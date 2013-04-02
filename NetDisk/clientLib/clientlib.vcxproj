@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A21E6AF2-D9F3-4641-BC2F-9B2EC061B082}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ClientLib</RootNamespace>
+    <SccProjectName>Svn</SccProjectName>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>D:\WorkSpace\WorkSpace_For_VS2010\SevenCBox_WorkSpace\Debug;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>D:\WorkSpace\WorkSpace_For_VS2010\SevenCBox_WorkSpace\include;$(IncludePath)</IncludePath>
+    <OutDir>../$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>D:\WorkSpace\WorkSpace_For_VS2010\SevenCBox_WorkSpace\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;Export_DLL;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <CallingConvention>Cdecl</CallingConvention>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <UseFullPaths>false</UseFullPaths>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAsManaged>false</CompileAsManaged>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;Export_DLL;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <LinkTimeCodeGeneration>false</LinkTimeCodeGeneration>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AsynRequest.cpp" />
+    <ClCompile Include="AsynRequestManager.cpp" />
+    <ClCompile Include="Base64Help.cpp" />
+    <ClCompile Include="CppSQLite3.cpp" />
+    <ClCompile Include="DbManager.cpp" />
+    <ClCompile Include="filesplit\split\FileSplitter.cpp" />
+    <ClCompile Include="GetRemoteFileExecutor.cpp" />
+    <ClCompile Include="GetRemoteThumbExecutor.cpp" />
+    <ClCompile Include="JsonHttpClient.cpp" />
+    <ClCompile Include="PostRequestExecuter.cpp" />
+    <ClCompile Include="SevenCBoxConfig.cpp" />
+    <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="md5.cpp" />
+    <ClCompile Include="SevenCBoxClient.cpp" />
+    <ClCompile Include="SevenCBoxSession.cpp" />
+    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
+    <ClCompile Include="TaskMonitor.cpp" />
+    <ClCompile Include="tinythread.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\clientlib\AsynRequest.h" />
+    <ClInclude Include="..\include\clientlib\AsynRequestManager.h" />
+    <ClInclude Include="..\include\clientlib\Base64Help.h" />
+    <ClInclude Include="..\include\clientlib\CCommonUtils.h" />
+    <ClInclude Include="..\include\clientlib\ClientExport.h" />
+    <ClInclude Include="..\include\clientlib\CppSQLite3.h" />
+    <ClInclude Include="..\include\clientlib\fast_mutex.h" />
+    <ClInclude Include="..\include\clientlib\HttpClientCommon.h" />
+    <ClInclude Include="..\include\clientlib\ITaskExecuter.h" />
+    <ClInclude Include="..\include\clientlib\JsonHttpClient.h" />
+    <ClInclude Include="..\include\clientlib\PhotoManageConfig.h" />
+    <ClInclude Include="..\include\clientlib\SevenCBoxConfig.h" />
+    <ClInclude Include="..\include\clientlib\StringUtils.h" />
+    <ClInclude Include="..\include\clientlib\SevenCBoxClient.h" />
+    <ClInclude Include="..\include\clientlib\SevenCBoxClientConfig.h" />
+    <ClInclude Include="..\include\clientlib\SevenCBoxSession.h" />
+    <ClInclude Include="..\include\clientlib\sqlite3.h" />
+    <ClInclude Include="..\include\clientlib\Task.h" />
+    <ClInclude Include="..\include\clientlib\TaskManager.h" />
+    <ClInclude Include="..\include\clientlib\TaskMonitor.h" />
+    <ClInclude Include="..\include\clientlib\tinythread.h" />
+    <ClInclude Include="DbManager.h" />
+    <ClInclude Include="filesplit\split\FileSplitter.h" />
+    <ClInclude Include="GetRemoteFileExecutor.h" />
+    <ClInclude Include="GetRemoteThumbExecutor.h" />
+    <ClInclude Include="md5.h" />
+    <ClInclude Include="PostRequestExecuter.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
