@@ -105,6 +105,7 @@
 - (IBAction)deleteAction:(id)sender;
 - (IBAction)shareAction:(id)sender;
 - (IBAction)moveAction:(id)sender;
+-(IBAction)openImage:(id)sender;
 
 - (NSArray *)sortList:(NSArray *)sourceArray;
 

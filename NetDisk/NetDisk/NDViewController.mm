@@ -8,6 +8,7 @@
 
 
 #import "NDViewController.h"
+#import "ImageBrowserViewController.h"
 
 
 void callBackFmFunc(Value &jsonValue,void *s_pv);
@@ -213,8 +214,13 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     [self.navigationController pushViewController:_av animated:YES];
     [_av release];
 }
+-(IBAction)openImage:(id)sender
+{
+    ImageBrowserViewController *browser=[[ImageBrowserViewController alloc] init];
+    [self.navigationController pushViewController:browser animated:YES];
+}
 - (IBAction)uploadFile:(id)sender
-{  
+{
     NDAppDelegate *appDelegate =  (NDAppDelegate *)[UIApplication sharedApplication].delegate;
     NDTaskManagerViewController *t_taskCont= appDelegate._taskMangeView;
     [self.navigationController pushViewController:t_taskCont animated:YES];

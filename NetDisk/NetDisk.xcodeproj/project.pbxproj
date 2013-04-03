@@ -19,6 +19,9 @@
 		29AB9A5316FC4FC6003DE32B /* icon_movie.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AB9A5016FC4FC0003DE32B /* icon_movie.png */; };
 		29AB9A5416FC4FC6003DE32B /* icon_music.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AB9A5116FC4FC2003DE32B /* icon_music.png */; };
 		29AB9A5516FC4FC6003DE32B /* top_bgr.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 29AB9A5216FC4FC4003DE32B /* top_bgr.jpg */; };
+		29B3995F170C017E0008D955 /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B3995E170C017E0008D955 /* ImageBrowserViewController.m */; };
+		29B39967170C2CC10008D955 /* MWTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B39962170C2CC10008D955 /* MWTapDetectingImageView.m */; };
+		29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B39964170C2CC10008D955 /* MWTapDetectingView.m */; };
 		8312A8BC168BED730091ED59 /* ExecFileDownLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8312A8B9168BED730091ED59 /* ExecFileDownLoad.cpp */; };
 		8312A8BD168BED730091ED59 /* ExecFileUpload.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8312A8BA168BED730091ED59 /* ExecFileUpload.cpp */; };
 		831AB49D16B53EE500ABD9DA /* AsynRequestManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831AB49C16B53EE500ABD9DA /* AsynRequestManager.cpp */; };
@@ -285,6 +288,12 @@
 		29AB9A5016FC4FC0003DE32B /* icon_movie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_movie.png; sourceTree = "<group>"; };
 		29AB9A5116FC4FC2003DE32B /* icon_music.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_music.png; sourceTree = "<group>"; };
 		29AB9A5216FC4FC4003DE32B /* top_bgr.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = top_bgr.jpg; sourceTree = "<group>"; };
+		29B3995D170C017E0008D955 /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
+		29B3995E170C017E0008D955 /* ImageBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBrowserViewController.m; sourceTree = "<group>"; };
+		29B39961170C2CC10008D955 /* MWTapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingImageView.h; sourceTree = "<group>"; };
+		29B39962170C2CC10008D955 /* MWTapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingImageView.m; sourceTree = "<group>"; };
+		29B39963170C2CC10008D955 /* MWTapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingView.h; sourceTree = "<group>"; };
+		29B39964170C2CC10008D955 /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
 		8312A8B9168BED730091ED59 /* ExecFileDownLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExecFileDownLoad.cpp; sourceTree = "<group>"; };
 		8312A8BA168BED730091ED59 /* ExecFileUpload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExecFileUpload.cpp; sourceTree = "<group>"; };
 		8312A8C0168BEFF40091ED59 /* ExecFileDownLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExecFileDownLoad.h; sourceTree = "<group>"; };
@@ -763,6 +772,17 @@
 			path = UMAnalytics_Sdk_2.1.3.OpenUDID;
 			sourceTree = "<group>";
 		};
+		29B39960170C2CAD0008D955 /* Top */ = {
+			isa = PBXGroup;
+			children = (
+				29B39961170C2CC10008D955 /* MWTapDetectingImageView.h */,
+				29B39962170C2CC10008D955 /* MWTapDetectingImageView.m */,
+				29B39963170C2CC10008D955 /* MWTapDetectingView.h */,
+				29B39964170C2CC10008D955 /* MWTapDetectingView.m */,
+			);
+			name = Top;
+			sourceTree = "<group>";
+		};
 		835C2FDC1670638000E83538 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
@@ -1162,6 +1182,7 @@
 		83A3A0481650D0C700BEDB27 = {
 			isa = PBXGroup;
 			children = (
+				29B39960170C2CAD0008D955 /* Top */,
 				293896B9170932BA00929F48 /* UMAnalytics_Sdk_2.1.3.OpenUDID */,
 				29A06C1616F9979B00D4A62D /* Default-568h@2x.png */,
 				29A06C1416F9979300D4A62D /* Default@2x.png */,
@@ -1298,6 +1319,8 @@
 				8397C5E916A5330200FD4BBD /* UIRenameViewController.xib */,
 				83B519D916ABDD7C004B6B32 /* Item.h */,
 				83B519DA16ABDD7E004B6B32 /* Item.m */,
+				29B3995D170C017E0008D955 /* ImageBrowserViewController.h */,
+				29B3995E170C017E0008D955 /* ImageBrowserViewController.m */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1893,6 +1916,9 @@
 				83F57B6416D6169D0006C980 /* GetRemoteThumbExecutor.cpp in Sources */,
 				83B068DE16DB7CDC00756966 /* CheckConnectionKind.mm in Sources */,
 				83B068E216DB7F2200756966 /* Reachability.mm in Sources */,
+				29B3995F170C017E0008D955 /* ImageBrowserViewController.m in Sources */,
+				29B39967170C2CC10008D955 /* MWTapDetectingImageView.m in Sources */,
+				29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1941,7 +1967,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ./NetDisk/lib/include;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/armv7;
+				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;

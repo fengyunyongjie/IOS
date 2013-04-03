@@ -104,7 +104,8 @@ dispatch_queue_t t_queue;
         {
             iv.image=newImg;
         }
-        NSLog(@"修改之后：width: %f, height: %f, 占用内存: %ld",iv.image.size.width,iv.image.size.height,sizeof(newImg));
+        //NSData *dataObj=UIImageJPEGRepresentation(newImg);
+       // NSLog(@"修改之后：width: %f, height: %f, 占用内存: %ld",iv.ima ge.size.width,iv.image.size.height,);
         [iv setTag:3];
     }
 }
