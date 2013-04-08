@@ -75,7 +75,6 @@
 								<string key="NSFrame">{{82, 15}, {180, 20}}</string>
 								<reference key="NSSuperview" ref="246565093"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -1038,7 +1037,6 @@
 						<string key="editAction:">id</string>
 						<string key="frientMsg:">id</string>
 						<string key="moveAction:">id</string>
-						<string key="openImage:">id</string>
 						<string key="pasteAction:">id</string>
 						<string key="setting:">id</string>
 						<string key="shareAction:">id</string>
@@ -1067,10 +1065,6 @@
 						</object>
 						<object class="IBActionInfo" key="moveAction:">
 							<string key="name">moveAction:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="openImage:">
-							<string key="name">openImage:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="pasteAction:">

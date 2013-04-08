@@ -8,7 +8,6 @@
 
 
 #import "NDViewController.h"
-#import "ImageBrowserViewController.h"
 
 
 void callBackFmFunc(Value &jsonValue,void *s_pv);
@@ -41,17 +40,17 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     
     self.m_titleLabel.text = @"我的虹盘";
     self.m_storeLabel.text = @"";
-    UIBarButtonItem *leftBarButtonItem = [ [ UIBarButtonItem alloc ]  
+    UIBarButtonItem *leftBarButtonItem = [ [ UIBarButtonItem alloc ]
                                           initWithTitle: NSLocalizedString(@"关于", nil)
-                                          style: UIBarButtonItemStylePlain  
-                                          target: self  
-                                          action: @selector(about)  
+                                          style: UIBarButtonItemStylePlain
+                                          target: self
+                                          action: @selector(about)
                                           ];
-    UIBarButtonItem *rightBarButtonItem = [ [ UIBarButtonItem alloc ]  
+    UIBarButtonItem *rightBarButtonItem = [ [ UIBarButtonItem alloc ]
                                            initWithTitle: NSLocalizedString(@"好友动态", nil)
-                                           style: UIBarButtonItemStylePlain  
-                                           target: self  
-                                           action: @selector(activity)  
+                                           style: UIBarButtonItemStylePlain
+                                           target: self
+                                           action: @selector(activity)
                                            ];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
@@ -70,11 +69,11 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     
     
     m_listArray = [[NSMutableArray alloc] initWithCapacity:0];
-    /*  
+    /*
      HUD = [[[MBProgressHUD alloc] initWithView:self.navigationController.view] autorelease];
      [self.navigationController.view addSubview:HUD];
      HUD.delegate = self;
-     */   
+     */
     CGRect tRect = CGRectMake(0, 44, [[UIScreen mainScreen]bounds].size.width, [[UIScreen mainScreen] bounds].size.height-(480-370));
     //NSLog(@"UIScreen mainScreen bounds size (%f, %f, %f , %f)",[[UIScreen mainScreen]bounds].origin.x,[[UIScreen mainScreen]bounds].origin.y,[[UIScreen mainScreen]bounds].size.width,[[UIScreen mainScreen] bounds].size.height);
     m_tableView = [[BIDragRefreshTableView alloc]initWithFrame:tRect];
@@ -178,7 +177,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
             NSLog(@"%@",appDelegate.m_parentIdForFresh);
             [appDelegate clearFreshID];
         }
-    }    
+    }
     //    scBox.GetFriendshipsGroupsDeep(0,-1,callBackGetFriendsFunc,self);
 }
 
@@ -213,11 +212,6 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     NDActivityViewController *_av = [[NDActivityViewController alloc] initWithNibName:@"NDActivityViewController" bundle:nil];
     [self.navigationController pushViewController:_av animated:YES];
     [_av release];
-}
--(IBAction)openImage:(id)sender
-{
-    ImageBrowserViewController *browser=[[ImageBrowserViewController alloc] init];
-    [self.navigationController pushViewController:browser animated:YES];
 }
 - (IBAction)uploadFile:(id)sender
 {
@@ -264,7 +258,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
 }
 
 - (void)hiddenPasteButton:(BOOL)theBL
-{    
+{
     if (theBL) {
         m_pastView.hidden = theBL;
         m_normalView.hidden = !theBL;
@@ -280,7 +274,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     
 }
 - (void)hiddenBatchButton:(BOOL)theBL
-{    
+{
     if (theBL) {
         m_batchView.hidden = theBL;
         m_normalView.hidden = !theBL;
@@ -420,7 +414,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
         fv.m_myInfoDic = dic;
         [self.navigationController pushViewController:fv animated:YES];
         [fv release];
-    }   
+    }
 }
 #pragma mark - other Methods
 - (void)setEnableButtons:(int)index
@@ -528,10 +522,10 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     if (m_listArray==nil||[m_listArray count]<2) {
         return;
     }
-    CGRect rect = m_tableView.frame;    
-    [UIView beginAnimations:@"Curl2" context:nil];//动画开始   
-	[UIView setAnimationDuration:0.3];   
-	[UIView setAnimationDelegate:self];  
+    CGRect rect = m_tableView.frame;
+    [UIView beginAnimations:@"Curl2" context:nil];//动画开始
+	[UIView setAnimationDuration:0.3];
+	[UIView setAnimationDelegate:self];
 	[UIView setAnimationBeginsFromCurrentState:YES];
 	
 	if (textEdit) {
@@ -588,11 +582,11 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     
 }
 #pragma mark - UISearchBarDelegate Methods
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar { 
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
     
-    searchBar.showsScopeBar = YES;  
-    [searchBar sizeToFit];  
-    [searchBar setShowsCancelButton:YES animated:YES];  
+    searchBar.showsScopeBar = YES;
+    [searchBar sizeToFit];
+    [searchBar setShowsCancelButton:YES animated:YES];
     for(id cc in [m_searchBar subviews])
     {
         if([cc isKindOfClass:[UIButton class]])
@@ -604,18 +598,18 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     
     m_editButton.enabled = NO;
     m_bottomBackView.hidden = YES;
-    return YES;  
-}  
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {  
-    //  searchBar.showsScopeBar = NO;  
-    //  [searchBar sizeToFit];  
-    //  [searchBar setShowsCancelButton:NO animated:YES]; 
+    return YES;
+}
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    //  searchBar.showsScopeBar = NO;
+    //  [searchBar sizeToFit];
+    //  [searchBar setShowsCancelButton:NO animated:YES];
     
     //  m_editButton.enabled = YES;
     
     
-    return YES;  
-}  
+    return YES;
+}
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if ( searchText==nil||[searchText length]==0) {
@@ -659,9 +653,9 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
 }
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    searchBar.showsScopeBar = NO;  
-    [searchBar sizeToFit];  
-    [searchBar setShowsCancelButton:NO animated:YES];  
+    searchBar.showsScopeBar = NO;
+    [searchBar sizeToFit];
+    [searchBar setShowsCancelButton:NO animated:YES];
     [searchBar clearsContextBeforeDrawing];
     [searchBar resignFirstResponder];
     
@@ -805,7 +799,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                     string fid([f_id cStringUsingEncoding:NSUTF8StringEncoding]);
                     fids.push_back(fid);
                     scBox.FmRm(fids,callBackFmRmFunc,self);
-                }      
+                }
                     break;
                 case 4:
                 {
@@ -826,7 +820,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                 case 0://查看
                 {
                     [self showFmInfoAction];
-                }    
+                }
                     break;
                 case 1://下载、打开
                 {
@@ -931,7 +925,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                     string fid([f_id cStringUsingEncoding:NSUTF8StringEncoding]);
                     fids.push_back(fid);
                     scBox.FmRm(fids,callBackFmRmFunc,self);
-                }      
+                }
                     break;
                 case 5:
                 {
@@ -995,7 +989,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                     //                            NSMutableArray *keepedList = [[NSUserDefaults standardUserDefaults] objectForKey:@"nd_keeped_list"];
                     //                            if (keepedList==nil) {
                     //                                keepedList = [NSMutableArray array];
-                    //                                
+                    //
                     //                            }
                     //                            /*直接加入了dic，则无法插入NSUserDefaults，奇怪，估计dic内数据有异常。*/
                     //                            NSMutableDictionary *dd = [NSMutableDictionary dictionary];
@@ -1009,7 +1003,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                     //                            }*/
                     //                            [[NSUserDefaults standardUserDefaults] setObject:keepedList forKey:@"nd_keeped_list"];
                     //                            [[NSUserDefaults standardUserDefaults] synchronize];
-                    //                            
+                    //
                     //                            [m_hud setCaption:@"已加入收藏"];
                     //                            [m_hud setActivity:NO];
                     //                            [m_hud show];
@@ -1017,7 +1011,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                     //                        [m_hud hideAfter:0.8f];
                     //                    }
                     
-                }    
+                }
                     break;
                 case 6:
                 {
@@ -1046,7 +1040,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
 	if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
         
     }
-    //需要修改未temp目录下保存	
+    //需要修改未temp目录下保存
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSLocale *locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
     [dateFormatter setLocale:locale];
@@ -1077,7 +1071,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
 
 -(void)refreshTableHeaderViewDataSourceDidStartLoad:(BIRefreshTableHeaderView *) refreshTableHeaderView{
     
-    if (m_editButton.selected) { 
+    if (m_editButton.selected) {
         [m_tableView dataSourceDidFinishedLoad:m_tableView.headerView];
         return ;
     }
@@ -1109,14 +1103,14 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
 	}
     else
     {
-   //     if(!m_editButton.enabled)
-     //       return;
+        //     if(!m_editButton.enabled)
+        //       return;
         switch (indexPath.section) {
             case 0:
             {
                 switch (indexPath.row) {
                     case 0:
-                    {  
+                    {
                         NDMainViewController *subFolderView = [[NDMainViewController alloc] initWithNibName:@"NDMainViewController" bundle:nil];
                         subFolderView.m_parentType = PShareViewController;
                         subFolderView.m_title =[NSString stringWithString:@"我的共享"] ;
@@ -1125,15 +1119,15 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                         [subFolderView release];
                     }
                         break;
-//                    case 1:
-//                    {   
-//                        NDPhotoViewController *pv = [[NDPhotoViewController alloc]initWithNibName:@"NDPhotoViewController" bundle:nil];
-//                        [self.navigationController pushViewController:pv animated:YES];
-//                        [pv release];
-//                    }
-//                        break;
+                        //                    case 1:
+                        //                    {
+                        //                        NDPhotoViewController *pv = [[NDPhotoViewController alloc]initWithNibName:@"NDPhotoViewController" bundle:nil];
+                        //                        [self.navigationController pushViewController:pv animated:YES];
+                        //                        [pv release];
+                        //                    }
+                        //                        break;
                     case 1:
-                    {   
+                    {
                         NDKeepViewController *_kp = [[NDKeepViewController alloc] initWithNibName:@"NDKeepViewController" bundle:nil];
                         
                         //    subFolderView.m_title =[NSString stringWithString:@"我的空间"] ;
@@ -1141,7 +1135,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                         [_kp release];
                     }
                         break;
-  
+                        
                     case 2:
                     {
                         NDAppDelegate *appDelegate =  (NDAppDelegate *)[UIApplication sharedApplication].delegate;
@@ -1166,7 +1160,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                 NSMutableDictionary *dic = [m_listArray objectAtIndex:indexPath.row];
                 NSString *t_fl = [dic objectForKey:@"f_mime"];
                 NSString *f_id = [Function covertNumberToString:[dic objectForKey:@"f_id"]];
-                if ([t_fl isEqualToString:@"directory"]) { 
+                if ([t_fl isEqualToString:@"directory"]) {
                     NDMainViewController *subFolderView = [[NDMainViewController alloc] initWithNibName:@"NDMainViewController" bundle:nil];
                     subFolderView.m_parentType = PViewController;
                     subFolderView.m_title = [dic objectForKey:@"f_name"];
@@ -1175,7 +1169,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                     [self.navigationController pushViewController:subFolderView animated:YES];
                     [subFolderView release];
                 }
-                else{ 
+                else{
                     shareRow = indexPath.row;
                     NSDictionary *dic = [m_listArray objectAtIndex:indexPath.row];
                     NSString *f_name = [dic objectForKey:@"f_name"];
@@ -1193,7 +1187,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                         imageShow.m_index=indexPath.row;
                         imageShow.m_listArray=m_listArray;
                         [self.navigationController pushViewController:imageShow animated:YES];
-                        [imageShow release];                        
+                        [imageShow release];
                     }
                     else
                     {
@@ -1201,31 +1195,31 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
                         [m_hud setActivity:NO];
                         [m_hud show];
                         [m_hud hideAfter:0.8f];
-//                        UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:f_name
-//                                                                        delegate:self
-//                                                               cancelButtonTitle:nil
-//                                                          destructiveButtonTitle:nil
-//                                                               otherButtonTitles:nil];
-//                        as.delegate = self;
-//                        as.tag = TAG_ACTIONSHEET_SINGLE;
-//                        
-//                        NSString *savedImagePath=[[Function getImgCachePath] stringByAppendingPathComponent:f_name];
-//                        NSString *keepedImagePath=[[Function getKeepCachePath] stringByAppendingPathComponent:f_name];
-//                        [as addButtonWithTitle:NSLocalizedString(@"查 看",nil)];
-//                        if([Function fileSizeAtPath:savedImagePath]<2 && [Function fileSizeAtPath:keepedImagePath]<2)
-//                            [as addButtonWithTitle:NSLocalizedString(@"下 载",nil)];
-//                        else
-//                            [as addButtonWithTitle:NSLocalizedString(@"打开",nil)];
-//                        [as addButtonWithTitle:NSLocalizedString(@"复 制",nil)];
-//                        [as addButtonWithTitle:NSLocalizedString(@"剪 切",nil)];
-//                        [as addButtonWithTitle:NSLocalizedString(@"删 除",nil)];
-//                        [as addButtonWithTitle:NSLocalizedString(@"收 藏",nil)];
-//                        [as addButtonWithTitle:NSLocalizedString(@"重命名",nil)];
-//                        [as addButtonWithTitle:NSLocalizedString(@"取 消",nil)];
-//                        as.cancelButtonIndex = [as numberOfButtons] - 1;
-//                        
-//                        [as showInView:self.view];
-//                        [as release];
+                        //                        UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:f_name
+                        //                                                                        delegate:self
+                        //                                                               cancelButtonTitle:nil
+                        //                                                          destructiveButtonTitle:nil
+                        //                                                               otherButtonTitles:nil];
+                        //                        as.delegate = self;
+                        //                        as.tag = TAG_ACTIONSHEET_SINGLE;
+                        //
+                        //                        NSString *savedImagePath=[[Function getImgCachePath] stringByAppendingPathComponent:f_name];
+                        //                        NSString *keepedImagePath=[[Function getKeepCachePath] stringByAppendingPathComponent:f_name];
+                        //                        [as addButtonWithTitle:NSLocalizedString(@"查 看",nil)];
+                        //                        if([Function fileSizeAtPath:savedImagePath]<2 && [Function fileSizeAtPath:keepedImagePath]<2)
+                        //                            [as addButtonWithTitle:NSLocalizedString(@"下 载",nil)];
+                        //                        else
+                        //                            [as addButtonWithTitle:NSLocalizedString(@"打开",nil)];
+                        //                        [as addButtonWithTitle:NSLocalizedString(@"复 制",nil)];
+                        //                        [as addButtonWithTitle:NSLocalizedString(@"剪 切",nil)];
+                        //                        [as addButtonWithTitle:NSLocalizedString(@"删 除",nil)];
+                        //                        [as addButtonWithTitle:NSLocalizedString(@"收 藏",nil)];
+                        //                        [as addButtonWithTitle:NSLocalizedString(@"重命名",nil)];
+                        //                        [as addButtonWithTitle:NSLocalizedString(@"取 消",nil)];
+                        //                        as.cancelButtonIndex = [as numberOfButtons] - 1;
+                        //
+                        //                        [as showInView:self.view];
+                        //                        [as release];
                     }
                 }
             }
@@ -1253,7 +1247,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     if (indexPath.section==0) {
         return UITableViewCellEditingStyleNone;
     }
-	return  (UITableViewCellEditingStyle)(UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert); 
+	return  (UITableViewCellEditingStyle)(UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert);
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -1278,7 +1272,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
             break;
         case 1:
             return 30;
-            break;    
+            break;
         default:
             return 30;
             break;
@@ -1415,9 +1409,9 @@ void callBackFmFunc(Value &jsonValue,void *s_pv){
     NSString *vallStr = [NSString stringWithCString:vall.c_str() encoding:NSUTF8StringEncoding];
     
     [s_pv parseReturnData:vallStr];
-    /*    
+    /*
      int code = jsonValue["code"].asInt();
-     int total = jsonValue["total"].asInt(); 
+     int total = jsonValue["total"].asInt();
      if (code==0) {
      if(jsonValue.isMember("files"))
      {
@@ -1429,7 +1423,7 @@ void callBackFmFunc(Value &jsonValue,void *s_pv){
      }
      }
      
-     int total = jsonValue["total"].asInt(); 
+     int total = jsonValue["total"].asInt();
      if (total>0) {
      
      }
@@ -1440,7 +1434,7 @@ void callBackFmFunc(Value &jsonValue,void *s_pv){
      [alertView show];
      [alertView release];
      }
-     */   
+     */
 }
 void callBackFmUploadFunc(Value &jsonValue,void *s_pv)
 {
@@ -1485,7 +1479,7 @@ void callBackGetFriendsFunc(Value &jsonValue,void *s_pv)
     
     NSData *data =  [vallStr dataUsingEncoding:NSUTF8StringEncoding];
     NSArray*paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-    NSString *documentsDirectory=[paths objectAtIndex:0]; 
+    NSString *documentsDirectory=[paths objectAtIndex:0];
     NSString *savedImagePath=[documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.txt",@"friends"]];
     [data writeToFile:savedImagePath atomically:YES];
     vector<string> member_account;
@@ -1606,7 +1600,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv)
         imagePickerController.delegate = self;
 	}
     
-	if (hasCamera) 
+	if (hasCamera)
 		imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
 	else
 		imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -1668,9 +1662,9 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv)
          //     m_listArray = [NSArray arrayWithArray:[valueDic objectForKey:@"files"]] ;
          NSLog(@"%@",m_listArray);
          */
-     //   NSIndexSet *set = [NSIndexSet indexSetWithIndex:0];
+        //   NSIndexSet *set = [NSIndexSet indexSetWithIndex:0];
         NSArray *tArray = [valueDic objectForKey:@"files"];
-     //   tArray = [self sortList:tArray];
+        //   tArray = [self sortList:tArray];
         m_listArray = [tArray retain];
         counts = [m_listArray count];
         [m_listSourceArray release];
@@ -1696,7 +1690,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv)
                     SevenCBoxClient::FmDownloadThumbFile(f_id,[picPath cStringUsingEncoding:NSUTF8StringEncoding]);
                     noc++;
                 }
-            }  
+            }
         }
         if (noc!=0) {
             SevenCBoxClient::StartTaskMonitor();
@@ -1706,7 +1700,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv)
     if (code==0)
     {
         
-    }    
+    }
     else
     {
         [m_hud setCaption:@"获取失败!"];
@@ -1731,7 +1725,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv)
      
      }
      [self.navigationController pushViewController:subFolderView animated:YES];
-     */    
+     */
 }
 - (NSArray *)sortList:(NSArray *)sourceArray
 {
@@ -1741,7 +1735,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv)
     NSSortDescriptor *sd1 = [NSSortDescriptor sortDescriptorWithKey:@"f_name" ascending:NO];
     
     NSArray *_ar = [sourceArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sd1, nil]];
-    /*    
+    /*
      for (int i=0; i<[_ar count]; i++) {
      NSDictionary *dic = [_ar objectAtIndex:i];
      NSLog(@"network=%d,created_at=%@",[[dic objectForKey:@"network"] intValue],[dic objectForKey:@"sortTime"]);
@@ -1759,7 +1753,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv)
     {
         [m_hud setCaption:@"共享成功!"];
         [m_hud setImage:[UIImage imageNamed:@"19-check"]];
-    }    
+    }
     else
     {
         [m_hud setCaption:@"共享失败!"];

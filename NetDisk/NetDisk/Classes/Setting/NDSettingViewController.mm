@@ -385,7 +385,7 @@ void callBackLogoutFunc(Value &jsonValue,void *s_pv);
                 case 0:
                     descLabel.hidden = NO;
                     titleLabel.text = @"版本";
-                    descLabel.text = @"V1.0.1";
+                    descLabel.text = @"V1.0.2";
                     break;
                 case 1:
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
