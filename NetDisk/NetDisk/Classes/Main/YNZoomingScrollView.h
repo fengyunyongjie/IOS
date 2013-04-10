@@ -13,12 +13,17 @@
 @interface YNZoomingScrollView : UIScrollView<UIScrollViewDelegate,MWTapDetectingImageViewDelegate,MWTapDetectingViewDelegate>
 {
     id _photoBrowser;
-    
+    UIImage * oImage;   //源图
+    UIImage * tImage;   //小图
+    int ima_tag;
     MWTapDetectingView *_tapView; //for background taps
     MWTapDetectingImageView *_photoImageView;
 }
 -(id)initWithBrowser:(id)browser;
+-(void)testDisplayImage:(NSDictionary *)datadic;
 -(void)displayImage;
+-(void)showOImage;
+-(void)showTImage;
 -(void)displayImageFailure;
 -(void)setMaxMinZoomScalesForCurrentBounds;
 -(void)prepareForReuse;

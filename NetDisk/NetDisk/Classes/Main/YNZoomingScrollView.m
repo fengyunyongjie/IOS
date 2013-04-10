@@ -7,6 +7,7 @@
 //
 
 #import "YNZoomingScrollView.h"
+#import "Function.h"
 
 @interface YNZoomingScrollView()
 @property(nonatomic,assign) id photoBrowser;
@@ -52,6 +53,7 @@
 		self.showsVerticalScrollIndicator = NO;
 		self.decelerationRate = UIScrollViewDecelerationRateFast;
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.frame=[[UIScreen mainScreen] bounds];
     }
     return self;
 }
@@ -64,8 +66,74 @@
 - (void)prepareForReuse {
 }
 
-#pragma mark - Image
+#pragma mark - UIImage Methods
+-(UIImage *)scaleImage:(UIImage*)image toScale:(float)scaleSize
+{
+    UIGraphicsBeginImageContext(CGSizeMake(image.size.width/scaleSize,image.size.height/scaleSize));
+    [image drawInRect:CGRectMake(0, 0, image.size.width/scaleSize,image.size.height/scaleSize)];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return scaledImage;
+}
 
+#pragma mark - Image
+-(void)testDisplayImage:(NSDictionary *)datadic{
+    if (_photoImageView.image==nil) {
+		// Reset
+		self.maximumZoomScale = 1;
+		self.minimumZoomScale = 1;
+		self.zoomScale = 1;
+		self.contentSize = CGSizeMake(0, 0);
+        
+        NSString *oPath=[[Function getImgCachePath] stringByAppendingPathComponent:[datadic objectForKey:@"f_name"]];
+        NSString *tPath=[NSString stringWithFormat:@"%@/%@",[Function getTempCachePath],[Function picFileNameFromURL:[datadic objectForKey:@"compressaddr"]]];
+
+		// Get image from browser as it handles ordering of fetching
+		UIImage *img;
+        if ([Function fileSizeAtPath:oPath]<2) {
+            img= [UIImage imageWithContentsOfFile:tPath];
+        }else{
+            img= [UIImage imageWithContentsOfFile:oPath];
+            float s_w=img.size.width/1024.0f;
+            float s_h=img.size.height/1024.0f;
+            //UIImage *s_img=nil;
+            if (s_w>1.5&s_h>1.5) {
+                if (s_w>s_h) {
+                    img=[self scaleImage:img toScale:s_w];
+                }else
+                {
+                    img=[self scaleImage:img toScale:s_h];
+                }
+            }
+//            if (s_img!=nil) {
+//                [img release];
+//                img=s_img;
+//            }
+        }
+        //img= [UIImage imageWithContentsOfFile:tPath];
+		if (img) {
+			// Set image
+			_photoImageView.image = img;
+			_photoImageView.hidden = NO;
+
+			// Setup photo frame
+			CGRect photoImageViewFrame;
+			photoImageViewFrame.origin = CGPointZero;
+			photoImageViewFrame.size = img.size;
+			_photoImageView.frame = photoImageViewFrame;
+			self.contentSize = photoImageViewFrame.size;
+			// Set zoom to minimum zoom
+			[self setMaxMinZoomScalesForCurrentBounds];
+			
+		} else {
+			
+			// Hide image view
+			_photoImageView.hidden = YES;
+			
+		}
+		[self setNeedsLayout];
+    }
+}
 // Get and display image
 - (void)displayImage {
 //	if (_photo && _photoImageView.image == nil) {
@@ -202,27 +270,27 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-	[_photoBrowser cancelControlHiding];
+	//[_photoBrowser cancelControlHiding];
 }
 
 - (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view {
-	[_photoBrowser cancelControlHiding];
+	//[_photoBrowser cancelControlHiding];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-	[_photoBrowser hideControlsAfterDelay];
+	//[_photoBrowser hideControlsAfterDelay];
 }
 
 #pragma mark - Tap Detection
 
 - (void)handleSingleTap:(CGPoint)touchPoint {
-	[_photoBrowser performSelector:@selector(toggleControls) withObject:nil afterDelay:0.2];
+	//[_photoBrowser performSelector:@selector(toggleControls) withObject:nil afterDelay:0.2];
 }
 
 - (void)handleDoubleTap:(CGPoint)touchPoint {
 	
 	// Cancel any single tap handling
-	[NSObject cancelPreviousPerformRequestsWithTarget:_photoBrowser];
+	//[NSObject cancelPreviousPerformRequestsWithTarget:_photoBrowser];
 	
 	// Zoom
 	if (self.zoomScale == self.maximumZoomScale) {
@@ -238,10 +306,10 @@
 	}
 	
 	// Delay controls
-	[_photoBrowser hideControlsAfterDelay];
+	//[_photoBrowser hideControlsAfterDelay];
 	
 }
-
+#pragma mark - MWTapDetectingImageViewDelegate Method
 // Image View
 - (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch {
     [self handleSingleTap:[touch locationInView:imageView]];
