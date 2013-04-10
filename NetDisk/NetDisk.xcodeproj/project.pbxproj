@@ -22,6 +22,8 @@
 		29B3995F170C017E0008D955 /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B3995E170C017E0008D955 /* ImageBrowserViewController.m */; };
 		29B39967170C2CC10008D955 /* MWTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B39962170C2CC10008D955 /* MWTapDetectingImageView.m */; };
 		29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B39964170C2CC10008D955 /* MWTapDetectingView.m */; };
+		29B65BB517124EEC00077CB7 /* YNZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B65BB417124EEC00077CB7 /* YNZoomingScrollView.m */; };
+		29B65BB8171258C100077CB7 /* YNPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B65BB7171258C100077CB7 /* YNPhotoBrowser.m */; };
 		8312A8BC168BED730091ED59 /* ExecFileDownLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8312A8B9168BED730091ED59 /* ExecFileDownLoad.cpp */; };
 		8312A8BD168BED730091ED59 /* ExecFileUpload.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8312A8BA168BED730091ED59 /* ExecFileUpload.cpp */; };
 		831AB49D16B53EE500ABD9DA /* AsynRequestManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831AB49C16B53EE500ABD9DA /* AsynRequestManager.cpp */; };
@@ -294,6 +296,10 @@
 		29B39962170C2CC10008D955 /* MWTapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingImageView.m; sourceTree = "<group>"; };
 		29B39963170C2CC10008D955 /* MWTapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingView.h; sourceTree = "<group>"; };
 		29B39964170C2CC10008D955 /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
+		29B65BB317124EEC00077CB7 /* YNZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNZoomingScrollView.h; sourceTree = "<group>"; };
+		29B65BB417124EEC00077CB7 /* YNZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNZoomingScrollView.m; sourceTree = "<group>"; };
+		29B65BB6171258C100077CB7 /* YNPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNPhotoBrowser.h; sourceTree = "<group>"; };
+		29B65BB7171258C100077CB7 /* YNPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNPhotoBrowser.m; sourceTree = "<group>"; };
 		8312A8B9168BED730091ED59 /* ExecFileDownLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExecFileDownLoad.cpp; sourceTree = "<group>"; };
 		8312A8BA168BED730091ED59 /* ExecFileUpload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExecFileUpload.cpp; sourceTree = "<group>"; };
 		8312A8C0168BEFF40091ED59 /* ExecFileDownLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExecFileDownLoad.h; sourceTree = "<group>"; };
@@ -1308,6 +1314,10 @@
 				839B33DA16556992008AAADC /* ImageShowViewController.h */,
 				839B33DB16556992008AAADC /* ImageShowViewController.mm */,
 				839B33DC16556992008AAADC /* ImageShowViewController.xib */,
+				29B65BB317124EEC00077CB7 /* YNZoomingScrollView.h */,
+				29B65BB417124EEC00077CB7 /* YNZoomingScrollView.m */,
+				29B65BB6171258C100077CB7 /* YNPhotoBrowser.h */,
+				29B65BB7171258C100077CB7 /* YNPhotoBrowser.m */,
 				83A3A08E1650ED2F00BEDB27 /* NDMainViewController.h */,
 				83A3A08F1650ED2F00BEDB27 /* NDMainViewController.mm */,
 				83A3A0901650ED2F00BEDB27 /* NDMainViewController.xib */,
@@ -1919,6 +1929,8 @@
 				29B3995F170C017E0008D955 /* ImageBrowserViewController.m in Sources */,
 				29B39967170C2CC10008D955 /* MWTapDetectingImageView.m in Sources */,
 				29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */,
+				29B65BB517124EEC00077CB7 /* YNZoomingScrollView.m in Sources */,
+				29B65BB8171258C100077CB7 /* YNPhotoBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1967,7 +1979,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ./NetDisk/lib/include;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
+				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/armv7;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;

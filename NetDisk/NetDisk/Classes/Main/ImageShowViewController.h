@@ -24,6 +24,8 @@
     NSTimer *updateTimer;
     UILabel *m_titleLabel;
     NSMutableArray *m_imgListArray;
+    NSMutableArray *imgHD;
+    NSMutableArray *imgTH;
     int new_index;
     int last_index;
 }

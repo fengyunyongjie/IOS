@@ -19,13 +19,16 @@ dispatch_queue_t t_queue;
     }
     return self;
 }
-
-
-
 - (void)didReceiveMemoryWarning
 {
     // Releases the view if it doesn't have a superview.
+    
     [super didReceiveMemoryWarning];
+    for (int i=0; i<imgHD.count; i++) {
+        if (i!=[self currentIndex]) {
+            [[imgHD objectAtIndex:i] release];
+        }
+    }
     
     // Release any cached data, images, etc that aren't in use.
 }
@@ -36,7 +39,16 @@ dispatch_queue_t t_queue;
 }
 - (UIImageView *)currentView
 {
-    return (UIImageView *)[[scrollView subviews] objectAtIndex:[self currentIndex]];
+    //return (UIImageView *)[[scrollView subviews] objectAtIndex:[self currentIndex]];
+    return [self ImageViewAtIndex:[self currentIndex]];
+}
+-(UIImageView *)ImageViewAtIndex:(int)index
+{
+    return (UIImageView *)[[[self ScrollViewAtIndex:index] subviews] objectAtIndex:0];
+}
+-(UIScrollView *)ScrollViewAtIndex:(int)index
+{
+    return (UIScrollView *)[[scrollView subviews] objectAtIndex:[self currentIndex]];
 }
 - (void)setPage:(int)page
 {
@@ -68,22 +80,27 @@ dispatch_queue_t t_queue;
     if (index<0||index>=[m_imgListArray count]) {
         return;
     }
-    UIImageView *iv=(UIImageView *)[[scrollView subviews] objectAtIndex:index];
+    UIImageView *iv=[self ImageViewAtIndex:index];
     if (iv.image && iv.tag==3) {
         return;
     }
     NSDictionary *dataDic=[m_imgListArray objectAtIndex:index];
     NSString *f_name=[dataDic objectForKey:@"f_name"];
     NSString *savedImagePath=[[Function getImgCachePath] stringByAppendingPathComponent:f_name];
-    if ([Function fileSizeAtPath:savedImagePath]<2) {
-        if (iv.tag==2) {
-            return;
-        }
+    //if ([Function fileSizeAtPath:savedImagePath]<2) {
+//        if (iv.tag==2) {
+//            return;
+//        }
+    if (iv.tag==1)
+    {
         NSString *picName = [Function picFileNameFromURL:[dataDic objectForKey:@"compressaddr"]];
         NSString *path = [NSString stringWithFormat:@"%@/%@",[Function getTempCachePath],picName];
-        iv.image=[UIImage imageWithContentsOfFile:path];
+        UIImage *im=[UIImage imageWithContentsOfFile:path];
+        iv.image=im;
         [iv setTag:2];
-    }else
+        [imgTH  setObject:im atIndexedSubscript:index];
+    }
+    if ([Function fileSizeAtPath:savedImagePath]>2)
     {
         UIImage *newImg=[UIImage imageWithContentsOfFile:savedImagePath];
         NSLog(@"原图大小：width: %f, height: %f, 占用内存: %ld",newImg.size.width,newImg.size.height,sizeof(newImg));
@@ -104,17 +121,45 @@ dispatch_queue_t t_queue;
         {
             iv.image=newImg;
         }
+        [imgHD setObject:iv.image atIndexedSubscript:index];
         //NSData *dataObj=UIImageJPEGRepresentation(newImg);
        // NSLog(@"修改之后：width: %f, height: %f, 占用内存: %ld",iv.ima ge.size.width,iv.image.size.height,);
         [iv setTag:3];
     }
+}
+-(void)loadMiniImage:(int)index
+{
+    if (index<0||index>=[m_imgListArray count]) {
+        return;
+    }
+    
+    UIImageView *iv=[self ImageViewAtIndex:index];
+    if (iv.tag!=1) {
+        return;
+    }
+//    if (iv.image && iv.tag==3) {
+//        [iv.image release];
+//        iv.tag=1;
+//    }
+//    if ([imgTH objectAtIndex:index]) {
+//        iv.image=(UIImage *)[imgTH objectAtIndex:index];
+//        [iv setTag:2];
+//        return;
+//    }
+    NSDictionary *dataDic=[m_imgListArray objectAtIndex:index];
+    NSString *picName = [Function picFileNameFromURL:[dataDic objectForKey:@"compressaddr"]];
+    NSString *path = [NSString stringWithFormat:@"%@/%@",[Function getTempCachePath],picName];
+    iv.image=[UIImage imageWithContentsOfFile:path];
+    [iv setTag:2];
+    [imgTH setObject:iv.image atIndexedSubscript:index];
 }
 -(void)releaseImage:(int)index
 {
     if (index<0||index>=[m_imgListArray count]) {
         return;
     }
-    UIImageView *iv=(UIImageView *)[ [scrollView subviews] objectAtIndex:index];
+    //UIImageView *iv=(UIImageView *)[ [scrollView subviews] objectAtIndex:index];
+    UIImageView *iv=[self ImageViewAtIndex:index];
     iv.image =nil;
     [iv setTag:1];
 }
@@ -124,10 +169,10 @@ dispatch_queue_t t_queue;
 	NSArray *subviews = [scrollView subviews];
     
 	// reposition all image subviews in a horizontal serial fashion
-	CGFloat curXLoc = - [UIScreen mainScreen].bounds.size.width;
+	CGFloat curXLoc =0;// - [UIScreen mainScreen].bounds.size.width;
 	for (view in subviews)
 	{
-		if ([view isKindOfClass:[UIImageView class]] && view.tag >= 0)
+		if ([view isKindOfClass:[UIScrollView class]] && view.tag == 10)
 		{
 			CGRect frame = view.frame;
 			frame.origin = CGPointMake(curXLoc, 0);
@@ -166,7 +211,9 @@ dispatch_queue_t t_queue;
             }
         }
     }
-    
+    //初始化两个UIImage数组，一个高清，一个小图
+    imgHD=[[NSMutableArray alloc] initWithCapacity:m_listArray.count];
+    imgTH=[[NSMutableArray alloc] initWithCapacity:m_listArray.count];
     for (int i=0;i<m_imgListArray.count;i++)
     {
         NSDictionary *dic=[m_imgListArray objectAtIndex:i];
@@ -208,8 +255,14 @@ dispatch_queue_t t_queue;
             rect.size.width=[[UIScreen mainScreen] bounds].size.width;
             _imageView.frame=rect;
             _imageView.tag=1;           //imageView.tag :      1:为无图， 2：为小图， 3：大图
-            [scrollView addSubview:_imageView];
+            UIScrollView *scrolPage=[[UIScrollView alloc] init];
+            [scrolPage addSubview:_imageView];
+            [scrolPage setFrame:rect];
+            [scrolPage setContentSize:rect.size];
             [_imageView release];
+            [scrolPage setTag:10];
+            [scrollView addSubview:scrolPage];
+            [scrolPage release];
         }
         
     }
@@ -251,84 +304,8 @@ dispatch_queue_t t_queue;
     scrollView.clipsToBounds=YES;
     scrollView.scrollEnabled=YES;
     scrollView.pagingEnabled=YES;
-    //t_queue =dispatch_queue_create("netdisk.image", NULL);
-    
-    [self performSelector:@selector(loadImages) withObject:self afterDelay:0];
-    
-    
-    //[NSThread detachNewThreadSelector:@selector(loadImages) toTarget:self withObject:nil];
-    //[self loadImages];
-//    NSLog(@"new_index=%d",new_index);
-/*
-    CGRect frame = CGRectMake(0, 0, 320, 460);
-    // Create a scroll view
-  //  scrollView = [[UIScrollView alloc] initWithFrame:frame];
-  //  scrollView.delegate = self;
-    scrollView.bouncesZoom = YES;
-    scrollView.backgroundColor = [UIColor clearColor];
-    
-    // Create a container view. We need to return this in -viewForZoomingInScrollView: below.
-    containerView = [[UIView alloc] initWithFrame:CGRectZero];
-    containerView.backgroundColor = [UIColor blackColor];
-    [scrollView addSubview:containerView];
-    
-    // Create an image view for each of our images
-    CGFloat maximumWidth = 0.0;
-    CGFloat totalHeight = 0.0;
-
- //   UIImage *image =  [UIImage imageNamed:@"1.jpg"];
- //   CGSize imageSize = CGSizeMake(image.size.width, image.size.height);
- //   picPath = @"http://ww4.sinaimg.cn/bmiddle/4e5b54d8gw1dvjy5v3e0tj.jpg";
-    
-//    frame.size = imageSize;
-    imageView = [[UIImageView alloc] initWithFrame:frame];
-    UIImage *_image = nil;
-    if (picPath==nil||[picPath isEqualToString:@""]) {
-        picPath=@"u0_original.png";
-        _image = [UIImage imageNamed:picPath];
-    }
-    else
-    {
-        _image = [UIImage imageWithContentsOfFile:picPath];
-    }
-    
-    imageView.image= _image;
-  //  imageView.contentMode = UIViewContentModeTop;
-//    [imageView setUrl:[NSURL URLWithString:picPath]];
-    
-  //  imageView.image = image;
-    
-    
-    CGSize imageSize= CGSizeMake(320, 436);
-    
-    // Add it as a subview of the container view.
-    [containerView addSubview:imageView];
-    
-
-    // Increment our maximum width & total height.
-    maximumWidth = MAX(maximumWidth, imageSize.width);
-    totalHeight = imageSize.height;
-
-    
-    // Size the container view to fit. Use its size for the scroll view's content size as well.
-    containerView.frame = CGRectMake(0, 0, maximumWidth, totalHeight);
-    scrollView.contentSize = containerView.frame.size;
-    
-    // Minimum and maximum zoom scales
-    scrollView.minimumZoomScale = scrollView.frame.size.width / maximumWidth;
-    scrollView.maximumZoomScale = 2.0;
-    
- //   [self.view addSubview:scrollView];
-    
-    [containerView addGestureRecognizer:singleTap];
-    [singleTap release];
-   
-  /*  
-    indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    [self.view addSubview:indicatorView];
-    [indicatorView setCenter:CGPointMake(self.view.frame.size.width/2, self.view.frame.size.height/2)];
-    
-  */
+    [self loadImages];
+    //[self performSelector:@selector(loadImages) withObject:self afterDelay:0];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -430,6 +407,8 @@ dispatch_queue_t t_queue;
     [indicatorView release],indicatorView=nil;
     [scrollView release];
     [containerView release];
+    [imgHD release];
+    [imgTH release];
     
     if (leftBtn!=nil) [leftBtn release];
     if (rightBtn!=nil) [rightBtn release];
@@ -455,16 +434,17 @@ dispatch_queue_t t_queue;
         SevenCBoxClient::FmDownloadFile([f_id cStringUsingEncoding:NSUTF8StringEncoding],[savedImagePath cStringUsingEncoding:NSUTF8StringEncoding]);
     }
     NSLog(@"scrollViewDidScroll:index=%d",index);
-    UIImageView *iv=(UIImageView *)[[scrollView subviews] objectAtIndex:index];
+    UIImageView *iv=[self ImageViewAtIndex:index];
     if (!iv.image) {
-        [self loadImage:index];
+        //[self loadImage:index];
+        [self loadMiniImage:index];
     }
     if (last_index<index) {
-        [self loadImage:index+2];
-        [self releaseImage:index-3];
+        //[self loadImage:index+2];
+        //[self releaseImage:index-3];
     }else if(last_index>index){
-        [self loadImage:index-2];
-        [self releaseImage:index+3];
+        //[self loadImage:index-2];
+        //[self releaseImage:index+3];
     }
     last_index=index;
     //[self performSelector:@selector(load5Image) withObject:self afterDelay:0.1];
@@ -472,10 +452,10 @@ dispatch_queue_t t_queue;
 -(void)load5Image
 {
     int index=[self currentIndex];
-    [self loadImage:index+2];
-    [self releaseImage:index+3];
-    [self loadImage:index-2];
-    [self releaseImage:index-3];
+    [self loadMiniImage:index+2];
+    [self loadMiniImage:index+3];
+    [self loadMiniImage:index-2];
+    [self loadMiniImage:index-3];
 }
 
 //单击隐藏顶部view，再单击显示
