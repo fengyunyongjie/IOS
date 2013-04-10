@@ -75,9 +75,52 @@
     UIGraphicsEndImageContext();
     return scaledImage;
 }
-
+-(void)updateImage
+{
+    if (self.imgTag!=2) {
+        return;
+    }
+    NSString *oPath=[[Function getImgCachePath] stringByAppendingPathComponent:[[self dataDic] objectForKey:@"f_name"]];
+//    NSString *tPath=[NSString stringWithFormat:@"%@/%@",[Function getTempCachePath],[Function picFileNameFromURL:[[self dataDic] objectForKey:@"compressaddr"]]];
+    if ([Function fileSizeAtPath:oPath]<2) {
+        oPath=[[Function getKeepCachePath] stringByAppendingPathComponent:[[self dataDic] objectForKey:@"f_name"]];
+        if ([Function fileSizeAtPath:oPath]<2) {
+            return;
+        }
+    }
+    UIImage *img=[UIImage imageWithContentsOfFile:oPath];
+    float s_w=img.size.width/1024.0f;
+    float s_h=img.size.height/1024.0f;
+    //UIImage *s_img=nil;
+    if (s_w>1.5&s_h>1.5) {
+        if (s_w>s_h) {
+            img=[self scaleImage:img toScale:s_w];
+        }else
+        {
+            img=[self scaleImage:img toScale:s_h];
+        }
+    }
+    if (img) {
+        // Set image
+        _photoImageView.image = img;
+        _photoImageView.hidden = NO;
+        
+        // Setup photo frame
+        CGRect photoImageViewFrame;
+        photoImageViewFrame.origin = CGPointZero;
+        photoImageViewFrame.size = img.size;
+        _photoImageView.frame = photoImageViewFrame;
+        self.contentSize = photoImageViewFrame.size;
+        // Set zoom to minimum zoom
+        [self setMaxMinZoomScalesForCurrentBounds];
+        
+    }
+    [self setNeedsLayout];
+    self.imgTag=3;
+}
 #pragma mark - Image
 -(void)testDisplayImage:(NSDictionary *)datadic{
+    self.dataDic=datadic;
     if (_photoImageView.image==nil) {
 		// Reset
 		self.maximumZoomScale = 1;
@@ -86,13 +129,18 @@
 		self.contentSize = CGSizeMake(0, 0);
         
         NSString *oPath=[[Function getImgCachePath] stringByAppendingPathComponent:[datadic objectForKey:@"f_name"]];
+        //NSString *savedImagePath=[[Function getKeepCachePath] stringByAppendingPathComponent:[datadic objectForKey:@"f_name"]];
         NSString *tPath=[NSString stringWithFormat:@"%@/%@",[Function getTempCachePath],[Function picFileNameFromURL:[datadic objectForKey:@"compressaddr"]]];
-
+        if ([Function fileSizeAtPath:oPath]<2) {
+            oPath=[[Function getKeepCachePath] stringByAppendingPathComponent:[datadic objectForKey:@"f_name"]];
+        }
 		// Get image from browser as it handles ordering of fetching
 		UIImage *img;
         if ([Function fileSizeAtPath:oPath]<2) {
             img= [UIImage imageWithContentsOfFile:tPath];
+            self.imgTag=2;
         }else{
+            self.imgTag=3;
             img= [UIImage imageWithContentsOfFile:oPath];
             float s_w=img.size.width/1024.0f;
             float s_h=img.size.height/1024.0f;

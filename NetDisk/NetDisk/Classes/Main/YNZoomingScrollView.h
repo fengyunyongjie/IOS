@@ -19,7 +19,10 @@
     MWTapDetectingView *_tapView; //for background taps
     MWTapDetectingImageView *_photoImageView;
 }
+@property(nonatomic,assign)int imgTag;
+@property(nonatomic,retain)NSDictionary *dataDic;
 -(id)initWithBrowser:(id)browser;
+-(void)updateImage;
 -(void)testDisplayImage:(NSDictionary *)datadic;
 -(void)displayImage;
 -(void)showOImage;

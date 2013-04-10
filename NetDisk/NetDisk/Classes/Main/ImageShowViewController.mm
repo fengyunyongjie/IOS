@@ -186,13 +186,10 @@ dispatch_queue_t t_queue;
 	[scrollView setContentSize:CGSizeMake((m_imgListArray.count * [UIScreen mainScreen].bounds.size.width), [UIScreen mainScreen].bounds.size.height-80)];
 }
 
--(void)update:(NSTimer*)theTimer{
- 
+-(void)update:(NSTimer*)theTimer{ 
     int current_index=[self currentIndex];
-    UIImageView *iv=[[scrollView subviews] objectAtIndex:current_index];
-    if (iv.tag!=3) {
-        [self loadImage:current_index];
-    }
+    YNZoomingScrollView * zsv= (YNZoomingScrollView *)[self ScrollViewAtIndex:current_index];
+    [zsv updateImage];
 }
 
 -(void)loadImages
@@ -251,7 +248,7 @@ dispatch_queue_t t_queue;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    updateTimer=[NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(update:) userInfo:[self userInfo] repeats:YES];
+    updateTimer=[NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(update:) userInfo:[self userInfo] repeats:YES];
     
     //添加单击手势
 //    UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidenTopView)];
@@ -401,30 +398,35 @@ dispatch_queue_t t_queue;
 #pragma mark - UIScrollViewDelegate Methods
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-//    int index=[self currentIndex];
-//    NSDictionary *dataDic=[m_imgListArray objectAtIndex:index];
-//    NSString *f_name = [dataDic objectForKey:@"f_name"];
-//    
-//    NSString *savedImagePath=[[Function getImgCachePath] stringByAppendingPathComponent:f_name];
-//    NSString *f_id = [Function covertNumberToString:[dataDic objectForKey:@"f_id"]];
-//    if([Function fileSizeAtPath:savedImagePath]<2)
-//    {
-//        SevenCBoxClient::FmDownloadFile([f_id cStringUsingEncoding:NSUTF8StringEncoding],[savedImagePath cStringUsingEncoding:NSUTF8StringEncoding]);
-//    }
-//    NSLog(@"scrollViewDidScroll:index=%d",index);
+    int index=[self currentIndex];
+    NSDictionary *dataDic=[m_imgListArray objectAtIndex:index];
+    NSString *f_name = [dataDic objectForKey:@"f_name"];
+    
+    NSString *savedImagePath=[[Function getImgCachePath] stringByAppendingPathComponent:f_name];
+    NSString *f_id = [Function covertNumberToString:[dataDic objectForKey:@"f_id"]];
+    if([Function fileSizeAtPath:savedImagePath]<2)
+    {
+        SevenCBoxClient::FmDownloadFile([f_id cStringUsingEncoding:NSUTF8StringEncoding],[savedImagePath cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+    NSLog(@"scrollViewDidScroll:index=%d",index);
 //    UIImageView *iv=[self ImageViewAtIndex:index];
 //    if (!iv.image) {
 //        //[self loadImage:index];
 //        [self loadMiniImage:index];
 //    }
-//    if (last_index<index) {
-//        //[self loadImage:index+2];
-//        //[self releaseImage:index-3];
-//    }else if(last_index>index){
-//        //[self loadImage:index-2];
-//        //[self releaseImage:index+3];
+
+//    if (index!=last_index) {
+//        YNZoomingScrollView *ynz=(YNZoomingScrollView *)[self ScrollViewAtIndex:last_index];
+//        ynz.zoomScale=ynz.minimumZoomScale;
 //    }
-//    last_index=index;
+    if (last_index<index) {
+        //[self loadImage:index+2];
+        //[self releaseImage:index-3];
+    }else if(last_index>index){
+        //[self loadImage:index-2];
+        //[self releaseImage:index+3];
+    }
+    last_index=index;
 }
 -(void)load5Image
 {

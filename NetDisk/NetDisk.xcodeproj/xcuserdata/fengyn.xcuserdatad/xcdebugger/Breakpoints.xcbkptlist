@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NetDisk/Classes/Main/ImageShowViewController.mm"
-         timestampString = "387103838.501494"
+         timestampString = "387266047.400713"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "253"
-         endingLineNumber = "253"
+         startingLineNumber = "250"
+         endingLineNumber = "250"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NetDisk/Classes/Main/YNZoomingScrollView.m"
-         timestampString = "387253554.386872"
+         timestampString = "387270010.491528"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "181"
-         endingLineNumber = "181"
+         startingLineNumber = "229"
+         endingLineNumber = "229"
          landmarkName = "-displayImageFailure"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NetDisk/Classes/Main/YNZoomingScrollView.m"
-         timestampString = "387253554.386872"
+         timestampString = "387270010.491528"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "117"
-         endingLineNumber = "117"
+         startingLineNumber = "165"
+         endingLineNumber = "165"
          landmarkName = "-testDisplayImage:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NetDisk/Classes/Main/YNZoomingScrollView.m"
-         timestampString = "387253554.386872"
+         timestampString = "387270010.491528"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "318"
-         endingLineNumber = "318"
+         startingLineNumber = "366"
+         endingLineNumber = "366"
          landmarkName = "-imageView:doubleTapDetected:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NetDisk/Classes/Main/ImageShowViewController.mm"
-         timestampString = "387249598.305732"
+         timestampString = "387266047.400713"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "333"
-         endingLineNumber = "333"
+         startingLineNumber = "330"
+         endingLineNumber = "330"
          landmarkName = "-restoreButtonAction:"
          landmarkType = "5">
       </FileBreakpoint>
