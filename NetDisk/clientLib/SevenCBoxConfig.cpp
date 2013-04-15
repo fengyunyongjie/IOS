@@ -48,9 +48,9 @@ SevenCBoxConfig::SevenCBoxConfig()
 	SevenCBox_DbFilePath = "";
 	//SevenCBoxConfig::SevenCBox_DefaultDownloadFolder = "";
 	//SevenCBox_ServerURL = "http://7cbox.f3322.org:8080/nds/api";
-	//SevenCBox_ServerURL = "http://7cbox.cn:8080/nds/api";//正式库
+	SevenCBox_ServerURL = "http://7cbox.cn:8080/nds/api";//正式库
     //SevenCBox_ServerURL = "http://117.34.79.18:8080/nds/api";//正式库
-    SevenCBox_ServerURL = "http://117.34.79.20:8080/nds/api";//正式库
+    //SevenCBox_ServerURL = "http://117.34.79.20:8080/nds/api";//正式库
     //SevenCBox_ServerURL = "http://117.34.79.21:8080/nds/api";//正式库
 	//SevenCBox_ServerURL = "http://192.168.1.5:8080/nds/api";	//local host
 	//SevenCBoxConfig::SevenCBox_ServerURL = "http://7cbox.f3322.org:8899/nds/api";

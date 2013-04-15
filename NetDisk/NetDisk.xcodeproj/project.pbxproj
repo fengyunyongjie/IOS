@@ -8,9 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		293896BC170932BA00929F48 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 293896BA170932BA00929F48 /* libMobClickLibrary.a */; };
+		2955289517178F190098F45A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
+		2955289B171795190098F45A /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289A171795190098F45A /* SCBAccountManager.m */; };
 		29A06C1316F98EFA00D4A62D /* mm.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29A06C1216F98EFA00D4A62D /* mm.xib */; };
 		29A06C1516F9979300D4A62D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29A06C1416F9979300D4A62D /* Default@2x.png */; };
 		29A06C1716F9979B00D4A62D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29A06C1616F9979B00D4A62D /* Default-568h@2x.png */; };
+		29A3083A1716ADD400275890 /* SCBRestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A308391716ADD400275890 /* SCBRestClient.m */; };
+		29A6FA9C171B86BE007E6C0A /* SCBFriendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FA9B171B86BE007E6C0A /* SCBFriendManager.m */; };
+		29A6FA9F171B86E2007E6C0A /* SCBMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FA9E171B86E2007E6C0A /* SCBMessageManager.m */; };
+		29A6FAA2171B870F007E6C0A /* SCBFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA1171B870F007E6C0A /* SCBFileManager.m */; };
+		29A6FAA5171B872B007E6C0A /* SCBShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA4171B872B007E6C0A /* SCBShareManager.m */; };
+		29A6FAA8171B8744007E6C0A /* SCBPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA7171B8744007E6C0A /* SCBPhotoManager.m */; };
+		29A6FAAB171B8A54007E6C0A /* SCBDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAAA171B8A54007E6C0A /* SCBDownloader.m */; };
+		29A6FAAE171B8A81007E6C0A /* SCBUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAAD171B8A81007E6C0A /* SCBUploader.m */; };
+		29A92A09171560B500B1B2A4 /* SCBoxSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A92A08171560B500B1B2A4 /* SCBoxSDK.m */; };
 		29AB0F551703CEB0006E8AC6 /* btn_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AB0F531703CEB0006E8AC6 /* btn_camera.png */; };
 		29AB0F561703CEB0006E8AC6 /* btn_library.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AB0F541703CEB0006E8AC6 /* btn_library.png */; };
 		29AB0F581703D12B006E8AC6 /* 7Cbox_loadingbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AB0F571703D12B006E8AC6 /* 7Cbox_loadingbg.png */; };
@@ -279,9 +290,31 @@
 /* Begin PBXFileReference section */
 		293896BA170932BA00929F48 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		293896BB170932BA00929F48 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
+		2955289317178F190098F45A /* SCBSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBSession.h; sourceTree = "<group>"; };
+		2955289417178F190098F45A /* SCBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBSession.m; sourceTree = "<group>"; };
+		29552899171795190098F45A /* SCBAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBAccountManager.h; sourceTree = "<group>"; };
+		2955289A171795190098F45A /* SCBAccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBAccountManager.m; sourceTree = "<group>"; };
 		29A06C1216F98EFA00D4A62D /* mm.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = mm.xib; sourceTree = "<group>"; };
 		29A06C1416F9979300D4A62D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		29A06C1616F9979B00D4A62D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		29A308381716ADD400275890 /* SCBRestClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBRestClient.h; sourceTree = "<group>"; };
+		29A308391716ADD400275890 /* SCBRestClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBRestClient.m; sourceTree = "<group>"; };
+		29A6FA9A171B86BE007E6C0A /* SCBFriendManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBFriendManager.h; sourceTree = "<group>"; };
+		29A6FA9B171B86BE007E6C0A /* SCBFriendManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBFriendManager.m; sourceTree = "<group>"; };
+		29A6FA9D171B86E2007E6C0A /* SCBMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBMessageManager.h; sourceTree = "<group>"; };
+		29A6FA9E171B86E2007E6C0A /* SCBMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBMessageManager.m; sourceTree = "<group>"; };
+		29A6FAA0171B870F007E6C0A /* SCBFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBFileManager.h; sourceTree = "<group>"; };
+		29A6FAA1171B870F007E6C0A /* SCBFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBFileManager.m; sourceTree = "<group>"; };
+		29A6FAA3171B872A007E6C0A /* SCBShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBShareManager.h; sourceTree = "<group>"; };
+		29A6FAA4171B872B007E6C0A /* SCBShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBShareManager.m; sourceTree = "<group>"; };
+		29A6FAA6171B8744007E6C0A /* SCBPhotoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBPhotoManager.h; sourceTree = "<group>"; };
+		29A6FAA7171B8744007E6C0A /* SCBPhotoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBPhotoManager.m; sourceTree = "<group>"; };
+		29A6FAA9171B8A54007E6C0A /* SCBDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBDownloader.h; sourceTree = "<group>"; };
+		29A6FAAA171B8A54007E6C0A /* SCBDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBDownloader.m; sourceTree = "<group>"; };
+		29A6FAAC171B8A81007E6C0A /* SCBUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBUploader.h; sourceTree = "<group>"; };
+		29A6FAAD171B8A81007E6C0A /* SCBUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBUploader.m; sourceTree = "<group>"; };
+		29A92A07171560B500B1B2A4 /* SCBoxSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBoxSDK.h; sourceTree = "<group>"; };
+		29A92A08171560B500B1B2A4 /* SCBoxSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBoxSDK.m; sourceTree = "<group>"; };
 		29AB0F531703CEB0006E8AC6 /* btn_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_camera.png; sourceTree = "<group>"; };
 		29AB0F541703CEB0006E8AC6 /* btn_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_library.png; sourceTree = "<group>"; };
 		29AB0F571703D12B006E8AC6 /* 7Cbox_loadingbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7Cbox_loadingbg.png; sourceTree = "<group>"; };
@@ -778,6 +811,35 @@
 			path = UMAnalytics_Sdk_2.1.3.OpenUDID;
 			sourceTree = "<group>";
 		};
+		29A92A0A171560BE00B1B2A4 /* NewSDK */ = {
+			isa = PBXGroup;
+			children = (
+				29A92A07171560B500B1B2A4 /* SCBoxSDK.h */,
+				29A92A08171560B500B1B2A4 /* SCBoxSDK.m */,
+				29A308381716ADD400275890 /* SCBRestClient.h */,
+				29A308391716ADD400275890 /* SCBRestClient.m */,
+				2955289317178F190098F45A /* SCBSession.h */,
+				2955289417178F190098F45A /* SCBSession.m */,
+				29552899171795190098F45A /* SCBAccountManager.h */,
+				2955289A171795190098F45A /* SCBAccountManager.m */,
+				29A6FA9A171B86BE007E6C0A /* SCBFriendManager.h */,
+				29A6FA9B171B86BE007E6C0A /* SCBFriendManager.m */,
+				29A6FA9D171B86E2007E6C0A /* SCBMessageManager.h */,
+				29A6FA9E171B86E2007E6C0A /* SCBMessageManager.m */,
+				29A6FAA0171B870F007E6C0A /* SCBFileManager.h */,
+				29A6FAA1171B870F007E6C0A /* SCBFileManager.m */,
+				29A6FAA3171B872A007E6C0A /* SCBShareManager.h */,
+				29A6FAA4171B872B007E6C0A /* SCBShareManager.m */,
+				29A6FAA6171B8744007E6C0A /* SCBPhotoManager.h */,
+				29A6FAA7171B8744007E6C0A /* SCBPhotoManager.m */,
+				29A6FAA9171B8A54007E6C0A /* SCBDownloader.h */,
+				29A6FAAA171B8A54007E6C0A /* SCBDownloader.m */,
+				29A6FAAC171B8A81007E6C0A /* SCBUploader.h */,
+				29A6FAAD171B8A81007E6C0A /* SCBUploader.m */,
+			);
+			name = NewSDK;
+			sourceTree = "<group>";
+		};
 		29B39960170C2CAD0008D955 /* Top */ = {
 			isa = PBXGroup;
 			children = (
@@ -1188,6 +1250,7 @@
 		83A3A0481650D0C700BEDB27 = {
 			isa = PBXGroup;
 			children = (
+				29A92A0A171560BE00B1B2A4 /* NewSDK */,
 				29B39960170C2CAD0008D955 /* Top */,
 				293896B9170932BA00929F48 /* UMAnalytics_Sdk_2.1.3.OpenUDID */,
 				29A06C1616F9979B00D4A62D /* Default-568h@2x.png */,
@@ -1931,6 +1994,17 @@
 				29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */,
 				29B65BB517124EEC00077CB7 /* YNZoomingScrollView.m in Sources */,
 				29B65BB8171258C100077CB7 /* YNPhotoBrowser.m in Sources */,
+				29A92A09171560B500B1B2A4 /* SCBoxSDK.m in Sources */,
+				29A3083A1716ADD400275890 /* SCBRestClient.m in Sources */,
+				2955289517178F190098F45A /* SCBSession.m in Sources */,
+				2955289B171795190098F45A /* SCBAccountManager.m in Sources */,
+				29A6FA9C171B86BE007E6C0A /* SCBFriendManager.m in Sources */,
+				29A6FA9F171B86E2007E6C0A /* SCBMessageManager.m in Sources */,
+				29A6FAA2171B870F007E6C0A /* SCBFileManager.m in Sources */,
+				29A6FAA5171B872B007E6C0A /* SCBShareManager.m in Sources */,
+				29A6FAA8171B8744007E6C0A /* SCBPhotoManager.m in Sources */,
+				29A6FAAB171B8A54007E6C0A /* SCBDownloader.m in Sources */,
+				29A6FAAE171B8A81007E6C0A /* SCBUploader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1979,7 +2053,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ./NetDisk/lib/include;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
+				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/armv7;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
