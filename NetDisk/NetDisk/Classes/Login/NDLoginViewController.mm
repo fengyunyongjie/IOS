@@ -7,6 +7,7 @@
 //
 
 #import "NDLoginViewController.h"
+#import "SCBAccountManager.h"
 
 void callBackFunc(Value &jsonValue,void *s_pv);
 

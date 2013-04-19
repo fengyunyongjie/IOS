@@ -10,6 +10,8 @@
 		293896BC170932BA00929F48 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 293896BA170932BA00929F48 /* libMobClickLibrary.a */; };
 		2955289517178F190098F45A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
 		2955289B171795190098F45A /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289A171795190098F45A /* SCBAccountManager.m */; };
+		298D2102171FA6A200CA00FA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298D2101171FA6A200CA00FA /* MobileCoreServices.framework */; };
+		298D2105171FF5FB00CA00FA /* SCBHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 298D2104171FF5FB00CA00FA /* SCBHttpRequest.m */; };
 		29A06C1316F98EFA00D4A62D /* mm.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29A06C1216F98EFA00D4A62D /* mm.xib */; };
 		29A06C1516F9979300D4A62D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29A06C1416F9979300D4A62D /* Default@2x.png */; };
 		29A06C1716F9979B00D4A62D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29A06C1616F9979B00D4A62D /* Default-568h@2x.png */; };
@@ -294,6 +296,10 @@
 		2955289417178F190098F45A /* SCBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBSession.m; sourceTree = "<group>"; };
 		29552899171795190098F45A /* SCBAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBAccountManager.h; sourceTree = "<group>"; };
 		2955289A171795190098F45A /* SCBAccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBAccountManager.m; sourceTree = "<group>"; };
+		298D2101171FA6A200CA00FA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		298D2103171FF5FB00CA00FA /* SCBHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBHttpRequest.h; sourceTree = "<group>"; };
+		298D2104171FF5FB00CA00FA /* SCBHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBHttpRequest.m; sourceTree = "<group>"; };
+		298D2106171FF6E800CA00FA /* SCBoxConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCBoxConfig.h; sourceTree = "<group>"; };
 		29A06C1216F98EFA00D4A62D /* mm.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = mm.xib; sourceTree = "<group>"; };
 		29A06C1416F9979300D4A62D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		29A06C1616F9979B00D4A62D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -772,17 +778,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83A58F4316636AD70075D243 /* libz.dylib in Frameworks */,
+				83A3A05C1650D0C700BEDB27 /* CoreGraphics.framework in Frameworks */,
+				298D2102171FA6A200CA00FA /* MobileCoreServices.framework in Frameworks */,
 				83B068E616DB822500756966 /* SystemConfiguration.framework in Frameworks */,
 				83B068E416DB811200756966 /* CFNetwork.framework in Frameworks */,
 				83A91B9216D8AAAD000E2948 /* CoreLocation.framework in Frameworks */,
 				83E8B12316D47F8C00A31255 /* AssetsLibrary.framework in Frameworks */,
 				83A3D349169892120092C0A5 /* AudioToolbox.framework in Frameworks */,
 				831E7A421668CC420089A012 /* libsqlite3.dylib in Frameworks */,
-				83A58F4316636AD70075D243 /* libz.dylib in Frameworks */,
 				83C17DD916560B7D0066CB13 /* QuartzCore.framework in Frameworks */,
 				83A3A0581650D0C700BEDB27 /* UIKit.framework in Frameworks */,
 				83A3A05A1650D0C700BEDB27 /* Foundation.framework in Frameworks */,
-				83A3A05C1650D0C700BEDB27 /* CoreGraphics.framework in Frameworks */,
 				B34BDD9A16EF1C1000FFB2C3 /* libcrypto.a in Frameworks */,
 				B34BDD9B16EF1C1000FFB2C3 /* libcurl.a in Frameworks */,
 				B34BDD9C16EF1C1000FFB2C3 /* libjson.a in Frameworks */,
@@ -836,6 +843,9 @@
 				29A6FAAA171B8A54007E6C0A /* SCBDownloader.m */,
 				29A6FAAC171B8A81007E6C0A /* SCBUploader.h */,
 				29A6FAAD171B8A81007E6C0A /* SCBUploader.m */,
+				298D2103171FF5FB00CA00FA /* SCBHttpRequest.h */,
+				298D2104171FF5FB00CA00FA /* SCBHttpRequest.m */,
+				298D2106171FF6E800CA00FA /* SCBoxConfig.h */,
 			);
 			name = NewSDK;
 			sourceTree = "<group>";
@@ -1250,6 +1260,7 @@
 		83A3A0481650D0C700BEDB27 = {
 			isa = PBXGroup;
 			children = (
+				298D2101171FA6A200CA00FA /* MobileCoreServices.framework */,
 				29A92A0A171560BE00B1B2A4 /* NewSDK */,
 				29B39960170C2CAD0008D955 /* Top */,
 				293896B9170932BA00929F48 /* UMAnalytics_Sdk_2.1.3.OpenUDID */,
@@ -2005,6 +2016,7 @@
 				29A6FAA8171B8744007E6C0A /* SCBPhotoManager.m in Sources */,
 				29A6FAAB171B8A54007E6C0A /* SCBDownloader.m in Sources */,
 				29A6FAAE171B8A81007E6C0A /* SCBUploader.m in Sources */,
+				298D2105171FF5FB00CA00FA /* SCBHttpRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2115,7 +2127,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "F3D9F7A4-39C4-4ABA-8FB3-05FE4F097F0E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F3D9F7A4-39C4-4ABA-8FB3-05FE4F097F0E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F1903F58-13A8-4F1F-A9F8-3D0048851623";
 				VERSION_INFO_BUILDER = yinhaihua;
 				WRAPPER_EXTENSION = app;
 			};
@@ -2149,7 +2161,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "10D64E7D-FA26-4D6D-A96B-E70AFC39B7C1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CC0EB52C-D266-402A-984C-C1C5B0527302";
 				VERSION_INFO_BUILDER = yinhaihua;
 				WRAPPER_EXTENSION = app;
 			};

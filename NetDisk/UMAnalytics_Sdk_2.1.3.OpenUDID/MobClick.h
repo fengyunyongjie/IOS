@@ -340,7 +340,6 @@ typedef enum {
 
  */
 
-
 @protocol MobClickDelegate <NSObject>
 @optional
 - (NSString *)appKey;

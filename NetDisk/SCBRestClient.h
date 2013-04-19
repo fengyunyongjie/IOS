@@ -56,6 +56,12 @@
 
 - (void)copyFromRef:(NSString*)copyRef toPath:(NSString *)toPath;
 
+
+
+
+
+
+
 - (void)moveFrom:(NSString*)fromPath toPath:(NSString *)toPath;
 
 - (void)loadAccountInfo;
