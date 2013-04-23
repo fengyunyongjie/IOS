@@ -1,7 +1,8 @@
 
 
 #import <UIKit/UIKit.h>
-@interface ImageShowViewController : UIViewController<UIScrollViewDelegate,UIImagePickerControllerDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate>
+@protocol SCBDownloaderDelegate;
+@interface ImageShowViewController : UIViewController<UIScrollViewDelegate,UIImagePickerControllerDelegate,UIAlertViewDelegate,UIGestureRecognizerDelegate,SCBDownloaderDelegate>
 {
     UIScrollView *scrollView;
     UIView *containerView;
@@ -28,6 +29,8 @@
     NSMutableArray *imgTH;
     int new_index;
     int last_index;
+    
+    NSMutableDictionary *fileDownloaders;
 }
 @property (nonatomic,retain) NSArray *m_listArray;
 @property (nonatomic,assign) int m_index;
@@ -42,8 +45,13 @@
 @property (nonatomic,retain) IBOutlet UIView *m_topView;
 @property (nonatomic,retain) NSString *m_title;
 @property (nonatomic,retain) IBOutlet UILabel *m_titleLabel;
+
+@property (nonatomic,retain) NSMutableDictionary *fileDownloaders;
 - (IBAction)comeBack:(id)sender;
 -(IBAction)pushButtonAction:(id)sender;
 -(IBAction)restoreButtonAction:(id)sender;
 - (void)setData:(NSDictionary *)theNewsData;
+
+-(void)fileDidDownload:(int)index;
+-(void)updateProgress:(long)size index:(int)index;
 @end

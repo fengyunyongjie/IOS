@@ -102,8 +102,8 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
+//    NSInteger section = indexPath.section;
+//    NSInteger row = indexPath.row;
     static NSString *CellIdentifier = @"Cell";
     
     NDActivityCell *cell = (NDActivityCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];

@@ -153,4 +153,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - SCBDownloaderDelegate Method
+-(void)fileDidDownload:(int)index
+{
+    
+}
 @end

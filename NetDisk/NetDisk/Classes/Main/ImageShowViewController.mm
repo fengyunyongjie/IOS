@@ -3,6 +3,7 @@
 #import "SevenCBoxClient.h"
 #import "ImageShowViewController.h"
 #import "YNZoomingScrollView.h"
+#import "SCBDownloader.h"
 
 dispatch_queue_t t_queue;
 
@@ -12,11 +13,13 @@ dispatch_queue_t t_queue;
 @synthesize scrollView;
 @synthesize m_bottomView,m_topView;
 @synthesize m_listArray,m_index;
+@synthesize fileDownloaders;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.fileDownloaders=[NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -65,8 +68,19 @@ dispatch_queue_t t_queue;
         NSString *keepedImagePath=[[Function getKeepCachePath] stringByAppendingPathComponent:f_name];
         if([Function fileSizeAtPath:keepedImagePath]<2)//下载
         {
-            SevenCBoxClient::FmDownloadFile([f_id cStringUsingEncoding:NSUTF8StringEncoding],[savedImagePath cStringUsingEncoding:NSUTF8StringEncoding]);
-            SevenCBoxClient::StartTaskMonitor();
+//            SevenCBoxClient::FmDownloadFile([f_id cStringUsingEncoding:NSUTF8StringEncoding],[savedImagePath cStringUsingEncoding:NSUTF8StringEncoding]);
+//            SevenCBoxClient::StartTaskMonitor();
+            SCBDownloader *downloader=[fileDownloaders objectForKey:[NSIndexPath indexPathWithIndex:page]];
+            if (downloader==nil) {
+                downloader=[[SCBDownloader alloc] init];
+                downloader.index=page;
+                downloader.fileId=f_id;
+                downloader.savedPath=savedImagePath;
+                downloader.delegate=self;
+                [fileDownloaders setObject:downloader forKey:[NSIndexPath indexPathWithIndex:page]];
+                [downloader startDownload];
+                [downloader release];
+            }
         }
     }
 //    [self loadImage:page];
@@ -248,7 +262,7 @@ dispatch_queue_t t_queue;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    updateTimer=[NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(update:) userInfo:[self userInfo] repeats:YES];
+    //updateTimer=[NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(update:) userInfo:[self userInfo] repeats:YES];
     
     //添加单击手势
 //    UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidenTopView)];
@@ -406,7 +420,19 @@ dispatch_queue_t t_queue;
     NSString *f_id = [Function covertNumberToString:[dataDic objectForKey:@"f_id"]];
     if([Function fileSizeAtPath:savedImagePath]<2)
     {
-        SevenCBoxClient::FmDownloadFile([f_id cStringUsingEncoding:NSUTF8StringEncoding],[savedImagePath cStringUsingEncoding:NSUTF8StringEncoding]);
+//        SevenCBoxClient::FmDownloadFile([f_id cStringUsingEncoding:NSUTF8StringEncoding],[savedImagePath cStringUsingEncoding:NSUTF8StringEncoding]); 
+        int page=[self currentIndex];
+        SCBDownloader *downloader=[fileDownloaders objectForKey:[NSIndexPath indexPathWithIndex:page]];
+        if (downloader==nil) {
+            downloader=[[SCBDownloader alloc] init];
+            downloader.index=page;
+            downloader.fileId=f_id;
+            downloader.savedPath=savedImagePath;
+            downloader.delegate=self;
+            [fileDownloaders setObject:downloader forKey:[NSIndexPath indexPathWithIndex:page]];
+            [downloader startDownload];
+            [downloader release];
+        }
     }
     NSLog(@"scrollViewDidScroll:index=%d",index);
 //    UIImageView *iv=[self ImageViewAtIndex:index];
@@ -452,5 +478,15 @@ dispatch_queue_t t_queue;
     UIGraphicsEndImageContext();
     return scaledImage;
 }
-
+#pragma mark - SCBDownloaderDelegate Methods
+-(void)fileDidDownload:(int)index
+{
+    YNZoomingScrollView  * zsv=[[scrollView subviews] objectAtIndex:index];
+    [zsv updateImage];
+}
+-(void)updateProgress:(long)size index:(int)index
+{
+    YNZoomingScrollView  * zsv=[[scrollView subviews] objectAtIndex:index];
+    [zsv updateImgLoadProgress:size];
+}
 @end

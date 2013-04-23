@@ -18,6 +18,7 @@
 
 @implementation YNZoomingScrollView
 @synthesize photoBrowser=_photoBrowser;
+@synthesize fileSize;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -45,6 +46,10 @@
 		_photoImageView.contentMode = UIViewContentModeCenter;
 		_photoImageView.backgroundColor = [UIColor blackColor];
 		[self addSubview:_photoImageView];
+        CGRect r=[[UIScreen mainScreen] bounds];
+        progressView=[[UIProgressView alloc] initWithFrame:CGRectMake((r.size.width-200)/2,r.size.height/2+100, 200, 9)];
+        [self addSubview:progressView];
+        [progressView setHidden:YES];
         
         // Setup
 		self.backgroundColor = [UIColor blackColor];
@@ -129,6 +134,7 @@
 		self.contentSize = CGSizeMake(0, 0);
         
         NSString *oPath=[[Function getImgCachePath] stringByAppendingPathComponent:[datadic objectForKey:@"f_name"]];
+        fileSize=[[datadic objectForKey:@"f_size"] intValue];
         //NSString *savedImagePath=[[Function getKeepCachePath] stringByAppendingPathComponent:[datadic objectForKey:@"f_name"]];
         NSString *tPath=[NSString stringWithFormat:@"%@/%@",[Function getTempCachePath],[Function picFileNameFromURL:[datadic objectForKey:@"compressaddr"]]];
         if ([Function fileSizeAtPath:oPath]<2) {
@@ -180,6 +186,15 @@
 			
 		}
 		[self setNeedsLayout];
+    }
+}
+-(void)updateImgLoadProgress:(long)size
+{
+    [progressView setHidden:NO];
+    progressValue=size/(float)fileSize;
+    [progressView setProgress:progressValue];
+    if (size>=fileSize) {
+        [progressView setHidden:YES];
     }
 }
 // Get and display image

@@ -20,4 +20,12 @@
 #define USER_LOGIN_URI @"/usr/login"
 //用户注销
 #define USER_LOGOUT_URI @"/usr/logout"
+
+//文件下载
+#define FM_DOWNLOAD_URI @"/fm/download"
+#define FM_DOWNLOAD_NEW_URI @"/fm/download/new"
+
+//缩略图下载
+#define FM_DOWNLOAD_THUMB_URI @"/fm/download/thumb"
+
 #endif

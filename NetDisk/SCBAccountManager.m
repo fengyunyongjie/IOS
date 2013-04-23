@@ -8,10 +8,19 @@
 
 #import "SCBAccountManager.h"
 #import "SCBoxConfig.h"
+#import "SCBSession.h"
+static SCBAccountManager *_sharedAccountManager;
 @implementation SCBAccountManager
++(SCBAccountManager *)sharedManager
+{
+    if (_sharedAccountManager==nil) {
+        _sharedAccountManager=[[self alloc] init];
+    }
+    return _sharedAccountManager;
+}
 -(void)UserLoginWithName:(NSString *)user_name Password:(NSString *)user_pwd
 {
-    NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%s%s",SERVER_URL,USER_LOGIN_URI]];
+    NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_LOGIN_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
     [body appendFormat:@"usr_name=%@&usr_pwd=%@",user_name,user_pwd];
@@ -21,6 +30,9 @@
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
     NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"%@",request);
+    NSLog(@"%@",[[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
+    NSLog(@"%@",request.allHTTPHeaderFields);
 }
 -(void)UserLogout
 {
@@ -58,7 +70,21 @@
 // so we just drop it on the floor.
 {
     NSLog(@"connection:didReceiveData:");
-    NSLog(@"%@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
+    NSError *jsonParsingError=nil;
+    NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
+    NSLog(@"%@",[dic objectForKey:@"usr_id"] );
+    NSLog(@"%@",[dic objectForKey:@"code"] );
+    NSLog(@"%@",[dic objectForKey:@"usr_token"] );
+    if ([[dic objectForKey:@"code"] intValue]==0) {
+        NSLog(@"safafaf");
+        [[SCBSession sharedSession] setUserId:(NSString *)[dic objectForKey:@"usr_id"]];
+        [[SCBSession sharedSession] setUserToken:(NSString *)[dic objectForKey:@"usr_token"]];
+        
+        NSLog(@"%@",[[SCBSession sharedSession] userId]);
+        NSLog(@"%@",[[SCBSession sharedSession] userToken]);
+    }
+    
+    //NSLog(@"%@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
 #pragma unused(theConnection)
 #pragma unused(data)
     

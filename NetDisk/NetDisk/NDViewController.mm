@@ -62,6 +62,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
     [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backBarBtn = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     self.navigationItem.leftBarButtonItem=backBarBtn;
+    [backBarBtn release];
     
     UIBarButtonItem *backBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"返回", nil) style:UIBarButtonItemStyleBordered target:nil action:nil];
 	self.navigationItem.backBarButtonItem=backBarButtonItem;
@@ -218,6 +219,7 @@ void callBackKeepFunc(Value &jsonValue,void *s_pv);
 {
     ImageBrowserViewController *browser=[[ImageBrowserViewController alloc] init];
     [self.navigationController pushViewController:browser animated:YES];
+    [browser release];
 }
 - (IBAction)uploadFile:(id)sender
 {

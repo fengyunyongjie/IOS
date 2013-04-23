@@ -56,7 +56,7 @@ void callBackFunc(Value &jsonValue,void *s_pv);
 */    
     [m_userNameTextField resignFirstResponder];
     [m_passwordTextField resignFirstResponder];
-    NSLog(@"--1--");
+    NSLog(@"--1--User Login.");
     NSString *loginName=m_userNameTextField.text;
     NSString *password =m_passwordTextField.text;
     
@@ -72,9 +72,10 @@ void callBackFunc(Value &jsonValue,void *s_pv);
     [m_hud show];
     
     SevenCBoxClient scBox;
-    NSLog(@"--1,1--");
+//    NSLog(@"--1,1--");
 //    NSLog(@"username:%s",[loginName cStringUsingEncoding:NSUTF8StringEncoding]);
 //    NSLog(@"password:%s",[password cStringUsingEncoding:NSUTF8StringEncoding]);
+    [[SCBAccountManager sharedManager] UserLoginWithName:loginName Password:@"ZmVuZ3lu"];
     scBox.UserLogin([loginName cStringUsingEncoding:NSUTF8StringEncoding],[password cStringUsingEncoding:NSUTF8StringEncoding],callBackFunc,self);
  /*   string name= "deyangdianzi@qq.com";
     string password1="1234567";

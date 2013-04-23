@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface SCBAccountManager : NSObject<NSURLConnectionDelegate>
++(SCBAccountManager *)sharedManager;
 //login
 -(void)UserLoginWithName:(NSString *)user_name Password:(NSString *)user_pwd;
 //logout

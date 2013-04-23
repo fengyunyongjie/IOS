@@ -18,9 +18,13 @@
     int ima_tag;
     MWTapDetectingView *_tapView; //for background taps
     MWTapDetectingImageView *_photoImageView;
+    float progressValue;
+    UIProgressView *progressView;
+    long fileSize;
 }
 @property(nonatomic,assign)int imgTag;
 @property(nonatomic,retain)NSDictionary *dataDic;
+@property(nonatomic,assign)long fileSize;
 -(id)initWithBrowser:(id)browser;
 -(void)updateImage;
 -(void)testDisplayImage:(NSDictionary *)datadic;
@@ -30,4 +34,5 @@
 -(void)displayImageFailure;
 -(void)setMaxMinZoomScalesForCurrentBounds;
 -(void)prepareForReuse;
+-(void)updateImgLoadProgress:(long)size;
 @end

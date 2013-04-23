@@ -109,7 +109,7 @@
 
     NSArray*paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
     NSString *documentsDirectory=[paths objectAtIndex:0]; 
-    NSString *dbPath=[NSString stringWithFormat:@"%@/",documentsDirectory]; 
+    //NSString *dbPath=[NSString stringWithFormat:@"%@/",documentsDirectory];
  //   SevenCBoxClient::Config.SetDbFilePath([dbPath cStringUsingEncoding:NSUTF8StringEncoding]);
  //   NSString *logPath = [documentsDirectory stringByAppendingPathComponent:@"7cboxLog.txt"];
   //  SevenCBoxClient::Config.SetLogFile([logPath cStringUsingEncoding:NSUTF8StringEncoding]);

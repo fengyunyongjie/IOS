@@ -7,13 +7,26 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "NetDisk/Classes/Main/ImageShowViewController.mm"
-         timestampString = "387266047.400713"
+         filePath = "SCBDownloader.m"
+         timestampString = "388375532.661106"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "250"
-         endingLineNumber = "250"
-         landmarkName = "-viewDidLoad"
+         startingLineNumber = "30"
+         endingLineNumber = "30"
+         landmarkName = "-startDownload"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "SCBDownloader.m"
+         timestampString = "388389459.065443"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "90"
+         endingLineNumber = "90"
+         landmarkName = "-connection:didReceiveData:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -21,51 +34,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NetDisk/Classes/Main/YNZoomingScrollView.m"
-         timestampString = "387270010.491528"
+         timestampString = "388388494.06664"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "229"
-         endingLineNumber = "229"
-         landmarkName = "-displayImageFailure"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "NetDisk/Classes/Main/YNZoomingScrollView.m"
-         timestampString = "387270010.491528"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "165"
-         endingLineNumber = "165"
-         landmarkName = "-testDisplayImage:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "NetDisk/Classes/Main/YNZoomingScrollView.m"
-         timestampString = "387270010.491528"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "366"
-         endingLineNumber = "366"
-         landmarkName = "-imageView:doubleTapDetected:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "NetDisk/Classes/Main/ImageShowViewController.mm"
-         timestampString = "387266047.400713"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "330"
-         endingLineNumber = "330"
-         landmarkName = "-restoreButtonAction:"
+         startingLineNumber = "89"
+         endingLineNumber = "89"
+         landmarkName = "-updateImage"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
