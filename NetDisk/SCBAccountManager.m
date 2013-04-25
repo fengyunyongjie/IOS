@@ -9,6 +9,7 @@
 #import "SCBAccountManager.h"
 #import "SCBoxConfig.h"
 #import "SCBSession.h"
+#import "MF_Base64Additions.h"
 static SCBAccountManager *_sharedAccountManager;
 @implementation SCBAccountManager
 +(SCBAccountManager *)sharedManager
@@ -23,7 +24,8 @@ static SCBAccountManager *_sharedAccountManager;
     NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_LOGIN_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"usr_name=%@&usr_pwd=%@",user_name,user_pwd];
+    NSString *mi_ma =[user_pwd base64String];
+    [body appendFormat:@"usr_name=%@&usr_pwd=%@",user_name,mi_ma];
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		293896BC170932BA00929F48 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 293896BA170932BA00929F48 /* libMobClickLibrary.a */; };
+		294BA3ED1726656E00F6CEAE /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */; };
 		2955289517178F190098F45A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
 		2955289B171795190098F45A /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289A171795190098F45A /* SCBAccountManager.m */; };
 		298D2102171FA6A200CA00FA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298D2101171FA6A200CA00FA /* MobileCoreServices.framework */; };
@@ -290,6 +291,8 @@
 /* Begin PBXFileReference section */
 		293896BA170932BA00929F48 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		293896BB170932BA00929F48 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
+		294BA3EB1726656E00F6CEAE /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
+		294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base64Additions.m; sourceTree = "<group>"; };
 		2955289317178F190098F45A /* SCBSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBSession.h; sourceTree = "<group>"; };
 		2955289417178F190098F45A /* SCBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBSession.m; sourceTree = "<group>"; };
 		29552899171795190098F45A /* SCBAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBAccountManager.h; sourceTree = "<group>"; };
@@ -814,6 +817,15 @@
 			path = UMAnalytics_Sdk_2.1.3.OpenUDID;
 			sourceTree = "<group>";
 		};
+		294BA3EA1726651D00F6CEAE /* base64 */ = {
+			isa = PBXGroup;
+			children = (
+				294BA3EB1726656E00F6CEAE /* MF_Base64Additions.h */,
+				294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */,
+			);
+			name = base64;
+			sourceTree = "<group>";
+		};
 		29A92A0A171560BE00B1B2A4 /* NewSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -842,6 +854,7 @@
 				298D2103171FF5FB00CA00FA /* SCBHttpRequest.h */,
 				298D2104171FF5FB00CA00FA /* SCBHttpRequest.m */,
 				298D2106171FF6E800CA00FA /* SCBoxConfig.h */,
+				294BA3EA1726651D00F6CEAE /* base64 */,
 			);
 			name = NewSDK;
 			sourceTree = "<group>";
@@ -2009,6 +2022,7 @@
 				29A6FAAB171B8A54007E6C0A /* SCBDownloader.m in Sources */,
 				29A6FAAE171B8A81007E6C0A /* SCBUploader.m in Sources */,
 				298D2105171FF5FB00CA00FA /* SCBHttpRequest.m in Sources */,
+				294BA3ED1726656E00F6CEAE /* MF_Base64Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2153,7 +2167,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CC0EB52C-D266-402A-984C-C1C5B0527302";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "10D64E7D-FA26-4D6D-A96B-E70AFC39B7C1";
 				VERSION_INFO_BUILDER = yinhaihua;
 				WRAPPER_EXTENSION = app;
 			};

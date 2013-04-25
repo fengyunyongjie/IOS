@@ -268,7 +268,7 @@ dispatch_queue_t t_queue;
 //    UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidenTopView)];
 //    singleTapGesture.numberOfTouchesRequired = 1;
 //    singleTapGesture.numberOfTapsRequired = 1;
-//    singleTapGesture.delegate = self;
+//    singleTapGesture.delegate  = self;
 //    [scrollView addGestureRecognizer:singleTapGesture];
 //    [singleTapGesture release];
     
@@ -317,8 +317,15 @@ dispatch_queue_t t_queue;
   //  navBar.hidden = !navBar.hidden;
     m_topView.hidden = !m_topView.hidden;
 }
+-(void)cancelAllDownloaders
+{
+    for (SCBDownloader *dloader in [fileDownloaders allValues]) {
+        [dloader cancelDownload];
+    }
+}
 - (IBAction)comeBack:(id)sender
 {
+    [self cancelAllDownloaders];
     [self.navigationController popViewControllerAnimated:YES];
     [updateTimer invalidate];
 }
@@ -398,6 +405,7 @@ dispatch_queue_t t_queue;
     [containerView release];
     [imgHD release];
     [imgTH release];
+    [fileDownloaders release];
     
     if (leftBtn!=nil) [leftBtn release];
     if (rightBtn!=nil) [rightBtn release];

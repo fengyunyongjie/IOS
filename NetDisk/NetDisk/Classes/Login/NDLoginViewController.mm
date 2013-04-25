@@ -75,7 +75,7 @@ void callBackFunc(Value &jsonValue,void *s_pv);
 //    NSLog(@"--1,1--");
 //    NSLog(@"username:%s",[loginName cStringUsingEncoding:NSUTF8StringEncoding]);
 //    NSLog(@"password:%s",[password cStringUsingEncoding:NSUTF8StringEncoding]);
-    [[SCBAccountManager sharedManager] UserLoginWithName:loginName Password:@"ZmVuZ3lu"];
+    [[SCBAccountManager sharedManager] UserLoginWithName:loginName Password:password];
     scBox.UserLogin([loginName cStringUsingEncoding:NSUTF8StringEncoding],[password cStringUsingEncoding:NSUTF8StringEncoding],callBackFunc,self);
  /*   string name= "deyangdianzi@qq.com";
     string password1="1234567";

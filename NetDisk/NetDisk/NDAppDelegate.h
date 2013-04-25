@@ -29,7 +29,6 @@ typedef enum{
 
 @interface NDAppDelegate : UIResponder <UIApplicationDelegate>
 {
-    
     NSMutableArray *m_listArray_uploading;
     NSMutableArray *m_listArray_uploaded;
     NSMutableArray *m_listArray_downloading;

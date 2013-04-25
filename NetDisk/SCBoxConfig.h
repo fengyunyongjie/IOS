@@ -13,6 +13,7 @@
 #define CONNECT_TIMEOUT 10
 #define RESPONSE_TIMEOUT 10
 #define SERVER_URL @"http://7cbox.cn:8080/nds/api"
+//#define SERVER_URL @"http://192.168.1.5:8080/nds/api"	//local host
 
 //用户注册
 #define USER_REGISTER_URI @"/usr/register"

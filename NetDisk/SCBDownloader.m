@@ -55,7 +55,7 @@
 }
 -(void)cancelDownload
 {
-    
+    [fileConnection cancel];
 }
 #pragma mark -
 #pragma mark Download support (NSURLConnectionDelegate)
@@ -90,12 +90,13 @@
     NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
     if ([[dic objectForKey:@"code"] intValue]==0) {
         NSLog(@"下载成功 数据大小：%d",[data length]);
-        [delegate updateProgress:[self.activeDownload length] index:self.index];
+        if (delegate) {
+            [delegate updateProgress:[self.activeDownload length] index:self.index];
+        }
     }else
     {
         NSLog(@"下载失败 数据大小：%d",[data length]);
     }
-
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -138,6 +139,9 @@
     NSLog(@"connectionDidFinishLoading");
     //UIImage *image=[[UIImage alloc] initWithData:self.activeDownload];
     [self.activeDownload writeToFile:self.savedPath atomically:YES];
-    [delegate fileDidDownload:self.index];
+    if (delegate) {
+        [delegate fileDidDownload:self.index];
+    }
+    
 }
 @end
