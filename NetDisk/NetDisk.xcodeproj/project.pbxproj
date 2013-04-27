@@ -38,7 +38,6 @@
 		29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B39964170C2CC10008D955 /* MWTapDetectingView.m */; };
 		29B65BB517124EEC00077CB7 /* YNZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B65BB417124EEC00077CB7 /* YNZoomingScrollView.m */; };
 		29B65BB8171258C100077CB7 /* YNPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B65BB7171258C100077CB7 /* YNPhotoBrowser.m */; };
-		29EFE84A172A50DD0099B5A7 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE849172A50DD0099B5A7 /* MainWindow.xib */; };
 		29EFE850172A55AD0099B5A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A0571650D0C700BEDB27 /* UIKit.framework */; };
 		29EFE851172A55AD0099B5A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A0591650D0C700BEDB27 /* Foundation.framework */; };
 		29EFE852172A55AD0099B5A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A05B1650D0C700BEDB27 /* CoreGraphics.framework */; };
@@ -350,7 +349,6 @@
 		29B65BB417124EEC00077CB7 /* YNZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNZoomingScrollView.m; sourceTree = "<group>"; };
 		29B65BB6171258C100077CB7 /* YNPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNPhotoBrowser.h; sourceTree = "<group>"; };
 		29B65BB7171258C100077CB7 /* YNPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNPhotoBrowser.m; sourceTree = "<group>"; };
-		29EFE849172A50DD0099B5A7 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../MainWindow.xib; sourceTree = "<group>"; };
 		29EFE84F172A55AD0099B5A7 /* newnds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newnds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29EFE855172A55AD0099B5A7 /* newnds-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "newnds-Info.plist"; sourceTree = "<group>"; };
 		29EFE857172A55AD0099B5A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -904,7 +902,6 @@
 		29EFE853172A55AD0099B5A7 /* newnds */ = {
 			isa = PBXGroup;
 			children = (
-				29EFE849172A50DD0099B5A7 /* MainWindow.xib */,
 				29EFE85C172A55AD0099B5A7 /* AppDelegate.h */,
 				29EFE85D172A55AD0099B5A7 /* AppDelegate.m */,
 				29EFE854172A55AD0099B5A7 /* Supporting Files */,
@@ -2010,7 +2007,6 @@
 				29AB0F551703CEB0006E8AC6 /* btn_camera.png in Resources */,
 				29AB0F561703CEB0006E8AC6 /* btn_library.png in Resources */,
 				29AB0F581703D12B006E8AC6 /* 7Cbox_loadingbg.png in Resources */,
-				29EFE84A172A50DD0099B5A7 /* MainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2172,6 +2168,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2193,6 +2190,7 @@
 				INFOPLIST_FILE = "newnds/newnds-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -2331,6 +2329,7 @@
 				29EFE867172A55AD0099B5A7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		83A3A04D1650D0C700BEDB27 /* Build configuration list for PBXProject "NetDisk" */ = {
 			isa = XCConfigurationList;
