@@ -7,9 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-
+@protocol SCBFileManagerDelegate;
 @interface SCBFileManager : NSObject
+{
+    
+}
+@property (nonatomic,assign)id<SCBFileManagerDelegate> delegate;
 //打开网盘/fm
+-(void)openFinderWithID:(NSString *)f_id;      //无分页：所以cursor=0,offset=-1;
 //新建/fm/mkdir
 //重命名/fm/rename
 //复制粘贴/fm/copypaste
@@ -34,4 +39,8 @@
 //上传/fm/upload/new/
 //上传提交/fm/upload/new/commit
 //下载/fm/download/new/
+@end
+@protocol SCBFileManagerDelegate
+-(void)openFinderSucess:(NSArray *)datadic;
+-(void)openFinderUnsucess;
 @end

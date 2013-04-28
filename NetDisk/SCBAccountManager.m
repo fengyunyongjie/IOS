@@ -84,6 +84,10 @@ static SCBAccountManager *_sharedAccountManager;
         
         NSLog(@"%@",[[SCBSession sharedSession] userId]);
         NSLog(@"%@",[[SCBSession sharedSession] userToken]);
+        [self.delegate loginSucceed:self];
+    }else
+    {
+        [self.delegate loginUnsucceed:self];
     }
     
     //NSLog(@"%@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);

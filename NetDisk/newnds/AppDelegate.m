@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "LoginViewController.h"
+#import "MYTabBarController.h"
 
 @implementation AppDelegate
 
@@ -21,53 +23,19 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    
-    UINavigationController *viewController1,*viewController2,*viewController3,*viewController4,*viewController5,*viewController6;
-    viewController1=[[[UINavigationController alloc] init] autorelease];
-    viewController1.title=@"First";
-    UITableViewController *rootView1=[[[UITableViewController alloc] init ]autorelease];
-    rootView1.title=@"我的网盘";
-    [viewController1 pushViewController:rootView1 animated:YES];
-    
-    
-    viewController2=[[[UINavigationController alloc] init] autorelease];
-    viewController2.title=@"Second";
-    UIViewController * rootView2=[[[UIViewController alloc] init] autorelease];
-    rootView2.title=@"收藏";
-    [viewController2 pushViewController:rootView2 animated:YES];
-    
-    viewController3=[[[UINavigationController alloc] init] autorelease];
-    viewController3.title=@"Third";
-    UIViewController * rootView3=[[[UIViewController alloc] init] autorelease];
-    rootView3.title=@"照片";
-    [viewController3 pushViewController:rootView3 animated:YES];
-    
-    viewController4=[[[UINavigationController alloc] init] autorelease];
-    viewController4.title=@"fourth";
-    UIViewController * rootView4=[[[UIViewController alloc] init] autorelease];
-    rootView4.title=@"上传";
-    [viewController4 pushViewController:rootView4 animated:YES];
-    
-    viewController5=[[[UINavigationController alloc] init] autorelease];
-    viewController5.title=@"fifth";
-    UIViewController * rootView5=[[[UIViewController alloc] init] autorelease];
-    rootView5.title=@"设置";
-    [viewController5 pushViewController:rootView5 animated:YES];
-    
-    viewController6=[[[UINavigationController alloc] init] autorelease];
-    viewController6.title=@"sixth";
-    
-    self.myTabBarController=[[[UITabBarController alloc] init] autorelease];
-    self.myTabBarController.delegate=self;
-    self.myTabBarController.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5, nil];
-
-    
+    self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
     self.window.rootViewController=self.myTabBarController;
+    
+//    LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
+//    [self.window.rootViewController presentViewController:lv animated:YES completion:^(void){}];
     
     [self.window makeKeyAndVisible];
     return YES;
 }
-
+-(void)setLogin
+{
+    self.window.rootViewController=self.myTabBarController;
+}
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

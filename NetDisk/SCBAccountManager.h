@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-
+@class SCBAccountManagerDelegate;
 @interface SCBAccountManager : NSObject<NSURLConnectionDelegate>
+@property(nonatomic,assign) SCBAccountManagerDelegate * delegate;
 +(SCBAccountManager *)sharedManager;
 //login
 -(void)UserLoginWithName:(NSString *)user_name Password:(NSString *)user_pwd;
@@ -16,4 +17,9 @@
 -(void)UserLogout;
 //register
 -(void)UserRegisterWithName:(NSString *)user_name Password:(NSString *)user_pwd;
+@end
+
+@protocol SCBAccountManagerDelegate
+-(void)loginSucceed:(id)manager;
+-(void)loginUnsucceed:(id)manager;
 @end

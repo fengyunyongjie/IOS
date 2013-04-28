@@ -7,10 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		29262229172BD70000A95E97 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29262227172BD70000A95E97 /* LoginViewController.m */; };
+		2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29262228172BD70000A95E97 /* LoginViewController.xib */; };
+		2926222B172BD8CE00A95E97 /* 7Cbox_loadingbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AB0F571703D12B006E8AC6 /* 7Cbox_loadingbg.png */; };
+		2926222C172BDA5700A95E97 /* 7Cbox_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 839B3D081678D45A0095101E /* 7Cbox_logo.png */; };
+		2926222D172BDA7600A95E97 /* btn_create_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 839B3D0A1678D45A0095101E /* btn_create_n.png */; };
+		2926222E172BDA9800A95E97 /* input_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 839B3D3D1678D45A0095101E /* input_login.png */; };
+		2926222F172BDAB400A95E97 /* login_btnbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 839B3D481678D45A0095101E /* login_btnbg.png */; };
 		293896BC170932BA00929F48 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 293896BA170932BA00929F48 /* libMobClickLibrary.a */; };
 		294BA3ED1726656E00F6CEAE /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */; };
 		2955289517178F190098F45A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
 		2955289B171795190098F45A /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289A171795190098F45A /* SCBAccountManager.m */; };
+		29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF4172CB2B5001AD87A /* MYTabBarController.m */; };
+		29852CF8172CBCF5001AD87A /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF7172CBCF5001AD87A /* SettingViewController.m */; };
+		29852CF9172CCB99001AD87A /* SCBoxSDK.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A92A07171560B500B1B2A4 /* SCBoxSDK.h */; };
+		29852CFA172CCB99001AD87A /* SCBoxSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A92A08171560B500B1B2A4 /* SCBoxSDK.m */; };
+		29852CFB172CCB99001AD87A /* SCBRestClient.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A308381716ADD400275890 /* SCBRestClient.h */; };
+		29852CFC172CCB99001AD87A /* SCBRestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A308391716ADD400275890 /* SCBRestClient.m */; };
+		29852CFD172CCB99001AD87A /* SCBSession.h in Sources */ = {isa = PBXBuildFile; fileRef = 2955289317178F190098F45A /* SCBSession.h */; };
+		29852CFE172CCB99001AD87A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
+		29852CFF172CCB99001AD87A /* SCBAccountManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 29552899171795190098F45A /* SCBAccountManager.h */; };
+		29852D00172CCB99001AD87A /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289A171795190098F45A /* SCBAccountManager.m */; };
+		29852D01172CCB99001AD87A /* SCBFriendManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FA9A171B86BE007E6C0A /* SCBFriendManager.h */; };
+		29852D02172CCB99001AD87A /* SCBFriendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FA9B171B86BE007E6C0A /* SCBFriendManager.m */; };
+		29852D03172CCB99001AD87A /* SCBMessageManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FA9D171B86E2007E6C0A /* SCBMessageManager.h */; };
+		29852D04172CCB99001AD87A /* SCBMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FA9E171B86E2007E6C0A /* SCBMessageManager.m */; };
+		29852D05172CCB99001AD87A /* SCBFileManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA0171B870F007E6C0A /* SCBFileManager.h */; };
+		29852D06172CCB99001AD87A /* SCBFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA1171B870F007E6C0A /* SCBFileManager.m */; };
+		29852D07172CCB99001AD87A /* SCBShareManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA3171B872A007E6C0A /* SCBShareManager.h */; };
+		29852D08172CCB99001AD87A /* SCBShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA4171B872B007E6C0A /* SCBShareManager.m */; };
+		29852D09172CCB99001AD87A /* SCBPhotoManager.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA6171B8744007E6C0A /* SCBPhotoManager.h */; };
+		29852D0A172CCB99001AD87A /* SCBPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA7171B8744007E6C0A /* SCBPhotoManager.m */; };
+		29852D0B172CCB99001AD87A /* SCBDownloader.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA9171B8A54007E6C0A /* SCBDownloader.h */; };
+		29852D0C172CCB99001AD87A /* SCBDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAAA171B8A54007E6C0A /* SCBDownloader.m */; };
+		29852D0D172CCB99001AD87A /* SCBUploader.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAAC171B8A81007E6C0A /* SCBUploader.h */; };
+		29852D0E172CCB99001AD87A /* SCBUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAAD171B8A81007E6C0A /* SCBUploader.m */; };
+		29852D0F172CCB99001AD87A /* SCBHttpRequest.h in Sources */ = {isa = PBXBuildFile; fileRef = 298D2103171FF5FB00CA00FA /* SCBHttpRequest.h */; };
+		29852D10172CCB99001AD87A /* SCBHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 298D2104171FF5FB00CA00FA /* SCBHttpRequest.m */; };
+		29852D11172CCB99001AD87A /* SCBoxConfig.h in Sources */ = {isa = PBXBuildFile; fileRef = 298D2106171FF6E800CA00FA /* SCBoxConfig.h */; };
+		29852D12172CCBE0001AD87A /* MF_Base64Additions.h in Sources */ = {isa = PBXBuildFile; fileRef = 294BA3EB1726656E00F6CEAE /* MF_Base64Additions.h */; };
+		29852D13172CCBE0001AD87A /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */; };
+		29852D14172CD42C001AD87A /* MBProgressHUD.h in Sources */ = {isa = PBXBuildFile; fileRef = 83D6813B1675B48E0054AB1A /* MBProgressHUD.h */; };
+		29852D15172CD42C001AD87A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D6813C1675B48E0054AB1A /* MBProgressHUD.m */; };
+		29852D18172CFDA6001AD87A /* MyndsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852D17172CFDA6001AD87A /* MyndsViewController.m */; };
 		298D2102171FA6A200CA00FA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298D2101171FA6A200CA00FA /* MobileCoreServices.framework */; };
 		298D2105171FF5FB00CA00FA /* SCBHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 298D2104171FF5FB00CA00FA /* SCBHttpRequest.m */; };
 		29A06C1316F98EFA00D4A62D /* mm.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29A06C1216F98EFA00D4A62D /* mm.xib */; };
@@ -298,6 +337,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		29262226172BD70000A95E97 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		29262227172BD70000A95E97 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		29262228172BD70000A95E97 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		293896BA170932BA00929F48 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		293896BB170932BA00929F48 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		294BA3EB1726656E00F6CEAE /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
@@ -306,6 +348,12 @@
 		2955289417178F190098F45A /* SCBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBSession.m; sourceTree = "<group>"; };
 		29552899171795190098F45A /* SCBAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBAccountManager.h; sourceTree = "<group>"; };
 		2955289A171795190098F45A /* SCBAccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBAccountManager.m; sourceTree = "<group>"; };
+		29852CF3172CB2B5001AD87A /* MYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTabBarController.h; sourceTree = "<group>"; };
+		29852CF4172CB2B5001AD87A /* MYTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTabBarController.m; sourceTree = "<group>"; };
+		29852CF6172CBCF5001AD87A /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		29852CF7172CBCF5001AD87A /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		29852D16172CFDA6001AD87A /* MyndsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyndsViewController.h; sourceTree = "<group>"; };
+		29852D17172CFDA6001AD87A /* MyndsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyndsViewController.m; sourceTree = "<group>"; };
 		298D2101171FA6A200CA00FA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		298D2103171FF5FB00CA00FA /* SCBHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBHttpRequest.h; sourceTree = "<group>"; };
 		298D2104171FF5FB00CA00FA /* SCBHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBHttpRequest.m; sourceTree = "<group>"; };
@@ -631,7 +679,7 @@
 		83A3A0631650D0C800BEDB27 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		83A3A0651650D0C800BEDB27 /* NetDisk-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NetDisk-Prefix.pch"; sourceTree = "<group>"; };
 		83A3A0661650D0C800BEDB27 /* NDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NDAppDelegate.h; sourceTree = "<group>"; };
-		83A3A0671650D0C800BEDB27 /* NDAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NDAppDelegate.mm; sourceTree = "<group>"; };
+		83A3A0671650D0C800BEDB27 /* NDAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NDAppDelegate.mm; path = ../../NDAppDelegate.mm; sourceTree = "<group>"; };
 		83A3A0691650D0C800BEDB27 /* NDViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NDViewController.h; sourceTree = "<group>"; };
 		83A3A06A1650D0C800BEDB27 /* NDViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NDViewController.mm; sourceTree = "<group>"; };
 		83A3A06D1650D0C800BEDB27 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NDViewController.xib; sourceTree = "<group>"; };
@@ -904,6 +952,15 @@
 			children = (
 				29EFE85C172A55AD0099B5A7 /* AppDelegate.h */,
 				29EFE85D172A55AD0099B5A7 /* AppDelegate.m */,
+				29852CF3172CB2B5001AD87A /* MYTabBarController.h */,
+				29852CF4172CB2B5001AD87A /* MYTabBarController.m */,
+				29262226172BD70000A95E97 /* LoginViewController.h */,
+				29262227172BD70000A95E97 /* LoginViewController.m */,
+				29262228172BD70000A95E97 /* LoginViewController.xib */,
+				29852CF6172CBCF5001AD87A /* SettingViewController.h */,
+				29852CF7172CBCF5001AD87A /* SettingViewController.m */,
+				29852D16172CFDA6001AD87A /* MyndsViewController.h */,
+				29852D17172CFDA6001AD87A /* MyndsViewController.m */,
 				29EFE854172A55AD0099B5A7 /* Supporting Files */,
 			);
 			path = newnds;
@@ -1377,7 +1434,6 @@
 			children = (
 				83A3A0741650D21600BEDB27 /* Classes */,
 				83A3A0661650D0C800BEDB27 /* NDAppDelegate.h */,
-				83A3A0671650D0C800BEDB27 /* NDAppDelegate.mm */,
 				83A3A0691650D0C800BEDB27 /* NDViewController.h */,
 				83A3A06A1650D0C800BEDB27 /* NDViewController.mm */,
 				83A3A06C1650D0C800BEDB27 /* NDViewController.xib */,
@@ -1489,6 +1545,7 @@
 		83A3A07A1650D21600BEDB27 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				83A3A0671650D0C800BEDB27 /* NDAppDelegate.mm */,
 				83A3A0981650ED6D00BEDB27 /* NDShareViewController.h */,
 				83A3A0991650ED6D00BEDB27 /* NDShareViewController.mm */,
 				83A3A09A1650ED6D00BEDB27 /* NDShareViewController.xib */,
@@ -1832,10 +1889,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2926222F172BDAB400A95E97 /* login_btnbg.png in Resources */,
+				2926222E172BDA9800A95E97 /* input_login.png in Resources */,
+				2926222D172BDA7600A95E97 /* btn_create_n.png in Resources */,
+				2926222C172BDA5700A95E97 /* 7Cbox_logo.png in Resources */,
+				2926222B172BD8CE00A95E97 /* 7Cbox_loadingbg.png in Resources */,
 				29EFE858172A55AD0099B5A7 /* InfoPlist.strings in Resources */,
 				29EFE860172A55AD0099B5A7 /* Default.png in Resources */,
 				29EFE862172A55AD0099B5A7 /* Default@2x.png in Resources */,
 				29EFE864172A55AD0099B5A7 /* Default-568h@2x.png in Resources */,
+				2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2017,8 +2080,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29852D14172CD42C001AD87A /* MBProgressHUD.h in Sources */,
+				29852D15172CD42C001AD87A /* MBProgressHUD.m in Sources */,
+				29852D12172CCBE0001AD87A /* MF_Base64Additions.h in Sources */,
+				29852D13172CCBE0001AD87A /* MF_Base64Additions.m in Sources */,
+				29852CF9172CCB99001AD87A /* SCBoxSDK.h in Sources */,
+				29852CFA172CCB99001AD87A /* SCBoxSDK.m in Sources */,
+				29852CFB172CCB99001AD87A /* SCBRestClient.h in Sources */,
+				29852CFC172CCB99001AD87A /* SCBRestClient.m in Sources */,
+				29852CFD172CCB99001AD87A /* SCBSession.h in Sources */,
+				29852CFE172CCB99001AD87A /* SCBSession.m in Sources */,
+				29852CFF172CCB99001AD87A /* SCBAccountManager.h in Sources */,
+				29852D00172CCB99001AD87A /* SCBAccountManager.m in Sources */,
+				29852D01172CCB99001AD87A /* SCBFriendManager.h in Sources */,
+				29852D02172CCB99001AD87A /* SCBFriendManager.m in Sources */,
+				29852D03172CCB99001AD87A /* SCBMessageManager.h in Sources */,
+				29852D04172CCB99001AD87A /* SCBMessageManager.m in Sources */,
+				29852D05172CCB99001AD87A /* SCBFileManager.h in Sources */,
+				29852D06172CCB99001AD87A /* SCBFileManager.m in Sources */,
+				29852D07172CCB99001AD87A /* SCBShareManager.h in Sources */,
+				29852D08172CCB99001AD87A /* SCBShareManager.m in Sources */,
+				29852D09172CCB99001AD87A /* SCBPhotoManager.h in Sources */,
+				29852D0A172CCB99001AD87A /* SCBPhotoManager.m in Sources */,
+				29852D0B172CCB99001AD87A /* SCBDownloader.h in Sources */,
+				29852D0C172CCB99001AD87A /* SCBDownloader.m in Sources */,
+				29852D0D172CCB99001AD87A /* SCBUploader.h in Sources */,
+				29852D0E172CCB99001AD87A /* SCBUploader.m in Sources */,
+				29852D0F172CCB99001AD87A /* SCBHttpRequest.h in Sources */,
+				29852D10172CCB99001AD87A /* SCBHttpRequest.m in Sources */,
+				29852D11172CCB99001AD87A /* SCBoxConfig.h in Sources */,
 				29EFE85A172A55AD0099B5A7 /* main.m in Sources */,
 				29EFE85E172A55AD0099B5A7 /* AppDelegate.m in Sources */,
+				29262229172BD70000A95E97 /* LoginViewController.m in Sources */,
+				29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */,
+				29852CF8172CBCF5001AD87A /* SettingViewController.m in Sources */,
+				29852D18172CFDA6001AD87A /* MyndsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
