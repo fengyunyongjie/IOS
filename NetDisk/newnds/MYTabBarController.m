@@ -9,6 +9,7 @@
 #import "MYTabBarController.h"
 #import "LoginViewController.h"
 #import "SettingViewController.h"
+#import "MyndsViewController.h"
 
 @interface MYTabBarController ()
 
@@ -31,7 +32,7 @@
         UINavigationController *viewController1,*viewController2,*viewController3,*viewController4,*viewController5,*viewController6;
         viewController1=[[[UINavigationController alloc] init] autorelease];
         viewController1.title=@"First";
-        UITableViewController *rootView1=[[[UITableViewController alloc] init ]autorelease];
+        MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
         rootView1.title=@"我的网盘";
         [viewController1 pushViewController:rootView1 animated:YES];
         

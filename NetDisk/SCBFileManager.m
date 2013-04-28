@@ -16,7 +16,7 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",f_id,0,-1];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",@"1",0,-1];
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
@@ -54,6 +54,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     NSLog(@"connection:didReceiveData:");
+    NSLog(@"%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
     NSError *jsonParsingError=nil;
     
     NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];

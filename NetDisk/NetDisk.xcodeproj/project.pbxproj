@@ -903,6 +903,41 @@
 			name = base64;
 			sourceTree = "<group>";
 		};
+		29852D19172D1795001AD87A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		29852D1B172D17CE001AD87A /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Photo;
+			sourceTree = "<group>";
+		};
+		29852D1C172D17E9001AD87A /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Upload;
+			sourceTree = "<group>";
+		};
+		29852D1D172D17FE001AD87A /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
+		29852D1E172D1808001AD87A /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Favorites;
+			sourceTree = "<group>";
+		};
 		29A92A0A171560BE00B1B2A4 /* NewSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -950,6 +985,11 @@
 		29EFE853172A55AD0099B5A7 /* newnds */ = {
 			isa = PBXGroup;
 			children = (
+				29852D1E172D1808001AD87A /* Favorites */,
+				29852D1D172D17FE001AD87A /* Setting */,
+				29852D1C172D17E9001AD87A /* Upload */,
+				29852D1B172D17CE001AD87A /* Photo */,
+				29852D19172D1795001AD87A /* Main */,
 				29EFE85C172A55AD0099B5A7 /* AppDelegate.h */,
 				29EFE85D172A55AD0099B5A7 /* AppDelegate.m */,
 				29852CF3172CB2B5001AD87A /* MYTabBarController.h */,
