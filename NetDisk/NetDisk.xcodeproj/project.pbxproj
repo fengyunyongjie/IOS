@@ -77,6 +77,10 @@
 		29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B39964170C2CC10008D955 /* MWTapDetectingView.m */; };
 		29B65BB517124EEC00077CB7 /* YNZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B65BB417124EEC00077CB7 /* YNZoomingScrollView.m */; };
 		29B65BB8171258C100077CB7 /* YNPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B65BB7171258C100077CB7 /* YNPhotoBrowser.m */; };
+		29E816741732388100866C34 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E316DB811100756966 /* CFNetwork.framework */; };
+		29E81679173238E900866C34 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E516DB822500756966 /* SystemConfiguration.framework */; };
+		29E8167A1732392D00866C34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298D2101171FA6A200CA00FA /* MobileCoreServices.framework */; };
+		29E8167D1732395A00866C34 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E8167C1732395A00866C34 /* PhotoViewController.m */; };
 		29EFE850172A55AD0099B5A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A0571650D0C700BEDB27 /* UIKit.framework */; };
 		29EFE851172A55AD0099B5A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A0591650D0C700BEDB27 /* Foundation.framework */; };
 		29EFE852172A55AD0099B5A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A05B1650D0C700BEDB27 /* CoreGraphics.framework */; };
@@ -397,6 +401,8 @@
 		29B65BB417124EEC00077CB7 /* YNZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNZoomingScrollView.m; sourceTree = "<group>"; };
 		29B65BB6171258C100077CB7 /* YNPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNPhotoBrowser.h; sourceTree = "<group>"; };
 		29B65BB7171258C100077CB7 /* YNPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNPhotoBrowser.m; sourceTree = "<group>"; };
+		29E8167B1732395A00866C34 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
+		29E8167C1732395A00866C34 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		29EFE84F172A55AD0099B5A7 /* newnds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newnds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29EFE855172A55AD0099B5A7 /* newnds-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "newnds-Info.plist"; sourceTree = "<group>"; };
 		29EFE857172A55AD0099B5A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -844,6 +850,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29E8167A1732392D00866C34 /* MobileCoreServices.framework in Frameworks */,
+				29E81679173238E900866C34 /* SystemConfiguration.framework in Frameworks */,
+				29E816741732388100866C34 /* CFNetwork.framework in Frameworks */,
 				29EFE850172A55AD0099B5A7 /* UIKit.framework in Frameworks */,
 				29EFE851172A55AD0099B5A7 /* Foundation.framework in Frameworks */,
 				29EFE852172A55AD0099B5A7 /* CoreGraphics.framework in Frameworks */,
@@ -913,6 +922,8 @@
 		29852D1B172D17CE001AD87A /* Photo */ = {
 			isa = PBXGroup;
 			children = (
+				29E8167B1732395A00866C34 /* PhotoViewController.h */,
+				29E8167C1732395A00866C34 /* PhotoViewController.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -2155,6 +2166,7 @@
 				29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */,
 				29852CF8172CBCF5001AD87A /* SettingViewController.m in Sources */,
 				29852D18172CFDA6001AD87A /* MyndsViewController.m in Sources */,
+				29E8167D1732395A00866C34 /* PhotoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2353,7 +2365,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ./NetDisk/lib/include;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/armv7;
+				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2376,7 +2388,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ./NetDisk/lib/include;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/armv7;
+				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

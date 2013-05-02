@@ -8,8 +8,26 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol SCBPhotoDelegate <NSObject>
+
+-(void)getPhotoTiimeLine:(NSDictionary *)dictionary;
+
+-(void)getPhotoGeneral:(NSDictionary *)dictionary;
+
+-(void)getPhotoDetail:(NSDictionary *)dictionary;
+
+@end
+
 @interface SCBPhotoManager : NSObject
+{
+    id<SCBPhotoDelegate> photoDelegate;
+    NSString *url_string;
+}
+
+@property(nonatomic,retain) id<SCBPhotoDelegate> photoDelegate;
+
 //获取时间分组/photo/timeline
+-(void)getPhotoTimeLine;
 //获取按年或月查询的概要照片/photo/general
 //获取按日查询的照片/photo/detail
 //获取最新标签/photo/tag/recent

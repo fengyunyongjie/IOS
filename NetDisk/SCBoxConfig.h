@@ -43,4 +43,13 @@
 
 
 #pragma mark - 意见管理
+
+#pragma mark - 照片管理
+//获取时间分组
+#define PHOTO_TIMERLINE @"/photo/timeline"
+//获取按年或月查询的概要照片
+#define PHOTO_GENERAL @"/photo/general"
+//获取按月或日查询的所有照片（分页）
+#define PHOTO_DETAIL @"/photo/detail"
+
 #endif

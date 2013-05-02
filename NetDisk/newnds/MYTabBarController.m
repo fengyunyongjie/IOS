@@ -10,6 +10,7 @@
 #import "LoginViewController.h"
 #import "SettingViewController.h"
 #import "MyndsViewController.h"
+#import "PhotoViewController.h"
 
 @interface MYTabBarController ()
 
@@ -45,7 +46,7 @@
         
         viewController3=[[[UINavigationController alloc] init] autorelease];
         viewController3.title=@"Third";
-        UIViewController * rootView3=[[[UIViewController alloc] init] autorelease];
+        PhotoViewController * rootView3=[[[PhotoViewController alloc] init] autorelease];
         rootView3.title=@"照片";
         [viewController3 pushViewController:rootView3 animated:YES];
         
