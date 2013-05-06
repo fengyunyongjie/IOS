@@ -97,7 +97,7 @@
                     string_date = photo_demo.f_create;
                     [photo_demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
                     [photo_demo setF_mime:[dict objectForKey:@"f_modify"]];
-                    [photo_demo setF_mime:[dict objectForKey:@"compressaddr"]];
+                    [photo_demo setCompressaddr:[dict objectForKey:@"compressaddr"]];
                     [photo_demo setF_ownerid:[[dict objectForKey:@"f_ownerid"] intValue]];
                     [tableArray addObject:photo_demo];
                     [photo_demo release];
@@ -152,7 +152,7 @@
     NSDate *today = [NSDate date];
     NSInteger todayInteger = [today timeIntervalSince1970];
     NSInteger bodyInteger = [date timeIntervalSince1970];
-    NSInteger compareInteger = (todayInteger-bodyInteger)/1000;
+    NSInteger compareInteger = todayInteger-bodyInteger;
     //今天
     if(compareInteger<24*60*60)
     {
