@@ -24,6 +24,15 @@
 //    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",@"1",0,-1];
 //    NSMutableData *myRequestData=[NSMutableData data];
 //    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    if(matableData==nil)
+    {
+        matableData = [[NSMutableData alloc] init];
+    }
+    else
+    {
+        [matableData release];
+        matableData = [[NSMutableData alloc] init];
+    }
     
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
@@ -39,6 +48,16 @@
     timeDictionary = [[NSMutableDictionary alloc] init];
     timeLineAllArray = timeLineArray;
     timeLineTotalNumber = [timeLineArray count];
+    if(matableData==nil)
+    {
+        matableData = [[NSMutableData alloc] init];
+    }
+    else
+    {
+        [matableData release];
+        matableData = [[NSMutableData alloc] init];
+    }
+    timeLineNowNumber = 0;
     [self getPhotoGeneral];
     
 }
@@ -58,6 +77,7 @@
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [request setHTTPBody:myRequestData];
     timeLineNowNumber++;
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
@@ -121,7 +141,13 @@
 #pragma mark -请求成功后，分发数据
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:data options:nil error:nil];
+    [matableData appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:matableData options:NSJSONReadingMutableLeaves error:nil];
+    NSLog(@"请求成功后，分发数据:%@",diction);
     NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
     if([type_string isEqualToString:[[PHOTO_TIMERLINE componentsSeparatedByString:@"/"] lastObject]])
     {

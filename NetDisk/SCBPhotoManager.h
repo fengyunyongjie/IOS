@@ -26,6 +26,7 @@
     int timeLineNowNumber;
     NSArray *timeLineAllArray;
     NSMutableDictionary *timeDictionary;
+    NSMutableData *matableData;
 }
 
 @property(nonatomic,retain) id<SCBPhotoDelegate> photoDelegate;

@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DownImage.h"
 
-@interface PhotoDetailViewController : UIViewController
+@interface PhotoDetailViewController : UIViewController<DownloaderDelegate>
 {
     UIScrollView *scrollView;
+    float allHeight;
 }
 
 @property(nonatomic,retain) UIScrollView *scrollView;

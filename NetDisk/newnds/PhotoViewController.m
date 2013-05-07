@@ -44,7 +44,7 @@
     photoManager = [[SCBPhotoManager alloc] init];
     [photoManager setPhotoDelegate:self];
     [photoManager getPhotoTimeLine];
-    scroll_View = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 180)];
+    scroll_View = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-49-44)];
     [scroll_View setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:scroll_View];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -101,7 +101,7 @@
 -(void)getPhotoGeneral:(NSDictionary *)dictionary
 {
     allDictionary = dictionary;
-    NSLog(@"diction:%@",[dictionary allKeys]);
+    NSLog(@"时间轴 diction:%@",[dictionary allKeys]);
     //今天
     if([dictionary objectForKey:timeLine1]!=nil)
     {
@@ -159,6 +159,7 @@
 
 -(void)showTimeLine:(NSArray *)array titleString:(NSString *)titleString
 {
+    NSLog(@"height:%i",show_height);
     if(show_height>0)
     {
         show_height += 10;
@@ -221,15 +222,16 @@
         [downImage setImageUrl:demo.f_name];
         [downImage setImageViewIndex:indexTag+i];
         [downImage setDelegate:self];
-        [image_button setTitle:@"A" forState:UIControlStateNormal];
         [image_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [image_button addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchUpInside];
         [scroll_View addSubview:image_button];
         [downImage startDownload];
         show_height = image_button.frame.origin.y + image_button.frame.size.height;
+        [scroll_View setContentSize:CGSizeMake(320, show_height+10)];
     }
 }
 
+#pragma mark 下载完成后的回调方法
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:image
 {
     UIButton *image_button = (UIButton *)[scroll_View viewWithTag:indexTag];
@@ -238,7 +240,6 @@
     imageRect.size.width = (320-(2*5))/4;
     imageRect.size.height = 80;
     [image_button.imageView setFrame:imageRect];
-    
 }
 
 #pragma mark 进入详细页面
@@ -288,8 +289,9 @@
         array = [allDictionary objectForKey:timeLine3];
     }
     PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
-    [photoDetalViewController loadAllDiction:array currtimeIdexTag:image_button.tag%(1000*type)];
-    [self presentViewController:photoDetalViewController animated:YES completion:^{}];
+    [self presentViewController:photoDetalViewController animated:YES completion:^{
+        [photoDetalViewController loadAllDiction:array currtimeIdexTag:image_button.tag%(1000*type)];
+    }];
     [photoDetalViewController release];
 }
 
