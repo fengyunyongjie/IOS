@@ -9,24 +9,34 @@
 #import "SCBFileManager.h"
 #import "SCBoxConfig.h"
 #import "SCBSession.h"
-
+@interface SCBFileManager()
+{
+    NSURLConnection *_conn;
+}
+@end
 @implementation SCBFileManager
+-(void)cancelAllTask
+{
+    self.delegate=nil;
+}
 -(void)openFinderWithID:(NSString *)f_id
 {
+    self.activeData=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",@"1",0,-1];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",f_id,0,-1];
+    NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
-    
+    [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
     
-    NSURLConnection *conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 #pragma mark - NSURLConnectionDelegate Methods
 
@@ -53,19 +63,8 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
+    [self.activeData appendData:data];
     NSLog(@"connection:didReceiveData:");
-    NSLog(@"%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-    NSError *jsonParsingError=nil;
-    
-    NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
-    if ([[dic objectForKey:@"code"] intValue]==0) {
-        NSLog(@"操作成功 数据大小：%d",[data length]);
-        NSArray *a=[NSArray arrayWithObject:[dic objectForKey:@"files"]];
-        [self.delegate openFinderSucess:a];
-    }else
-    {
-        NSLog(@"操作失败 数据大小：%d",[data length]);
-    }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -73,6 +72,9 @@
 	// Clear the activeDownload property to allow later attempts
     // Release the connection now that it's finished
     NSLog(@"connection:didFailWithError");
+    if (self.delegate!=nil) {
+        [self.delegate openFinderUnsucess];
+    }
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -80,6 +82,20 @@
     // Release the connection now that it's finished
     // call our delegate and tell it that our icon is ready for display
     //[delegate fileDidDownload:self.index];
+    NSLog(@"%@",[[NSString alloc] initWithData:self.activeData encoding:NSUTF8StringEncoding]);
+    NSError *jsonParsingError=nil;
+    
+    NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:self.activeData options:0 error:&jsonParsingError];
+    if ([[dic objectForKey:@"code"] intValue]==0) {
+        NSLog(@"操作成功 数据大小：%d",[self.activeData length]);
+        if (self.delegate!=nil) {
+            [self.delegate openFinderSucess:dic];
+        }
+    }else
+    {
+        NSLog(@"操作失败 数据大小：%d",[self.activeData length]);
+    }
+    self.activeData=nil;
     NSLog(@"connectionDidFinishLoading");
     //UIImage *image=[[UIImage alloc] initWithData:self.activeDownload];
 }

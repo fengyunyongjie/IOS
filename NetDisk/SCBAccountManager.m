@@ -82,6 +82,10 @@ static SCBAccountManager *_sharedAccountManager;
         [[SCBSession sharedSession] setUserId:(NSString *)[dic objectForKey:@"usr_id"]];
         [[SCBSession sharedSession] setUserToken:(NSString *)[dic objectForKey:@"usr_token"]];
         
+        [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
+        [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         NSLog(@"%@",[[SCBSession sharedSession] userId]);
         NSLog(@"%@",[[SCBSession sharedSession] userToken]);
         [self.delegate loginSucceed:self];

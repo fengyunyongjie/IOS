@@ -5,7 +5,7 @@
 //  Created by fengyongning on 13-4-26.
 //
 //
-
+//#import "MobClick.h"
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "MYTabBarController.h"
@@ -21,6 +21,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    [MobClick startWithAppkey:@"5158f8f056240bb70c030e97"];
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
