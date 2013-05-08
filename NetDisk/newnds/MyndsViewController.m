@@ -192,6 +192,15 @@
         [cell setChecked:fileItem.checked];
         
         NSString *name= [this objectForKey:@"f_name"];
+        NSString *f_modify=[this objectForKey:@"f_modify"];
+        cell.detailTextLabel.text=f_modify;
+//        if ([t_fl isEqualToString:@"directory"]) {
+//            cell.detailTextLabel.text=f_modify;
+//        }else
+//        {
+//            NSString *f_size=[this objectForKey:@"f_size"];
+//            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@B",f_modify,f_size];
+//        }
         text=name;
         if ([t_fl isEqualToString:@"directory"]) {
             cell.imageView.image = [UIImage imageNamed:@"icon_Folder.png"];  

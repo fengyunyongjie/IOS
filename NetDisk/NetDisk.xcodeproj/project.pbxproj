@@ -14,6 +14,11 @@
 		2926222D172BDA7600A95E97 /* btn_create_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 839B3D0A1678D45A0095101E /* btn_create_n.png */; };
 		2926222E172BDA9800A95E97 /* input_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 839B3D3D1678D45A0095101E /* input_login.png */; };
 		2926222F172BDAB400A95E97 /* login_btnbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 839B3D481678D45A0095101E /* login_btnbg.png */; };
+		292FF984173A466D004CC609 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E416B9385100A1BE48 /* 114.png */; };
+		292FF985173A4670004CC609 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E216B937D900A1BE48 /* icon.png */; };
+		292FF989173A4930004CC609 /* YNFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FF988173A4930004CC609 /* YNFunctions.m */; };
+		292FF98D173A4C56004CC609 /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FF98B173A4C54004CC609 /* RegistViewController.m */; };
+		292FF98E173A4C56004CC609 /* RegistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292FF98C173A4C55004CC609 /* RegistViewController.xib */; };
 		293896BC170932BA00929F48 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 293896BA170932BA00929F48 /* libMobClickLibrary.a */; };
 		294BA3ED1726656E00F6CEAE /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */; };
 		2955289517178F190098F45A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
@@ -357,6 +362,11 @@
 		29262226172BD70000A95E97 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		29262227172BD70000A95E97 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		29262228172BD70000A95E97 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		292FF987173A4930004CC609 /* YNFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNFunctions.h; sourceTree = "<group>"; };
+		292FF988173A4930004CC609 /* YNFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNFunctions.m; sourceTree = "<group>"; };
+		292FF98A173A4C54004CC609 /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
+		292FF98B173A4C54004CC609 /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
+		292FF98C173A4C55004CC609 /* RegistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistViewController.xib; sourceTree = "<group>"; };
 		293896BA170932BA00929F48 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		293896BB170932BA00929F48 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		294BA3EB1726656E00F6CEAE /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
@@ -711,7 +721,7 @@
 		83A3A0631650D0C800BEDB27 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		83A3A0651650D0C800BEDB27 /* NetDisk-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NetDisk-Prefix.pch"; sourceTree = "<group>"; };
 		83A3A0661650D0C800BEDB27 /* NDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NDAppDelegate.h; sourceTree = "<group>"; };
-		83A3A0671650D0C800BEDB27 /* NDAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = NDAppDelegate.mm; path = ../../NDAppDelegate.mm; sourceTree = "<group>"; };
+		83A3A0671650D0C800BEDB27 /* NDAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NDAppDelegate.mm; sourceTree = "<group>"; };
 		83A3A0691650D0C800BEDB27 /* NDViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NDViewController.h; sourceTree = "<group>"; };
 		83A3A06A1650D0C800BEDB27 /* NDViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NDViewController.mm; sourceTree = "<group>"; };
 		83A3A06D1650D0C800BEDB27 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/NDViewController.xib; sourceTree = "<group>"; };
@@ -921,6 +931,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		292FF986173A48FF004CC609 /* YNFunctions */ = {
+			isa = PBXGroup;
+			children = (
+				292FF987173A4930004CC609 /* YNFunctions.h */,
+				292FF988173A4930004CC609 /* YNFunctions.m */,
+			);
+			name = YNFunctions;
+			sourceTree = "<group>";
+		};
+		292FF98F173A4CDE004CC609 /* Login&Regist */ = {
+			isa = PBXGroup;
+			children = (
+				29262226172BD70000A95E97 /* LoginViewController.h */,
+				29262227172BD70000A95E97 /* LoginViewController.m */,
+				29262228172BD70000A95E97 /* LoginViewController.xib */,
+				292FF98A173A4C54004CC609 /* RegistViewController.h */,
+				292FF98B173A4C54004CC609 /* RegistViewController.m */,
+				292FF98C173A4C55004CC609 /* RegistViewController.xib */,
+			);
+			name = "Login&Regist";
+			sourceTree = "<group>";
+		};
 		293896B9170932BA00929F48 /* UMAnalytics_Sdk_2.1.3.OpenUDID */ = {
 			isa = PBXGroup;
 			children = (
@@ -939,11 +971,13 @@
 			name = base64;
 			sourceTree = "<group>";
 		};
-		29852D19172D1795001AD87A /* Main */ = {
+		29852D19172D1795001AD87A /* MyRoom */ = {
 			isa = PBXGroup;
 			children = (
+				29852D16172CFDA6001AD87A /* MyndsViewController.h */,
+				29852D17172CFDA6001AD87A /* MyndsViewController.m */,
 			);
-			name = Main;
+			name = MyRoom;
 			sourceTree = "<group>";
 		};
 		29852D1B172D17CE001AD87A /* Photo */ = {
@@ -973,6 +1007,8 @@
 		29852D1D172D17FE001AD87A /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				29852CF6172CBCF5001AD87A /* SettingViewController.h */,
+				29852CF7172CBCF5001AD87A /* SettingViewController.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -1033,22 +1069,17 @@
 			children = (
 				29639037173A3E98009C5530 /* FileItemTableCell.h */,
 				29639038173A3E98009C5530 /* FileItemTableCell.m */,
+				292FF986173A48FF004CC609 /* YNFunctions */,
+				292FF98F173A4CDE004CC609 /* Login&Regist */,
 				29852D1E172D1808001AD87A /* Favorites */,
 				29852D1D172D17FE001AD87A /* Setting */,
 				29852D1C172D17E9001AD87A /* Upload */,
 				29852D1B172D17CE001AD87A /* Photo */,
-				29852D19172D1795001AD87A /* Main */,
+				29852D19172D1795001AD87A /* MyRoom */,
 				29EFE85C172A55AD0099B5A7 /* AppDelegate.h */,
 				29EFE85D172A55AD0099B5A7 /* AppDelegate.m */,
 				29852CF3172CB2B5001AD87A /* MYTabBarController.h */,
 				29852CF4172CB2B5001AD87A /* MYTabBarController.m */,
-				29262226172BD70000A95E97 /* LoginViewController.h */,
-				29262227172BD70000A95E97 /* LoginViewController.m */,
-				29262228172BD70000A95E97 /* LoginViewController.xib */,
-				29852CF6172CBCF5001AD87A /* SettingViewController.h */,
-				29852CF7172CBCF5001AD87A /* SettingViewController.m */,
-				29852D16172CFDA6001AD87A /* MyndsViewController.h */,
-				29852D17172CFDA6001AD87A /* MyndsViewController.m */,
 				29EFE854172A55AD0099B5A7 /* Supporting Files */,
 			);
 			path = newnds;
@@ -1525,6 +1556,7 @@
 			children = (
 				83A3A0741650D21600BEDB27 /* Classes */,
 				83A3A0661650D0C800BEDB27 /* NDAppDelegate.h */,
+				83A3A0671650D0C800BEDB27 /* NDAppDelegate.mm */,
 				83A3A0691650D0C800BEDB27 /* NDViewController.h */,
 				83A3A06A1650D0C800BEDB27 /* NDViewController.mm */,
 				83A3A06C1650D0C800BEDB27 /* NDViewController.xib */,
@@ -1636,7 +1668,6 @@
 		83A3A07A1650D21600BEDB27 /* Share */ = {
 			isa = PBXGroup;
 			children = (
-				83A3A0671650D0C800BEDB27 /* NDAppDelegate.mm */,
 				83A3A0981650ED6D00BEDB27 /* NDShareViewController.h */,
 				83A3A0991650ED6D00BEDB27 /* NDShareViewController.mm */,
 				83A3A09A1650ED6D00BEDB27 /* NDShareViewController.xib */,
@@ -1993,6 +2024,9 @@
 				2963903D173A3EC1009C5530 /* Placeholder.png in Resources */,
 				2963903E173A3EC1009C5530 /* Selected.png in Resources */,
 				2963903F173A3EC1009C5530 /* Unselected.png in Resources */,
+				292FF984173A466D004CC609 /* 114.png in Resources */,
+				292FF985173A4670004CC609 /* icon.png in Resources */,
+				292FF98E173A4C56004CC609 /* RegistViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2215,6 +2249,8 @@
 				29CFD62617375630001B6721 /* PhotoDetailViewController.m in Sources */,
 				299C9EC71737A9A300D5B3E0 /* PhotoDetailView.m in Sources */,
 				29639039173A3E98009C5530 /* FileItemTableCell.m in Sources */,
+				292FF989173A4930004CC609 /* YNFunctions.m in Sources */,
+				292FF98D173A4C56004CC609 /* RegistViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

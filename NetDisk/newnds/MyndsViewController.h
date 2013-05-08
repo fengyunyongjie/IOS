@@ -18,7 +18,6 @@
 @interface FileItem : NSObject
 {
 }
-
 @property (nonatomic, assign)	BOOL checked;
 + (FileItem*) fileItem;
 @end
