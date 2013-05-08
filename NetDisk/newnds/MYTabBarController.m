@@ -33,7 +33,8 @@
         viewController1=[[[UINavigationController alloc] init] autorelease];
         viewController1.title=@"First";
         MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
-        rootView1.title=@"我的网盘";
+        rootView1.f_id=@"1";
+        rootView1.title=@"我的空间";
         [viewController1 pushViewController:rootView1 animated:YES];
         
         
@@ -63,7 +64,11 @@
         [viewController5 pushViewController:rootView5 animated:YES];
         
         viewController6=[[[UINavigationController alloc] init] autorelease];
-        viewController6.title=@"sixth";
+        viewController6.title=@"sexth";
+        UIViewController * rootView6=[[[UIViewController alloc] init] autorelease];
+        rootView6.title=@"共享空间";
+        [viewController6 pushViewController:rootView6 animated:YES];
+        
         
         self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5, nil];
     }
@@ -85,11 +90,12 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
-    
 }
 -(void)viewDidAppear:(BOOL)animated
 {
     [self presendLoginViewController];
+    self.selectedIndex=2;
+    self.selectedIndex=0;
 }
 - (void)didReceiveMemoryWarning
 {

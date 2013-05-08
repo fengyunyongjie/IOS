@@ -20,8 +20,9 @@ static SCBSession * _sharedSession;
 {
     self=[super init];
     if (self) {
-        _usr_id=@"";
-        _usr_token=@"";
+        
+        self.userId=(NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_id"];
+        self.userToken=(NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_token"];
     }
     return self;
 }

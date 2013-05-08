@@ -10,9 +10,10 @@
 @protocol SCBFileManagerDelegate;
 @interface SCBFileManager : NSObject
 {
-    
 }
 @property (nonatomic,assign)id<SCBFileManagerDelegate> delegate;
+@property (strong,nonatomic) NSMutableData *activeData;
+-(void)cancelAllTask;
 //打开网盘/fm
 -(void)openFinderWithID:(NSString *)f_id;      //无分页：所以cursor=0,offset=-1;
 //新建/fm/mkdir
@@ -41,6 +42,6 @@
 //下载/fm/download/new/
 @end
 @protocol SCBFileManagerDelegate
--(void)openFinderSucess:(NSArray *)datadic;
+-(void)openFinderSucess:(NSDictionary *)datadic;
 -(void)openFinderUnsucess;
 @end
