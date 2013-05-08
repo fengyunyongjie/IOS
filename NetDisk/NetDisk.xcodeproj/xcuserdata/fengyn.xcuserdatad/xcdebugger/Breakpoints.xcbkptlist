@@ -7,13 +7,13 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "newnds/MyndsViewController.m"
-         timestampString = "389674467.990608"
+         filePath = "SCBFileManager.m"
+         timestampString = "388830512.60469"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "307"
-         endingLineNumber = "307"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
+         startingLineNumber = "16"
+         endingLineNumber = "16"
+         landmarkName = "-openFinderWithID:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
