@@ -18,6 +18,10 @@
 		294BA3ED1726656E00F6CEAE /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */; };
 		2955289517178F190098F45A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
 		2955289B171795190098F45A /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289A171795190098F45A /* SCBAccountManager.m */; };
+		29639039173A3E98009C5530 /* FileItemTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29639038173A3E98009C5530 /* FileItemTableCell.m */; };
+		2963903D173A3EC1009C5530 /* Placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903A173A3EC0009C5530 /* Placeholder.png */; };
+		2963903E173A3EC1009C5530 /* Selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903B173A3EC1009C5530 /* Selected.png */; };
+		2963903F173A3EC1009C5530 /* Unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903C173A3EC1009C5530 /* Unselected.png */; };
 		29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF4172CB2B5001AD87A /* MYTabBarController.m */; };
 		29852CF8172CBCF5001AD87A /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF7172CBCF5001AD87A /* SettingViewController.m */; };
 		29852CF9172CCB99001AD87A /* SCBoxSDK.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A92A07171560B500B1B2A4 /* SCBoxSDK.h */; };
@@ -361,6 +365,11 @@
 		2955289417178F190098F45A /* SCBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBSession.m; sourceTree = "<group>"; };
 		29552899171795190098F45A /* SCBAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBAccountManager.h; sourceTree = "<group>"; };
 		2955289A171795190098F45A /* SCBAccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBAccountManager.m; sourceTree = "<group>"; };
+		29639037173A3E98009C5530 /* FileItemTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileItemTableCell.h; sourceTree = "<group>"; };
+		29639038173A3E98009C5530 /* FileItemTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileItemTableCell.m; sourceTree = "<group>"; };
+		2963903A173A3EC0009C5530 /* Placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Placeholder.png; sourceTree = "<group>"; };
+		2963903B173A3EC1009C5530 /* Selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Selected.png; sourceTree = "<group>"; };
+		2963903C173A3EC1009C5530 /* Unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unselected.png; sourceTree = "<group>"; };
 		29852CF3172CB2B5001AD87A /* MYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTabBarController.h; sourceTree = "<group>"; };
 		29852CF4172CB2B5001AD87A /* MYTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTabBarController.m; sourceTree = "<group>"; };
 		29852CF6172CBCF5001AD87A /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -1022,6 +1031,8 @@
 		29EFE853172A55AD0099B5A7 /* newnds */ = {
 			isa = PBXGroup;
 			children = (
+				29639037173A3E98009C5530 /* FileItemTableCell.h */,
+				29639038173A3E98009C5530 /* FileItemTableCell.m */,
 				29852D1E172D1808001AD87A /* Favorites */,
 				29852D1D172D17FE001AD87A /* Setting */,
 				29852D1C172D17E9001AD87A /* Upload */,
@@ -1050,6 +1061,9 @@
 				29EFE856172A55AD0099B5A7 /* InfoPlist.strings */,
 				29EFE859172A55AD0099B5A7 /* main.m */,
 				29EFE85B172A55AD0099B5A7 /* newnds-Prefix.pch */,
+				2963903A173A3EC0009C5530 /* Placeholder.png */,
+				2963903B173A3EC1009C5530 /* Selected.png */,
+				2963903C173A3EC1009C5530 /* Unselected.png */,
 				29EFE85F172A55AD0099B5A7 /* Default.png */,
 				29EFE861172A55AD0099B5A7 /* Default@2x.png */,
 				29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */,
@@ -1976,6 +1990,9 @@
 				29EFE862172A55AD0099B5A7 /* Default@2x.png in Resources */,
 				29EFE864172A55AD0099B5A7 /* Default-568h@2x.png in Resources */,
 				2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */,
+				2963903D173A3EC1009C5530 /* Placeholder.png in Resources */,
+				2963903E173A3EC1009C5530 /* Selected.png in Resources */,
+				2963903F173A3EC1009C5530 /* Unselected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2197,6 +2214,7 @@
 				29CFD47D173733FF001B6721 /* DownImage.m in Sources */,
 				29CFD62617375630001B6721 /* PhotoDetailViewController.m in Sources */,
 				299C9EC71737A9A300D5B3E0 /* PhotoDetailView.m in Sources */,
+				29639039173A3E98009C5530 /* FileItemTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
