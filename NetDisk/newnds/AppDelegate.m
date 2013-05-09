@@ -25,6 +25,7 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
+//    UINavigationController *root=[[UINavigationController alloc] initWithRootViewController:self.myTabBarController];
     self.window.rootViewController=self.myTabBarController;
     
 //    LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];

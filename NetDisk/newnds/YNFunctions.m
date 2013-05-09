@@ -69,4 +69,23 @@
     }
     return theFMCachePath;
 }
++(NSString *)getDataCachePath
+{
+    NSString *theFMCachePath=nil;
+    NSArray *pathes= NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    theFMCachePath=[pathes objectAtIndex:0];
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:@"/DataCache/"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:theFMCachePath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:theFMCachePath
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    return theFMCachePath;
+}
++(NSString *)getFileNameWithFID:(NSString *)f_id
+{
+    return [NSString stringWithFormat:@"%@.data",f_id];
+}
 @end

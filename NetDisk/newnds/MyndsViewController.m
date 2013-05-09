@@ -9,6 +9,8 @@
 #import "MyndsViewController.h"
 #import "SCBFileManager.h"
 #import "FileItemTableCell.h"
+#import "YNFunctions.h"
+#import "AppDelegate.h"
 
 @implementation FileItem
 
@@ -118,6 +120,26 @@
     if (self.dataDic) {
         [self.tableView reloadData];
         return;
+    }
+    NSString *dataFilePath=[YNFunctions getDataCachePath];
+    dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:dataFilePath])
+    {
+        NSError *jsonParsingError=nil;
+        NSData *data=[NSData dataWithContentsOfFile:dataFilePath];
+        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
+        self.dataDic=dic;
+        if (self.dataDic) {
+            self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
+            NSMutableArray *a=[NSMutableArray array];
+            for (int i=0; i<self.listArray.count; i++) {
+                FileItem *fileItem=[[[FileItem alloc]init]autorelease];
+                [a addObject:fileItem];
+                [fileItem setChecked:NO];
+            }
+            self.m_fileItems=a;
+            [self.tableView reloadData];
+        }
     }
     if (self.fm) {
         return;
@@ -328,6 +350,11 @@
         viewController.f_id=f_id;
         [self.navigationController pushViewController:viewController animated:YES];
         viewController.title=f_name;
+    }else
+    {
+        AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UIViewController *viewController=[[[UIViewController alloc] init] autorelease];
+        [self.navigationController pushViewController:viewController animated:YES];
     }
 }
 
@@ -350,6 +377,22 @@
         [self updateFileList];
     }
     NSLog(@"openFinderSucess:");
+    if (self.dataDic)
+    {
+        NSString *dataFilePath=[YNFunctions getDataCachePath];
+        dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
+        
+        NSError *jsonParsingError=nil;
+        NSData *data=[NSJSONSerialization dataWithJSONObject:self.dataDic options:0 error:&jsonParsingError];
+        BOOL isWrite=[data writeToFile:dataFilePath atomically:YES];
+        if (isWrite) {
+            NSLog(@"写入文件成功：%@",dataFilePath);
+        }else
+        {
+            NSLog(@"写入文件失败：%@",dataFilePath);
+        }
+    }
+
 }
 -(void)openFinderUnsucess
 {
