@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+typedef enum {
+    kFMTypeOpenFinder,
+    kFMTypeRemove,
+}kFMType;
 @protocol SCBFileManagerDelegate;
 @interface SCBFileManager : NSObject
 {
 }
 @property (nonatomic,assign)id<SCBFileManagerDelegate> delegate;
 @property (strong,nonatomic) NSMutableData *activeData;
+@property (assign,nonatomic) kFMType fm_type;
 -(void)cancelAllTask;
 //打开网盘/fm
 -(void)openFinderWithID:(NSString *)f_id;      //无分页：所以cursor=0,offset=-1;
@@ -21,6 +26,7 @@
 //复制粘贴/fm/copypaste
 //剪切粘贴/fm/cutpaste
 //移除/fm/rm
+-(void)removeFileWithIDs:(NSArray*)f_ids;
 //搜索/fm/search
 //打开网盘收站/fm/trash
 //彻底删除/fm/trash/del
@@ -44,4 +50,6 @@
 @protocol SCBFileManagerDelegate
 -(void)openFinderSucess:(NSDictionary *)datadic;
 -(void)openFinderUnsucess;
+-(void)removeSucess;
+-(void)removeUnsucess;
 @end

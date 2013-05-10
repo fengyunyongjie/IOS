@@ -21,11 +21,36 @@
 }
 -(void)openFinderWithID:(NSString *)f_id
 {
+    self.fm_type=kFMTypeOpenFinder;
     self.activeData=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
     [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",f_id,0,-1];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+-(void)removeFileWithIDs:(NSArray*)f_ids
+{
+    self.fm_type=kFMTypeRemove;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_RM_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *sssss=@"";
+    for (NSString *s in f_ids) {
+        sssss=[sssss stringByAppendingString:s];
+    }
+    [body appendFormat:@"f_ids[]=%@",sssss];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -89,7 +114,15 @@
     if ([[dic objectForKey:@"code"] intValue]==0) {
         NSLog(@"操作成功 数据大小：%d",[self.activeData length]);
         if (self.delegate!=nil) {
-            [self.delegate openFinderSucess:dic];
+            switch (self.fm_type) {
+                case kFMTypeOpenFinder:
+                    [self.delegate openFinderSucess:dic];
+                    break;
+                case kFMTypeRemove:
+                    [self.delegate removeSucess];
+                    break;
+                    
+            }
         }
     }else
     {

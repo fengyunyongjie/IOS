@@ -84,6 +84,9 @@
 		29AB9A5316FC4FC6003DE32B /* icon_movie.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AB9A5016FC4FC0003DE32B /* icon_movie.png */; };
 		29AB9A5416FC4FC6003DE32B /* icon_music.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AB9A5116FC4FC2003DE32B /* icon_music.png */; };
 		29AB9A5516FC4FC6003DE32B /* top_bgr.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 29AB9A5216FC4FC4003DE32B /* top_bgr.jpg */; };
+		29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */; };
+		29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B18AC7173CC37C00DBF2CB /* OptionCell.xib */; };
+		29B18ACB173CC5D700DBF2CB /* OptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18ACA173CC5D700DBF2CB /* OptionCell.m */; };
 		29B3995F170C017E0008D955 /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B3995E170C017E0008D955 /* ImageBrowserViewController.m */; };
 		29B39967170C2CC10008D955 /* MWTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B39962170C2CC10008D955 /* MWTapDetectingImageView.m */; };
 		29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B39964170C2CC10008D955 /* MWTapDetectingView.m */; };
@@ -421,6 +424,11 @@
 		29AB9A5016FC4FC0003DE32B /* icon_movie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_movie.png; sourceTree = "<group>"; };
 		29AB9A5116FC4FC2003DE32B /* icon_music.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_music.png; sourceTree = "<group>"; };
 		29AB9A5216FC4FC4003DE32B /* top_bgr.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = top_bgr.jpg; sourceTree = "<group>"; };
+		29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
+		29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBrowserViewController.m; sourceTree = "<group>"; };
+		29B18AC7173CC37C00DBF2CB /* OptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OptionCell.xib; sourceTree = "<group>"; };
+		29B18AC9173CC5D700DBF2CB /* OptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionCell.h; sourceTree = "<group>"; };
+		29B18ACA173CC5D700DBF2CB /* OptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionCell.m; sourceTree = "<group>"; };
 		29B3995D170C017E0008D955 /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
 		29B3995E170C017E0008D955 /* ImageBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBrowserViewController.m; sourceTree = "<group>"; };
 		29B39961170C2CC10008D955 /* MWTapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingImageView.h; sourceTree = "<group>"; };
@@ -976,6 +984,9 @@
 			children = (
 				29852D16172CFDA6001AD87A /* MyndsViewController.h */,
 				29852D17172CFDA6001AD87A /* MyndsViewController.m */,
+				29B18AC9173CC5D700DBF2CB /* OptionCell.h */,
+				29B18ACA173CC5D700DBF2CB /* OptionCell.m */,
+				29B18AC7173CC37C00DBF2CB /* OptionCell.xib */,
 			);
 			name = MyRoom;
 			sourceTree = "<group>";
@@ -1053,6 +1064,15 @@
 			name = NewSDK;
 			sourceTree = "<group>";
 		};
+		29B18AC0173C973700DBF2CB /* Browsers */ = {
+			isa = PBXGroup;
+			children = (
+				29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */,
+				29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */,
+			);
+			name = Browsers;
+			sourceTree = "<group>";
+		};
 		29B39960170C2CAD0008D955 /* Top */ = {
 			isa = PBXGroup;
 			children = (
@@ -1067,6 +1087,7 @@
 		29EFE853172A55AD0099B5A7 /* newnds */ = {
 			isa = PBXGroup;
 			children = (
+				29B18AC0173C973700DBF2CB /* Browsers */,
 				29639037173A3E98009C5530 /* FileItemTableCell.h */,
 				29639038173A3E98009C5530 /* FileItemTableCell.m */,
 				292FF986173A48FF004CC609 /* YNFunctions */,
@@ -2027,6 +2048,7 @@
 				292FF984173A466D004CC609 /* 114.png in Resources */,
 				292FF985173A4670004CC609 /* icon.png in Resources */,
 				292FF98E173A4C56004CC609 /* RegistViewController.xib in Resources */,
+				29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2251,6 +2273,8 @@
 				29639039173A3E98009C5530 /* FileItemTableCell.m in Sources */,
 				292FF989173A4930004CC609 /* YNFunctions.m in Sources */,
 				292FF98D173A4C56004CC609 /* RegistViewController.m in Sources */,
+				29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */,
+				29B18ACB173CC5D700DBF2CB /* OptionCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2402,6 +2426,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "newnds/newnds-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/NetDisk/lib/armv6\"",
+					"\"$(SRCROOT)/NetDisk/lib/armv7\"",
+					"\"$(SRCROOT)/NetDisk/lib/i386\"",
+					"\"$(SRCROOT)/UMAnalytics_Sdk_2.1.3.OpenUDID\"",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "armv7 armv7s";
@@ -2425,6 +2456,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "newnds/newnds-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/NetDisk/lib/armv6\"",
+					"\"$(SRCROOT)/NetDisk/lib/armv7\"",
+					"\"$(SRCROOT)/NetDisk/lib/i386\"",
+					"\"$(SRCROOT)/UMAnalytics_Sdk_2.1.3.OpenUDID\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;

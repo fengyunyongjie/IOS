@@ -11,6 +11,9 @@
 #import "FileItemTableCell.h"
 #import "YNFunctions.h"
 #import "AppDelegate.h"
+#import "MBProgressHUD.h"
+
+#import "ImageBrowserViewController.h"
 
 @implementation FileItem
 
@@ -32,6 +35,7 @@
 @property (strong,nonatomic) UIBarButtonItem *editBtn;
 @property (assign,nonatomic) BOOL isEditing;
 @property (strong,nonatomic) NSMutableArray *m_fileItems;
+@property(strong,nonatomic) MBProgressHUD *hud;
 @end
 
 @implementation MyndsViewController
@@ -51,6 +55,7 @@
     
     [super viewDidLoad];
     self.optionCell=[[[UITableViewCell alloc] init] autorelease];
+    [self.optionCell addSubview:[[[UIToolbar alloc] init] autorelease]];
     self.selectedIndexPath=nil;
     self.editBtn=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStyleDone target:self action:@selector(editAction:)];
     [self.navigationItem setRightBarButtonItem:self.editBtn];
@@ -77,6 +82,7 @@
 }
 - (void)editAction:(id)sender
 {
+    [self hideOptionCell];
     [self setIsEditing:!self.isEditing];
     UIBarButtonItem *button = (UIBarButtonItem *)sender;
     if (self.isEditing) {
@@ -117,10 +123,6 @@
 }
 - (void)updateFileList
 {
-    if (self.dataDic) {
-        [self.tableView reloadData];
-        return;
-    }
     NSString *dataFilePath=[YNFunctions getDataCachePath];
     dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
     if ([[NSFileManager defaultManager] fileExistsAtPath:dataFilePath])
@@ -141,9 +143,9 @@
             [self.tableView reloadData];
         }
     }
-    if (self.fm) {
-        return;
-    }
+//    if (self.fm) {
+//        return;
+//    }
     self.fm=[[SCBFileManager alloc] init];
     [self.fm setDelegate:self];
     [self.fm openFinderWithID:self.f_id];
@@ -162,36 +164,96 @@
         NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
         if (self.selectedIndexPath) {
             return [a count]+1;
-        }else
-        {
-            return [a count];
         }
+        return [a count];
     }
     return 1;
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-//    double delayInSeconds = 0.2;
-//    BOOL shouldAdjustInsertedRow = YES;
-//    if(self.selectedIndexPath && self.selectedIndexPath.row == indexPath.row) {
-//        shouldAdjustInsertedRow = NO;
-//        self.selectedIndexPath = nil;
-//    }else
-//    {
-//        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-//        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//            if(shouldAdjustInsertedRow)
-//                self.selectedIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
-//            else
-//                self.selectedIndexPath = indexPath;
-//            [tableView insertRowsAtIndexPaths:@[self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        });
-//    }
+    if (self.selectedIndexPath && self.selectedIndexPath.row==indexPath.row+1) {
+        [self hideOptionCell];
+        return;
+    }
+    double delayInSeconds = 0.0;
+    BOOL shouldAdjustInsertedRow = YES;
+    if(self.selectedIndexPath) {
+        NSArray *indexesToDelete = @[self.selectedIndexPath];
+        if(self.selectedIndexPath.row <= indexPath.row)
+            shouldAdjustInsertedRow = NO;
+        self.selectedIndexPath = nil;
+        delayInSeconds = 0.2;
+        [tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        if(shouldAdjustInsertedRow)
+//            self.selectedIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+//        else
+//            self.selectedIndexPath = indexPath;
+//        [tableView insertRowsAtIndexPaths:@[self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//    });
+    if(shouldAdjustInsertedRow)
+    {
+        self.selectedIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+    }
+    else
+    {
+        self.selectedIndexPath = indexPath;
+    }
+    [tableView insertRowsAtIndexPaths:@[self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+-(void)toRename:(id)sender
+{
+    [self hideOptionCell];
+}
+-(void)toFavorite:(id)sender
+{
+    [self hideOptionCell];
+}
+-(void)toDelete:(id)sender
+{
+    
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    NSString *f_id=[dic objectForKey:@"f_id"];
+    SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
+    fm_temp.delegate=self;
+    [fm_temp removeFileWithIDs:@[f_id]];
+    [self hideOptionCell];
+}
+-(void)toShared:(id)sender
+{
+    [self hideOptionCell];
+}
+-(void)hideOptionCell
+{
+    if(self.selectedIndexPath) {
+        NSArray *indexesToDelete = @[self.selectedIndexPath];
+        self.selectedIndexPath = nil;
+        [self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.selectedIndexPath && self.selectedIndexPath.row==indexPath.row && self.selectedIndexPath.section==indexPath.section) {
-        return self.optionCell;
+        static NSString *CellIdentifier = @"Option Cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[[FileItemTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                             reuseIdentifier:CellIdentifier] autorelease];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        //cell.textLabel.text=@"收藏   分享   删除";
+        UIToolbar *toolbar=[[[UIToolbar alloc] initWithFrame:cell.bounds] autorelease];
+        UIBarButtonItem *item0=[[UIBarButtonItem alloc] initWithTitle:@"重命名" style:UIBarButtonItemStyleDone target:self action:@selector(toRename:)];
+        UIBarButtonItem *item1=[[UIBarButtonItem alloc] initWithTitle:@"收藏" style:UIBarButtonItemStyleDone target:self action:@selector(toFavorite:)];
+        UIBarButtonItem *item2=[[UIBarButtonItem alloc] initWithTitle:@"共享" style:UIBarButtonItemStyleDone target:self action:@selector(toShared:)];
+        UIBarButtonItem *item3=[[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStyleDone target:self action:@selector(toDelete:)];
+        UIBarButtonItem *flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        [toolbar setItems:@[flexible,item0,flexible,item1,flexible,item2,flexible,item3,flexible]];
+        [cell addSubview:toolbar];
+        return cell;
     }
     
     static NSString *CellIdentifier = @"Cell";
@@ -202,15 +264,18 @@
                                        reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
-    
+    int row=indexPath.row;
+    if (self.selectedIndexPath && self.selectedIndexPath.row<indexPath.row) {
+        row=row-1;
+    }
     UILabel *label =cell.textLabel;
     NSString *text;
     if (self.dataDic) {
         NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
-        NSDictionary *this=(NSDictionary *)[a objectAtIndex:indexPath.row];
+        NSDictionary *this=(NSDictionary *)[a objectAtIndex:row];
         NSString *t_fl = [[this objectForKey:@"f_mime"] lowercaseString];
         cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
-        FileItem* fileItem = [self.m_fileItems objectAtIndex:indexPath.row];
+        FileItem* fileItem = [self.m_fileItems objectAtIndex:row];
         [cell setChecked:fileItem.checked];
         
         NSString *name= [this objectForKey:@"f_name"];
@@ -255,20 +320,21 @@
     {
         text = @"加载中...";
     }
-    CGRect cellFrame = [cell frame];
-    cellFrame.origin = CGPointMake(0, 0);
-    
-    label.text = text;
-    CGRect rect = CGRectInset(cellFrame, 2, 2);
-    label.frame = rect;
-    [label sizeToFit];
-    if (label.frame.size.height > 46) {
-        cellFrame.size.height = 50 + label.frame.size.height - 46;
-    }
-    else {
-        cellFrame.size.height = 50;
-    }
-    [cell setFrame:cellFrame];
+    label.text=text;
+//    CGRect cellFrame = [cell frame];
+//    cellFrame.origin = CGPointMake(0, 0);
+//    
+//    label.text = text;
+//    CGRect rect = CGRectInset(cellFrame, 2, 2);
+//    label.frame = rect;
+//    [label sizeToFit];
+//    if (label.frame.size.height > 46) {
+//        cellFrame.size.height = 50 + label.frame.size.height - 46;
+//    }
+//    else {
+//        cellFrame.size.height = 50;
+//    }
+//    [cell setFrame:cellFrame];
     
     return cell;
 }
@@ -330,6 +396,11 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
+    if (self.selectedIndexPath) {
+        [self hideOptionCell];
+        return;
+    }
+    
     if (self.dataDic==Nil) {
         return;
     }
@@ -352,9 +423,17 @@
         viewController.title=f_name;
     }else
     {
-        AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UIViewController *viewController=[[[UIViewController alloc] init] autorelease];
-        [self.navigationController pushViewController:viewController animated:YES];
+        ImageBrowserViewController *browser=[[[ImageBrowserViewController alloc] init] autorelease];
+        browser.listArray=self.listArray;
+        browser.index=indexPath.row;
+//        if (self.navigationController.navigationBarHidden) {
+//            [self.navigationController setNavigationBarHidden:NO animated:YES];
+//        }else
+//        {
+//            [self.navigationController setNavigationBarHidden:YES animated:YES];
+//        }
+        [self.navigationController pushViewController:browser animated:YES];
+        //[self.tabBarController.tabBar setHidden:YES];
     }
 }
 
@@ -397,5 +476,19 @@
 -(void)openFinderUnsucess
 {
     NSLog(@"openFinderUnsucess: 网络连接失败!!");
+}
+-(void)removeSucess
+{
+    [self updateFileList];
+    if (!self.hud) {
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+    }
+    [self.hud show:NO];
+    self.hud.labelText=@"删除成功！";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:0.5f];
 }
 @end

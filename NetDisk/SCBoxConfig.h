@@ -31,6 +31,8 @@
 #pragma mark - 文件管理
 //打开网盘
 #define FM_URI @"/fm"
+//移除/fm/rm
+#define FM_RM_URI @"/fm/rm"
 //文件下载
 #define FM_DOWNLOAD_URI @"/fm/download"
 #define FM_DOWNLOAD_NEW_URI @"/fm/download/new"

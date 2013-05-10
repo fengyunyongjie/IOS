@@ -32,7 +32,6 @@
     if (self) {
         UINavigationController *viewController1,*viewController2,*viewController3,*viewController4,*viewController5,*viewController6;
         viewController1=[[[UINavigationController alloc] init] autorelease];
-        viewController1.title=@"First";
         MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
         rootView1.f_id=@"1";
         rootView1.title=@"我的空间";
