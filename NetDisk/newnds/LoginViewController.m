@@ -60,6 +60,8 @@
 #pragma mark - SCBAccountManagerDelegate Methods
 -(void)loginSucceed:(id)manager
 {
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate setLogin];
     [[NSUserDefaults standardUserDefaults] setObject:@"fengyn@16feng.com" forKey:@"usr_name"];
     [[NSUserDefaults standardUserDefaults] setObject:@"fengyn"  forKey:@"usr_pwd"];
     [[NSUserDefaults standardUserDefaults] synchronize];

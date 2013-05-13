@@ -10,13 +10,14 @@
 #import "SBJSON.h"
 #import "PhohoDemo.h"
 #import "PhotoDetailViewController.h"
+#import "PhotoImageButton.h"
 
 @interface PhotoViewController ()
 
 @end
 
 @implementation PhotoViewController
-@synthesize photoManager,scroll_View;
+@synthesize photoManager,scroll_View,allDictionary;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,6 +30,7 @@
 
 - (void)viewDidLoad
 {
+    imageTa = 1000;
     //添加分享按钮
     UINavigationItem *nav_item = [self navigationItem];
     UIButton *right_button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -46,6 +48,7 @@
     [photoManager getPhotoTimeLine];
     scroll_View = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-49-44)];
     [scroll_View setBackgroundColor:[UIColor clearColor]];
+    scroll_View.delegate = self;
     [self.view addSubview:scroll_View];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [super viewDidLoad];
@@ -76,8 +79,12 @@
         time_string = [time_string stringByReplacingOccurrencesOfString:@",[" withString:@"-"];
         time_string = [time_string stringByReplacingOccurrencesOfString:@"[" withString:@""];
         time_string = [time_string stringByReplacingOccurrencesOfString:@"]" withString:@""];
+        if([time_string length]>7)
+        {
+            time_string = [time_string substringToIndex:7];
+        }
         [tableArray addObject:time_string];
-        timeLine = [timeLine substringFromIndex:12];
+        timeLine = [timeLine substringFromIndex:range.location+2];
         range = [timeLine rangeOfString:@"],"];
     }
     if([timeLine length]>0)
@@ -85,16 +92,14 @@
         timeLine = [timeLine stringByReplacingOccurrencesOfString:@",[" withString:@"-"];
         timeLine = [timeLine stringByReplacingOccurrencesOfString:@"[" withString:@""];
         timeLine = [timeLine stringByReplacingOccurrencesOfString:@"]" withString:@""];
+        if([timeLine length]>7)
+        {
+            timeLine = [timeLine substringToIndex:7];
+        }
         [tableArray addObject:timeLine];
     }
+    NSLog(@"解析时间轴:%@",tableArray);
     [photoManager getAllPhotoGeneral:tableArray];
-    //昨天
-    //本周
-    //上一周
-    //本月
-    //上一月
-    //本年
-    //xxxx年
 }
 
 #pragma mark -得到时间轴的概要列表
@@ -102,54 +107,13 @@
 {
     allDictionary = dictionary;
     NSLog(@"时间轴 diction:%@",[dictionary allKeys]);
-    //今天
-    if([dictionary objectForKey:timeLine1]!=nil)
+    NSArray *allKeys = [dictionary objectForKey:@"timeLine"];
+    for(int i=0;i<[allKeys count];i++)
     {
-        NSArray *array = [dictionary objectForKey:timeLine1];
-        [self showTimeLine:array titleString:timeLine1];
+        NSArray *array = [dictionary objectForKey:[allKeys objectAtIndex:i]];
+        [self showTimeLine:array titleString:[allKeys objectAtIndex:i]];
     }
-    //昨天
-    if([dictionary objectForKey:timeLine2]!=nil)
-    {
-        NSArray *array = [dictionary objectForKey:timeLine2];
-        [self showTimeLine:array titleString:timeLine2];
-    }
-    //本周
-    if([dictionary objectForKey:timeLine3]!=nil)
-    {
-        NSArray *array = [dictionary objectForKey:timeLine3];
-        [self showTimeLine:array titleString:timeLine3];
-    }
-    //上一周
-    if([dictionary objectForKey:timeLine4]!=nil)
-    {
-        NSArray *array = [dictionary objectForKey:timeLine4];
-        [self showTimeLine:array titleString:timeLine4];
-    }
-    //本月
-    if([dictionary objectForKey:timeLine5]!=nil)
-    {
-        NSArray *array = [dictionary objectForKey:timeLine5];
-        [self showTimeLine:array titleString:timeLine5];
-    }
-    //上一月
-    if([dictionary objectForKey:timeLine6]!=nil)
-    {
-        NSArray *array = [dictionary objectForKey:timeLine6];
-        [self showTimeLine:array titleString:timeLine6];
-    }
-    //本年
-    if([dictionary objectForKey:timeLine7]!=nil)
-    {
-        NSArray *array = [dictionary objectForKey:timeLine7];
-        [self showTimeLine:array titleString:timeLine7];
-    }
-    //xxxx年
-    if([dictionary objectForKey:@"xxxx年"]!=nil)
-    {
-        NSArray *array = [dictionary objectForKey:timeLine3];
-        [self showTimeLine:array titleString:timeLine3];
-    }
+    [self scrollViewDidEndDragging:scroll_View willDecelerate:YES];
 }
 
 -(void)getPhotoDetail:(NSDictionary *)dictionary
@@ -183,49 +147,20 @@
         if(i%4==0&i!=0)
         {
             //换行
-            image_height += 85;
+            image_height += 79;
         }
-        CGRect image_rect = CGRectMake(80*(i%4)+2, image_height, (320-(2*5))/4, 80);
-        UIButton *image_button = [[UIButton alloc] initWithFrame:image_rect];
-        int indexTag = 0;
-        if([titleString isEqualToString:timeLine1])
-        {
-            indexTag = 1000;
-        }
-        if([titleString isEqualToString:timeLine2])
-        {
-            indexTag = 2000;
-        }
-        if([titleString isEqualToString:timeLine3])
-        {
-            indexTag = 3000;
-        }
-        if([titleString isEqualToString:timeLine4])
-        {
-            indexTag = 4000;
-        }
-        if([titleString isEqualToString:timeLine5])
-        {
-            indexTag = 5000;
-        }
-        if([titleString isEqualToString:timeLine6])
-        {
-            indexTag = 6000;
-        }
-        if([titleString isEqualToString:timeLine7])
-        {
-            indexTag = 7000;
-        }
-        [image_button setTag:indexTag+i];
-        DownImage *downImage = [[[DownImage alloc] init] autorelease];
-        [downImage setFileId:demo.f_id];
-        [downImage setImageUrl:demo.f_name];
-        [downImage setImageViewIndex:indexTag+i];
-        [downImage setDelegate:self];
+        CGRect image_rect = CGRectMake(79*(i%4)+4, image_height, 75, 75);
+        PhotoImageButton *image_button = [[PhotoImageButton alloc] initWithFrame:image_rect];
+        imageTa++;
+        [image_button setTag:imageTa];
+        [image_button setTimeIndex:i];
+        [image_button setDemo:demo];
+        
         [image_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [image_button addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchUpInside];
+        [image_button setTimeLine:titleString];
         [scroll_View addSubview:image_button];
-        [downImage startDownload];
+        [image_button release];
         show_height = image_button.frame.origin.y + image_button.frame.size.height;
         [scroll_View setContentSize:CGSizeMake(320, show_height+10)];
     }
@@ -234,71 +169,180 @@
 #pragma mark 下载完成后的回调方法
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:image
 {
-    UIButton *image_button = (UIButton *)[scroll_View viewWithTag:indexTag];
-    [image_button setBackgroundImage:image forState:UIControlStateNormal];
-    CGRect imageRect = image_button.imageView.frame;
-    imageRect.size.width = (320-(2*5))/4;
-    imageRect.size.height = 80;
-    [image_button.imageView setFrame:imageRect];
+    PhotoImageButton *image_button = (PhotoImageButton *)[scroll_View viewWithTag:indexTag];
+    
+    [image_button setIsShowImage:YES];
+    UIImage *image1 = (UIImage *)image;
+    CGSize imageS = image1.size;
+    if(imageS.width == imageS.height)
+    {
+        if(imageS.width>=75)
+        {
+            imageS.height = 75;
+            imageS.width = 75;
+            image = [self scaleFromImage:image toSize:imageS];
+            [image_button setBackgroundImage:image forState:UIControlStateNormal];
+        }
+        else
+        {
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = imageS.height;
+            [image_button setFrame:imageRect];
+        }
+    }
+    else if(imageS.width < imageS.height)
+    {
+        if(imageS.width>=75)
+        {
+            imageS.height = 75*imageS.height/imageS.width;
+            image = [self scaleFromImage:image toSize:CGSizeMake(75, imageS.height)];
+            UIImage *endImage = [self imageFromImage:image inRect:CGRectMake(0, (imageS.height-75)/2, 75, 75)];
+            [image_button setBackgroundImage:endImage forState:UIControlStateNormal];
+        }
+        else if(imageS.height<75)
+        {
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = imageS.height;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:image forState:UIControlStateNormal];
+        }
+        else
+        {
+            UIImage *endImage = [self imageFromImage:image inRect:CGRectMake((75-imageS.width)/2, (imageS.height-75)/2, imageS.width, 75)];
+            [image_button setBackgroundImage:endImage forState:UIControlStateNormal];
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = 75;
+            [image_button setFrame:imageRect];
+        }
+    }
+    else
+    {
+        if(imageS.height>=75)
+        {
+            imageS.width = 75*imageS.width/imageS.height;
+            image = [self scaleFromImage:image toSize:CGSizeMake(imageS.width, 75)];
+            UIImage *endImage = [self imageFromImage:image inRect:CGRectMake((imageS.width-75)/2, 0, 75, 75)];
+            [image_button setBackgroundImage:endImage forState:UIControlStateNormal];
+        }
+        else if(imageS.width<75)
+        {
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = imageS.height;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:image forState:UIControlStateNormal];
+        }
+        else
+        {
+            UIImage *endImage = [self imageFromImage:image inRect:CGRectMake((imageS.width-75)/2, (75-imageS.height)/2, 75, imageS.height)];
+            [image_button setBackgroundImage:endImage forState:UIControlStateNormal];
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = 75;
+            imageRect.size.height = imageS.height;
+            [image_button setFrame:imageRect];
+        }
+    }
 }
 
 #pragma mark 进入详细页面
 -(void)image_button_click:(id)sender
 {
-    UIButton *image_button = sender;
-    int type = image_button.tag/1000;
-    NSArray *array = nil;
-    //今天
-    if(type ==1 && [allDictionary objectForKey:timeLine1]!=nil)
-    {
-        array = [allDictionary objectForKey:timeLine1];
-    }
-    //昨天
-    if(type ==2 && [allDictionary objectForKey:timeLine2]!=nil)
-    {
-        array = [allDictionary objectForKey:timeLine2];
-    }
-    //本周
-    if(type ==3 && [allDictionary objectForKey:timeLine3]!=nil)
-    {
-        array = [allDictionary objectForKey:timeLine3];
-    }
-    //上一周
-    if(type ==4 && [allDictionary objectForKey:timeLine4]!=nil)
-    {
-       array = [allDictionary objectForKey:timeLine4];
-    }
-    //本月
-    if(type ==5 && [allDictionary objectForKey:timeLine5]!=nil)
-    {
-        array = [allDictionary objectForKey:timeLine5];
-    }
-    //上一月
-    if(type ==6 && [allDictionary objectForKey:timeLine6]!=nil)
-    {
-        array = [allDictionary objectForKey:timeLine6];
-    }
-    //本年
-    if(type ==7 && [allDictionary objectForKey:timeLine7]!=nil)
-    {
-        array = [allDictionary objectForKey:timeLine7];
-    }
-    //xxxx年
-    if(type ==8 && [allDictionary objectForKey:@"xxxx年"]!=nil)
-    {
-        array = [allDictionary objectForKey:timeLine3];
-    }
+    PhotoImageButton *image_button = sender;
+    NSArray *array = [allDictionary objectForKey:image_button.timeLine];
     PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
     [self presentViewController:photoDetalViewController animated:YES completion:^{
-        [photoDetalViewController loadAllDiction:array currtimeIdexTag:image_button.tag%(1000*type)];
+        [photoDetalViewController loadAllDiction:array currtimeIdexTag:image_button.timeIndex];
+        [photoDetalViewController release];
     }];
-    [photoDetalViewController release];
+}
+
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+//	BOOL offset_distance = scrollView.contentOffset.y + (scrollView.frame.size.height) > scrollView.contentSize.height*3/4;
+    int loadIndex = scroll_View.contentOffset.y/90*4;
+    int imageIndex = 1000;
+    if(loadIndex>0)
+    {
+        for(int i = imageIndex+loadIndex-28;i<imageIndex+loadIndex+1;i++)
+        {
+            if(i>=imageTa+1)
+            {
+                break;
+            }
+            if(i<1000)
+            {
+                continue;
+            }
+            else
+            {
+                PhotoImageButton *image_button = (PhotoImageButton *)[scroll_View viewWithTag:i];
+                if(![image_button isShowImage])
+                {
+                    DownImage *downImage = [[DownImage alloc] init];
+                    [downImage setFileId:image_button.demo.f_id];
+                    [downImage setImageUrl:image_button.demo.f_name];
+                    [downImage setImageViewIndex:i];
+                    [downImage setDelegate:self];
+                    [downImage startDownload];
+                    [downImage release];
+                }
+            }
+        }
+    }
+    for(int i = imageIndex+loadIndex-1;i<imageIndex+loadIndex+28;i++)
+    {
+        if(i>=imageTa+1)
+        {
+            break;
+        }
+        if(i<1000)
+        {
+            continue;
+        }
+        else
+        {
+            PhotoImageButton *image_button = (PhotoImageButton *)[scroll_View viewWithTag:i];
+            if(![image_button isShowImage])
+            {
+                DownImage *downImage = [[DownImage alloc] init];
+                [downImage setFileId:image_button.demo.f_id];
+                [downImage setImageUrl:image_button.demo.f_name];
+                [downImage setImageViewIndex:i];
+                [downImage setDelegate:self];
+                [downImage startDownload];
+                [downImage release];
+            }
+        }
+    }
+}
+
+
+-(UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{
+	CGImageRef sourceImageRef = [image CGImage];
+	CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);
+	UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+	return newImage;
+}
+
+
+-(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 -(void)dealloc
 {
     [photoManager release];
     [scroll_View release];
+    [allDictionary release];
     [super dealloc];
 }
 

@@ -6,6 +6,14 @@
 //
 //
 
+#define timeLine1 @"今天"
+#define timeLine2 @"昨天"
+#define timeLine3 @"本周"
+#define timeLine4 @"上一周"
+#define timeLine5 @"本月"
+#define timeLine6 @"上一月"
+#define timeLine7 @"本年"
+
 #import <Foundation/Foundation.h>
 
 @protocol SCBPhotoDelegate <NSObject>
@@ -15,6 +23,8 @@
 -(void)getPhotoGeneral:(NSDictionary *)dictionary;
 
 -(void)getPhotoDetail:(NSDictionary *)dictionary;
+
+-(void)requstDelete:(NSDictionary *)dictionary;
 
 @end
 
@@ -27,6 +37,7 @@
     NSArray *timeLineAllArray;
     NSMutableDictionary *timeDictionary;
     NSMutableData *matableData;
+    NSMutableArray *allKeysArray;
 }
 
 @property(nonatomic,retain) id<SCBPhotoDelegate> photoDelegate;
@@ -46,6 +57,7 @@
 //创建标签/photo/tag/create
 //删除标签/photo/tag/del
 
+//删除文件
 //得到月份天数
 -(int)theDaysInYear:(int)year inMonth:(int)month;
 #pragma mark 获取当月过了多少天

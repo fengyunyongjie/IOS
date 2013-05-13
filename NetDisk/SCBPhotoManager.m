@@ -46,8 +46,17 @@
 -(void)getAllPhotoGeneral:(NSArray *)timeLineArray
 {
     timeDictionary = [[NSMutableDictionary alloc] init];
+    allKeysArray = [[NSMutableArray alloc] init];
     timeLineAllArray = timeLineArray;
     timeLineTotalNumber = [timeLineArray count];
+    timeLineNowNumber = 0;
+    [self getPhotoGeneral];
+    
+}
+
+#pragma mark 获取按年或月查询的概要照片
+-(void)getPhotoGeneral
+{
     if(matableData==nil)
     {
         matableData = [[NSMutableData alloc] init];
@@ -57,14 +66,6 @@
         [matableData release];
         matableData = [[NSMutableData alloc] init];
     }
-    timeLineNowNumber = 0;
-    [self getPhotoGeneral];
-    
-}
-
-#pragma mark 获取按年或月查询的概要照片
--(void)getPhotoGeneral
-{
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,PHOTO_GENERAL]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     url_string = PHOTO_GENERAL;
@@ -78,6 +79,7 @@
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    NSLog(@"请求的参数：%@",[timeLineAllArray objectAtIndex:timeLineNowNumber]);
     [request setHTTPBody:myRequestData];
     timeLineNowNumber++;
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
@@ -86,8 +88,7 @@
 #pragma mark 处理返回的数据
 -(void)mangerGobackData:(NSDictionary *)dictionary
 {
-    NSLog(@"dictionary:%@",dictionary);
-    
+    NSLog(@"处理返回的数据:%@",dictionary);
     if([[dictionary objectForKey:@"photos"] isKindOfClass:[NSArray class]])
     {
         NSArray *photosArray = [dictionary objectForKey:@"photos"];
@@ -96,8 +97,14 @@
             NSDictionary *photosDiction = [photosArray objectAtIndex:i];
             if([[photosDiction objectForKey:@"list"] isKindOfClass:[NSArray class]])
             {
+                NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+                [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+                [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                NSDate *date_string;
+                NSString *date_type;;
                 NSArray *array_dict = [photosDiction objectForKey:@"list"];
-                NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+                NSMutableArray *tableArray;
                 NSString *string_date;
                 for(int j=0;j<[array_dict count];j++)
                 {
@@ -113,29 +120,153 @@
                     {
                         [photo_demo setImg_create:[dict objectForKey:@"img_create"]];
                     }
+                    
                     [photo_demo setF_create:[dict objectForKey:@"f_create"]];
                     string_date = photo_demo.f_create;
                     [photo_demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
                     [photo_demo setF_mime:[dict objectForKey:@"f_modify"]];
                     [photo_demo setCompressaddr:[dict objectForKey:@"compressaddr"]];
                     [photo_demo setF_ownerid:[[dict objectForKey:@"f_ownerid"] intValue]];
+                    if(j==0)
+                    {
+                        date_string = [dateFormatter dateFromString:string_date];
+                        date_type = [self getNowTimeLineForType:date_string];
+                        NSLog(@"类型：%@",date_type);
+                        if([[timeDictionary objectForKey:date_type] isKindOfClass:[NSMutableArray class]])
+                        {
+                            tableArray = [[NSMutableArray alloc] initWithArray:[timeDictionary objectForKey:date_type]];
+                        }
+                        else
+                        {
+                            tableArray = [[NSMutableArray alloc] init];
+                        }
+                    }
                     [tableArray addObject:photo_demo];
                     [photo_demo release];
                 }
-                
-                NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-                [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-                [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-                NSDate *date_string = [dateFormatter dateFromString:string_date];
-                NSString *date_type = [self getNowTimeLineForType:date_string];
+                NSLog(@"date_type:%@",date_type);
+                BOOL typeBl = FALSE;
+                for(int k=0;k<[allKeysArray count];k++)
+                {
+                    NSString *keyString = [allKeysArray objectAtIndex:k];
+                    if([keyString isEqualToString:date_type])
+                    {
+                        typeBl = TRUE;
+                        break;
+                    }
+                }
+                if(typeBl)
+                {}
+                else if([date_type isEqualToString:timeLine1])
+                {
+                    if([allKeysArray count]>1)
+                    {
+                        [allKeysArray insertObject:date_type atIndex:0];
+                    }
+                    else
+                    {
+                        [allKeysArray addObject:date_type];
+                    }
+                }
+                else if([date_type isEqualToString:timeLine2])
+                {
+                    if([allKeysArray count]>1)
+                    {
+                        [allKeysArray insertObject:date_type atIndex:1];
+                    }
+                    else
+                    {
+                        [allKeysArray addObject:date_type];
+                    }
+                }
+                else if([date_type isEqualToString:timeLine3])
+                {
+                    if([allKeysArray count]>2)
+                    {
+                        [allKeysArray insertObject:date_type atIndex:2];
+                    }
+                    else
+                    {
+                        [allKeysArray addObject:date_type];
+                    }
+                }
+                else if([date_type isEqualToString:timeLine4])
+                {
+                    if([allKeysArray count]>3)
+                    {
+                        [allKeysArray insertObject:date_type atIndex:3];
+                    }
+                    else
+                    {
+                        [allKeysArray addObject:date_type];
+                    }
+                }
+                else if([date_type isEqualToString:timeLine5])
+                {
+                    if([allKeysArray count]>4)
+                    {
+                        [allKeysArray insertObject:date_type atIndex:4];
+                    }
+                    else
+                    {
+                        [allKeysArray addObject:date_type];
+                    }
+                }
+                else if([date_type isEqualToString:timeLine6])
+                {
+                    if([allKeysArray count]>5)
+                    {
+                        [allKeysArray insertObject:date_type atIndex:5];
+                    }
+                    else
+                    {
+                        [allKeysArray addObject:date_type];
+                    }
+                }
+                else if([date_type isEqualToString:timeLine7])
+                {
+                    if([allKeysArray count]>6)
+                    {
+                        [allKeysArray insertObject:date_type atIndex:6];
+                    }
+                    else
+                    {
+                        [allKeysArray addObject:date_type];
+                    }
+                }
+                else
+                {
+                    [allKeysArray addObject:date_type];
+                }
+                NSLog(@"allkey:%@",allKeysArray);
                 [timeDictionary setObject:tableArray forKey:date_type];
-                NSLog(@"timeDictionary:%@",timeDictionary);
+                [timeDictionary setObject:allKeysArray forKey:@"timeLine"];
                 [tableArray release];
             }
         }
-
     }
+}
+
+#pragma mark 请求删除文件
+-(void)requestDeletePhoto:(NSArray *)deleteId
+{
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,PHOTO_Delete]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = PHOTO_Delete;
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"%@",deleteId];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    NSLog(@"请求的参数：%@",[timeLineAllArray objectAtIndex:timeLineNowNumber]);
+    [request setHTTPBody:myRequestData];
+    timeLineNowNumber++;
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
 #pragma mark -请求成功后，分发数据
@@ -169,58 +300,64 @@
     {
         [photoDelegate getPhotoDetail:diction];
     }
+    else if([type_string isEqualToString:[[PHOTO_Delete componentsSeparatedByString:@"/"] lastObject]])
+    {
+        [photoDelegate requstDelete:diction];
+    }
 }
 
 #pragma mark 判断当前时间属于哪一类
 -(NSString *)getNowTimeLineForType:(NSDate *)date
 {
     //得到当前时间戳
-    NSDate *today = [NSDate date];
-    NSInteger todayInteger = [today timeIntervalSince1970];
-    NSInteger bodyInteger = [date timeIntervalSince1970];
-    NSInteger compareInteger = todayInteger-bodyInteger;
-    //今天
-    if(compareInteger<24*60*60)
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *component = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:date];
+    
+    NSDate *todayDate = [NSDate date];
+    NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
+    
+    if(todayComponent.year == component.year)
     {
-        return @"今天";
+        if(todayComponent.month == component.month)
+        {
+            if(todayComponent.week == component.week)
+            {
+                //今天
+                if(todayComponent.weekday == component.weekday)
+                {
+                    return @"今天";
+                }
+                else if(todayComponent.weekday-component.weekday == 1)
+                {
+                    return @"昨天";
+                }
+                else
+                {
+                    return @"本周";
+                }
+            }
+            else if(todayComponent.week - component.week ==1)
+            {
+                return @"上一周";
+            }
+            else
+            {
+                return @"本月";
+            }
+        }
+        else if(todayComponent.month-component.month == 1)
+        {
+            return @"上一月";
+        }
+        else
+        {
+            return @"本年";
+        }
     }
-    //昨天
-    if(compareInteger<2*24*60*60)
+    else 
     {
-        return @"昨天";
+        return [NSString stringWithFormat:@"%i年",component.year];
     }
-    //本周
-    if(compareInteger<7*24*60*60)
-    {
-        return @"本周";
-    }
-    //上一周
-    if(compareInteger<14*24*60*60)
-    {
-        return @"上一周";
-    }
-    //本月
-    if(compareInteger<[self getNowMonthToManyDay]*24*60*60)
-    {
-        return @"本月";
-    }
-    //上一月
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [dateFormatter setDateFormat:@"yyyy"];
-    int oldMonthDay = [self theDaysInYear:[[dateFormatter stringFromDate:today] intValue] inMonth:[[timeLineAllArray objectAtIndex:timeLineNowNumber-1] intValue]];
-    if(compareInteger<([self getNowMonthToManyDay]+oldMonthDay)*24*60*60)
-    {
-        return @"上一月";
-    }
-    //本年
-    if(compareInteger < [self getNowYearToManyDay]*24*60*60)
-    {
-        return @"本年";
-    }
-    //xxxx年
-    return [NSString stringWithFormat:@"%@年",[dateFormatter stringFromDate:today]];
 }
 
 #pragma mark 得到月份天数

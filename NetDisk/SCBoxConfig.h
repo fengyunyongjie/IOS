@@ -10,7 +10,7 @@
 #define NetDisk_SCBoxConfig_h
 
 #define CLIENT_TAG @"3"
-#define CONNECT_TIMEOUT 10
+#define CONNECT_TIMEOUT 30
 #define RESPONSE_TIMEOUT 10
 #define SERVER_URL @"http://7cbox.cn:8080/nds/api"
 //#define SERVER_URL @"http://192.168.1.5:8080/nds/api"	//local host
@@ -53,5 +53,7 @@
 #define PHOTO_GENERAL @"/photo/general"
 //获取按月或日查询的所有照片（分页）
 #define PHOTO_DETAIL @"/photo/detail"
+//移除
+#define PHOTO_Delete @"/fm/rm"
 
 #endif

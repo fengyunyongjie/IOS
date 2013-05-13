@@ -19,6 +19,8 @@
 		292FF989173A4930004CC609 /* YNFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FF988173A4930004CC609 /* YNFunctions.m */; };
 		292FF98D173A4C56004CC609 /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FF98B173A4C54004CC609 /* RegistViewController.m */; };
 		292FF98E173A4C56004CC609 /* RegistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292FF98C173A4C55004CC609 /* RegistViewController.xib */; };
+		2936170A173CFD9D00F8303B /* PhotoImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 29361709173CFD9D00F8303B /* PhotoImageButton.m */; };
+		2936170B173CFD9D00F8303B /* PhotoImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 29361709173CFD9D00F8303B /* PhotoImageButton.m */; };
 		293896BC170932BA00929F48 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 293896BA170932BA00929F48 /* libMobClickLibrary.a */; };
 		294BA3ED1726656E00F6CEAE /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */; };
 		2955289517178F190098F45A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
@@ -370,6 +372,8 @@
 		292FF98A173A4C54004CC609 /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
 		292FF98B173A4C54004CC609 /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
 		292FF98C173A4C55004CC609 /* RegistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistViewController.xib; sourceTree = "<group>"; };
+		29361708173CFD9D00F8303B /* PhotoImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoImageButton.h; sourceTree = "<group>"; };
+		29361709173CFD9D00F8303B /* PhotoImageButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoImageButton.m; sourceTree = "<group>"; };
 		293896BA170932BA00929F48 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
 		293896BB170932BA00929F48 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
 		294BA3EB1726656E00F6CEAE /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
@@ -994,6 +998,8 @@
 		29852D1B172D17CE001AD87A /* Photo */ = {
 			isa = PBXGroup;
 			children = (
+				29361708173CFD9D00F8303B /* PhotoImageButton.h */,
+				29361709173CFD9D00F8303B /* PhotoImageButton.m */,
 				29E0C1351733846C005007BC /* PhohoDemo.h */,
 				29E0C1361733846C005007BC /* PhohoDemo.m */,
 				29E8167B1732395A00866C34 /* PhotoViewController.h */,
@@ -2275,6 +2281,7 @@
 				292FF98D173A4C56004CC609 /* RegistViewController.m in Sources */,
 				29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */,
 				29B18ACB173CC5D700DBF2CB /* OptionCell.m in Sources */,
+				2936170B173CFD9D00F8303B /* PhotoImageButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2376,6 +2383,7 @@
 				29CFD47C173733FF001B6721 /* DownImage.m in Sources */,
 				29CFD62517375630001B6721 /* PhotoDetailViewController.m in Sources */,
 				299C9EC61737A9A300D5B3E0 /* PhotoDetailView.m in Sources */,
+				2936170A173CFD9D00F8303B /* PhotoImageButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

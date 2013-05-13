@@ -11,6 +11,7 @@
 @interface PhotoDetailView : UIView
 {
     UIImageView *bgImageView;
+    UIButton *clickButton;
     UIView *topView;
     UIButton *topButton;
     UILabel *pagLabel;
@@ -27,6 +28,7 @@
 }
 
 @property(nonatomic,retain) UIImageView *bgImageView;
+@property(nonatomic,retain) UIButton *clickButton;
 @property(nonatomic,retain) UIView *topView;
 @property(nonatomic,retain) UIButton *topButton;
 @property(nonatomic,retain) UILabel *pagLabel;
@@ -40,5 +42,11 @@
 @property(nonatomic,retain) UIButton *leftButton;
 @property(nonatomic,retain) UIButton *centerButton;
 @property(nonatomic,retain) UIButton *rightButton;
+
+#pragma mark 隐藏信息
+-(void)hiddenNewview;
+
+#pragma mark 显示信息
+-(void)showNewview;
 
 @end

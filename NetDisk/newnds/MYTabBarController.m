@@ -93,9 +93,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self presendLoginViewController];
-    self.selectedIndex=2;
-    self.selectedIndex=0;
+//    [self presendLoginViewController];
+//    self.selectedIndex=2;
+//    self.selectedIndex=0;
 }
 - (void)didReceiveMemoryWarning
 {
