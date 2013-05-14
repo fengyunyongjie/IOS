@@ -22,7 +22,7 @@
         clickButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         [clickButton setBackgroundColor:[UIColor clearColor]];
         [self addSubview:clickButton];
-        
+         
         CGRect topRect = CGRectMake(0, 0, 320, 44);
         topView = [[UIView alloc] initWithFrame:topRect];
         CGRect topImageRect = CGRectMake(0, 0, 320, 44);

@@ -35,25 +35,31 @@
         MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
         rootView1.f_id=@"1";
         rootView1.title=@"我的空间";
+        [rootView1.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
         [viewController1 pushViewController:rootView1 animated:YES];
+        //[viewController1.navigationBar setBarStyle:UIBarStyleBlackOpaque];
+        [viewController1.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
         
         
         viewController2=[[[UINavigationController alloc] init] autorelease];
         viewController2.title=@"Second";
         UIViewController * rootView2=[[[UIViewController alloc] init] autorelease];
         rootView2.title=@"收藏";
+        [rootView2.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
         [viewController2 pushViewController:rootView2 animated:YES];
         
         viewController3=[[[UINavigationController alloc] init] autorelease];
         viewController3.title=@"Third";
         PhotoViewController * rootView3=[[[PhotoViewController alloc] init] autorelease];
         rootView3.title=@"照片";
+        [rootView3.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_photo.png"]];
         [viewController3 pushViewController:rootView3 animated:YES];
         
         viewController4=[[[UINavigationController alloc] init] autorelease];
         viewController4.title=@"fourth";
         UIViewController * rootView4=[[[UIViewController alloc] init] autorelease];
         rootView4.title=@"上传";
+        [rootView4.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_upload.png"]];
         [viewController4 pushViewController:rootView4 animated:YES];
         
         viewController5=[[[UINavigationController alloc] init] autorelease];
@@ -61,6 +67,7 @@
         SettingViewController * rootView5=[[[SettingViewController alloc] init] autorelease];
         [rootView5 setRootViewController:self];
         rootView5.title=@"设置";
+        [rootView5.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_setting.png"]];
         [viewController5 pushViewController:rootView5 animated:YES];
         
         viewController6=[[[UINavigationController alloc] init] autorelease];
@@ -93,9 +100,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-//    [self presendLoginViewController];
-//    self.selectedIndex=2;
-//    self.selectedIndex=0;
+    [self presendLoginViewController];
+    self.selectedIndex=1;
+    self.selectedIndex=0;
 }
 - (void)didReceiveMemoryWarning
 {
