@@ -11,11 +11,13 @@
 #import "MYTabBarController.h"
 
 @implementation AppDelegate
+@synthesize user_name;
 
 - (void)dealloc
 {
     [_window release];
     [_myTabBarController release];
+    [user_name release];
     [super dealloc];
 }
 
@@ -31,9 +33,49 @@
     LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
     //    [self.window.rootViewController presentViewController:lv animated:YES completion:^(void){}];
     self.window.rootViewController = lv;
+    //程序启动时，在代码中向微信终端注册你的id
+    [WXApi registerApp:@"wxd930ea5d5a258f4f"];
     [self.window makeKeyAndVisible];
     return YES;
 }
+
+- (void) onReq:(BaseReq*)req
+{
+
+}
+
+- (void) onResp:(BaseResp*)resp
+{
+    if([resp isKindOfClass:[SendMessageToWXResp class]])
+    {
+        NSString *strMsg = [NSString stringWithFormat:@"发送消息结果:%d",resp.errCode];
+    }
+}
+
+- (void) sendImageContent
+{
+    WXMediaMessage *message = [WXMediaMessage message];
+    [message setThumbImage:[UIImage imageNamed:@"footbtn.png"]];
+    WXImageObject *ext = [WXImageObject object];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"footbtn" ofType:@"png"];
+    ext.imageData = [NSData dataWithContentsOfFile:filePath] ;
+    message.mediaObject = ext;
+    SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
+    req.bText = NO;
+    req.message = message;
+    //req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
+    [WXApi sendReq:req];
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return  [WXApi handleOpenURL:url delegate:self];
+}
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return  [WXApi handleOpenURL:url delegate:self];
+}
+
 -(void)setLogin
 {
     self.window.rootViewController=self.myTabBarController;

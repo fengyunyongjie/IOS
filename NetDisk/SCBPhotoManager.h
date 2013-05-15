@@ -64,5 +64,7 @@
 -(int)getNowMonthToManyDay;
 #pragma mark 获取本年过了多少天
 -(int)getNowYearToManyDay;
+#pragma mark 请求删除文件
+-(void)requestDeletePhoto:(NSArray *)deleteId;
 
 @end

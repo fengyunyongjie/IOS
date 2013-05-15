@@ -10,6 +10,11 @@
 #import "SCBSession.h"
 #import "SCBoxConfig.h"
 #import "PhohoDemo.h"
+#import "DBTimeLine.h"
+#import "FMDatabase.h"
+#import "DBSqlite.h"
+#import "AppDelegate.h"
+#import "JSON.h"
 
 @implementation SCBPhotoManager
 @synthesize photoDelegate;
@@ -17,29 +22,50 @@
 #pragma mark 获取时间分组
 -(void)getPhotoTimeLine
 {
-    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,PHOTO_TIMERLINE]];
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     url_string = PHOTO_TIMERLINE;
-//    NSMutableString *body=[[NSMutableString alloc] init];
-//    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",@"1",0,-1];
-//    NSMutableData *myRequestData=[NSMutableData data];
-//    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    if(matableData==nil)
+    
+    //数据库是否存在
+    DBSqlite *sqlite3 = [[DBSqlite alloc] init];
+    if([sqlite3 initDatabase])
     {
-        matableData = [[NSMutableData alloc] init];
-    }
-    else
-    {
-        [matableData release];
-        matableData = [[NSMutableData alloc] init];
+        FMDatabase *dataBase = [sqlite3 getDatabase];
+        DBTimeLine *db_timeLine = [[DBTimeLine alloc] init];
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [db_timeLine setUser_name:app_delegate.user_name];
+        [db_timeLine setDatabase:dataBase];
+        NSData *data = [db_timeLine isHaveUserinfo];
+        if(1==1)
+        {
+            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,PHOTO_TIMERLINE]];
+            NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+            
+            if(matableData==nil)
+            {
+                matableData = [[NSMutableData alloc] init];
+            }
+            else
+            {
+                [matableData release];
+                matableData = [[NSMutableData alloc] init];
+            }
+            
+            [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+            [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+            [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+            [request setHTTPMethod:@"POST"];
+            
+            [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+        }
+        else
+        {
+            NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+            [self mangerGobackData:diction];
+        }
+        [db_timeLine release];
+        [dataBase close];
     }
     
-    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
-    [request setHTTPMethod:@"POST"];
     
-    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
 #pragma mark 获取所有时间轴上的照片信息
@@ -89,6 +115,7 @@
 -(void)mangerGobackData:(NSDictionary *)dictionary
 {
     NSLog(@"处理返回的数据:%@",dictionary);
+    
     if([[dictionary objectForKey:@"photos"] isKindOfClass:[NSArray class]])
     {
         NSArray *photosArray = [dictionary objectForKey:@"photos"];
@@ -247,25 +274,47 @@
     }
 }
 
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    
+}
+
+
 #pragma mark 请求删除文件
 -(void)requestDeletePhoto:(NSArray *)deleteId
 {
+    if(matableData==nil)
+    {
+        matableData = [[NSMutableData alloc] init];
+    }
+    else
+    {
+        [matableData release];
+        matableData = [[NSMutableData alloc] init];
+    }
+    
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,PHOTO_Delete]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     url_string = PHOTO_Delete;
-    NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"%@",deleteId];
-    NSMutableData *myRequestData=[NSMutableData data];
-    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    
+    NSMutableString *idString = [[NSMutableString alloc] init];
+    for(int i=0;i<[deleteId count];i++)
+    {
+        [idString appendString:[deleteId objectAtIndex:i]];
+    }
+    
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_ids[]=%@",idString];
+    [idString release];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-    NSLog(@"请求的参数：%@",[timeLineAllArray objectAtIndex:timeLineNowNumber]);
-    [request setHTTPBody:myRequestData];
-    timeLineNowNumber++;
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
@@ -286,6 +335,19 @@
     }
     else if([type_string isEqualToString:[[PHOTO_GENERAL componentsSeparatedByString:@"/"] lastObject]])
     {
+        DBSqlite *sqlite3 = [[DBSqlite alloc] init];
+        if([sqlite3 initDatabase])
+        {
+            FMDatabase *dataBase = [sqlite3 getDatabase];
+            DBTimeLine *db_timeLine = [[DBTimeLine alloc] init];
+            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [db_timeLine setUser_name:app_delegate.user_name];
+            [db_timeLine setUser_linedictionary:matableData];
+            [db_timeLine setDatabase:dataBase];
+            [db_timeLine insertUserinfo];
+            [db_timeLine release];
+            [dataBase close];
+        }
         [self mangerGobackData:diction];
         if(timeLineNowNumber<timeLineTotalNumber)
         {

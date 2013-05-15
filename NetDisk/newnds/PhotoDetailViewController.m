@@ -17,6 +17,8 @@
 @implementation PhotoDetailViewController
 @synthesize scroll_View;
 @synthesize bottonView,topView,pageLabel;
+@synthesize deleteDelegate;
+@synthesize timeLine;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -99,11 +101,14 @@
     UIButton *rightButton = [[UIButton alloc] initWithFrame:rightRect];
     [rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [rightButton.titleLabel setTextColor:[UIColor blackColor]];
+    [rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
 //    [rightButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [rightButton setTitle:@"删除" forState:UIControlStateNormal];
     [rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [bottonView addSubview:rightButton];
     
+    [self.topView setHidden:YES];
+    [self.bottonView setHidden:YES];
     [self.view addSubview:bottonView];
     
     [super viewDidLoad];
@@ -121,6 +126,7 @@
     [topView release];
     [bottonView release];
     [pageLabel release];
+    [timeLine release];
     [super dealloc];
 }
 
@@ -183,9 +189,6 @@
     
     [scroll_View addSubview:detailView];
     [scroll_View setContentSize:CGSizeMake(320*[allPhotoDemoArray count], allHeight)];
-    
-    [self.topView setHidden:YES];
-    [self.bottonView setHidden:YES];
 }
 
 #pragma mark 滑动隐藏
@@ -406,7 +409,39 @@
 #pragma mark 删除按钮
 -(void)deleteClicked:(id)sender
 {
+    int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+    deletePage = page;
+    PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:page];
+    SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
+    [photoManager setPhotoDelegate:self];
+    NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
+    [photoManager requestDeletePhoto:array];
     
+}
+
+-(void)requstDelete:(NSDictionary *)dictioinary
+{
+    if([[dictioinary objectForKey:@"code"] intValue] == 0)
+    {
+        [allPhotoDemoArray removeObjectAtIndex:deletePage];
+        if(deletePage==0)
+        {
+            [self loadAllDiction:allPhotoDemoArray currtimeIdexTag:deletePage];
+        }
+        else
+        {
+            [self loadAllDiction:allPhotoDemoArray currtimeIdexTag:deletePage-1];
+        }
+    }
+    if(allPhotoDemoArray == 0)
+    {
+        [deleteDelegate  deleteForDeleteArray:-1 timeLine:timeLine];
+        [self dismissViewControllerAnimated:YES completion:^{}];
+    }
+    else
+    {
+        [deleteDelegate  deleteForDeleteArray:deletePage timeLine:timeLine];
+    }
 }
 
 @end

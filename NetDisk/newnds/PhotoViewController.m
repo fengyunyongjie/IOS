@@ -32,6 +32,7 @@
 
 - (void)viewDidLoad
 {
+    
     imageTa = 1000;
     //添加分享按钮
     UINavigationItem *nav_item = [self navigationItem];
@@ -50,7 +51,6 @@
     photoManager = [[SCBPhotoManager alloc] init];
     [photoManager setPhotoDelegate:self];
     [photoManager getPhotoTimeLine];
-    
     //设置背景为黑色
     [self.view setBackgroundColor:[UIColor blackColor]];
     [super viewDidLoad];
@@ -109,13 +109,12 @@
 {
     table_view = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
     [self.view addSubview:table_view];
-    allDictionary = dictionary;
+    allDictionary = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
     [table_view setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     table_view.delegate = self;
     table_view.dataSource = self;
     [table_view reloadData];
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(firstLoad) userInfo:nil repeats:NO];
-    
 }
 
 -(void)firstLoad
@@ -271,13 +270,43 @@
     PhotoImageButton *image_button = sender;
     NSArray *array = [allDictionary objectForKey:image_button.timeLine];
     PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
+    photoDetalViewController.deleteDelegate = self;
     [self presentViewController:photoDetalViewController animated:YES completion:^{
+        [photoDetalViewController setTimeLine:image_button.timeLine];
         [photoDetalViewController loadAllDiction:array currtimeIdexTag:image_button.timeIndex];
         [photoDetalViewController release];
     }];
 }
 
+#pragma mark 删除回调
+-(void)deleteForDeleteArray:(NSInteger)page timeLine:(NSString *)timeLineString
+{
+    if(page == -1)
+    {
+        [allDictionary removeObjectForKey:timeLineString];
+        NSMutableArray *allKeys = [allDictionary objectForKey:@"timeLine"];
+        for(int i=0;i<[allKeys count];i++)
+        {
+            NSString *keyString = [allKeys objectAtIndex:i];
+            if([keyString isEqualToString:timeLineString])
+            {
+                [allKeys removeObjectAtIndex:i];
+                [allDictionary setObject:allKeys forKey:@"timeLine"];
+                break;
+            }
+        }
+    }
+    else
+    {
+        NSMutableArray *array = [allDictionary objectForKey:timeLineString];
+        [array removeObjectAtIndex:page];
+        [allDictionary setObject:array forKey:timeLineString];
+    }
+    [table_view reloadData];
+}
 
+
+#pragma mark 滑动结束后，加载数据
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     NSArray *array = table_view.visibleCells;
@@ -353,12 +382,6 @@
     return newImage;
 }
 
-#pragma mark 删除后返回的信息
--(void)requstDelete:(NSDictionary *)dictionary
-{
-    
-}
-
 #pragma mark UITableViewDelegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -402,7 +425,7 @@
     NSArray *allKeys = [allDictionary objectForKey:@"timeLine"];
     NSString *timeLine = [allKeys objectAtIndex:section];
     NSArray *array = [allDictionary objectForKey:timeLine];
-    NSLog(@"array;%i",[array count]);
+    NSLog(@"-----------------------------\n\n------------------array;%i",[array count]);
     NSString *cellString = [NSString stringWithFormat:@"cellLoad:%i %i",section,row];
     PhotoCell *photoCell = [table_view dequeueReusableCellWithIdentifier:cellString];
     if(!photoCell)
@@ -423,10 +446,7 @@
         if([self image_exists_at_file_path:path])
         {
             imageDemo = [UIImage imageWithContentsOfFile:path];
-            if(!photoCell.imageViewButton1.isShowImage)
-            {
-                [self loadCellDefulImage:photoCell.imageViewButton1 urlImage:imageDemo];
-            }
+            [self loadCellDefulImage:photoCell.imageViewButton1 urlImage:imageDemo];
         }
         else
         {
@@ -444,10 +464,7 @@
         if([self image_exists_at_file_path:path])
         {
             imageDemo = [UIImage imageWithContentsOfFile:path];
-            if(!photoCell.imageViewButton2.isShowImage)
-            {
-                [self loadCellDefulImage:photoCell.imageViewButton2 urlImage:imageDemo];
-            }
+            [self loadCellDefulImage:photoCell.imageViewButton2 urlImage:imageDemo];
         }
         else
         {
@@ -464,10 +481,7 @@
         if([self image_exists_at_file_path:path])
         {
             imageDemo = [UIImage imageWithContentsOfFile:path];
-            if(!photoCell.imageViewButton3.isShowImage)
-            {
-                [self loadCellDefulImage:photoCell.imageViewButton3 urlImage:imageDemo];
-            }
+            [self loadCellDefulImage:photoCell.imageViewButton3 urlImage:imageDemo];
         }
         else
         {
@@ -484,10 +498,7 @@
         if([self image_exists_at_file_path:path])
         {
             imageDemo = [UIImage imageWithContentsOfFile:path];
-            if(!photoCell.imageViewButton4.isShowImage)
-            {
-                [self loadCellDefulImage:photoCell.imageViewButton4 urlImage:imageDemo];
-            }
+            [self loadCellDefulImage:photoCell.imageViewButton4 urlImage:imageDemo];
         }
         else
         {
@@ -511,10 +522,7 @@
             if([self image_exists_at_file_path:path])
             {
                 imageDemo = [UIImage imageWithContentsOfFile:path];
-                if(!photoCell.imageViewButton1.isShowImage)
-                {
-                    [self loadCellDefulImage:photoCell.imageViewButton1 urlImage:imageDemo];
-                }
+                [self loadCellDefulImage:photoCell.imageViewButton1 urlImage:imageDemo];
             }
             else
             {
@@ -538,10 +546,7 @@
             if([self image_exists_at_file_path:path])
             {
                 imageDemo = [UIImage imageWithContentsOfFile:path];
-                if(!photoCell.imageViewButton1.isShowImage)
-                {
-                    [self loadCellDefulImage:photoCell.imageViewButton1 urlImage:imageDemo];
-                }
+                [self loadCellDefulImage:photoCell.imageViewButton1 urlImage:imageDemo];
             }
             else
             {
@@ -558,10 +563,7 @@
             if([self image_exists_at_file_path:path])
             {
                 imageDemo = [UIImage imageWithContentsOfFile:path];
-                if(!photoCell.imageViewButton2.isShowImage)
-                {
-                    [self loadCellDefulImage:photoCell.imageViewButton2 urlImage:imageDemo];
-                }
+                [self loadCellDefulImage:photoCell.imageViewButton2 urlImage:imageDemo];
             }
             else
             {
@@ -584,10 +586,7 @@
             if([self image_exists_at_file_path:path])
             {
                 imageDemo = [UIImage imageWithContentsOfFile:path];
-                if(!photoCell.imageViewButton1.isShowImage)
-                {
-                    [self loadCellDefulImage:photoCell.imageViewButton1 urlImage:imageDemo];
-                }
+                [self loadCellDefulImage:photoCell.imageViewButton1 urlImage:imageDemo];
             }
             else
             {
@@ -604,10 +603,7 @@
             if([self image_exists_at_file_path:path])
             {
                 imageDemo = [UIImage imageWithContentsOfFile:path];
-                if(!photoCell.imageViewButton2.isShowImage)
-                {
-                    [self loadCellDefulImage:photoCell.imageViewButton2 urlImage:imageDemo];
-                }
+                [self loadCellDefulImage:photoCell.imageViewButton2 urlImage:imageDemo];
             }
             else
             {
@@ -624,10 +620,7 @@
             if([self image_exists_at_file_path:path])
             {
                 imageDemo = [UIImage imageWithContentsOfFile:path];
-                if(!photoCell.imageViewButton3.isShowImage)
-                {
-                    [self loadCellDefulImage:photoCell.imageViewButton3 urlImage:imageDemo];
-                }
+                [self loadCellDefulImage:photoCell.imageViewButton3 urlImage:imageDemo];
             }
             else
             {
