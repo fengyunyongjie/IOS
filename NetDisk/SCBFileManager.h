@@ -10,6 +10,8 @@
 typedef enum {
     kFMTypeOpenFinder,
     kFMTypeRemove,
+    kFMTypeRename,
+    kFMTypeMove,
 }kFMType;
 @protocol SCBFileManagerDelegate;
 @interface SCBFileManager : NSObject
@@ -23,8 +25,10 @@ typedef enum {
 -(void)openFinderWithID:(NSString *)f_id;      //无分页：所以cursor=0,offset=-1;
 //新建/fm/mkdir
 //重命名/fm/rename
+-(void)renameWithID:(NSString *)f_id newName:(NSString *)f_name;
 //复制粘贴/fm/copypaste
 //剪切粘贴/fm/cutpaste
+-(void)moveFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid;
 //移除/fm/rm
 -(void)removeFileWithIDs:(NSArray*)f_ids;
 //搜索/fm/search
@@ -52,4 +56,8 @@ typedef enum {
 -(void)openFinderUnsucess;
 -(void)removeSucess;
 -(void)removeUnsucess;
+-(void)renameSucess;
+-(void)renameUnsucess;
+-(void)moveSucess;
+-(void)moveUnsucess;
 @end
