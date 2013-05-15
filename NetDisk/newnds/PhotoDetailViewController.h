@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DownImage.h"
 #import "PhohoDemo.h"
+#import "PhotoDetailView.h"
 
 @interface PhotoDetailViewController : UIViewController<DownloaderDelegate,UIScrollViewDelegate>
 {
@@ -17,10 +18,17 @@
     NSInteger imageTag;
     NSMutableArray *allPhotoDemoArray;
     NSInteger currPageNumber;
-    BOOL changeBig;
+    PhotoDetailView *OntimeView;
+    
+    UIView *topView;
+    UIView *bottonView;
+    UILabel *pageLabel;
 }
 
 @property(nonatomic,retain) UIScrollView *scroll_View;
+@property(nonatomic,retain) UIView *topView;
+@property(nonatomic,retain) UIView *bottonView;
+@property(nonatomic,retain) UILabel *pageLabel;
 
 #pragma mark 加载所有数据
 -(void)loadAllDiction:(NSArray *)allArray currtimeIdexTag:(int)indexTag;

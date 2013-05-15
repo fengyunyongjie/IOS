@@ -17,19 +17,17 @@
 #import "SCBPhotoManager.h"
 #import "DownImage.h"
 
-
-@interface PhotoViewController : UIViewController<SCBPhotoDelegate,DownloaderDelegate,UIScrollViewDelegate>
+@interface PhotoViewController : UIViewController<SCBPhotoDelegate,DownloaderDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     SCBPhotoManager *photoManager;
-    UIScrollView *scroll_View;
     NSInteger show_height;
     NSDictionary *allDictionary;
     NSInteger imageTa;
+    UITableView *table_view;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
-@property(nonatomic,retain) UIScrollView *scroll_View;
 @property(nonatomic,retain) NSDictionary *allDictionary;
-
+@property(nonatomic,retain) UITableView *table_view;
 
 @end

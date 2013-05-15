@@ -22,4 +22,8 @@
 @property(nonatomic,retain) PhohoDemo *demo;
 @property(nonatomic,assign) BOOL isShowImage;
 
+-(void)loadImage:(PhohoDemo *)demos;
+//获取图片路径
+- (NSString*)get_image_save_file_path:(NSString*)image_path;
+
 @end

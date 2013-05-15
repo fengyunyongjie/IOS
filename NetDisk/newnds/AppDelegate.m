@@ -21,16 +21,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    [MobClick startWithAppkey:@"5158f8f056240bb70c030e97"];
+    //    [MobClick startWithAppkey:@"5158f8f056240bb70c030e97"];
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
-//    UINavigationController *root=[[UINavigationController alloc] initWithRootViewController:self.myTabBarController];
-    self.window.rootViewController=self.myTabBarController;
+    //    UINavigationController *root=[[UINavigationController alloc] initWithRootViewController:self.myTabBarController];
+    //    self.window.rootViewController=self.myTabBarController;
     
-//    LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
-//    [self.window.rootViewController presentViewController:lv animated:YES completion:^(void){}];
-    
+    LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
+    //    [self.window.rootViewController presentViewController:lv animated:YES completion:^(void){}];
+    self.window.rootViewController = lv;
     [self.window makeKeyAndVisible];
     return YES;
 }

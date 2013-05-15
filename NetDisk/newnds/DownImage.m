@@ -9,6 +9,7 @@
 #import "DownImage.h"
 #import "SCBoxConfig.h"
 #import "SCBSession.h"
+#import "MF_Base64Additions.h"
 @implementation DownImage
 @synthesize delegate;
 @synthesize activeDownload;
@@ -16,6 +17,9 @@
 @synthesize imageUrl;
 @synthesize imageViewIndex;
 @synthesize fileId;
+@synthesize index;
+@synthesize showType;
+
 #pragma mark
 - (void)dealloc
 {
@@ -32,18 +36,19 @@
         NSString *path = [self get_image_save_file_path:imageUrl];
         NSLog(@"path:%@",path);
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
-        [delegate appImageDidLoad:imageViewIndex urlImage:image];
+        [delegate appImageDidLoad:imageViewIndex urlImage:image index:index];
         [image release];
     }
     else
     {
-        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?f_id=%i&f_skip=%d",SERVER_URL,FM_DOWNLOAD_URI,self.fileId,0]];
+        NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
+        fielStirng = [fielStirng base64String];
+        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@&default_pic=false",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
+        if(showType == 1)
+        {
+            s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
+        }
         NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-        NSMutableString *body=[[NSMutableString alloc] init];
-        [body appendFormat:@"f_id=%i&f_skip=%d",self.fileId,0];
-        NSMutableData *myRequestData=[NSMutableData data];
-        [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-        //[request setHTTPBody:myRequestData];
         [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
         [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
         [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
@@ -78,19 +83,40 @@
 //下载完成后将图片写入黑盒子，
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    UIImage *image = [[UIImage alloc] initWithData:self.activeDownload];
-    newDownImage=image;
-    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *documentDir = [documentPaths objectAtIndex:0];
-    NSArray *array=[imageUrl componentsSeparatedByString:@"/"];
-    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
-    [activeDownload writeToFile:path atomically:YES];
-    NSString *urlpath = [NSString stringWithFormat:@"%@",path];
-    NSLog(@"urlpath:%@",urlpath);
-    self.activeDownload = nil;
-    self.imageConnection = nil;
-    [delegate appImageDidLoad:imageViewIndex urlImage:image]; //将视图tag和地址派发给实现类
-    [image release];
+    NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.activeDownload options:NSJSONReadingMutableLeaves error:nil];
+    if([[diction objectForKey:@"code"] intValue] == 3)
+    {
+        NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
+        fielStirng = [fielStirng base64String];
+        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@&default_pic=true",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
+        NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+        [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+        [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+        [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+        [request setHTTPMethod:@"GET"];
+        
+        self.activeDownload = [NSMutableData data];
+        NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        
+        self.imageConnection = conn;
+        [conn release];
+    }
+    else
+    {
+        UIImage *image = [[UIImage alloc] initWithData:self.activeDownload];
+        newDownImage=image;
+        NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *documentDir = [documentPaths objectAtIndex:0];
+        NSArray *array=[imageUrl componentsSeparatedByString:@"/"];
+        NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+        [activeDownload writeToFile:path atomically:YES];
+        NSString *urlpath = [NSString stringWithFormat:@"%@",path];
+        NSLog(@"urlpath:%@",urlpath);
+        self.activeDownload = nil;
+        self.imageConnection = nil;
+        [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
+        [image release];
+    }
 }
 
 //这个路径下是否存在此图片

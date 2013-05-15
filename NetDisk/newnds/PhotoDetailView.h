@@ -8,13 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PhotoDetailView : UIView
+@interface PhotoDetailView : UIScrollView<UIScrollViewDelegate>
 {
     UIImageView *bgImageView;
     UIButton *clickButton;
-    UIView *topView;
-    UIButton *topButton;
-    UILabel *pagLabel;
     UILabel *addressLabel;
     UILabel *weatherLabel;
     UILabel *dayTimeLabel;
@@ -29,9 +26,6 @@
 
 @property(nonatomic,retain) UIImageView *bgImageView;
 @property(nonatomic,retain) UIButton *clickButton;
-@property(nonatomic,retain) UIView *topView;
-@property(nonatomic,retain) UIButton *topButton;
-@property(nonatomic,retain) UILabel *pagLabel;
 @property(nonatomic,retain) UILabel *addressLabel;
 @property(nonatomic,retain) UILabel *weatherLabel;
 @property(nonatomic,retain) UILabel *dayTimeLabel;
@@ -48,5 +42,7 @@
 
 #pragma mark 显示信息
 -(void)showNewview;
+
+-(void)initImageView;
 
 @end

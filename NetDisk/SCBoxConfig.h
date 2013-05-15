@@ -13,6 +13,7 @@
 #define CONNECT_TIMEOUT 30
 #define RESPONSE_TIMEOUT 10
 #define SERVER_URL @"http://7cbox.cn:8080/nds/api"
+#define SERVER_URL_NEW @"http://7cbox.cn/nds/api"
 //#define SERVER_URL @"http://192.168.1.5:8080/nds/api"	//local host
 
 #pragma mark - 用户管理
@@ -39,7 +40,8 @@
 
 //缩略图下载
 #define FM_DOWNLOAD_THUMB_URI @"/fm/download/thumb"
-
+//预览图下载
+#define FM_DOWNLOAD_Look @"/fm/download/preview"
 
 #pragma mark - 共享管理
 
