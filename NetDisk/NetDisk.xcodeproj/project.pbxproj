@@ -35,6 +35,8 @@
 		294CEEA1174467D000AF0D66 /* tab_btn_photo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 294CEE99174467CF00AF0D66 /* tab_btn_photo@2x.png */; };
 		294CEEA2174467D000AF0D66 /* tab_btn_setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 294CEE9A174467CF00AF0D66 /* tab_btn_setting@2x.png */; };
 		294CEEA3174467D000AF0D66 /* tab_btn_upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 294CEE9B174467D000AF0D66 /* tab_btn_upload@2x.png */; };
+		294CEEA7174489A300AF0D66 /* FavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 294CEEA6174489A300AF0D66 /* FavoritesViewController.m */; };
+		294CEEAA1744B11500AF0D66 /* FavoritesData.m in Sources */ = {isa = PBXBuildFile; fileRef = 294CEEA91744B11500AF0D66 /* FavoritesData.m */; };
 		2955289517178F190098F45A /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289417178F190098F45A /* SCBSession.m */; };
 		2955289B171795190098F45A /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2955289A171795190098F45A /* SCBAccountManager.m */; };
 		29639039173A3E98009C5530 /* FileItemTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29639038173A3E98009C5530 /* FileItemTableCell.m */; };
@@ -531,6 +533,10 @@
 		294CEE99174467CF00AF0D66 /* tab_btn_photo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_btn_photo@2x.png"; sourceTree = "<group>"; };
 		294CEE9A174467CF00AF0D66 /* tab_btn_setting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_btn_setting@2x.png"; sourceTree = "<group>"; };
 		294CEE9B174467D000AF0D66 /* tab_btn_upload@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_btn_upload@2x.png"; sourceTree = "<group>"; };
+		294CEEA5174489A300AF0D66 /* FavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesViewController.h; sourceTree = "<group>"; };
+		294CEEA6174489A300AF0D66 /* FavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesViewController.m; sourceTree = "<group>"; };
+		294CEEA81744B11500AF0D66 /* FavoritesData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesData.h; sourceTree = "<group>"; };
+		294CEEA91744B11500AF0D66 /* FavoritesData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesData.m; sourceTree = "<group>"; };
 		2955289317178F190098F45A /* SCBSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBSession.h; sourceTree = "<group>"; };
 		2955289417178F190098F45A /* SCBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBSession.m; sourceTree = "<group>"; };
 		29552899171795190098F45A /* SCBAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBAccountManager.h; sourceTree = "<group>"; };
@@ -1252,6 +1258,10 @@
 		29852D1E172D1808001AD87A /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
+				294CEEA5174489A300AF0D66 /* FavoritesViewController.h */,
+				294CEEA6174489A300AF0D66 /* FavoritesViewController.m */,
+				294CEEA81744B11500AF0D66 /* FavoritesData.h */,
+				294CEEA91744B11500AF0D66 /* FavoritesData.m */,
 			);
 			name = Favorites;
 			sourceTree = "<group>";
@@ -2666,6 +2676,8 @@
 				2910C30E17436B9D00195008 /* DBSqlite.m in Sources */,
 				2910C3131743752400195008 /* UserInfo.m in Sources */,
 				2910C3161743803D00195008 /* DBTimeLine.m in Sources */,
+				294CEEA7174489A300AF0D66 /* FavoritesViewController.m in Sources */,
+				294CEEAA1744B11500AF0D66 /* FavoritesData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

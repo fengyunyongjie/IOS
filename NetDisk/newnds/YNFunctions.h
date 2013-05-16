@@ -14,5 +14,6 @@
 +(NSString *)getKeepCachePath;  //收藏目录
 +(NSString *)getTempCachePath;  //临时缓存目录
 +(NSString *)getDataCachePath;  //数据缓存目录
++(NSString *)getUserFavoriteDataPath;   //收藏数据文件路径
 +(NSString *)getFileNameWithFID:(NSString *)f_id;   //根据目录ID，获取数据缓存文件名称
 @end

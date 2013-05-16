@@ -12,6 +12,7 @@
 #import "YNFunctions.h"
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
+#import "FavoritesData.h"
 
 #import "ImageBrowserViewController.h"
 
@@ -251,6 +252,20 @@
 }
 -(void)toFavorite:(id)sender
 {
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    NSString *f_id=[dic objectForKey:@"f_id"];
+    if ([[FavoritesData sharedFavoritesData].favoriteDic objectForKey:f_id]) {
+        [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
+        NSLog(@"%@",[FavoritesData sharedFavoritesData].favoriteDic);
+        NSLog(@"删除一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
+
+    }else
+    {
+        [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
+        NSLog(@"%@",[FavoritesData sharedFavoritesData].favoriteDic);
+        NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
+    }
+    [self.tableView reloadData];
     [self hideOptionCell];
 }
 -(void)toDelete:(id)sender
@@ -365,6 +380,7 @@
         
         NSString *name= [this objectForKey:@"f_name"];
         NSString *f_modify=[this objectForKey:@"f_modify"];
+        NSString *f_id=[this objectForKey:@"f_id"];
         cell.detailTextLabel.text=f_modify;
 //        if ([t_fl isEqualToString:@"directory"]) {
 //            cell.detailTextLabel.text=f_modify;
@@ -382,7 +398,21 @@
                   [t_fl isEqualToString:@"bmp"])
         {
             cell.imageView.image = [UIImage imageNamed:@"icon_pic.png"];
-            
+//            NSObject *tag=nil;
+//            tag=[[FavoritesData sharedFavoritesData] objectForKey:f_id];
+//            if (tag!=nil) {
+//                UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
+//                CGRect r=[tagView frame];
+//                r.origin.x=0;
+//                r.origin.y=20;
+//                [tagView setFrame:r];
+//                [cell.imageView addSubview:tagView];
+//            }else
+//            {
+//                if ([[cell.imageView subviews] count]>0) {
+//                    [[[cell.imageView subviews] objectAtIndex:0] removeFromSuperview];
+//                }
+//            }
         }else if ([t_fl isEqualToString:@"doc"]||
                   [t_fl isEqualToString:@"docx"])
         {

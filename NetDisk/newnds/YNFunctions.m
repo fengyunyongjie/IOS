@@ -84,6 +84,25 @@
     }
     return theFMCachePath;
 }
++(NSString *)getUserFavoriteDataPath
+{
+    NSString *theFMCachePath=nil;
+    NSArray *pathes= NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    theFMCachePath=[pathes objectAtIndex:0];
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:@"/FavoritesData/"];
+    NSString *usr_name=[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:usr_name];
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:@"/"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:theFMCachePath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:theFMCachePath
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:@"/favoritesData.plist"];
+    return theFMCachePath;
+}
 +(NSString *)getFileNameWithFID:(NSString *)f_id
 {
     return [NSString stringWithFormat:@"%@.data",f_id];

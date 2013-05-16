@@ -11,6 +11,7 @@
 #import "SettingViewController.h"
 #import "MyndsViewController.h"
 #import "PhotoViewController.h"
+#import "FavoritesViewController.h"
 
 @interface MYTabBarController ()
 
@@ -44,7 +45,7 @@
         
         viewController2=[[[UINavigationController alloc] init] autorelease];
         viewController2.title=@"Second";
-        UIViewController * rootView2=[[[UIViewController alloc] init] autorelease];
+        FavoritesViewController * rootView2=[[[FavoritesViewController alloc] init] autorelease];
         rootView2.title=@"收藏";
         [rootView2.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
         [viewController2 pushViewController:rootView2 animated:YES];
