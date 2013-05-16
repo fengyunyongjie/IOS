@@ -16,7 +16,7 @@
 
 @implementation PhotoDetailViewController
 @synthesize scroll_View;
-@synthesize bottonView,topView,pageLabel;
+@synthesize topBar,bottonBar,pageLabel;
 @synthesize deleteDelegate;
 @synthesize timeLine;
 
@@ -50,35 +50,37 @@
     
     //添加头部试图
     CGRect topRect = CGRectMake(0, 0, 320, 44);
-    topView = [[UIView alloc] initWithFrame:topRect];
-    UIImageView *bgView = [[UIImageView alloc] initWithFrame:topRect];
-    [topView addSubview:bgView];
-    [bgView release];
+    topBar = [[UINavigationBar alloc] initWithFrame:topRect];
+    [self.view addSubview:topBar];
     CGRect backRect = CGRectMake(7, 7, 70, 30);
     UIButton *backButton = [[UIButton alloc] initWithFrame:backRect];
 //    [backButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [backButton setTitle:@"返回" forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
     [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [topView addSubview:backButton];
+    [topBar addSubview:backButton];
+    [topBar setAlpha:0.7];
     [backButton release];
+    
     CGRect pageRect = CGRectMake(130, 12, 60, 20);
     pageLabel = [[UILabel alloc] initWithFrame:pageRect];
     [pageLabel setBackgroundColor:[UIColor clearColor]];
     [pageLabel setTextColor:[UIColor whiteColor]];
     [pageLabel setTextAlignment:NSTextAlignmentCenter];
-    [topView addSubview:pageLabel];
-    
-    [self.view addSubview:topView];
+    [topBar addSubview:pageLabel];
     
     //添加底部试图
     CGRect bottonRect = CGRectMake(0, allHeight-44, 320, 44);
-    bottonView = [[UIView alloc] initWithFrame:bottonRect];
+    bottonBar = [[UINavigationBar alloc] initWithFrame:bottonRect];
+    [self.view addSubview:bottonBar];
+    [bottonBar setAlpha:0.7];
+    
     CGRect bottonImageRect = CGRectMake(0, 0, 320, 44);
     UIImageView *bottonImage = [[UIImageView alloc] initWithFrame:bottonImageRect];
 //    [bottonImage setImage:[UIImage imageNamed:@"Selected.png"]];
-    [bottonView addSubview:bottonImage];
+    [bottonBar addSubview:bottonImage];
     [bottonImage release];
+    
     CGRect leftRect = CGRectMake(36, 5, 35, 33);
     UIButton *leftButton = [[UIButton alloc] initWithFrame:leftRect];
     [leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
@@ -86,7 +88,8 @@
 //    [leftButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
     [leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [bottonView addSubview:leftButton];
+    [leftButton setBackgroundColor:[UIColor clearColor]];
+    [bottonBar addSubview:leftButton];
     
     CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
     UIButton *centerButton = [[UIButton alloc] initWithFrame:centerRect];
@@ -95,7 +98,8 @@
 //    [centerButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [centerButton setTitle:@"下载" forState:UIControlStateNormal];
     [centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [bottonView addSubview:centerButton];
+    [centerButton setBackgroundColor:[UIColor clearColor]];
+    [bottonBar addSubview:centerButton];
     
     CGRect rightRect = CGRectMake(213+36, 5, 35, 33);
     UIButton *rightButton = [[UIButton alloc] initWithFrame:rightRect];
@@ -105,11 +109,11 @@
 //    [rightButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [rightButton setTitle:@"删除" forState:UIControlStateNormal];
     [rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [bottonView addSubview:rightButton];
+    [rightButton setBackgroundColor:[UIColor clearColor]];
+    [bottonBar addSubview:rightButton];
     
-    [self.topView setHidden:YES];
-    [self.bottonView setHidden:YES];
-    [self.view addSubview:bottonView];
+    [self.topBar setHidden:YES];
+    [self.bottonBar setHidden:YES];
     
     [super viewDidLoad];
 }
@@ -123,8 +127,8 @@
 -(void)dealloc
 {
     [scroll_View release];
-    [topView release];
-    [bottonView release];
+    [topBar release];
+    [bottonBar release];
     [pageLabel release];
     [timeLine release];
     [super dealloc];
@@ -194,10 +198,10 @@
 #pragma mark 滑动隐藏
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(!topView.hidden)
+    if(!topBar.hidden)
     {
-        [self.topView setHidden:YES];
-        [self.bottonView setHidden:YES];
+        [self.topBar setHidden:YES];
+        [self.bottonBar setHidden:YES];
     }
 }
 
@@ -378,6 +382,7 @@
                     bgRect.origin.y = (allHeight-bgRect.size.height)/2;
                 }
                 [detailView.bgImageView setFrame:bgRect];
+                [detailView.clickButton setFrame:bgRect];
                 [detailView initImageView];
                 [detailView setContentOffset:CGPointMake(touch.view.frame.origin.x, touch.view.frame.origin.y) animated:YES];
             }
@@ -386,16 +391,16 @@
     else if(touch.tapCount ==1)
     {
         //单击头部和底部出现
-        if(topView.hidden)
+        if(topBar.hidden)
         {
             [self.pageLabel setText:[NSString stringWithFormat:@"%i/%i",button.tag%20000+1,[allPhotoDemoArray count]]];
-            [self.topView setHidden:NO];
-            [self.bottonView setHidden:NO];
+            [self.topBar setHidden:NO];
+            [self.bottonBar setHidden:NO];
         }
         else
         {
-            [self.topView setHidden:YES];
-            [self.bottonView setHidden:YES];
+            [self.topBar setHidden:YES];
+            [self.bottonBar setHidden:YES];
         }
     }
 }
@@ -409,14 +414,26 @@
 #pragma mark 删除按钮
 -(void)deleteClicked:(id)sender
 {
-    int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
-    deletePage = page;
-    PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:page];
-    SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
-    [photoManager setPhotoDelegate:self];
-    NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
-    [photoManager requestDeletePhoto:array];
     
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    [alertView show];
+    [alertView release];
+}
+
+#pragma mark UIAalertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+        int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+        deletePage = page;
+        PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:page];
+        SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
+        [photoManager setPhotoDelegate:self];
+        NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
+        [photoManager requestDeletePhoto:array];
+
+    }
 }
 
 -(void)requstDelete:(NSDictionary *)dictioinary

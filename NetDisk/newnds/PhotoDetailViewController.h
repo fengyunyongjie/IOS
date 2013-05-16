@@ -14,7 +14,7 @@
 @protocol DeleteDelegate  //删除后，改变主窗口数据源
 - (void)deleteForDeleteArray:(NSInteger)page timeLine:(NSString *)timeLineString;
 @end
-@interface PhotoDetailViewController : UIViewController<DownloaderDelegate,UIScrollViewDelegate,SCBPhotoDelegate>
+@interface PhotoDetailViewController : UIViewController<DownloaderDelegate,UIScrollViewDelegate,SCBPhotoDelegate,UIAlertViewDelegate>
 {
     UIScrollView *scroll_View;
     float allHeight;
@@ -23,22 +23,23 @@
     NSInteger currPageNumber;
     PhotoDetailView *OntimeView;
     
-    UIView *topView;
-    UIView *bottonView;
-    UILabel *pageLabel;
     
     int deletePage;
     
     id<DeleteDelegate> deleteDelegate;
     NSString *timeLine;
+    
+    UILabel *pageLabel;
+    UINavigationBar *topBar;
+    UINavigationBar *bottonBar;
 }
 
 @property(nonatomic,retain) UIScrollView *scroll_View;
-@property(nonatomic,retain) UIView *topView;
-@property(nonatomic,retain) UIView *bottonView;
 @property(nonatomic,retain) UILabel *pageLabel;
 @property(nonatomic,retain) id<DeleteDelegate> deleteDelegate;
 @property(nonatomic,retain) NSString *timeLine;
+@property(nonatomic,retain) UINavigationBar *topBar;
+@property(nonatomic,retain) UINavigationBar *bottonBar;
 
 #pragma mark 加载所有数据
 -(void)loadAllDiction:(NSArray *)allArray currtimeIdexTag:(int)indexTag;

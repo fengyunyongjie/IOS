@@ -425,7 +425,6 @@
     NSArray *allKeys = [allDictionary objectForKey:@"timeLine"];
     NSString *timeLine = [allKeys objectAtIndex:section];
     NSArray *array = [allDictionary objectForKey:timeLine];
-    NSLog(@"-----------------------------\n\n------------------array;%i",[array count]);
     NSString *cellString = [NSString stringWithFormat:@"cellLoad:%i %i",section,row];
     PhotoCell *photoCell = [table_view dequeueReusableCellWithIdentifier:cellString];
     if(!photoCell)
@@ -450,7 +449,7 @@
         }
         else
         {
-            imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+            imageDemo = [UIImage imageNamed:@"icon_Load.png"];
             [photoCell.imageViewButton1 setBackgroundImage:imageDemo forState:UIControlStateNormal];
         }
         
@@ -468,7 +467,7 @@
         }
         else
         {
-            imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+            imageDemo = [UIImage imageNamed:@"icon_Load.png"];
             [photoCell.imageViewButton2 setBackgroundImage:imageDemo forState:UIControlStateNormal];
         }
         
@@ -485,7 +484,7 @@
         }
         else
         {
-            imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+            imageDemo = [UIImage imageNamed:@"icon_Load.png"];
             [photoCell.imageViewButton3 setBackgroundImage:imageDemo forState:UIControlStateNormal];
         }
         
@@ -502,7 +501,7 @@
         }
         else
         {
-            imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+            imageDemo = [UIImage imageNamed:@"icon_Load.png"];
             [photoCell.imageViewButton4 setBackgroundImage:imageDemo forState:UIControlStateNormal];
         }
     }
@@ -526,7 +525,7 @@
             }
             else
             {
-                imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+                imageDemo = [UIImage imageNamed:@"icon_Load.png"];
                 [photoCell.imageViewButton1 setBackgroundImage:imageDemo forState:UIControlStateNormal];
             }
             
@@ -550,7 +549,7 @@
             }
             else
             {
-                imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+                imageDemo = [UIImage imageNamed:@"icon_Load.png"];
                 [photoCell.imageViewButton1 setBackgroundImage:imageDemo forState:UIControlStateNormal];
             }
             
@@ -567,7 +566,7 @@
             }
             else
             {
-                imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+                imageDemo = [UIImage imageNamed:@"icon_Load.png"];
                 [photoCell.imageViewButton2 setBackgroundImage:imageDemo forState:UIControlStateNormal];
             }
             
@@ -590,7 +589,7 @@
             }
             else
             {
-                imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+                imageDemo = [UIImage imageNamed:@"icon_Load.png"];
                 [photoCell.imageViewButton1 setBackgroundImage:imageDemo forState:UIControlStateNormal];
             }
             
@@ -607,7 +606,7 @@
             }
             else
             {
-                imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+                imageDemo = [UIImage imageNamed:@"icon_Load.png"];
                 [photoCell.imageViewButton2 setBackgroundImage:imageDemo forState:UIControlStateNormal];
             }
             
@@ -624,7 +623,7 @@
             }
             else
             {
-                imageDemo = [UIImage imageNamed:@"icon_unkown.png"];
+                imageDemo = [UIImage imageNamed:@"icon_Load.png"];
                 [photoCell.imageViewButton3 setBackgroundImage:imageDemo forState:UIControlStateNormal];
             }
             
