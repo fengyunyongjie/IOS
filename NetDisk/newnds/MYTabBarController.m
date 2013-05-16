@@ -34,11 +34,12 @@
         viewController1=[[[UINavigationController alloc] init] autorelease];
         MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
         rootView1.f_id=@"1";
+        rootView1.myndsType=kMyndsTypeDefault;
         rootView1.title=@"我的空间";
         [rootView1.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
         [viewController1 pushViewController:rootView1 animated:YES];
-        //[viewController1.navigationBar setBarStyle:UIBarStyleBlackOpaque];
-        [viewController1.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
+        [viewController1.navigationBar setBarStyle:UIBarStyleBlack];
+        //[viewController1.navigationBar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_bg.png"]] atIndex:1];
         
         
         viewController2=[[[UINavigationController alloc] init] autorelease];
@@ -93,6 +94,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.tabBar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_bg.png"]] atIndex:1];
 	// Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -100,9 +102,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-//    [self presendLoginViewController];
-//    self.selectedIndex=1;
-//    self.selectedIndex=0;
+    [self presendLoginViewController];
+    self.selectedIndex=1;
+    self.selectedIndex=0;
 }
 - (void)didReceiveMemoryWarning
 {

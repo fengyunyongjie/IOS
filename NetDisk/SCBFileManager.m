@@ -39,6 +39,47 @@
     
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
+-(void)renameWithID:(NSString *)f_id newName:(NSString *)f_name
+{
+    self.fm_type=kFMTypeRename;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_RENAME_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_id=%@&f_name=%@",f_id,f_name];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+-(void)moveFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid
+{
+    self.fm_type=kFMTypeMove;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MOVE_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *fids=[f_ids componentsJoinedByString:@","];
+    [body appendFormat:@"f_pid=%@&f_ids[]=%@",f_pid,fids];
+    NSLog(@"move: %@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
 -(void)removeFileWithIDs:(NSArray*)f_ids
 {
     self.fm_type=kFMTypeRemove;
@@ -46,12 +87,9 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_RM_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    NSString *sssss=@"";
-    for (NSString *s in f_ids) {
-        sssss=[sssss stringByAppendingString:s];
-    }
-    [body appendFormat:@"f_ids[]=%@",sssss];
-    NSLog(@"%@",body);
+    NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
+    [body appendFormat:@"f_ids[]=%@",fids];
+    NSLog(@"\"remove: %@\"",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
@@ -121,7 +159,13 @@
                 case kFMTypeRemove:
                     [self.delegate removeSucess];
                     break;
-                    
+                case kFMTypeRename:
+                    [self.delegate renameSucess];
+                    break;
+                case kFMTypeMove:
+                    [self.delegate moveSucess];
+                    NSLog(@"移动成功");
+                    break;
             }
         }
     }else

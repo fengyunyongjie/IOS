@@ -34,6 +34,10 @@
 #define FM_URI @"/fm"
 //移除/fm/rm
 #define FM_RM_URI @"/fm/rm"
+//重命名/fm/rename
+#define FM_RENAME_URI @"/fm/rename"
+//移动文件＝＝剪切粘贴 /fm/cutpaste
+#define FM_MOVE_URI @"/fm/cutpaste"
 //文件下载
 #define FM_DOWNLOAD_URI @"/fm/download"
 #define FM_DOWNLOAD_NEW_URI @"/fm/download/new"
