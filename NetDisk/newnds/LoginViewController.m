@@ -66,8 +66,6 @@
     
     [[SCBAccountManager sharedManager] setDelegate:self];
     [[SCBAccountManager sharedManager] UserLoginWithName:self.userNameTextField.text Password:self.passwordTextField.text];
-//    self.av=[[[UIAlertView alloc] initWithTitle:@"  \n" message:@"正在登录..." delegate:self cancelButtonTitle:@"取消" otherButtonTitles: nil] autorelease];
-//    [self.av show];
     self.hud.labelText=@"正在登录...";
     self.hud.mode=MBProgressHUDModeIndeterminate;
     [self.hud show:YES];
