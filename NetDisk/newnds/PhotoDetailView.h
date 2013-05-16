@@ -22,6 +22,7 @@
     UIButton *leftButton;
     UIButton *centerButton;
     UIButton *rightButton;
+    UIActivityIndicatorView *activity_indicator;
 }
 
 @property(nonatomic,retain) UIImageView *bgImageView;
@@ -36,6 +37,7 @@
 @property(nonatomic,retain) UIButton *leftButton;
 @property(nonatomic,retain) UIButton *centerButton;
 @property(nonatomic,retain) UIButton *rightButton;
+@property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
 
 #pragma mark 隐藏信息
 -(void)hiddenNewview;

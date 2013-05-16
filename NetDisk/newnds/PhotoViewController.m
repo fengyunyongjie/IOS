@@ -313,7 +313,7 @@
     for(int i=0;i<[array count];i++)
     {
         PhotoCell *cell = (PhotoCell *)[array objectAtIndex:i];
-        if(cell.imageViewButton1)
+        if(!cell.imageViewButton1.isShowImage)
         {
             PhohoDemo *demo = cell.imageViewButton1.demo;
             DownImage *downImage = [[DownImage alloc] init];
@@ -325,7 +325,7 @@
             [downImage startDownload];
             [downImage release];
         }
-        if(cell.imageViewButton2)
+        if(!cell.imageViewButton1.isShowImage)
         {
             PhohoDemo *demo = cell.imageViewButton2.demo;
             DownImage *downImage = [[DownImage alloc] init];
@@ -337,7 +337,7 @@
             [downImage startDownload];
             [downImage release];
         }
-        if(cell.imageViewButton3)
+        if(!cell.imageViewButton1.isShowImage)
         {
             PhohoDemo *demo = cell.imageViewButton3.demo;
             DownImage *downImage = [[DownImage alloc] init];
@@ -349,7 +349,7 @@
             [downImage startDownload];
             [downImage release];
         }
-        if(cell.imageViewButton4)
+        if(!cell.imageViewButton1.isShowImage)
         {
             PhohoDemo *demo = cell.imageViewButton4.demo;
             DownImage *downImage = [[DownImage alloc] init];
@@ -452,7 +452,6 @@
             imageDemo = [UIImage imageNamed:@"icon_Load.png"];
             [photoCell.imageViewButton1 setBackgroundImage:imageDemo forState:UIControlStateNormal];
         }
-        
         
         demo = (PhohoDemo *)[array objectAtIndex:row*4+1];
         [photoCell.imageViewButton2 setDemo:demo];

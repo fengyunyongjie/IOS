@@ -54,7 +54,7 @@
     [self.view addSubview:topBar];
     CGRect backRect = CGRectMake(7, 7, 70, 30);
     UIButton *backButton = [[UIButton alloc] initWithFrame:backRect];
-//    [backButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+    //    [backButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [backButton setTitle:@"返回" forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
     [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -77,7 +77,7 @@
     
     CGRect bottonImageRect = CGRectMake(0, 0, 320, 44);
     UIImageView *bottonImage = [[UIImageView alloc] initWithFrame:bottonImageRect];
-//    [bottonImage setImage:[UIImage imageNamed:@"Selected.png"]];
+    //    [bottonImage setImage:[UIImage imageNamed:@"Selected.png"]];
     [bottonBar addSubview:bottonImage];
     [bottonImage release];
     
@@ -85,7 +85,7 @@
     UIButton *leftButton = [[UIButton alloc] initWithFrame:leftRect];
     [leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [leftButton.titleLabel setTextColor:[UIColor blackColor]];
-//    [leftButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+    //    [leftButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
     [leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [leftButton setBackgroundColor:[UIColor clearColor]];
@@ -95,7 +95,7 @@
     UIButton *centerButton = [[UIButton alloc] initWithFrame:centerRect];
     [centerButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [centerButton.titleLabel setTextColor:[UIColor blackColor]];
-//    [centerButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+    //    [centerButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [centerButton setTitle:@"下载" forState:UIControlStateNormal];
     [centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [centerButton setBackgroundColor:[UIColor clearColor]];
@@ -106,7 +106,7 @@
     [rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [rightButton.titleLabel setTextColor:[UIColor blackColor]];
     [rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
-//    [rightButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+    //    [rightButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [rightButton setTitle:@"删除" forState:UIControlStateNormal];
     [rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [rightButton setBackgroundColor:[UIColor clearColor]];
@@ -269,6 +269,7 @@
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:image index:(int)index
 {
     PhotoDetailView *detailView = (PhotoDetailView *)[scroll_View viewWithTag:30000+(indexTag-10000)];
+    [detailView.activity_indicator stopAnimating];
     if(detailView)
     {
         CGRect detailRect = detailView.frame;
@@ -432,7 +433,7 @@
         [photoManager setPhotoDelegate:self];
         NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
         [photoManager requestDeletePhoto:array];
-
+        
     }
 }
 
@@ -440,6 +441,16 @@
 {
     if([[dictioinary objectForKey:@"code"] intValue] == 0)
     {
+        [scroll_View removeFromSuperview];
+        [scroll_View release];
+        //创建滚动条
+        CGRect scrollRect = CGRectMake(0, 0, 320, allHeight);
+        scroll_View = [[UIScrollView alloc] initWithFrame:scrollRect];
+        [scroll_View setPagingEnabled:YES];
+        [scroll_View setScrollEnabled:YES];
+        [self.view addSubview:scroll_View];
+        [self.view bringSubviewToFront:self.topBar];
+        [self.view bringSubviewToFront:self.bottonBar];
         [allPhotoDemoArray removeObjectAtIndex:deletePage];
         if(deletePage==0)
         {

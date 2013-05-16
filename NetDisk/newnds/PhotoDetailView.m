@@ -11,6 +11,7 @@
 
 @implementation PhotoDetailView
 @synthesize bgImageView,leftButton,bottonView,addressLabel,centerButton,clientLabel,dateTimeLabel,dayTimeLabel,lineImageView,rightButton,weatherLabel,clickButton;
+@synthesize activity_indicator;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -83,7 +84,11 @@
         [rightButton.titleLabel setTextColor:[UIColor blackColor]];
         [rightButton setBackgroundImage:[UIImage imageNamed:@"u14_normal.png"] forState:UIControlStateNormal];
         [self addSubview:rightButton];
-        
+        CGRect activityRect = CGRectMake((320-20)/2, (self.frame.size.height-20)/2, 20, 20);
+        activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
+        [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+        [activity_indicator startAnimating];
+        [self addSubview:activity_indicator];
         [self hiddenNewview];
         
     }
@@ -110,14 +115,14 @@
 {
     [leftButton setHidden:NO];
     [bottonView setHidden:NO];
-//    [addressLabel setHidden:NO];
+    //    [addressLabel setHidden:NO];
     [centerButton setHidden:NO];
-//    [clientLabel setHidden:NO];
-//    [dateTimeLabel setHidden:NO];
-//    [dayTimeLabel setHidden:NO];
-//    [lineImageView setHidden:NO];
+    //    [clientLabel setHidden:NO];
+    //    [dateTimeLabel setHidden:NO];
+    //    [dayTimeLabel setHidden:NO];
+    //    [lineImageView setHidden:NO];
     [rightButton setHidden:NO];
-//    [weatherLabel setHidden:NO];
+    //    [weatherLabel setHidden:NO];
 }
 
 - (void)initImageView
@@ -139,6 +144,7 @@
     [leftButton release];
     [centerButton release];
     [rightButton release];
+    [activity_indicator release];
     [super dealloc];
 }
 
