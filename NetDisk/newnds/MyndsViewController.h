@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    kMyndsTypeDefault,
+    kMyndsTypeSelect,
+} MyndsType;
+
 @interface MyndsViewController : UITableViewController
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSString *f_id;
+@property (assign,nonatomic) MyndsType myndsType;
+@property (assign,nonatomic) MyndsViewController *delegate;
 -(void)loadData;
 @end
 

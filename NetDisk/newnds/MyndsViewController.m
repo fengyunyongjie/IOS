@@ -33,6 +33,7 @@
 @property (strong,nonatomic) NSIndexPath *selectedIndexPath;
 @property (strong,nonatomic) UITableViewCell *optionCell;
 @property (strong,nonatomic) UIBarButtonItem *editBtn;
+@property (strong,nonatomic) UIBarButtonItem *deleteBtn;
 @property (assign,nonatomic) BOOL isEditing;
 @property (strong,nonatomic) NSMutableArray *m_fileItems;
 @property(strong,nonatomic) MBProgressHUD *hud;
@@ -57,15 +58,6 @@
     self.optionCell=[[[UITableViewCell alloc] init] autorelease];
     [self.optionCell addSubview:[[[UIToolbar alloc] init] autorelease]];
     self.selectedIndexPath=nil;
-    self.editBtn=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStyleDone target:self action:@selector(editAction:)];
-    [self.navigationItem setRightBarButtonItem:self.editBtn];
-    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bar.png"] forBarMetrics:UIBarMetricsDefault];
-    self.isEditing=NO;
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 -(void)viewWillLayoutSubviews
 {
@@ -76,10 +68,51 @@
 }
 - (void)viewDidAppear:(BOOL)animated
 {
+    if (self.myndsType==kMyndsTypeDefault) {
+        self.editBtn=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
+        self.deleteBtn=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteAction:)];
+        [self.deleteBtn setEnabled:NO];
+        [self.navigationItem setRightBarButtonItems:@[self.editBtn,self.deleteBtn]];
+        self.isEditing=NO;
+    }else if (self.myndsType==kMyndsTypeSelect)
+    {
+        UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(moveFileToHere:)];
+        UIBarButtonItem *cancel_btn=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(moveCancel:)];
+        [self.navigationItem setRightBarButtonItems:@[ok_btn,cancel_btn]];
+        [ok_btn release];
+        [cancel_btn release];
+    }
+    
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
     [self.fm cancelAllTask];
+}
+- (void)moveFileToHere:(id)sender
+{
+    [self.delegate moveFileToID:self.f_id];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)moveCancel:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)deleteAction:(id)sender
+{
+    NSMutableArray *f_ids=[NSMutableArray array];
+    for (int i=0;i<self.m_fileItems.count;i++) {
+        FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+        if (fileItem.checked) {
+            NSDictionary *dic=[self.listArray objectAtIndex:i];
+            NSString *f_id=[dic objectForKey:@"f_id"];
+            [f_ids addObject:f_id];
+        }
+    }
+    if (f_ids.count>0) {
+        SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
+        fm_temp.delegate=self;
+        [fm_temp removeFileWithIDs:f_ids];
+    }
 }
 - (void)editAction:(id)sender
 {
@@ -88,9 +121,11 @@
     UIBarButtonItem *button = (UIBarButtonItem *)sender;
     if (self.isEditing) {
         [button setTitle:@"完成"];
+        [self.deleteBtn setEnabled:YES];
     }else
     {
         [button setTitle:@"编辑"];
+        [self.deleteBtn setEnabled:NO];
     }
 //   if (!button.selected) {
 //        NDAppDelegate *appDelegate =  (NDAppDelegate *)[UIApplication sharedApplication].delegate;
@@ -207,7 +242,12 @@
 }
 -(void)toRename:(id)sender
 {
-    [self hideOptionCell];
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    NSString *name=[dic objectForKey:@"f_name"];
+    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"重命名" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [[alert textFieldAtIndex:0] setText:name];
+    [alert show];
 }
 -(void)toFavorite:(id)sender
 {
@@ -223,9 +263,27 @@
     [fm_temp removeFileWithIDs:@[f_id]];
     [self hideOptionCell];
 }
+-(void)moveFileToID:(NSString *)f_id
+{
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    NSString *m_fid=[dic objectForKey:@"f_id"];
+    SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
+    fm_temp.delegate=self;
+    if ([f_id intValue]!=[m_fid intValue]) {
+        [fm_temp moveFileIDs:@[m_fid] toPID:f_id];
+    }
+    [self hideOptionCell];
+}
 -(void)toShared:(id)sender
 {
-    [self hideOptionCell];
+    
+    MyndsViewController *moveViewController=[[[MyndsViewController alloc] init] autorelease];
+    moveViewController.f_id=@"1";
+    moveViewController.myndsType=kMyndsTypeSelect;
+    moveViewController.title=@"我的空间";
+    moveViewController.delegate=self;
+    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:moveViewController];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 -(void)hideOptionCell
 {
@@ -247,14 +305,20 @@
         }
         //cell.textLabel.text=@"收藏   分享   删除";
         UIToolbar *toolbar=[[[UIToolbar alloc] initWithFrame:cell.bounds] autorelease];
+        //[toolbar setBackgroundImage:[UIImage imageNamed:@"option_bar.png"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsDefault];
+        [toolbar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"option_bar.png"]] atIndex:1];
         //UIBarButtonItem *item0=[[UIBarButtonItem alloc] initWithTitle:@"重命名" style:UIBarButtonItemStyleDone target:self action:@selector(toRename:)];
         UIBarButtonItem *item0=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_edit.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toRename:)];
+        [item0 setTitle:@"重命名"];
         //UIBarButtonItem *item1=[[UIBarButtonItem alloc] initWithTitle:@"收藏" style:UIBarButtonItemStyleDone target:self action:@selector(toFavorite:)];
-        UIBarButtonItem *item1=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_favorite.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toFavorite:)];
+        UIBarButtonItem *item1=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toFavorite:)];
+        [item1 setTitle:@"收藏"];
         //UIBarButtonItem *item2=[[UIBarButtonItem alloc] initWithTitle:@"移动" style:UIBarButtonItemStyleDone target:self action:@selector(toShared:)];
         UIBarButtonItem *item2=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_move.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toShared:)];
+        [item2 setTitle:@"移动"];
         //UIBarButtonItem *item3=[[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStyleDone target:self action:@selector(toDelete:)];
         UIBarButtonItem *item3=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_remove.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toDelete:)];
+        [item3 setTitle:@"删除"];
         UIBarButtonItem *flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         NSDictionary *this=(NSDictionary *)[self.listArray objectAtIndex:indexPath.row-1];
         NSString *t_fl = [[this objectForKey:@"f_mime"] lowercaseString];
@@ -275,7 +339,7 @@
     if (cell == nil) {
         cell = [[[FileItemTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                        reuseIdentifier:CellIdentifier] autorelease];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     int row=indexPath.row;
     if (self.selectedIndexPath && self.selectedIndexPath.row<indexPath.row) {
@@ -287,7 +351,15 @@
         NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
         NSDictionary *this=(NSDictionary *)[a objectAtIndex:row];
         NSString *t_fl = [[this objectForKey:@"f_mime"] lowercaseString];
-        cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
+        if (self.myndsType==kMyndsTypeDefault) {
+            cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
+        }else
+        {
+            cell.accessoryType=UITableViewCellAccessoryNone;
+        }
+        
+//        UIButton *btn=(UIButton *)cell.accessoryView;
+//        [btn setBackgroundImage:[UIImage imageNamed:@"accessory.png"] forState:UIControlStateNormal];
         FileItem* fileItem = [self.m_fileItems objectAtIndex:row];
         [cell setChecked:fileItem.checked];
         
@@ -303,7 +375,7 @@
 //        }
         text=name;
         if ([t_fl isEqualToString:@"directory"]) {
-            cell.imageView.image = [UIImage imageNamed:@"icon_Folder.png"];  
+            cell.imageView.image = [UIImage imageNamed:@"icon_Folder.png"];
         }else if ([t_fl isEqualToString:@"png"]||
                   [t_fl isEqualToString:@"jpg"]||
                   [t_fl isEqualToString:@"jpeg"]||
@@ -432,10 +504,17 @@
     if ([f_mime isEqualToString:@"directory"]) {
         MyndsViewController *viewController =[[[MyndsViewController alloc] init] autorelease];
         viewController.f_id=f_id;
+        viewController.myndsType=self.myndsType;
+        if (self.myndsType==kMyndsTypeSelect){
+            viewController.delegate=self.delegate;
+        }
         [self.navigationController pushViewController:viewController animated:YES];
         viewController.title=f_name;
     }else
     {
+        if (self.myndsType!=kMyndsTypeDefault) {
+            return;
+        }
         ImageBrowserViewController *browser=[[[ImageBrowserViewController alloc] init] autorelease];
         browser.listArray=self.listArray;
         browser.index=indexPath.row;
@@ -503,5 +582,38 @@
     self.hud.margin=10.f;
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:0.5f];
+}
+-(void)renameSucess
+{
+    [self updateFileList];
+}
+-(void)renameUnsucess
+{
+    NSLog(@"openFinderUnsucess: 网络连接失败!!");
+}
+-(void)moveSucess
+{
+    [self updateFileList];
+}
+#pragma mark - UIAlertViewDelegate Methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+        NSString *name=[dic objectForKey:@"f_name"];
+        NSString *f_id=[dic objectForKey:@"f_id"];
+        NSString *fildtext=[[alertView textFieldAtIndex:0] text];
+        if (![fildtext isEqualToString:name]) {
+            NSLog(@"重命名");
+            SCBFileManager *fm=[[[SCBFileManager alloc] init] autorelease];
+            [fm renameWithID:f_id newName:fildtext];
+            [fm setDelegate:self];
+        }
+        NSLog(@"点击确定");
+    }else
+    {
+        NSLog(@"点击其它");
+    }
+    [self hideOptionCell];
 }
 @end
