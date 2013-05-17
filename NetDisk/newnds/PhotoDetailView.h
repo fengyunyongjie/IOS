@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
+@protocol BackDelegate
+- (void)backImageView:(id)detailView;
+@end
 @interface PhotoDetailView : UIScrollView<UIScrollViewDelegate>
 {
     UIImageView *bgImageView;
@@ -23,6 +27,7 @@
     UIButton *centerButton;
     UIButton *rightButton;
     UIActivityIndicatorView *activity_indicator;
+    id<BackDelegate> back_Delegate;
 }
 
 @property(nonatomic,retain) UIImageView *bgImageView;
@@ -38,6 +43,7 @@
 @property(nonatomic,retain) UIButton *centerButton;
 @property(nonatomic,retain) UIButton *rightButton;
 @property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
+@property(nonatomic,retain) id<BackDelegate> back_Delegate;
 
 #pragma mark 隐藏信息
 -(void)hiddenNewview;
@@ -48,3 +54,4 @@
 -(void)initImageView;
 
 @end
+

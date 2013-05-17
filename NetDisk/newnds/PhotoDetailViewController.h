@@ -14,7 +14,7 @@
 @protocol DeleteDelegate  //删除后，改变主窗口数据源
 - (void)deleteForDeleteArray:(NSInteger)page timeLine:(NSString *)timeLineString;
 @end
-@interface PhotoDetailViewController : UIViewController<DownloaderDelegate,UIScrollViewDelegate,SCBPhotoDelegate,UIAlertViewDelegate>
+@interface PhotoDetailViewController : UIViewController<DownloaderDelegate,UIScrollViewDelegate,SCBPhotoDelegate,UIAlertViewDelegate,BackDelegate>
 {
     UIScrollView *scroll_View;
     float allHeight;

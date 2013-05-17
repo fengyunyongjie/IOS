@@ -41,6 +41,7 @@
 }
 
 @property(nonatomic,retain) id<SCBPhotoDelegate> photoDelegate;
+@property(nonatomic,retain) NSMutableData *matableData;
 
 //获取时间分组/photo/timeline
 -(void)getPhotoTimeLine;

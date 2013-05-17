@@ -83,6 +83,8 @@
 -(void)setLogin
 {
     self.window.rootViewController=self.myTabBarController;
+    self.myTabBarController.selectedIndex = 2;
+    self.myTabBarController.selectedIndex = 1;
     self.myTabBarController.selectedIndex = 0;
 }
 - (void)applicationWillResignActive:(UIApplication *)application

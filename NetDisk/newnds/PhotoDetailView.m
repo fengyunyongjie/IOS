@@ -11,7 +11,7 @@
 
 @implementation PhotoDetailView
 @synthesize bgImageView,leftButton,bottonView,addressLabel,centerButton,clientLabel,dateTimeLabel,dayTimeLabel,lineImageView,rightButton,weatherLabel,clickButton;
-@synthesize activity_indicator;
+@synthesize activity_indicator,back_Delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -89,6 +89,9 @@
         [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
         [activity_indicator startAnimating];
         [self addSubview:activity_indicator];
+        self.minimumZoomScale = 0.5;
+        self.maximumZoomScale = 5.0;
+        self.delegate = self;
         [self hiddenNewview];
         
     }
@@ -127,7 +130,65 @@
 
 - (void)initImageView
 {
-    [self setContentSize:CGSizeMake(bgImageView.frame.size.width, bgImageView.frame.size.height)];
+    CGFloat zs = self.zoomScale;
+    if(zs == 1.0)
+    {
+        zs = 2.0;
+    }
+    else
+    {
+        zs = 1.0;
+    }
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    self.zoomScale = zs;
+    [UIView commitAnimations];
+    CGRect clickRect =  self.clickButton.frame;
+    clickRect.size.width = self.contentSize.width;
+    clickRect.size.height = self.contentSize.height;
+    [self.clickButton setFrame:clickRect];
+}
+
+- (void)zoomToPointInRootView:(CGPoint)center atScale:(float)scale {
+    CGRect zoomRect;
+    zoomRect.size.height = self.frame.size.height / scale;
+    zoomRect.size.width  = self.frame.size.width  / scale;
+    zoomRect.origin.x    = center.x - (zoomRect.size.width  / 2.0);
+    zoomRect.origin.y    = center.y - (zoomRect.size.height / 2.0);
+    [self zoomToRect:zoomRect animated:YES];
+}
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+
+{
+    return self.bgImageView; //返回ScrollView上添加的需要缩放的视图
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+
+{
+    //缩放操作中被调用
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale
+
+{
+    //缩放结束后被调用
+    CGFloat zs = scrollView.zoomScale;
+    if(zs<1.0)
+    {
+        zs = 1.0;
+    }
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    scrollView.zoomScale = zs;
+    [UIView commitAnimations];
+    CGRect clickRect =  self.clickButton.frame;
+    clickRect.size.width = self.contentSize.width;
+    clickRect.size.height = self.contentSize.height;
+    [self.clickButton setFrame:clickRect];
+    
 }
 
 -(void)dealloc

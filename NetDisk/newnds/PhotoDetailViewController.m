@@ -181,7 +181,6 @@
     [detailView.dateTimeLabel setText:demo.f_create];
     //拍摄设备
     [detailView.clientLabel setText:@"iPhone5"];
-    
     detailView.rightButton.tag = 40000+pageIndex;
     [detailView.rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
     [detailView hiddenNewview];
@@ -214,9 +213,9 @@
             PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.compressaddr];
+            [downImage setImageUrl:demo.f_mime];
             [downImage setImageViewIndex:imageTag+i];
-            [downImage setShowType:1];
+//            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
         }
@@ -228,9 +227,9 @@
             PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.compressaddr];
+            [downImage setImageUrl:demo.f_mime];
             [downImage setImageViewIndex:imageTag+i];
-            [downImage setShowType:1];
+//            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
         }
@@ -242,9 +241,9 @@
             PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.compressaddr];
+            [downImage setImageUrl:demo.f_mime];
             [downImage setImageViewIndex:imageTag+i];
-            [downImage setShowType:1];
+//            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
         }
@@ -256,9 +255,9 @@
             PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.compressaddr];
+            [downImage setImageUrl:demo.f_mime];
             [downImage setImageViewIndex:imageTag+i];
-            [downImage setShowType:1];
+//            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
         }
@@ -361,33 +360,7 @@
     if (touch.tapCount == 2)
     {
         //双击放大
-        [UIView animateWithDuration:0.5 animations:^{
-            CGRect bgRect = detailView.bgImageView.frame;
-            if(bgRect.size.width>500)
-            {
-                [self appImageDidLoad:detailView.bgImageView.tag urlImage:detailView.bgImageView.image index:0];
-            }
-            else
-            {
-                [detailView hiddenNewview];
-                bgRect.origin.x = 0;
-                bgRect.origin.y = 0;
-                bgRect.size.width = bgRect.size.width*2;
-                if(bgRect.size.width<320)
-                {
-                    bgRect.origin.x = (320-bgRect.size.width)/2;
-                }
-                bgRect.size.height = bgRect.size.height*2;
-                if(bgRect.size.height<allHeight)
-                {
-                    bgRect.origin.y = (allHeight-bgRect.size.height)/2;
-                }
-                [detailView.bgImageView setFrame:bgRect];
-                [detailView.clickButton setFrame:bgRect];
-                [detailView initImageView];
-                [detailView setContentOffset:CGPointMake(touch.view.frame.origin.x, touch.view.frame.origin.y) animated:YES];
-            }
-        } completion:^(BOOL bl){}];
+        [detailView initImageView];
     }
     else if(touch.tapCount ==1)
     {

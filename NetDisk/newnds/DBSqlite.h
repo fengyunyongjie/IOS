@@ -1,7 +1,7 @@
 //
 //  DBSqlite.h
 //  NetDisk
-//
+//  数据库管理基类
 //  Created by Yangsl on 13-5-15.
 //
 //

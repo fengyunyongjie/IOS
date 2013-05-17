@@ -29,8 +29,6 @@
     NSString *user_id; //用户id
     NSString *key_string; //时间轴的key
     NSString *oderByString; //排序字符串
-    //数据库管理
-    NSString *sqlite_path;
 }
 @property(nonatomic,retain) NSString *f_mime;
 @property(nonatomic,assign) NSInteger f_size;
@@ -49,6 +47,5 @@
 @property(nonatomic,retain) NSString *user_id;
 @property(nonatomic,retain) NSString *key_string;
 @property(nonatomic,retain) NSString *oderByString;
-@property(nonatomic,retain) NSString *sqlite_path;
 
 @end

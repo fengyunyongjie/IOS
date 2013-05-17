@@ -1144,6 +1144,10 @@
 		2910C30B17436B7C00195008 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
+				2910C3141743803C00195008 /* DBTimeLine.h */,
+				2910C3151743803C00195008 /* DBTimeLine.m */,
+				2910C3111743752400195008 /* UserInfo.h */,
+				2910C3121743752400195008 /* UserInfo.m */,
 				2910C30C17436B9D00195008 /* DBSqlite.h */,
 				2910C30D17436B9D00195008 /* DBSqlite.m */,
 			);
@@ -1180,8 +1184,6 @@
 				292FF98A173A4C54004CC609 /* RegistViewController.h */,
 				292FF98B173A4C54004CC609 /* RegistViewController.m */,
 				292FF98C173A4C55004CC609 /* RegistViewController.xib */,
-				2910C3111743752400195008 /* UserInfo.h */,
-				2910C3121743752400195008 /* UserInfo.m */,
 			);
 			name = "Login&Regist";
 			sourceTree = "<group>";
@@ -1233,8 +1235,6 @@
 				29CFD62417375630001B6721 /* PhotoDetailViewController.m */,
 				299C9EC41737A9A300D5B3E0 /* PhotoDetailView.h */,
 				299C9EC51737A9A300D5B3E0 /* PhotoDetailView.m */,
-				2910C3141743803C00195008 /* DBTimeLine.h */,
-				2910C3151743803C00195008 /* DBTimeLine.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";

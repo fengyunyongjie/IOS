@@ -47,10 +47,12 @@
     [right_button addTarget:self action:@selector(right_button_cilcked:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *right_item = [[UIBarButtonItem alloc] initWithCustomView:right_button];
     [nav_item setRightBarButtonItem:right_item];
+    
     //请求时间轴
     photoManager = [[SCBPhotoManager alloc] init];
     [photoManager setPhotoDelegate:self];
     [photoManager getPhotoTimeLine];
+    
     //设置背景为黑色
     [self.view setBackgroundColor:[UIColor blackColor]];
     [super viewDidLoad];

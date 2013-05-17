@@ -49,20 +49,20 @@
     NSString *user_name = _userNameTextField.text;
     NSString *user_passwor = _passwordTextField.text;
     NSLog(@"user_name;%@,user_password:%@",user_name,user_passwor);
-    DBSqlite *sqlite3 = [[DBSqlite alloc] init];
-    if([sqlite3 initDatabase])
-    {
-        FMDatabase *dataBase = [sqlite3 getDatabase];
-        UserInfo *info = [[UserInfo alloc] init];
-        info.database = dataBase;
-        info.user_name = user_name;
-        info.user_password = user_passwor;
-        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [app_delegate setUser_name:user_name];
-        [info insertUserinfo];
-        [info release];
-        [dataBase close];
-    }
+//    DBSqlite *sqlite3 = [[DBSqlite alloc] init];
+//    if([sqlite3 initDatabase])
+//    {
+//        FMDatabase *dataBase = [sqlite3 getDatabase];
+//        UserInfo *info = [[UserInfo alloc] init];
+//        info.database = dataBase;
+//        info.user_name = user_name;
+//        info.user_password = user_passwor;
+//        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//        [app_delegate setUser_name:user_name];
+//        [info insertUserinfo];
+//        [info release];
+//        [dataBase close];
+//    }
     
     [[SCBAccountManager sharedManager] setDelegate:self];
     [[SCBAccountManager sharedManager] UserLoginWithName:self.userNameTextField.text Password:self.passwordTextField.text];
