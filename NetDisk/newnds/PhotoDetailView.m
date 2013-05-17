@@ -144,10 +144,10 @@
     [UIView setAnimationDuration:0.3];
     self.zoomScale = zs;
     [UIView commitAnimations];
-    CGRect clickRect =  self.clickButton.frame;
-    clickRect.size.width = self.contentSize.width;
-    clickRect.size.height = self.contentSize.height;
-    [self.clickButton setFrame:clickRect];
+//    CGRect clickRect =  self.clickButton.frame;
+//    clickRect.size.width = self.contentSize.width;
+//    clickRect.size.height = self.contentSize.height;
+//    [self.clickButton setFrame:clickRect];
 }
 
 - (void)zoomToPointInRootView:(CGPoint)center atScale:(float)scale {

@@ -20,6 +20,7 @@
 @implementation PhotoViewController
 @synthesize photoManager,allDictionary;
 @synthesize table_view;
+@synthesize activity_indicator;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,10 +49,10 @@
     UIBarButtonItem *right_item = [[UIBarButtonItem alloc] initWithCustomView:right_button];
     [nav_item setRightBarButtonItem:right_item];
     
-    //请求时间轴
-    photoManager = [[SCBPhotoManager alloc] init];
-    [photoManager setPhotoDelegate:self];
-    [photoManager getPhotoTimeLine];
+//    //请求时间轴
+//    photoManager = [[SCBPhotoManager alloc] init];
+//    [photoManager setPhotoDelegate:self];
+//    [photoManager getPhotoTimeLine];
     
     //设置背景为黑色
     [self.view setBackgroundColor:[UIColor blackColor]];
@@ -109,6 +110,7 @@
 #pragma mark -得到时间轴的概要列表
 -(void)getPhotoGeneral:(NSDictionary *)dictionary
 {
+    [activity_indicator stopAnimating];
     table_view = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
     [self.view addSubview:table_view];
     allDictionary = [[NSMutableDictionary alloc] initWithDictionary:dictionary];
@@ -657,7 +659,24 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [table_view reloadData];
+    if(photoManager)
+    {
+        [photoManager release];
+        if(table_view)
+        {
+            [table_view removeFromSuperview];
+            [table_view release];
+        }
+    }
+    //请求时间轴
+    photoManager = [[SCBPhotoManager alloc] init];
+    [photoManager setPhotoDelegate:self];
+    [photoManager getPhotoTimeLine];
+    CGRect activityRect = CGRectMake((320-20)/2, (self.view.frame.size.height-20)/2, 20, 20);
+    activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
+    [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+    [activity_indicator startAnimating];
+    [self.view addSubview:activity_indicator];
 }
 
 -(void)dealloc
@@ -665,6 +684,7 @@
     [photoManager release];
     [table_view release];
     [allDictionary release];
+    [activity_indicator release];
     [super dealloc];
 }
 

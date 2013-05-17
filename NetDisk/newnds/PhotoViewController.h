@@ -25,10 +25,12 @@
     NSMutableDictionary *allDictionary;
     NSInteger imageTa;
     UITableView *table_view;
+    UIActivityIndicatorView *activity_indicator;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
 @property(nonatomic,retain) NSMutableDictionary *allDictionary;
 @property(nonatomic,retain) UITableView *table_view;
+@property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
 
 @end
