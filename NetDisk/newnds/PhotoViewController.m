@@ -12,6 +12,7 @@
 #import "PhotoDetailViewController.h"
 #import "PhotoImageButton.h"
 #import "PhotoCell.h"
+#import "SCBSession.h"
 
 @interface PhotoViewController ()
 
@@ -21,6 +22,7 @@
 @synthesize photoManager,allDictionary;
 @synthesize table_view;
 @synthesize activity_indicator;
+@synthesize user_id,user_token;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,7 +35,6 @@
 
 - (void)viewDidLoad
 {
-    
     imageTa = 1000;
     //添加分享按钮
     UINavigationItem *nav_item = [self navigationItem];
@@ -659,24 +660,29 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if(photoManager)
+    if(![[[SCBSession sharedSession] userId] isEqualToString:user_id] && ![[[SCBSession sharedSession] userToken] isEqualToString:user_token])
     {
-        [photoManager release];
-        if(table_view)
+        if(photoManager)
         {
-            [table_view removeFromSuperview];
-            [table_view release];
+            [photoManager release];
+            if(table_view)
+            {
+                [table_view removeFromSuperview];
+                [table_view release];
+            }
         }
+        //请求时间轴
+        photoManager = [[SCBPhotoManager alloc] init];
+        [photoManager setPhotoDelegate:self];
+        [photoManager getPhotoTimeLine];
+        CGRect activityRect = CGRectMake((320-20)/2, (self.view.frame.size.height-20)/2, 20, 20);
+        activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
+        [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+        [activity_indicator startAnimating];
+        [self.view addSubview:activity_indicator];
+        [self setUser_id:[[SCBSession sharedSession] userId]];
+        [self setUser_token:[[SCBSession sharedSession] userToken]];
     }
-    //请求时间轴
-    photoManager = [[SCBPhotoManager alloc] init];
-    [photoManager setPhotoDelegate:self];
-    [photoManager getPhotoTimeLine];
-    CGRect activityRect = CGRectMake((320-20)/2, (self.view.frame.size.height-20)/2, 20, 20);
-    activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
-    [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-    [activity_indicator startAnimating];
-    [self.view addSubview:activity_indicator];
 }
 
 -(void)dealloc
@@ -685,6 +691,8 @@
     [table_view release];
     [allDictionary release];
     [activity_indicator release];
+    [user_token release];
+    [user_id release];
     [super dealloc];
 }
 

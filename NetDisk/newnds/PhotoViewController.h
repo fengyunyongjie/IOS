@@ -26,11 +26,15 @@
     NSInteger imageTa;
     UITableView *table_view;
     UIActivityIndicatorView *activity_indicator;
+    NSString *user_id;
+    NSString *user_token;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
 @property(nonatomic,retain) NSMutableDictionary *allDictionary;
 @property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
+@property(nonatomic,retain) NSString *user_id;
+@property(nonatomic,retain) NSString *user_token;
 
 @end
