@@ -107,4 +107,48 @@
 {
     return [NSString stringWithFormat:@"%@.data",f_id];
 }
+#pragma mark --------获取图片存档文件名
++(NSString*)picFileNameFromURL:(NSString*)URL{
+    if (URL==nil) {
+        return nil;
+    }
+	NSRange rang ;
+	NSString *url = [NSString stringWithString:URL];
+	while (url!=nil) {
+		rang = [url rangeOfString:@"/"];
+		if( rang.location != NSNotFound )
+			url = [url substringFromIndex:rang.location+1];
+		else
+			break;
+	}
+	return url;
+}
+#pragma mark --------换算文件容量大小
++ (NSString *)convertSize:(NSString *)sourceSize
+{
+    NSString *sSize = nil;
+    float nSize = 0.0f;
+    if (sourceSize==nil) {
+        return sSize;
+    }
+    nSize = [sourceSize floatValue]/1024.0;
+    sSize = [NSString stringWithFormat:@"%.2f K",nSize];
+    if (nSize<1) {
+        sSize = @"0 K";
+        return sSize;
+    }
+    if (nSize>=1024) {
+        nSize = nSize/1024.0;
+        sSize = [NSString stringWithFormat:@"%.2f M",nSize];
+        if (nSize>=1024) {
+            nSize = nSize/1024.0;
+            sSize = [NSString stringWithFormat:@"%.2f G",nSize];
+            if (nSize>=1024) {
+                nSize = nSize/1024.0;
+                sSize = [NSString stringWithFormat:@"%.2f T",nSize];
+            }
+        }
+    }
+    return sSize;
+}
 @end

@@ -21,8 +21,6 @@
 		292FF984173A466D004CC609 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E416B9385100A1BE48 /* 114.png */; };
 		292FF985173A4670004CC609 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E216B937D900A1BE48 /* icon.png */; };
 		292FF989173A4930004CC609 /* YNFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FF988173A4930004CC609 /* YNFunctions.m */; };
-		292FF98D173A4C56004CC609 /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FF98B173A4C54004CC609 /* RegistViewController.m */; };
-		292FF98E173A4C56004CC609 /* RegistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292FF98C173A4C55004CC609 /* RegistViewController.xib */; };
 		2936170A173CFD9D00F8303B /* PhotoImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 29361709173CFD9D00F8303B /* PhotoImageButton.m */; };
 		2936170B173CFD9D00F8303B /* PhotoImageButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 29361709173CFD9D00F8303B /* PhotoImageButton.m */; };
 		293896BC170932BA00929F48 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 293896BA170932BA00929F48 /* libMobClickLibrary.a */; };
@@ -43,6 +41,10 @@
 		2963903D173A3EC1009C5530 /* Placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903A173A3EC0009C5530 /* Placeholder.png */; };
 		2963903E173A3EC1009C5530 /* Selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903B173A3EC1009C5530 /* Selected.png */; };
 		2963903F173A3EC1009C5530 /* Unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903C173A3EC1009C5530 /* Unselected.png */; };
+		298075D91749C35000B138FE /* MyndsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852D17172CFDA6001AD87A /* MyndsViewController.m */; };
+		298075DD174A141F00B138FE /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298075DB174A141F00B138FE /* RegistViewController.m */; };
+		298075DE174A141F00B138FE /* RegistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 298075DC174A141F00B138FE /* RegistViewController.xib */; };
+		298075DF174A1CAF00B138FE /* input3_createbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A66086169982B90065C73C /* input3_createbg.png */; };
 		29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF4172CB2B5001AD87A /* MYTabBarController.m */; };
 		29852CF8172CBCF5001AD87A /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF7172CBCF5001AD87A /* SettingViewController.m */; };
 		29852CF9172CCB99001AD87A /* SCBoxSDK.h in Sources */ = {isa = PBXBuildFile; fileRef = 29A92A07171560B500B1B2A4 /* SCBoxSDK.h */; };
@@ -91,6 +93,7 @@
 		29A6FAA8171B8744007E6C0A /* SCBPhotoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAA7171B8744007E6C0A /* SCBPhotoManager.m */; };
 		29A6FAAB171B8A54007E6C0A /* SCBDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAAA171B8A54007E6C0A /* SCBDownloader.m */; };
 		29A6FAAE171B8A81007E6C0A /* SCBUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A6FAAD171B8A81007E6C0A /* SCBUploader.m */; };
+		29A747611746297B006299E4 /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A747601746297B006299E4 /* IconDownloader.m */; };
 		29A92A09171560B500B1B2A4 /* SCBoxSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A92A08171560B500B1B2A4 /* SCBoxSDK.m */; };
 		29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */; };
 		29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B18AC7173CC37C00DBF2CB /* OptionCell.xib */; };
@@ -516,9 +519,6 @@
 		29262228172BD70000A95E97 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		292FF987173A4930004CC609 /* YNFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNFunctions.h; sourceTree = "<group>"; };
 		292FF988173A4930004CC609 /* YNFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNFunctions.m; sourceTree = "<group>"; };
-		292FF98A173A4C54004CC609 /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
-		292FF98B173A4C54004CC609 /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
-		292FF98C173A4C55004CC609 /* RegistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistViewController.xib; sourceTree = "<group>"; };
 		29361708173CFD9D00F8303B /* PhotoImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoImageButton.h; sourceTree = "<group>"; };
 		29361709173CFD9D00F8303B /* PhotoImageButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoImageButton.m; sourceTree = "<group>"; };
 		293896BA170932BA00929F48 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
@@ -546,6 +546,9 @@
 		2963903A173A3EC0009C5530 /* Placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Placeholder.png; sourceTree = "<group>"; };
 		2963903B173A3EC1009C5530 /* Selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Selected.png; sourceTree = "<group>"; };
 		2963903C173A3EC1009C5530 /* Unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unselected.png; sourceTree = "<group>"; };
+		298075DA174A141F00B138FE /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
+		298075DB174A141F00B138FE /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
+		298075DC174A141F00B138FE /* RegistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistViewController.xib; sourceTree = "<group>"; };
 		29852CF3172CB2B5001AD87A /* MYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTabBarController.h; sourceTree = "<group>"; };
 		29852CF4172CB2B5001AD87A /* MYTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTabBarController.m; sourceTree = "<group>"; };
 		29852CF6172CBCF5001AD87A /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -577,6 +580,8 @@
 		29A6FAAA171B8A54007E6C0A /* SCBDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBDownloader.m; sourceTree = "<group>"; };
 		29A6FAAC171B8A81007E6C0A /* SCBUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBUploader.h; sourceTree = "<group>"; };
 		29A6FAAD171B8A81007E6C0A /* SCBUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBUploader.m; sourceTree = "<group>"; };
+		29A7475F1746297B006299E4 /* IconDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconDownloader.h; sourceTree = "<group>"; };
+		29A747601746297B006299E4 /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
 		29A92A07171560B500B1B2A4 /* SCBoxSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBoxSDK.h; sourceTree = "<group>"; };
 		29A92A08171560B500B1B2A4 /* SCBoxSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBoxSDK.m; sourceTree = "<group>"; };
 		29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
@@ -1181,9 +1186,9 @@
 				29262226172BD70000A95E97 /* LoginViewController.h */,
 				29262227172BD70000A95E97 /* LoginViewController.m */,
 				29262228172BD70000A95E97 /* LoginViewController.xib */,
-				292FF98A173A4C54004CC609 /* RegistViewController.h */,
-				292FF98B173A4C54004CC609 /* RegistViewController.m */,
-				292FF98C173A4C55004CC609 /* RegistViewController.xib */,
+				298075DA174A141F00B138FE /* RegistViewController.h */,
+				298075DB174A141F00B138FE /* RegistViewController.m */,
+				298075DC174A141F00B138FE /* RegistViewController.xib */,
 			);
 			name = "Login&Regist";
 			sourceTree = "<group>";
@@ -1214,6 +1219,8 @@
 				29B18AC9173CC5D700DBF2CB /* OptionCell.h */,
 				29B18ACA173CC5D700DBF2CB /* OptionCell.m */,
 				29B18AC7173CC37C00DBF2CB /* OptionCell.xib */,
+				29A7475F1746297B006299E4 /* IconDownloader.h */,
+				29A747601746297B006299E4 /* IconDownloader.m */,
 			);
 			name = MyRoom;
 			sourceTree = "<group>";
@@ -2316,7 +2323,6 @@
 				2963903F173A3EC1009C5530 /* Unselected.png in Resources */,
 				292FF984173A466D004CC609 /* 114.png in Resources */,
 				292FF985173A4670004CC609 /* icon.png in Resources */,
-				292FF98E173A4C56004CC609 /* RegistViewController.xib in Resources */,
 				29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */,
 				29DE0CF717422C5C009C41C7 /* accessory.png in Resources */,
 				29DE0CF817422C5C009C41C7 /* nav_bar_edit.png in Resources */,
@@ -2342,6 +2348,7 @@
 				29B38A0117431A48007313B1 /* btn_library.png in Resources */,
 				29B38A0317431A48007313B1 /* btn_quit.png in Resources */,
 				29B38A0517431A48007313B1 /* btn_quit_on.png in Resources */,
+				298075DF174A1CAF00B138FE /* input3_createbg.png in Resources */,
 				29B38A0717431A48007313B1 /* btn_updown.png in Resources */,
 				29B38A0917431A48007313B1 /* btn_updown_on.png in Resources */,
 				29B38A0B17431A48007313B1 /* check_input.png in Resources */,
@@ -2437,6 +2444,7 @@
 				294CEEA1174467D000AF0D66 /* tab_btn_photo@2x.png in Resources */,
 				294CEEA2174467D000AF0D66 /* tab_btn_setting@2x.png in Resources */,
 				294CEEA3174467D000AF0D66 /* tab_btn_upload@2x.png in Resources */,
+				298075DE174A141F00B138FE /* RegistViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2665,7 +2673,6 @@
 				299C9EC71737A9A300D5B3E0 /* PhotoDetailView.m in Sources */,
 				29639039173A3E98009C5530 /* FileItemTableCell.m in Sources */,
 				292FF989173A4930004CC609 /* YNFunctions.m in Sources */,
-				292FF98D173A4C56004CC609 /* RegistViewController.m in Sources */,
 				29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */,
 				29B18ACB173CC5D700DBF2CB /* OptionCell.m in Sources */,
 				2936170B173CFD9D00F8303B /* PhotoImageButton.m in Sources */,
@@ -2678,6 +2685,8 @@
 				2910C3161743803D00195008 /* DBTimeLine.m in Sources */,
 				294CEEA7174489A300AF0D66 /* FavoritesViewController.m in Sources */,
 				294CEEAA1744B11500AF0D66 /* FavoritesData.m in Sources */,
+				29A747611746297B006299E4 /* IconDownloader.m in Sources */,
+				298075DD174A141F00B138FE /* RegistViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2780,6 +2789,7 @@
 				29CFD62517375630001B6721 /* PhotoDetailViewController.m in Sources */,
 				299C9EC61737A9A300D5B3E0 /* PhotoDetailView.m in Sources */,
 				2936170A173CFD9D00F8303B /* PhotoImageButton.m in Sources */,
+				298075D91749C35000B138FE /* MyndsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -43,7 +43,7 @@
 #define FM_DOWNLOAD_NEW_URI @"/fm/download/new"
 
 //缩略图下载
-#define FM_DOWNLOAD_THUMB_URI @"/fm/download/thumb"
+#define FM_DOWNLOAD_THUMB_URI @"/fm/download/thumb/"
 //预览图下载
 #define FM_DOWNLOAD_Look @"/fm/download/preview"
 

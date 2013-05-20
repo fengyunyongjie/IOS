@@ -15,7 +15,7 @@
 #import "FavoritesData.h"
 #import "PhohoDemo.h"
 #import "PhotoDetailViewController.h"
-
+#import "IconDownloader.h"
 #import "ImageBrowserViewController.h"
 
 @implementation FileItem
@@ -56,7 +56,7 @@
 
 - (void)viewDidLoad
 {
-    
+    self.imageDownloadsInProgress=[NSMutableDictionary dictionary];
     [super viewDidLoad];
     self.optionCell=[[[UITableViewCell alloc] init] autorelease];
     [self.optionCell addSubview:[[[UIToolbar alloc] init] autorelease]];
@@ -74,8 +74,8 @@
     if (self.myndsType==kMyndsTypeDefault) {
         self.editBtn=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
         self.deleteBtn=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteAction:)];
-        [self.deleteBtn setEnabled:NO];
-        [self.navigationItem setRightBarButtonItems:@[self.editBtn,self.deleteBtn]];
+        //[self.deleteBtn setEnabled:NO];
+        [self.navigationItem setRightBarButtonItems:@[self.editBtn]];
         self.isEditing=NO;
     }else if (self.myndsType==kMyndsTypeSelect)
     {
@@ -124,11 +124,13 @@
     UIBarButtonItem *button = (UIBarButtonItem *)sender;
     if (self.isEditing) {
         [button setTitle:@"完成"];
-        [self.deleteBtn setEnabled:YES];
+        //[self.navigationItem setRightBarButtonItems:@[self.editBtn,self.deleteBtn] animated:YES];
+        [self.navigationItem setLeftBarButtonItem:self.deleteBtn];
     }else
     {
         [button setTitle:@"编辑"];
-        [self.deleteBtn setEnabled:NO];
+        [self.navigationItem setLeftBarButtonItem:nil];
+        //[self.navigationItem setRightBarButtonItems:@[self.editBtn] animated:YES];
     }
 //   if (!button.selected) {
 //        NDAppDelegate *appDelegate =  (NDAppDelegate *)[UIApplication sharedApplication].delegate;
@@ -260,14 +262,33 @@
         [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
         NSLog(@"%@",[FavoritesData sharedFavoritesData].favoriteDic);
         NSLog(@"删除一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
+//        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row + 1 inSection:self.selectedIndexPath.section];
+//        UITableViewCell *cell=[self tableView:self.tableView cellForRowAtIndexPath:indexPath];
+//        if (cell.imageView.subviews.count>0) {
+//            for (UIView *view in cell.imageView.subviews) {
+//                [view removeFromSuperview];
+//            }
+//        }
 
     }else
     {
         [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
         NSLog(@"%@",[FavoritesData sharedFavoritesData].favoriteDic);
         NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
+//        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row + 1 inSection:self.selectedIndexPath.section];
+//        UITableViewCell *cell=[self tableView:self.tableView cellForRowAtIndexPath:indexPath];
+//        if (cell.imageView.subviews.count==0) {
+//            UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
+//            CGRect r=[tagView frame];
+//            r.origin.x=0;
+//            r.origin.y=20;
+//            [tagView setFrame:r];
+//            [cell.imageView addSubview:tagView];
+//        }
     }
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row -1 inSection:self.selectedIndexPath.section];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self hideOptionCell];
 }
 -(void)toDelete:(id)sender
@@ -383,15 +404,48 @@
         NSString *name= [this objectForKey:@"f_name"];
         NSString *f_modify=[this objectForKey:@"f_modify"];
         NSString *f_id=[this objectForKey:@"f_id"];
-        cell.detailTextLabel.text=f_modify;
-//        if ([t_fl isEqualToString:@"directory"]) {
-//            cell.detailTextLabel.text=f_modify;
-//        }else
-//        {
-//            NSString *f_size=[this objectForKey:@"f_size"];
-//            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@B",f_modify,f_size];
-//        }
+        //cell.detailTextLabel.text=f_modify;
+        if ([t_fl isEqualToString:@"directory"]) {
+            cell.detailTextLabel.text=f_modify;
+            if (cell.imageView.subviews.count>0) {
+                UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
+                [tagView setHidden:YES];
+            }
+        }else
+        {
+            NSString *f_size=[this objectForKey:@"f_size"];
+            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@B",f_modify,[YNFunctions convertSize:f_size]];
+        //是否显示收藏图标
+            NSObject *tag=nil;
+            tag=[[FavoritesData sharedFavoritesData] objectForKey:f_id];
+            if (tag!=nil) {
+                if (cell.imageView.subviews.count==0) {
+                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
+                    CGRect r=[tagView frame];
+                    r.origin.x=20;
+                    r.origin.y=20;
+                    [tagView setFrame:r];
+                    [cell.imageView addSubview:tagView];
+                }
+                UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
+                [tagView setHidden:NO];
+            }else
+            {
+                if (cell.imageView.subviews.count==0) {
+                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
+                    CGRect r=[tagView frame];
+                    r.origin.x=20;
+                    r.origin.y=20;
+                    [tagView setFrame:r];
+                    [cell.imageView addSubview:tagView];
+                }
+                UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
+                [tagView setHidden:YES];
+            }
+
+        }
         text=name;
+        
         if ([t_fl isEqualToString:@"directory"]) {
             cell.imageView.image = [UIImage imageNamed:@"icon_Folder.png"];
         }else if ([t_fl isEqualToString:@"png"]||
@@ -399,22 +453,29 @@
                   [t_fl isEqualToString:@"jpeg"]||
                   [t_fl isEqualToString:@"bmp"])
         {
-            cell.imageView.image = [UIImage imageNamed:@"icon_pic.png"];
-//            NSObject *tag=nil;
-//            tag=[[FavoritesData sharedFavoritesData] objectForKey:f_id];
-//            if (tag!=nil) {
-//                UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
-//                CGRect r=[tagView frame];
-//                r.origin.x=0;
-//                r.origin.y=20;
-//                [tagView setFrame:r];
-//                [cell.imageView addSubview:tagView];
-//            }else
-//            {
-//                if ([[cell.imageView subviews] count]>0) {
-//                    [[[cell.imageView subviews] objectAtIndex:0] removeFromSuperview];
-//                }
-//            }
+            NSDictionary *dic = [self.listArray objectAtIndex:indexPath.row];
+            NSString *compressaddr=[dic objectForKey:@"compressaddr"];
+            compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
+            NSString *path=[YNFunctions getIconCachePath];
+            path=[path stringByAppendingPathComponent:compressaddr];
+            
+            //"compressaddr":"cimage/cs860183fc-81bd-40c2-817a-59653d0dc513.jpg"
+            if ([[NSFileManager defaultManager] fileExistsAtPath:path]) // avoid the app icon download if the app already has an icon
+            {
+                //UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:path]];
+                UIImage *icon=[UIImage imageWithContentsOfFile:path];
+                CGSize itemSize = CGSizeMake(40, 40);
+                UIGraphicsBeginImageContext(itemSize);
+                CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+                [icon drawInRect:imageRect];
+                UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                cell.imageView.image = image;
+            }else
+            {
+                [self startIconDownload:dic forIndexPath:indexPath];
+                cell.imageView.image = [UIImage imageNamed:@"icon_pic.png"];
+            }
         }else if ([t_fl isEqualToString:@"doc"]||
                   [t_fl isEqualToString:@"docx"])
         {
@@ -438,21 +499,6 @@
         text = @"加载中...";
     }
     label.text=text;
-//    CGRect cellFrame = [cell frame];
-//    cellFrame.origin = CGPointMake(0, 0);
-//    
-//    label.text = text;
-//    CGRect rect = CGRectInset(cellFrame, 2, 2);
-//    label.frame = rect;
-//    [label sizeToFit];
-//    if (label.frame.size.height > 46) {
-//        cellFrame.size.height = 50 + label.frame.size.height - 46;
-//    }
-//    else {
-//        cellFrame.size.height = 50;
-//    }
-//    [cell setFrame:cellFrame];
-    
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -691,5 +737,70 @@
         NSLog(@"点击其它");
     }
     [self hideOptionCell];
+}
+#pragma mark -
+#pragma mark Deferred image loading (UIScrollViewDelegate)
+
+// Load images for all onscreen rows when scrolling is finished
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+	{
+        [self loadImagesForOnscreenRows];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self loadImagesForOnscreenRows];
+}
+
+// this method is used in case the user scrolled into a set of cells that don't have their app icons yet
+- (void)loadImagesForOnscreenRows
+{
+    if ([self.listArray count] > 0)
+    {
+        NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in visiblePaths)
+        {
+            NSDictionary *dic = [self.listArray objectAtIndex:indexPath.row];
+            NSString *compressaddr=[dic objectForKey:@"compressaddr"];
+            compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
+            NSString *path=[YNFunctions getIconCachePath];
+            path=[path stringByAppendingPathComponent:compressaddr];
+            
+            //"compressaddr":"cimage/cs860183fc-81bd-40c2-817a-59653d0dc513.jpg"
+            if (![[NSFileManager defaultManager] fileExistsAtPath:path]) // avoid the app icon download if the app already has an icon
+            {
+                [self startIconDownload:dic forIndexPath:indexPath];
+            }
+        }
+    }
+}
+- (void)startIconDownload:(NSDictionary *)dic forIndexPath:(NSIndexPath *)indexPath
+{
+    IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
+    if (iconDownloader == nil)
+    {
+        iconDownloader = [[IconDownloader alloc] init];
+        iconDownloader.data_dic=dic;
+        iconDownloader.indexPathInTableView = indexPath;
+        iconDownloader.delegate = self;
+        [self.imageDownloadsInProgress setObject:iconDownloader forKey:indexPath];
+        [iconDownloader startDownload];
+        [iconDownloader release];
+    }
+}
+- (void)appImageDidLoad:(NSIndexPath *)indexPath;
+{
+    IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
+    if (iconDownloader != nil)
+    {        
+        [self.tableView reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    
+    // Remove the IconDownloader from the in progress list.
+    // This will result in it being deallocated.
+    [self.imageDownloadsInProgress removeObjectForKey:indexPath];
 }
 @end

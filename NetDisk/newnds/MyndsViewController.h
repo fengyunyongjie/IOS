@@ -19,6 +19,7 @@ typedef enum {
 @property (strong,nonatomic) NSString *f_id;
 @property (assign,nonatomic) MyndsType myndsType;
 @property (assign,nonatomic) MyndsViewController *delegate;
+@property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
 -(void)loadData;
 @end
 

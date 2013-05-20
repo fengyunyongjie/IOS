@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 #import "DBSqlite.h"
 #import "UserInfo.h"
+#import "RegistViewController.h"
 
 
 @interface LoginViewController ()
@@ -42,6 +43,11 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)userRegister:(id)sender
+{
+    RegistViewController *regist=[[[RegistViewController alloc] initWithNibName:@"RegistViewController" bundle:nil] autorelease];
+    [self presentViewController:regist animated:YES completion:nil];
 }
 - (IBAction)login:(id)sender
 {

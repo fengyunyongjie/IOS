@@ -10,6 +10,8 @@
 #import "FavoritesData.h"
 #import "PhohoDemo.h"
 #import "PhotoDetailViewController.h"
+#import "YNFunctions.h"
+#import "IconDownloader.h"
 @interface FavoritesViewController ()
 
 @end
@@ -84,7 +86,29 @@
               [t_fl isEqualToString:@"jpeg"]||
               [t_fl isEqualToString:@"bmp"])
     {
-        cell.imageView.image = [UIImage imageNamed:@"icon_pic.png"];
+        //NSDictionary *dic = [self.listArray objectAtIndex:indexPath.row];
+        NSString *compressaddr=[dic objectForKey:@"compressaddr"];
+        compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
+        NSString *path=[YNFunctions getIconCachePath];
+        path=[path stringByAppendingPathComponent:compressaddr];
+        
+        //"compressaddr":"cimage/cs860183fc-81bd-40c2-817a-59653d0dc513.jpg"
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) // avoid the app icon download if the app already has an icon
+        {
+            //UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:path]];
+            UIImage *icon=[UIImage imageWithContentsOfFile:path];
+            CGSize itemSize = CGSizeMake(40, 40);
+            UIGraphicsBeginImageContext(itemSize);
+            CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+            [icon drawInRect:imageRect];
+            UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            cell.imageView.image = image;
+        }else
+        {
+            [self startIconDownload:dic forIndexPath:indexPath];
+            cell.imageView.image = [UIImage imageNamed:@"icon_pic.png"];
+        }
         
     }else if ([t_fl isEqualToString:@"doc"]||
               [t_fl isEqualToString:@"docx"])
@@ -105,7 +129,10 @@
     }
     return cell;
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
 
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -202,5 +229,70 @@
     }
 
 }
+#pragma mark -
+#pragma mark Deferred image loading (UIScrollViewDelegate)
 
+// Load images for all onscreen rows when scrolling is finished
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+	{
+        [self loadImagesForOnscreenRows];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self loadImagesForOnscreenRows];
+}
+
+// this method is used in case the user scrolled into a set of cells that don't have their app icons yet
+- (void)loadImagesForOnscreenRows
+{
+    NSArray *listArray=[[[FavoritesData sharedFavoritesData] favoriteDic] allValues];
+    if ([listArray count] > 0)
+    {
+        NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in visiblePaths)
+        {
+            NSDictionary *dic = [listArray objectAtIndex:indexPath.row];
+            NSString *compressaddr=[dic objectForKey:@"compressaddr"];
+            compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
+            NSString *path=[YNFunctions getIconCachePath];
+            path=[path stringByAppendingPathComponent:compressaddr];
+            
+            //"compressaddr":"cimage/cs860183fc-81bd-40c2-817a-59653d0dc513.jpg"
+            if (![[NSFileManager defaultManager] fileExistsAtPath:path]) // avoid the app icon download if the app already has an icon
+            {
+                [self startIconDownload:dic forIndexPath:indexPath];
+            }
+        }
+    }
+}
+- (void)startIconDownload:(NSDictionary *)dic forIndexPath:(NSIndexPath *)indexPath
+{
+    IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
+    if (iconDownloader == nil)
+    {
+        iconDownloader = [[IconDownloader alloc] init];
+        iconDownloader.data_dic=dic;
+        iconDownloader.indexPathInTableView = indexPath;
+        iconDownloader.delegate = self;
+        [self.imageDownloadsInProgress setObject:iconDownloader forKey:indexPath];
+        [iconDownloader startDownload];
+        [iconDownloader release];
+    }
+}
+- (void)appImageDidLoad:(NSIndexPath *)indexPath;
+{
+    IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
+    if (iconDownloader != nil)
+    {
+        [self.tableView reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    
+    // Remove the IconDownloader from the in progress list.
+    // This will result in it being deallocated.
+    [self.imageDownloadsInProgress removeObjectForKey:indexPath];
+}
 @end

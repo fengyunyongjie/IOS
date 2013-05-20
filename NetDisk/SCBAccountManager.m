@@ -21,6 +21,7 @@ static SCBAccountManager *_sharedAccountManager;
 }
 -(void)UserLoginWithName:(NSString *)user_name Password:(NSString *)user_pwd
 {
+    self.type=kUserLogin;
     NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_LOGIN_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
@@ -32,9 +33,6 @@ static SCBAccountManager *_sharedAccountManager;
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
     NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    NSLog(@"%@",request);
-    NSLog(@"%@",[[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
-    NSLog(@"%@",request.allHTTPHeaderFields);
 }
 -(void)UserLogout
 {

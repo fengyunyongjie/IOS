@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface FavoritesViewController : UITableViewController
-
+@property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
 @end

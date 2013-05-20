@@ -39,7 +39,6 @@
         rootView1.title=@"我的空间";
         [rootView1.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
         [viewController1 pushViewController:rootView1 animated:YES];
-        [viewController1.navigationBar setBarStyle:UIBarStyleBlack];
         //[viewController1.navigationBar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_bg.png"]] atIndex:1];
         
         
@@ -78,6 +77,11 @@
         rootView6.title=@"共享空间";
         [viewController6 pushViewController:rootView6 animated:YES];
         
+        [viewController1.navigationBar setBarStyle:UIBarStyleBlack];
+        [viewController2.navigationBar setBarStyle:UIBarStyleBlack];
+        [viewController3.navigationBar setBarStyle:UIBarStyleBlack];
+        [viewController4.navigationBar setBarStyle:UIBarStyleBlack];
+        [viewController5.navigationBar setBarStyle:UIBarStyleBlack];
         
         self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5, nil];
     }
