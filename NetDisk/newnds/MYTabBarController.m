@@ -89,7 +89,7 @@
     NSString *userPwd  = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_pwd"];
     if (userName==nil&&userPwd==nil) {
         LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
-        [self presentViewController:lv animated:YES completion:^(void){}];
+        [self presentViewController:lv animated:NO completion:^(void){}];
     }
 }
 - (void)viewDidLoad
@@ -100,6 +100,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+
 }
 -(void)viewDidAppear:(BOOL)animated
 {
