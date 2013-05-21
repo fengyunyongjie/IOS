@@ -52,13 +52,11 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     int count=[[FavoritesData sharedFavoritesData] count];
     return count;
@@ -218,13 +216,13 @@
                 [photo_demo release];
             }
         }
-        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
-        photoDetalViewController.deleteDelegate = self;
-        [self presentViewController:photoDetalViewController animated:YES completion:^{
-            //[photoDetalViewController setTimeLine:image_button.timeLine];
-            [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
-            [photoDetalViewController release];
-        }];
+//        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
+//        photoDetalViewController.deleteDelegate = self;
+//        [self presentViewController:photoDetalViewController animated:YES completion:^{
+//            //[photoDetalViewController setTimeLine:image_button.timeLine];
+//            [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
+//            [photoDetalViewController release];
+//        }];
         
     }
 

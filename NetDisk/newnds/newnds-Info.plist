@@ -39,10 +39,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>abcde</string>
+			<string>weixin</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>hongpan</string>
+				<string>wxdcc0186c9f173352</string>
 			</array>
 		</dict>
 	</array>

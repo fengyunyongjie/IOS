@@ -39,13 +39,13 @@
 #pragma mark 获取所有时间轴上的照片信息
 -(void)getAllPhotoGeneral:(NSArray *)timeLineArray
 {
+    
     timeDictionary = [[NSMutableDictionary alloc] init];
     allKeysArray = [[NSMutableArray alloc] init];
     timeLineAllArray = timeLineArray;
     timeLineTotalNumber = [timeLineArray count];
     timeLineNowNumber = 0;
     [self getPhotoGeneral];
-    
 }
 
 #pragma mark 获取按年或月查询的概要照片
@@ -98,7 +98,6 @@
                     PhohoDemo *photo_demo = [[PhohoDemo alloc] init];
                     [photo_demo setTotal:[[photosDiction objectForKey:@"total"] intValue]];
                     NSDictionary *dict = [array_dict objectAtIndex:j];
-                    NSLog(@"[dateFormatter dateFromString:string_date]:%@",dict);
                     [photo_demo setF_mime:[dict objectForKey:@"f_mime"]];
                     [photo_demo setF_size:[[dict objectForKey:@"f_size"] intValue]];
                     [photo_demo setF_name:[dict objectForKey:@"f_name"]];
@@ -109,7 +108,7 @@
                     }
                     
                     [photo_demo setF_create:[dict objectForKey:@"f_create"]];
-                    string_date = photo_demo.f_create;
+                    string_date = photo_demo.img_create;
                     [photo_demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
                     [photo_demo setF_mime:[dict objectForKey:@"f_modify"]];
                     [photo_demo setCompressaddr:[dict objectForKey:@"compressaddr"]];
@@ -288,13 +287,10 @@
     else if([type_string isEqualToString:[[PHOTO_GENERAL componentsSeparatedByString:@"/"] lastObject]])
     {
         [self mangerGobackData:diction];
+        [photoDelegate getPhotoGeneral:timeDictionary];
         if(timeLineNowNumber<timeLineTotalNumber)
         {
             [self getPhotoGeneral];
-        }
-        else
-        {
-            [photoDelegate getPhotoGeneral:timeDictionary];
         }
     }
     else if([type_string isEqualToString:[[PHOTO_DETAIL componentsSeparatedByString:@"/"] lastObject]])

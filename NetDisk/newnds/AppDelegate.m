@@ -37,7 +37,7 @@
     //self.window.rootViewController = lv;
     //程序启动时，在代码中向微信终端注册你的id
     
-    [WXApi registerApp:@"wxd930ea5d5a258f4f"];
+    [WXApi registerApp:@"wxdcc0186c9f173352"];
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -53,15 +53,16 @@
     if([resp isKindOfClass:[SendMessageToWXResp class]])
     {
         NSString *strMsg = [NSString stringWithFormat:@"发送消息结果:%d",resp.errCode];
+        NSLog(@"strMSg：%@",strMsg);
     }
 }
 
 - (void) sendImageContent
 {
     WXMediaMessage *message = [WXMediaMessage message];
-    [message setThumbImage:[UIImage imageNamed:@"footbtn.png"]];
+    [message setThumbImage:[UIImage imageNamed:@"icon_Load.png"]];
     WXImageObject *ext = [WXImageObject object];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"footbtn" ofType:@"png"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"icon_Load" ofType:@"png"];
     ext.imageData = [NSData dataWithContentsOfFile:filePath] ;
     message.mediaObject = ext;
     SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];

@@ -15,10 +15,17 @@
 
 #import <UIKit/UIKit.h>
 #import "SCBPhotoManager.h"
-#import "DownImage.h"
 #import "PhotoDetailViewController.h"
 
-@interface PhotoViewController : UIViewController<SCBPhotoDelegate,DownloaderDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,DeleteDelegate>
+/*
+ 1:公开版
+ 0:测试版 暂时屏蔽部分代码
+ */
+#ifndef DEBUG_PUBLIC_EDITION
+#define DEBUG_PUBLIC_EDITION 1
+#endif
+
+@interface PhotoViewController : UIViewController<SCBPhotoDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,DeleteDelegate>
 {
     SCBPhotoManager *photoManager;
     NSInteger show_height;
@@ -28,6 +35,11 @@
     UIActivityIndicatorView *activity_indicator;
     NSString *user_id;
     NSString *user_token;
+    NSMutableArray *allKeys;
+    
+    NSMutableArray *_arrVisibleCells; // 当前可见的cell
+	NSMutableDictionary *_dicReuseCells; //重用的cell
+    BOOL editBL;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;

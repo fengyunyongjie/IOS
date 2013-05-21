@@ -295,6 +295,9 @@
 		29B65BB8171258C100077CB7 /* YNPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B65BB7171258C100077CB7 /* YNPhotoBrowser.m */; };
 		29BC8B1D17445F8700ED3DBB /* icon_Load.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BC8B1C17445F8700ED3DBB /* icon_Load.png */; };
 		29BFAB53174215FC00C33C90 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFAB52174215FC00C33C90 /* PhotoCell.m */; };
+		29C66B93174B0B8600ED6B2C /* UICustomTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C66B92174B0B8600ED6B2C /* UICustomTabController.m */; };
+		29C66B94174B0B8600ED6B2C /* UICustomTabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C66B92174B0B8600ED6B2C /* UICustomTabController.m */; };
+		29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C17DD816560B7D0066CB13 /* QuartzCore.framework */; };
 		29CFD47C173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
 		29CFD47D173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
 		29CFD62517375630001B6721 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD62417375630001B6721 /* PhotoDetailViewController.m */; };
@@ -697,6 +700,8 @@
 		29BC8B1C17445F8700ED3DBB /* icon_Load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_Load.png; sourceTree = "<group>"; };
 		29BFAB51174215FC00C33C90 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
 		29BFAB52174215FC00C33C90 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
+		29C66B91174B0B8600ED6B2C /* UICustomTabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICustomTabController.h; sourceTree = "<group>"; };
+		29C66B92174B0B8600ED6B2C /* UICustomTabController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICustomTabController.m; sourceTree = "<group>"; };
 		29CFD47A173733FF001B6721 /* DownImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownImage.h; sourceTree = "<group>"; };
 		29CFD47B173733FF001B6721 /* DownImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownImage.m; sourceTree = "<group>"; };
 		29CFD62317375630001B6721 /* PhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailViewController.h; sourceTree = "<group>"; };
@@ -1084,6 +1089,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */,
 				2910C30A17436A7F00195008 /* libsqlite3.dylib in Frameworks */,
 				29A2D2F51733C2680013D65A /* libz.dylib in Frameworks */,
 				29E8167A1732392D00866C34 /* MobileCoreServices.framework in Frameworks */,
@@ -1242,6 +1248,8 @@
 				29CFD62417375630001B6721 /* PhotoDetailViewController.m */,
 				299C9EC41737A9A300D5B3E0 /* PhotoDetailView.h */,
 				299C9EC51737A9A300D5B3E0 /* PhotoDetailView.m */,
+				29C66B91174B0B8600ED6B2C /* UICustomTabController.h */,
+				29C66B92174B0B8600ED6B2C /* UICustomTabController.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -2687,6 +2695,7 @@
 				294CEEAA1744B11500AF0D66 /* FavoritesData.m in Sources */,
 				29A747611746297B006299E4 /* IconDownloader.m in Sources */,
 				298075DD174A141F00B138FE /* RegistViewController.m in Sources */,
+				29C66B94174B0B8600ED6B2C /* UICustomTabController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2790,6 +2799,7 @@
 				299C9EC61737A9A300D5B3E0 /* PhotoDetailView.m in Sources */,
 				2936170A173CFD9D00F8303B /* PhotoImageButton.m in Sources */,
 				298075D91749C35000B138FE /* MyndsViewController.m in Sources */,
+				29C66B93174B0B8600ED6B2C /* UICustomTabController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

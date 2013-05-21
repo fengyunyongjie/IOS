@@ -30,14 +30,12 @@
 }
 - (void)startDownload
 {
+    NSString *path = [self get_image_save_file_path:imageUrl];
     //查询本地是否已经有该图片
-    if([self image_exists_at_file_path:imageUrl])
+    UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
+    if(image)
     {
-        NSString *path = [self get_image_save_file_path:imageUrl];
-        NSLog(@"path:%@",path);
-        UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
-        [delegate appImageDidLoad:imageViewIndex urlImage:image index:index];
-        [image release];
+        [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
     }
     else
     {
@@ -59,9 +57,10 @@
         
         self.imageConnection = conn;
         [conn release];
+        [image release];
     }
-    
 }
+
 - (void)cancelDownload
 {
     [self.imageConnection cancel];
@@ -111,7 +110,7 @@
         NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
         [activeDownload writeToFile:path atomically:YES];
         NSString *urlpath = [NSString stringWithFormat:@"%@",path];
-        NSLog(@"urlpath:%@",urlpath);
+        NSLog(@"f_id:%i,urlpath:%@",self.fileId,urlpath);
         self.activeDownload = nil;
         self.imageConnection = nil;
         [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类

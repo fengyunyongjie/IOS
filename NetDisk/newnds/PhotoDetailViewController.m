@@ -148,6 +148,10 @@
     for(int i=0;i<[allArray count];i++)
     {
         PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
+        if(i==indexTag)
+        {
+            NSLog(@"demoID:%@",demo.f_name);
+        }
         [self addCenterImageView:demo currPage:i totalCount:[allPhotoDemoArray count]];
     }
     [scroll_View setContentOffset:CGPointMake(320*indexTag, 0) animated:NO];
