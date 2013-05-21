@@ -77,6 +77,24 @@
 //    [app_delegate sendImageContent];
     if(editBL)
     {
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
+        if(bottonView)
+        {
+            CATransition *animation = [CATransition animation];
+            animation.duration = 0.35f;
+            animation.timingFunction = UIViewAnimationCurveEaseInOut;
+            animation.fillMode = kCAFillModeForwards;
+            animation.type = kCATransitionPush;
+            animation.subtype = kCATransitionFromBottom;
+            
+            CGRect frame = [bottonView frame];
+            frame.origin.y = self.view.frame.size.height;
+            [bottonView setFrame:frame];
+            [bottonView.layer removeAllAnimations];
+            [bottonView.layer addAnimation:animation forKey:@"animated"];
+        }
+        
         editBL = FALSE;
         NSArray *array = table_view.visibleCells;
         for(int i=0;i<[array count];i++)
@@ -103,12 +121,53 @@
                 [cell.imageViewButton4 setBackgroundImage:nil forState:UIControlStateNormal];
             }
         }
-
+        
     }
     else
     {
+        if(!bottonView)
+        {
+            //底部试图
+            CGRect bottonRect = CGRectMake(0, self.view.frame.size.height-49, 320, 49);
+            bottonView = [[UIView alloc] initWithFrame:bottonRect];
+            bottonRect.origin.y = 0;
+            UIImageView *bottonImage = [[UIImageView alloc] initWithFrame:bottonRect];
+            [bottonImage setImage:[UIImage imageNamed:@"foot_bg.png"]];
+            [bottonView addSubview:bottonImage];
+            //删除按钮
+            CGRect deleteRect = CGRectMake((160-24)/2, (49-24)/2, 24, 24);
+            UIButton *deleteButton = [[UIButton alloc] initWithFrame:deleteRect];
+            [deleteButton setBackgroundImage:[UIImage imageNamed:@"Icons48_del.png"] forState:UIControlStateNormal];
+            //            [deleteButton setTitle:@"删除" forState:UIControlStateNormal];
+            [deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [bottonView addSubview:deleteButton];
+            
+            //分享按钮
+            CGRect shareRect = CGRectMake(160+(160-24)/2, (49-24)/2, 24, 24);
+            UIButton *shareButton = [[UIButton alloc] initWithFrame:shareRect];
+            [shareButton setBackgroundImage:[UIImage imageNamed:@"share60@2X.png"] forState:UIControlStateNormal];
+            [bottonView addSubview:shareButton];
+            
+            [self.view addSubview:bottonView];
+        }
+        CATransition *animation = [CATransition animation];
+        animation.duration = 0.35f;
+        animation.timingFunction = UIViewAnimationCurveEaseInOut;
+        animation.fillMode = kCAFillModeForwards;
+        animation.type = kCATransitionPush;
+        animation.subtype = kCATransitionFromTop;
+        
+        CGRect frame = [bottonView frame];
+        frame.origin.y = self.view.frame.size.height-49;
+        [bottonView setFrame:frame];
+        [bottonView.layer removeAllAnimations];
+        [bottonView.layer addAnimation:animation forKey:@"animated"];
+        
         editBL = YES;
         NSArray *array = table_view.visibleCells;
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [app_delegate.myTabBarController setHidesTabBarWithAnimate:YES];
+        
         for(int i=0;i<[array count];i++)
         {
             PhotoCell *cell = (PhotoCell *)[array objectAtIndex:i];

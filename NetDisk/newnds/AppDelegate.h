@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "WXApi.h"
+#import "MYTabBarController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,WXApiDelegate>
 {
@@ -15,7 +16,8 @@
 }
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) UITabBarController *myTabBarController;
+@property (strong, nonatomic) MYTabBarController *myTabBarController;
 @property (retain, nonatomic) NSString *user_name;
 -(void)setLogin;
+-(void) sendImageContent;
 @end

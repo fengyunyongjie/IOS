@@ -40,6 +40,7 @@
     NSMutableArray *_arrVisibleCells; // 当前可见的cell
 	NSMutableDictionary *_dicReuseCells; //重用的cell
     BOOL editBL;
+    UIView *bottonView;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;

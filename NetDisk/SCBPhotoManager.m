@@ -32,6 +32,7 @@
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }

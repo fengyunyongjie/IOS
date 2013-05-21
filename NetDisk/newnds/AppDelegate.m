@@ -27,9 +27,17 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
+    [self.myTabBarController setNeed_to_custom:YES];
+    [self.myTabBarController setTab_bar_bg:[UIImage imageNamed:@"foot_bg.png"]];
+    [self.myTabBarController setNormal_image:[NSArray arrayWithObjects:@"tab_btn_myroom@2x.png",@"tab_btn_favorite@2x.png",@"tab_btn_photo@2x.png",@"tab_btn_upload@2x.png",@"tab_btn_setting@2x.png", nil]];
+    [self.myTabBarController setSelect_image:[NSArray arrayWithObjects:@"tab_btn_myroom_h@2x.png",@"tab_btn_favorite_h@2x.png",@"tab_btn_photo_h@2x.png",@"tab_btn_upload_h@2x.png",@"tab_btn_setting_h@2x.png",nil]];
+    [self.myTabBarController setShow_style:UItabbarControllerShowStyleIconAndText];
+    [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, 49)];
+    [self.myTabBarController setFont:[UIFont boldSystemFontOfSize:10.0]];
+    [self.myTabBarController setFont_color:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0]];
+    
     //    UINavigationController *root=[[UINavigationController alloc] initWithRootViewController:self.myTabBarController];
         self.window.rootViewController=self.myTabBarController;
-    
     //！！！程序启动时不需要每次都进入登录窗口，只有注销和第一次启动时才进入登录窗口，所以我所这儿注释掉，在MyTabBarController判断！是否显示登录页面
     
     //LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
@@ -68,7 +76,7 @@
     SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
     req.bText = NO;
     req.message = message;
-    //req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
+    req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
     [WXApi sendReq:req];
 }
 
