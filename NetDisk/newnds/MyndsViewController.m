@@ -453,7 +453,7 @@
                   [t_fl isEqualToString:@"jpeg"]||
                   [t_fl isEqualToString:@"bmp"])
         {
-            NSDictionary *dic = [self.listArray objectAtIndex:indexPath.row];
+            NSDictionary *dic = [self.listArray objectAtIndex:row];
             NSString *compressaddr=[dic objectForKey:@"compressaddr"];
             compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
             NSString *path=[YNFunctions getIconCachePath];
@@ -755,12 +755,20 @@
 {
     if (!decelerate)
 	{
+        if (self.selectedIndexPath) {
+            [self hideOptionCell];
+            return;
+        }
         [self loadImagesForOnscreenRows];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    if (self.selectedIndexPath) {
+        [self hideOptionCell];
+        return;
+    }
     [self loadImagesForOnscreenRows];
 }
 
