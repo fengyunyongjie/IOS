@@ -216,13 +216,13 @@
                 [photo_demo release];
             }
         }
-//        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
-//        photoDetalViewController.deleteDelegate = self;
-//        [self presentViewController:photoDetalViewController animated:YES completion:^{
-//            //[photoDetalViewController setTimeLine:image_button.timeLine];
-//            [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
-//            [photoDetalViewController release];
-//        }];
+        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
+        photoDetalViewController.deleteDelegate = self;
+        [self presentViewController:photoDetalViewController animated:YES completion:^{
+            //[photoDetalViewController setTimeLine:image_button.timeLine];
+            [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
+            [photoDetalViewController release];
+        }];
         
     }
 

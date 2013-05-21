@@ -12,6 +12,7 @@
 #import "MyndsViewController.h"
 #import "PhotoViewController.h"
 #import "FavoritesViewController.h"
+#import "UploadViewController.h"
 
 @interface MYTabBarController ()
 
@@ -58,7 +59,7 @@
         
         viewController4=[[[UINavigationController alloc] init] autorelease];
         viewController4.title=@"fourth";
-        UIViewController * rootView4=[[[UIViewController alloc] init] autorelease];
+        UploadViewController * rootView4=[[[UploadViewController alloc] initWithNibName:@"UploadViewController" bundle:nil] autorelease];
         rootView4.title=@"上传";
         [rootView4.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_upload.png"]];
         [viewController4 pushViewController:rootView4 animated:YES];

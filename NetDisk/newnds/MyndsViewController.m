@@ -420,7 +420,7 @@
             tag=[[FavoritesData sharedFavoritesData] objectForKey:f_id];
             if (tag!=nil) {
                 if (cell.imageView.subviews.count==0) {
-                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
+                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
                     CGRect r=[tagView frame];
                     r.origin.x=20;
                     r.origin.y=20;
@@ -432,7 +432,7 @@
             }else
             {
                 if (cell.imageView.subviews.count==0) {
-                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
+                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
                     CGRect r=[tagView frame];
                     r.origin.x=20;
                     r.origin.y=20;
@@ -466,6 +466,15 @@
                 UIImage *icon=[UIImage imageWithContentsOfFile:path];
                 CGSize itemSize = CGSizeMake(40, 40);
                 UIGraphicsBeginImageContext(itemSize);
+                CGRect theR=CGRectMake(0, 0, itemSize.width, itemSize.height);
+                if (icon.size.width>icon.size.height) {
+                    theR.size.width=icon.size.width/(icon.size.height/itemSize.height);
+                    theR.origin.x=-(theR.size.width/2)-itemSize.width;
+                }else
+                {
+                    theR.size.height=icon.size.height/(icon.size.width/itemSize.width);
+                    theR.origin.y=-(theR.size.height/2)-itemSize.height;
+                }
                 CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
                 [icon drawInRect:imageRect];
                 UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
