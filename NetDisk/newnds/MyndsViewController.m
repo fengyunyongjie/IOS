@@ -175,12 +175,19 @@
         if (self.dataDic) {
             self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
             NSMutableArray *a=[NSMutableArray array];
+            NSMutableArray *b=[NSMutableArray array];
             for (int i=0; i<self.listArray.count; i++) {
                 FileItem *fileItem=[[[FileItem alloc]init]autorelease];
                 [a addObject:fileItem];
                 [fileItem setChecked:NO];
+                NSDictionary *dic=[self.listArray objectAtIndex:i];
+                NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
+                if ([f_mime isEqualToString:@"directory"]) {
+                    [b addObject:dic];
+                }
             }
             self.m_fileItems=a;
+            self.finderArray=b;
             [self.tableView reloadData];
         }
     }
@@ -202,11 +209,16 @@
 {
     // Return the number of rows in the section.
     if (self.dataDic) {
-        NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
-        if (self.selectedIndexPath) {
-            return [a count]+1;
+        if (self.myndsType==kMyndsTypeSelect) {
+            return [self.finderArray count];
+        }else
+        {
+            NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
+            if (self.selectedIndexPath) {
+                return [a count]+1;
+            }
+            return [a count];
         }
-        return [a count];
     }
     return 1;
 }
@@ -333,6 +345,28 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.myndsType==kMyndsTypeSelect) {
+        static NSString *CellIdentifier = @"Cell";
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[[FileItemTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                             reuseIdentifier:CellIdentifier] autorelease];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        if (self.dataDic) {
+            NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
+            NSDictionary *this=(NSDictionary *)[a objectAtIndex:indexPath.row];
+
+            
+            NSString *name= [this objectForKey:@"f_name"];
+            NSString *f_modify=[this objectForKey:@"f_modify"];
+            cell.textLabel.text=name;
+            cell.detailTextLabel.text=f_modify;
+            cell.imageView.image = [UIImage imageNamed:@"icon_Folder.png"];
+        return cell;
+        }
+    }
     if (self.selectedIndexPath && self.selectedIndexPath.row==indexPath.row && self.selectedIndexPath.section==indexPath.section) {
         static NSString *CellIdentifier = @"Option Cell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -666,12 +700,19 @@
     self.dataDic=datadic;
     self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
     NSMutableArray *a=[NSMutableArray array];
+    NSMutableArray *b=[NSMutableArray array];
     for (int i=0; i<self.listArray.count; i++) {
         FileItem *fileItem=[[[FileItem alloc]init]autorelease];
         [a addObject:fileItem];
         [fileItem setChecked:NO];
+        NSDictionary *dic=[self.listArray objectAtIndex:i];
+        NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
+        if ([f_mime isEqualToString:@"directory"]) {
+            [b addObject:dic];
+        }
     }
     self.m_fileItems=a;
+    self.finderArray=b;
     if (self.dataDic) {
         [self.tableView reloadData];
     }else

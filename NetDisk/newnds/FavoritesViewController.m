@@ -77,6 +77,16 @@
     NSString *t_fl = [[dic objectForKey:@"f_mime"] lowercaseString];
     cell.textLabel.text=name;
     cell.detailTextLabel.text=f_modify;
+    if (cell.imageView.subviews.count==0) {
+        UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
+        CGRect r=[tagView frame];
+        r.origin.x=20;
+        r.origin.y=20;
+        [tagView setFrame:r];
+        [cell.imageView addSubview:tagView];
+    }
+//    UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
+    
     if ([t_fl isEqualToString:@"directory"]) {
         cell.imageView.image = [UIImage imageNamed:@"icon_Folder.png"];
     }else if ([t_fl isEqualToString:@"png"]||
