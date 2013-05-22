@@ -29,6 +29,9 @@
     NSString *user_id; //用户id
     NSString *key_string; //时间轴的key
     NSString *oderByString; //排序字符串
+    BOOL isSelected;
+    BOOL isShowImage;
+    NSString *timeLine;
 }
 @property(nonatomic,retain) NSString *f_mime;
 @property(nonatomic,assign) NSInteger f_size;
@@ -47,5 +50,8 @@
 @property(nonatomic,retain) NSString *user_id;
 @property(nonatomic,retain) NSString *key_string;
 @property(nonatomic,retain) NSString *oderByString;
+@property(nonatomic,assign) BOOL isSelected;
+@property(nonatomic,assign) BOOL isShowImage;
+@property(nonatomic,retain) NSString *timeLine;
 
 @end

@@ -42,6 +42,7 @@
 {
     
     timeDictionary = [[NSMutableDictionary alloc] init];
+    photoDictionary  = [[NSMutableDictionary alloc] init];
     allKeysArray = [[NSMutableArray alloc] init];
     timeLineAllArray = timeLineArray;
     timeLineTotalNumber = [timeLineArray count];
@@ -128,7 +129,9 @@
                             tableArray = [[NSMutableArray alloc] init];
                         }
                     }
-                    [tableArray addObject:photo_demo];
+                    [photo_demo setTimeLine:date_type];
+                    [tableArray addObject:[NSString stringWithFormat:@"%i",photo_demo.f_id]];
+                    [photoDictionary setObject:photo_demo forKey:[NSString stringWithFormat:@"%i",photo_demo.f_id]];
                     [photo_demo release];
                 }
                 NSLog(@"date_type:%@",date_type);
@@ -288,7 +291,7 @@
     else if([type_string isEqualToString:[[PHOTO_GENERAL componentsSeparatedByString:@"/"] lastObject]])
     {
         [self mangerGobackData:diction];
-        [photoDelegate getPhotoGeneral:timeDictionary];
+        [photoDelegate getPhotoGeneral:timeDictionary photoDictioin:photoDictionary];
         if(timeLineNowNumber<timeLineTotalNumber)
         {
             [self getPhotoGeneral];

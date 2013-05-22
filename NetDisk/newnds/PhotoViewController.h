@@ -25,7 +25,7 @@
 #define DEBUG_PUBLIC_EDITION 1
 #endif
 
-@interface PhotoViewController : UIViewController<SCBPhotoDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,DeleteDelegate>
+@interface PhotoViewController : UIViewController<SCBPhotoDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,DeleteDelegate,UIAlertViewDelegate>
 {
     SCBPhotoManager *photoManager;
     NSInteger show_height;
@@ -37,10 +37,13 @@
     NSString *user_token;
     NSMutableArray *allKeys;
     
-    NSMutableArray *_arrVisibleCells; // 当前可见的cell
-	NSMutableDictionary *_dicReuseCells; //重用的cell
+    NSMutableArray *_arrVisibleCells; // 重用的cell
+	NSMutableDictionary *_dicReuseCells; //选中的数据
     BOOL editBL;
     UIView *bottonView;
+    NSMutableDictionary *photo_diction;
+    
+    UIScrollView *scroll_view;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
@@ -49,5 +52,9 @@
 @property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
 @property(nonatomic,retain) NSString *user_id;
 @property(nonatomic,retain) NSString *user_token;
+@property(nonatomic,retain) NSMutableArray *allKeys;
+@property(nonatomic,retain) NSMutableArray *_arrVisibleCells; // 重用的cell
+@property(nonatomic,retain) NSMutableDictionary *_dicReuseCells; //选中的数据
+@property(nonatomic,retain) UIView *bottonView;
 
 @end

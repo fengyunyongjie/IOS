@@ -10,7 +10,7 @@
 
 @implementation PhohoDemo
 @synthesize compressaddr,date,f_id,f_mime,f_modify,f_name,f_ownerid,f_pid,f_size,img_create,total,f_create;
-@synthesize date_type,key_string,oderByString,user_id,user_name;
+@synthesize date_type,key_string,oderByString,user_id,user_name,isSelected,isShowImage,timeLine;
 
 -(void)dealloc
 {
@@ -26,6 +26,7 @@
     [oderByString release];
     [user_id release];
     [user_name release];
+    [timeLine release];
     [super dealloc];
 }
 

@@ -14,13 +14,13 @@
     NSString *timeLine;
     NSInteger timeIndex;
     PhohoDemo *demo;
-    BOOL isShowImage;
+    UIImageView *bgImageView;
 }
 
 @property(nonatomic,retain) NSString *timeLine;
 @property(nonatomic,assign) NSInteger timeIndex;
 @property(nonatomic,retain) PhohoDemo *demo;
-@property(nonatomic,assign) BOOL isShowImage;
+@property(nonatomic,retain) UIImageView *bgImageView;
 
 -(void)loadImage:(PhohoDemo *)demos;
 //获取图片路径

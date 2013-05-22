@@ -9,6 +9,7 @@
 #import "PhotoDetailViewController.h"
 #import "PhohoDemo.h"
 #import "PhotoDetailView.h"
+#import "AppDelegate.h"
 
 @interface PhotoDetailViewController ()
 
@@ -19,6 +20,7 @@
 @synthesize topBar,bottonBar,pageLabel;
 @synthesize deleteDelegate;
 @synthesize timeLine;
+@synthesize photo_dictionary;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -95,8 +97,9 @@
     UIButton *centerButton = [[UIButton alloc] initWithFrame:centerRect];
     [centerButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [centerButton.titleLabel setTextColor:[UIColor blackColor]];
+    [centerButton addTarget:self action:@selector(shareClicked:) forControlEvents:UIControlEventTouchUpInside];
     //    [centerButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
-    [centerButton setTitle:@"下载" forState:UIControlStateNormal];
+    [centerButton setTitle:@"分享" forState:UIControlStateNormal];
     [centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [centerButton setBackgroundColor:[UIColor clearColor]];
     [bottonBar addSubview:centerButton];
@@ -147,12 +150,16 @@
     currPageNumber = indexTag;
     for(int i=0;i<[allArray count];i++)
     {
-        PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
-        if(i==indexTag)
+        if([[allArray objectAtIndex:i] isKindOfClass:[NSString class]])
         {
-            NSLog(@"demoID:%@",demo.f_name);
+            PhohoDemo *demo = [photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:i]];
+            [self addCenterImageView:demo currPage:i totalCount:[allPhotoDemoArray count]];
         }
-        [self addCenterImageView:demo currPage:i totalCount:[allPhotoDemoArray count]];
+        else if([[allArray objectAtIndex:i] isKindOfClass:[PhohoDemo class]])
+        {
+            PhohoDemo *demo = [allArray objectAtIndex:i];
+            [self addCenterImageView:demo currPage:i totalCount:[allArray count]];
+        }
     }
     [scroll_View setContentOffset:CGPointMake(320*indexTag, 0) animated:NO];
     //页数
@@ -214,12 +221,19 @@
     {
         for(int i =0;i<[allPhotoDemoArray count];i++)
         {
-            PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
+            PhohoDemo *demo = nil;
+            if([[allPhotoDemoArray objectAtIndex:i] isKindOfClass:[NSString class]])
+            {
+                demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:i]];
+            }
+            else if([[allPhotoDemoArray objectAtIndex:i] isKindOfClass:[PhohoDemo class]])
+            {
+                demo = [allPhotoDemoArray objectAtIndex:i];
+            }
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
             [downImage setImageUrl:demo.f_mime];
             [downImage setImageViewIndex:imageTag+i];
-//            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
         }
@@ -228,12 +242,19 @@
     {
         for(int i =0;i<3;i++)
         {
-            PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
+            PhohoDemo *demo = nil;
+            if([[allPhotoDemoArray objectAtIndex:i] isKindOfClass:[NSString class]])
+            {
+                demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:i]];
+            }
+            else if([[allPhotoDemoArray objectAtIndex:i] isKindOfClass:[PhohoDemo class]])
+            {
+                demo = [allPhotoDemoArray objectAtIndex:i];
+            }
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
             [downImage setImageUrl:demo.f_mime];
             [downImage setImageViewIndex:imageTag+i];
-//            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
         }
@@ -242,12 +263,19 @@
     {
         for(int i =indexTag-2;i<indexTag+1;i++)
         {
-            PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
+            PhohoDemo *demo = nil;
+            if([[allPhotoDemoArray objectAtIndex:i] isKindOfClass:[NSString class]])
+            {
+                demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:i]];
+            }
+            else if([[allPhotoDemoArray objectAtIndex:i] isKindOfClass:[PhohoDemo class]])
+            {
+                demo = [allPhotoDemoArray objectAtIndex:i];
+            }
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
             [downImage setImageUrl:demo.f_mime];
             [downImage setImageViewIndex:imageTag+i];
-//            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
         }
@@ -256,12 +284,19 @@
     {
         for(int i =indexTag-1;i<indexTag+2;i++)
         {
-            PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:i];
+            PhohoDemo *demo = nil;
+            if([[allPhotoDemoArray objectAtIndex:i] isKindOfClass:[NSString class]])
+            {
+                demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:i]];
+            }
+            else if([[allPhotoDemoArray objectAtIndex:i] isKindOfClass:[PhohoDemo class]])
+            {
+                demo = [allPhotoDemoArray objectAtIndex:i];
+            }
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
             [downImage setImageUrl:demo.f_mime];
             [downImage setImageViewIndex:imageTag+i];
-//            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
         }
@@ -389,10 +424,53 @@
     [self showIndexTag:page];
 }
 
-#pragma mark 删除按钮
+#pragma mark 分享按钮事件
+-(void)shareClicked:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"分享到" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"微信朋友圈" otherButtonTitles:@"微信好友",@"新浪微博", nil];
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+}
+
+#pragma mark UIActionSheetDelegate
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+    PhohoDemo *demo = nil;
+    if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[NSString class]])
+    {
+        demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:page]];
+    }
+    else if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[PhohoDemo class]])
+    {
+        demo = [allPhotoDemoArray objectAtIndex:page];
+    }
+    if(buttonIndex == 0)
+    {
+        //微信朋友圈
+        [app_delegate sendImageContentIsFiends:YES path:demo.f_mime];
+    }
+    if(buttonIndex == 1)
+    {
+        //微信好友
+        [app_delegate sendImageContentIsFiends:NO path:demo.f_mime];
+    }
+    if(buttonIndex == 2)
+    {
+        //新浪微博
+        [app_delegate ssoButtonPressed];
+    }
+    if(buttonIndex == 3)
+    {
+        
+        
+    }
+}
+
+#pragma mark 删除按钮事件
 -(void)deleteClicked:(id)sender
 {
-    
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
     [alertView show];
     [alertView release];
@@ -405,7 +483,15 @@
     {
         int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
         deletePage = page;
-        PhohoDemo *demo = (PhohoDemo *)[allPhotoDemoArray objectAtIndex:page];
+        PhohoDemo *demo = nil;
+        if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[NSString class]])
+        {
+            demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:page]];
+        }
+        else if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[PhohoDemo class]])
+        {
+            demo = [allPhotoDemoArray objectAtIndex:page];
+        }
         SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
         [photoManager setPhotoDelegate:self];
         NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];

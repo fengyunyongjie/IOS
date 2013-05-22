@@ -9,13 +9,17 @@
 #import "PhotoImageButton.h"
 
 @implementation PhotoImageButton
-@synthesize timeLine,timeIndex,demo,isShowImage;
+@synthesize timeLine,timeIndex,demo,bgImageView;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [bgImageView setImage:[UIImage imageNamed:@"interestSelected.png"]];
+        [bgImageView setHidden:YES];
+        [self addSubview:bgImageView];
     }
     return self;
 }
@@ -70,6 +74,7 @@
 {
     [timeLine release];
     [demo release];
+    [bgImageView release];
     [super dealloc];
 }
 

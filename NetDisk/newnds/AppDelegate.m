@@ -35,6 +35,7 @@
     [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, 49)];
     [self.myTabBarController setFont:[UIFont boldSystemFontOfSize:10.0]];
     [self.myTabBarController setFont_color:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0]];
+    [self.myTabBarController setHilighted_color:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0]];
     
     //    UINavigationController *root=[[UINavigationController alloc] initWithRootViewController:self.myTabBarController];
         self.window.rootViewController=self.myTabBarController;
@@ -44,8 +45,10 @@
     //    [self.window.rootViewController presentViewController:lv animated:YES completion:^(void){}];
     //self.window.rootViewController = lv;
     //程序启动时，在代码中向微信终端注册你的id
-    
     [WXApi registerApp:@"wxdcc0186c9f173352"];
+    //启动时注册微博
+    [WeiboSDK enableDebugMode:YES];
+    [WeiboSDK registerApp:kAppKey];
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -65,18 +68,31 @@
     }
 }
 
-- (void) sendImageContent
+//获取图片路径
+- (NSString*)get_image_save_file_path:(NSString*)image_path
+{
+    NSArray *path_array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *documentDir = [path_array objectAtIndex:0];
+    NSArray *array=[image_path componentsSeparatedByString:@"/"];
+    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+    return path;
+}
+
+- (void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path
 {
     WXMediaMessage *message = [WXMediaMessage message];
-    [message setThumbImage:[UIImage imageNamed:@"icon_Load.png"]];
+    NSString *filePath = [self get_image_save_file_path:path];
+    [message setThumbImage:[UIImage imageWithContentsOfFile:filePath]];
     WXImageObject *ext = [WXImageObject object];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"icon_Load" ofType:@"png"];
-    ext.imageData = [NSData dataWithContentsOfFile:filePath] ;
+    ext.imageData = [NSData dataWithContentsOfFile:filePath];
     message.mediaObject = ext;
     SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
     req.bText = NO;
     req.message = message;
-    req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
+    if(bl)
+    {
+        req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
+    }
     [WXApi sendReq:req];
 }
 
@@ -86,7 +102,7 @@
 }
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return  [WXApi handleOpenURL:url delegate:self];
+    return  [WXApi handleOpenURL:url delegate:self] || [WeiboSDK handleOpenURL:url delegate:self];;
 }
 
 -(void)setLogin
@@ -121,6 +137,105 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark 新浪微博模块
+
+//微博授权
+- (void)ssoButtonPressed
+{
+    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
+    request.redirectURI = @"http://";
+    request.scope = @"email,direct_messages_write";
+    request.userInfo = @{@"SSO_From": @"newnds",
+                         @"Other_Info_1": [NSNumber numberWithInt:123],
+                         @"Other_Info_2": @[@"obj1", @"obj2"],
+                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
+    [WeiboSDK sendRequest:request];
+}
+
+- (void)didReceiveWeiboRequest:(WBBaseRequest *)request
+{
+    if ([request isKindOfClass:WBProvideMessageForWeiboRequest.class])
+    {
+//        ProvideMessageForWeiboViewController *controller = [[[ProvideMessageForWeiboViewController alloc] init] autorelease];
+//        [self.viewController presentModalViewController:controller animated:YES];
+        NSLog(@"ProvideMessageForWeiboViewController");
+    }
+}
+
+//授权成功后的回调
+- (void)didReceiveWeiboResponse:(WBBaseResponse *)response
+{
+    if ([response isKindOfClass:WBSendMessageToWeiboResponse.class])
+    {
+        NSString *title = @"发送结果";
+        NSString *message = [NSString stringWithFormat:@"响应状态: %d\n响应UserInfo数据: %@\n原请求UserInfo数据: %@",
+                             response.statusCode, response.userInfo, response.requestUserInfo];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+    else if ([response isKindOfClass:WBAuthorizeResponse.class])
+    {
+        NSString *title = @"认证结果";
+        NSString *message = [NSString stringWithFormat:@"响应状态: %d\nresponse.userId: %@\nresponse.accessToken: %@\n响应UserInfo数据: %@\n原请求UserInfo数据: %@",
+                             response.statusCode, [(WBAuthorizeResponse *)response userID], [(WBAuthorizeResponse *)response accessToken], response.userInfo, response.requestUserInfo];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+}
+
+//微博分享
+- (void)shareButtonPressed
+{
+    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare:1]];
+    request.userInfo = @{@"ShareMessageFrom": @"SendMessageToWeiboViewController",
+                         @"Other_Info_1": [NSNumber numberWithInt:123],
+                         @"Other_Info_2": @[@"obj1", @"obj2"],
+                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
+    //    request.shouldOpenWeiboAppInstallPageIfNotInstalled = NO;
+    
+    [WeiboSDK sendRequest:request];
+}
+
+//分享信息
+- (WBMessageObject *)messageToShare:(int)type //type 0是text，1是image，2是多媒体
+{
+    WBMessageObject *message = [WBMessageObject message];
+    
+    if (type == 1)
+    {
+        message.text = @"测试通过WeiboSDK发送文字到微博!";
+    }
+    
+    if (type == 2)
+    {
+        WBImageObject *image = [WBImageObject object];
+        image.imageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"image_1" ofType:@"jpg"]];
+        message.imageObject = image;
+    }
+    
+    if (type == 3)
+    {
+        WBWebpageObject *webpage = [WBWebpageObject object];
+        webpage.objectID = @"identifier1";
+        webpage.title = @"分享网页标题";
+        webpage.description = [NSString stringWithFormat:@"分享网页内容简介-%.0f", [[NSDate date] timeIntervalSince1970]];
+        webpage.thumbnailData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"image_2" ofType:@"jpg"]];
+        webpage.webpageUrl = @"http://sina.cn?a=1";
+        message.mediaObject = webpage;
+    }
+    return message;
 }
 
 @end

@@ -20,7 +20,7 @@
 
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary;
 
--(void)getPhotoGeneral:(NSDictionary *)dictionary;
+-(void)getPhotoGeneral:(NSDictionary *)dictionary photoDictioin:(NSMutableDictionary *)photoDic;
 
 -(void)getPhotoDetail:(NSDictionary *)dictionary;
 
@@ -36,6 +36,7 @@
     int timeLineNowNumber;
     NSArray *timeLineAllArray;
     NSMutableDictionary *timeDictionary;
+    NSMutableDictionary *photoDictionary;
     NSMutableData *matableData;
     NSMutableArray *allKeysArray;
 }

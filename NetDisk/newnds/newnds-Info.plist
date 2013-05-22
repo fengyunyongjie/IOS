@@ -57,6 +57,16 @@
 				<string>wxdcc0186c9f173352</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>xinlang</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sinaweibosso.3477197772</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1.1.0-M3</string>

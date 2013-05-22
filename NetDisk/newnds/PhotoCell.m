@@ -30,7 +30,8 @@
         backRect.origin.x += 79;
         bg2 = [[UIImageView alloc] initWithFrame:backRect];
         [self addSubview:bg2];
-        imageViewButton2 = [[PhotoImageButton alloc] initWithFrame:backRect];
+        imageViewButton2 = [PhotoImageButton buttonWithType:UIButtonTypeCustom];
+        [imageViewButton2 setFrame:backRect];
         [imageViewButton2.layer setBorderColor:[bg_color CGColor]];
         [imageViewButton2.layer setBorderWidth:1];
         [self addSubview:imageViewButton2];
@@ -38,7 +39,8 @@
         backRect.origin.x += 79;
         bg3 = [[UIImageView alloc] initWithFrame:backRect];
         [self addSubview:bg3];
-        imageViewButton3 = [[PhotoImageButton alloc] initWithFrame:backRect];
+        imageViewButton3 = [PhotoImageButton buttonWithType:UIButtonTypeCustom];
+        [imageViewButton3 setFrame:backRect];
         [imageViewButton3.layer setBorderColor:[bg_color CGColor]];
         [imageViewButton3.layer setBorderWidth:1];
         [self addSubview:imageViewButton3];
@@ -46,7 +48,8 @@
         backRect.origin.x += 79;
         bg4 = [[UIImageView alloc] initWithFrame:backRect];
         [self addSubview:bg4];
-        imageViewButton4 = [[PhotoImageButton alloc] initWithFrame:backRect];
+        imageViewButton4 = [PhotoImageButton buttonWithType:UIButtonTypeCustom];
+        [imageViewButton4 setFrame:backRect];
         [imageViewButton4.layer setBorderColor:[bg_color CGColor]];
         [imageViewButton4.layer setBorderWidth:1];
         [self addSubview:imageViewButton4];
@@ -78,6 +81,21 @@
                 imageDemo = [UIImage imageWithContentsOfFile:path];
                 [self loadImageView:imageDemo button:bg1 number:1];
             }
+            if(isSelected && demo.isSelected)
+            {
+                [imageViewButton1 setAlpha:0.5];
+                [imageViewButton1 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+            }
+            else if(isSelected)
+            {
+                [imageViewButton1 setAlpha:0.5];
+            }
+            else
+            {
+                [imageViewButton1 setAlpha:1.0];
+                [imageViewButton1 setBackgroundImage:nil forState:UIControlStateNormal];
+                [demo setIsSelected:NO];
+            }
         }
         else if(i%4==1)
         {
@@ -91,6 +109,21 @@
             {
                 imageDemo = [UIImage imageWithContentsOfFile:path];
                 [self loadImageView:imageDemo button:bg2 number:2];
+            }
+            if(isSelected && demo.isSelected)
+            {
+                [imageViewButton1 setAlpha:0.5];
+                [imageViewButton1 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+            }
+            else if(isSelected)
+            {
+                [imageViewButton1 setAlpha:0.5];
+            }
+            else
+            {
+                [imageViewButton1 setAlpha:1.0];
+                [imageViewButton1 setBackgroundImage:nil forState:UIControlStateNormal];
+                [demo setIsSelected:NO];
             }
         }
         else if(i%4==2)
@@ -106,6 +139,21 @@
                 imageDemo = [UIImage imageWithContentsOfFile:path];
                 [self loadImageView:imageDemo button:bg3 number:3];
             }
+            if(isSelected && demo.isSelected)
+            {
+                [imageViewButton1 setAlpha:0.5];
+                [imageViewButton1 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+            }
+            else if(isSelected)
+            {
+                [imageViewButton1 setAlpha:0.5];
+            }
+            else
+            {
+                [imageViewButton1 setAlpha:1.0];
+                [imageViewButton1 setBackgroundImage:nil forState:UIControlStateNormal];
+                [demo setIsSelected:NO];
+            }
         }
         else if(i%4==3)
         {
@@ -119,6 +167,21 @@
             {
                 imageDemo = [UIImage imageWithContentsOfFile:path];
                 [self loadImageView:imageDemo button:bg4 number:4];
+            }
+            if(isSelected && demo.isSelected)
+            {
+                [imageViewButton1 setAlpha:0.5];
+                [imageViewButton1 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+            }
+            else if(isSelected)
+            {
+                [imageViewButton1 setAlpha:0.5];
+            }
+            else
+            {
+                [imageViewButton1 setAlpha:1.0];
+                [imageViewButton1 setBackgroundImage:nil forState:UIControlStateNormal];
+                [demo setIsSelected:NO];
             }
         }
     }
@@ -299,49 +362,63 @@
 
 -(void)downImage
 {
-    if(!imageViewButton1.isShowImage)
+    PhohoDemo *demo = imageViewButton1.demo;
+    if(demo)
     {
-        PhohoDemo *demo = imageViewButton1.demo;
-        DownImage *downImage = [[DownImage alloc] init];
-        [downImage setFileId:demo.f_id];
-        [downImage setImageUrl:demo.f_name];
-        [downImage setIndex:1];
-        [downImage setDelegate:self];
-        [downImage startDownload];
-        [downImage release];
+        if(!demo.isShowImage)
+        {
+            DownImage *downImage = [[DownImage alloc] init];
+            [downImage setFileId:demo.f_id];
+            [downImage setImageUrl:demo.f_name];
+            [downImage setIndex:1];
+            [downImage setDelegate:self];
+            [downImage startDownload];
+            [downImage release];
+        }
     }
-    if(!imageViewButton2.isShowImage)
+    demo = imageViewButton2.demo;
+    if(demo)
     {
-        PhohoDemo *demo = imageViewButton2.demo;
-        DownImage *downImage = [[DownImage alloc] init];
-        [downImage setFileId:demo.f_id];
-        [downImage setImageUrl:demo.f_name];
-        [downImage setIndex:2];
-        [downImage setDelegate:self];
-        [downImage startDownload];
-        [downImage release];
+        if(!demo.isShowImage)
+        {
+            DownImage *downImage = [[DownImage alloc] init];
+            [downImage setFileId:demo.f_id];
+            [downImage setImageUrl:demo.f_name];
+            [downImage setIndex:2];
+            [downImage setDelegate:self];
+            [downImage startDownload];
+            [downImage release];
+        }
     }
-    if(!imageViewButton3.isShowImage)
+    
+    demo = imageViewButton3.demo;
+    if(demo)
     {
-        PhohoDemo *demo = imageViewButton3.demo;
-        DownImage *downImage = [[DownImage alloc] init];
-        [downImage setFileId:demo.f_id];
-        [downImage setImageUrl:demo.f_name];
-        [downImage setIndex:3];
-        [downImage setDelegate:self];
-        [downImage startDownload];
-        [downImage release];
+        if(!demo.isShowImage)
+        {
+            DownImage *downImage = [[DownImage alloc] init];
+            [downImage setFileId:demo.f_id];
+            [downImage setImageUrl:demo.f_name];
+            [downImage setIndex:3];
+            [downImage setDelegate:self];
+            [downImage startDownload];
+            [downImage release];
+        }
     }
-    if(!imageViewButton4.isShowImage)
+    
+    demo = imageViewButton4.demo;
+    if(demo)
     {
-        PhohoDemo *demo = imageViewButton4.demo;
-        DownImage *downImage = [[DownImage alloc] init];
-        [downImage setFileId:demo.f_id];
-        [downImage setImageUrl:demo.f_name];
-        [downImage setIndex:4];
-        [downImage setDelegate:self];
-        [downImage startDownload];
-        [downImage release];
+        if(!demo.isShowImage)
+        {
+            DownImage *downImage = [[DownImage alloc] init];
+            [downImage setFileId:demo.f_id];
+            [downImage setImageUrl:demo.f_name];
+            [downImage setIndex:4];
+            [downImage setDelegate:self];
+            [downImage startDownload];
+            [downImage release];
+        }
     }
 }
 

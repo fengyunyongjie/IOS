@@ -162,13 +162,14 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self presendLoginViewController];
-    [self rechange_the_selected_index:0];
     [super viewDidAppear:animated];
-    if (need_to_custom && !is_did_load)
-    {
-        is_did_load = YES;
-        tab_num = [self.viewControllers count];
-        [self add_custom_view_layer];
+    if (self.selectedIndex==0) {
+        if (need_to_custom && !is_did_load)
+        {
+            is_did_load = YES;
+            tab_num = [self.viewControllers count];
+            [self add_custom_view_layer];
+        }
     }
 }
 
@@ -225,7 +226,7 @@
         animation.subtype = kCATransitionFromTop;
         
         CGRect frame = [custom_view frame];
-        frame.origin.y = 431;
+        frame.origin.y = allHeight-49;
         [custom_view setFrame:frame];
         [custom_view.layer removeAllAnimations];
         [custom_view.layer addAnimation:animation forKey:@"animated"];

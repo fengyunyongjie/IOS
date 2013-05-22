@@ -26,6 +26,8 @@
     UIButton *selected2;
     UIButton *selected3;
     UIButton *selected4;
+    
+    BOOL isSelected;
 }
 
 @property(nonatomic,retain) PhotoImageButton *imageViewButton1;
@@ -43,7 +45,12 @@
 @property(nonatomic,retain) UIButton *selected3;
 @property(nonatomic,retain) UIButton *selected4;
 
+@property(nonatomic,assign) BOOL isSelected;
+
 -(void)array:(NSArray *)array index:(int)index timeLine:(NSString *)timeLine nunber:(int)number;
 -(void)downImage;
+-(void)loadImageView:(UIImage *)image button:(UIImageView *)image_button number:(int)number;
+- (NSString*)get_image_save_file_path:(NSString*)image_path;
+- (BOOL)image_exists_at_file_path:(NSString *)image_path;
 
 @end
