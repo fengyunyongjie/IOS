@@ -70,7 +70,7 @@
         [activity_indicator startAnimating];
         [self.view addSubview:activity_indicator];
     }
-    
+    downArray = [[NSMutableArray alloc] init];
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
@@ -256,6 +256,7 @@
     }
     scroll_view = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-49)];
     [scroll_view setBackgroundColor:[UIColor whiteColor]];
+    [scroll_view setDelegate:self];
     [self.view addSubview:scroll_view];
     NSArray *array = [allDictionary objectForKey:@"timeLine"];
     int scrollview_heigth = 0;
@@ -282,7 +283,7 @@
                 scrollview_heigth += 79;
             }
             CGRect imageButtonRect = CGRectMake((j%4)*79+4, scrollview_heigth+4, 75, 75);
-            PhotoImageButton *imageButton = [[PhotoImageButton alloc] initWithFrame:imageButtonRect];
+            PhotoImageButton *imageButton = [[[PhotoImageButton alloc] initWithFrame:imageButtonRect] autorelease];
             [imageButton addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchUpInside];
             [imageButton setDemo:demo];
             [imageButton setTag:demo.f_id];
@@ -294,8 +295,12 @@
                 UIImage *imageDemo = [UIImage imageWithContentsOfFile:path];
                 [imageButton setBackgroundImage:imageDemo forState:UIControlStateNormal];
             }
+            else
+            {
+                UIImage *imageDemo = [UIImage imageNamed:@"icon_Load.png"];
+                [imageButton setBackgroundImage:imageDemo forState:UIControlStateNormal];
+            }
             [scroll_view addSubview:imageButton];
-            [imageButton release];
             [demo setIsSelected:NO];
         }
         scrollview_heigth += 79+4;
@@ -313,6 +318,93 @@
     
 }
 
+#pragma mark 滑动结束后，加载数据
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    NSLog(@"开始");
+    if(!bl)
+    {
+        NSLog(@"太快了吧");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self getAllDown];
+        });
+        bl = TRUE;
+    }
+//    int number = [scrollView contentOffset].y/80*4;
+//    NSArray *allArray = [photo_diction allKeys];
+//    int allcount = [allArray count];
+//    if(number>allcount&&allcount>10)
+//    {
+//        for(int i=allcount-1;i>=allcount-10;i--)
+//        {
+//            PhohoDemo *demo = [photo_diction objectForKey:[allArray objectAtIndex:i]];
+//            DownImage *downImage = [[[DownImage alloc] init] autorelease];
+//            [downImage setFileId:demo.f_id];
+//            [downImage setImageUrl:demo.f_name];
+//            [downImage setImageViewIndex:demo.f_id];
+//            [downImage setDelegate:self];
+//            [downImage startDownload];
+//        }
+//    }
+//    else if(number<allcount&&number+10<allcount)
+//    {
+//        for(int i=number;i<number+10;i++)
+//        {
+//            PhohoDemo *demo = [photo_diction objectForKey:[allArray objectAtIndex:i]];
+//            DownImage *downImage = [[[DownImage alloc] init] autorelease];
+//            [downImage setFileId:demo.f_id];
+//            [downImage setImageUrl:demo.f_name];
+//            [downImage setImageViewIndex:demo.f_id];
+//            [downImage setDelegate:self];
+//            [downImage startDownload];
+//        }
+//    }
+//    else if(number<allcount&&number+10>allcount)
+//    {
+//        for(int i=number;i<allcount;i++)
+//        {
+//            PhohoDemo *demo = [photo_diction objectForKey:[allArray objectAtIndex:i]];
+//            DownImage *downImage = [[[DownImage alloc] init] autorelease];
+//            [downImage setFileId:demo.f_id];
+//            [downImage setImageUrl:demo.f_name];
+//            [downImage setImageViewIndex:demo.f_id];
+//            [downImage setDelegate:self];
+//            [downImage startDownload];
+//        }
+//    }  
+//    NSLog(@"结束");
+}
+
+-(void)getAllDown
+{
+    NSArray *allArray = [photo_diction allKeys];
+    int allcount = [allArray count];
+    for(int i=0;i<allcount;i++)
+    {
+        PhohoDemo *demo = [photo_diction objectForKey:[allArray objectAtIndex:i]];
+        DownImage *downImage = [[[DownImage alloc] init] autorelease];
+        [downImage setFileId:demo.f_id];
+        [downImage setImageUrl:demo.f_name];
+        [downImage setImageViewIndex:demo.f_id];
+        NSString *path = [self get_image_save_file_path:demo.f_name];
+        if(![self image_exists_at_file_path:path])
+        {
+            [downArray addObject:downImage];
+        }
+        
+    }
+    [self downImage];
+}
+
+-(void)downImage
+{
+    if(downNumber<[downArray count])
+    {
+        DownImage *downImage = [downArray objectAtIndex:downNumber];
+        [downImage setDelegate:self];
+        [downImage startDownload];
+    }
+}
 
 
 #pragma mark 进入详细页面
@@ -326,14 +418,12 @@
         {
             [demo setIsSelected:NO];
             [image_button.bgImageView setHidden:YES];
-//            [image_button.bgImageView setAlpha:1.0];
             [_dicReuseCells removeObjectForKey:[NSString stringWithFormat:@"%i",image_button.tag]];
         }
         else
         {
             [demo setIsSelected:YES];
             [image_button.bgImageView setHidden:NO];
-//            [image_button.bgImageView setAlpha:0.9];
             [_dicReuseCells setObject:demo forKey:[NSString stringWithFormat:@"%i",image_button.tag]];
         }
     }
@@ -377,15 +467,13 @@
     [table_view reloadData];
 }
 
-#pragma mark 滑动结束后，加载数据
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+-(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
 {
-    NSArray *array = table_view.visibleCells;
-    for(int i=0;i<[array count];i++)
-    {
-        PhotoCell *cell = (PhotoCell *)[array objectAtIndex:i];
-        [cell downImage];
-    }
+    downNumber++;
+    PhotoImageButton *image_button = (PhotoImageButton *)[scroll_view viewWithTag:indexTag];
+    [image_button setBackgroundImage:image forState:UIControlStateNormal];
+    [self downImage];
+//    [self loadImageView:image button:imagebutton number:index];
 }
 
 #pragma mark UITableViewDelegate
@@ -659,17 +747,19 @@
 -(void)shareButton
 {
     NSLog(@"选中到了多少个：%i",[_dicReuseCells.allKeys count]);
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
-    [alertView show];
-    [alertView release];
+    if([_dicReuseCells.allKeys count]>0)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+        [alertView show];
+        [alertView release];
+    }
 }
 
 #pragma mark UIActionSheetDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"buttonIndex:%i",buttonIndex);[photoManager setPhotoDelegate:self];
-    [photoManager requestDeletePhoto:[_dicReuseCells allKeys]];
-    if(buttonIndex == 0)
+    NSLog(@"buttonIndex:%i",buttonIndex);
+    if(buttonIndex == 1)
     {
         [photoManager setPhotoDelegate:self];
         [photoManager requestDeletePhoto:[_dicReuseCells allKeys]];
@@ -707,25 +797,28 @@
 #pragma mark 删除成功后回调
 -(void)requstDelete:(NSDictionary *)dictionary
 {
-    NSArray *array = [_dicReuseCells allKeys];
-    for(int k=0;k<[array count];k++)
+    if([[dictionary objectForKey:@"code"] intValue] == 0)
     {
-        PhohoDemo *demo = [_dicReuseCells objectForKey:[array objectAtIndex:k]];
-        NSMutableArray *tableArray = [allDictionary objectForKey:demo.timeLine];
-        for(int j=0;j<[tableArray count];)
+        NSArray *array = [_dicReuseCells allKeys];
+        for(int k=0;k<[array count];k++)
         {
-            int f_id = [[tableArray objectAtIndex:j] intValue];
-            if(demo.f_id == f_id)
+            PhohoDemo *demo = [_dicReuseCells objectForKey:[array objectAtIndex:k]];
+            NSMutableArray *tableArray = [allDictionary objectForKey:demo.timeLine];
+            for(int j=0;j<[tableArray count];)
             {
-                [tableArray removeObjectAtIndex:j];
-            }
-            else
-            {
-                j++;
+                int f_id = [[tableArray objectAtIndex:j] intValue];
+                if(demo.f_id == f_id)
+                {
+                    [tableArray removeObjectAtIndex:j];
+                }
+                else
+                {
+                    j++;
+                }
             }
         }
+        [self loadViewData];
     }
-    [self loadViewData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -764,6 +857,131 @@
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return [file_manager fileExistsAtPath:path];
+}
+
+-(void)loadImageView:(UIImage *)image button:(PhotoImageButton *)image_button number:(int)number
+{
+    UIImage *image1 = (UIImage *)image;
+    CGSize imageS = image1.size;
+    if(imageS.width == imageS.height)
+    {
+        if(imageS.width>=75)
+        {
+            imageS.height = 75;
+            imageS.width = 75;
+            image = [self scaleFromImage:image toSize:imageS];
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = imageS.height;
+            imageRect.origin.x = (number-1)*79+4;
+            imageRect.origin.y = 4;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:image forState:UIControlStateNormal];
+        }
+        else
+        {
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = imageS.height;
+            imageRect.origin.x = 79*(number-1)+4+(75-imageS.width)/2;
+            imageRect.origin.y = 4+(75-imageS.height)/2;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:image forState:UIControlStateNormal];
+        }
+    }
+    else if(imageS.width < imageS.height)
+    {
+        if(imageS.width>=75)
+        {
+            imageS.height = 75*imageS.height/imageS.width;
+            image = [self scaleFromImage:image toSize:CGSizeMake(75, imageS.height)];
+            
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = 75;
+            imageRect.size.height = 75;
+            imageRect.origin.x = (number-1)*79+4;
+            imageRect.origin.y = 4;
+            [image_button setFrame:imageRect];
+            
+            UIImage *endImage = [self imageFromImage:image inRect:CGRectMake(0, (imageS.height-75)/2, 75, 75)];
+            [image_button setBackgroundImage:endImage forState:UIControlStateNormal];
+        }
+        else if(imageS.height<75)
+        {
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = imageS.height;
+            imageRect.origin.x = (number-1)*79+4+(75-imageS.width)/2;
+            imageRect.origin.y = 4+(75-imageS.height)/2;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:image forState:UIControlStateNormal];
+        }
+        else
+        {
+            UIImage *endImage = [self imageFromImage:image inRect:CGRectMake((75-imageS.width)/2, (imageS.height-75)/2, imageS.width, 75)];
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = 75;
+            imageRect.origin.x = (number-1)*79+4+(75-imageS.width)/2;
+            imageRect.origin.y = 4;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:endImage forState:UIControlStateNormal];
+        }
+    }
+    else
+    {
+        if(imageS.height>=75)
+        {
+            imageS.width = 75*imageS.width/imageS.height;
+            image = [self scaleFromImage:image toSize:CGSizeMake(imageS.width, 75)];
+            UIImage *endImage = [self imageFromImage:image inRect:CGRectMake((imageS.width-75)/2, 0, 75, 75)];
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = 75;
+            imageRect.size.height = 75;
+            imageRect.origin.x = (number-1)*79+4;
+            imageRect.origin.y = 4;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:endImage forState:UIControlStateNormal];
+        }
+        else if(imageS.width<75)
+        {
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = imageS.width;
+            imageRect.size.height = imageS.height;
+            imageRect.origin.x = (number-1)*79+4+(75-imageS.width)/2;
+            imageRect.origin.y = 4+(75-imageS.height)/2;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:image forState:UIControlStateNormal];
+        }
+        else
+        {
+            UIImage *endImage = [self imageFromImage:image inRect:CGRectMake((imageS.width-75)/2, (75-imageS.height)/2, 75, imageS.height)];
+            CGRect imageRect = image_button.frame;
+            imageRect.size.width = 75;
+            imageRect.size.height = imageS.height;
+            imageRect.origin.x = (number-1)*79+4;
+            imageRect.origin.y = 4+(75-imageS.height)/2;
+            [image_button setFrame:imageRect];
+            [image_button setBackgroundImage:endImage forState:UIControlStateNormal];
+        }
+    }
+}
+
+-(UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{
+	CGImageRef sourceImageRef = [image CGImage];
+	CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);
+	UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+	return newImage;
+}
+
+
+-(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 -(void)dealloc

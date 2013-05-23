@@ -16,6 +16,7 @@
 #import <UIKit/UIKit.h>
 #import "SCBPhotoManager.h"
 #import "PhotoDetailViewController.h"
+#import "DownImage.h"
 
 /*
  1:公开版
@@ -25,7 +26,7 @@
 #define DEBUG_PUBLIC_EDITION 1
 #endif
 
-@interface PhotoViewController : UIViewController<SCBPhotoDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,DeleteDelegate,UIAlertViewDelegate>
+@interface PhotoViewController : UIViewController<SCBPhotoDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,DeleteDelegate,UIAlertViewDelegate,DownloaderDelegate>
 {
     SCBPhotoManager *photoManager;
     NSInteger show_height;
@@ -44,6 +45,11 @@
     NSMutableDictionary *photo_diction;
     
     UIScrollView *scroll_view;
+    
+    NSMutableArray *downArray;
+    int downNumber;
+    BOOL bl;
+    int scrollview_heigth;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
