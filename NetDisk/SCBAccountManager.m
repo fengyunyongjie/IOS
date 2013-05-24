@@ -19,8 +19,21 @@ static SCBAccountManager *_sharedAccountManager;
     }
     return _sharedAccountManager;
 }
+-(void)currentUserSpace
+{
+    self.activeData=[NSMutableData data];
+    self.type=kUserGetSpace;
+    NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_SPACE_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPMethod:@"POST"];
+    NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
 -(void)UserLoginWithName:(NSString *)user_name Password:(NSString *)user_pwd
 {
+    self.activeData=[NSMutableData data];
     self.type=kUserLogin;
     NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_LOGIN_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
@@ -40,7 +53,19 @@ static SCBAccountManager *_sharedAccountManager;
 }
 -(void)UserRegisterWithName:(NSString *)user_name Password:(NSString *)user_pwd
 {
-    
+    self.activeData=[NSMutableData data];
+    self.type=kUserRegist;
+    NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_REGISTER_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *mi_ma =[user_pwd base64String];
+    [body appendFormat:@"usr_name=%@&usr_pwd=%@",user_name,mi_ma];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 #pragma mark NSURLConnectionDelegate Method
 - (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response
@@ -69,33 +94,8 @@ static SCBAccountManager *_sharedAccountManager;
 // response data for a POST is only for useful for debugging purposes,
 // so we just drop it on the floor.
 {
+    [self.activeData appendData:data];
     NSLog(@"connection:didReceiveData:");
-    NSError *jsonParsingError=nil;
-    NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
-    NSLog(@"%@",[dic objectForKey:@"usr_id"] );
-    NSLog(@"%@",[dic objectForKey:@"code"] );
-    NSLog(@"%@",[dic objectForKey:@"usr_token"] );
-    if ([[dic objectForKey:@"code"] intValue]==0) {
-        NSLog(@"safafaf");
-        [[SCBSession sharedSession] setUserId:(NSString *)[dic objectForKey:@"usr_id"]];
-        [[SCBSession sharedSession] setUserToken:(NSString *)[dic objectForKey:@"usr_token"]];
-        
-        [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
-        [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        NSLog(@"%@",[[SCBSession sharedSession] userId]);
-        NSLog(@"%@",[[SCBSession sharedSession] userToken]);
-        [self.delegate loginSucceed:self];
-    }else
-    {
-        [self.delegate loginUnsucceed:self];
-    }
-    
-    //NSLog(@"%@",[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]);
-#pragma unused(theConnection)
-#pragma unused(data)
-    
     //    assert(theConnection == self.connection);
     
     // do nothing
@@ -120,9 +120,54 @@ static SCBAccountManager *_sharedAccountManager;
 // causes the image to be displayed.
 {
     NSLog(@"connectionDidFinishLoading");
-    //#pragma unused(theConnection)
-    //    assert(theConnection == self.connection);
-    //
-    //    [self stopSendWithStatus:nil];
+    NSError *jsonParsingError=nil;
+    NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:self.activeData options:0 error:&jsonParsingError];
+    if ([[dic objectForKey:@"code"] intValue]==0) {
+    }else
+    {
+        NSLog(@"网络操作失败：");
+        NSLog(@"%@",dic);
+    }
+    switch (self.type) {
+        case kUserLogin:
+            if ([[dic objectForKey:@"code"] intValue]==0) {
+                [[SCBSession sharedSession] setUserId:(NSString *)[dic objectForKey:@"usr_id"]];
+                [[SCBSession sharedSession] setUserToken:(NSString *)[dic objectForKey:@"usr_token"]];
+                
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                NSLog(@"%@",[[SCBSession sharedSession] userId]);
+                NSLog(@"%@",[[SCBSession sharedSession] userToken]);
+                [self.delegate loginSucceed:self];
+            }else
+            {
+                [self.delegate loginUnsucceed:self];
+            }
+
+            break;
+        case kUserRegist:
+            if ([[dic objectForKey:@"code"] intValue]==0) {
+                NSLog(@"注册成功！！！");
+                [self.delegate registSucceed];
+            }else
+            {
+                NSLog(@"注册失败！！！");
+            }
+            break;
+        case kUserGetSpace:
+            if ([[dic objectForKey:@"code"] intValue]==0) {
+                NSLog(@"空间（已用大小/总大小） ： %@/%@",[dic objectForKey:@"space_used"],[dic objectForKey:@"space_total"]);
+                [self.delegate spaceSucceedUsed:[dic objectForKey:@"space_used"] total:[dic objectForKey:@"space_total"]];
+            }else
+            {
+                
+            }
+            break;
+        default:
+            break;
+    }
+    self.activeData=nil;
 }
 @end

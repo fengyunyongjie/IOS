@@ -9,6 +9,52 @@
 #import "YNFunctions.h"
 
 @implementation YNFunctions
++(double)getDirectorySizeForPath:(NSString*)path
+{
+    NSFileManager*  fileManager = [[NSFileManager alloc] init];
+    
+    NSDirectoryEnumerator* e = [fileManager enumeratorAtPath:path];
+    
+    NSString *file;
+    
+    double totalSize = 0;
+    while ((file = [e nextObject]))
+    {
+        
+        NSDictionary *attributes = [e fileAttributes];
+        
+        NSNumber *fileSize = [attributes objectForKey:NSFileSize];
+        
+        totalSize += [fileSize longLongValue];
+    }
+    [fileManager release];
+    return totalSize;
+}
++(NSString *)covertNumberToString:(NSDecimalNumber *)sourceNumber{
+    
+    NSDecimalNumber *dd = sourceNumber;
+    long long dl = [dd longLongValue];
+    NSString *fid = [NSString stringWithFormat:@"%llu",dl];
+    return fid;
+}
+
++(long long) fileSizeAtPath:(NSString*) filePath{
+    NSFileManager* manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:filePath]){
+        return [[manager attributesOfItemAtPath:filePath error:nil] fileSize];
+    }
+    return 0;
+}
+
++(NSString *)fileType:(NSString *)fileName
+{
+    NSRange rang = [fileName rangeOfString:@"." options:NSBackwardsSearch];
+    if (rang.location!=NSNotFound) {
+        rang = NSMakeRange(rang.location+1, [fileName length]-rang.location-1);
+        return [fileName substringWithRange:rang];
+    }
+    return nil;
+}
 +(NSString *)getFMCachePath
 {
     NSString *theFMCachePath=nil;

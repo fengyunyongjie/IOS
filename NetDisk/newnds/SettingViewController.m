@@ -7,9 +7,12 @@
 //
 
 #import "SettingViewController.h"
+#import "SCBAccountManager.h"
+#import "YNFunctions.h"
 
 @interface SettingViewController ()
-
+@property (strong,nonatomic) NSString *space_total;
+@property (strong,nonatomic) NSString *space_used;
 @end
 
 @implementation SettingViewController
@@ -33,7 +36,8 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
+    self.space_used=@"";
+    self.space_total=@"";
     UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
     [exitButton setTitle:@"退出登录" forState:UIControlStateNormal];
     [exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -43,7 +47,22 @@
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
 }
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self updateData];
+}
+-(void)updateData
+{
+    [[SCBAccountManager sharedManager] currentUserSpace];
+    [[SCBAccountManager sharedManager] setDelegate:self];
+}
+-(void)spaceSucceedUsed:(NSString *)space_used total:(NSString *)space_total
+{
+    self.space_total=[YNFunctions convertSize:space_total];
+    self.space_used=[YNFunctions convertSize:space_used];
+    [self.tableView reloadData];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -64,6 +83,14 @@
                                               otherButtonTitles:@"退出", nil];
     [alertView show];
     [alertView release];
+}
+- (void)clearCache
+{
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getFMCachePath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getIconCachePath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
+    [self.tableView reloadData];
 }
 #pragma mark - UIAlertViewDelegate Methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -189,8 +216,14 @@
                 case 1:
                 {
                     titleLabel.text = @"网盘用量";
-                    //descLabel.text = m_storeStr;
-                    descLabel.text=@"23G/300G";
+                    NSString *spaceInfo;
+                    if ([self.space_total isEqualToString:@""]) {
+                        spaceInfo=@"获取中...";
+                    }else
+                    {
+                        spaceInfo=[NSString stringWithFormat:@"%@/%@",self.space_used,self.space_total];
+                    }
+                    descLabel.text=spaceInfo;
                     descLabel.textColor = [UIColor grayColor];
                 }
                     break;
@@ -202,8 +235,6 @@
             break;
         case 1:
         {
-            
-            
             UISwitch *m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(210, 10, 40, 29)];
             [m_switch addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
             m_switch.on = YES;
@@ -235,19 +266,18 @@
                     NSString *cachePath=[paths objectAtIndex:0];
                     
                     double locationCacheSize = 0.0f;// [Function getDirectorySizeForPath:cachePath];
-//                    cachePath = [Function getImgCachePath];
-//                    locationCacheSize += [Function getDirectorySizeForPath:cachePath];
-//                    cachePath = [Function getTempCachePath];
-//                    locationCacheSize += [Function getDirectorySizeForPath:cachePath];
-//                    cachePath = [Function getKeepCachePath];
-//                    locationCacheSize += [Function getDirectorySizeForPath:cachePath];
-//                    cachePath = [Function getUploadTempPath];
-//                    locationCacheSize += [Function getDirectorySizeForPath:cachePath];
+                    cachePath = [YNFunctions getFMCachePath];
+                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+                    cachePath = [YNFunctions getIconCachePath];
+                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+                    cachePath = [YNFunctions getKeepCachePath];
+                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+                    cachePath = [YNFunctions getTempCachePath];
+                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
                     
                     
-//                    NSString *sizeStr = [NSString stringWithFormat:@"%f",locationCacheSize];
-//                    descLabel.text = [Function convertSize:sizeStr];
-                    descLabel.text=@"100M";
+                    NSString *sizeStr = [NSString stringWithFormat:@"%f",locationCacheSize];
+                    descLabel.text = [YNFunctions convertSize:sizeStr];
                     descLabel.textColor = [UIColor grayColor];
                     
                     m_switch.hidden = YES;
@@ -258,7 +288,7 @@
                     
                     
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     descLabel.hidden = YES;
                     m_switch.hidden = YES;
                     titleLabel.text = @"清除缓存";
@@ -300,10 +330,10 @@
                 case 0:
                     descLabel.hidden = NO;
                     titleLabel.text = @"版本";
-                    descLabel.text = @"V1.0.3";
+                    descLabel.text = @"V1.1.0";
                     break;
                 case 1:
-                    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     descLabel.hidden = YES;
                     titleLabel.text = @"评分";
@@ -369,14 +399,75 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    switch (section) {
+            
+        case 0:     //账号信息
+        {
+            switch (row) {
+                case 0:
+                {
+                    //当前用户
+                }
+                    break;
+                case 1:
+                {
+                    //网盘用量
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+        case 1:     //设置
+        {
+            switch (row) {
+                case 0:
+                {
+                    //仅在连接WIFI时上传
+                }
+                    break;
+                case 1:
+                {
+                    //缓存占用
+                }
+                    
+                    break;
+                case 2:
+                    //清除缓存
+                    [self clearCache];
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        case 2:     //关于
+        {
+            
+            switch (row) {
+                case 0:
+                    //版本
+                    break;
+                case 1:
+                    //评分
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        case 3:
+            break;
+        default:
+            break;
+    }
 }
 
 @end

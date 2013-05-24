@@ -154,8 +154,10 @@
 - (void)loadView
 {
     [super loadView];
-    [self setNeed_to_custom:YES];
-    [self show_custom_view_layer];
+    if (self.need_to_custom) {
+        [self setNeed_to_custom:YES];
+        [self show_custom_view_layer];
+    }
 }
 
 

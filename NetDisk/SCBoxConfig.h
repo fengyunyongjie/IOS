@@ -23,6 +23,8 @@
 #define USER_LOGIN_URI @"/usr/login"
 //用户注销
 #define USER_LOGOUT_URI @"/usr/logout"
+//获取用户当前存储空间信息；
+#define USER_SPACE_URI @"/usr/space"
 
 
 #pragma mark - 好友管理

@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface YNFunctions : NSObject
++(double)getDirectorySizeForPath:(NSString*)path;
++(NSString *)covertNumberToString:(NSDecimalNumber *)sourceNumber;
++(long long) fileSizeAtPath:(NSString*) filePath;
++(NSString *)fileType:(NSString *)fileName;
 +(NSString *)getFMCachePath;    //文件缓存目录
 +(NSString *)getIconCachePath;  //图标缓存
 +(NSString *)getKeepCachePath;  //收藏目录

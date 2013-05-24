@@ -17,6 +17,7 @@ typedef enum {
 }kUserType;
 @protocol SCBAccountManagerDelegate;
 @interface SCBAccountManager : NSObject<NSURLConnectionDelegate>
+@property(strong,nonatomic) NSMutableData *activeData;
 @property(nonatomic,assign) id<SCBAccountManagerDelegate>  delegate;
 @property(nonatomic,assign) kUserType type;
 +(SCBAccountManager *)sharedManager;
@@ -30,9 +31,13 @@ typedef enum {
 //修改个人信息 /usr/profile/update
 //获取个人信息 /usr/profile
 //获取空间信息 /usr/space
+-(void)currentUserSpace;
 @end
 
 @protocol SCBAccountManagerDelegate
 -(void)loginSucceed:(id)manager;
 -(void)loginUnsucceed:(id)manager;
+-(void)registSucceed;
+//[self.delegate spaceSucceedUsed:[dic objectForKey:@"space_used"] total:[dic objectForKey:@"space_total"]];
+-(void)spaceSucceedUsed:(NSString *)space_used total:(NSString *)space_total;
 @end

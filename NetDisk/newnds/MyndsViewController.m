@@ -797,7 +797,7 @@
     if (!decelerate)
 	{
         if (self.selectedIndexPath) {
-            [self hideOptionCell];
+            //[self hideOptionCell];
             return;
         }
         [self loadImagesForOnscreenRows];
@@ -807,7 +807,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (self.selectedIndexPath) {
-        [self hideOptionCell];
+        //[self hideOptionCell];
         return;
     }
     [self loadImagesForOnscreenRows];

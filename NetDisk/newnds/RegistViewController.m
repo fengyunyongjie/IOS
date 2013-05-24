@@ -8,6 +8,7 @@
 
 #import "RegistViewController.h"
 #import "MBProgressHUD.h"
+#import "SCBAccountManager.h"
 
 @interface RegistViewController ()
 @property (strong ,nonatomic) MBProgressHUD *m_hud;
@@ -36,9 +37,18 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+-(void)registSucceed
+{
+     [self.m_hud removeFromSuperview];
+    [self dismissModalViewControllerAnimated:YES];
+}
 - (IBAction) regitst:(id)sender
 {
     if ([self registAssert]) {
+        
+        [[SCBAccountManager sharedManager] UserRegisterWithName:self.m_userNameTextField.text Password:self.m_passwordTextField.text];
+        [[SCBAccountManager sharedManager] setDelegate:self];
+        
         [self.m_hud removeFromSuperview];
         self.m_hud=[[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:self.m_hud];
