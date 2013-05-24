@@ -321,15 +321,10 @@
 #pragma mark 滑动结束后，加载数据
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"开始");
-    if(!bl)
-    {
-        NSLog(@"太快了吧");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self getAllDown];
-        });
-        bl = TRUE;
-    }
+    NSLog(@"太快了吧");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self getAllDown];
+    });
 //    int number = [scrollView contentOffset].y/80*4;
 //    NSArray *allArray = [photo_diction allKeys];
 //    int allcount = [allArray count];

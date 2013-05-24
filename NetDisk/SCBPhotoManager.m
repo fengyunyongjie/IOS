@@ -19,6 +19,7 @@
 @implementation SCBPhotoManager
 @synthesize photoDelegate;
 @synthesize matableData;
+@synthesize newFoldDelegate;
 
 #pragma mark 获取时间分组
 -(void)getPhotoTimeLine
@@ -305,6 +306,14 @@
     {
         [photoDelegate requstDelete:diction];
     }
+    else if([type_string isEqualToString:[[FM_MKDIR_URL componentsSeparatedByString:@"/"] lastObject]])
+    {
+        [newFoldDelegate newFold:diction];
+    }
+    else if([type_string isEqualToString:[[FM_URI componentsSeparatedByString:@"/"] lastObject]])
+    {
+        [newFoldDelegate openFile:diction];
+    }
 }
 
 #pragma mark 判断当前时间属于哪一类
@@ -406,6 +415,58 @@
         nowYearDay += [self theDaysInYear:nowYear inMonth:i];
     }
     return nowYearDay + [self getNowMonthToManyDay];
+}
+
+#pragma mark 新建文件夹
+-(void)requestNewFold:(NSString *)name FID:(int)f_id
+{
+    self.matableData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URL]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = FM_MKDIR_URL;
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_name=%@&f_pid=%i",name,f_id];
+    NSLog(@"body:%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
+#pragma mark 打开文件目录
+-(void)openFinderWithID:(NSString *)f_id
+{
+    self.matableData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = FM_URI;
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",f_id,0,-1];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
+-(void)dealloc
+{
+    [photoDelegate release];
+    [newFoldDelegate release];
+    [matableData release];
+    [super dealloc];
 }
 
 @end

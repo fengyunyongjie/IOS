@@ -61,5 +61,13 @@
 #define PHOTO_DETAIL @"/photo/detail"
 //移除
 #define PHOTO_Delete @"/fm/rm"
+//新建
+#define FM_MKDIR_URL @"/fm/mkdir"
+//上传校验
+#define FM_UPLOAD_VERIFY @"/fm/upload/verify"
+//上传
+#define FM_UPLOAD @"/fm/upload"
+//申请传输文件
+#define FM_UPLOAD_STATE @"/fm/upload/state"
 
 #endif

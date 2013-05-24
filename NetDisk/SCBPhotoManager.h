@@ -28,9 +28,18 @@
 
 @end
 
+@protocol NewFoldDelegate <NSObject>
+
+-(void)newFold:(NSDictionary *)dictionary;
+
+-(void)openFile:(NSDictionary *)dictionary;
+
+@end
+
 @interface SCBPhotoManager : NSObject
 {
     id<SCBPhotoDelegate> photoDelegate;
+    id<NewFoldDelegate> newFoldDelegate;
     NSString *url_string;
     int timeLineTotalNumber;
     int timeLineNowNumber;
@@ -43,6 +52,7 @@
 
 @property(nonatomic,retain) id<SCBPhotoDelegate> photoDelegate;
 @property(nonatomic,retain) NSMutableData *matableData;
+@property(nonatomic,retain) id<NewFoldDelegate> newFoldDelegate;
 
 //获取时间分组/photo/timeline
 -(void)getPhotoTimeLine;
@@ -68,5 +78,9 @@
 -(int)getNowYearToManyDay;
 #pragma mark 请求删除文件
 -(void)requestDeletePhoto:(NSArray *)deleteId;
+#pragma mark 新建文件夹
+-(void)requestNewFold:(NSString *)name FID:(int)f_id;
+#pragma mark 打开文件目录
+-(void)openFinderWithID:(NSString *)f_id;
 
 @end
