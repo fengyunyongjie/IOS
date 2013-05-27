@@ -17,6 +17,7 @@
 #import "PhotoDetailViewController.h"
 #import "IconDownloader.h"
 #import "ImageBrowserViewController.h"
+#import "OtherBrowserViewController.h"
 
 @implementation FileItem
 
@@ -679,6 +680,13 @@
                 [photoDetalViewController release];
             }];
 
+        }else
+        {
+            OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+            [otherBrowser setHidesBottomBarWhenPushed:YES];
+            otherBrowser.dataDic=dic;
+            otherBrowser.title=f_name;
+            [self.navigationController pushViewController:otherBrowser animated:YES];
         }
 //        ImageBrowserViewController *browser=[[[ImageBrowserViewController alloc] init] autorelease];
 //        browser.listArray=self.listArray;
