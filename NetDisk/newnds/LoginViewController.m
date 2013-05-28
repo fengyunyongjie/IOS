@@ -10,8 +10,6 @@
 #import "AppDelegate.h"
 #import "SCBAccountManager.h"
 #import "MBProgressHUD.h"
-#import "DBSqlite.h"
-#import "UserInfo.h"
 #import "RegistViewController.h"
 
 

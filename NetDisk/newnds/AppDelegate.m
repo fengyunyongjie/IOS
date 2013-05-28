@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 //#import "LoginViewController.h"
 #import "MYTabBarController.h"
+#import "TaskDemo.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -50,6 +51,16 @@
     [WeiboSDK enableDebugMode:YES];
     [WeiboSDK registerApp:kAppKey];
     
+//    //测试
+//    TaskDemo *task_demo = [[TaskDemo alloc] init];
+//    [task_demo createTable];
+//    task_demo.f_id = 280015;
+//    task_demo.f_base_name = @"IMG_0062.JPG";
+//    UIImage *image = [UIImage imageNamed:@"111.png"];
+//    task_demo.f_data = UIImagePNGRepresentation(image);
+//    task_demo.f_state = 1;
+//    task_demo.f_lenght = task_demo.f_data.length;
+//    [task_demo insertTaskTable];
     [self.window makeKeyAndVisible];
     return YES;
 }

@@ -372,6 +372,7 @@
 
 -(void)getAllDown
 {
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSArray *allArray = [photo_diction allKeys];
     int allcount = [allArray count];
     for(int i=0;i<allcount;i++)
@@ -388,6 +389,7 @@
         }
         
     }
+    [pool release];
     [self downImage];
 }
 

@@ -45,7 +45,7 @@
 
 
 //上传效验
--(void)requestUploadVerify:(int)f_pid f_name:(NSString *)f_name f_size:(NSString *)f_size;
+-(void)requestUploadVerify:(int)f_pid f_name:(NSString *)f_name f_size:(NSString *)f_size f_md5:(NSString *)f_md5;
 
 //上传
 -(void)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image;
@@ -53,8 +53,8 @@
 //上传
 -(void)requestUploadState:(NSString *)s_name;
 
-////上传文件完成
-//-(void)uploadFinish:(NSDictionary *)dictionary;
+//上传提交
+-(void)requestUploadCommit:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name device:(NSString *)deviceName skip:(NSString *)skip f_md5:(NSString *)f_md5 img_createtime:(NSString *)dateString;
 //
 ////查看上传记录
 //-(void)lookDescript:(NSDictionary *)dictionary;

@@ -15,17 +15,17 @@
 @synthesize matableData;
 
 //上传效验
--(void)requestUploadVerify:(int)f_pid f_name:(NSString *)f_name f_size:(NSString *)f_size
+-(void)requestUploadVerify:(int)f_pid f_name:(NSString *)f_name f_size:(NSString *)f_size f_md5:(NSString *)f_md5
 {
     self.matableData = [NSMutableData data];
-    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_VERIFY]];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_VERIFY]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-    url_string = FM_UPLOAD_VERIFY;
+    url_string = FM_UPLOAD_NEW_VERIFY;
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_pid=%i&f_name=%@&f_size=%@",f_pid,f_name,f_size];
+    [body appendFormat:@"f_pid=%i&f_name=%@&f_size=%@&f_md5=%@",f_pid,f_name,f_size,f_md5];
     NSLog(@"body:%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -62,71 +62,48 @@
 -(void)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image
 {
     self.matableData = [NSMutableData data];
-    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD]];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-    url_string = FM_UPLOAD;
+    url_string = FM_UPLOAD_NEW;
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setValue:s_name forHTTPHeaderField:@"s_name"];
+    [request setValue:[NSString stringWithFormat:@"bytes=0-%@",skip] forHTTPHeaderField:@"Range"];
+    [request setHTTPBody:image];
+    [request setHTTPMethod:@"PUT"];
+    NSLog(@"上传请求：%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
+//上传提交
+-(void)requestUploadCommit:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name device:(NSString *)deviceName skip:(NSString *)skip f_md5:(NSString *)f_md5 img_createtime:(NSString *)dateString
+{
+    self.matableData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = FM_UPLOAD_NEW_COMMIT;
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_pid=%@&f_name=%@&s_name=%@&skip=%@&md5=%@",f_pid,f_name,s_name,skip,f_md5];
+    [body appendString:[NSString stringWithFormat:@"f_pid=%@",f_pid]];
+    [body appendString:[NSString stringWithFormat:@"&f_name=%@",f_name]];
+    [body appendString:[NSString stringWithFormat:@"&s_name=%@",s_name]];
+    [body appendString:@"&img_device="];
+    NSLog(@"uploadData:%@",f_md5);
+    [body appendString:[NSString stringWithFormat:@"&f_md5=%@",f_md5]];
+    [body appendString:@"&img_size="];
+    [body appendString:@"&img_createtime="];
+    NSLog(@"body:%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    NSLog(@"body:%@",body);
     [request setHTTPBody:myRequestData];
-    NSInputStream *inputStream = [NSInputStream inputStreamWithData:image];
-    [request setHTTPBodyStream:inputStream];
+    
     [request setHTTPMethod:@"POST"];
-    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    NSLog(@"上传完成后提交 %@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
-    
-//    self.matableData = [NSMutableData data];
-//    
-//    NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD]];
-//    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:url];
-//    [request addRequestHeader:@"usr_id" value:[[SCBSession sharedSession] userId]];
-//    [request addRequestHeader:@"client_tag" value:CLIENT_TAG];
-//    [request addRequestHeader:@"usr_token" value:[[SCBSession sharedSession] userToken]];
-    
-//    [request addRequestHeader:@"f_pid" value:f_pid];
-//    [request addRequestHeader:@"f_name" value:f_name];
-//    [request addRequestHeader:@"s_name" value:s_name];
-//    [request addRequestHeader:@"skip" value:skip];
-//    [request addRequestHeader:@"md5" value:f_md5];
-    
-//    [request setPostValue:f_pid forKey:@"f_pid"];
-//    [request setPostValue:f_name forKey:@"f_name"];
-//    [request setPostValue:s_name forKey:@"s_name"];
-//    [request setPostValue:skip forKey:@"skip"];
-//    [request setPostValue:f_md5 forKey:@"md5"];
-//    NSMutableData *imageData = [NSMutableData dataWithData:image];
-//    NSLog(@"imageData:%@",imageData);
-//    [request setPostBody:imageData];
-//    [request setTimeOutSeconds:30];
-    
-    
-//    [request setPostValue:[[SCBSession sharedSession] userId] forKey:@"usr_id"];
-//    [request setPostValue:CLIENT_TAG forKey:@"usr_id"];
-//    [request setPostValue:[[SCBSession sharedSession] userToken] forKey:@"usr_token"];
-//    url_string = FM_UPLOAD;
-//    NSMutableString *body=[[NSMutableString alloc] init];
-//    [body appendFormat:@"f_pid=%@&f_name=%@&s_name=%@&skip=%@&md5=%@",f_pid,f_name,s_name,skip,f_md5];
-//    NSMutableData *myRequestData=[NSMutableData data];
-//    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-//    NSLog(@"body:%@",body);
-//    [request setPostBody:myRequestData];
-//    [body release];
-    
-    
-//    [request addData:imageData withFileName:s_name andContentType:@"image/png" forKey:@"image"];
-//    [request setShouldStreamPostDataFromDisk:YES];
-//    [request setRequestMethod:@"POST"];
-//    [request setDelegate:self];
-//    [request startSynchronous];
-//    NSLog(@"%@",[request responseString]);
-    
 }
-
 -(void)request:(ASIHTTPRequest *)request didReceiveData:(NSData *)data
 {
     [self.matableData appendData:data];
@@ -151,11 +128,12 @@
     NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.matableData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"请求成功后，分发数据:%@",diction);
     NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
-    if([type_string isEqualToString:[[FM_UPLOAD_VERIFY componentsSeparatedByString:@"/"] lastObject]])
+    NSLog(@"type_string:%@",type_string);
+    if([type_string isEqualToString:[[FM_UPLOAD_NEW_VERIFY componentsSeparatedByString:@"/"] lastObject]])
     {
         [upLoadDelegate uploadVerify:diction];
     }
-    else if([type_string isEqualToString:[[FM_UPLOAD componentsSeparatedByString:@"/"] lastObject]])
+    else if([type_string isEqualToString:[[FM_UPLOAD_NEW componentsSeparatedByString:@"/"] lastObject]])
     {
         [upLoadDelegate uploadFinish:diction];
     }
@@ -163,7 +141,10 @@
     {
         [upLoadDelegate requestUploadState:diction];
     }
-    
+    else if([type_string isEqualToString:[[FM_UPLOAD_NEW_COMMIT componentsSeparatedByString:@"/"] lastObject]])
+    {
+        [upLoadDelegate uploadCommit:diction];
+    } 
 }
 
 -(void)dealloc

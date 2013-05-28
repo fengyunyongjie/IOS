@@ -10,9 +10,6 @@
 #import "SCBSession.h"
 #import "SCBoxConfig.h"
 #import "PhohoDemo.h"
-#import "DBTimeLine.h"
-#import "FMDatabase.h"
-#import "DBSqlite.h"
 #import "AppDelegate.h"
 #import "JSON.h"
 
@@ -391,7 +388,6 @@
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    
     [dateFormatter setDateFormat:@"dd"];
     NSDate *today = [NSDate date];
     int manyDay = [[dateFormatter stringFromDate:today] intValue];

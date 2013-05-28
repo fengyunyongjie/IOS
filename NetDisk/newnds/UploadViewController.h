@@ -24,6 +24,10 @@
     int f_pid;
     int uploadNumber;
     SCBPhotoManager *photoManger;
+    NSString *finishName;
+    NSString *uploadData;
+    BOOL isStop;
+    UIImage *imageV;
 }
 @property (retain, nonatomic) IBOutlet UIImageView *stateImageview;
 @property (retain, nonatomic) IBOutlet UILabel *nameLabel;
@@ -31,7 +35,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *diyUploadButton;
 @property (retain, nonatomic) IBOutlet UILabel *basePhotoLabel;
 @property (retain, nonatomic) IBOutlet UILabel *formatLabel;
-@property (retain, nonatomic) IBOutlet UILabel *uploadNumber;
+@property (retain, nonatomic) IBOutlet UILabel *uploadNumberLabel;
 @property (nonatomic,retain) NSMutableArray *photoArray;
 
 -(NSString *)md5:(NSData *)concat;
@@ -43,12 +47,16 @@
 {
     UIImage *image;
     NSString *name;
-    NSString *imageData;
+    NSString *imageSize;
+    NSString *image_device;
+    NSString *img_createtime;
 }
 
 @property(nonatomic,retain) UIImage *image;
 @property(nonatomic,retain) NSString *name;
-@property(nonatomic,retain) NSString *imageData;
+@property(nonatomic,retain) NSString *imageSize;
+@property(nonatomic,retain) NSString *image_device;
+@property(nonatomic,retain) NSString *img_createtime;
 
 
 @end
