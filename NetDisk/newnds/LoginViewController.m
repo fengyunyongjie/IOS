@@ -57,32 +57,56 @@
     RegistViewController *regist=[[[RegistViewController alloc] initWithNibName:@"RegistViewController" bundle:nil] autorelease];
     [self presentViewController:regist animated:YES completion:nil];
 }
+- (BOOL)registAssert
+{
+    BOOL rt = YES;
+    NSString *loginName = self.userNameTextField.text;
+    if (loginName==nil||[loginName isEqualToString:@""]) {
+        self.hud.labelText=@"请输入合法的用户名";
+        rt=NO;
+    }
+    else
+    {
+        NSRange rang  = [loginName rangeOfString:@"@"];
+        if (rang.location==NSNotFound) {
+            self.hud.labelText=@"请输入合法的用户名";
+            rt=NO;
+        }
+        else
+        {
+            NSString *password = self.passwordTextField.text;
+            if ([password isEqualToString:@""]) {
+                self.hud.labelText=@"密码不得为空";
+                rt=NO;
+            }
+            else if ([password length]<6||[password length]>16) {
+                self.hud.labelText=@"输入密码在6-16位";
+                rt=NO;
+            }
+        }
+    }
+    [self.hud show:NO];
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:0.5f];
+    return rt;
+}
 - (IBAction)login:(id)sender
 {
-    //把用户信息存储到数据库
-    NSString *user_name = _userNameTextField.text;
-    NSString *user_passwor = _passwordTextField.text;
-    NSLog(@"user_name;%@,user_password:%@",user_name,user_passwor);
-//    DBSqlite *sqlite3 = [[DBSqlite alloc] init];
-//    if([sqlite3 initDatabase])
-//    {
-//        FMDatabase *dataBase = [sqlite3 getDatabase];
-//        UserInfo *info = [[UserInfo alloc] init];
-//        info.database = dataBase;
-//        info.user_name = user_name;
-//        info.user_password = user_passwor;
-//        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//        [app_delegate setUser_name:user_name];
-//        [info insertUserinfo];
-//        [info release];
-//        [dataBase close];
-//    }
-    
-    [[SCBAccountManager sharedManager] setDelegate:self];
-    [[SCBAccountManager sharedManager] UserLoginWithName:self.userNameTextField.text Password:self.passwordTextField.text];
-    self.hud.labelText=@"正在登录...";
-    self.hud.mode=MBProgressHUDModeIndeterminate;
-    [self.hud show:YES];
+    [self.userNameTextField endEditing:YES];
+    [self.passwordTextField endEditing:YES];
+    if ([self registAssert]) {
+        //把用户信息存储到数据库
+        NSString *user_name = _userNameTextField.text;
+        NSString *user_passwor = _passwordTextField.text;
+        NSLog(@"user_name;%@,user_password:%@",user_name,user_passwor);    
+        [[SCBAccountManager sharedManager] setDelegate:self];
+        [[SCBAccountManager sharedManager] UserLoginWithName:self.userNameTextField.text Password:self.passwordTextField.text];
+        self.hud.labelText=@"正在登录...";
+        self.hud.mode=MBProgressHUDModeIndeterminate;
+        [self.hud show:YES];
+    }
 }
 #pragma mark - UIAlertViewDelegate Methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -119,9 +143,14 @@
      Reduce the size of the text view so that it's not obscured by the keyboard.
      Animate the resize so that it's in sync with the appearance of the keyboard.
      */
+    
+    [UIView beginAnimations:@"MoveUp" context:nil];
+    [UIView setAnimationDuration:0.2f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     CGRect r=self.view.frame;
     r.origin.y=-100;
     [self.view setFrame:r];
+    [UIView commitAnimations];
 //    NSDictionary *userInfo = [notification userInfo];
 //    
 //    // Get the origin of the keyboard when it's displayed.
@@ -153,9 +182,13 @@
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
+    [UIView beginAnimations:@"MoveUp" context:nil];
+    [UIView setAnimationDuration:0.2f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     CGRect r=self.view.frame;
-    r.origin.y=-100;
+    r.origin.y=20;
     [self.view setFrame:r];
+    [UIView commitAnimations];
 //    NSDictionary *userInfo = [notification userInfo];
 //    
 //    /*
