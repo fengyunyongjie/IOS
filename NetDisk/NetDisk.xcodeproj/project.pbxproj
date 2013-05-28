@@ -3137,7 +3137,6 @@
 					"\"$(SRCROOT)/NetDisk/lib/i386\"",
 					"\"$(SRCROOT)/UMAnalytics_Sdk_2.1.3.OpenUDID\"",
 					"\"$(SRCROOT)/newnds/SDKExport\"",
-					"\"$(SRCROOT)/libWeiboSDK\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3169,7 +3168,6 @@
 					"\"$(SRCROOT)/NetDisk/lib/i386\"",
 					"\"$(SRCROOT)/UMAnalytics_Sdk_2.1.3.OpenUDID\"",
 					"\"$(SRCROOT)/newnds/SDKExport\"",
-					"\"$(SRCROOT)/libWeiboSDK\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CC0EB52C-D266-402A-984C-C1C5B0527302";
