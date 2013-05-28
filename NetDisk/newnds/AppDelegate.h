@@ -9,12 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "WXApi.h"
 #import "MYTabBarController.h"
-#import "WeiboSDK.h"
 //新浪微博微博
 #define kAppKey         @"706445160"
 #define kRedirectURI    @"http://www.7cbox.cn"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,WXApiDelegate,WeiboSDKDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,WXApiDelegate>
 {
     NSString *user_name;
 }
@@ -27,6 +26,4 @@
 -(void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path;
 //微博授权
 - (void)ssoButtonPressed;
-//微博分享
-- (WBMessageObject *)messageToShare:(int)type;
 @end

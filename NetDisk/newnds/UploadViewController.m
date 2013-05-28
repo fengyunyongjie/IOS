@@ -265,8 +265,9 @@
         [demo updateTaskTableFName];
         uploadNumber++;
         int page = (float)uploadNumber/(float)[photoArray count]*100;
-        [_uploadNumberLabel setText:[NSString stringWithFormat:@"%％",page]];
+        [_uploadNumberLabel setText:[NSString stringWithFormat:@"%i％",page]];
         [_basePhotoLabel setText:[NSString stringWithFormat:@"本地图片：%i",[photoArray count]]];
+        [_formatLabel setText:[NSString stringWithFormat:@"已上传图片：%i",uploadNumber]];
         [_uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
         if(!isStop && uploadNumber<[photoArray count])
         {

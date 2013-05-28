@@ -71,5 +71,11 @@
 #define FM_UPLOAD @"/fm/upload"
 //申请传输文件
 #define FM_UPLOAD_STATE @"/fm/upload/state"
+//新上传效验
+#define FM_UPLOAD_NEW_VERIFY @"/fm/upload/new/verify"
+//新上传
+#define FM_UPLOAD_NEW @"/fm/upload/new"
+//新上传提交
+#define FM_UPLOAD_NEW_COMMIT @"/fm/upload/new/commit"
 
 #endif
