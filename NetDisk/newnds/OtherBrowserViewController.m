@@ -63,10 +63,41 @@
 //    self.downloadProgress=[[UIProgressView alloc] init];
 //    [self.view addSubview:self.downloadProgress];
 	// Do any additional setup after loading the view.
+    [self performSelector:@selector(showDoc) withObject:self afterDelay:0.01f];
 }
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    NSString *f_name=[self.dataDic objectForKey:@"f_name"];
+    NSString *savedPath=[YNFunctions getFMCachePath];
+    savedPath=[savedPath stringByAppendingPathComponent:f_name];
+    self.savePath=savedPath;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.savePath]) {
+        [self.downloadProgress setHidden:YES];
+        [self.downloadLabel setText:@"下载完成"];
+        [self.downloadLabel setHidden:NO];
+        [self.downloadBtn setHidden:YES];
+        [self.alertLabel setHidden:YES];
+        [self.openItem setEnabled:YES];
+    }
+}
+-(void)showDoc
+{
+    NSString *f_name=[self.dataDic objectForKey:@"f_name"];
+    NSString *savedPath=[YNFunctions getFMCachePath];
+    savedPath=[savedPath stringByAppendingPathComponent:f_name];
+    self.savePath=savedPath;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.savePath]) {
+        [self.downloadProgress setHidden:YES];
+        [self.downloadLabel setText:@"下载完成"];
+        [self.downloadLabel setHidden:NO];
+        [self.downloadBtn setHidden:YES];
+        [self.alertLabel setHidden:YES];
+        [self.openItem setEnabled:YES];
+        UIDocumentInteractionController *docIC=[[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:self.savePath]] autorelease];
+        docIC.delegate=self;
+        [docIC presentPreviewAnimated:YES];
+    }
 }
 -(IBAction)openWithOthersApp:(id)sender
 {

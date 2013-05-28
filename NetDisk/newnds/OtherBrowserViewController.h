@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#ifndef F_LOCK
+#define F_LOCK   //隐藏掉文件预览功能
+#endif
 @interface OtherBrowserViewController : UIViewController<UIDocumentInteractionControllerDelegate>
 @property (strong,nonatomic) IBOutlet UIToolbar *toolbar;
 @property (strong,nonatomic) IBOutlet UIBarButtonItem *shareItem;

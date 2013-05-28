@@ -12,6 +12,7 @@
 #import "PhotoDetailViewController.h"
 #import "YNFunctions.h"
 #import "IconDownloader.h"
+#import "OtherBrowserViewController.h"
 @interface FavoritesViewController ()
 
 @end
@@ -234,6 +235,16 @@
             [photoDetalViewController release];
         }];
         
+    }else
+    {
+#ifndef F_LOCK
+        OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+        [otherBrowser setHidesBottomBarWhenPushed:YES];
+        otherBrowser.dataDic=dic;
+        NSString *f_name=[dic objectForKey:@"f_name"];
+        otherBrowser.title=f_name;
+        [self.navigationController pushViewController:otherBrowser animated:YES];
+#endif
     }
 
 }

@@ -10,6 +10,7 @@
 #import "SCBAccountManager.h"
 #import "YNFunctions.h"
 
+
 @interface SettingViewController ()
 @property (strong,nonatomic) NSString *space_total;
 @property (strong,nonatomic) NSString *space_used;
