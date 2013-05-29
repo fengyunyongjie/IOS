@@ -54,7 +54,11 @@
     }
     return self;
 }
-
+-(void)dealloc
+{
+    [super dealloc];
+    //self.imageDownloadsInProgress=nil;
+}
 - (void)viewDidLoad
 {
     self.imageDownloadsInProgress=[NSMutableDictionary dictionary];
@@ -91,6 +95,9 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [self.fm cancelAllTask];
+    for (IconDownloader *iconLoader in self.imageDownloadsInProgress.allValues) {
+        [iconLoader cancelDownload];
+    };
 }
 - (void)moveFileToHere:(id)sender
 {

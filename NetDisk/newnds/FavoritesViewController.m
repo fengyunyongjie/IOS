@@ -27,7 +27,11 @@
     }
     return self;
 }
-
+-(void)dealloc
+{
+    [super dealloc];
+    self.imageDownloadsInProgress=nil;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -11,6 +11,7 @@
 #import "MYTabBarController.h"
 #import "TaskDemo.h"
 #import "YNFunctions.h"
+#import "OpenViewController.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -22,7 +23,6 @@
     [user_name release];
     [super dealloc];
 }
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //    [MobClick startWithAppkey:@"5158f8f056240bb70c030e97"];
@@ -63,6 +63,16 @@
 //    task_demo.f_lenght = task_demo.f_data.length;
 //    [task_demo insertTaskTable];
     [self.window makeKeyAndVisible];
+    //处理其它程序调用本程序打开文件
+#ifdef ABCC
+    NSURL *url=[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+    if (url) {
+        NSLog(@"the URL:%@",url);
+        OpenViewController *viewController=[[[OpenViewController alloc] initWithNibName:@"OpenViewController" bundle:nil] autorelease];
+        [viewController setTitle:[url description]];
+        [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+    }
+#endif
     return YES;
 }
 

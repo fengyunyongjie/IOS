@@ -36,12 +36,17 @@
     self.imageConnection=conn;
     [conn release];
 }
-
+-(void)dealloc
+{
+    [self cancelDownload];
+    [super dealloc];
+}
 - (void)cancelDownload
 {
-    [self.imageConnection cancel];
-    self.imageConnection = nil;
-    self.activeDownload = nil;
+    self.delegate=nil;
+//    [self.imageConnection cancel];
+//    self.imageConnection = nil;
+//    self.activeDownload = nil;
 }
 #pragma mark -
 #pragma mark Download support (NSURLConnectionDelegate)
@@ -90,6 +95,9 @@
     self.imageConnection = nil;
     
     // call our delegate and tell it that our icon is ready for display
-    [self.delegate appImageDidLoad:self.indexPathInTableView];
+    if (self.delegate!=nil)
+    {
+        [self.delegate appImageDidLoad:self.indexPathInTableView];
+    }
 }
 @end

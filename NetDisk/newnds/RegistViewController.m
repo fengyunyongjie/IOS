@@ -40,7 +40,16 @@
 -(void)registSucceed
 {
      [self.m_hud removeFromSuperview];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)registUnsucceed:(id)manager
+{
+    [self.m_hud show:NO];
+    self.m_hud.labelText=@"注册失败！";
+    self.m_hud.mode=MBProgressHUDModeText;
+    self.m_hud.margin=10.f;
+    [self.m_hud show:YES];
+    [self.m_hud hide:YES afterDelay:0.5f];
 }
 - (IBAction) regitst:(id)sender
 {
@@ -100,8 +109,5 @@
     [self.m_hud show:YES];
     [self.m_hud hide:YES afterDelay:0.5f];
     return rt;
-
-    
-
 }
 @end

@@ -133,7 +133,6 @@
     self.hud.margin=10.f;
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:0.5f];
-    
 }
 #pragma mark - Responding to keyboard events
 
