@@ -15,6 +15,7 @@
 #import "SCBSession.h"
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
+#import "YNFunctions.h"
 
 @interface PhotoViewController ()
 
@@ -26,6 +27,7 @@
 @synthesize activity_indicator;
 @synthesize user_id,user_token;
 @synthesize _arrVisibleCells,_dicReuseCells,bottonView,allKeys;
+@synthesize deleteItem,right_item;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,17 +43,11 @@
     imageTa = 1000;
     //添加分享按钮
     UINavigationItem *nav_item = [self navigationItem];
-    UIButton *right_button = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect rect = CGRectMake(300, 7, 24, 24);
-    [right_button setFrame:rect];
-    [right_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [right_button.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0]];
-    [right_button setTitle:@"返回" forState:UIControlStateNormal];
-    [right_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [right_button setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
-    [right_button addTarget:self action:@selector(right_button_cilcked:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *right_item = [[UIBarButtonItem alloc] initWithCustomView:right_button];
+    right_item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(right_button_cilcked:)];
     [nav_item setRightBarButtonItem:right_item];
+    //添加删除按钮
+    deleteItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButton)];
+//    [nav_item setLeftBarButtonItem:deleteItem];
     
     //初始化基本数据
     _dicReuseCells = [[NSMutableDictionary alloc] init];
@@ -84,6 +80,8 @@
 #pragma mark -标题栏的编辑按钮
 -(void)right_button_cilcked:(id)sender
 {
+    UINavigationItem *nav_item = [self navigationItem];
+    [nav_item setRightBarButtonItem:right_item];
     for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
     {
         PhotoImageButton *imageButton = (PhotoImageButton *)[scroll_view viewWithTag:[[[_dicReuseCells allKeys] objectAtIndex:i] intValue]];
@@ -93,58 +91,12 @@
     if(editBL)
     {
         editBL = FALSE;
-        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
-        if(bottonView)
-        {
-            CATransition *animation = [CATransition animation];
-            animation.duration = 0.35f;
-            animation.timingFunction = UIViewAnimationCurveEaseInOut;
-            animation.fillMode = kCAFillModeForwards;
-            animation.type = kCATransitionPush;
-            animation.subtype = kCATransitionFromBottom;
-            
-            CGRect frame = [bottonView frame];
-            frame.origin.y = self.view.frame.size.height;
-            [bottonView setFrame:frame];
-            [bottonView.layer removeAllAnimations];
-            [bottonView.layer addAnimation:animation forKey:@"animated"];
-        }
+        [nav_item setLeftBarButtonItem:nil];
     }
     else
     {
-        if(!bottonView)
-        {
-            //底部试图
-            CGRect bottonRect = CGRectMake(0, self.view.frame.size.height-49, 320, 49);
-            bottonView = [[UIView alloc] initWithFrame:bottonRect];
-            bottonRect.origin.y = 0;
-            UIImageView *bottonImage = [[UIImageView alloc] initWithFrame:bottonRect];
-            [bottonImage setImage:[UIImage imageNamed:@"tab_bg.png"]];
-            [bottonView addSubview:bottonImage];
-            //删除按钮
-            CGRect deleteRect = CGRectMake(0, 0, 320, 50);
-            UIButton *deleteButton = [[UIButton alloc] initWithFrame:deleteRect];
-            [deleteButton setTitle:@"删除" forState:UIControlStateNormal];
-            [deleteButton addTarget:self action:@selector(deleteButton) forControlEvents:UIControlEventTouchUpInside];
-            [deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [bottonView addSubview:deleteButton];
-            [self.view addSubview:bottonView];
-        }
-        CATransition *animation = [CATransition animation];
-        animation.duration = 0.35f;
-        animation.timingFunction = UIViewAnimationCurveEaseInOut;
-        animation.fillMode = kCAFillModeForwards;
-        animation.type = kCATransitionPush;
-        animation.subtype = kCATransitionFromTop;
-        CGRect frame = [bottonView frame];
-        frame.origin.y = self.view.frame.size.height-49;
-        [bottonView setFrame:frame];
-        [bottonView.layer removeAllAnimations];
-        [bottonView.layer addAnimation:animation forKey:@"animated"];
+        [nav_item setLeftBarButtonItem:deleteItem];
         editBL = YES;
-        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [app_delegate.myTabBarController setHidesTabBarWithAnimate:YES];
     }
 }
 
@@ -153,7 +105,7 @@
 {
     //解析时间轴
     NSString *timeLine = [dictionary objectForKey:@"timeline"];
-    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+    NSMutableArray *tableArray = [[[NSMutableArray alloc] init] autorelease];
     NSRange range = [timeLine rangeOfString:@"],"];
     while (range.length>0) {
         NSString *time_string = [timeLine substringToIndex:range.location];
@@ -254,10 +206,11 @@
         [scroll_view removeFromSuperview];
         [scroll_view release];
     }
-    scroll_view = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-49)];
+    scroll_view = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
     [scroll_view setBackgroundColor:[UIColor whiteColor]];
     [scroll_view setDelegate:self];
     [self.view addSubview:scroll_view];
+    
     NSArray *array = [allDictionary objectForKey:@"timeLine"];
     int scrollview_heigth = 0;
     for(int i=0;i<[array count];i++)
@@ -306,6 +259,7 @@
         scrollview_heigth += 79+4;
     }
     [scroll_view setContentSize:CGSizeMake(320, scrollview_heigth+10)];
+    [self scrollViewDidEndDragging:scroll_view willDecelerate:YES];
 }
 
 -(void)firstLoad
@@ -466,10 +420,14 @@
 
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
 {
-    downNumber++;
-    PhotoImageButton *image_button = (PhotoImageButton *)[scroll_view viewWithTag:indexTag];
-    [image_button setBackgroundImage:image forState:UIControlStateNormal];
-    [self downImage];
+    if(image)
+    {
+        downNumber++;
+        PhotoImageButton *image_button = (PhotoImageButton *)[scroll_view viewWithTag:indexTag];
+        [image_button setBackgroundImage:image forState:UIControlStateNormal];
+        [self downImage];
+    }
+    NSLog(@"appImageDidLoad");
 //    [self loadImageView:image button:imagebutton number:index];
 }
 
@@ -815,13 +773,16 @@
             }
         }
         [self loadViewData];
+        UINavigationItem *nav_item = [self navigationItem];
+        UIBarButtonItem *done_item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(right_button_cilcked:)];
+        [nav_item setRightBarButtonItem:done_item];
     }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if(![[[SCBSession sharedSession] userId] isEqualToString:user_id] && ![[[SCBSession sharedSession] userToken] isEqualToString:user_token])
-    {
+//    if(![[[SCBSession sharedSession] userId] isEqualToString:user_id] && ![[[SCBSession sharedSession] userToken] isEqualToString:user_token])
+//    {
         if(photoManager)
         {
             [photoManager release];
@@ -832,14 +793,13 @@
         [photoManager getPhotoTimeLine];
         [self setUser_id:[[SCBSession sharedSession] userId]];
         [self setUser_token:[[SCBSession sharedSession] userToken]];
-    }
+//    }
 }
 
 //获取图片路径
 - (NSString*)get_image_save_file_path:(NSString*)image_path
 {
-    NSArray *path_array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *documentDir = [path_array objectAtIndex:0];
+    NSString *documentDir = [YNFunctions getProviewCachePath];
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return path;
@@ -849,8 +809,7 @@
 - (BOOL)image_exists_at_file_path:(NSString *)image_path
 {
     NSFileManager *file_manager = [NSFileManager defaultManager];
-    NSArray *path_array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *documentDir = [path_array objectAtIndex:0];
+    NSString *documentDir = [YNFunctions getProviewCachePath];
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return [file_manager fileExistsAtPath:path];
@@ -968,6 +927,7 @@
 	CGImageRef sourceImageRef = [image CGImage];
 	CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);
 	UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    CGImageRelease(newImageRef);
 	return newImage;
 }
 
@@ -993,6 +953,8 @@
     [_dicReuseCells release];
     [_arrVisibleCells release];
     [bottonView release];
+    [deleteItem release];
+    [right_item release];
     [super dealloc];
 }
 

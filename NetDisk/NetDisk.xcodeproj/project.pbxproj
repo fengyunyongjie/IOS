@@ -17,6 +17,9 @@
 		2910C3161743803D00195008 /* DBTimeLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2910C3151743803C00195008 /* DBTimeLine.m */; };
 		2910C31D17438AEF00195008 /* libWeChatSDK_armv7_armv7s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2910C31917438AEF00195008 /* libWeChatSDK_armv7_armv7s.a */; };
 		291E0B15174B61CF007A72FB /* interestSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 291E0B14174B61CF007A72FB /* interestSelected.png */; };
+		292344A21754AF11002FE3D0 /* PKReachability.h in Sources */ = {isa = PBXBuildFile; fileRef = 2939A64A174DE2820036EFD6 /* PKReachability.h */; };
+		292344A61754AF5C002FE3D0 /* Reachability.h in Sources */ = {isa = PBXBuildFile; fileRef = 292344A31754AF47002FE3D0 /* Reachability.h */; };
+		292344A81754B1FD002FE3D0 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 292344A71754B1FD002FE3D0 /* Reachability.m */; };
 		29262229172BD70000A95E97 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29262227172BD70000A95E97 /* LoginViewController.m */; };
 		2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29262228172BD70000A95E97 /* LoginViewController.xib */; };
 		292FF984173A466D004CC609 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E416B9385100A1BE48 /* 114.png */; };
@@ -483,7 +486,6 @@
 		83A91B9216D8AAAD000E2948 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A91B9116D8AAAD000E2948 /* CoreLocation.framework */; };
 		83ADAC11168C75A900419952 /* entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83ADAC10168C75A800419952 /* entitlements.plist */; };
 		83B068DE16DB7CDC00756966 /* CheckConnectionKind.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83B068DD16DB7CDC00756966 /* CheckConnectionKind.mm */; };
-		83B068E216DB7F2200756966 /* Reachability.mm in Sources */ = {isa = PBXBuildFile; fileRef = 83B068E116DB7F2200756966 /* Reachability.mm */; };
 		83B068E416DB811200756966 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E316DB811100756966 /* CFNetwork.framework */; };
 		83B068E616DB822500756966 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E516DB822500756966 /* SystemConfiguration.framework */; };
 		83B29FCC1695D52700CC41E7 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = 83B29FCB1695D52700CC41E7 /* default.png */; };
@@ -568,6 +570,8 @@
 		2910C31A17438AEF00195008 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
 		2910C31B17438AEF00195008 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		291E0B14174B61CF007A72FB /* interestSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interestSelected.png; sourceTree = "<group>"; };
+		292344A31754AF47002FE3D0 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		292344A71754B1FD002FE3D0 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		29262226172BD70000A95E97 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		29262227172BD70000A95E97 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		29262228172BD70000A95E97 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
@@ -1125,8 +1129,6 @@
 		83ADAC10168C75A800419952 /* entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = entitlements.plist; sourceTree = "<group>"; };
 		83B068DC16DB7CDC00756966 /* CheckConnectionKind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckConnectionKind.h; sourceTree = "<group>"; };
 		83B068DD16DB7CDC00756966 /* CheckConnectionKind.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CheckConnectionKind.mm; sourceTree = "<group>"; };
-		83B068E016DB7F2200756966 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		83B068E116DB7F2200756966 /* Reachability.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Reachability.mm; sourceTree = "<group>"; };
 		83B068E316DB811100756966 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		83B068E516DB822500756966 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		83B29FCB1695D52700CC41E7 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
@@ -1742,10 +1744,10 @@
 			isa = PBXGroup;
 			children = (
 				2939A631174DE2820036EFD6 /* ASIHttpLib */,
-				83B068E016DB7F2200756966 /* Reachability.h */,
-				83B068E116DB7F2200756966 /* Reachability.mm */,
 				83B068DC16DB7CDC00756966 /* CheckConnectionKind.h */,
 				83B068DD16DB7CDC00756966 /* CheckConnectionKind.mm */,
+				292344A31754AF47002FE3D0 /* Reachability.h */,
+				292344A71754B1FD002FE3D0 /* Reachability.m */,
 				835C3004167064AA00E83538 /* JSON */,
 				83D681451675D2B80054AB1A /* Function.h */,
 				83D681461675D2B80054AB1A /* Function.mm */,
@@ -2907,6 +2909,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				292344A61754AF5C002FE3D0 /* Reachability.h in Sources */,
+				292344A21754AF11002FE3D0 /* PKReachability.h in Sources */,
 				29852D14172CD42C001AD87A /* MBProgressHUD.h in Sources */,
 				29852D15172CD42C001AD87A /* MBProgressHUD.m in Sources */,
 				29852D12172CCBE0001AD87A /* MF_Base64Additions.h in Sources */,
@@ -2977,6 +2981,7 @@
 				298C1EDE17532F4F00D793F3 /* OtherBrowserViewController.m in Sources */,
 				299D9F6B1754326900B61161 /* DBSqlite3.m in Sources */,
 				299D9F6C1754326900B61161 /* TaskDemo.m in Sources */,
+				292344A81754B1FD002FE3D0 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3055,7 +3060,6 @@
 				83E8B11F16D4758F00A31255 /* ALAsset+AGIPC.m in Sources */,
 				83F57B6416D6169D0006C980 /* GetRemoteThumbExecutor.cpp in Sources */,
 				83B068DE16DB7CDC00756966 /* CheckConnectionKind.mm in Sources */,
-				83B068E216DB7F2200756966 /* Reachability.mm in Sources */,
 				29B3995F170C017E0008D955 /* ImageBrowserViewController.m in Sources */,
 				29B39967170C2CC10008D955 /* MWTapDetectingImageView.m in Sources */,
 				29B39968170C2CC10008D955 /* MWTapDetectingView.m in Sources */,

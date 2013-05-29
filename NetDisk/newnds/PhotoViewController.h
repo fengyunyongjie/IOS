@@ -49,7 +49,8 @@
     NSMutableArray *downArray;
     int downNumber;
     BOOL bl;
-    int scrollview_heigth;
+    UIBarButtonItem *deleteItem;
+    UIBarButtonItem *right_item;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
@@ -62,5 +63,7 @@
 @property(nonatomic,retain) NSMutableArray *_arrVisibleCells; // 重用的cell
 @property(nonatomic,retain) NSMutableDictionary *_dicReuseCells; //选中的数据
 @property(nonatomic,retain) UIView *bottonView;
+@property(nonatomic,retain) UIBarButtonItem *deleteItem;
+@property(nonatomic,retain) UIBarButtonItem *right_item;
 
 @end

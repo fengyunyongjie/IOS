@@ -10,6 +10,7 @@
 //#import "LoginViewController.h"
 #import "MYTabBarController.h"
 #import "TaskDemo.h"
+#import "YNFunctions.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -28,7 +29,7 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
-    [self.myTabBarController setNeed_to_custom:NO];
+    [self.myTabBarController setNeed_to_custom:YES];
     [self.myTabBarController setTab_bar_bg:[UIImage imageNamed:@"tab_bg.png"]];
     [self.myTabBarController setNormal_image:[NSArray arrayWithObjects:@"tab_btn_myroom@2x.png",@"tab_btn_favorite@2x.png",@"tab_btn_photo@2x.png",@"tab_btn_upload@2x.png",@"tab_btn_setting@2x.png", nil]];
     [self.myTabBarController setSelect_image:[NSArray arrayWithObjects:@"tab_btn_myroom_h@2x.png",@"tab_btn_favorite_h@2x.png",@"tab_btn_photo_h@2x.png",@"tab_btn_upload_h@2x.png",@"tab_btn_setting_h@2x.png",nil]];
@@ -82,8 +83,7 @@
 //获取图片路径
 - (NSString*)get_image_save_file_path:(NSString*)image_path
 {
-    NSArray *path_array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *documentDir = [path_array objectAtIndex:0];
+    NSString *documentDir = [YNFunctions getProviewCachePath];
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return path;
@@ -91,11 +91,23 @@
 
 - (void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path
 {
+    
     WXMediaMessage *message = [WXMediaMessage message];
     NSString *filePath = [self get_image_save_file_path:path];
-    [message setThumbImage:[UIImage imageWithContentsOfFile:filePath]];
+    NSLog(@"filePath:%@",filePath);
+    NSData *data = [[NSData alloc] initWithContentsOfFile:filePath];
+    NSLog(@"data:%i",[data length]/1024);
+    UIImage *imageV = [UIImage imageWithContentsOfFile:filePath];
+    if([data length]>=32)
+    {
+        imageV = [self scaleFromImage:imageV toSize:CGSizeMake(200, 200)];
+    }    
+    [message setThumbImage:imageV];
     WXImageObject *ext = [WXImageObject object];
-    ext.imageData = [NSData dataWithContentsOfFile:filePath];
+    
+    ext.imageData = UIImagePNGRepresentation(imageV);
+    NSLog(@"data:%i",[ext.imageData length]/1024);
+    [data release];
     message.mediaObject = ext;
     SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
     req.bText = NO;
@@ -105,6 +117,24 @@
         req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
     }
     [WXApi sendReq:req];
+}
+
+-(UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{
+	CGImageRef sourceImageRef = [image CGImage];
+	CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);
+	UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    CGImageRelease(newImageRef);
+	return newImage;
+}
+
+
+-(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url

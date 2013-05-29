@@ -7,6 +7,7 @@
 //
 
 #import "PhotoImageButton.h"
+#import "YNFunctions.h"
 
 @implementation PhotoImageButton
 @synthesize timeLine,timeIndex,demo,bgImageView;
@@ -52,8 +53,7 @@
 //获取图片路径
 - (NSString*)get_image_save_file_path:(NSString*)image_path
 {
-    NSArray *path_array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *documentDir = [path_array objectAtIndex:0];
+    NSString *documentDir = [YNFunctions getProviewCachePath];
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return path;
@@ -63,8 +63,7 @@
 - (BOOL)image_exists_at_file_path:(NSString *)image_path
 {
     NSFileManager *file_manager = [NSFileManager defaultManager];
-    NSArray *path_array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *documentDir = [path_array objectAtIndex:0];
+    NSString *documentDir = [YNFunctions getProviewCachePath];
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return [file_manager fileExistsAtPath:path];

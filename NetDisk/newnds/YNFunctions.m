@@ -85,6 +85,23 @@
     }
     return theFMCachePath;
 }
+
++(NSString *)getProviewCachePath
+{
+    NSString *theFMCachePath=nil;
+    NSArray *pathes= NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    theFMCachePath=[pathes objectAtIndex:0];
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:@"/ProviewCache/"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:theFMCachePath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:theFMCachePath
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    return theFMCachePath;
+}
+
 +(NSString *)getKeepCachePath
 {
     NSString *theFMCachePath=nil;

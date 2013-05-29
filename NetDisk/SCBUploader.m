@@ -30,7 +30,7 @@
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
-    
+    [body release];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
@@ -52,14 +52,14 @@
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
-    
+    [body release];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
 //上传
--(void)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image
+-(NSURLConnection *)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image
 {
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
@@ -73,7 +73,8 @@
     [request setHTTPBody:image];
     [request setHTTPMethod:@"PUT"];
     NSLog(@"上传请求：%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    NSURLConnection *con = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    return con;
 }
 
 //上传提交
@@ -99,7 +100,7 @@
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
-    
+    [body release];
     [request setHTTPMethod:@"POST"];
     NSLog(@"上传完成后提交 %@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];

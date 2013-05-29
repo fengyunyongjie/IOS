@@ -92,6 +92,7 @@
     [leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [leftButton setBackgroundColor:[UIColor clearColor]];
     [bottonBar addSubview:leftButton];
+    [leftButton release];
     
     CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
     UIButton *centerButton = [[UIButton alloc] initWithFrame:centerRect];
@@ -232,7 +233,7 @@
             }
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.f_mime];
+            [downImage setImageUrl:demo.f_name];
             [downImage setImageViewIndex:imageTag+i];
             [downImage setDelegate:self];
             [downImage startDownload];
@@ -253,7 +254,7 @@
             }
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.f_mime];
+            [downImage setImageUrl:demo.f_name];
             [downImage setImageViewIndex:imageTag+i];
             [downImage setDelegate:self];
             [downImage startDownload];
@@ -274,7 +275,7 @@
             }
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.f_mime];
+            [downImage setImageUrl:demo.f_name];
             [downImage setImageViewIndex:imageTag+i];
             [downImage setDelegate:self];
             [downImage startDownload];
@@ -295,7 +296,7 @@
             }
             DownImage *downImage = [[[DownImage alloc] init] autorelease];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.f_mime];
+            [downImage setImageUrl:demo.f_name];
             [downImage setImageViewIndex:imageTag+i];
             [downImage setDelegate:self];
             [downImage startDownload];
@@ -443,18 +444,18 @@
         demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:page]];
     }
     else if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[PhohoDemo class]])
-    {
+    { 
         demo = [allPhotoDemoArray objectAtIndex:page];
     }
     if(buttonIndex == 0)
     {
         //微信朋友圈
-        [app_delegate sendImageContentIsFiends:YES path:demo.f_mime];
+        [app_delegate sendImageContentIsFiends:YES path:demo.f_name];
     }
     if(buttonIndex == 1)
     {
         //微信好友
-        [app_delegate sendImageContentIsFiends:NO path:demo.f_mime];
+        [app_delegate sendImageContentIsFiends:NO path:demo.f_name];
     }
     if(buttonIndex == 2)
     {
@@ -500,6 +501,8 @@
     }
 }
 
+
+#pragma mark SCBPhotoDelegate
 -(void)requstDelete:(NSDictionary *)dictioinary
 {
     if([[dictioinary objectForKey:@"code"] intValue] == 0)
@@ -533,6 +536,21 @@
     {
         [deleteDelegate  deleteForDeleteArray:deletePage timeLine:timeLine];
     }
+}
+
+-(void)getPhotoTiimeLine:(NSDictionary *)dictionary
+{
+    
+}
+
+-(void)getPhotoGeneral:(NSDictionary *)dictionary photoDictioin:(NSMutableDictionary *)photoDic
+{
+    
+}
+
+-(void)getPhotoDetail:(NSDictionary *)dictionary
+{
+    
 }
 
 @end

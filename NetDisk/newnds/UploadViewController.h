@@ -28,14 +28,23 @@
     NSString *uploadData;
     BOOL isStop;
     UIImage *imageV;
+    
+    
+    UIImageView *stateImageview;
+    UILabel *nameLabel;
+    UIButton *uploadTypeButton;
+    UIButton *diyUploadButton;
+    UILabel *basePhotoLabel;
+    UILabel *formatLabel;
+    UILabel *uploadNumberLabel;
 }
-@property (retain, nonatomic) IBOutlet UIImageView *stateImageview;
-@property (retain, nonatomic) IBOutlet UILabel *nameLabel;
-@property (retain, nonatomic) IBOutlet UIButton *uploadTypeButton;
-@property (retain, nonatomic) IBOutlet UIButton *diyUploadButton;
-@property (retain, nonatomic) IBOutlet UILabel *basePhotoLabel;
-@property (retain, nonatomic) IBOutlet UILabel *formatLabel;
-@property (retain, nonatomic) IBOutlet UILabel *uploadNumberLabel;
+@property (retain, nonatomic) UIImageView *stateImageview;
+@property (retain, nonatomic) UILabel *nameLabel;
+@property (retain, nonatomic) UIButton *uploadTypeButton;
+@property (retain, nonatomic) UIButton *diyUploadButton;
+@property (retain, nonatomic) UILabel *basePhotoLabel;
+@property (retain, nonatomic) UILabel *formatLabel;
+@property (retain, nonatomic) UILabel *uploadNumberLabel;
 @property (nonatomic,retain) NSMutableArray *photoArray;
 
 -(NSString *)md5:(NSData *)concat;

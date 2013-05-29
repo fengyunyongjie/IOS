@@ -42,7 +42,7 @@
     timeDictionary = [[NSMutableDictionary alloc] init];
     photoDictionary  = [[NSMutableDictionary alloc] init];
     allKeysArray = [[NSMutableArray alloc] init];
-    timeLineAllArray = timeLineArray;
+    timeLineAllArray = [timeLineArray retain];
     timeLineTotalNumber = [timeLineArray count];
     timeLineNowNumber = 0;
     [self getPhotoGeneral];
@@ -60,12 +60,14 @@
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
+    NSLog(@"--------------------------------------------------请求的参数：%@",body);
+    [body release];
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-    NSLog(@"--------------------------------------------------请求的参数：%@",body);
+    
     
     timeLineNowNumber++;
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
@@ -89,9 +91,9 @@
                 [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
                 [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
                 NSDate *date_string;
-                NSString *date_type;;
+                NSString *date_type = nil;
                 NSArray *array_dict = [photosDiction objectForKey:@"list"];
-                NSMutableArray *tableArray;
+                NSMutableArray *tableArray = nil;
                 NSString *string_date;
                 for(int j=0;j<[array_dict count];j++)
                 {
@@ -255,16 +257,24 @@
     NSMutableString *idString = [[NSMutableString alloc] init];
     for(int i=0;i<[deleteId count];i++)
     {
-        [idString appendString:[deleteId objectAtIndex:i]];
+        if(i==0)
+        {
+            [idString appendString:[NSString stringWithFormat:@"f_ids[]=%@",[deleteId objectAtIndex:i]]];
+        }
+        else
+        {
+            [idString appendString:[NSString stringWithFormat:@"&f_ids[]=%@",[deleteId objectAtIndex:i]]];
+        }
     }
     
+    NSLog(@"idString:%@",idString);
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_ids[]=%@",idString];
+    [body appendString:idString];
     [idString release];
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
-    
+    [body release];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
@@ -429,7 +439,7 @@
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
-    
+    [body release];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
@@ -447,7 +457,7 @@
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    
+    [body release];
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];

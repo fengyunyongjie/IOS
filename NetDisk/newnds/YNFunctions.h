@@ -15,6 +15,7 @@
 +(NSString *)fileType:(NSString *)fileName;
 +(NSString *)getFMCachePath;    //文件缓存目录
 +(NSString *)getIconCachePath;  //图标缓存
++(NSString *)getProviewCachePath;  //预览目录
 +(NSString *)getKeepCachePath;  //收藏目录
 +(NSString *)getTempCachePath;  //临时缓存目录
 +(NSString *)getDataCachePath;  //数据缓存目录

@@ -10,6 +10,8 @@
 #import "SCBoxConfig.h"
 #import "SCBSession.h"
 #import "MF_Base64Additions.h"
+#import "YNFunctions.h"
+
 @implementation DownImage
 @synthesize delegate;
 @synthesize activeDownload;
@@ -52,37 +54,32 @@
         [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
         [request setHTTPMethod:@"GET"];
         
-        self.activeDownload = [NSMutableData data];
-        NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        
-        self.imageConnection = conn;
-        [conn release];
-        [image release];
+        activeDownload = [[NSMutableData alloc] init];
+        imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     }
+    [image release];
 }
 
 - (void)cancelDownload
 {
-    [self.imageConnection cancel];
-    self.imageConnection = nil;
-    self.activeDownload = nil;
+    [imageConnection cancel];
 }
 #pragma mark -
 #pragma mark Download support (NSURLConnectionDelegate)
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    [self.activeDownload appendData:data];
+    [activeDownload appendData:data];
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    self.activeDownload = nil;
-    self.imageConnection = nil;
+    
 }
 
 //下载完成后将图片写入黑盒子，
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.activeDownload options:NSJSONReadingMutableLeaves error:nil];
+    NSLog(@"connectionDidFinishLoading:%@",connection);
     if([[diction objectForKey:@"code"] intValue] == 3)
     {
         NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
@@ -93,28 +90,23 @@
         [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
         [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
         [request setHTTPMethod:@"GET"];
-        
-        self.activeDownload = [NSMutableData data];
-        NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        
-        self.imageConnection = conn;
-        [conn release];
+        if(activeDownload)
+        {
+            [activeDownload release];
+        }
+        activeDownload = [[NSMutableData alloc] init];
+        imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     }
     else
     {
-        UIImage *image = [[UIImage alloc] initWithData:self.activeDownload];
-        newDownImage=image;
-        NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *documentDir = [documentPaths objectAtIndex:0];
+        NSString *documentDir = [YNFunctions getProviewCachePath];
         NSArray *array=[imageUrl componentsSeparatedByString:@"/"];
         NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
         [activeDownload writeToFile:path atomically:YES];
         NSString *urlpath = [NSString stringWithFormat:@"%@",path];
         NSLog(@"f_id:%i,urlpath:%@",self.fileId,urlpath);
-        self.activeDownload = nil;
-        self.imageConnection = nil;
+        UIImage  *image = [UIImage imageWithContentsOfFile:urlpath];
         [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
-        [image release];
     }
 }
 
@@ -122,8 +114,7 @@
 - (BOOL)image_exists_at_file_path:(NSString *)image_path
 {
     NSFileManager *file_manager = [NSFileManager defaultManager];
-    NSArray *path_array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *documentDir = [path_array objectAtIndex:0];
+    NSString *documentDir = [YNFunctions getProviewCachePath];
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return [file_manager fileExistsAtPath:path];
@@ -133,8 +124,7 @@
 //获取图片路径
 - (NSString*)get_image_save_file_path:(NSString*)image_path
 {
-    NSArray *path_array = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *documentDir = [path_array objectAtIndex:0];
+    NSString *documentDir = [YNFunctions getProviewCachePath];
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return path;
