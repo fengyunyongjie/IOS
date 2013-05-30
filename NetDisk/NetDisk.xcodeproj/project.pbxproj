@@ -355,6 +355,7 @@
 		29CFD47D173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
 		29CFD62517375630001B6721 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD62417375630001B6721 /* PhotoDetailViewController.m */; };
 		29CFD62617375630001B6721 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD62417375630001B6721 /* PhotoDetailViewController.m */; };
+		29D0CD571757342D00B20294 /* FavoritesDBController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D0CD561757342D00B20294 /* FavoritesDBController.m */; };
 		29DE0CF717422C5C009C41C7 /* accessory.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DE0CE917422C5C009C41C7 /* accessory.png */; };
 		29DE0CF817422C5C009C41C7 /* nav_bar_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DE0CEA17422C5C009C41C7 /* nav_bar_edit.png */; };
 		29DE0CF917422C5C009C41C7 /* nav_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DE0CEB17422C5C009C41C7 /* nav_bg.png */; };
@@ -831,6 +832,8 @@
 		29CFD47B173733FF001B6721 /* DownImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownImage.m; sourceTree = "<group>"; };
 		29CFD62317375630001B6721 /* PhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailViewController.h; sourceTree = "<group>"; };
 		29CFD62417375630001B6721 /* PhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailViewController.m; sourceTree = "<group>"; };
+		29D0CD551757342D00B20294 /* FavoritesDBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesDBController.h; sourceTree = "<group>"; };
+		29D0CD561757342D00B20294 /* FavoritesDBController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesDBController.m; sourceTree = "<group>"; };
 		29DE0CE917422C5C009C41C7 /* accessory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accessory.png; sourceTree = "<group>"; };
 		29DE0CEA17422C5C009C41C7 /* nav_bar_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bar_edit.png; sourceTree = "<group>"; };
 		29DE0CEB17422C5C009C41C7 /* nav_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_bg.png; sourceTree = "<group>"; };
@@ -1478,6 +1481,8 @@
 				299D9F681754326900B61161 /* DBSqlite3.m */,
 				299D9F691754326900B61161 /* TaskDemo.h */,
 				299D9F6A1754326900B61161 /* TaskDemo.m */,
+				29D0CD551757342D00B20294 /* FavoritesDBController.h */,
+				29D0CD561757342D00B20294 /* FavoritesDBController.m */,
 			);
 			path = sqlite3;
 			sourceTree = "<group>";
@@ -3004,6 +3009,7 @@
 				299D9F6C1754326900B61161 /* TaskDemo.m in Sources */,
 				292344A81754B1FD002FE3D0 /* Reachability.m in Sources */,
 				29DF5BD61755A760005D85E4 /* OpenViewController.m in Sources */,
+				29D0CD571757342D00B20294 /* FavoritesDBController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

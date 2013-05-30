@@ -2,51 +2,32 @@
 <Bucket
    type = "1"
    version = "1.0">
-<<<<<<< HEAD
    <FileBreakpoints>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "newnds/AppDelegate.m"
-         timestampString = "391578877.296017"
+         filePath = "newnds/sqlite3/FavoritesDBController.m"
+         timestampString = "391601307.880914"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "81"
-         endingLineNumber = "81"
-         landmarkName = "-onReq:"
+         startingLineNumber = "82"
+         endingLineNumber = "82"
+         landmarkName = "-deleteWithF_ID:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "newnds/PhotoDetailViewController.m"
-         timestampString = "391588541.646003"
+         filePath = "newnds/sqlite3/FavoritesDBController.m"
+         timestampString = "391602225.944422"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "549"
-         endingLineNumber = "549"
-         landmarkName = "-alertView:clickedButtonAtIndex:"
+         startingLineNumber = "136"
+         endingLineNumber = "136"
+         landmarkName = "-getAllDatas"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
-=======
-   <ExceptionBreakpoints>
-      <ExceptionBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         scope = "0"
-         stopOnStyle = "0">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.DebuggerCommand">
-               <ActionContent>
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
-      </ExceptionBreakpoint>
-   </ExceptionBreakpoints>
->>>>>>> 修改Bugs。
 </Bucket>

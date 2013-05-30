@@ -150,6 +150,21 @@
     }
     return theFMCachePath;
 }
++(NSString *)getDBCachePath
+{
+    NSString *theFMCachePath=nil;
+    NSArray *pathes= NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    theFMCachePath=[pathes objectAtIndex:0];
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:@"/DBCache/"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:theFMCachePath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:theFMCachePath
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    return theFMCachePath;
+}
 +(NSString *)getUserFavoriteDataPath
 {
     NSString *theFMCachePath=nil;

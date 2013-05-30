@@ -57,5 +57,4 @@
 #pragma mark 判断图片是否存在
 -(BOOL)isPhotoExist;
 
-
 @end

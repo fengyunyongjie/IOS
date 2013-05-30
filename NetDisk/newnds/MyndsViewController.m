@@ -280,35 +280,12 @@
 {
     NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
     NSString *f_id=[dic objectForKey:@"f_id"];
-    if ([[FavoritesData sharedFavoritesData].favoriteDic objectForKey:f_id]) {
+    if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
         [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
-        NSLog(@"%@",[FavoritesData sharedFavoritesData].favoriteDic);
-        NSLog(@"删除一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
-//        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row + 1 inSection:self.selectedIndexPath.section];
-//        UITableViewCell *cell=[self tableView:self.tableView cellForRowAtIndexPath:indexPath];
-//        if (cell.imageView.subviews.count>0) {
-//            for (UIView *view in cell.imageView.subviews) {
-//                [view removeFromSuperview];
-//            }
-//        }
-
     }else
     {
         [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
-        NSLog(@"%@",[FavoritesData sharedFavoritesData].favoriteDic);
-        NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
-//        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row + 1 inSection:self.selectedIndexPath.section];
-//        UITableViewCell *cell=[self tableView:self.tableView cellForRowAtIndexPath:indexPath];
-//        if (cell.imageView.subviews.count==0) {
-//            UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
-//            CGRect r=[tagView frame];
-//            r.origin.x=0;
-//            r.origin.y=20;
-//            [tagView setFrame:r];
-//            [cell.imageView addSubview:tagView];
-//        }
     }
-//    [self.tableView reloadData];
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row -1 inSection:self.selectedIndexPath.section];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self hideOptionCell];
@@ -458,10 +435,10 @@
         }else
         {
             NSString *f_size=[this objectForKey:@"f_size"];
-            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@B",f_modify,[YNFunctions convertSize:f_size]];
+            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",f_modify,[YNFunctions convertSize:f_size]];
         //是否显示收藏图标
             NSObject *tag=nil;
-            tag=[[FavoritesData sharedFavoritesData] objectForKey:f_id];
+            tag=[[FavoritesData sharedFavoritesData] isExistsWithFID:f_id];
             if (tag!=nil) {
                 if (cell.imageView.subviews.count==0) {
                     UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];

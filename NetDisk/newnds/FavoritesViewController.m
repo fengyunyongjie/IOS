@@ -77,12 +77,12 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     cell.textLabel.text=@"fane";
-    NSDictionary *dic=[[[[FavoritesData sharedFavoritesData] favoriteDic] allValues] objectAtIndex:indexPath.row];
+    NSDictionary *dic=[[[FavoritesData sharedFavoritesData] allValues] objectAtIndex:indexPath.row];
     NSString *name= [dic objectForKey:@"f_name"];
-    NSString *f_modify=[dic objectForKey:@"f_modify"];
+    //NSString *f_modify=[dic objectForKey:@"f_modify"];
     NSString *t_fl = [[dic objectForKey:@"f_mime"] lowercaseString];
     cell.textLabel.text=name;
-    cell.detailTextLabel.text=f_modify;
+    //cell.detailTextLabel.text=f_modify;
     if (cell.imageView.subviews.count==0) {
         UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
         CGRect r=[tagView frame];
@@ -162,7 +162,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        NSArray *listArray=[[FavoritesData sharedFavoritesData].favoriteDic allValues];
+        NSArray *listArray=[[FavoritesData sharedFavoritesData] allValues];
         NSDictionary *dic=[listArray objectAtIndex:indexPath.row];
         NSString *f_id=[dic objectForKey:@"f_id"];
         [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
@@ -194,7 +194,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *listArray=[[FavoritesData sharedFavoritesData].favoriteDic allValues];
+    NSArray *listArray=[[FavoritesData sharedFavoritesData] allValues];
     NSDictionary *dic=[listArray objectAtIndex:indexPath.row];
     NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
     if ([f_mime isEqualToString:@"png"]||
