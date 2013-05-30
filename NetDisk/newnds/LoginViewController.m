@@ -55,6 +55,7 @@
 - (IBAction)userRegister:(id)sender
 {
     RegistViewController *regist=[[[RegistViewController alloc] initWithNibName:@"RegistViewController" bundle:nil] autorelease];
+    regist.delegate=self;
     [self presentViewController:regist animated:YES completion:nil];
 }
 - (BOOL)registAssert
@@ -108,6 +109,11 @@
         [self.hud show:YES];
     }
 }
+- (IBAction)endEdit:(id)sender
+{
+    [self.userNameTextField endEditing:YES];
+    [self.passwordTextField endEditing:YES];
+}
 #pragma mark - UIAlertViewDelegate Methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -122,8 +128,17 @@
     [[NSUserDefaults standardUserDefaults] setObject:_userNameTextField.text forKey:@"usr_name"];
     [[NSUserDefaults standardUserDefaults] setObject:_passwordTextField.text forKey:@"usr_pwd"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(resetData)]) {
+        [self.delegate resetData];
+    }
     [self dismissViewControllerAnimated:YES completion:^(void){}];
     [self.hud show:NO];
+}
+-(void)resetData
+{
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(resetData)]) {
+        [self.delegate resetData];
+    }
 }
 -(void)loginUnsucceed:(id)manager
 {

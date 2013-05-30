@@ -25,6 +25,21 @@ static FavoritesData *_sharedFavoritesData;
     }
     return _sharedFavoritesData;
 }
+-(NSArray *)allValuesSort
+{
+}
+-(void)reloadData
+{
+    NSString *dataFilePath=[YNFunctions getUserFavoriteDataPath];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:dataFilePath])
+    {
+        [self readFromFile];
+    }else
+    {
+        self.favoriteDic=[NSMutableDictionary dictionary];
+    }
+
+}
 - (void)setObject:(id)value forKey:(NSString *)defaultName
 {
     [self.favoriteDic setObject:value forKey:defaultName];

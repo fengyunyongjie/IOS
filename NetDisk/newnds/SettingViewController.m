@@ -42,7 +42,9 @@
     UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
     [exitButton setTitle:@"退出登录" forState:UIControlStateNormal];
     [exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [exitButton setBackgroundColor:[UIColor redColor]];
+    //[exitButton setBackgroundColor:[UIColor redColor]];
+    [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit.png"] forState:UIControlStateNormal];
+    [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit_on.png"] forState:UIControlStateHighlighted];
     [exitButton setFrame:CGRectMake(10, 470, 301, 50)];
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:exitButton];

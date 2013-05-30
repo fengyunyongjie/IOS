@@ -718,8 +718,8 @@
 		29B3899717431A48007313B1 /* btn_create_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_create_n.png; sourceTree = "<group>"; };
 		29B3899817431A48007313B1 /* btn_create_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_create_on.png; sourceTree = "<group>"; };
 		29B3899917431A48007313B1 /* btn_library.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_library.png; sourceTree = "<group>"; };
-		29B3899A17431A48007313B1 /* btn_quit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_quit.png; sourceTree = "<group>"; };
-		29B3899B17431A48007313B1 /* btn_quit_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_quit_on.png; sourceTree = "<group>"; };
+		29B3899A17431A48007313B1 /* btn_quit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = btn_quit.png; path = ../../NetDisk/Pic/btn_quit.png; sourceTree = "<group>"; };
+		29B3899B17431A48007313B1 /* btn_quit_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = btn_quit_on.png; path = ../../NetDisk/Pic/btn_quit_on.png; sourceTree = "<group>"; };
 		29B3899C17431A48007313B1 /* btn_updown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_updown.png; sourceTree = "<group>"; };
 		29B3899D17431A48007313B1 /* btn_updown_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_updown_on.png; sourceTree = "<group>"; };
 		29B3899E17431A48007313B1 /* check_input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check_input.png; sourceTree = "<group>"; };
@@ -1542,8 +1542,6 @@
 				29B3899717431A48007313B1 /* btn_create_n.png */,
 				29B3899817431A48007313B1 /* btn_create_on.png */,
 				29B3899917431A48007313B1 /* btn_library.png */,
-				29B3899A17431A48007313B1 /* btn_quit.png */,
-				29B3899B17431A48007313B1 /* btn_quit_on.png */,
 				29B3899C17431A48007313B1 /* btn_updown.png */,
 				29B3899D17431A48007313B1 /* btn_updown_on.png */,
 				29B3899E17431A48007313B1 /* check_input.png */,
@@ -1663,6 +1661,8 @@
 		29DE0CE817422C5B009C41C7 /* nds_img */ = {
 			isa = PBXGroup;
 			children = (
+				29B3899A17431A48007313B1 /* btn_quit.png */,
+				29B3899B17431A48007313B1 /* btn_quit_on.png */,
 				298C1EE1175340FF00D793F3 /* file_icon.png */,
 				29B996C5174E1B4700204068 /* login */,
 				29DE0CE917422C5C009C41C7 /* accessory.png */,

@@ -67,12 +67,11 @@
     [self.optionCell addSubview:[[[UIToolbar alloc] init] autorelease]];
     self.selectedIndexPath=nil;
 }
--(void)viewWillLayoutSubviews
-{
-}
 - (void)viewWillAppear:(BOOL)animated
 {
     [self updateFileList];
+    NSLog(@"viewWillAppear::");
+    [super viewWillAppear:animated];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -81,7 +80,10 @@
         self.deleteBtn=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteAction:)];
         //[self.deleteBtn setEnabled:NO];
         [self.navigationItem setRightBarButtonItems:@[self.editBtn]];
-        self.isEditing=NO;
+        if(self.isEditing)
+        {
+            [self editAction:self.editBtn];
+        }
     }else if (self.myndsType==kMyndsTypeSelect)
     {
         UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(moveFileToHere:)];
@@ -691,13 +693,14 @@
 
         }else
         {
-#ifndef F_LOCK
-            OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
-            [otherBrowser setHidesBottomBarWhenPushed:YES];
-            otherBrowser.dataDic=dic;
-            otherBrowser.title=f_name;
-            [self.navigationController pushViewController:otherBrowser animated:YES];
-#endif
+            if ([YNFunctions isUnlockFeature]) {
+                OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+                [otherBrowser setHidesBottomBarWhenPushed:YES];
+                otherBrowser.dataDic=dic;
+                otherBrowser.title=f_name;
+                [self.navigationController pushViewController:otherBrowser animated:YES];
+
+            }
         }
 //        ImageBrowserViewController *browser=[[[ImageBrowserViewController alloc] init] autorelease];
 //        browser.listArray=self.listArray;

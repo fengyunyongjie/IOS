@@ -40,12 +40,22 @@
 -(void)registSucceed
 {
      [self.m_hud removeFromSuperview];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^(void){
+        if (self.delegate && [self.delegate respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
+            [[NSUserDefaults standardUserDefaults] setObject:self.m_userNameTextField.text forKey:@"usr_name"];
+            [[NSUserDefaults standardUserDefaults] setObject:self.m_passwordAgainTextField.text forKey:@"usr_pwd"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            if (self.delegate&&[self.delegate respondsToSelector:@selector(resetData)]) {
+                [self.delegate resetData];
+            }
+            [self.delegate dismissViewControllerAnimated:YES completion:nil];
+        }
+    }];
 }
 -(void)registUnsucceed:(id)manager
 {
     [self.m_hud show:NO];
-    self.m_hud.labelText=@"注册失败！";
+    self.m_hud.labelText=@"注册失败！(帐号被使用)";
     self.m_hud.mode=MBProgressHUDModeText;
     self.m_hud.margin=10.f;
     [self.m_hud show:YES];

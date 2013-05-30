@@ -15,4 +15,6 @@
 - (id)objectForKey:(NSString *)defaultName;
 - (void)removeObjectForKey:(NSString *)defaultName;
 - (int)count;
+-(void)reloadData;
+-(NSArray *)allValuesSort;
 @end

@@ -138,6 +138,9 @@
     NSArray *pathes= NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     theFMCachePath=[pathes objectAtIndex:0];
     theFMCachePath=[theFMCachePath stringByAppendingPathComponent:@"/DataCache/"];
+    NSString *usr_name=[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:usr_name];
+    theFMCachePath=[theFMCachePath stringByAppendingPathComponent:@"/"];
     if (![[NSFileManager defaultManager] fileExistsAtPath:theFMCachePath])
     {
         [[NSFileManager defaultManager] createDirectoryAtPath:theFMCachePath
@@ -195,23 +198,32 @@
         return sSize;
     }
     nSize = [sourceSize floatValue]/1024.0;
-    sSize = [NSString stringWithFormat:@"%.2f K",nSize];
+    sSize = [NSString stringWithFormat:@"%.2f KB",nSize];
     if (nSize<1) {
-        sSize = @"0 K";
+        sSize = @"0 KB";
         return sSize;
     }
     if (nSize>=1024) {
         nSize = nSize/1024.0;
-        sSize = [NSString stringWithFormat:@"%.2f M",nSize];
+        sSize = [NSString stringWithFormat:@"%.2f MB",nSize];
         if (nSize>=1024) {
             nSize = nSize/1024.0;
-            sSize = [NSString stringWithFormat:@"%.2f G",nSize];
+            sSize = [NSString stringWithFormat:@"%.2f GB",nSize];
             if (nSize>=1024) {
                 nSize = nSize/1024.0;
-                sSize = [NSString stringWithFormat:@"%.2f T",nSize];
+                sSize = [NSString stringWithFormat:@"%.2f TB",nSize];
             }
         }
     }
     return sSize;
+}
+#pragma mark --------屏蔽某些新功能
++(BOOL)isUnlockFeature
+{
+    NSString *userName=[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+    if ([userName isEqualToString:@"fengyn@16feng.com"]) {
+        return YES;
+    }
+    return NO;
 }
 @end

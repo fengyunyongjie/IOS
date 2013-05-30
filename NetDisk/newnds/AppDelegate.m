@@ -29,7 +29,7 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
-    [self.myTabBarController setNeed_to_custom:YES];
+    [self.myTabBarController setNeed_to_custom:NO];
     [self.myTabBarController setTab_bar_bg:[UIImage imageNamed:@"tab_bg.png"]];
     [self.myTabBarController setNormal_image:[NSArray arrayWithObjects:@"tab_btn_myroom@2x.png",@"tab_btn_favorite@2x.png",@"tab_btn_photo@2x.png",@"tab_btn_upload@2x.png",@"tab_btn_setting@2x.png", nil]];
     [self.myTabBarController setSelect_image:[NSArray arrayWithObjects:@"tab_btn_myroom_h@2x.png",@"tab_btn_favorite_h@2x.png",@"tab_btn_photo_h@2x.png",@"tab_btn_upload_h@2x.png",@"tab_btn_setting_h@2x.png",nil]];
@@ -64,15 +64,15 @@
 //    [task_demo insertTaskTable];
     [self.window makeKeyAndVisible];
     //处理其它程序调用本程序打开文件
-#ifdef ABCC
-    NSURL *url=[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-    if (url) {
-        NSLog(@"the URL:%@",url);
-        OpenViewController *viewController=[[[OpenViewController alloc] initWithNibName:@"OpenViewController" bundle:nil] autorelease];
-        [viewController setTitle:[url description]];
-        [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+    if ([YNFunctions isUnlockFeature]) {
+        NSURL *url=[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+        if (url) {
+            NSLog(@"the URL:%@",url);
+            OpenViewController *viewController=[[[OpenViewController alloc] initWithNibName:@"OpenViewController" bundle:nil] autorelease];
+            [viewController setTitle:[url description]];
+            [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
+        }
     }
-#endif
     return YES;
 }
 

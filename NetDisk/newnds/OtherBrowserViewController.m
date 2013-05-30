@@ -32,36 +32,6 @@
     [self.shareItem setEnabled:NO];
     [self.openItem setEnabled:NO];
     self.isFinished=NO;
-//    self.toolbar=[[[UIToolbar alloc] init] autorelease];
-//    [self.toolbar setBarStyle:UIBarStyleBlack];
-//    self.shareItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil];
-//    self.openItem=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:nil];
-//    UIBarButtonItem *item=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-//    [self.toolbar setItems:@[self.shareItem,item,self.openItem]];
-//    CGSize fSize=self.view.frame.size;
-//    [self.toolbar setFrame:CGRectMake(0, fSize.height-44-44, fSize.width, 44)];
-//    [self.view addSubview:self.toolbar];
-//    [self.shareItem setEnabled:NO];
-//    [self.openItem setEnabled:NO];
-//    
-//    self.iconImageView=[[[UIImageView alloc] init] autorelease];
-//    self.iconImageView.image=[UIImage imageNamed:@"file_icon.png"];
-//    [self.iconImageView setFrame:CGRectMake((fSize.width-103)/2, (fSize.height/2)-132, 103, 132)];//206 × 264
-//    [self.view addSubview:self.iconImageView];
-//    
-//    self.alertLabel=[[UILabel alloc] init];
-//    self.alertLabel.text=@"暂不支持该文件格式";
-//    CGRect rect=self.alertLabel.frame;
-//    rect.origin.x=(fSize.width-rect.size.width)/2;
-//    rect.origin.y=(fSize.height)/2;
-//    [self.alertLabel setFrame:rect];
-//    [self.view addSubview:self.alertLabel];
-//    
-//    self.downloadBtn=[[[UIButton alloc] init] autorelease];
-//    [self.view addSubview:self.downloadBtn];
-//    
-//    self.downloadProgress=[[UIProgressView alloc] init];
-//    [self.view addSubview:self.downloadProgress];
 	// Do any additional setup after loading the view.
     [self performSelector:@selector(showDoc) withObject:self afterDelay:0.01f];
 }

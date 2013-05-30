@@ -121,6 +121,10 @@ static SCBAccountManager *_sharedAccountManager;
 {
     NSLog(@"connectionDidFinishLoading");
     NSError *jsonParsingError=nil;
+    if (self.activeData==nil) {
+        NSLog(@"!!!数据错误!!");
+        return;
+    }
     NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:self.activeData options:0 error:&jsonParsingError];
     if ([[dic objectForKey:@"code"] intValue]==0) {
     }else
@@ -150,10 +154,17 @@ static SCBAccountManager *_sharedAccountManager;
         case kUserRegist:
             if ([[dic objectForKey:@"code"] intValue]==0) {
                 NSLog(@"注册成功！！！");
+                [[SCBSession sharedSession] setUserId:(NSString *)[dic objectForKey:@"usr_id"]];
+                [[SCBSession sharedSession] setUserToken:(NSString *)[dic objectForKey:@"usr_token"]];
+                
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 [self.delegate registSucceed];
             }else
             {
                 NSLog(@"注册失败！！！");
+                [self.delegate registUnsucceed:self];
             }
             break;
         case kUserGetSpace:

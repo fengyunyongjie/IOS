@@ -38,6 +38,7 @@ typedef enum {
 -(void)loginSucceed:(id)manager;
 -(void)loginUnsucceed:(id)manager;
 -(void)registSucceed;
+-(void)registUnsucceed:(id)manager;
 //[self.delegate spaceSucceedUsed:[dic objectForKey:@"space_used"] total:[dic objectForKey:@"space_total"]];
 -(void)spaceSucceedUsed:(NSString *)space_used total:(NSString *)space_total;
 @end

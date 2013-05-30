@@ -44,6 +44,7 @@
 }
 - (void)viewDidAppear:(BOOL)animated
 {
+    [[FavoritesData sharedFavoritesData] reloadData];
     [self.tableView reloadData];
     [super viewDidAppear:animated];
 }
@@ -243,14 +244,14 @@
         
     }else
     {
-#ifndef F_LOCK
-        OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
-        [otherBrowser setHidesBottomBarWhenPushed:YES];
-        otherBrowser.dataDic=dic;
-        NSString *f_name=[dic objectForKey:@"f_name"];
-        otherBrowser.title=f_name;
-        [self.navigationController pushViewController:otherBrowser animated:YES];
-#endif
+        if ([YNFunctions isUnlockFeature]) {
+            OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+            [otherBrowser setHidesBottomBarWhenPushed:YES];
+            otherBrowser.dataDic=dic;
+            NSString *f_name=[dic objectForKey:@"f_name"];
+            otherBrowser.title=f_name;
+            [self.navigationController pushViewController:otherBrowser animated:YES];
+        }
     }
 
 }
