@@ -126,7 +126,13 @@
     {
         req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
     }
-    [WXApi sendReq:req];
+    BOOL isSuccess = [WXApi sendReq:req];
+    if(!isSuccess)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的手机还没有按照微信客户端" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
+        [alert show];
+        [alert release];
+    }
 }
 
 -(UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{

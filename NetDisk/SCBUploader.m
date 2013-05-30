@@ -63,7 +63,7 @@
 {
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:100];
     url_string = FM_UPLOAD_NEW;
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
@@ -132,19 +132,31 @@
     NSLog(@"type_string:%@",type_string);
     if([type_string isEqualToString:[[FM_UPLOAD_NEW_VERIFY componentsSeparatedByString:@"/"] lastObject]])
     {
-        [upLoadDelegate uploadVerify:diction];
+        if([upLoadDelegate respondsToSelector:@selector(uploadVerify:)])
+        {
+            [upLoadDelegate uploadVerify:diction];
+        }
     }
     else if([type_string isEqualToString:[[FM_UPLOAD_NEW componentsSeparatedByString:@"/"] lastObject]])
     {
-        [upLoadDelegate uploadFinish:diction];
+        if([upLoadDelegate respondsToSelector:@selector(uploadFinish:)])
+        {
+            [upLoadDelegate uploadFinish:diction];
+        }
     }
     else if([type_string isEqualToString:[[FM_UPLOAD_STATE componentsSeparatedByString:@"/"] lastObject]])
     {
-        [upLoadDelegate requestUploadState:diction];
+        if([upLoadDelegate respondsToSelector:@selector(requestUploadState:)])
+        {
+            [upLoadDelegate requestUploadState:diction];
+        }
     }
     else if([type_string isEqualToString:[[FM_UPLOAD_NEW_COMMIT componentsSeparatedByString:@"/"] lastObject]])
     {
-        [upLoadDelegate uploadCommit:diction];
+        if([upLoadDelegate respondsToSelector:@selector(uploadCommit:)])
+        {
+            [upLoadDelegate uploadCommit:diction];
+        }
     } 
 }
 

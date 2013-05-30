@@ -18,7 +18,7 @@
 #define SelectMoreTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=0"
 #define SelectOneTaskTableForTID @"SELECT * FROM TASKTABLE WHERE T_ID=?"
 #define SelectOneTaskTableForFID @"SELECT * FROM TASKTABLE WHERE F_ID=?"
-#define SelectOneTaskTableForFNAME @"SELECT * FROM TASKTABLE WHERE F_BASE_NAME=?"
+#define SelectOneTaskTableForFNAME @"SELECT * FROM TASKTABLE WHERE F_BASE_NAME=? AND F_STATE=1"
 
 @interface TaskDemo : DBSqlite3
 {

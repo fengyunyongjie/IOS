@@ -28,6 +28,7 @@
 @synthesize user_id,user_token;
 @synthesize _arrVisibleCells,_dicReuseCells,bottonView,allKeys;
 @synthesize deleteItem,right_item;
+@synthesize done_item;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,7 +48,8 @@
     [nav_item setRightBarButtonItem:right_item];
     //添加删除按钮
     deleteItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteButton)];
-//    [nav_item setLeftBarButtonItem:deleteItem];
+    //添加完成按钮
+    done_item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(right_button_cilcked:)];
     
     //初始化基本数据
     _dicReuseCells = [[NSMutableDictionary alloc] init];
@@ -81,7 +83,6 @@
 -(void)right_button_cilcked:(id)sender
 {
     UINavigationItem *nav_item = [self navigationItem];
-    [nav_item setRightBarButtonItem:right_item];
     for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
     {
         PhotoImageButton *imageButton = (PhotoImageButton *)[scroll_view viewWithTag:[[[_dicReuseCells allKeys] objectAtIndex:i] intValue]];
@@ -92,10 +93,12 @@
     {
         editBL = FALSE;
         [nav_item setLeftBarButtonItem:nil];
+        [nav_item setRightBarButtonItem:right_item];
     }
     else
     {
         [nav_item setLeftBarButtonItem:deleteItem];
+        [nav_item setRightBarButtonItem:done_item];
         editBL = YES;
     }
 }
@@ -237,7 +240,7 @@
             }
             CGRect imageButtonRect = CGRectMake((j%4)*79+4, scrollview_heigth+4, 75, 75);
             PhotoImageButton *imageButton = [[[PhotoImageButton alloc] initWithFrame:imageButtonRect] autorelease];
-            [imageButton addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchUpInside];
+            [imageButton addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchDown];
             [imageButton setDemo:demo];
             [imageButton setTag:demo.f_id];
             [imageButton setTimeLine:[array objectAtIndex:i]];
@@ -774,7 +777,6 @@
         }
         [self loadViewData];
         UINavigationItem *nav_item = [self navigationItem];
-        UIBarButtonItem *done_item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(right_button_cilcked:)];
         [nav_item setRightBarButtonItem:done_item];
     }
 }
@@ -955,6 +957,7 @@
     [bottonView release];
     [deleteItem release];
     [right_item release];
+    [done_item release];
     [super dealloc];
 }
 

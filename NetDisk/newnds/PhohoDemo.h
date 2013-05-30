@@ -25,6 +25,8 @@
     NSInteger total;
     NSString *date_type; //时间轴的key
     NSString *user_name; //用户名
+    NSString *f_owername;
+    NSString *f_pids;
     //时间轴表
     NSString *user_id; //用户id
     NSString *key_string; //时间轴的key
@@ -47,6 +49,8 @@
 @property(nonatomic,assign) NSInteger total;
 @property(nonatomic,retain) NSString *date_type;
 @property(nonatomic,retain) NSString *user_name;
+@property(nonatomic,retain) NSString *f_owername;
+@property(nonatomic,retain) NSString *f_pids;
 @property(nonatomic,retain) NSString *user_id;
 @property(nonatomic,retain) NSString *key_string;
 @property(nonatomic,retain) NSString *oderByString;

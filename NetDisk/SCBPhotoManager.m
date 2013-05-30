@@ -104,6 +104,7 @@
                     [photo_demo setF_size:[[dict objectForKey:@"f_size"] intValue]];
                     [photo_demo setF_name:[dict objectForKey:@"f_name"]];
                     [photo_demo setF_pid:[[dict objectForKey:@"f_pid"] intValue]];
+                    
                     if([[dict objectForKey:@"img_create"] isKindOfClass:[NSString class]])
                     {
                         [photo_demo setImg_create:[dict objectForKey:@"img_create"]];
@@ -115,6 +116,8 @@
                     [photo_demo setF_mime:[dict objectForKey:@"f_modify"]];
                     [photo_demo setCompressaddr:[dict objectForKey:@"compressaddr"]];
                     [photo_demo setF_ownerid:[[dict objectForKey:@"f_ownerid"] intValue]];
+                    [photo_demo setF_owername:@""];
+                    [photo_demo setF_pids:@""];
                     if(j==0)
                     {
                         date_string = [dateFormatter dateFromString:string_date];
@@ -294,12 +297,18 @@
     NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
     if([type_string isEqualToString:[[PHOTO_TIMERLINE componentsSeparatedByString:@"/"] lastObject]])
     {
-        [photoDelegate getPhotoTiimeLine:diction];
+        if([photoDelegate respondsToSelector:@selector(getPhotoTiimeLine:)])
+        {
+            [photoDelegate getPhotoTiimeLine:diction];
+        }
     }
     else if([type_string isEqualToString:[[PHOTO_GENERAL componentsSeparatedByString:@"/"] lastObject]])
     {
         [self mangerGobackData:diction];
-        [photoDelegate getPhotoGeneral:timeDictionary photoDictioin:photoDictionary];
+        if([photoDelegate respondsToSelector:@selector(getPhotoGeneral:photoDictioin:)])
+        {
+            [photoDelegate getPhotoGeneral:timeDictionary photoDictioin:photoDictionary];
+        }
         if(timeLineNowNumber<timeLineTotalNumber)
         {
             [self getPhotoGeneral];
@@ -307,19 +316,31 @@
     }
     else if([type_string isEqualToString:[[PHOTO_DETAIL componentsSeparatedByString:@"/"] lastObject]])
     {
-        [photoDelegate getPhotoDetail:diction];
+        if([photoDelegate respondsToSelector:@selector(getPhotoDetail:)])
+        {
+            [photoDelegate getPhotoDetail:diction];
+        }
     }
     else if([type_string isEqualToString:[[PHOTO_Delete componentsSeparatedByString:@"/"] lastObject]])
     {
-        [photoDelegate requstDelete:diction];
+        if([photoDelegate respondsToSelector:@selector(requstDelete:)])
+        {
+            [photoDelegate requstDelete:diction];
+        }
     }
     else if([type_string isEqualToString:[[FM_MKDIR_URL componentsSeparatedByString:@"/"] lastObject]])
     {
-        [newFoldDelegate newFold:diction];
+        if([newFoldDelegate respondsToSelector:@selector(newFold:)])
+        {
+            [newFoldDelegate newFold:diction];
+        }
     }
     else if([type_string isEqualToString:[[FM_URI componentsSeparatedByString:@"/"] lastObject]])
     {
-        [newFoldDelegate openFile:diction];
+        if([newFoldDelegate respondsToSelector:@selector(openFile:)])
+        {
+            [newFoldDelegate openFile:diction];
+        }
     }
 }
 

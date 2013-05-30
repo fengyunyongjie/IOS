@@ -37,6 +37,8 @@
     UILabel *basePhotoLabel;
     UILabel *formatLabel;
     UILabel *uploadNumberLabel;
+    NSString *user_id;
+    NSString *user_token;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -46,6 +48,8 @@
 @property (retain, nonatomic) UILabel *formatLabel;
 @property (retain, nonatomic) UILabel *uploadNumberLabel;
 @property (nonatomic,retain) NSMutableArray *photoArray;
+@property (nonatomic,retain) NSString *user_id;
+@property (nonatomic,retain) NSString *user_token;
 
 -(NSString *)md5:(NSData *)concat;
 

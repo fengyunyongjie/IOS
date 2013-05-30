@@ -11,7 +11,8 @@
 #import "PhohoDemo.h"
 #import "PhotoDetailView.h"
 #import "SCBPhotoManager.h"
-@protocol DeleteDelegate  //删除后，改变主窗口数据源
+#import "MBProgressHUD.h"
+@protocol DeleteDelegate <NSObject> //删除后，改变主窗口数据源
 - (void)deleteForDeleteArray:(NSInteger)page timeLine:(NSString *)timeLineString;
 @end
 @interface PhotoDetailViewController : UIViewController<DownloaderDelegate,UIScrollViewDelegate,UIAlertViewDelegate,SCBPhotoDelegate,UIActionSheetDelegate>
@@ -33,6 +34,7 @@
     UINavigationBar *topBar;
     UINavigationBar *bottonBar;
     NSMutableDictionary *photo_dictionary;
+    MBProgressHUD *hud;
 }
 
 @property(nonatomic,retain) UIScrollView *scroll_View;
@@ -42,6 +44,7 @@
 @property(nonatomic,retain) UINavigationBar *topBar;
 @property(nonatomic,retain) UINavigationBar *bottonBar;
 @property(nonatomic,retain) NSMutableDictionary *photo_dictionary;
+@property(nonatomic,retain) MBProgressHUD *hud;
 
 #pragma mark 加载所有数据
 -(void)loadAllDiction:(NSArray *)allArray currtimeIdexTag:(int)indexTag;

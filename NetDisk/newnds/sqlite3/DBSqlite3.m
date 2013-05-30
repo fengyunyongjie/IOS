@@ -7,6 +7,7 @@
 //
 
 #import "DBSqlite3.h"
+#import "SCBSession.h"
 
 @implementation DBSqlite3
 
@@ -25,7 +26,7 @@
     docsDir = [dirPaths objectAtIndex:0];
     
     // Build the path to the database file
-    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: @"hongPan.sqlite"]];
+    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@hongPan.sqlite",[[SCBSession sharedSession] userId]]]];
     
     NSFileManager *filemgr = [NSFileManager defaultManager];
     

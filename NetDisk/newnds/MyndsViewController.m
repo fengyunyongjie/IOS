@@ -672,6 +672,8 @@
                     [photo_demo setF_mime:[dict objectForKey:@"f_modify"]];
                     [photo_demo setCompressaddr:[dict objectForKey:@"compressaddr"]];
                     [photo_demo setF_ownerid:[[dict objectForKey:@"f_ownerid"] intValue]];
+                    [photo_demo setF_pids:@""];
+                    [photo_demo setF_owername:@""];
                     [array addObject:photo_demo];
                     if (i==indexPath.row) {
                         index=array.count-1;

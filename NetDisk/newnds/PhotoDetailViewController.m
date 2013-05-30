@@ -10,6 +10,7 @@
 #import "PhohoDemo.h"
 #import "PhotoDetailView.h"
 #import "AppDelegate.h"
+#import "FavoritesData.h"
 
 @interface PhotoDetailViewController ()
 
@@ -21,6 +22,7 @@
 @synthesize deleteDelegate;
 @synthesize timeLine;
 @synthesize photo_dictionary;
+@synthesize hud;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -88,6 +90,7 @@
     [leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [leftButton.titleLabel setTextColor:[UIColor blackColor]];
     //    [leftButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+    [leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
     [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
     [leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [leftButton setBackgroundColor:[UIColor clearColor]];
@@ -119,6 +122,8 @@
     [self.topBar setHidden:YES];
     [self.bottonBar setHidden:YES];
     
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
     [super viewDidLoad];
 }
 
@@ -135,6 +140,7 @@
     [bottonBar release];
     [pageLabel release];
     [timeLine release];
+    [hud release];
     [super dealloc];
 }
 
@@ -165,6 +171,15 @@
     [scroll_View setContentOffset:CGPointMake(320*indexTag, 0) animated:NO];
     //页数
     [self.pageLabel setText:[NSString stringWithFormat:@"%i/%i",indexTag+1,[allPhotoDemoArray count]]];
+    
+    CGSize maximumLabelSize = CGSizeMake(2000,20);
+    CGSize expectedLabelSize = [self.pageLabel.text sizeWithFont:self.pageLabel.font
+                                       constrainedToSize:maximumLabelSize
+                                           lineBreakMode:self.pageLabel.lineBreakMode];//假定label_1的字体确定，自适应宽
+    CGRect pageRect = self.pageLabel.frame;
+    pageRect.origin.x = (320-expectedLabelSize.width)/2;
+    pageRect.size.width = expectedLabelSize.width;
+    [self.pageLabel setFrame:pageRect];
     [self showIndexTag:indexTag];
     [scroll_View setDelegate:self];
 }
@@ -425,10 +440,53 @@
     [self showIndexTag:page];
 }
 
+#pragma mark 收藏按钮事件
+-(void)clipClicked:(id)sender
+{
+    int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+    PhohoDemo *demo = nil;
+    if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[NSString class]])
+    {
+        demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:page]];
+    }
+    else if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[PhohoDemo class]])
+    {
+        demo = [allPhotoDemoArray objectAtIndex:page];
+    }
+    NSString *f_id = [NSString stringWithFormat:@"%i",demo.f_id];
+    if ([[FavoritesData sharedFavoritesData].favoriteDic objectForKey:f_id]) {
+        hud.labelText=@"图片已经收藏过";
+        hud.mode=MBProgressHUDModeText;
+        [hud show:YES];
+        [self.hud hide:YES afterDelay:0.5f];
+    }
+    else
+    {
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
+        [dic setObject:demo.f_name forKey:@"f_name"];
+        [dic setObject:[NSNumber numberWithInteger:demo.f_size] forKey:@"f_size"];
+        [dic setObject:[NSNumber numberWithInteger:demo.f_id] forKey:@"f_id"];
+        [dic setObject:demo.f_create forKey:@"f_create"];
+        [dic setObject:demo.f_mime forKey:@"f_mime"];
+        [dic setObject:demo.f_pids forKey:@"pids"];
+        [dic setObject:demo.f_name forKey:@"f_modify"];
+        [dic setObject:demo.f_owername forKey:@"f_owner_name"];
+        [dic setObject:demo.compressaddr forKey:@"compressaddr"];
+        [dic setObject:[NSNumber numberWithInteger:demo.f_ownerid] forKey:@"f_ownerid"];
+        [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
+        NSLog(@"%@",[FavoritesData sharedFavoritesData].favoriteDic);
+        NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
+        hud.labelText=@"收藏成功";
+        hud.mode=MBProgressHUDModeText;
+        [hud show:YES];
+        [self.hud hide:YES afterDelay:0.5f];
+    }
+}
+
 #pragma mark 分享按钮事件
 -(void)shareClicked:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"分享到" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"微信朋友圈" otherButtonTitles:@"微信好友",@"新浪微博", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"分享到" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"微信朋友圈" otherButtonTitles:@"微信好友", nil];
     [actionSheet showInView:self.view];
     [actionSheet release];
 }
@@ -449,18 +507,24 @@
     }
     if(buttonIndex == 0)
     {
+        if([app_delegate respondsToSelector:@selector(sendImageContentIsFiends:path:)])
+        {
         //微信朋友圈
-        [app_delegate sendImageContentIsFiends:YES path:demo.f_name];
+            [app_delegate sendImageContentIsFiends:YES path:demo.f_name];
+        }
     }
     if(buttonIndex == 1)
     {
-        //微信好友
-        [app_delegate sendImageContentIsFiends:NO path:demo.f_name];
+        if([app_delegate respondsToSelector:@selector(sendImageContentIsFiends:path:)])
+        {
+            //微信好友
+            [app_delegate sendImageContentIsFiends:NO path:demo.f_name];
+        }
     }
     if(buttonIndex == 2)
     {
         //新浪微博
-        [app_delegate ssoButtonPressed];
+//        [app_delegate ssoButtonPressed];
     }
     if(buttonIndex == 3)
     {
@@ -498,6 +562,9 @@
         NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
         [photoManager requestDeletePhoto:array];
         
+        hud.mode=MBProgressHUDModeIndeterminate;
+        hud.labelText=@"正在删除";
+        [hud show:YES];
     }
 }
 
@@ -507,6 +574,11 @@
 {
     if([[dictioinary objectForKey:@"code"] intValue] == 0)
     {
+        hud.labelText=@"删除成功";
+        hud.mode=MBProgressHUDModeText;
+//        [hud show:YES];
+        [self.hud hide:YES afterDelay:0.5f];
+        
         [scroll_View removeFromSuperview];
         [scroll_View release];
         //创建滚动条
@@ -534,7 +606,14 @@
     }
     else
     {
-        [deleteDelegate  deleteForDeleteArray:deletePage timeLine:timeLine];
+        if([deleteDelegate respondsToSelector:@selector(deleteForDeleteArray:timeLine:)])
+        {
+            [deleteDelegate  deleteForDeleteArray:deletePage timeLine:timeLine];
+        }
+        else
+        {
+//            [self dismissViewControllerAnimated:YES completion:^{}];
+        }
     }
 }
 

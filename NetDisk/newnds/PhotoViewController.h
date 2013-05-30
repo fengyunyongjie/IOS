@@ -51,6 +51,7 @@
     BOOL bl;
     UIBarButtonItem *deleteItem;
     UIBarButtonItem *right_item;
+    UIBarButtonItem *done_item;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
@@ -65,5 +66,9 @@
 @property(nonatomic,retain) UIView *bottonView;
 @property(nonatomic,retain) UIBarButtonItem *deleteItem;
 @property(nonatomic,retain) UIBarButtonItem *right_item;
+@property(nonatomic,retain) UIBarButtonItem *done_item;
+
+#pragma mark -得到时间轴的列表
+-(void)getPhotoTiimeLine:(NSDictionary *)dictionary;
 
 @end

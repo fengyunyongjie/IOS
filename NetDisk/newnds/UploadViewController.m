@@ -10,6 +10,7 @@
 #import "ALAsset+AGIPC.h"
 #import "TaskDemo.h"
 #import "Reachability.h"
+#import "SCBSession.h"
 
 @interface UploadViewController ()
 
@@ -23,6 +24,7 @@
 @synthesize basePhotoLabel;
 @synthesize formatLabel;
 @synthesize uploadNumberLabel;
+@synthesize user_id,user_token;
 
 @synthesize photoArray;
 
@@ -33,6 +35,21 @@
         
     }
     return self;
+}
+
+-(void)dealloc
+{
+    [user_id release];
+    [user_token release];
+    [stateImageview release];
+    [nameLabel release];
+    [uploadTypeButton release];
+    [diyUploadButton release];
+    [basePhotoLabel release];
+    [formatLabel release];
+    [uploadNumberLabel release];
+    [photoArray release];
+    [super dealloc];
 }
 
 - (void)viewDidLoad
@@ -111,9 +128,10 @@
                         TaskDemo *demo = [[TaskDemo alloc] init];
                         demo.f_state = 0;
                         demo.f_data = nil;
+                        demo.f_lenght = 0;
                         //获取照片名称
                         demo.f_base_name = [[result defaultRepresentation] filename];
-                        demo.result = result;
+                        demo.result = [result retain];
                         BOOL bl = [demo isPhotoExist];
                         if(!bl)
                         {
@@ -124,12 +142,17 @@
                     }
                     [pool release];
                 }];
-                if(!isStop && uploadNumber<[photoArray count])
-                {
-                    dispatch_sync(dispatch_get_main_queue(), ^{
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    if(!isStop && uploadNumber<[photoArray count])
+                    {
                         [self upLoad];
-                    });
-                }
+                    }
+                    else if(!isStop)
+                    {
+                        [uploadNumberLabel setText:[NSString stringWithFormat:@"没有新照片"]];
+                        [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+                    }
+                });
             }
         } failureBlock:^(NSError *error) {
             NSLog(@"Enumerate the asset groups failed.");
@@ -185,33 +208,52 @@
             [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
         }
         [button setBackgroundImage:[UIImage imageNamed:@"upload_btn_unlock.png"] forState:UIControlStateNormal];
+        isStop = NO;
         isSelected = TRUE;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            isStop = NO;
-            TaskDemo *demo = [[[TaskDemo alloc] init] autorelease];
-            NSArray *array = [demo selectAllTaskTable];
-            if([array count]>0 && [photoArray count] == 0)
-            {
-                [photoArray addObjectsFromArray:array];
-            }
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                if([photoArray count]>0 && uploadNumber<[photoArray count])
-                {
-                   [self upLoad];
-                }
-                if([photoArray count] == 0)
-                {
-                    [uploadNumberLabel setText:[NSString stringWithFormat:@"没有新照片"]];
-                    [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-                }
-            });
-        });
+        if([photoArray count]==0)
+        {
+            [self getPhotoLibrary];
+        }
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//            isStop = NO;
+//            TaskDemo *demo = [[[TaskDemo alloc] init] autorelease];
+//            NSArray *array = [demo selectAllTaskTable];
+//            if([array count]>0 && [photoArray count] == 0)
+//            {
+//                [photoArray addObjectsFromArray:array];
+//            }
+//            dispatch_sync(dispatch_get_main_queue(), ^{
+//                if([photoArray count]>0 && uploadNumber<[photoArray count])
+//                {
+//                   [self upLoad];
+//                }
+//                if([photoArray count] == 0)
+//                {
+//                    [uploadNumberLabel setText:[NSString stringWithFormat:@"没有新照片"]];
+//                    [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+//                }
+//            });
+//        });
     }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if([photoArray count] ==0)
+    if([[SCBSession sharedSession] userId] != user_id || [[SCBSession sharedSession] userToken] != user_token)
+    {
+        [uploadTypeButton setBackgroundImage:[UIImage imageNamed:@"upload_btn_lock.png"] forState:UIControlStateNormal];
+        isSelected = FALSE;
+        [uploadNumberLabel setText:@""];
+        [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片："]];
+        [formatLabel setText:[NSString stringWithFormat:@"已上传图片："]];
+        [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+        uploadNumber = 0;
+        isStop = YES;
+        [photoArray removeAllObjects];
+        user_id = [[SCBSession sharedSession] userId];
+        user_token = [[SCBSession sharedSession] userToken];
+    }
+    if(!isStop && [photoArray count] ==0)
     {
         [self getPhotoLibrary];
     }
@@ -304,21 +346,25 @@
 -(void)newFold:(NSDictionary *)dictionary
 {
     NSLog(@"newFold dictionary:%@",dictionary);
-    if([[dictionary objectForKey:@"code"] intValue] == 0)
+    
+    if(!isStop && uploadNumber<[photoArray count])
     {
-        f_pid = [[dictionary objectForKey:@"f_id"] intValue];
-        [self requestVerify];
-    }
-    else
-    {
-        [photoManger requestNewFold:@"手机照片" FID:1];
+        if([[dictionary objectForKey:@"code"] intValue] == 0)
+        {
+            f_pid = [[dictionary objectForKey:@"f_id"] intValue];
+            [self requestVerify];
+        }
+        else
+        {
+            [photoManger requestNewFold:@"手机照片" FID:1];
+        }
     }
 }
 
 -(void)openFile:(NSDictionary *)dictionary
 {
     NSLog(@"打开成功 dictionary:%@",dictionary);
-    if([[dictionary objectForKey:@"code"] intValue] == 0)
+    if([[dictionary objectForKey:@"code"] intValue] == 0 && !isStop && uploadNumber<[photoArray count])
     {
         NSArray *array = [dictionary objectForKey:@"files"];
         for(int i=0;i<[array count];i++)
@@ -355,13 +401,9 @@
             [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
             demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
         }
+        NSLog(@"demo.f_data:%i",[demo.f_data length]);
         uploadData = [[NSString alloc] initWithString:[self md5:demo.f_data]];
         [uploder requestUploadVerify:f_pid f_name:demo.f_base_name f_size:[NSString stringWithFormat:@"%i",[demo.f_data length]] f_md5:uploadData];
-    }
-    else if(isStop && uploadNumber<[photoArray count])
-    {
-        [uploadNumberLabel setText:@"上传暂停"];
-        [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
     }
     else if(!isStop && uploadNumber >= [photoArray count])
     {
@@ -377,22 +419,26 @@
 -(void)uploadVerify:(NSDictionary *)dictionary
 {
     NSLog(@"upload:%@",dictionary);
-    if([[dictionary objectForKey:@"code"] intValue] == 0 && uploadNumber < [photoArray count])
+    
+    if(!isStop && uploadNumber<[photoArray count])
     {
-        TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
-        SCBUploader *uploder = [[[SCBUploader alloc] init] autorelease];
-        [uploder setUpLoadDelegate:self];
-        NSLog(@"2:申请效验");
-        [uploder requestUploadState:demo.f_base_name];
-    }
-    else if([[dictionary objectForKey:@"code"] intValue] == 5)
-    {
-        TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
-        demo.f_state = 1;
-        demo.f_lenght = [demo.f_data length];
-        [demo updateTaskTableFName];
-        uploadNumber++;
-        [self upLoad];
+        if([[dictionary objectForKey:@"code"] intValue] == 0 )
+        {
+            TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
+            SCBUploader *uploder = [[[SCBUploader alloc] init] autorelease];
+            [uploder setUpLoadDelegate:self];
+            NSLog(@"2:申请效验");
+            [uploder requestUploadState:demo.f_base_name];
+        }
+        else if([[dictionary objectForKey:@"code"] intValue] == 5 )
+        {
+            TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
+            demo.f_state = 1;
+            demo.f_lenght = [demo.f_data length];
+            [demo updateTaskTableFName];
+            uploadNumber++;
+            [self upLoad];
+        }
     }
 }
 
@@ -420,26 +466,24 @@
 -(void)requestUploadState:(NSDictionary *)dictionary
 {
     NSLog(@"dictionary:%@",dictionary);
-    if([[dictionary objectForKey:@"code"] intValue] == 0 && uploadNumber < [photoArray count])
+    if(!isStop && [[dictionary objectForKey:@"code"] intValue] == 0 && uploadNumber < [photoArray count])
     {
         TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
         SCBUploader *uploder = [[[SCBUploader alloc] init] autorelease];
         [uploder setUpLoadDelegate:self];
         finishName = [dictionary objectForKey:@"sname"];
         NSLog(@"3:开始上传：%@",finishName);
-        if(!isStop && uploadNumber<[photoArray count])
+        if(demo.f_data == nil)
         {
-            if(demo.f_data == nil)
-            {
-                ALAsset *result = demo.result;
-                NSError *error = nil;
-                Byte *data = malloc(result.defaultRepresentation.size);
-                //获得照片图像数据
-                [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-                demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-            }
-            [uploder requestUploadFile:[NSString stringWithFormat:@"%i",f_pid] f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+            ALAsset *result = demo.result;
+            NSError *error = nil;
+            Byte *data = malloc(result.defaultRepresentation.size);
+            //获得照片图像数据
+            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
         }
+        NSLog(@"demo.f_data:%i",[demo.f_data length]);
+        [uploder requestUploadFile:[NSString stringWithFormat:@"%i",f_pid] f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
     }
 }
 
@@ -459,7 +503,19 @@
     }
     NSLog(@"uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
     uploadNumber++;
-    [self upLoad];
+    if(!isStop && uploadNumber<[photoArray count])
+    {
+        [self upLoad];
+    }
+    else if(!isStop && uploadNumber >= [photoArray count])
+    {
+        [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片：%i",[photoArray count]]];
+        [formatLabel setText:[NSString stringWithFormat:@"已上传图片：%i",uploadNumber]];
+        [uploadNumberLabel setText:@"已完成"];
+        [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+        [photoArray removeAllObjects];
+        uploadNumber = 0;
+    }
 }
 
 -(void)uploadFiles:(NSDictionary *)dictionary
@@ -476,15 +532,6 @@
 	[self presentModalViewController:picker animated:YES];
 }
 
-- (void)dealloc {
-    [uploadNumberLabel release];
-    [basePhotoLabel release];
-    [formatLabel release];
-    [uploadTypeButton release];
-    [stateImageview release];
-    [nameLabel release];
-    [super dealloc];
-}
 - (void)viewDidUnload {
     [self setUploadNumberLabel:nil];
     [super viewDidUnload];

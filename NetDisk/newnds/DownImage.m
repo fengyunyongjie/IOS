@@ -106,7 +106,10 @@
         NSString *urlpath = [NSString stringWithFormat:@"%@",path];
         NSLog(@"f_id:%i,urlpath:%@",self.fileId,urlpath);
         UIImage  *image = [UIImage imageWithContentsOfFile:urlpath];
-        [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
+        if([delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
+        {
+            [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
+        }
     }
 }
 
