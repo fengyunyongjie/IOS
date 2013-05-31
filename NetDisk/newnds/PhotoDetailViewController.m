@@ -11,6 +11,7 @@
 #import "PhotoDetailView.h"
 #import "AppDelegate.h"
 #import "FavoritesData.h"
+#import "PhotoFile.h"
 
 @interface PhotoDetailViewController ()
 
@@ -155,6 +156,8 @@
 {
     allPhotoDemoArray = [[NSMutableArray alloc] initWithArray:allArray];
     currPageNumber = indexTag;
+    NSMutableArray *tables = [[NSMutableArray alloc] init];
+    BOOL bl = FALSE;
     for(int i=0;i<[allArray count];i++)
     {
         if([[allArray objectAtIndex:i] isKindOfClass:[NSString class]])
@@ -167,15 +170,31 @@
             PhohoDemo *demo = [allArray objectAtIndex:i];
             [self addCenterImageView:demo currPage:i totalCount:[allArray count]];
         }
+        else if([[allArray objectAtIndex:i] isKindOfClass:[PhotoFile class]])
+        {
+            bl = TRUE;
+            PhotoFile *file = [allArray objectAtIndex:i];
+            PhohoDemo *demo = [[PhohoDemo alloc] init];
+            demo.f_id = file.f_id;
+            demo.f_name = [NSString stringWithFormat:@"%i",file.f_id];
+            [self addCenterImageView:demo currPage:i totalCount:[allArray count]];
+            [tables addObject:demo];
+            [demo release];
+        }
     }
+    if(bl)
+    {
+        allPhotoDemoArray = [[NSMutableArray alloc] initWithArray:tables];
+    }
+    [tables release];
     [scroll_View setContentOffset:CGPointMake(320*indexTag, 0) animated:NO];
     //页数
     [self.pageLabel setText:[NSString stringWithFormat:@"%i/%i",indexTag+1,[allPhotoDemoArray count]]];
     
     CGSize maximumLabelSize = CGSizeMake(2000,20);
     CGSize expectedLabelSize = [self.pageLabel.text sizeWithFont:self.pageLabel.font
-                                       constrainedToSize:maximumLabelSize
-                                           lineBreakMode:self.pageLabel.lineBreakMode];//假定label_1的字体确定，自适应宽
+                                               constrainedToSize:maximumLabelSize
+                                                   lineBreakMode:self.pageLabel.lineBreakMode];//假定label_1的字体确定，自适应宽
     CGRect pageRect = self.pageLabel.frame;
     pageRect.origin.x = (320-expectedLabelSize.width)/2;
     pageRect.size.width = expectedLabelSize.width;
@@ -403,6 +422,7 @@
 #pragma mark 按钮返回事件
 -(void)backClick:(id)sender
 {
+    [scroll_View removeFromSuperview];
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
@@ -423,6 +443,14 @@
         if(topBar.hidden)
         {
             [self.pageLabel setText:[NSString stringWithFormat:@"%i/%i",button.tag%20000+1,[allPhotoDemoArray count]]];
+            CGSize maximumLabelSize = CGSizeMake(2000,20);
+            CGSize expectedLabelSize = [self.pageLabel.text sizeWithFont:self.pageLabel.font
+                                                       constrainedToSize:maximumLabelSize
+                                                           lineBreakMode:self.pageLabel.lineBreakMode];//假定label_1的字体确定，自适应宽
+            CGRect pageRect = self.pageLabel.frame;
+            pageRect.origin.x = (320-expectedLabelSize.width)/2;
+            pageRect.size.width = expectedLabelSize.width;
+            [self.pageLabel setFrame:pageRect];
             [self.topBar setHidden:NO];
             [self.bottonBar setHidden:NO];
         }

@@ -129,7 +129,7 @@
     BOOL isSuccess = [WXApi sendReq:req];
     if(!isSuccess)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的手机还没有按照微信客户端" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的手机还没有按装微信客户端" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
         [alert show];
         [alert release];
     }

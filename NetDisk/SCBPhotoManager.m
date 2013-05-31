@@ -12,18 +12,22 @@
 #import "PhohoDemo.h"
 #import "AppDelegate.h"
 #import "JSON.h"
+#import "PhotoFile.h"
 
 @implementation SCBPhotoManager
 @synthesize photoDelegate;
 @synthesize matableData;
 @synthesize newFoldDelegate;
+@synthesize sectionarray;
+@synthesize tablediction;
 
 #pragma mark 获取时间分组
--(void)getPhotoTimeLine
+-(void)getPhotoTimeLine:(BOOL)bl
 {
-    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,PHOTO_TIMERLINE]];
+    isFirst = bl;
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,PHOTO_ALL]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-    url_string = PHOTO_TIMERLINE;
+    url_string = PHOTO_ALL;
     self.matableData = [NSMutableData data];
     
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
@@ -240,6 +244,39 @@
     }
 }
 
+#pragma mark 优化数据得到自己想要的数据
+-(void)getMangerDiction:(NSDictionary *)dicion
+{
+    BOOL bl = FALSE;
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    //获取所有数据
+    if([[dicion objectForKey:@"files"] isKindOfClass:[NSArray class]])
+    {
+        NSArray *allArray = [dicion objectForKey:@"files"];
+        NSLog(@"allArray:%i",[allArray count]);
+        for(int i=0;i<[allArray count];i++)
+        {
+            NSDictionary *dictionary = [allArray objectAtIndex:i];
+            NSString *f_date = [dictionary objectForKey:@"f_date"];
+            int f_id = [[dictionary objectForKey:@"f_id"] intValue];
+            PhotoFile *photo_file = [[PhotoFile alloc] init];
+            photo_file.f_id = f_id;
+            photo_file.f_date = f_date;
+            photo_file.f_time = [[dateFormatter dateFromString:f_date] timeIntervalSince1970];
+            NSLog(@"photo_file.f_time:%f",photo_file.f_time);
+            bl = [photo_file insertPhotoFileTable];
+            [photo_file release];
+        }
+    }
+    if(bl || isFirst)
+    {
+        [photoDelegate getPhotoTiimeLine:nil];
+    }
+}
+
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     
@@ -302,17 +339,17 @@
             [photoDelegate getPhotoTiimeLine:diction];
         }
     }
-    else if([type_string isEqualToString:[[PHOTO_GENERAL componentsSeparatedByString:@"/"] lastObject]])
+    else if([type_string isEqualToString:[[PHOTO_ALL componentsSeparatedByString:@"/"] lastObject]])
     {
-        [self mangerGobackData:diction];
-        if([photoDelegate respondsToSelector:@selector(getPhotoGeneral:photoDictioin:)])
-        {
-            [photoDelegate getPhotoGeneral:timeDictionary photoDictioin:photoDictionary];
-        }
-        if(timeLineNowNumber<timeLineTotalNumber)
-        {
-            [self getPhotoGeneral];
-        }
+        [self getMangerDiction:diction];
+//        if([photoDelegate respondsToSelector:@selector(getPhotoGeneral:photoDictioin:)])
+//        {
+//            [photoDelegate getPhotoGeneral:timeDictionary photoDictioin:photoDictionary];
+//        }
+//        if(timeLineNowNumber<timeLineTotalNumber)
+//        {
+//            [self getPhotoGeneral];
+//        }
     }
     else if([type_string isEqualToString:[[PHOTO_DETAIL componentsSeparatedByString:@"/"] lastObject]])
     {
@@ -493,6 +530,9 @@
     [photoDelegate release];
     [newFoldDelegate release];
     [matableData release];
+    
+    [tablediction release];
+    [sectionarray release];
     [super dealloc];
 }
 

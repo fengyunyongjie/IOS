@@ -13,6 +13,10 @@
 #define timeLine6 @"上一月"
 #define timeLine7 @"本年"
 
+#define UICellTag 10000000
+#define UIImageTag 1000000
+#define UIButtonTag 2000000
+
 #import <UIKit/UIKit.h>
 #import "SCBPhotoManager.h"
 #import "PhotoDetailViewController.h"
@@ -52,11 +56,18 @@
     UIBarButtonItem *deleteItem;
     UIBarButtonItem *right_item;
     UIBarButtonItem *done_item;
+    
+    NSMutableDictionary *tablediction;
+    NSMutableArray *sectionarray;
+    
+    BOOL isLoadImage;
+    BOOL isFirst;
+    BOOL isLoadData;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
 @property(nonatomic,retain) NSMutableDictionary *allDictionary;
-@property(nonatomic,retain) UITableView *table_view;
+@property(retain,atomic) UITableView *table_view;
 @property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
 @property(nonatomic,retain) NSString *user_id;
 @property(nonatomic,retain) NSString *user_token;
@@ -68,7 +79,34 @@
 @property(nonatomic,retain) UIBarButtonItem *right_item;
 @property(nonatomic,retain) UIBarButtonItem *done_item;
 
+@property(nonatomic,retain) NSMutableDictionary *tablediction;
+@property(nonatomic,retain) NSMutableArray *sectionarray;
+
 #pragma mark -得到时间轴的列表
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary;
+
+@end
+
+@interface CellTag : NSObject
+{
+    NSInteger fileTag;
+    NSInteger imageTag;
+    NSInteger buttonTag;
+    NSInteger pageTag;
+    NSInteger sectionTag;
+}
+
+@property(nonatomic,assign) NSInteger fileTag;
+@property(nonatomic,assign) NSInteger imageTag;
+@property(nonatomic,assign) NSInteger buttonTag;
+@property(nonatomic,assign) NSInteger pageTag;
+@property(nonatomic,assign) NSInteger sectionTag;
+@end
+
+@interface SelectButton : UIButton
+{
+    CellTag *cell;
+}
+@property(nonatomic,retain) CellTag *cell;
 
 @end

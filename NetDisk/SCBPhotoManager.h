@@ -48,14 +48,21 @@
     NSMutableDictionary *photoDictionary;
     NSMutableData *matableData;
     NSMutableArray *allKeysArray;
+    
+    NSMutableDictionary *tablediction;
+    NSMutableArray *sectionarray;
+    BOOL isFirst;
 }
 
 @property(nonatomic,retain) id<SCBPhotoDelegate> photoDelegate;
 @property(nonatomic,retain) NSMutableData *matableData;
 @property(nonatomic,retain) id<NewFoldDelegate> newFoldDelegate;
 
-//获取时间分组/photo/timeline
--(void)getPhotoTimeLine;
+@property(nonatomic,retain) NSMutableDictionary *tablediction;
+@property(nonatomic,retain) NSMutableArray *sectionarray;
+
+#pragma mark 获取时间分组
+-(void)getPhotoTimeLine:(BOOL)bl;
 //获取所有时间轴上的照片信息
 -(void)getAllPhotoGeneral:(NSArray *)timeLineArray;
 //获取按年或月查询的概要照片/photo/general

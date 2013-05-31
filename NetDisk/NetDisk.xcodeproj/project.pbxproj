@@ -352,6 +352,8 @@
 		29BC8B1D17445F8700ED3DBB /* icon_Load.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BC8B1C17445F8700ED3DBB /* icon_Load.png */; };
 		29BFAB53174215FC00C33C90 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BFAB52174215FC00C33C90 /* PhotoCell.m */; };
 		29BFAD4C174C6306000AFE7A /* 111.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BFAD4B174C6306000AFE7A /* 111.png */; };
+		29C0775417584DC2005A5EFF /* PhotoFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C0775317584DC2005A5EFF /* PhotoFile.m */; };
+		29C077571758B0BE005A5EFF /* PhotoFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C077561758B0BD005A5EFF /* PhotoFileCell.m */; };
 		29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C17DD816560B7D0066CB13 /* QuartzCore.framework */; };
 		29CFD47C173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
 		29CFD47D173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
@@ -832,6 +834,10 @@
 		29BFAB51174215FC00C33C90 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
 		29BFAB52174215FC00C33C90 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
 		29BFAD4B174C6306000AFE7A /* 111.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 111.png; sourceTree = "<group>"; };
+		29C0775217584DC2005A5EFF /* PhotoFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFile.h; sourceTree = "<group>"; };
+		29C0775317584DC2005A5EFF /* PhotoFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFile.m; sourceTree = "<group>"; };
+		29C077551758B0BD005A5EFF /* PhotoFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFileCell.h; sourceTree = "<group>"; };
+		29C077561758B0BD005A5EFF /* PhotoFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFileCell.m; sourceTree = "<group>"; };
 		29CFD47A173733FF001B6721 /* DownImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownImage.h; sourceTree = "<group>"; };
 		29CFD47B173733FF001B6721 /* DownImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownImage.m; sourceTree = "<group>"; };
 		29CFD62317375630001B6721 /* PhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDetailViewController.h; sourceTree = "<group>"; };
@@ -1439,6 +1445,8 @@
 				29CFD62417375630001B6721 /* PhotoDetailViewController.m */,
 				299C9EC41737A9A300D5B3E0 /* PhotoDetailView.h */,
 				299C9EC51737A9A300D5B3E0 /* PhotoDetailView.m */,
+				29C077551758B0BD005A5EFF /* PhotoFileCell.h */,
+				29C077561758B0BD005A5EFF /* PhotoFileCell.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -1487,6 +1495,8 @@
 				299D9F6A1754326900B61161 /* TaskDemo.m */,
 				29D0CD551757342D00B20294 /* FavoritesDBController.h */,
 				29D0CD561757342D00B20294 /* FavoritesDBController.m */,
+				29C0775217584DC2005A5EFF /* PhotoFile.h */,
+				29C0775317584DC2005A5EFF /* PhotoFile.m */,
 			);
 			path = sqlite3;
 			sourceTree = "<group>";
@@ -3018,6 +3028,8 @@
 				292344A81754B1FD002FE3D0 /* Reachability.m in Sources */,
 				29DF5BD61755A760005D85E4 /* OpenViewController.m in Sources */,
 				29D0CD571757342D00B20294 /* FavoritesDBController.m in Sources */,
+				29C0775417584DC2005A5EFF /* PhotoFile.m in Sources */,
+				29C077571758B0BE005A5EFF /* PhotoFileCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

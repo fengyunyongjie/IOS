@@ -16,6 +16,8 @@
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "YNFunctions.h"
+#import "PhotoFile.h"
+#import "PhotoFileCell.h"
 
 @interface PhotoViewController ()
 
@@ -69,6 +71,13 @@
         [self.view addSubview:activity_indicator];
     }
     downArray = [[NSMutableArray alloc] init];
+    tablediction = [[NSMutableDictionary alloc] init];
+    sectionarray = [[NSMutableArray alloc] init];
+    CGRect rect = CGRectMake(0, 0, 320, self.view.frame.size.height-49-44);
+    table_view = [[UITableView alloc] initWithFrame:rect];
+    [table_view setDataSource:self];
+    [table_view setDelegate:self];
+    [self.view addSubview:table_view];
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 }
@@ -88,15 +97,17 @@
         PhotoImageButton *imageButton = (PhotoImageButton *)[scroll_view viewWithTag:[[[_dicReuseCells allKeys] objectAtIndex:i] intValue]];
         [imageButton.bgImageView setHidden:YES];
     }
-    [_dicReuseCells removeAllObjects];
     if(editBL)
     {
         editBL = FALSE;
         [nav_item setLeftBarButtonItem:nil];
         [nav_item setRightBarButtonItem:right_item];
+//        [table_view reloadSectionIndexTitles];
+        [self scrollViewDidEndDecelerating:nil];
     }
     else
     {
+        [_dicReuseCells removeAllObjects];
         [nav_item setLeftBarButtonItem:deleteItem];
         [nav_item setRightBarButtonItem:done_item];
         editBL = YES;
@@ -106,53 +117,141 @@
 #pragma mark -得到时间轴的列表
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary
 {
-    //解析时间轴
-    NSString *timeLine = [dictionary objectForKey:@"timeline"];
-    NSMutableArray *tableArray = [[[NSMutableArray alloc] init] autorelease];
-    NSRange range = [timeLine rangeOfString:@"],"];
-    while (range.length>0) {
-        NSString *time_string = [timeLine substringToIndex:range.location];
-        time_string = [time_string substringFromIndex:6];
-        time_string = [time_string stringByReplacingOccurrencesOfString:@"[" withString:@""];
-        time_string = [time_string stringByReplacingOccurrencesOfString:@"]" withString:@""];
-        NSArray *array = [time_string componentsSeparatedByString:@","];
-        for(int i=0;i<[array count];i++)
-        {
-            NSString *_string = [NSString stringWithFormat:@"%@-%@",[[timeLine substringToIndex:5] substringFromIndex:1],[array objectAtIndex:i]];
-            NSLog(@"--------------------------------string:%@",_string);
-            [tableArray addObject:_string];
-            
-        }
-        timeLine = [timeLine substringFromIndex:range.location+2];
-        range = [timeLine rangeOfString:@"],"];
-    }
-    if([timeLine length]>0)
+    [tablediction removeAllObjects];
+    [sectionarray removeAllObjects];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate *todayDate = [NSDate date];
+    NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
+    
+    //今天的起止时间
+    NSString *eString  = [NSString stringWithFormat:@"%i-%i-%i %i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute];
+    NSString *sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day];
+    PhotoFile *photo_file = [[PhotoFile alloc] init];
+    NSArray *timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+    if([timeArray count]>0)
     {
-        NSString *time_string = [timeLine substringFromIndex:6];
-        time_string = [time_string stringByReplacingOccurrencesOfString:@"[" withString:@""];
-        time_string = [time_string stringByReplacingOccurrencesOfString:@"]" withString:@""];
-        NSArray *array = [time_string componentsSeparatedByString:@","];
-        for(int i=0;i<[array count];i++)
-        {
-            NSString *_string = [NSString stringWithFormat:@"%@-%@",[[timeLine substringToIndex:5] substringFromIndex:1],[array objectAtIndex:i]];
-            NSLog(@"--------------------------------string:%@",_string);
-            [tableArray addObject:_string];
-            
-        }
+        [sectionarray addObject:timeLine1];
+        [tablediction setObject:timeArray forKey:timeLine1];
     }
-    NSLog(@"解析时间轴:%@",tableArray);
-    //判断时间轴是否有值
-    if([tableArray count] == 0)
+    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+    //昨天的起止时间
+    eString = sString;
+    if(todayComponent.day-2 == -1)
     {
-        [activity_indicator stopAnimating];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你还没有上传图片" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
-        [alertView show];
-        [alertView release];
+        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]];
     }
     else
     {
-        [photoManager getAllPhotoGeneral:tableArray];
+        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-1];
     }
+     
+    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+    if([timeArray count]>0)
+    {
+        [sectionarray addObject:timeLine2];
+        [tablediction setObject:timeArray forKey:timeLine2];
+    }
+    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+    
+    //本周的起止时间
+    eString = sString;
+    if(todayComponent.day-todayComponent.weekday < 0)
+    {
+        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]-(todayComponent.day-todayComponent.weekday)+1];
+    }
+    else
+    {
+        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-todayComponent.weekday+1];
+    }
+    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+    if([timeArray count]>0)
+    {
+        [sectionarray addObject:timeLine3];
+        [tablediction setObject:timeArray forKey:timeLine3];
+    }
+    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+    
+    //上一周的起止时间
+    eString = sString;
+    if(todayComponent.day-(todayComponent.weekday+7)<0)
+    {
+        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]-(todayComponent.day-(todayComponent.weekday+7))+1];
+    }
+    else
+    {
+        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-(todayComponent.weekday+7)+1];
+    }
+    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+    if([timeArray count]>0)
+    {
+        [sectionarray addObject:timeLine4];
+        [tablediction setObject:timeArray forKey:timeLine4];
+    }
+    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+    
+    //本月的起止时间
+    eString = sString;
+    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,1];
+    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+    if([timeArray count]>0)
+    {
+        [sectionarray addObject:timeLine5];
+        [tablediction setObject:timeArray forKey:timeLine5];
+    }
+    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+    
+    //上个月的起止时间
+    eString = sString;
+    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,1];
+    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+    if([timeArray count]>0)
+    {
+        [sectionarray addObject:timeLine6];
+        [tablediction setObject:timeArray forKey:timeLine6];
+    }
+    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+    
+    //本年的起止时间
+    eString = sString;
+    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,1,1];
+    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+    if([timeArray count]>0)
+    {
+        [sectionarray addObject:timeLine7];
+        [tablediction setObject:timeArray forKey:timeLine7];
+    }
+    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+    
+    //十年内的数据
+    for(int i=1;i<=10;i++)
+    {
+        eString = sString;
+        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year-i,1,1];
+        timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+        if([timeArray count]>0)
+        {
+            [sectionarray addObject:[NSString stringWithFormat:@"%i年",todayComponent.year-i]];
+            [tablediction setObject:timeArray forKey:[NSString stringWithFormat:@"%i年",todayComponent.year-i]];
+        }
+        NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+    }
+    [table_view reloadData];
+    [self scrollViewDidEndDecelerating:nil];
+}
+
+#pragma mark 得到月份天数
+-(int)theDaysInYear:(int)year inMonth:(int)month
+{
+    if (month == 1||month == 3||month == 5||month == 7||month == 8||month == 10||month == 12) {
+        return 31;
+    }
+    if (month == 4||month == 6||month == 9||month == 11) {
+        return 30;
+    }
+    if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+        return 29;
+    }
+    return 28;
 }
 
 #pragma mark -得到时间轴的概要列表
@@ -275,57 +374,7 @@
     
 }
 
-#pragma mark 滑动结束后，加载数据
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    NSLog(@"太快了吧");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self getAllDown];
-    });
-//    int number = [scrollView contentOffset].y/80*4;
-//    NSArray *allArray = [photo_diction allKeys];
-//    int allcount = [allArray count];
-//    if(number>allcount&&allcount>10)
-//    {
-//        for(int i=allcount-1;i>=allcount-10;i--)
-//        {
-//            PhohoDemo *demo = [photo_diction objectForKey:[allArray objectAtIndex:i]];
-//            DownImage *downImage = [[[DownImage alloc] init] autorelease];
-//            [downImage setFileId:demo.f_id];
-//            [downImage setImageUrl:demo.f_name];
-//            [downImage setImageViewIndex:demo.f_id];
-//            [downImage setDelegate:self];
-//            [downImage startDownload];
-//        }
-//    }
-//    else if(number<allcount&&number+10<allcount)
-//    {
-//        for(int i=number;i<number+10;i++)
-//        {
-//            PhohoDemo *demo = [photo_diction objectForKey:[allArray objectAtIndex:i]];
-//            DownImage *downImage = [[[DownImage alloc] init] autorelease];
-//            [downImage setFileId:demo.f_id];
-//            [downImage setImageUrl:demo.f_name];
-//            [downImage setImageViewIndex:demo.f_id];
-//            [downImage setDelegate:self];
-//            [downImage startDownload];
-//        }
-//    }
-//    else if(number<allcount&&number+10>allcount)
-//    {
-//        for(int i=number;i<allcount;i++)
-//        {
-//            PhohoDemo *demo = [photo_diction objectForKey:[allArray objectAtIndex:i]];
-//            DownImage *downImage = [[[DownImage alloc] init] autorelease];
-//            [downImage setFileId:demo.f_id];
-//            [downImage setImageUrl:demo.f_name];
-//            [downImage setImageViewIndex:demo.f_id];
-//            [downImage setDelegate:self];
-//            [downImage startDownload];
-//        }
-//    }  
-//    NSLog(@"结束");
-}
+
 
 -(void)getAllDown
 {
@@ -423,39 +472,44 @@
 
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
 {
-    if(image)
+    __block NSArray *array = [table_view indexPathsForVisibleRows];
+    if(isLoadImage)
     {
-        downNumber++;
-        PhotoImageButton *image_button = (PhotoImageButton *)[scroll_view viewWithTag:indexTag];
-        [image_button setBackgroundImage:image forState:UIControlStateNormal];
-        [self downImage];
+        for(int i=0;i<[array count];i++)
+        {
+            NSLog(@"cellForRowAtIndexPath:%i",i);
+            UITableViewCell *cell = (UITableViewCell *)[table_view cellForRowAtIndexPath:[array objectAtIndex:i]];
+            if([[cell viewWithTag:UIImageTag+indexTag] isKindOfClass:[UIImageView class]])
+            {
+                UIImageView *iamgeV = (UIImageView *)[cell viewWithTag:UIImageTag+indexTag];
+                [iamgeV setImage:image];
+            }
+        }
     }
-    NSLog(@"appImageDidLoad");
-//    [self loadImageView:image button:imagebutton number:index];
 }
 
 #pragma mark UITableViewDelegate
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [allKeys count];
+    return [sectionarray count];
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [allKeys objectAtIndex:section];
+    return [sectionarray objectAtIndex:section];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *array = [allDictionary objectForKey:[allKeys objectAtIndex:section]];
+    NSArray *array = [tablediction objectForKey:[sectionarray objectAtIndex:section]];
     int number = [array count];
-    if(number%4==0)
+    if(number%3==0)
     {
-        return number/4;
+        return number/3;
     }
     else
     {
-        return number/4+1;
+        return number/3+1;
     }
 }
 
@@ -466,239 +520,243 @@
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 83;
+    return 105;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int section = [indexPath section];
     int row = [indexPath row];
-    NSString *timeLine = [allKeys objectAtIndex:section];
-    NSArray *array = [allDictionary objectForKey:timeLine];
-    NSString *cellString = [NSString stringWithFormat:@"allHeight:%i %i",section,row];
-    PhotoCell *photoCell = [tableView dequeueReusableCellWithIdentifier:cellString];
-    if(!photoCell)
+    NSString *cellString = @"cellString";
+    PhotoFileCell *cell = [table_view dequeueReusableHeaderFooterViewWithIdentifier:cellString];
+    if(!cell)
     {
-        photoCell = [[[PhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
-        [photoCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        [photoCell.imageViewButton1 addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchUpInside];
-        [photoCell.imageViewButton2 addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchUpInside];
-        [photoCell.imageViewButton3 addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchUpInside];
-        [photoCell.imageViewButton4 addTarget:self action:@selector(image_button_click:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIImage *imageDemo = [UIImage imageNamed:@"icon_Load.png"];
-        [photoCell.bg1 setImage:imageDemo];
-        [photoCell.bg2 setImage:imageDemo];
-        [photoCell.bg3 setImage:imageDemo];
-        [photoCell.bg4 setImage:imageDemo];
-        
-        [photoCell.imageViewButton2.layer setBorderWidth:0];
-        [photoCell.imageViewButton3.layer setBorderWidth:0];
-        [photoCell.imageViewButton4.layer setBorderWidth:0];
+        cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
-    [photoCell.imageViewButton1 setHidden:NO];
-    [photoCell.bg1 setHidden:NO];
-    [photoCell.imageViewButton2 setHidden:NO];
-    [photoCell.bg2 setHidden:NO];
-    [photoCell.imageViewButton3 setHidden:NO];
-    [photoCell.bg3 setHidden:NO];
-    [photoCell.imageViewButton4 setHidden:NO];
-    [photoCell.bg4 setHidden:NO];
-    [photoCell setIsSelected:editBL];
-    if([array count]/4>=row+1)
+    NSString *sectionNumber = [sectionarray objectAtIndex:section];
+    NSArray *array = [tablediction objectForKey:sectionNumber];
+    if([array count]/3 == row)
     {
-        PhohoDemo *demo = [photo_diction objectForKey:[array objectAtIndex:row*4]];
-        [photoCell.imageViewButton1 setDemo:demo];
-        [photoCell.imageViewButton1 setTag:demo.f_id];
-        [photoCell.imageViewButton1 setTimeLine:timeLine];
-        [photoCell.imageViewButton1 setTimeIndex:row*4];
-        NSString *path = [photoCell get_image_save_file_path:demo.f_name];
-        UIImage *imageDemo = [UIImage imageNamed:@"icon_Load.png"];
-        [photoCell.bg1 setImage:imageDemo];
-        if([photoCell image_exists_at_file_path:path])
+        cell.tag = row+UICellTag*section;
+        int number = 3;
+        if([array count]%3>0)
         {
-            imageDemo = [UIImage imageWithContentsOfFile:path];
-            [photoCell loadImageView:imageDemo button:photoCell.bg1 number:1];
+            number = [array count]%3;
         }
-        if(editBL && demo.isSelected)
+        NSMutableArray *cellArray = [[NSMutableArray alloc] init];
+        for(int i=0;i<number;i++)
         {
-            [photoCell.imageViewButton1 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+            CellTag *cellT = [[CellTag alloc] init];
+            PhotoFile *demo = [array objectAtIndex:row*3+i];
+            [cellT setFileTag:demo.f_id];
+            CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
+            UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
+            image.tag = UIImageTag+demo.f_id;
+            [cellT setImageTag:image.tag];
+            UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+            [image setImage:imageV];
+            [cell.contentView addSubview:image];
+            [image release];
+            SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
+            [button setTag:UIButtonTag+demo.f_id];
+            [cellT setButtonTag:button.tag];
+            [cellT setSectionTag:section];
+            [cellT setPageTag:row*3+i];
+            [cellArray addObject:cellT];
+            [button setCell:cellT];
+            [cellT release];
+            [button addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
+            if(editBL)
+            {
+                for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
+                {
+                    int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
+                    if(demo.f_id == fid)
+                    {
+                        [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+                    }
+                }
+            }
+            [cell.contentView addSubview:button];
+            [button release];
         }
-        else
+        [cell setCellArray:cellArray];
+        [cellArray release];
+    }
+    else
+    {
+        cell.tag = row+UICellTag*section;
+        NSMutableArray *cellArray = [[NSMutableArray alloc] init];
+        for(int i=0;i<3;i++)
         {
-            [photoCell.imageViewButton1 setBackgroundImage:imageDemo forState:UIControlStateNormal];
-            [demo setIsSelected:NO];
+            CellTag *cellT = [[CellTag alloc] init];
+            PhotoFile *demo = [array objectAtIndex:row*3+i];
+            [cellT setFileTag:demo.f_id];
+            CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
+            UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
+            image.tag = UIImageTag+demo.f_id;
+            [cellT setImageTag:image.tag];
+            UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+            [image setImage:imageV];
+            [cell.contentView addSubview:image];
+            [image release];
+            SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
+            [button setTag:UIButtonTag+demo.f_id];
+            [cellT setButtonTag:button.tag];
+            [cellT setSectionTag:section];
+            [cellT setPageTag:row*3+i];
+            [cellArray addObject:cellT];
+            [button setCell:cellT];
+            [cellT release];
+            [button addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
+            if(editBL)
+            {
+                for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
+                {
+                    int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
+                    if(demo.f_id == fid)
+                    {
+                        [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+                    }
+                }
+            }
+            [cell.contentView addSubview:button];
+            [button release];
         }
+        [cell setCellArray:cellArray];
+        [cellArray release];
+    }
+    return cell;
+}
+
+-(void)getImageLoad:(PhotoFileCell *)cell
+{
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc]init];
+    isLoadData = TRUE;
+    NSArray *array = [cell cellArray];
+    for(int j=0;j<[array count];j++)
+    {
+        CellTag *cellTag = [array objectAtIndex:j];
+        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
+        {
+            UIImageView *image_view = (UIImageView *)[table_view viewWithTag:cellTag.imageTag];
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+            UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+            CGSize newImageSize;
+            if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+            {
+                newImageSize.height = 200;
+                newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                imageS = [self imageFromImage:imageS inRect:imageRect];
+                [image_view setImage:imageS];
+            }
+            else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+            {
+                newImageSize.width = 200;
+                newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                imageS = [self imageFromImage:imageS inRect:imageRect];
+                [image_view setImage:imageS];
+            }
+            else
+            {
+                [image_view setImage:imageV];
+            }
+            if(!editBL)
+            {
+                for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
+                {
+                    int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
+                    if(cellTag.fileTag == fid)
+                    {
+                        UIButton *button = (UIButton *)[table_view viewWithTag:cellTag.buttonTag];
+                        [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
+                        [button setSelected:NO];
+                    }
+                }
+            }
+        }
+    }
+    isLoadData = FALSE;
+    [pool drain];
+}
+
+#pragma mark 滑动结束后，加载数据
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSLog(@"scrollViewDidEndDecelerating");
+    if(!isLoadData)
+    {
+        isLoadImage = TRUE;
+        NSArray *cellArrays = [table_view visibleCells];
+        for(int i=0;i<[cellArrays count];i++)
+        {
+            PhotoFileCell *cell = [cellArrays objectAtIndex:i];
+            [NSThread detachNewThreadSelector:@selector(getImageLoad:) toTarget:self withObject:cell];
+            NSArray *array = [cell cellArray];
+            for(int j=0;j<[array count];j++)
+            {
+                CellTag *cellTag = [array objectAtIndex:j];
+                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
+                {
+                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                    [downImage setFileId:cellTag.fileTag];
+                    [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+                    [downImage setImageViewIndex:cellTag.imageTag];
+                    [downImage setDelegate:self];
+                    [downImage startDownload];
+                }
+            }
+        }
+    }
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    isLoadImage = NO;
+}
+
+#pragma mark 按钮点击事件
+-(void)clicked:(id)sender
+{
+    SelectButton *button = sender;
+    int fid = button.tag-UIButtonTag;
+    if(editBL)
+    {
         
-        demo = [photo_diction objectForKey:[array objectAtIndex:row*4+1]];
-        [photoCell.imageViewButton2 setDemo:demo];
-        [photoCell.imageViewButton2 setTag:demo.f_id];
-        [photoCell.imageViewButton2 setTimeLine:timeLine];
-        [photoCell.imageViewButton2 setTimeIndex:row*4+1];
-        path = [photoCell get_image_save_file_path:demo.f_name];
-        imageDemo = [UIImage imageNamed:@"icon_Load.png"];
-        [photoCell.bg2 setImage:imageDemo];
-        if([photoCell image_exists_at_file_path:path])
+        if(button.selected)
         {
-            imageDemo = [UIImage imageWithContentsOfFile:path];
-            [photoCell loadImageView:imageDemo button:photoCell.bg2 number:1];
-        }
-        if(editBL && demo.isSelected)
-        {
-            [photoCell.imageViewButton2 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+            [button setSelected:NO];
+            [_dicReuseCells removeObjectForKey:[NSString stringWithFormat:@"%i",fid]];
+            [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
         }
         else
         {
-            [photoCell.imageViewButton2 setBackgroundImage:imageDemo forState:UIControlStateNormal];
-            [demo setIsSelected:NO];
-        }
-        
-        demo = [photo_diction objectForKey:[array objectAtIndex:row*4+2]];
-        [photoCell.imageViewButton3 setDemo:demo];
-        [photoCell.imageViewButton3 setTag:demo.f_id];
-        [photoCell.imageViewButton3 setTimeLine:timeLine];
-        [photoCell.imageViewButton3 setTimeIndex:row*4+2];
-        path = [photoCell get_image_save_file_path:demo.f_name];
-        imageDemo = [UIImage imageNamed:@"icon_Load.png"];
-        [photoCell.bg3 setImage:imageDemo];
-        if([photoCell image_exists_at_file_path:path])
-        {
-            imageDemo = [UIImage imageWithContentsOfFile:path];
-            [photoCell loadImageView:imageDemo button:photoCell.bg3 number:1];
-        }
-        if(editBL && demo.isSelected)
-        {
-            [photoCell.imageViewButton3 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
-        }
-        else
-        {
-            [photoCell.imageViewButton3 setBackgroundImage:imageDemo forState:UIControlStateNormal];
-            [demo setIsSelected:NO];
-        }
-        
-        demo = [photo_diction objectForKey:[array objectAtIndex:row*4+3]];
-        [photoCell.imageViewButton4 setDemo:demo];
-        [photoCell.imageViewButton4 setTag:demo.f_id];
-        [photoCell.imageViewButton4 setTimeLine:timeLine];
-        [photoCell.imageViewButton4 setTimeIndex:row*4+3];
-        path = [photoCell get_image_save_file_path:demo.f_name];
-        imageDemo = [UIImage imageNamed:@"icon_Load.png"];
-        [photoCell.bg4 setImage:imageDemo];
-        if([photoCell image_exists_at_file_path:path])
-        {
-            imageDemo = [UIImage imageWithContentsOfFile:path];
-            [photoCell loadImageView:imageDemo button:photoCell.bg4 number:1];
-        }
-        if(editBL && demo.isSelected)
-        {
-            [photoCell.imageViewButton4 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
-        }
-        else
-        {
-            [photoCell.imageViewButton4 setBackgroundImage:imageDemo forState:UIControlStateNormal];
-            [demo setIsSelected:NO];
+            [button setSelected:YES];
+            [_dicReuseCells setObject:[NSNumber numberWithInt:fid] forKey:[NSString stringWithFormat:@"%i",fid]];
+            [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
         }
     }
     else
     {
-        int number = [array count]%4;
-        PhohoDemo *demo = [photo_diction objectForKey:[array objectAtIndex:row*4]];
-        [photoCell.imageViewButton1 setDemo:demo];
-        [photoCell.imageViewButton1 setTag:demo.f_id];
-        [photoCell.imageViewButton1 setTimeLine:timeLine];
-        [photoCell.imageViewButton1 setTimeIndex:row*4];
-        NSString *path = [photoCell get_image_save_file_path:demo.f_name];
-        UIImage *imageDemo = [UIImage imageNamed:@"icon_Load.png"];
-        [photoCell.bg1 setImage:imageDemo];
-        if([photoCell image_exists_at_file_path:path])
-        {
-            imageDemo = [UIImage imageWithContentsOfFile:path];
-            [photoCell loadImageView:imageDemo button:photoCell.bg1 number:1];
-        }
-        if(editBL && demo.isSelected)
-        {
-            [photoCell.imageViewButton1 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
-        }
-        else
-        {
-            [photoCell.imageViewButton1 setBackgroundImage:imageDemo forState:UIControlStateNormal];
-            [demo setIsSelected:NO];
-        }
-        
-        if(number == 1)
-        {
-            [photoCell.imageViewButton2 setHidden:YES];
-            [photoCell.bg2 setHidden:YES];
-            [photoCell.imageViewButton3 setHidden:YES];
-            [photoCell.bg3 setHidden:YES];
-            [photoCell.imageViewButton4 setHidden:YES];
-            [photoCell.bg4 setHidden:YES];
-            return photoCell;
-        }
-        demo = [photo_diction objectForKey:[array objectAtIndex:row*4+1]];
-        [photoCell.imageViewButton2 setDemo:demo];
-        [photoCell.imageViewButton2 setTag:demo.f_id];
-        [photoCell.imageViewButton2 setTimeLine:timeLine];
-        [photoCell.imageViewButton2 setTimeIndex:row*4+1];
-        path = [photoCell get_image_save_file_path:demo.f_name];
-        imageDemo = [UIImage imageNamed:@"icon_Load.png"];
-        [photoCell.bg2 setImage:imageDemo];
-        if([photoCell image_exists_at_file_path:path])
-        {
-            imageDemo = [UIImage imageWithContentsOfFile:path];
-            [photoCell loadImageView:imageDemo button:photoCell.bg2 number:1];
-        }
-        if(editBL && demo.isSelected)
-        {
-            [photoCell.imageViewButton2 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
-        }
-        else
-        {
-            [photoCell.imageViewButton2 setBackgroundImage:imageDemo forState:UIControlStateNormal];
-            [demo setIsSelected:NO];
-        }
-        
-        if(number==2)
-        {
-            [photoCell.imageViewButton3 setHidden:YES];
-            [photoCell.bg3 setHidden:YES];
-            [photoCell.imageViewButton4 setHidden:YES];
-            [photoCell.bg4 setHidden:YES];
-            return photoCell;
-        }
-        demo = [photo_diction objectForKey:[array objectAtIndex:row*4+2]];
-        [photoCell.imageViewButton3 setDemo:demo];
-        [photoCell.imageViewButton3 setTag:demo.f_id];
-        [photoCell.imageViewButton3 setTimeLine:timeLine];
-        [photoCell.imageViewButton3 setTimeIndex:row*4+2];
-        path = [photoCell get_image_save_file_path:demo.f_name];
-        imageDemo = [UIImage imageNamed:@"icon_Load.png"];
-        [photoCell.bg3 setImage:imageDemo];
-        if([photoCell image_exists_at_file_path:path])
-        {
-            imageDemo = [UIImage imageWithContentsOfFile:path];
-            [photoCell loadImageView:imageDemo button:photoCell.bg3 number:1];
-        }
-        if(editBL && demo.isSelected)
-        {
-            [photoCell.imageViewButton3 setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
-        }
-        else
-        {
-            [photoCell.imageViewButton3 setBackgroundImage:imageDemo forState:UIControlStateNormal];
-            [demo setIsSelected:NO];
-        }
-        
-        if(number==3)
-        {
-            [photoCell.imageViewButton4 setHidden:YES];
-            [photoCell.bg4 setHidden:YES];
-            return photoCell;
-        }
-//        
-//        [photoCell array:array index:row*4 timeLine:timeLine nunber:number];
+        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
+        photoDetalViewController.deleteDelegate = self;
+        [self presentViewController:photoDetalViewController animated:YES completion:^{
+            NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
+            [photoDetalViewController loadAllDiction:[tablediction objectForKey:sectionString] currtimeIdexTag:button.cell.pageTag];
+            [photoDetalViewController release];
+        }];
     }
-    return photoCell;
+    NSLog(@"button:%i",button.tag);
 }
 
 #pragma mark 分享到朋友圈或会话
@@ -760,22 +818,30 @@
         NSArray *array = [_dicReuseCells allKeys];
         for(int k=0;k<[array count];k++)
         {
-            PhohoDemo *demo = [_dicReuseCells objectForKey:[array objectAtIndex:k]];
-            NSMutableArray *tableArray = [allDictionary objectForKey:demo.timeLine];
-            for(int j=0;j<[tableArray count];)
+            int fid = [[_dicReuseCells objectForKey:[array objectAtIndex:k]] intValue];
+            PhotoFile *photo = [[PhotoFile alloc] init];
+            photo.f_id = fid;
+            [photo deletePhotoFileTable];
+            [photo release];
+            for(int j=0;j<[sectionarray count];j++)
             {
-                int f_id = [[tableArray objectAtIndex:j] intValue];
-                if(demo.f_id == f_id)
+                NSMutableArray *tableA = [tablediction objectForKey:[sectionarray objectAtIndex:j]];
+                for(int i=0;i<[tableA count];)
                 {
-                    [tableArray removeObjectAtIndex:j];
-                }
-                else
-                {
-                    j++;
+                    PhotoFile *demo = [tableA objectAtIndex:i];
+                    if(demo.f_id == fid)
+                    {
+                        [tableA removeObjectAtIndex:i];
+                    }
+                    else
+                    {
+                        i++;
+                    }
                 }
             }
         }
-        [self loadViewData];
+        [table_view reloadData];
+        [self scrollViewDidEndDecelerating:nil];
         UINavigationItem *nav_item = [self navigationItem];
         [nav_item setRightBarButtonItem:done_item];
     }
@@ -784,27 +850,24 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 //    if(![[[SCBSession sharedSession] userId] isEqualToString:user_id] && ![[[SCBSession sharedSession] userToken] isEqualToString:user_token])
-//    {
-        if(photoManager)
-        {
-            [photoManager release];
-        }
-        //请求时间轴
-        photoManager = [[SCBPhotoManager alloc] init];
-        [photoManager setPhotoDelegate:self];
-        [photoManager getPhotoTimeLine];
-        [self setUser_id:[[SCBSession sharedSession] userId]];
-        [self setUser_token:[[SCBSession sharedSession] userToken]];
-//    }
-}
-
-//获取图片路径
-- (NSString*)get_image_save_file_path:(NSString*)image_path
-{
-    NSString *documentDir = [YNFunctions getProviewCachePath];
-    NSArray *array=[image_path componentsSeparatedByString:@"/"];
-    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
-    return path;
+    if(photoManager)
+    {
+        [photoManager release];
+    }
+    //请求时间轴
+    photoManager = [[SCBPhotoManager alloc] init];
+    [photoManager setPhotoDelegate:self];
+    if(!isFirst)
+    {
+        [photoManager getPhotoTimeLine:TRUE];
+        isFirst = TRUE;
+    }
+    else
+    {
+        [photoManager getPhotoTimeLine:NO];
+    }
+    [self setUser_id:[[SCBSession sharedSession] userId]];
+    [self setUser_token:[[SCBSession sharedSession] userToken]];
 }
 
 //这个路径下是否存在此图片
@@ -815,6 +878,16 @@
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return [file_manager fileExistsAtPath:path];
+}
+
+
+//获取图片路径
+- (NSString*)get_image_save_file_path:(NSString*)image_path
+{
+    NSString *documentDir = [YNFunctions getProviewCachePath];
+    NSArray *array=[image_path componentsSeparatedByString:@"/"];
+    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+    return path;
 }
 
 -(void)loadImageView:(UIImage *)image button:(PhotoImageButton *)image_button number:(int)number
@@ -962,3 +1035,19 @@
 }
 
 @end
+
+@implementation CellTag
+@synthesize fileTag,imageTag,buttonTag,pageTag,sectionTag;
+
+@end
+
+@implementation SelectButton
+@synthesize cell;
+-(void)dealloc
+{
+    [cell release];
+    [super dealloc];
+}
+
+@end
+

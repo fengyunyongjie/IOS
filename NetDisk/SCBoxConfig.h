@@ -12,9 +12,10 @@
 #define CLIENT_TAG @"3"
 #define CONNECT_TIMEOUT 30
 #define RESPONSE_TIMEOUT 10
-#define SERVER_URL @"http://7cbox.cn/nds/api"
-#define SERVER_URL_NEW @"http://7cbox.cn/nds/api"
+//#define SERVER_URL @"http://7cbox.cn/nds/api"
+//#define SERVER_URL_NEW @"http://7cbox.cn/nds/api"
 //#define SERVER_URL @"http://192.168.1.5:8080/nds/api"	//local host
+#define SERVER_URL @"http://xianzhouhe.eicp.net/nds/api"	//local host
 
 #pragma mark - 用户管理
 //用户注册
@@ -55,6 +56,8 @@
 #pragma mark - 意见管理
 
 #pragma mark - 照片管理
+#pragma mark - 获取用户的所有的拍摄信息
+#define PHOTO_ALL  @"/photo/all"
 //获取时间分组
 #define PHOTO_TIMERLINE @"/photo/timeline"
 //获取按年或月查询的概要照片
