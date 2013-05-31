@@ -454,7 +454,7 @@
         demo = [allPhotoDemoArray objectAtIndex:page];
     }
     NSString *f_id = [NSString stringWithFormat:@"%i",demo.f_id];
-    if ([[FavoritesData sharedFavoritesData].favoriteDic objectForKey:f_id]) {
+    if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
         hud.labelText=@"图片已经收藏过";
         hud.mode=MBProgressHUDModeText;
         [hud show:YES];
@@ -474,7 +474,6 @@
         [dic setObject:demo.compressaddr forKey:@"compressaddr"];
         [dic setObject:[NSNumber numberWithInteger:demo.f_ownerid] forKey:@"f_ownerid"];
         [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
-        NSLog(@"%@",[FavoritesData sharedFavoritesData].favoriteDic);
         NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
         hud.labelText=@"收藏成功";
         hud.mode=MBProgressHUDModeText;

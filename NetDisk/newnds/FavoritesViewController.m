@@ -275,7 +275,7 @@
 // this method is used in case the user scrolled into a set of cells that don't have their app icons yet
 - (void)loadImagesForOnscreenRows
 {
-    NSArray *listArray=[[[FavoritesData sharedFavoritesData] favoriteDic] allValues];
+    NSArray *listArray=[[FavoritesData sharedFavoritesData] allValues];
     if ([listArray count] > 0)
     {
         NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
