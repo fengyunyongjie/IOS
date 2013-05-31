@@ -43,10 +43,8 @@
 }
 - (void)cancelDownload
 {
+    [self.imageConnection cancel];
     self.delegate=nil;
-//    [self.imageConnection cancel];
-//    self.imageConnection = nil;
-//    self.activeDownload = nil;
 }
 #pragma mark -
 #pragma mark Download support (NSURLConnectionDelegate)
@@ -68,22 +66,6 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-//    // Set appIcon and clear temporary data/image
-//    UIImage *image = [[UIImage alloc] initWithData:self.activeDownload];
-//    
-//    if (image.size.width != kAppIconSize || image.size.height != kAppIconSize)
-//	{
-//        CGSize itemSize = CGSizeMake(kAppIconSize, kAppIconSize);
-//		UIGraphicsBeginImageContext(itemSize);
-//		CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-//		[image drawInRect:imageRect];
-//		self.appRecord.appIcon = UIGraphicsGetImageFromCurrentImageContext();
-//		UIGraphicsEndImageContext();
-//    }
-//    else
-//    {
-//        self.appRecord.appIcon = image;
-//    }
     NSString *compressaddr=[self.data_dic objectForKey:@"compressaddr"];
     compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
     NSString *path=[YNFunctions getIconCachePath];
@@ -95,9 +77,12 @@
     self.imageConnection = nil;
     
     // call our delegate and tell it that our icon is ready for display
-    if (self.delegate!=nil)
+    if (self.delegate)
     {
-        [self.delegate appImageDidLoad:self.indexPathInTableView];
+        if ([self.delegate respondsToSelector:@selector(appImageDidLoad:)]) {
+            [self.delegate appImageDidLoad:self.indexPathInTableView];
+        }
+    
     }
 }
 @end

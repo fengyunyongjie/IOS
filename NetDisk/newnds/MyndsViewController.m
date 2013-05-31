@@ -19,6 +19,12 @@
 #import "ImageBrowserViewController.h"
 #import "OtherBrowserViewController.h"
 
+typedef enum{
+    kAlertTagDeleteOne,
+    kAlertTagDeleteMore,
+    kAlertTagRename,
+}AlertTag;
+
 @implementation FileItem
 
 + (FileItem*) fileItem
@@ -96,10 +102,17 @@
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
+}
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     [self.fm cancelAllTask];
     for (IconDownloader *iconLoader in self.imageDownloadsInProgress.allValues) {
         [iconLoader cancelDownload];
     };
+}
+-(void)viewDidUnload
+{
 }
 - (void)moveFileToHere:(id)sender
 {
@@ -112,20 +125,10 @@
 }
 - (void)deleteAction:(id)sender
 {
-    NSMutableArray *f_ids=[NSMutableArray array];
-    for (int i=0;i<self.m_fileItems.count;i++) {
-        FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
-        if (fileItem.checked) {
-            NSDictionary *dic=[self.listArray objectAtIndex:i];
-            NSString *f_id=[dic objectForKey:@"f_id"];
-            [f_ids addObject:f_id];
-        }
-    }
-    if (f_ids.count>0) {
-        SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
-        fm_temp.delegate=self;
-        [fm_temp removeFileWithIDs:f_ids];
-    }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除所选文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    [alertView show];
+    [alertView setTag:kAlertTagDeleteMore];
+    [alertView release];
 }
 - (void)editAction:(id)sender
 {
@@ -274,6 +277,7 @@
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"重命名" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     [[alert textFieldAtIndex:0] setText:name];
+    [alert setTag:kAlertTagRename];
     [alert show];
 }
 -(void)toFavorite:(id)sender
@@ -292,13 +296,10 @@
 }
 -(void)toDelete:(id)sender
 {
-    
-    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-    NSString *f_id=[dic objectForKey:@"f_id"];
-    SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
-    fm_temp.delegate=self;
-    [fm_temp removeFileWithIDs:@[f_id]];
-    [self hideOptionCell];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    [alertView show];
+    [alertView setTag:kAlertTagDeleteOne];
+    [alertView release];
 }
 -(void)moveFileToID:(NSString *)f_id
 {
@@ -678,17 +679,6 @@
 
             }
         }
-//        ImageBrowserViewController *browser=[[[ImageBrowserViewController alloc] init] autorelease];
-//        browser.listArray=self.listArray;
-//        browser.index=indexPath.row;
-//        if (self.navigationController.navigationBarHidden) {
-//            [self.navigationController setNavigationBarHidden:NO animated:YES];
-//        }else
-//        {
-//            [self.navigationController setNavigationBarHidden:YES animated:YES];
-//        }
-//        [self.navigationController pushViewController:browser animated:YES];
-        //[self.tabBarController.tabBar setHidden:YES];
     }
 }
 
@@ -765,26 +755,133 @@
 {
     [self updateFileList];
 }
+-(void)removeFromDicWithObjects:(NSArray *)objects
+{
+    NSMutableArray *tempA=[NSMutableArray arrayWithArray:self.listArray];
+    [tempA removeObjectsInArray:objects];
+    NSMutableDictionary *tempD=[NSMutableDictionary dictionaryWithDictionary:self.dataDic];
+    [tempD setObject:tempA forKey:@"files"];
+    self.dataDic=tempD;
+    //修改之后的结果写入本地文件，
+    NSString *dataFilePath=[YNFunctions getDataCachePath];
+    dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
+    
+    NSError *jsonParsingError=nil;
+    NSData *data=[NSJSONSerialization dataWithJSONObject:self.dataDic options:0 error:&jsonParsingError];
+    BOOL isWrite=[data writeToFile:dataFilePath atomically:YES];
+    if (isWrite) {
+        NSLog(@"写入文件成功：%@",dataFilePath);
+    }else
+    {
+        NSLog(@"写入文件失败：%@",dataFilePath);
+    }
+}
+-(void)resetFileItems
+{
+    NSMutableArray *a=[NSMutableArray array];
+    for (id o in self.listArray) {
+        FileItem *fileItem=[[[FileItem alloc]init]autorelease];
+        [a addObject:fileItem];
+        [fileItem setChecked:NO];
+    }
+    self.m_fileItems=a;
+}
+-(void)removeFromDicWithObject:(id)object
+{
+    NSMutableArray *tempA=[NSMutableArray arrayWithArray:self.listArray];
+    [tempA removeObject:object];
+    NSMutableDictionary *tempD=[NSMutableDictionary dictionaryWithDictionary:self.dataDic];
+    [tempD setObject:tempA forKey:@"files"];
+    self.dataDic=tempD;
+    [self resetFileItems];
+    //修改之后的结果写入本地文件，
+    NSString *dataFilePath=[YNFunctions getDataCachePath];
+    dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
+    
+    NSError *jsonParsingError=nil;
+    NSData *data=[NSJSONSerialization dataWithJSONObject:self.dataDic options:0 error:&jsonParsingError];
+    BOOL isWrite=[data writeToFile:dataFilePath atomically:YES];
+    if (isWrite) {
+        NSLog(@"写入文件成功：%@",dataFilePath);
+    }else
+    {
+        NSLog(@"写入文件失败：%@",dataFilePath);
+    }
+}
 #pragma mark - UIAlertViewDelegate Methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex==1) {
-        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-        NSString *name=[dic objectForKey:@"f_name"];
-        NSString *f_id=[dic objectForKey:@"f_id"];
-        NSString *fildtext=[[alertView textFieldAtIndex:0] text];
-        if (![fildtext isEqualToString:name]) {
-            NSLog(@"重命名");
-            SCBFileManager *fm=[[[SCBFileManager alloc] init] autorelease];
-            [fm renameWithID:f_id newName:fildtext];
-            [fm setDelegate:self];
+    switch (alertView.tag) {
+        case kAlertTagDeleteOne:
+        {
+            if (buttonIndex==1) {
+                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+                [self removeFromDicWithObject:dic];
+                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row-1 inSection:self.selectedIndexPath.section];
+                NSLog(@"%d",self.selectedIndexPath.section);
+                NSArray *indexesToDelete = @[indexPath,self.selectedIndexPath];
+                self.selectedIndexPath = nil;
+                [self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
+                NSString *f_id=[dic objectForKey:@"f_id"];
+                SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
+                fm_temp.delegate=self;
+                [fm_temp removeFileWithIDs:@[f_id]];
+            }
+            [self hideOptionCell];
+            break;
         }
-        NSLog(@"点击确定");
-    }else
-    {
-        NSLog(@"点击其它");
+        case kAlertTagRename:
+        {
+            if (buttonIndex==1) {
+                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+                NSString *name=[dic objectForKey:@"f_name"];
+                NSString *f_id=[dic objectForKey:@"f_id"];
+                NSString *fildtext=[[alertView textFieldAtIndex:0] text];
+                if (![fildtext isEqualToString:name]) {
+                    NSLog(@"重命名");
+                    SCBFileManager *fm=[[[SCBFileManager alloc] init] autorelease];
+                    [fm renameWithID:f_id newName:fildtext];
+                    [fm setDelegate:self];
+                }
+                NSLog(@"点击确定");
+            }else
+            {
+                NSLog(@"点击其它");
+            }
+            [self hideOptionCell];
+            break;
+        }
+        case kAlertTagDeleteMore:
+        {
+            if (buttonIndex==1) {
+                NSMutableArray *f_ids=[NSMutableArray array];
+                NSMutableArray *deleteObjects=[NSMutableArray array];
+                for (int i=0;i<self.m_fileItems.count;i++) {
+                    FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+                    if (fileItem.checked) {
+                        NSDictionary *dic=[self.listArray objectAtIndex:i];
+                        NSString *f_id=[dic objectForKey:@"f_id"];
+                        [f_ids addObject:f_id];
+                        [deleteObjects addObject:dic];
+                    }
+                }
+                [self removeFromDicWithObjects:deleteObjects];
+                [self.tableView reloadData];
+                if (f_ids.count>0) {
+                    SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
+                    fm_temp.delegate=self;
+                    [fm_temp removeFileWithIDs:f_ids];
+                }
+
+            }
+            break;
+        }
+        default:
+            break;
     }
-    [self hideOptionCell];
+    
+    
+    
 }
 #pragma mark -
 #pragma mark Deferred image loading (UIScrollViewDelegate)

@@ -30,6 +30,14 @@
     [super viewDidLoad];
     self.m_hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.m_hud];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,7 +63,7 @@
 -(void)registUnsucceed:(id)manager
 {
     [self.m_hud show:NO];
-    self.m_hud.labelText=@"注册失败！(帐号被使用)";
+    self.m_hud.labelText=@"失败(帐号被使用或格式不正确)";
     self.m_hud.mode=MBProgressHUDModeText;
     self.m_hud.margin=10.f;
     [self.m_hud show:YES];
@@ -120,4 +128,38 @@
     [self.m_hud hide:YES afterDelay:0.5f];
     return rt;
 }
+- (IBAction)endEdit:(id)sender
+{
+    [self.m_userNameTextField endEditing:YES];
+    [self.m_passwordAgainTextField endEditing:YES];
+    [self.m_passwordTextField endEditing:YES];
+}
+#pragma mark - Responding to keyboard events
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    /*
+     Reduce the size of the text view so that it's not obscured by the keyboard.
+     Animate the resize so that it's in sync with the appearance of the keyboard.
+     */
+    
+    [UIView beginAnimations:@"MoveUp" context:nil];
+    [UIView setAnimationDuration:0.2f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    CGRect r=self.view.frame;
+    r.origin.y=-100;
+    [self.view setFrame:r];
+    [UIView commitAnimations];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    [UIView beginAnimations:@"MoveUp" context:nil];
+    [UIView setAnimationDuration:0.2f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    CGRect r=self.view.frame;
+    r.origin.y=20;
+    [self.view setFrame:r];
+    [UIView commitAnimations];
+}
+
 @end

@@ -16,5 +16,6 @@
 - (IBAction) regitst:(id)sender;
 - (IBAction) comeBack:(id)sender;
 - (BOOL)registAssert;
+- (IBAction)endEdit:(id)sender;
 
 @end

@@ -128,6 +128,7 @@
     [viewController5.navigationBar setBarStyle:UIBarStyleBlack];
     
     self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5, nil];
+    self.selectedIndex=0;
 }
 - (void)viewDidLoad
 {

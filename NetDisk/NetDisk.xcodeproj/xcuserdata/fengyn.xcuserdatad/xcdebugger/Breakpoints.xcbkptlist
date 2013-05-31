@@ -20,13 +20,13 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "newnds/sqlite3/FavoritesDBController.m"
-         timestampString = "391602225.944422"
+         filePath = "newnds/RegistViewController.m"
+         timestampString = "391676580.548467"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "136"
-         endingLineNumber = "136"
-         landmarkName = "-getAllDatas"
+         startingLineNumber = "53"
+         endingLineNumber = "53"
+         landmarkName = "-registSucceed"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

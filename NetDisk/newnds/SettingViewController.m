@@ -93,6 +93,7 @@
     [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getIconCachePath] error:nil];
     [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
     [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
     [self.tableView reloadData];
 }
 #pragma mark - UIAlertViewDelegate Methods
@@ -276,6 +277,8 @@
                     cachePath = [YNFunctions getKeepCachePath];
                     locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
                     cachePath = [YNFunctions getTempCachePath];
+                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+                    cachePath = [YNFunctions getProviewCachePath];
                     locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
                     
                     
