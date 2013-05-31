@@ -648,7 +648,6 @@
                     
                     [photo_demo setF_create:[dict objectForKey:@"f_create"]];
                     [photo_demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
-                    [photo_demo setF_mime:[dict objectForKey:@"f_modify"]];
                     [photo_demo setCompressaddr:[dict objectForKey:@"compressaddr"]];
                     [photo_demo setF_ownerid:[[dict objectForKey:@"f_ownerid"] intValue]];
                     [photo_demo setF_pids:@""];

@@ -285,10 +285,17 @@
             }
             [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片：%i",[photoArray count]]];
             [formatLabel setText:[NSString stringWithFormat:@"已上传图片：%i",uploadNumber]];
+            if(uploadNumber >= [photoArray count])
+            {
+                [uploadNumberLabel setText:@"已完成"];
+            }
+            else
+            {
+                //判断文件是否存在
+                NSLog(@"1:打开文件目录");
+                [photoManger openFinderWithID:@"1"];
+            }
             [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-            //判断文件是否存在
-            NSLog(@"1:打开文件目录");
-            [photoManger openFinderWithID:@"1"];
         }
         else
         {
