@@ -10,6 +10,10 @@
 #import "SCBAccountManager.h"
 #import "YNFunctions.h"
 
+typedef enum{
+    kAlertTypeExit,
+    kAlertTypeClear,
+}kAlertType;
 
 @interface SettingViewController ()
 @property (strong,nonatomic) NSString *space_total;
@@ -89,23 +93,41 @@
 }
 - (void)clearCache
 {
-    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getFMCachePath] error:nil];
-    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getIconCachePath] error:nil];
-    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
-    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
-    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
-    [self.tableView reloadData];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告"
+                                                        message:@"确定要清除缓存"
+                                                       delegate:self
+                                              cancelButtonTitle:@"取消"
+                                              otherButtonTitles:@"确定", nil];
+    [alertView show];
+    [alertView release];
 }
 #pragma mark - UIAlertViewDelegate Methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        //scBox.UserLogout(callBackLogoutFunc,self);
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
-        [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [self.rootViewController presendLoginViewController];
+    switch (alertView.tag) {
+        case kAlertTypeExit:
+            if (buttonIndex == 1) {
+                //scBox.UserLogout(callBackLogoutFunc,self);
+                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
+                [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self.rootViewController presendLoginViewController];
+            }
+            break;
+        case kAlertTypeClear:
+            if (buttonIndex==1) {
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getFMCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getIconCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
+                [self.tableView reloadData];
+            }
+            break;
+        default:
+            break;
     }
+    
 }
 
 #pragma mark - Table view data source

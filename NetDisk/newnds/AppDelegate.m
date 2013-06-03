@@ -25,43 +25,11 @@
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //    [MobClick startWithAppkey:@"5158f8f056240bb70c030e97"];
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
-    [self.myTabBarController setNeed_to_custom:NO];
-    [self.myTabBarController setTab_bar_bg:[UIImage imageNamed:@"tab_bg.png"]];
-    [self.myTabBarController setNormal_image:[NSArray arrayWithObjects:@"tab_btn_myroom@2x.png",@"tab_btn_favorite@2x.png",@"tab_btn_photo@2x.png",@"tab_btn_upload@2x.png",@"tab_btn_setting@2x.png", nil]];
-    [self.myTabBarController setSelect_image:[NSArray arrayWithObjects:@"tab_btn_myroom_h@2x.png",@"tab_btn_favorite_h@2x.png",@"tab_btn_photo_h@2x.png",@"tab_btn_upload_h@2x.png",@"tab_btn_setting_h@2x.png",nil]];
-    [self.myTabBarController setShow_style:UItabbarControllerShowStyleIconAndText];
-    [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, 49)];
-    [self.myTabBarController setFont:[UIFont boldSystemFontOfSize:10.0]];
-    [self.myTabBarController setFont_color:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0]];
-    [self.myTabBarController setHilighted_color:[UIColor colorWithRed:153.0/255.0 green:153.0/255.0 blue:153.0/255.0 alpha:1.0]];
-    
-    //    UINavigationController *root=[[UINavigationController alloc] initWithRootViewController:self.myTabBarController];
-        self.window.rootViewController=self.myTabBarController;
-    //！！！程序启动时不需要每次都进入登录窗口，只有注销和第一次启动时才进入登录窗口，所以我所这儿注释掉，在MyTabBarController判断！是否显示登录页面
-    
-    //LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
-    //    [self.window.rootViewController presentViewController:lv animated:YES completion:^(void){}];
-    //self.window.rootViewController = lv;
+    self.window.rootViewController=self.myTabBarController;
     //程序启动时，在代码中向微信终端注册你的id
     [WXApi registerApp:@"wxdcc0186c9f173352"];
-//    //启动时注册微博
-//    [WeiboSDK enableDebugMode:YES];
-//    [WeiboSDK registerApp:kAppKey];
-    
-//    //测试
-//    TaskDemo *task_demo = [[TaskDemo alloc] init];
-//    [task_demo createTable];
-//    task_demo.f_id = 280015;
-//    task_demo.f_base_name = @"IMG_0062.JPG";
-//    UIImage *image = [UIImage imageNamed:@"111.png"];
-//    task_demo.f_data = UIImagePNGRepresentation(image);
-//    task_demo.f_state = 1;
-//    task_demo.f_lenght = task_demo.f_data.length;
-//    [task_demo insertTaskTable];
     [self.window makeKeyAndVisible];
     //处理其它程序调用本程序打开文件
     if ([YNFunctions isUnlockFeature]) {
@@ -195,104 +163,4 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
-#pragma mark 新浪微博模块
-
-////微博授权
-//- (void)ssoButtonPressed
-//{
-//    WBAuthorizeRequest *request = [WBAuthorizeRequest request];
-//    request.redirectURI = @"http://";
-//    request.scope = @"email,direct_messages_write";
-//    request.userInfo = @{@"SSO_From": @"newnds",
-//                         @"Other_Info_1": [NSNumber numberWithInt:123],
-//                         @"Other_Info_2": @[@"obj1", @"obj2"],
-//                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
-//    [WeiboSDK sendRequest:request];
-//}
-
-//- (void)didReceiveWeiboRequest:(WBBaseRequest *)request
-//{
-//    if ([request isKindOfClass:WBProvideMessageForWeiboRequest.class])
-//    {
-////        ProvideMessageForWeiboViewController *controller = [[[ProvideMessageForWeiboViewController alloc] init] autorelease];
-////        [self.viewController presentModalViewController:controller animated:YES];
-//        NSLog(@"ProvideMessageForWeiboViewController");
-//    }
-//}
-
-//授权成功后的回调
-//- (void)didReceiveWeiboResponse:(WBBaseResponse *)response
-//{
-//    if ([response isKindOfClass:WBSendMessageToWeiboResponse.class])
-//    {
-//        NSString *title = @"发送结果";
-//        NSString *message = [NSString stringWithFormat:@"响应状态: %d\n响应UserInfo数据: %@\n原请求UserInfo数据: %@",
-//                             response.statusCode, response.userInfo, response.requestUserInfo];
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-//                                                        message:message
-//                                                       delegate:nil
-//                                              cancelButtonTitle:@"确定"
-//                                              otherButtonTitles:nil];
-//        [alert show];
-//        [alert release];
-//    }
-//    else if ([response isKindOfClass:WBAuthorizeResponse.class])
-//    {
-//        NSString *title = @"认证结果";
-//        NSString *message = [NSString stringWithFormat:@"响应状态: %d\nresponse.userId: %@\nresponse.accessToken: %@\n响应UserInfo数据: %@\n原请求UserInfo数据: %@",
-//                             response.statusCode, [(WBAuthorizeResponse *)response userID], [(WBAuthorizeResponse *)response accessToken], response.userInfo, response.requestUserInfo];
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-//                                                        message:message
-//                                                       delegate:nil
-//                                              cancelButtonTitle:@"确定"
-//                                              otherButtonTitles:nil];
-//        [alert show];
-//        [alert release];
-//    }
-//}
-
-//微博分享
-//- (void)shareButtonPressed
-//{
-//    WBSendMessageToWeiboRequest *request = [WBSendMessageToWeiboRequest requestWithMessage:[self messageToShare:1]];
-//    request.userInfo = @{@"ShareMessageFrom": @"SendMessageToWeiboViewController",
-//                         @"Other_Info_1": [NSNumber numberWithInt:123],
-//                         @"Other_Info_2": @[@"obj1", @"obj2"],
-//                         @"Other_Info_3": @{@"key1": @"obj1", @"key2": @"obj2"}};
-//    //    request.shouldOpenWeiboAppInstallPageIfNotInstalled = NO;
-//    
-//    [WeiboSDK sendRequest:request];
-//}
-
-//分享信息
-//- (WBMessageObject *)messageToShare:(int)type //type 0是text，1是image，2是多媒体
-//{
-//    WBMessageObject *message = [WBMessageObject message];
-//    
-//    if (type == 1)
-//    {
-//        message.text = @"测试通过WeiboSDK发送文字到微博!";
-//    }
-//    
-//    if (type == 2)
-//    {
-//        WBImageObject *image = [WBImageObject object];
-//        image.imageData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"image_1" ofType:@"jpg"]];
-//        message.imageObject = image;
-//    }
-//    
-//    if (type == 3)
-//    {
-//        WBWebpageObject *webpage = [WBWebpageObject object];
-//        webpage.objectID = @"identifier1";
-//        webpage.title = @"分享网页标题";
-//        webpage.description = [NSString stringWithFormat:@"分享网页内容简介-%.0f", [[NSDate date] timeIntervalSince1970]];
-//        webpage.thumbnailData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"image_2" ofType:@"jpg"]];
-//        webpage.webpageUrl = @"http://sina.cn?a=1";
-//        message.mediaObject = webpage;
-//    }
-//    return message;
-//}
-
 @end

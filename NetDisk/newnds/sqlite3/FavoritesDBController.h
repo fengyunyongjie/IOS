@@ -10,7 +10,7 @@
 #define CreateFavoritesTable @"create  table if not exists favorites(t_id integer primary key autoincrement,f_id text,f_name text,f_mime text,f_size text,compressaddr text,owner text)"
 #define InsertTaskTable @"insert into favorites(f_id,f_name,f_mime,f_size,compressaddr,owner) values(?,?,?,?,?,?)"
 #define DeleteTskTable @"delete from favorites where f_id=? and owner=?"
-#define SelectAllTaskTable @"select * from favorites where owner=?"
+#define SelectAllTaskTable @"select * from favorites where owner=? ORDER BY t_id DESC"
 #define SelectOneTaskTableForFID @"select * from favorites where f_id=? and owner=?"
 
 

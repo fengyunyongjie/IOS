@@ -48,7 +48,7 @@
 -(void)registSucceed
 {
      [self.m_hud removeFromSuperview];
-    [self dismissViewControllerAnimated:YES completion:^(void){
+    [self dismissViewControllerAnimated:NO completion:^(void){
         if (self.delegate && [self.delegate respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
             [[NSUserDefaults standardUserDefaults] setObject:self.m_userNameTextField.text forKey:@"usr_name"];
             [[NSUserDefaults standardUserDefaults] setObject:self.m_passwordAgainTextField.text forKey:@"usr_pwd"];
@@ -56,7 +56,7 @@
             if (self.delegate&&[self.delegate respondsToSelector:@selector(resetData)]) {
                 [self.delegate resetData];
             }
-            [self.delegate dismissViewControllerAnimated:YES completion:nil];
+            [self.delegate dismissViewControllerAnimated:NO completion:nil];
         }
     }];
 }

@@ -7,6 +7,7 @@
 //
 
 #import "MYTabBarController.h"
+#import "YNFunctions.h"
 #import "LoginViewController.h"
 #import "SettingViewController.h"
 #import "MyndsViewController.h"
@@ -75,7 +76,7 @@
 }
 -(void)resetData
 {
-    UINavigationController *viewController1,*viewController2,*viewController3,*viewController4,*viewController5,*viewController6;
+    UINavigationController *viewController1,*viewController2,*viewController3,*viewController4,*viewController5,*viewController6,*viewController7,*viewController8;
     viewController1=[[[UINavigationController alloc] init] autorelease];
     MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
     rootView1.f_id=@"1";
@@ -83,7 +84,6 @@
     rootView1.title=@"我的空间";
     [rootView1.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
     [viewController1 pushViewController:rootView1 animated:YES];
-    //[viewController1.navigationBar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nav_bg.png"]] atIndex:1];
     
     
     viewController2=[[[UINavigationController alloc] init] autorelease];
@@ -119,16 +119,40 @@
     viewController6.title=@"sexth";
     UIViewController * rootView6=[[[UIViewController alloc] init] autorelease];
     rootView6.title=@"共享空间";
+    [rootView6.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
     [viewController6 pushViewController:rootView6 animated:YES];
+    
+    viewController7=[[[UINavigationController alloc] init] autorelease];
+    viewController7.title=@"seven";
+    UIViewController * rootView7=[[[UIViewController alloc] init] autorelease];
+    rootView7.title=@"回收站";
+    [rootView7.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
+    [viewController7 pushViewController:rootView7 animated:YES];
+    
+    viewController8=[[[UINavigationController alloc] init] autorelease];
+    viewController8.title=@"eight";
+    UIViewController * rootView8=[[[UIViewController alloc] init] autorelease];
+    rootView8.title=@"我的好友";
+    [rootView8.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
+    [viewController8 pushViewController:rootView8 animated:YES];
     
     [viewController1.navigationBar setBarStyle:UIBarStyleBlack];
     [viewController2.navigationBar setBarStyle:UIBarStyleBlack];
     [viewController3.navigationBar setBarStyle:UIBarStyleBlack];
     [viewController4.navigationBar setBarStyle:UIBarStyleBlack];
     [viewController5.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController6.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController7.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController8.navigationBar setBarStyle:UIBarStyleBlack];
+    if ([YNFunctions isUnlockFeature]) {
+        self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5,viewController6,viewController7,viewController8, nil];
+    }else
+    {
+        self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5, nil];
+    }
     
-    self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5, nil];
     self.selectedIndex=0;
+    [self.moreNavigationController.navigationBar setBarStyle:UIBarStyleBlack];
 }
 - (void)viewDidLoad
 {
@@ -164,7 +188,6 @@
         [self show_custom_view_layer];
     }
 }
-
 
 - (void)viewDidAppear:(BOOL)animated
 {

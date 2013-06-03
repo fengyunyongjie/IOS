@@ -125,6 +125,20 @@ typedef enum{
 }
 - (void)deleteAction:(id)sender
 {
+    NSMutableArray *f_ids=[NSMutableArray array];
+    NSMutableArray *deleteObjects=[NSMutableArray array];
+    for (int i=0;i<self.m_fileItems.count;i++) {
+        FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+        if (fileItem.checked) {
+            NSDictionary *dic=[self.listArray objectAtIndex:i];
+            NSString *f_id=[dic objectForKey:@"f_id"];
+            [f_ids addObject:f_id];
+            [deleteObjects addObject:dic];
+        }
+    }
+    if ([deleteObjects count]<=0) {
+        return;
+    }
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除所选文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
     [alertView show];
     [alertView setTag:kAlertTagDeleteMore];

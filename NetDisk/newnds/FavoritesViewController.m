@@ -82,6 +82,8 @@
     //NSString *f_modify=[dic objectForKey:@"f_modify"];
     NSString *t_fl = [[dic objectForKey:@"f_mime"] lowercaseString];
     cell.textLabel.text=name;
+    NSString *f_size=[dic objectForKey:@"f_size"];
+    cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[YNFunctions convertSize:f_size]];
     //cell.detailTextLabel.text=f_modify;
     if (cell.imageView.subviews.count==0) {
         UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
