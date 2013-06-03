@@ -123,8 +123,6 @@
     [self.topBar setHidden:YES];
     [self.bottonBar setHidden:YES];
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
     [super viewDidLoad];
 }
 
@@ -141,7 +139,10 @@
     [bottonBar release];
     [pageLabel release];
     [timeLine release];
-    [hud release];
+    if(hud != nil)
+    {
+        [hud release];
+    }
     [super dealloc];
 }
 
@@ -207,7 +208,7 @@
 -(void)addCenterImageView:(PhohoDemo *)demo currPage:(NSInteger)pageIndex totalCount:(NSInteger)count
 {
     CGRect detailRect =  CGRectMake(320*pageIndex, 0, 320, allHeight);
-    PhotoDetailView *detailView = [[[PhotoDetailView alloc] initWithFrame:detailRect] autorelease];
+    PhotoDetailView *detailView = [[PhotoDetailView alloc] initWithFrame:detailRect];
     detailView.clickButton.tag = 20000+pageIndex;
     [detailView.clickButton addTarget:self action:@selector(multipleTap:withEvent:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -237,6 +238,8 @@
     [detailView setUserInteractionEnabled:YES];
     
     [scroll_View addSubview:detailView];
+    [detailView clearsContextBeforeDrawing];
+    [detailView release];
     [scroll_View setContentSize:CGSizeMake(320*[allPhotoDemoArray count], allHeight)];
 }
 
@@ -265,12 +268,13 @@
             {
                 demo = [allPhotoDemoArray objectAtIndex:i];
             }
-            DownImage *downImage = [[[DownImage alloc] init] autorelease];
+            DownImage *downImage = [[DownImage alloc] init];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.f_name];
+            [downImage setImageUrl:[NSString stringWithFormat:@"%i",demo.f_id]];
             [downImage setImageViewIndex:imageTag+i];
             [downImage setDelegate:self];
             [downImage startDownload];
+            [downImage release];
         }
     }
     else if(indexTag==0)
@@ -286,12 +290,13 @@
             {
                 demo = [allPhotoDemoArray objectAtIndex:i];
             }
-            DownImage *downImage = [[[DownImage alloc] init] autorelease];
+            DownImage *downImage = [[DownImage alloc] init];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.f_name];
+            [downImage setImageUrl:[NSString stringWithFormat:@"%i",demo.f_id]];
             [downImage setImageViewIndex:imageTag+i];
             [downImage setDelegate:self];
             [downImage startDownload];
+            [downImage release];
         }
     }
     else if(indexTag+1==[allPhotoDemoArray count])
@@ -307,12 +312,13 @@
             {
                 demo = [allPhotoDemoArray objectAtIndex:i];
             }
-            DownImage *downImage = [[[DownImage alloc] init] autorelease];
+            DownImage *downImage = [[DownImage alloc] init];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.f_name];
+            [downImage setImageUrl:[NSString stringWithFormat:@"%i",demo.f_id]];
             [downImage setImageViewIndex:imageTag+i];
             [downImage setDelegate:self];
             [downImage startDownload];
+            [downImage release];
         }
     }
     else if(indexTag+1<[allPhotoDemoArray count]&&indexTag>0)
@@ -328,12 +334,13 @@
             {
                 demo = [allPhotoDemoArray objectAtIndex:i];
             }
-            DownImage *downImage = [[[DownImage alloc] init] autorelease];
+            DownImage *downImage = [[DownImage alloc] init];
             [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:demo.f_name];
+            [downImage setImageUrl:[NSString stringWithFormat:@"%i",demo.f_id]];
             [downImage setImageViewIndex:imageTag+i];
             [downImage setDelegate:self];
             [downImage startDownload];
+            [downImage release];
         }
     }
 }
@@ -422,8 +429,9 @@
 #pragma mark 按钮返回事件
 -(void)backClick:(id)sender
 {
-    [scroll_View removeFromSuperview];
-    [self dismissViewControllerAnimated:YES completion:^{}];
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 #pragma mrak 手势事件
@@ -462,8 +470,9 @@
     }
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [scroll_View clearsContextBeforeDrawing];
 	int page = scrollView.contentOffset.x/320;
     [self showIndexTag:page];
 }
@@ -483,10 +492,14 @@
     }
     NSString *f_id = [NSString stringWithFormat:@"%i",demo.f_id];
     if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
+        hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
         hud.labelText=@"图片已经收藏过";
         hud.mode=MBProgressHUDModeText;
         [hud show:YES];
-        [self.hud hide:YES afterDelay:0.5f];
+        [hud hide:YES afterDelay:0.5f];
+        [hud release];
+        hud = nil;
     }
     else
     {
@@ -503,10 +516,14 @@
         [dic setObject:[NSNumber numberWithInteger:demo.f_ownerid] forKey:@"f_ownerid"];
         [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
         NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
+        hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
         hud.labelText=@"收藏成功";
         hud.mode=MBProgressHUDModeText;
         [hud show:YES];
-        [self.hud hide:YES afterDelay:0.5f];
+        [hud hide:YES afterDelay:0.5f];
+        [hud release];
+        hud = nil;
     }
 }
 
@@ -589,6 +606,8 @@
         NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
         [photoManager requestDeletePhoto:array];
         
+        hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
         hud.mode=MBProgressHUDModeIndeterminate;
         hud.labelText=@"正在删除";
         [hud show:YES];
@@ -603,9 +622,11 @@
     {
         hud.labelText=@"删除成功";
         hud.mode=MBProgressHUDModeText;
-//        [hud show:YES];
-        [self.hud hide:YES afterDelay:0.5f];
-        
+        [hud hide:YES afterDelay:0.5f];
+        [hud removeFromSuperview];
+        [hud release];
+        hud = nil;
+        [scroll_View clearsContextBeforeDrawing];
         [scroll_View removeFromSuperview];
         [scroll_View release];
         //创建滚动条
@@ -626,7 +647,7 @@
             [self loadAllDiction:allPhotoDemoArray currtimeIdexTag:deletePage-1];
         }
     }
-    if(allPhotoDemoArray == 0)
+    if([allPhotoDemoArray count] == 0)
     {
         [deleteDelegate  deleteForDeleteArray:-1 timeLine:timeLine];
         [self dismissViewControllerAnimated:YES completion:^{}];

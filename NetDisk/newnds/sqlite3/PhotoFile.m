@@ -101,6 +101,27 @@
     }
 }
 
+#pragma mark 删除任务表中所有数据
+-(void)deleteAllPhotoFileTable
+{
+    sqlite3_stmt *statement;
+    const char *dbpath = [databasePath UTF8String];
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [DeleteAllPhotoFileTable UTF8String];
+        int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        if (success != SQLITE_OK) {
+            NSLog(@"Error: failed to insert:TASKTable");
+        }
+        sqlite3_bind_int(statement, 1, f_id);
+        success = sqlite3_step(statement);
+        if (success == SQLITE_ERROR) {
+            NSLog(@"Error: failed to insert into the database with message.");
+        }
+        NSLog(@"success:%i",success);
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+}
 
 #pragma mark 修改任务表
 -(void)updatePhotoFileTable
@@ -183,6 +204,25 @@
         sqlite3_close(contactDB);
     }
     return [tableArray autorelease];
+}
+
+#pragma mark 查询时间轴的个数
+-(NSInteger)selectCountTaskTable
+{
+    NSInteger count = 0;
+    sqlite3_stmt *statement;
+    const char *dbpath = [databasePath UTF8String];
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [SelectCountPhotoFileTable UTF8String];
+        sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        
+        while (sqlite3_step(statement)==SQLITE_ROW) {
+            count = sqlite3_column_int(statement, 0);
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return count;
 }
 
 -(void)dealloc

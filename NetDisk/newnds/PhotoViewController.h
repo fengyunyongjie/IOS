@@ -57,12 +57,15 @@
     UIBarButtonItem *right_item;
     UIBarButtonItem *done_item;
     
-    NSMutableDictionary *tablediction;
-    NSMutableArray *sectionarray;
+    __block NSMutableDictionary *tablediction;
+    __block NSMutableArray *sectionarray;
     
     BOOL isLoadImage;
     BOOL isFirst;
     BOOL isLoadData;
+    MBProgressHUD *hud;
+    float endFloat;
+    float selfLenght;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
@@ -79,8 +82,8 @@
 @property(nonatomic,retain) UIBarButtonItem *right_item;
 @property(nonatomic,retain) UIBarButtonItem *done_item;
 
-@property(nonatomic,retain) NSMutableDictionary *tablediction;
-@property(nonatomic,retain) NSMutableArray *sectionarray;
+@property(nonatomic,retain) __block NSMutableDictionary *tablediction;
+@property(nonatomic,retain) __block NSMutableArray *sectionarray;
 
 #pragma mark -得到时间轴的列表
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary;

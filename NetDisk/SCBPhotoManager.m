@@ -256,20 +256,27 @@
     if([[dicion objectForKey:@"files"] isKindOfClass:[NSArray class]])
     {
         NSArray *allArray = [dicion objectForKey:@"files"];
-        NSLog(@"allArray:%i",[allArray count]);
-        for(int i=0;i<[allArray count];i++)
+        //判断数据个数是否相等
+        PhotoFile *photo_f = [[[PhotoFile alloc] init] autorelease];
+        NSInteger count = [photo_f selectCountTaskTable];
+        if(count!=[allArray count])
         {
-            NSDictionary *dictionary = [allArray objectAtIndex:i];
-            NSString *f_date = [dictionary objectForKey:@"f_date"];
-            int f_id = [[dictionary objectForKey:@"f_id"] intValue];
-            PhotoFile *photo_file = [[PhotoFile alloc] init];
-            photo_file.f_id = f_id;
-            photo_file.f_date = f_date;
-            photo_file.f_time = [[dateFormatter dateFromString:f_date] timeIntervalSince1970];
-            NSLog(@"photo_file.f_time:%f",photo_file.f_time);
-            bl = [photo_file insertPhotoFileTable];
-            [photo_file release];
+            [photo_f deleteAllPhotoFileTable];
+            for(int i=0;i<[allArray count];i++)
+            {
+                NSDictionary *dictionary = [allArray objectAtIndex:i];
+                NSString *f_date = [dictionary objectForKey:@"f_date"];
+                int f_id = [[dictionary objectForKey:@"f_id"] intValue];
+                PhotoFile *photo_file = [[PhotoFile alloc] init];
+                photo_file.f_id = f_id;
+                photo_file.f_date = f_date;
+                photo_file.f_time = [[dateFormatter dateFromString:f_date] timeIntervalSince1970];
+                NSLog(@"photo_file.f_time:%f",photo_file.f_time);
+                bl = [photo_file insertPhotoFileTable];
+                [photo_file release];
+            }
         }
+        
     }
     if(bl || isFirst)
     {
@@ -530,7 +537,6 @@
     [photoDelegate release];
     [newFoldDelegate release];
     [matableData release];
-    
     [tablediction release];
     [sectionarray release];
     [super dealloc];
