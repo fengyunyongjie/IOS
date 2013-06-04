@@ -83,22 +83,24 @@ typedef enum{
 }
 - (void)exitAccount:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                         message:@"确定要退出登录"
                                                        delegate:self
                                               cancelButtonTitle:@"取消"
                                               otherButtonTitles:@"退出", nil];
     [alertView show];
+    [alertView setTag:kAlertTypeExit];
     [alertView release];
 }
 - (void)clearCache
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"警告"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                         message:@"确定要清除缓存"
                                                        delegate:self
                                               cancelButtonTitle:@"取消"
                                               otherButtonTitles:@"确定", nil];
     [alertView show];
+    [alertView setTag:kAlertTypeClear];
     [alertView release];
 }
 #pragma mark - UIAlertViewDelegate Methods
