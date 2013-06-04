@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "FavoritesData.h"
 #import "PhotoFile.h"
+#import "YNFunctions.h"
 
 @interface PhotoDetailViewController ()
 
@@ -178,6 +179,13 @@
             PhohoDemo *demo = [[PhohoDemo alloc] init];
             demo.f_id = file.f_id;
             demo.f_name = [NSString stringWithFormat:@"%i",file.f_id];
+            demo.f_mime = @"png";
+            demo.f_create = file.f_date;
+            demo.compressaddr = demo.f_name;
+            demo.f_pids = @"";
+            demo.f_ownerid = 0;
+            demo.f_owername = @"";
+            demo.f_modify = @"";
             [self addCenterImageView:demo currPage:i totalCount:[allArray count]];
             [tables addObject:demo];
             [demo release];
@@ -429,6 +437,7 @@
 #pragma mark 按钮返回事件
 -(void)backClick:(id)sender
 {
+    [scroll_View clearsContextBeforeDrawing];
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
@@ -514,6 +523,8 @@
         [dic setObject:demo.f_owername forKey:@"f_owner_name"];
         [dic setObject:demo.compressaddr forKey:@"compressaddr"];
         [dic setObject:[NSNumber numberWithInteger:demo.f_ownerid] forKey:@"f_ownerid"];
+        NSData *f_size = [NSData dataWithContentsOfFile:[self  get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]]];
+        [dic setObject:[NSNumber numberWithInt:[f_size length]] forKey:@"f_size"];
         [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
         NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
         hud = [[MBProgressHUD alloc] initWithView:self.view];
@@ -525,6 +536,15 @@
         [hud release];
         hud = nil;
     }
+}
+
+//获取图片路径
+- (NSString*)get_image_save_file_path:(NSString*)image_path
+{
+    NSString *documentDir = [YNFunctions getProviewCachePath];
+    NSArray *array=[image_path componentsSeparatedByString:@"/"];
+    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+    return path;
 }
 
 #pragma mark 分享按钮事件
