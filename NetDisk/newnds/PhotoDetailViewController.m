@@ -20,12 +20,11 @@
 
 @implementation PhotoDetailViewController
 @synthesize scroll_View;
-@synthesize topBar,bottonBar,pageLabel;
 @synthesize deleteDelegate;
 @synthesize timeLine;
 @synthesize photo_dictionary;
 @synthesize hud;
-
+@synthesize isCliped;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -37,8 +36,8 @@
 
 - (void)viewDidLoad
 {
-    [self.navigationController.navigationBar setHidden:YES];
-    [self hideTabBar:YES];
+//    [self.navigationController.navigationBar setHidden:YES];
+    
     
     //初始化基本数据
     allHeight = self.view.frame.size.height;
@@ -54,91 +53,197 @@
     //设置背景为黑色
     [self.view setBackgroundColor:[UIColor blackColor]];
     
-    //添加头部试图
-    CGRect topRect = CGRectMake(0, 0, 320, 44);
-    topBar = [[UINavigationBar alloc] initWithFrame:topRect];
-    [self.view addSubview:topBar];
-    CGRect backRect = CGRectMake(7, 7, 70, 30);
-    UIButton *backButton = [[UIButton alloc] initWithFrame:backRect];
-    //    [backButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
-    [backButton setTitle:@"返回" forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
-    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [topBar addSubview:backButton];
-    [topBar setAlpha:0.7];
-    [backButton release];
-    
-    CGRect pageRect = CGRectMake(130, 12, 60, 20);
-    pageLabel = [[UILabel alloc] initWithFrame:pageRect];
-    [pageLabel setBackgroundColor:[UIColor clearColor]];
-    [pageLabel setTextColor:[UIColor whiteColor]];
-    [pageLabel setTextAlignment:NSTextAlignmentCenter];
-    [topBar addSubview:pageLabel];
+//    //添加头部视图
+//    CGRect topRect = CGRectMake(0, 0, 320, 44);
+//    topToolBar = [[UIToolbar alloc] initWithFrame:topRect];
+//    [topToolBar setBarStyle:UIBarStyleBlackTranslucent];
+//    UIImage *imageS = [UIImage imageNamed:@"CustBack.png"];
+//    imageS = [self scaleFromImage:imageS toSize:CGSizeMake(25*imageS.size.width/imageS.size.height, 25)];
+//    UIBarButtonItem *leftButton1 = self.navigationItem.backBarButtonItem;
+//    NSArray *topArray = [[NSArray alloc] initWithObjects:leftButton1, nil];
+//    [leftButton1 release];
+//    [topToolBar setItems:topArray];
+//    [topArray release];
+//
+//    CGRect pageRect = CGRectMake(130, 12, 60, 20);
+//    pageLabel = [[UILabel alloc] initWithFrame:pageRect];
+//    [pageLabel setBackgroundColor:[UIColor clearColor]];
+//    [pageLabel setTextColor:[UIColor whiteColor]];
+//    [pageLabel setTextAlignment:NSTextAlignmentCenter];
+//    [topToolBar addSubview:pageLabel];
+//    [self.view addSubview:topToolBar];
     
     //添加底部试图
     CGRect bottonRect = CGRectMake(0, allHeight-44, 320, 44);
-    bottonBar = [[UINavigationBar alloc] initWithFrame:bottonRect];
-    [self.view addSubview:bottonBar];
-    [bottonBar setAlpha:0.7];
+    bottonToolBar = [[UIToolbar alloc] initWithFrame:bottonRect];
+    [bottonToolBar setBarStyle:UIBarStyleBlackTranslucent];
     
-    CGRect bottonImageRect = CGRectMake(0, 0, 320, 44);
-    UIImageView *bottonImage = [[UIImageView alloc] initWithFrame:bottonImageRect];
-    //    [bottonImage setImage:[UIImage imageNamed:@"Selected.png"]];
-    [bottonBar addSubview:bottonImage];
-    [bottonImage release];
     
     CGRect leftRect = CGRectMake(36, 5, 35, 33);
-    UIButton *leftButton = [[UIButton alloc] initWithFrame:leftRect];
+    leftButton = [[UIButton alloc] initWithFrame:leftRect];
     [leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [leftButton.titleLabel setTextColor:[UIColor blackColor]];
-    //    [leftButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
     [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
     [leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [leftButton setBackgroundColor:[UIColor clearColor]];
-    [bottonBar addSubview:leftButton];
+    [bottonToolBar addSubview:leftButton];
+    leftButton.showsTouchWhenHighlighted = YES;
     [leftButton release];
-    
+
     CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
-    UIButton *centerButton = [[UIButton alloc] initWithFrame:centerRect];
+    centerButton = [[UIButton alloc] initWithFrame:centerRect];
     [centerButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [centerButton.titleLabel setTextColor:[UIColor blackColor]];
     [centerButton addTarget:self action:@selector(shareClicked:) forControlEvents:UIControlEventTouchUpInside];
-    //    [centerButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [centerButton setTitle:@"分享" forState:UIControlStateNormal];
     [centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [centerButton setBackgroundColor:[UIColor clearColor]];
-    [bottonBar addSubview:centerButton];
-    
+    [bottonToolBar addSubview:centerButton];
+    centerButton.showsTouchWhenHighlighted = YES;
+
     CGRect rightRect = CGRectMake(213+36, 5, 35, 33);
-    UIButton *rightButton = [[UIButton alloc] initWithFrame:rightRect];
+    rightButton = [[UIButton alloc] initWithFrame:rightRect];
     [rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [rightButton.titleLabel setTextColor:[UIColor blackColor]];
     [rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
-    //    [rightButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
     [rightButton setTitle:@"删除" forState:UIControlStateNormal];
     [rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [rightButton setBackgroundColor:[UIColor clearColor]];
-    [bottonBar addSubview:rightButton];
+    rightButton.showsTouchWhenHighlighted = YES;
+    [bottonToolBar addSubview:rightButton];
     
-    [self.topBar setHidden:YES];
-    [self.bottonBar setHidden:YES];
+    [self.view addSubview:bottonToolBar];
+    
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackTranslucent];
+    [self.navigationController setNavigationBarHidden:YES];
+    [bottonToolBar setHidden:YES];
+    
+//    //添加头部试图
+//    CGRect topRect = CGRectMake(0, 0, 320, 44);
+//    topBar = [[UINavigationBar alloc] initWithFrame:topRect];
+//    [self.view addSubview:topBar];
+//    CGRect backRect = CGRectMake(7, 7, 70, 30);
+//    
+//    UIButton *backButton = [[UIButton alloc] initWithFrame:backRect];
+//    //    [backButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+//    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+//    [backButton addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
+//    [backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [topBar addSubview:backButton];
+//    [topBar setAlpha:0.7];
+//    [backButton release];
+//    
+//    CGRect pageRect = CGRectMake(130, 12, 60, 20);
+//    pageLabel = [[UILabel alloc] initWithFrame:pageRect];
+//    [pageLabel setBackgroundColor:[UIColor clearColor]];
+//    [pageLabel setTextColor:[UIColor whiteColor]];
+//    [pageLabel setTextAlignment:NSTextAlignmentCenter];
+//    [topBar addSubview:pageLabel];
+//    
+//    //添加底部试图
+//    CGRect bottonRect = CGRectMake(0, allHeight-44, 320, 44);
+//    bottonBar = [[UINavigationBar alloc] initWithFrame:bottonRect];
+//    [self.view addSubview:bottonBar];
+//    [bottonBar setAlpha:0.7];
+//    
+//    CGRect bottonImageRect = CGRectMake(0, 0, 320, 44);
+//    UIImageView *bottonImage = [[UIImageView alloc] initWithFrame:bottonImageRect];
+//    //    [bottonImage setImage:[UIImage imageNamed:@"Selected.png"]];
+//    [bottonBar addSubview:bottonImage];
+//    [bottonImage release];
+//    
+//    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, allHeight-49, 320, 49)];
+//    [toolBar setBarStyle:UIBarStyleBlackTranslucent];
+//    NSMutableArray *array = [[NSMutableArray alloc] init];
+//    UIBarButtonItem *leftButtons = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(right_button_cilcked:)];;
+//    [array addObject:leftButtons];
+//    [leftButtons release];
+//    [toolBar setItems:array];
+//    [self.view addSubview:toolBar];
+//    [array release];
+//    
+//    CGRect leftRect = CGRectMake(36, 5, 35, 33);
+//    leftButton = [[UIButton alloc] initWithFrame:leftRect];
+//    [leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+//    [leftButton.titleLabel setTextColor:[UIColor blackColor]];
+//    //    [leftButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+//    [leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+//    [leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [leftButton setBackgroundColor:[UIColor clearColor]];
+//    [bottonBar addSubview:leftButton];
+//    [leftButton release];
+//    
+//    CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
+//    centerButton = [[UIButton alloc] initWithFrame:centerRect];
+//    [centerButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+//    [centerButton.titleLabel setTextColor:[UIColor blackColor]];
+//    [centerButton addTarget:self action:@selector(shareClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    //    [centerButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+//    [centerButton setTitle:@"分享" forState:UIControlStateNormal];
+//    [centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [centerButton setBackgroundColor:[UIColor clearColor]];
+//    [bottonBar addSubview:centerButton];
+//    
+//    CGRect rightRect = CGRectMake(213+36, 5, 35, 33);
+//    rightButton = [[UIButton alloc] initWithFrame:rightRect];
+//    [rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+//    [rightButton.titleLabel setTextColor:[UIColor blackColor]];
+//    [rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    //    [rightButton setBackgroundImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+//    [rightButton setTitle:@"删除" forState:UIControlStateNormal];
+//    [rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [rightButton setBackgroundColor:[UIColor clearColor]];
+//    [bottonBar addSubview:rightButton];
+    
     
     [super viewDidLoad];
+}
+
+-(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 - (void) hideTabBar:(BOOL) hidden
 {
     [UIView beginAnimations:nil context:NULL];
+    MYTabBarController *tabBar = (MYTabBarController *)self.tabBarController;
+    [tabBar setHidesTabBarWithAnimate:YES];
     [UIView setAnimationDuration:0];
+}
+
+-(void)isHiddenDelete:(BOOL)bl
+{
+    if(bl)
+    {
+        CGRect leftRect = CGRectMake((160-100)/2, 5, 100, 33);
+        [leftButton setTitle:@"取消收藏" forState:UIControlStateNormal];
+        [leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        [leftButton setFrame:leftRect];
+        CGRect centerRect = CGRectMake(160+(160-35)/2, 5, 35, 33);
+        [centerButton setFrame:centerRect];
+        [rightButton setHidden:YES];
+    }
+    else
+    {
+        CGRect leftRect = CGRectMake(36, 5, 35, 33);
+        [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+        [leftButton setFrame:leftRect];
+        CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
+        [centerButton setFrame:centerRect];
+        [rightButton setHidden:NO];
+    }
 }
 
 -(void)dealloc
 {
     [scroll_View release];
-    [topBar release];
-    [bottonBar release];
-    [pageLabel release];
     [timeLine release];
     if(hud != nil)
     {
@@ -198,16 +303,17 @@
     [tables release];
     [scroll_View setContentOffset:CGPointMake(320*indexTag, 0) animated:NO];
     //页数
-    [self.pageLabel setText:[NSString stringWithFormat:@"%i/%i",indexTag+1,[allPhotoDemoArray count]]];
-    
-    CGSize maximumLabelSize = CGSizeMake(2000,20);
-    CGSize expectedLabelSize = [self.pageLabel.text sizeWithFont:self.pageLabel.font
-                                               constrainedToSize:maximumLabelSize
-                                                   lineBreakMode:self.pageLabel.lineBreakMode];//假定label_1的字体确定，自适应宽
-    CGRect pageRect = self.pageLabel.frame;
-    pageRect.origin.x = (320-expectedLabelSize.width)/2;
-    pageRect.size.width = expectedLabelSize.width;
-    [self.pageLabel setFrame:pageRect];
+//    [self.pageLabel setText:[NSString stringWithFormat:@"%i/%i",indexTag+1,[allPhotoDemoArray count]]];
+    self.navigationItem.title = [NSString stringWithFormat:@"%i/%i",indexTag+1,[allPhotoDemoArray count]];
+//    
+//    CGSize maximumLabelSize = CGSizeMake(2000,20);
+//    CGSize expectedLabelSize = [self.pageLabel.text sizeWithFont:self.pageLabel.font
+//                                               constrainedToSize:maximumLabelSize
+//                                                   lineBreakMode:self.pageLabel.lineBreakMode];//假定label_1的字体确定，自适应宽
+//    CGRect pageRect = self.pageLabel.frame;
+//    pageRect.origin.x = (320-expectedLabelSize.width)/2;
+//    pageRect.size.width = expectedLabelSize.width;
+//    [self.pageLabel setFrame:pageRect];
     [self showIndexTag:indexTag];
     [scroll_View setDelegate:self];
 }
@@ -251,15 +357,8 @@
     [scroll_View setContentSize:CGSizeMake(320*[allPhotoDemoArray count], allHeight)];
 }
 
-#pragma mark 滑动隐藏
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if(!topBar.hidden)
-    {
-        [self.topBar setHidden:YES];
-        [self.bottonBar setHidden:YES];
-    }
-}
+
+
 
 -(void)showIndexTag:(NSInteger)indexTag
 {
@@ -457,24 +556,35 @@
     else if(touch.tapCount ==1)
     {
         //单击头部和底部出现
-        if(topBar.hidden)
+        if(bottonToolBar.hidden)
         {
-            [self.pageLabel setText:[NSString stringWithFormat:@"%i/%i",button.tag%20000+1,[allPhotoDemoArray count]]];
-            CGSize maximumLabelSize = CGSizeMake(2000,20);
-            CGSize expectedLabelSize = [self.pageLabel.text sizeWithFont:self.pageLabel.font
-                                                       constrainedToSize:maximumLabelSize
-                                                           lineBreakMode:self.pageLabel.lineBreakMode];//假定label_1的字体确定，自适应宽
-            CGRect pageRect = self.pageLabel.frame;
-            pageRect.origin.x = (320-expectedLabelSize.width)/2;
-            pageRect.size.width = expectedLabelSize.width;
-            [self.pageLabel setFrame:pageRect];
-            [self.topBar setHidden:NO];
-            [self.bottonBar setHidden:NO];
+            self.navigationItem.title = [NSString stringWithFormat:@"%i/%i",button.tag%20000+1,[allPhotoDemoArray count]];
+            [self.navigationController setNavigationBarHidden:NO];
+            [bottonToolBar setHidden:NO];
+            
+            int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+            PhohoDemo *demo = nil;
+            if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[NSString class]])
+            {
+                demo = (PhohoDemo *)[photo_dictionary objectForKey:[allPhotoDemoArray objectAtIndex:page]];
+            }
+            else if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[PhohoDemo class]])
+            {
+                demo = [allPhotoDemoArray objectAtIndex:page];
+            }
+            NSString *f_id = [NSString stringWithFormat:@"%i",demo.f_id];
+            if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
+                [self isHiddenDelete:YES];
+            }
+            else
+            {   
+                [self isHiddenDelete:NO];
+            }
         }
         else
         {
-            [self.topBar setHidden:YES];
-            [self.bottonBar setHidden:YES];
+            [self.navigationController setNavigationBarHidden:YES];
+            [bottonToolBar setHidden:YES];
         }
     }
 }
@@ -486,10 +596,17 @@
     [self showIndexTag:page];
 }
 
+#pragma mark 滑动隐藏
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.navigationController setNavigationBarHidden:YES];
+    [bottonToolBar setHidden:YES];
+}
+
 #pragma mark 收藏按钮事件
 -(void)clipClicked:(id)sender
 {
-    int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+    int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
     PhohoDemo *demo = nil;
     if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[NSString class]])
     {
@@ -501,28 +618,107 @@
     }
     NSString *f_id = [NSString stringWithFormat:@"%i",demo.f_id];
     if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
+        [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
         hud = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:hud];
-        hud.labelText=@"图片已经收藏过";
+        hud.labelText=@"取消收藏成功";
         hud.mode=MBProgressHUDModeText;
         [hud show:YES];
         [hud hide:YES afterDelay:0.5f];
         [hud release];
         hud = nil;
+        if(!isCliped)
+        {
+            [self isHiddenDelete:NO];
+        }
+        else
+        {
+            [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+        }
     }
     else
     {
         NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-        [dic setObject:demo.f_name forKey:@"f_name"];
-        [dic setObject:[NSNumber numberWithInteger:demo.f_size] forKey:@"f_size"];
-        [dic setObject:[NSNumber numberWithInteger:demo.f_id] forKey:@"f_id"];
-        [dic setObject:demo.f_create forKey:@"f_create"];
-        [dic setObject:demo.f_mime forKey:@"f_mime"];
-        [dic setObject:demo.f_pids forKey:@"pids"];
-        [dic setObject:demo.f_name forKey:@"f_modify"];
-        [dic setObject:demo.f_owername forKey:@"f_owner_name"];
-        [dic setObject:demo.compressaddr forKey:@"compressaddr"];
-        [dic setObject:[NSNumber numberWithInteger:demo.f_ownerid] forKey:@"f_ownerid"];
+        if(demo.f_id)
+        {
+            [dic setObject:[NSString stringWithFormat:@"%i",demo.f_id] forKey:@"f_name"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"f_name"];
+        }
+        if(demo.f_size)
+        {
+            [dic setObject:[NSNumber numberWithInteger:demo.f_size] forKey:@"f_size"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"f_size"];
+        }
+        if(demo.f_id)
+        {
+            [dic setObject:[NSNumber numberWithInteger:demo.f_id] forKey:@"f_id"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"f_id"];
+        }
+        if(demo.f_create)
+        {
+            [dic setObject:demo.f_create forKey:@"f_create"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"f_create"];
+        }
+        if(demo.f_mime)
+        {
+            [dic setObject:demo.f_mime forKey:@"f_mime"];
+        }
+        else
+        {
+            [dic setObject:@"png" forKey:@"f_mime"];
+        }
+        if(demo.f_pids)
+        {
+            [dic setObject:demo.f_pids forKey:@"pids"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"pids"];
+        }
+        if(demo.f_name)
+        {
+            [dic setObject:demo.f_name forKey:@"f_modify"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"f_modify"];
+        }
+        if(demo.f_owername)
+        {
+            [dic setObject:demo.f_owername forKey:@"f_owner_name"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"f_owner_name"];
+        }
+        if(demo.f_id)
+        {
+            [dic setObject:[NSString stringWithFormat:@"%i",demo.f_id] forKey:@"compressaddr"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"compressaddr"];
+        }
+        if(demo.f_ownerid)
+        {
+            [dic setObject:[NSNumber numberWithInteger:demo.f_ownerid] forKey:@"f_ownerid"];
+        }
+        else
+        {
+            [dic setObject:@"" forKey:@"f_ownerid"];
+        }
         NSData *f_size = [NSData dataWithContentsOfFile:[self  get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]]];
         [dic setObject:[NSNumber numberWithInt:[f_size length]] forKey:@"f_size"];
         [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
@@ -535,6 +731,7 @@
         [hud hide:YES afterDelay:0.5f];
         [hud release];
         hud = nil;
+        [self isHiddenDelete:YES];
     }
 }
 
@@ -559,7 +756,7 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+    int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
     PhohoDemo *demo = nil;
     if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[NSString class]])
     {
@@ -574,7 +771,7 @@
         if([app_delegate respondsToSelector:@selector(sendImageContentIsFiends:path:)])
         {
         //微信朋友圈
-            [app_delegate sendImageContentIsFiends:YES path:demo.f_name];
+            [app_delegate sendImageContentIsFiends:YES path:[NSString stringWithFormat:@"%i",demo.f_id]];
         }
     }
     if(buttonIndex == 1)
@@ -582,7 +779,7 @@
         if([app_delegate respondsToSelector:@selector(sendImageContentIsFiends:path:)])
         {
             //微信好友
-            [app_delegate sendImageContentIsFiends:NO path:demo.f_name];
+            [app_delegate sendImageContentIsFiends:NO path:[NSString stringWithFormat:@"%i",demo.f_id]];
         }
     }
     if(buttonIndex == 2)
@@ -610,7 +807,7 @@
 {
     if(buttonIndex == 1)
     {
-        int page = [[[pageLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+        int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
         deletePage = page;
         PhohoDemo *demo = nil;
         if([[allPhotoDemoArray objectAtIndex:page] isKindOfClass:[NSString class]])
@@ -655,8 +852,8 @@
         [scroll_View setPagingEnabled:YES];
         [scroll_View setScrollEnabled:YES];
         [self.view addSubview:scroll_View];
-        [self.view bringSubviewToFront:self.topBar];
-        [self.view bringSubviewToFront:self.bottonBar];
+        [self.view bringSubviewToFront:self.navigationController.navigationBar];
+        [self.view bringSubviewToFront:bottonToolBar];
         [allPhotoDemoArray removeObjectAtIndex:deletePage];
         if(deletePage==0)
         {
@@ -677,10 +874,6 @@
         if([deleteDelegate respondsToSelector:@selector(deleteForDeleteArray:timeLine:)])
         {
             [deleteDelegate  deleteForDeleteArray:deletePage timeLine:timeLine];
-        }
-        else
-        {
-//            [self dismissViewControllerAnimated:YES completion:^{}];
         }
     }
 }

@@ -42,6 +42,12 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self setHidesBottomBarWhenPushed:NO];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [[FavoritesData sharedFavoritesData] reloadData];
@@ -238,11 +244,17 @@
         }
         PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
         photoDetalViewController.deleteDelegate = self;
-        [self presentViewController:photoDetalViewController animated:YES completion:^{
-            //[photoDetalViewController setTimeLine:image_button.timeLine];
-            [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
-            [photoDetalViewController release];
-        }];
+        [photoDetalViewController setHidesBottomBarWhenPushed:YES];
+        [photoDetalViewController setIsCliped:YES];
+        [self.navigationController pushViewController:photoDetalViewController animated:YES];
+        [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
+        [photoDetalViewController release];
+//        [self presentViewController:photoDetalViewController animated:YES completion:^{
+//            //[photoDetalViewController setTimeLine:image_button.timeLine];
+//            
+//            [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
+//            [photoDetalViewController release];
+//        }];
         
     }else
     {

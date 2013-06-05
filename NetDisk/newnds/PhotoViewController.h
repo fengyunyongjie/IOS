@@ -66,6 +66,8 @@
     MBProgressHUD *hud;
     float endFloat;
     float selfLenght;
+    UITableView *saveTableView;
+    int cellNumber;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;

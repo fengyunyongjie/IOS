@@ -80,6 +80,7 @@ typedef enum{
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self setHidesBottomBarWhenPushed:NO];
     [self updateFileList];
     NSLog(@"viewWillAppear::");
     [super viewWillAppear:animated];
@@ -116,6 +117,7 @@ typedef enum{
     [self.navigationController.view addSubview:toolbar];
     self.toolBar=toolbar;
 }
+
 - (void)viewDidAppear:(BOOL)animated
 {
     if (self.myndsType==kMyndsTypeDefault) {
@@ -715,11 +717,15 @@ typedef enum{
             }
             PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
             photoDetalViewController.deleteDelegate = self;
-            [self presentViewController:photoDetalViewController animated:YES completion:^{
-                //[photoDetalViewController setTimeLine:image_button.timeLine];
-                [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
-                [photoDetalViewController release];
-            }];
+            [photoDetalViewController setHidesBottomBarWhenPushed:YES];
+            [self.navigationController pushViewController:photoDetalViewController animated:YES];
+            [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
+            [photoDetalViewController release];
+//            [self presentViewController:photoDetalViewController animated:YES completion:^{
+//                //[photoDetalViewController setTimeLine:image_button.timeLine];
+//                [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
+//                [photoDetalViewController release];
+//            }];
 
         }else
         {

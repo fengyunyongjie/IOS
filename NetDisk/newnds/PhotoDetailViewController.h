@@ -30,21 +30,26 @@
     id<DeleteDelegate> deleteDelegate;
     NSString *timeLine;
     
-    UILabel *pageLabel;
-    UINavigationBar *topBar;
-    UINavigationBar *bottonBar;
     NSMutableDictionary *photo_dictionary;
     MBProgressHUD *hud;
+    UIButton *leftButton;
+    UIButton *centerButton;
+    UIButton *rightButton;
+    
+    BOOL isCliped;
+    
+    UIToolbar *topToolBar;
+    UIToolbar *bottonToolBar;
 }
 
 @property(nonatomic,retain) UIScrollView *scroll_View;
-@property(nonatomic,retain) UILabel *pageLabel;
 @property(nonatomic,retain) id<DeleteDelegate> deleteDelegate;
 @property(nonatomic,retain) NSString *timeLine;
-@property(nonatomic,retain) UINavigationBar *topBar;
-@property(nonatomic,retain) UINavigationBar *bottonBar;
 @property(nonatomic,retain) NSMutableDictionary *photo_dictionary;
 @property(nonatomic,retain) MBProgressHUD *hud;
+@property(nonatomic,assign) BOOL isCliped;
+@property(nonatomic,retain) UIToolbar *topToolBar;
+@property(nonatomic,retain) UIToolbar *bottonToolBar;
 
 #pragma mark 加载所有数据
 -(void)loadAllDiction:(NSArray *)allArray currtimeIdexTag:(int)indexTag;
