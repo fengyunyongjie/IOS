@@ -72,12 +72,49 @@ typedef enum{
     self.optionCell=[[[UITableViewCell alloc] init] autorelease];
     [self.optionCell addSubview:[[[UIToolbar alloc] init] autorelease]];
     self.selectedIndexPath=nil;
+//    self.toolBar=[[UIToolbar alloc] init];
+//    CGSize wsize=[[UIScreen mainScreen] bounds].size;
+//    [self.toolBar setFrame:CGRectMake(0, wsize.height-50, wsize.width, 50)];
+//    [self.view.superview addSubview:self.toolBar];
+//    [self.view.superview layoutSubviews];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [self updateFileList];
     NSLog(@"viewWillAppear::");
     [super viewWillAppear:animated];
+    //Initialize the toolbar
+    if (self.myndsType!=kMyndsTypeSelect)
+    {
+        return;
+    }
+    UIToolbar *toolbar = [[UIToolbar alloc] init];
+    toolbar.barStyle = UIBarStyleDefault;
+    
+    //Set the toolbar to fit the width of the app.
+    [toolbar sizeToFit];
+    
+    //Caclulate the height of the toolbar
+    CGFloat toolbarHeight = [toolbar frame].size.height;
+    
+    //Get the bounds of the parent view
+    CGRect rootViewBounds = self.parentViewController.view.bounds;
+    
+    //Get the height of the parent view.
+    CGFloat rootViewHeight = CGRectGetHeight(rootViewBounds);
+    
+    //Get the width of the parent view,
+    CGFloat rootViewWidth = CGRectGetWidth(rootViewBounds);
+    
+    //Create a rectangle for the toolbar
+    CGRect rectArea = CGRectMake(0, rootViewHeight - toolbarHeight, rootViewWidth, toolbarHeight);
+    
+    //Reposition and resize the receiver
+    [toolbar setFrame:rectArea];
+    
+    //Add the toolbar as a subview to the navigation controller.
+    [self.navigationController.view addSubview:toolbar];
+    self.toolBar=toolbar;
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -92,13 +129,15 @@ typedef enum{
         }
     }else if (self.myndsType==kMyndsTypeSelect)
     {
-        UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(moveFileToHere:)];
-        UIBarButtonItem *cancel_btn=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(moveCancel:)];
-        [self.navigationItem setRightBarButtonItems:@[ok_btn,cancel_btn]];
+        UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitle:@"    确 定    " style:UIBarButtonItemStyleDone target:self action:@selector(moveFileToHere:)];
+        UIBarButtonItem *cancel_btn=[[UIBarButtonItem alloc] initWithTitle:@"    取 消    " style:UIBarButtonItemStyleBordered target:self action:@selector(moveCancel:)];
+        UIBarButtonItem *fix=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        [self.navigationItem setRightBarButtonItems:nil];
+        [self.toolBar setItems:@[fix,cancel_btn,fix,ok_btn,fix]];
         [ok_btn release];
         [cancel_btn release];
+        [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.tableView.frame.size.width, self.tableView.frame.size.height-44)];
     }
-    
 }
 -(void)viewWillDisappear:(BOOL)animated
 {

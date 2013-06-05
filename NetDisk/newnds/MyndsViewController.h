@@ -21,6 +21,7 @@ typedef enum {
 @property (assign,nonatomic) MyndsType myndsType;
 @property (assign,nonatomic) MyndsViewController *delegate;
 @property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
+@property (strong,nonatomic) UIToolbar *toolBar;
 -(void)loadData;
 @end
 
