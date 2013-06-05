@@ -805,14 +805,47 @@ typedef enum{
 -(void)renameSucess
 {
     [self updateFileList];
+    [self updateFileList];
+    if (!self.hud) {
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+    }
+    [self.hud show:NO];
+    self.hud.labelText=@"重命名成功！";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:0.5f];
 }
 -(void)renameUnsucess
 {
     NSLog(@"openFinderUnsucess: 网络连接失败!!");
+    [self updateFileList];
+    if (!self.hud) {
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+    }
+    [self.hud show:NO];
+    self.hud.labelText=@"重命名失败！";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:0.5f];
 }
 -(void)moveSucess
 {
     [self updateFileList];
+    [self updateFileList];
+    if (!self.hud) {
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+    }
+    [self.hud show:NO];
+    self.hud.labelText=@"移动成功！";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:0.5f];
 }
 -(void)removeFromDicWithObjects:(NSArray *)objects
 {
