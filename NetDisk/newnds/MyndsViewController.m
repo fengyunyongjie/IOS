@@ -789,7 +789,7 @@ typedef enum{
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
-    [self.hud hide:YES afterDelay:0.5f];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 -(void)renameSucess
 {
@@ -804,7 +804,7 @@ typedef enum{
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
-    [self.hud hide:YES afterDelay:0.5f];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 -(void)renameUnsucess
 {
@@ -819,7 +819,7 @@ typedef enum{
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
-    [self.hud hide:YES afterDelay:0.5f];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 -(void)moveSucess
 {
@@ -834,7 +834,7 @@ typedef enum{
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
-    [self.hud hide:YES afterDelay:0.5f];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 -(void)removeFromDicWithObjects:(NSArray *)objects
 {
