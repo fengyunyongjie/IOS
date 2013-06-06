@@ -399,6 +399,7 @@
 		29EFE860172A55AD0099B5A7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE85F172A55AD0099B5A7 /* Default.png */; };
 		29EFE862172A55AD0099B5A7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE861172A55AD0099B5A7 /* Default@2x.png */; };
 		29EFE864172A55AD0099B5A7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */; };
+		29FA3B30176083B700FBA1B6 /* DefaultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */; };
 		8312A8BC168BED730091ED59 /* ExecFileDownLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8312A8B9168BED730091ED59 /* ExecFileDownLoad.cpp */; };
 		8312A8BD168BED730091ED59 /* ExecFileUpload.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8312A8BA168BED730091ED59 /* ExecFileUpload.cpp */; };
 		831AB49D16B53EE500ABD9DA /* AsynRequestManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831AB49C16B53EE500ABD9DA /* AsynRequestManager.cpp */; };
@@ -889,6 +890,8 @@
 		29EFE85F172A55AD0099B5A7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29EFE861172A55AD0099B5A7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		29FA3B2E176083B700FBA1B6 /* DefaultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultViewController.h; sourceTree = "<group>"; };
+		29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultViewController.m; sourceTree = "<group>"; };
 		8312A8B9168BED730091ED59 /* ExecFileDownLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExecFileDownLoad.cpp; sourceTree = "<group>"; };
 		8312A8BA168BED730091ED59 /* ExecFileUpload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExecFileUpload.cpp; sourceTree = "<group>"; };
 		8312A8C0168BEFF40091ED59 /* ExecFileDownLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExecFileDownLoad.h; sourceTree = "<group>"; };
@@ -1781,6 +1784,8 @@
 				29EFE85D172A55AD0099B5A7 /* AppDelegate.m */,
 				29852CF3172CB2B5001AD87A /* MYTabBarController.h */,
 				29852CF4172CB2B5001AD87A /* MYTabBarController.m */,
+				29FA3B2E176083B700FBA1B6 /* DefaultViewController.h */,
+				29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */,
 				29EFE854172A55AD0099B5A7 /* Supporting Files */,
 			);
 			path = newnds;
@@ -3061,6 +3066,7 @@
 				29C0775417584DC2005A5EFF /* PhotoFile.m in Sources */,
 				29C077571758B0BE005A5EFF /* PhotoFileCell.m in Sources */,
 				29AAC4E3175F4FAD0050B2A7 /* PhotoLookViewController.m in Sources */,
+				29FA3B30176083B700FBA1B6 /* DefaultViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

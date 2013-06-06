@@ -107,7 +107,8 @@
     }else if ([t_fl isEqualToString:@"png"]||
               [t_fl isEqualToString:@"jpg"]||
               [t_fl isEqualToString:@"jpeg"]||
-              [t_fl isEqualToString:@"bmp"])
+              [t_fl isEqualToString:@"bmp"]||
+              [t_fl isEqualToString:@"gif"])
     {
         //NSDictionary *dic = [self.listArray objectAtIndex:indexPath.row];
         NSString *compressaddr=[dic objectForKey:@"compressaddr"];
@@ -209,7 +210,8 @@
     if ([f_mime isEqualToString:@"png"]||
         [f_mime isEqualToString:@"jpg"]||
         [f_mime isEqualToString:@"jpeg"]||
-        [f_mime isEqualToString:@"bmp"]) {
+        [f_mime isEqualToString:@"bmp"]||
+        [f_mime isEqualToString:@"gif"]) {
         NSMutableArray *array=[NSMutableArray array];
         int index=0;
         for (int i=0;i<listArray.count;i++) {
@@ -218,11 +220,13 @@
             if ([f_mime isEqualToString:@"png"]||
                 [f_mime isEqualToString:@"jpg"]||
                 [f_mime isEqualToString:@"jpeg"]||
-                [f_mime isEqualToString:@"bmp"]) {
+                [f_mime isEqualToString:@"bmp"]||
+                [f_mime isEqualToString:@"gif"]) {
                 PhotoFile *demo = [[PhotoFile alloc] init];
                 [demo setF_date:[dict objectForKey:@"f_create"]];
                 [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
                 [array addObject:demo];
+                
                 if (i==indexPath.row) {
                     index=array.count-1;
                 }

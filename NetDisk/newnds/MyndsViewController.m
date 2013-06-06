@@ -420,7 +420,9 @@ typedef enum{
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         //cell.textLabel.text=@"收藏   分享   删除";
-        UIToolbar *toolbar=[[[UIToolbar alloc] initWithFrame:cell.bounds] autorelease];
+        CGRect r=cell.bounds;
+        r.size.height=50;
+        UIToolbar *toolbar=[[[UIToolbar alloc] initWithFrame:r] autorelease];
         //[toolbar setBackgroundImage:[UIImage imageNamed:@"option_bar.png"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsDefault];
         [toolbar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"option_bar.png"]] atIndex:1];
         //UIBarButtonItem *item0=[[UIBarButtonItem alloc] initWithTitle:@"重命名" style:UIBarButtonItemStyleDone target:self action:@selector(toRename:)];
@@ -529,7 +531,8 @@ typedef enum{
         }else if ([t_fl isEqualToString:@"png"]||
                   [t_fl isEqualToString:@"jpg"]||
                   [t_fl isEqualToString:@"jpeg"]||
-                  [t_fl isEqualToString:@"bmp"])
+                  [t_fl isEqualToString:@"bmp"]||
+                  [t_fl isEqualToString:@"gif"])
         {
             NSDictionary *dic = [self.listArray objectAtIndex:row];
             NSString *compressaddr=[dic objectForKey:@"compressaddr"];
@@ -683,7 +686,8 @@ typedef enum{
         if ([f_mime isEqualToString:@"png"]||
             [f_mime isEqualToString:@"jpg"]||
             [f_mime isEqualToString:@"jpeg"]||
-            [f_mime isEqualToString:@"bmp"]) {
+            [f_mime isEqualToString:@"bmp"]||
+            [f_mime isEqualToString:@"gif"]) {
             NSMutableArray *array=[NSMutableArray array];
             int index=0;
             for (int i=0;i<self.listArray.count;i++) {
@@ -692,11 +696,13 @@ typedef enum{
                 if ([f_mime isEqualToString:@"png"]||
                     [f_mime isEqualToString:@"jpg"]||
                     [f_mime isEqualToString:@"jpeg"]||
-                    [f_mime isEqualToString:@"bmp"]) {
+                    [f_mime isEqualToString:@"bmp"]||
+                    [f_mime isEqualToString:@"gif"]) {
                     PhotoFile *demo = [[PhotoFile alloc] init];
                     [demo setF_date:[dict objectForKey:@"f_create"]];
                     [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
                     [array addObject:demo];
+                    
                     if (i==indexPath.row) {
                         index=array.count-1;
                     }
@@ -912,7 +918,7 @@ typedef enum{
                 NSString *name=[dic objectForKey:@"f_name"];
                 NSString *f_id=[dic objectForKey:@"f_id"];
                 NSString *fildtext=[[alertView textFieldAtIndex:0] text];
-                if (![fildtext isEqualToString:name]) {
+                if (![fildtext isEqualToString:name] && ![fildtext isEqualToString:@""]) {
                     NSLog(@"重命名");
                     SCBFileManager *fm=[[[SCBFileManager alloc] init] autorelease];
                     [fm renameWithID:f_id newName:fildtext];
