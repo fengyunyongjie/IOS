@@ -8,11 +8,11 @@
 
 #import "FavoritesViewController.h"
 #import "FavoritesData.h"
-#import "PhohoDemo.h"
-#import "PhotoDetailViewController.h"
+#import "PhotoLookViewController.h"
 #import "YNFunctions.h"
 #import "IconDownloader.h"
 #import "OtherBrowserViewController.h"
+#import "PhotoFile.h"
 @interface FavoritesViewController ()
 
 @end
@@ -45,6 +45,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self setHidesBottomBarWhenPushed:NO];
 }
 
@@ -218,44 +219,23 @@
                 [f_mime isEqualToString:@"jpg"]||
                 [f_mime isEqualToString:@"jpeg"]||
                 [f_mime isEqualToString:@"bmp"]) {
-                PhohoDemo *photo_demo=[[PhohoDemo alloc] init];
-                [photo_demo setF_mime:[dict objectForKey:@"f_mime"]];
-                [photo_demo setF_size:[[dict objectForKey:@"f_size"] intValue]];
-                [photo_demo setF_name:[dict objectForKey:@"f_name"]];
-                [photo_demo setF_pid:[[dict objectForKey:@"f_pid"] intValue]];
-                if([[dict objectForKey:@"img_create"] isKindOfClass:[NSString class]])
-                {
-                    [photo_demo setImg_create:[dict objectForKey:@"img_create"]];
-                }
-                
-                [photo_demo setF_create:[dict objectForKey:@"f_create"]];
-                [photo_demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
-                [photo_demo setF_mime:[dict objectForKey:@"f_modify"]];
-                [photo_demo setCompressaddr:[dict objectForKey:@"compressaddr"]];
-                [photo_demo setF_ownerid:[[dict objectForKey:@"f_ownerid"] intValue]];
-                [photo_demo setF_pids:@""];
-                [photo_demo setF_owername:@""];
-                [array addObject:photo_demo];
+                PhotoFile *demo = [[PhotoFile alloc] init];
+                [demo setF_date:[dict objectForKey:@"f_create"]];
+                [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
+                [array addObject:demo];
                 if (i==indexPath.row) {
                     index=array.count-1;
                 }
-                [photo_demo release];
+                [demo release];
             }
         }
-        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
-        photoDetalViewController.deleteDelegate = self;
-        [photoDetalViewController setHidesBottomBarWhenPushed:YES];
-        [photoDetalViewController setIsCliped:YES];
-        [self.navigationController pushViewController:photoDetalViewController animated:YES];
-        [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
-        [photoDetalViewController release];
-//        [self presentViewController:photoDetalViewController animated:YES completion:^{
-//            //[photoDetalViewController setTimeLine:image_button.timeLine];
-//            
-//            [photoDetalViewController loadAllDiction:array currtimeIdexTag:index];
-//            [photoDetalViewController release];
-//        }];
-        
+        PhotoLookViewController *photoLookViewController = [[PhotoLookViewController alloc] init];
+        [photoLookViewController setHidesBottomBarWhenPushed:YES];
+        [photoLookViewController setIsCliped:YES];
+        [photoLookViewController setCurrPage:index];
+        [photoLookViewController setTableArray:array];
+        [self.navigationController pushViewController:photoLookViewController animated:YES];
+        [photoLookViewController release];
     }else
     {
         if ([YNFunctions isUnlockFeature]) {

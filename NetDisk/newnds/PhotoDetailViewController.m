@@ -89,7 +89,6 @@
     [leftButton setBackgroundColor:[UIColor clearColor]];
     [bottonToolBar addSubview:leftButton];
     leftButton.showsTouchWhenHighlighted = YES;
-    [leftButton release];
 
     CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
     centerButton = [[UIButton alloc] initWithFrame:centerRect];

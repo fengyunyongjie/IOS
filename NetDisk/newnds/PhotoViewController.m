@@ -18,6 +18,7 @@
 #import "YNFunctions.h"
 #import "PhotoFile.h"
 #import "PhotoFileCell.h"
+#import "PhotoLookViewController.h"
 
 @interface PhotoViewController ()
 
@@ -284,7 +285,7 @@
     [table_view reloadData];
     [self scrollViewDidEndDecelerating:nil];
     
-    [hud hide:YES afterDelay:0.5f];
+    [hud hide:YES afterDelay:0.8f];
     
 }
 
@@ -744,132 +745,256 @@
         return;
     }
     NSLog(@"cellArrays:%@",cellArrays);
-    for(int i=0;isLoadImage && i<[cellArrays count];i++)
+    if(isSort)
     {
-        PhotoFileCell *cell = (PhotoFileCell *)[table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
-        NSArray *array = [cell cellArray];
-        if(!array)
+        for(int i=[cellArrays count]-1;isLoadImage && i>=0;i--)
         {
-            return;
-        }
-        for(int j=0;isLoadImage && j<[array count];j++)
-        {
-            CellTag *cellTag = [array objectAtIndex:j];
-            if(!cellTag)
+            PhotoFileCell *cell = (PhotoFileCell *)[table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+            NSArray *array = [cell cellArray];
+            if(!array)
             {
                 return;
             }
-            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
+            for(int j=0;isLoadImage && j<[array count];j++)
             {
-                NSObject *obj = [table_view viewWithTag:cellTag.imageTag];
-                if(!obj)
+                CellTag *cellTag = [array objectAtIndex:j];
+                if(!cellTag)
                 {
                     return;
                 }
-                UIImageView *image_view = (UIImageView *)obj;
-                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
-                UIImage *imageV = [UIImage imageWithContentsOfFile:path];
-                CGSize newImageSize;
-                if(isLoadImage && imageV.size.width>=imageV.size.height && imageV.size.height>200)
+                if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
                 {
-                    newImageSize.height = 200;
-                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    if(!isLoadImage || !image_view || !imageS || ![image_view isKindOfClass:[UIImageView class]])
+                    NSObject *obj = [table_view viewWithTag:cellTag.imageTag];
+                    if(!obj)
                     {
                         return;
                     }
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [image_view setImage:imageS];
-                    });
-                }
-                else if(isLoadImage && imageV.size.width<=imageV.size.height && imageV.size.width>200)
-                {
-                    newImageSize.width = 200;
-                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    if(!isLoadImage || !image_view || !imageS || ![image_view isKindOfClass:[UIImageView class]])
+                    UIImageView *image_view = (UIImageView *)obj;
+                    NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+                    UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+                    CGSize newImageSize;
+                    if(isLoadImage && imageV.size.width>=imageV.size.height && imageV.size.height>200)
                     {
-                        return;
-                    }
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [image_view setImage:imageS];
-                    });
-                }
-                else
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [image_view setImage:imageV];
-                    });
-                }
-                if(!editBL)
-                {
-                    for(int i=0;isLoadImage && i<[[_dicReuseCells allKeys] count];i++)
-                    {
-                        int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
-                        if(cellTag.fileTag == fid)
+                        newImageSize.height = 200;
+                        newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                        UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                        CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                        imageS = [self imageFromImage:imageS inRect:imageRect];
+                        if(!isLoadImage || !image_view || !imageS || ![image_view isKindOfClass:[UIImageView class]])
                         {
-                            UIButton *button = (UIButton *)[table_view viewWithTag:cellTag.buttonTag];
-                            [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
-                            [button setSelected:NO];
+                            return;
+                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [image_view setImage:imageS];
+                        });
+                    }
+                    else if(isLoadImage && imageV.size.width<=imageV.size.height && imageV.size.width>200)
+                    {
+                        newImageSize.width = 200;
+                        newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                        UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                        CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                        imageS = [self imageFromImage:imageS inRect:imageRect];
+                        if(!isLoadImage || !image_view || !imageS || ![image_view isKindOfClass:[UIImageView class]])
+                        {
+                            return;
+                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [image_view setImage:imageS];
+                        });
+                    }
+                    else
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [image_view setImage:imageV];
+                        });
+                    }
+                    if(!editBL)
+                    {
+                        for(int i=0;isLoadImage && i<[[_dicReuseCells allKeys] count];i++)
+                        {
+                            int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
+                            if(cellTag.fileTag == fid)
+                            {
+                                UIButton *button = (UIButton *)[table_view viewWithTag:cellTag.buttonTag];
+                                [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
+                                [button setSelected:NO];
+                            }
                         }
                     }
                 }
+                else if(isLoadImage)
+                {
+                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                    [downImage setFileId:cellTag.fileTag];
+                    [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+                    [downImage setImageViewIndex:cellTag.imageTag];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [downImage setDelegate:self];
+                        [downImage startDownload];
+                    });
+                }
             }
-            else if(isLoadImage)
+        }
+    }
+    else
+    {
+        for(int i=0;isLoadImage && i<[cellArrays count];i++)
+        {
+            PhotoFileCell *cell = (PhotoFileCell *)[table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+            NSArray *array = [cell cellArray];
+            if(!array)
             {
-                DownImage *downImage = [[[DownImage alloc] init] autorelease];
-                [downImage setFileId:cellTag.fileTag];
-                [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
-                [downImage setImageViewIndex:cellTag.imageTag];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [downImage setDelegate:self];
-                    [downImage startDownload];
-                });
+                return;
+            }
+            for(int j=0;isLoadImage && j<[array count];j++)
+            {
+                CellTag *cellTag = [array objectAtIndex:j];
+                if(!cellTag)
+                {
+                    return;
+                }
+                if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
+                {
+                    NSObject *obj = [table_view viewWithTag:cellTag.imageTag];
+                    if(!obj)
+                    {
+                        return;
+                    }
+                    UIImageView *image_view = (UIImageView *)obj;
+                    NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+                    UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+                    CGSize newImageSize;
+                    if(isLoadImage && imageV.size.width>=imageV.size.height && imageV.size.height>200)
+                    {
+                        newImageSize.height = 200;
+                        newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                        UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                        CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                        imageS = [self imageFromImage:imageS inRect:imageRect];
+                        if(!isLoadImage || !image_view || !imageS || ![image_view isKindOfClass:[UIImageView class]])
+                        {
+                            return;
+                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [image_view setImage:imageS];
+                        });
+                    }
+                    else if(isLoadImage && imageV.size.width<=imageV.size.height && imageV.size.width>200)
+                    {
+                        newImageSize.width = 200;
+                        newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                        UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                        CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                        imageS = [self imageFromImage:imageS inRect:imageRect];
+                        if(!isLoadImage || !image_view || !imageS || ![image_view isKindOfClass:[UIImageView class]])
+                        {
+                            return;
+                        }
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [image_view setImage:imageS];
+                        });
+                    }
+                    else
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [image_view setImage:imageV];
+                        });
+                    }
+                    if(!editBL)
+                    {
+                        for(int i=0;isLoadImage && i<[[_dicReuseCells allKeys] count];i++)
+                        {
+                            int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
+                            if(cellTag.fileTag == fid)
+                            {
+                                UIButton *button = (UIButton *)[table_view viewWithTag:cellTag.buttonTag];
+                                [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
+                                [button setSelected:NO];
+                            }
+                        }
+                    }
+                }
+                else if(isLoadImage)
+                {
+                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                    [downImage setFileId:cellTag.fileTag];
+                    [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+                    [downImage setImageViewIndex:cellTag.imageTag];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [downImage setDelegate:self];
+                        [downImage startDownload];
+                    });
+                }
             }
         }
     }
     [pool drain];
 }
 
-#pragma mark 滑动结束后，加载数据
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-//{
-//    if(!isLoadData)
-//    {
-//        isLoadImage = TRUE;
-//        NSArray *cellArrays = [table_view indexPathsForVisibleRows];
-//        for(int i=0;i<[cellArrays count];i++)
-//        {
-//            PhotoFileCell *cell = (PhotoFileCell *)[table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
-//            [NSThread detachNewThreadSelector:@selector(getImageLoad:) toTarget:self withObject:cell];
-//            NSArray *array = [cell cellArray];
-//            for(int j=0;j<[array count];j++)
-//            {
-//                CellTag *cellTag = [array objectAtIndex:j];
-//                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
-//                {
-//                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
-//                    [downImage setFileId:cellTag.fileTag];
-//                    [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
-//                    [downImage setImageViewIndex:cellTag.imageTag];
-//                    [downImage setDelegate:self];
-//                    [downImage startDownload];
-//                }
-//            }
-//        }
-//    }
-//}
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    isLoadImage = TRUE;
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     isLoadImage = TRUE;
-    if((scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height) || (scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height))
+    if(scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
+        isSort = TRUE;
+        endFloat = scrollView.contentOffset.y;
+        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+    }
+    
+    if(scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height)
+    {
+        isSort = FALSE;
+        endFloat = scrollView.contentOffset.y;
+        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+    }
+}
+
+//-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    isLoadImage = TRUE;
+//    if((scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height) || (scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height))
+//    {
+//        endFloat = scrollView.contentOffset.y;
+//        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+//    }
+//}
+
+//-(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+//{
+//    isLoadImage = TRUE;
+//    if((scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height) || (scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height))
+//    {
+//        endFloat = scrollView.contentOffset.y;
+//        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+//    }
+//}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+//    isLoadImage = TRUE;
+//    if((scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height) || (scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height))
+//    {
+//        endFloat = scrollView.contentOffset.y;
+//        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+//    }
+    
+    isLoadImage = TRUE;
+    if(scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height)
+    {
+        isSort = TRUE;
+        endFloat = scrollView.contentOffset.y;
+        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+    }
+    
+    if(scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height)
+    {
+        isSort = FALSE;
         endFloat = scrollView.contentOffset.y;
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
@@ -888,7 +1013,6 @@
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     isLoadImage = FALSE;
-    [NSThread cancelPreviousPerformRequestsWithTarget:self selector:@selector(getImageLoad) object:nil];
 }
 
 #pragma mark 按钮点击事件
@@ -916,17 +1040,29 @@
     }
     else
     {
-        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
-        photoDetalViewController.deleteDelegate = self;
-        [photoDetalViewController setHidesBottomBarWhenPushed:YES];
-        [self.navigationController pushViewController:photoDetalViewController animated:YES];
+        PhotoLookViewController *photo_look_view = [[PhotoLookViewController alloc] init];
+        [photo_look_view setHidesBottomBarWhenPushed:YES];
+//        [photo_look_view.navigationController setNavigationBarHidden:YES];
         NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
-        [photoDetalViewController loadAllDiction:[tablediction objectForKey:sectionString] currtimeIdexTag:button.cell.pageTag];
+        [photo_look_view setTableArray:[tablediction objectForKey:sectionString]];
+        [photo_look_view setCurrPage:button.cell.pageTag];
+        [self.navigationController pushViewController:photo_look_view animated:YES];
+        [photo_look_view release];
+        
+        
+//        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
+//        photoDetalViewController.deleteDelegate = self;
+//        [photoDetalViewController setHidesBottomBarWhenPushed:YES];
+//        [self.navigationController pushViewController:photoDetalViewController animated:YES];
+//        NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
+//        [photoDetalViewController loadAllDiction:[tablediction objectForKey:sectionString] currtimeIdexTag:button.cell.pageTag];
+        
+        
 //        [self presentViewController:photoDetalViewController animated:YES completion:^{
 //            NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
 //            [photoDetalViewController loadAllDiction:[tablediction objectForKey:sectionString] currtimeIdexTag:button.cell.pageTag];
 //        }];
-        [photoDetalViewController release];
+//        [photoDetalViewController release];
     }
     NSLog(@"button:%i",button.tag);
 }
@@ -1016,6 +1152,7 @@
                 }
             }
         }
+        [_dicReuseCells removeAllObjects];
         [table_view reloadData];
         [self scrollViewDidEndDecelerating:nil];
         UINavigationItem *nav_item = [self navigationItem];
@@ -1047,7 +1184,7 @@
     }
     [self setUser_id:[[SCBSession sharedSession] userId]];
     [self setUser_token:[[SCBSession sharedSession] userToken]];
-    [hud hide:YES afterDelay:0.5f];
+    [hud hide:YES afterDelay:0.8f];
 }
 
 //这个路径下是否存在此图片

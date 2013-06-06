@@ -26,6 +26,8 @@
 
 -(void)requstDelete:(NSDictionary *)dictionary;
 
+-(void)getFileDetail:(NSDictionary *)dictionary;
+
 @end
 
 @protocol NewFoldDelegate <NSObject>
@@ -67,6 +69,8 @@
 -(void)getAllPhotoGeneral:(NSArray *)timeLineArray;
 //获取按年或月查询的概要照片/photo/general
 -(void)getPhotoGeneral;
+#pragma mark 请求收藏详细信息
+-(void)getDetail:(int)f_id;
 //获取按日查询的照片/photo/detail
 //获取最新标签/photo/tag/recent
 //获取指定文件相关标签/photo/tag/file_tags

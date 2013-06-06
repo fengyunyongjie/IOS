@@ -68,6 +68,11 @@
     float selfLenght;
     UITableView *saveTableView;
     int cellNumber;
+    
+    /*
+     倒序
+     */
+    bool isSort;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;

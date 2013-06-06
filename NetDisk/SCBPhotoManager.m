@@ -386,6 +386,15 @@
             [newFoldDelegate openFile:diction];
         }
     }
+    else if([type_string isEqualToString:[[FM_GETFILEINFO componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([photoDelegate respondsToSelector:@selector(getFileDetail:)])
+        {
+            [photoDelegate getFileDetail:diction];
+        }
+    }
+        
+        
 }
 
 #pragma mark 判断当前时间属于哪一类
@@ -531,6 +540,29 @@
     
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
+
+#pragma mark 请求收藏详细信息
+-(void)getDetail:(int)f_id
+{
+    self.matableData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_GETFILEINFO]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = FM_GETFILEINFO;
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_id=%i",f_id];
+    NSLog(@"body:%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    [body release];
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
 
 -(void)dealloc
 {
