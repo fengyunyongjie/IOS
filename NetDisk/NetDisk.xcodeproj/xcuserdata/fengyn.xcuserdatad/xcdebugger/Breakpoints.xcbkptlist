@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "newnds/FavoritesViewController.m"
-         timestampString = "392259450.534802"
+         timestampString = "392259990.599142"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "315"
-         endingLineNumber = "315"
+         startingLineNumber = "316"
+         endingLineNumber = "316"
          landmarkName = "-appImageDidLoad:"
          landmarkType = "5">
       </FileBreakpoint>

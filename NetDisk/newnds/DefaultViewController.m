@@ -27,6 +27,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    UIImage *image=[UIImage imageNamed:@"Default-568h@2x.png"];
+    UIImageView *imageView=[[UIImageView alloc] initWithImage:image];
+    imageView.frame=CGRectMake(0, -20, 320, 568);
+    self.view=imageView;
+    //[imageView release];
+    //[image release];
 }
 
 - (void)didReceiveMemoryWarning

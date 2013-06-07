@@ -44,6 +44,7 @@
 }
 -(id)init
 {
+    self.view.hidden=YES;
     allHeight = self.view.frame.size.height;
     NSLog(@"frame:%@",NSStringFromCGRect(self.view.frame));
     self=[super init];
@@ -192,6 +193,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self presendLoginViewController];
+    self.view.hidden=NO;
     [super viewDidAppear:animated];
     if (self.selectedIndex==0) {
         if (need_to_custom && !is_did_load)

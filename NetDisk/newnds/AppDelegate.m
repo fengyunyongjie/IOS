@@ -12,6 +12,7 @@
 #import "TaskDemo.h"
 #import "YNFunctions.h"
 #import "OpenViewController.h"
+#import "DefaultViewController.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -27,7 +28,8 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
-    self.window.rootViewController=self.myTabBarController;
+    DefaultViewController *viewController=[[[DefaultViewController alloc] init] autorelease];
+    self.window.rootViewController=viewController;
     //程序启动时，在代码中向微信终端注册你的id
     [WXApi registerApp:@"wxdcc0186c9f173352"];
     [self.window makeKeyAndVisible];
@@ -41,10 +43,14 @@
             [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
         }
     }
-    
+    [self performSelector:@selector(goMainViewController) withObject:self afterDelay:1.0f];
     return YES;
 }
-
+-(void)goMainViewController
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    self.window.rootViewController=self.myTabBarController;
+}
 - (void) onReq:(BaseReq*)req
 {
 

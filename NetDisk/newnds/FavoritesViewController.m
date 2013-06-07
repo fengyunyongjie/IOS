@@ -34,6 +34,7 @@
 }
 - (void)viewDidLoad
 {
+    self.imageDownloadsInProgress=[NSMutableDictionary dictionary];
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.
