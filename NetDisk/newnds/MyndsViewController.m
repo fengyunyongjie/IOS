@@ -785,7 +785,7 @@ typedef enum{
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"删除成功！";
+    self.hud.labelText=@"操作成功！";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
@@ -800,7 +800,7 @@ typedef enum{
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"重命名成功！";
+    self.hud.labelText=@"操作成功！";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
@@ -815,7 +815,7 @@ typedef enum{
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"重命名失败！";
+    self.hud.labelText=@"操作失败！";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
@@ -830,7 +830,7 @@ typedef enum{
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"移动成功！";
+    self.hud.labelText=@"操作成功！";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
