@@ -62,6 +62,8 @@ typedef enum{
 }
 -(void)dealloc
 {
+    [self.fm cancelAllTask];
+    self.fm=nil;
     [super dealloc];
     //self.imageDownloadsInProgress=nil;
 }
@@ -144,11 +146,12 @@ typedef enum{
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
+    [self.fm cancelAllTask];
+    self.fm=nil;
 }
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [self.fm cancelAllTask];
     for (IconDownloader *iconLoader in self.imageDownloadsInProgress.allValues) {
         [iconLoader cancelDownload];
     };
@@ -263,7 +266,9 @@ typedef enum{
 //    if (self.fm) {
 //        return;
 //    }
-    self.fm=[[SCBFileManager alloc] init];
+    [self.fm cancelAllTask];
+    self.fm=nil;
+    self.fm=[[[SCBFileManager alloc] init] autorelease];
     [self.fm setDelegate:self];
     [self.fm openFinderWithID:self.f_id];
 }
@@ -361,10 +366,11 @@ typedef enum{
 {
     NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
     NSString *m_fid=[dic objectForKey:@"f_id"];
-    SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
-    fm_temp.delegate=self;
+    [self.fm cancelAllTask];
+    self.fm=[[[SCBFileManager alloc] init] autorelease];
+    self.fm.delegate=self;
     if ([f_id intValue]!=[m_fid intValue]) {
-        [fm_temp moveFileIDs:@[m_fid] toPID:f_id];
+        [self.fm moveFileIDs:@[m_fid] toPID:f_id];
     }
     [self hideOptionCell];
 }
@@ -904,9 +910,10 @@ typedef enum{
                 self.selectedIndexPath = nil;
                 [self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
                 NSString *f_id=[dic objectForKey:@"f_id"];
-                SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
-                fm_temp.delegate=self;
-                [fm_temp removeFileWithIDs:@[f_id]];
+                [self.fm cancelAllTask];
+                self.fm=[[[SCBFileManager alloc] init] autorelease];
+                self.fm.delegate=self;
+                [self.fm removeFileWithIDs:@[f_id]];
             }
             [self hideOptionCell];
             break;
@@ -920,9 +927,10 @@ typedef enum{
                 NSString *fildtext=[[alertView textFieldAtIndex:0] text];
                 if (![fildtext isEqualToString:name] && ![fildtext isEqualToString:@""]) {
                     NSLog(@"重命名");
-                    SCBFileManager *fm=[[[SCBFileManager alloc] init] autorelease];
-                    [fm renameWithID:f_id newName:fildtext];
-                    [fm setDelegate:self];
+                    [self.fm cancelAllTask];
+                    self.fm=[[[SCBFileManager alloc] init] autorelease];
+                    [self.fm renameWithID:f_id newName:fildtext];
+                    [self.fm setDelegate:self];
                 }
                 NSLog(@"点击确定");
             }else
@@ -949,9 +957,10 @@ typedef enum{
                 [self removeFromDicWithObjects:deleteObjects];
                 [self.tableView reloadData];
                 if (f_ids.count>0) {
-                    SCBFileManager *fm_temp=[[[SCBFileManager alloc] init] autorelease];
-                    fm_temp.delegate=self;
-                    [fm_temp removeFileWithIDs:f_ids];
+                    [self.fm cancelAllTask];
+                    self.fm=[[[SCBFileManager alloc] init] autorelease];
+                    self.fm.delegate=self;
+                    [self.fm removeFileWithIDs:f_ids];
                 }
 
             }

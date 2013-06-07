@@ -151,7 +151,7 @@
     NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:self.activeData options:0 error:&jsonParsingError];
     if ([[dic objectForKey:@"code"] intValue]==0) {
         NSLog(@"操作成功 数据大小：%d",[self.activeData length]);
-        if (self.delegate!=nil) {
+        if (self.delegate) {
             switch (self.fm_type) {
                 case kFMTypeOpenFinder:
                     [self.delegate openFinderSucess:dic];
@@ -173,6 +173,7 @@
         NSLog(@"操作失败 数据大小：%d",[self.activeData length]);
     }
     self.activeData=nil;
+    self.delegate=nil;
     NSLog(@"connectionDidFinishLoading");
     //UIImage *image=[[UIImage alloc] initWithData:self.activeDownload];
 }
