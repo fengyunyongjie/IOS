@@ -286,7 +286,21 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    
+    NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
+    if([type_string isEqualToString:[[FM_MKDIR_URL componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([newFoldDelegate respondsToSelector:@selector(didFailWithError)])
+        {
+            [newFoldDelegate didFailWithError];
+        }
+    }
+    else if([type_string isEqualToString:[[FM_URI componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([newFoldDelegate respondsToSelector:@selector(didFailWithError)])
+        {
+            [newFoldDelegate didFailWithError];
+        }
+    }
 }
 
 

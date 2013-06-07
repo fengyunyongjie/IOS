@@ -652,6 +652,7 @@
     if([[dictioinary objectForKey:@"code"] intValue] == 0)
     {
         
+        
         /*
          重新添加数据
          */
@@ -665,25 +666,43 @@
         
         [tableArray removeObjectAtIndex:deletePage];
         
+        if([tableArray count]==0)
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+        
         offset = 0.0;
         scale_ = 1.0;
         if(deletePage==[tableArray count])
         {
-            deletePage = deletePage--;
+            currPage = deletePage-1;
         }
-        currPage = deletePage;
         self.imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, scollviewHeight)];
         self.imageScrollView.backgroundColor = [UIColor clearColor];
         self.imageScrollView.scrollEnabled = YES;
         self.imageScrollView.pagingEnabled = YES;
         self.imageScrollView.delegate = self;
-        self.imageScrollView.contentSize = CGSizeMake(320*[tableArray count], scollviewHeight);
+        
         
         if(currPage==0&&[tableArray count]>=3)
         {
             startPage = 0;
             endPage = currPage+2;
             for (int i = 0; i<currPage+3; i++){
+                PhotoFile *demo = [tableArray objectAtIndex:i];
+                if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
+                {
+                    continue;
+                }
+                [self loadPageColoumn:i];
+            }
+        }
+        
+        if(currPage==0&&[tableArray count]<=3)
+        {
+            startPage = 0;
+            endPage = [tableArray count]-1;
+            for (int i = 0; i<[tableArray count]; i++){
                 PhotoFile *demo = [tableArray objectAtIndex:i];
                 if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {
@@ -711,7 +730,7 @@
         {
             startPage = currPage-3;
             endPage = currPage-1;
-            for (int i = currPage-3; i<currPage; i++){
+            for (int i = currPage-3; i<=currPage; i++){
                 PhotoFile *demo = [tableArray objectAtIndex:i];
                 if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {
@@ -726,7 +745,7 @@
         {
             startPage = 0;
             endPage = currPage-1;
-            for (int i = 0; i< currPage; i++){
+            for (int i = 0; i<=currPage; i++){
                 PhotoFile *demo = [tableArray objectAtIndex:i];
                 if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {
@@ -737,19 +756,19 @@
             }
         }
         
-        [self.imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
-        
         [self.view addSubview:self.imageScrollView];
 //        [self.view bringSubviewToFront:self.navigationController.navigationBar];
         [self.view bringSubviewToFront:bottonToolBar];
+        
+        self.imageScrollView.contentSize = CGSizeMake(320*[tableArray count], scollviewHeight);
+        [self.imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
+        [self handleOnceTap:nil];
         
         hud.labelText=@"删除成功";
         hud.mode=MBProgressHUDModeText;
         [hud hide:YES afterDelay:0.8f];
         [hud release];
         hud = nil;
-        
-        
     }
 }
 

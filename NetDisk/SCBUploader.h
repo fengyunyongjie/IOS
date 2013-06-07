@@ -30,6 +30,9 @@
 //上传提交
 -(void)uploadCommit:(NSDictionary *)dictionary;
 
+//上传失败
+-(void)didFailWithError;
+
 @end
 
 

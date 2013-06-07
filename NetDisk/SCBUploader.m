@@ -116,6 +116,39 @@
 //    NSLog(@"请求成功后，分发数据:%@",diction);
 }
 
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
+    if([type_string isEqualToString:[[FM_UPLOAD_NEW_VERIFY componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([upLoadDelegate respondsToSelector:@selector(didFailWithError)])
+        {
+            [upLoadDelegate didFailWithError];
+        }
+    }
+    else if([type_string isEqualToString:[[FM_UPLOAD_NEW componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([upLoadDelegate respondsToSelector:@selector(didFailWithError)])
+        {
+            [upLoadDelegate didFailWithError];
+        }
+    }
+    else if([type_string isEqualToString:[[FM_UPLOAD_STATE componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([upLoadDelegate respondsToSelector:@selector(didFailWithError)])
+        {
+            [upLoadDelegate didFailWithError];
+        }
+    }
+    else if([type_string isEqualToString:[[FM_UPLOAD_NEW_COMMIT componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([upLoadDelegate respondsToSelector:@selector(didFailWithError)])
+        {
+            [upLoadDelegate didFailWithError];
+        }
+    }
+}
+
 
 #pragma mark -请求成功后，分发数据
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data

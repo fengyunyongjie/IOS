@@ -36,6 +36,9 @@
 
 -(void)openFile:(NSDictionary *)dictionary;
 
+//上传失败
+-(void)didFailWithError;
+
 @end
 
 @interface SCBPhotoManager : NSObject

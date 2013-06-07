@@ -283,7 +283,10 @@
     }
     
     [table_view reloadData];
-    [self scrollViewDidEndDecelerating:nil];
+    
+    isLoadImage = TRUE;
+    isSort = FALSE;
+    [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     
     [hud hide:YES afterDelay:0.8f];
     
@@ -546,41 +549,41 @@
             return;
         }
         
-            UIImageView *image_view = (UIImageView *)obj;
-            UIImage *imageV = image;
-            CGSize newImageSize;
-            if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+        UIImageView *image_view = (UIImageView *)obj;
+        UIImage *imageV = image;
+        CGSize newImageSize;
+        if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+        {
+            newImageSize.height = 200;
+            newImageSize.width = 200*imageV.size.width/imageV.size.height;
+            UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+            CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+            imageS = [self imageFromImage:imageS inRect:imageRect];
+            if([image_view isKindOfClass:[UIImageView class]])
             {
-                newImageSize.height = 200;
-                newImageSize.width = 200*imageV.size.width/imageV.size.height;
-                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-                imageS = [self imageFromImage:imageS inRect:imageRect];
-                if([image_view isKindOfClass:[UIImageView class]])
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [image_view setImage:imageS];
-                    });
-                }
-            }
-            else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
-            {
-                newImageSize.width = 200;
-                newImageSize.height = 200*imageV.size.height/imageV.size.width;
-                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-                imageS = [self imageFromImage:imageS inRect:imageRect];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [image_view setImage:imageS];
                 });
             }
-            else
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [image_view setImage:imageV];
-                });
-            }
-            return;
+        }
+        else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+        {
+            newImageSize.width = 200;
+            newImageSize.height = 200*imageV.size.height/imageV.size.width;
+            UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+            CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+            imageS = [self imageFromImage:imageS inRect:imageRect];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [image_view setImage:imageS];
+            });
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [image_view setImage:imageV];
+            });
+        }
+        return;
     }
     //    [self downLoad];
 }
@@ -935,7 +938,6 @@
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
     isLoadImage = TRUE;
-    [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(scrollViewDidEndDecelerating:) userInfo:scrollView repeats:NO];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -1000,7 +1002,7 @@
     {
         PhotoLookViewController *photo_look_view = [[PhotoLookViewController alloc] init];
         [photo_look_view setHidesBottomBarWhenPushed:YES];
-//        [photo_look_view.navigationController setNavigationBarHidden:YES];
+        //        [photo_look_view.navigationController setNavigationBarHidden:YES];
         NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
         [photo_look_view setTableArray:[tablediction objectForKey:sectionString]];
         [photo_look_view setCurrPage:button.cell.pageTag];
@@ -1008,19 +1010,19 @@
         [photo_look_view release];
         
         
-//        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
-//        photoDetalViewController.deleteDelegate = self;
-//        [photoDetalViewController setHidesBottomBarWhenPushed:YES];
-//        [self.navigationController pushViewController:photoDetalViewController animated:YES];
-//        NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
-//        [photoDetalViewController loadAllDiction:[tablediction objectForKey:sectionString] currtimeIdexTag:button.cell.pageTag];
+        //        PhotoDetailViewController *photoDetalViewController = [[PhotoDetailViewController alloc] init];
+        //        photoDetalViewController.deleteDelegate = self;
+        //        [photoDetalViewController setHidesBottomBarWhenPushed:YES];
+        //        [self.navigationController pushViewController:photoDetalViewController animated:YES];
+        //        NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
+        //        [photoDetalViewController loadAllDiction:[tablediction objectForKey:sectionString] currtimeIdexTag:button.cell.pageTag];
         
         
-//        [self presentViewController:photoDetalViewController animated:YES completion:^{
-//            NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
-//            [photoDetalViewController loadAllDiction:[tablediction objectForKey:sectionString] currtimeIdexTag:button.cell.pageTag];
-//        }];
-//        [photoDetalViewController release];
+        //        [self presentViewController:photoDetalViewController animated:YES completion:^{
+        //            NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
+        //            [photoDetalViewController loadAllDiction:[tablediction objectForKey:sectionString] currtimeIdexTag:button.cell.pageTag];
+        //        }];
+        //        [photoDetalViewController release];
     }
     NSLog(@"button:%i",button.tag);
 }
@@ -1122,12 +1124,12 @@
 {
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [hud show:YES];
-    //    if(![[[SCBSession sharedSession] userId] isEqualToString:user_id] && ![[[SCBSession sharedSession] userToken] isEqualToString:user_token])
     if(photoManager)
     {
         [photoManager release];
         photoManager = nil;
     }
+    [self scrollViewDidEndDecelerating:nil];
     //请求时间轴
     photoManager = [[SCBPhotoManager alloc] init];
     [photoManager setPhotoDelegate:self];
@@ -1142,6 +1144,11 @@
     }
     [self setUser_id:[[SCBSession sharedSession] userId]];
     [self setUser_token:[[SCBSession sharedSession] userToken]];
+    
+    isLoadImage = TRUE;
+    isSort = FALSE;
+    [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+    
     [hud hide:YES afterDelay:0.8f];
 }
 

@@ -39,6 +39,9 @@
     UILabel *uploadNumberLabel;
     NSString *user_id;
     NSString *user_token;
+    
+    //网络异常
+    bool isConnectionBl;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
