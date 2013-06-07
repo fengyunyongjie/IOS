@@ -935,6 +935,7 @@
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
     isLoadImage = TRUE;
+    [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(scrollViewDidEndDecelerating:) userInfo:scrollView repeats:NO];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -955,50 +956,6 @@
     }
 }
 
-//-(void)scrollViewDidScroll:(UIScrollView *)scrollView
-//{
-//    isLoadImage = TRUE;
-//    if((scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height) || (scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height))
-//    {
-//        endFloat = scrollView.contentOffset.y;
-//        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
-//    }
-//}
-
-//-(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-//{
-//    isLoadImage = TRUE;
-//    if((scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height) || (scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height))
-//    {
-//        endFloat = scrollView.contentOffset.y;
-//        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
-//    }
-//}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-//    isLoadImage = TRUE;
-//    if((scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height) || (scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height))
-//    {
-//        endFloat = scrollView.contentOffset.y;
-//        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
-//    }
-    
-    isLoadImage = TRUE;
-    if(scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height)
-    {
-        isSort = TRUE;
-        endFloat = scrollView.contentOffset.y;
-        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
-    }
-    
-    if(scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height)
-    {
-        isSort = FALSE;
-        endFloat = scrollView.contentOffset.y;
-        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
-    }
-}
 
 -(void)downLoad
 {
@@ -1013,6 +970,7 @@
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     isLoadImage = FALSE;
+    [NSThread cancelPreviousPerformRequestsWithTarget:self selector:@selector(getImageLoad) object:nil];
 }
 
 #pragma mark 按钮点击事件

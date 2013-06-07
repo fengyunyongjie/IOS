@@ -192,7 +192,9 @@
     if(isSelected)
     {
         [button setBackgroundImage:[UIImage imageNamed:@"upload_btn_lock.png"] forState:UIControlStateNormal];
-        [uploadNumberLabel setText:[NSString stringWithFormat:@"上传暂停"]];
+        [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
+        [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片："]];
+        [formatLabel setText:[NSString stringWithFormat:@"已上传图片："]];
         [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
         [photoArray removeAllObjects];
         NSLog(@"删除了数据");
@@ -299,7 +301,7 @@
         }
         else
         {
-            [uploadNumberLabel setText:[NSString stringWithFormat:@"暂停上传"]];
+            [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
             [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"WiFi没有打开，请打开后再上传" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
             [alert show];
