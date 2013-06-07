@@ -40,6 +40,7 @@ typedef enum{
 
 @interface MyndsViewController ()
 @property (strong,nonatomic) SCBFileManager *fm;
+@property (strong,nonatomic) SCBFileManager *fm_move;
 @property (strong,nonatomic) NSIndexPath *selectedIndexPath;
 @property (strong,nonatomic) UITableViewCell *optionCell;
 @property (strong,nonatomic) UIBarButtonItem *editBtn;
@@ -64,6 +65,8 @@ typedef enum{
 {
     [self.fm cancelAllTask];
     self.fm=nil;
+    [self.fm_move  cancelAllTask];
+    self.fm_move=nil;
     [super dealloc];
     //self.imageDownloadsInProgress=nil;
 }
@@ -148,6 +151,8 @@ typedef enum{
 {
     [self.fm cancelAllTask];
     self.fm=nil;
+    [self.fm_move cancelAllTask];
+    self.fm_move=nil;
 }
 -(void)viewDidDisappear:(BOOL)animated
 {
@@ -366,11 +371,15 @@ typedef enum{
 {
     NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
     NSString *m_fid=[dic objectForKey:@"f_id"];
-    [self.fm cancelAllTask];
-    self.fm=[[[SCBFileManager alloc] init] autorelease];
-    self.fm.delegate=self;
+    if (self.fm_move) {
+        [self.fm cancelAllTask];
+    }else
+    {
+        self.fm_move=[[[SCBFileManager alloc] init] autorelease];
+    }
+    self.fm_move.delegate=self;
     if ([f_id intValue]!=[m_fid intValue]) {
-        [self.fm moveFileIDs:@[m_fid] toPID:f_id];
+        [self.fm_move moveFileIDs:@[m_fid] toPID:f_id];
     }
     [self hideOptionCell];
 }
@@ -791,7 +800,7 @@ typedef enum{
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"操作成功！";
+    self.hud.labelText=@"操作成功";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
@@ -806,7 +815,7 @@ typedef enum{
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"操作成功！";
+    self.hud.labelText=@"操作成功";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
@@ -821,7 +830,7 @@ typedef enum{
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"操作失败！";
+    self.hud.labelText=@"操作失败";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
@@ -830,13 +839,12 @@ typedef enum{
 -(void)moveSucess
 {
     [self updateFileList];
-    [self updateFileList];
     if (!self.hud) {
         self.hud=[[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"操作成功！";
+    self.hud.labelText=@"操作成功";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];

@@ -27,9 +27,17 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    UIImage *image=[UIImage imageNamed:@"Default-568h@2x.png"];
+    CGSize wsize=[[UIScreen mainScreen] bounds].size;
+    UIImage *image;
+    if (wsize.height>500) {
+        image=[UIImage imageNamed:@"Default-568h@2x.png"];
+    }else
+    {
+        image=[UIImage imageNamed:@"Default@2x.png"];
+    }
+    
     UIImageView *imageView=[[UIImageView alloc] initWithImage:image];
-    imageView.frame=CGRectMake(0, -20, 320, 568);
+    imageView.frame=[[UIScreen mainScreen] bounds];
     self.view=imageView;
     //[imageView release];
     //[image release];
