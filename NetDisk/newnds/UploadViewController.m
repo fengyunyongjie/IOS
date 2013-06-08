@@ -110,7 +110,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         //紧紧在wifi下上传
         NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
-        if([switchFlag boolValue])
+        if([switchFlag boolValue] || !switchFlag)
         {
             //wifi
             if(![[self GetCurrntNet] isEqualToString:@"WIFI"])
@@ -121,9 +121,8 @@
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"WiFi没有打开，请打开后再上传" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
                     [alert show];
                     [alert release];
-                    [uploadTypeButton setBackgroundImage:[UIImage imageNamed:@"upload_btn_lock.png"] forState:UIControlStateNormal];
-                    return;
                 });
+                return;
             }
         }
         
@@ -266,7 +265,7 @@
 {
     //紧紧在wifi下上传
     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
-    if([switchFlag boolValue])
+    if([switchFlag boolValue] || !switchFlag)
     {
         //wifi
         if([[self GetCurrntNet] isEqualToString:@"WIFI"])
