@@ -239,6 +239,14 @@ typedef enum{
 {
     [self updateFileList];
 }
+- (void)operateUpdate
+{
+    [self.fm cancelAllTask];
+    self.fm=nil;
+    self.fm=[[[SCBFileManager alloc] init] autorelease];
+    [self.fm setDelegate:self];
+    [self.fm operateUpdateWithID:self.f_id];
+}
 - (void)updateFileList
 {
     NSString *dataFilePath=[YNFunctions getDataCachePath];
@@ -746,6 +754,20 @@ typedef enum{
 }
 
 #pragma mark - SCBFileManagerDelegate
+-(void)operateSucess:(NSDictionary *)datadic
+{
+    [self openFinderSucess:datadic];
+    if (!self.hud) {
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+    }
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
 -(void)openFinderSucess:(NSDictionary *)datadic
 {
     self.dataDic=datadic;
@@ -806,22 +828,7 @@ typedef enum{
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
 }
--(void)renameSucess
-{
-    [self updateFileList];
-    [self updateFileList];
-    if (!self.hud) {
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
-    }
-    [self.hud show:NO];
-    self.hud.labelText=@"操作成功";
-    self.hud.mode=MBProgressHUDModeText;
-    self.hud.margin=10.f;
-    [self.hud show:YES];
-    [self.hud hide:YES afterDelay:1.0f];
-}
--(void)renameUnsucess
+-(void)removeUnsucess
 {
     NSLog(@"openFinderUnsucess: 网络连接失败!!");
     [self updateFileList];
@@ -836,19 +843,64 @@ typedef enum{
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
 }
--(void)moveSucess
+-(void)renameSucess
 {
-    [self updateFileList];
+    [self operateUpdate];
+//    [self updateFileList];
+//    [self updateFileList];
+//    if (!self.hud) {
+//        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+//        [self.view addSubview:self.hud];
+//    }
+//    [self.hud show:NO];
+//    self.hud.labelText=@"操作成功";
+//    self.hud.mode=MBProgressHUDModeText;
+//    self.hud.margin=10.f;
+//    [self.hud show:YES];
+//    [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)renameUnsucess
+{
+    NSLog(@"openFinderUnsucess: 网络连接失败!!");
     if (!self.hud) {
         self.hud=[[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:self.hud];
     }
     [self.hud show:NO];
-    self.hud.labelText=@"操作成功";
+    self.hud.labelText=@"操作失败";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
+}
+
+-(void)moveUnsucess
+{
+    if (!self.hud) {
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+    }
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)moveSucess
+{
+    [self operateUpdate];
+//    [self updateFileList];
+//    if (!self.hud) {
+//        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+//        [self.view addSubview:self.hud];
+//    }
+//    [self.hud show:NO];
+//    self.hud.labelText=@"操作成功";
+//    self.hud.mode=MBProgressHUDModeText;
+//    self.hud.margin=10.f;
+//    [self.hud show:YES];
+//    [self.hud hide:YES afterDelay:1.0f];
 }
 -(void)removeFromDicWithObjects:(NSArray *)objects
 {

@@ -19,6 +19,25 @@
 {
     self.delegate=nil;
 }
+-(void)operateUpdateWithID:(NSString *)f_id
+{
+    self.fm_type=kFMTypeOperateUpdate;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",f_id,0,-1];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
 -(void)openFinderWithID:(NSString *)f_id
 {
     self.fm_type=kFMTypeOpenFinder;
@@ -166,11 +185,30 @@
                     [self.delegate moveSucess];
                     NSLog(@"移动成功");
                     break;
+                case kFMTypeOperateUpdate:
+                    [self.delegate operateSucess:dic];
+                    break;
             }
         }
     }else
     {
         NSLog(@"操作失败 数据大小：%d",[self.activeData length]);
+        if (self.delegate) {
+            switch (self.fm_type) {
+                case kFMTypeOpenFinder:
+                    break;
+                case kFMTypeRemove:
+                    [self.delegate removeUnsucess];
+                    break;
+                case kFMTypeRename:
+                    [self.delegate renameUnsucess];
+                    break;
+                case kFMTypeMove:
+                    [self.delegate moveUnsucess];
+                    NSLog(@"移动成功");
+                    break;
+            }
+        }
     }
     self.activeData=nil;
     self.delegate=nil;
