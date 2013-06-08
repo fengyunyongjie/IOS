@@ -943,14 +943,14 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     isLoadImage = TRUE;
-    if(scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && endFloat - scrollView.contentOffset.y > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height)
+    if(scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
         isSort = TRUE;
         endFloat = scrollView.contentOffset.y;
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
     
-    if(scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y - endFloat > 100 && scrollView.contentOffset.y <= scrollView.contentSize.height)
+    if(scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
         isSort = FALSE;
         endFloat = scrollView.contentOffset.y;

@@ -10,7 +10,7 @@
 #define NetDisk_SCBoxConfig_h
 
 #define CLIENT_TAG @"3"
-#define CONNECT_TIMEOUT 30
+#define CONNECT_TIMEOUT 15
 #define RESPONSE_TIMEOUT 10
 #define SERVER_URL @"http://7cbox.cn/nds/api"
 //#define SERVER_URL_NEW @"http://7cbox.cn/nds/api"

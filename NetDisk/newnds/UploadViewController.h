@@ -13,7 +13,7 @@
 #import "SCBUploader.h"
 #import <CommonCrypto/CommonDigest.h>
 
-@interface UploadViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,NewFoldDelegate,UpLoadDelegate>
+@interface UploadViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,NewFoldDelegate,UpLoadDelegate,UIAlertViewDelegate>
 {
     float allHeight;
     //装载所有图片信息
@@ -42,6 +42,8 @@
     
     //网络异常
     bool isConnectionBl;
+    NSTimer *timer;
+    BOOL timerBL;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;

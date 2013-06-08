@@ -11,6 +11,7 @@
 #import "TaskDemo.h"
 #import "Reachability.h"
 #import "SCBSession.h"
+#import "AppDelegate.h"
 
 @interface UploadViewController ()
 
@@ -54,7 +55,6 @@
 
 - (void)viewDidLoad
 {
-    
     allHeight = self.view.frame.size.height - 49;
     int defHeight = (allHeight-260)/2;
     CGRect rect = CGRectMake((320-184)/2, defHeight, 184, 124);
@@ -107,79 +107,75 @@
 #pragma mark 获取照片库信息
 -(void)getPhotoLibrary
 {
+    NSLog(@"getPhotoLibrary");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        //紧紧在wifi下上传
-        NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
-        if([switchFlag boolValue] || !switchFlag)
+        if([self isUPloadImage])
         {
-            //wifi
-            if(![[self GetCurrntNet] isEqualToString:@"WIFI"])
+            if(timerBL)
             {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
-                    [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"WiFi没有打开，请打开后再上传" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
-                    [alert show];
-                    [alert release];
-                });
-                return;
+                [timer invalidate];
+                timerBL = FALSE;
+                timer = nil;
             }
-        }
-        
-        ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]init];//生成整个photolibrary句柄的实例
-        //    NSMutableArray *mediaArray = [[NSMutableArray alloc]init];//存放media的数组
-        __block BOOL first = TRUE;
-        if([photoArray count] == 0)
-        {
+            ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]init];//生成整个photolibrary句柄的实例
+            //    NSMutableArray *mediaArray = [[NSMutableArray alloc]init];//存放media的数组
+            __block BOOL first = TRUE;
             [uploadNumberLabel setText:[NSString stringWithFormat:@"正在扫描"]];
             [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-        }
-        [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有group
-            if(first)
-            {
-                first = FALSE;
-                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {//从group里面
-                    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-                    NSString* assetType = [result valueForProperty:ALAssetPropertyType];
-                    if ([assetType isEqualToString:ALAssetTypePhoto]) {
-//                        NSError *error = nil;
-//                        Byte *data = malloc(result.defaultRepresentation.size);
-//                        //获得照片图像数据
-//                        [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-//                        demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-                        
-                        TaskDemo *demo = [[TaskDemo alloc] init];
-                        demo.f_state = 0;
-                        demo.f_data = nil;
-                        demo.f_lenght = 0;
-                        //获取照片名称
-                        demo.f_base_name = [[result defaultRepresentation] filename];
-                        demo.result = [result retain];
-                        BOOL bl = [demo isPhotoExist];
-                        if(!bl)
-                        {
-                            [demo insertTaskTable];
-                            [photoArray addObject:demo];
+            [photoArray removeAllObjects];
+            uploadNumber = 0;
+            [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有group
+                if(first)
+                {
+                    first = FALSE;
+                    [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {//从group里面
+                        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+                        NSString* assetType = [result valueForProperty:ALAssetPropertyType];
+                        if ([assetType isEqualToString:ALAssetTypePhoto]) {
+                            TaskDemo *demo = [[TaskDemo alloc] init];
+                            demo.f_state = 0;
+                            demo.f_data = nil;
+                            demo.f_lenght = 0;
+                            //获取照片名称
+                            demo.f_base_name = [[result defaultRepresentation] filename];
+                            demo.result = [result retain];
+                            BOOL bl = [demo isPhotoExist];
+                            if(!bl)
+                            {
+                                [demo insertTaskTable];
+                                [photoArray addObject:demo];
+                            }
+                            [demo release];
                         }
-                        [demo release];
-                    }
-                    [pool release];
-                }];
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    if(!isStop && uploadNumber<[photoArray count])
-                    {
-                        [self upLoad];
-                    }
-                    else if(!isStop)
-                    {
-                        [uploadNumberLabel setText:[NSString stringWithFormat:@"没有新照片"]];
-                        [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-                    }
-                });
+                        [pool release];
+                    }];
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        if(!isStop && uploadNumber<[photoArray count])
+                        {
+                            [self upLoad];
+                        }
+                        else if(!isStop)
+                        {
+                            [uploadNumberLabel setText:[NSString stringWithFormat:@"没有新照片"]];
+                            [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+                        }
+                    });
+                }
+            } failureBlock:^(NSError *error) {
+                NSLog(@"Enumerate the asset groups failed.");
+            }];
+        }
+        else
+        {
+            if(timerBL)
+            {
+                return ;
             }
-        } failureBlock:^(NSError *error) {
-            NSLog(@"Enumerate the asset groups failed.");
-        }];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+            });
+            timerBL = TRUE;
+        }
     });
 }
 
@@ -205,6 +201,85 @@
 -(void)createUploadArray
 {
     
+}
+
+-(BOOL)isUPloadImage
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    BOOL bl = FALSE;
+    NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
+    if([switchFlag boolValue] || !switchFlag)
+    {
+        //仅wifi
+        //wifi
+        if([[self GetCurrntNet] isEqualToString:@"WIFI"])
+        {
+            bl = TRUE;
+        }
+        else if([[self GetCurrntNet] isEqualToString:@"WLAN"])
+        {
+            bl = FALSE;
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if(!isConnectionBl && app_delegate.myTabBarController.selectedIndex == 3)
+                {
+                    [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
+                    [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"WiFi没有打开，请打开后再上传" delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert release];
+                }
+                isConnectionBl = TRUE;
+                [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
+                [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片："]];
+                [formatLabel setText:[NSString stringWithFormat:@"已上传图片："]];
+                [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+            });
+        }
+        else if([[self GetCurrntNet] isEqualToString:@"没有网络链接"])
+        {
+            bl = FALSE;
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if(!isConnectionBl && app_delegate.myTabBarController.selectedIndex == 3)
+                {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"无法连接到网盘服务器，请检查网络连接是否正常" delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert release];
+                }
+                isConnectionBl = TRUE;
+                [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
+                [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片："]];
+                [formatLabel setText:[NSString stringWithFormat:@"已上传图片："]];
+                [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+            });
+            
+        }
+    }
+    else
+    {
+        //非仅wifi
+        if([[self GetCurrntNet] isEqualToString:@"WIFI"] || [[self GetCurrntNet] isEqualToString:@"WLAN"])
+        {
+            bl = TRUE;
+        }
+        else if([[self GetCurrntNet] isEqualToString:@"没有网络链接"])
+        {
+            bl = FALSE;
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if(!isConnectionBl && app_delegate.myTabBarController.selectedIndex == 3)
+                {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"无法连接到网盘服务器，请检查网络连接是否正常" delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert release];
+                }
+                isConnectionBl = TRUE;
+                [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
+                [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片："]];
+                [formatLabel setText:[NSString stringWithFormat:@"已上传图片："]];
+                [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+            });
+        }
+    }
+    return bl;
 }
 
 #pragma mark 判断上传
@@ -237,6 +312,11 @@
     }
 }
 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    isConnectionBl = FALSE;
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     if([[SCBSession sharedSession] userId] != user_id || [[SCBSession sharedSession] userToken] != user_token)
@@ -253,63 +333,40 @@
         user_id = [[SCBSession sharedSession] userId];
         user_token = [[SCBSession sharedSession] userToken];
     }
-    if((!isStop && [photoArray count] ==0) || (isConnectionBl && !isStop))
-    {
-        NSLog(@"准备下载");
-        [self getPhotoLibrary];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        if(!isStop)
+        {
+            if(![self isUPloadImage])
+            {
+                if(timerBL)
+                {
+                    return ;
+                }
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+                });
+                timerBL = TRUE;
+            }
+        }
+    });
 }
 
 #pragma mark 上传校验
 -(void)upLoad
 {
-    //紧紧在wifi下上传
-    NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
-    if([switchFlag boolValue] || !switchFlag)
+    if([self isUPloadImage])
     {
-        //wifi
-        if([[self GetCurrntNet] isEqualToString:@"WIFI"])
+        if(timerBL)
         {
-            NSLog(@"------------------uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
-            if(uploadNumber==0)
-            {
-                [uploadNumberLabel setText:[NSString stringWithFormat:@"开始上传"]];
-            }
-            int page = (float)uploadNumber/(float)[photoArray count]*100;
-            if(page == 0)
-            {
-                [uploadNumberLabel setText:[NSString stringWithFormat:@"开始上传"]];
-            }
-            else
-            {
-                [uploadNumberLabel setText:[NSString stringWithFormat:@"%i％",page]];
-            }
-            [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片：%i",[photoArray count]]];
-            [formatLabel setText:[NSString stringWithFormat:@"已上传图片：%i",uploadNumber]];
-            if(uploadNumber >= [photoArray count])
-            {
-                [uploadNumberLabel setText:@"已完成"];
-            }
-            else
-            {
-                //判断文件是否存在
-                NSLog(@"1:打开文件目录");
-                [photoManger openFinderWithID:@"1"];
-            }
-            [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+            [timer invalidate];
+            timer = nil;
+            timerBL = FALSE;
         }
-        else
-        {
-            [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
-            [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"WiFi没有打开，请打开后再上传" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
-            [alert show];
-            [alert release];
-        }
-    }
-    else
-    {
         NSLog(@"------------------uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
+        if(uploadNumber==0)
+        {
+            [uploadNumberLabel setText:[NSString stringWithFormat:@"开始上传"]];
+        }
         int page = (float)uploadNumber/(float)[photoArray count]*100;
         if(page == 0)
         {
@@ -321,10 +378,28 @@
         }
         [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片：%i",[photoArray count]]];
         [formatLabel setText:[NSString stringWithFormat:@"已上传图片：%i",uploadNumber]];
+        if(uploadNumber >= [photoArray count])
+        {
+            [uploadNumberLabel setText:@"已完成"];
+        }
+        else
+        {
+            //判断文件是否存在
+            NSLog(@"1:打开文件目录");
+            [photoManger openFinderWithID:@"1"];
+        }
         [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-        //判断文件是否存在
-        NSLog(@"1:打开文件目录");
-        [photoManger openFinderWithID:@"1"];
+    }
+    else
+    {
+        if(timerBL)
+        {
+            return ;
+        }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        });
+        timerBL = TRUE;
     }
 }
 
@@ -335,17 +410,17 @@
     Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
     switch ([hostReach currentReachabilityStatus]) {
         case NotReachable:
+        {
             connectionKind = @"没有网络链接";
+        }
             break;
         case ReachableViaWiFi:
         {
-            isConnectionBl = FALSE;
             connectionKind = @"WIFI";
         }
             break;
         case ReachableViaWWAN:
         {
-            isConnectionBl = FALSE;
             connectionKind = @"WLAN";
         }
             break;
@@ -534,13 +609,26 @@
 
 -(void)didFailWithError
 {
-    if(!isConnectionBl)
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"无法连接到网盘服务器，请检查网络连接是否正常" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
-        [alert show];
-        [alert release];
-    }
-    isConnectionBl = TRUE;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(!isConnectionBl && app_delegate.myTabBarController.selectedIndex == 3)
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"无法连接到网盘服务器，请检查网络连接是否正常" delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+        }
+        isConnectionBl = TRUE;
+        [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
+        [basePhotoLabel setText:[NSString stringWithFormat:@"本地图片："]];
+        [formatLabel setText:[NSString stringWithFormat:@"已上传图片："]];
+        [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+        if(timerBL)
+        {
+            return ;
+        }
+        timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        timerBL = TRUE;
+    });
 }
 
 -(void)uploadFiles:(NSDictionary *)dictionary
