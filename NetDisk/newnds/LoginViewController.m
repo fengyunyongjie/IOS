@@ -90,7 +90,7 @@
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
-    [self.hud hide:YES afterDelay:0.5f];
+    [self.hud hide:YES afterDelay:1.0f];
     return rt;
 }
 - (IBAction)login:(id)sender
@@ -147,7 +147,7 @@
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
-    [self.hud hide:YES afterDelay:0.5f];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 #pragma mark - Responding to keyboard events
 

@@ -623,7 +623,7 @@
         hud.labelText=@"取消收藏成功";
         hud.mode=MBProgressHUDModeText;
         [hud show:YES];
-        [hud hide:YES afterDelay:0.5f];
+        [hud hide:YES afterDelay:1.0f];
         [hud release];
         hud = nil;
         if(!isCliped)
@@ -727,7 +727,7 @@
         hud.labelText=@"收藏成功";
         hud.mode=MBProgressHUDModeText;
         [hud show:YES];
-        [hud hide:YES afterDelay:0.5f];
+        [hud hide:YES afterDelay:1.0f];
         [hud release];
         hud = nil;
         [self isHiddenDelete:YES];
@@ -838,7 +838,7 @@
     {
         hud.labelText=@"删除成功";
         hud.mode=MBProgressHUDModeText;
-        [hud hide:YES afterDelay:0.5f];
+        [hud hide:YES afterDelay:1.0f];
         [hud removeFromSuperview];
         [hud release];
         hud = nil;

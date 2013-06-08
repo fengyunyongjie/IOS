@@ -67,7 +67,7 @@
     self.m_hud.mode=MBProgressHUDModeText;
     self.m_hud.margin=10.f;
     [self.m_hud show:YES];
-    [self.m_hud hide:YES afterDelay:0.5f];
+    [self.m_hud hide:YES afterDelay:1.0f];
 }
 - (IBAction) regitst:(id)sender
 {
@@ -125,7 +125,7 @@
     self.m_hud.mode=MBProgressHUDModeText;
     self.m_hud.margin=10.f;
     [self.m_hud show:YES];
-    [self.m_hud hide:YES afterDelay:0.5f];
+    [self.m_hud hide:YES afterDelay:1.0f];
     return rt;
 }
 - (IBAction)endEdit:(id)sender
