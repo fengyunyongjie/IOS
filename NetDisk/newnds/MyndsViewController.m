@@ -189,7 +189,7 @@ typedef enum{
     if ([deleteObjects count]<=0) {
         return;
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除所选文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除所选文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alertView show];
     [alertView setTag:kAlertTagDeleteMore];
     [alertView release];
@@ -370,7 +370,7 @@ typedef enum{
 }
 -(void)toDelete:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alertView show];
     [alertView setTag:kAlertTagDeleteOne];
     [alertView release];

@@ -613,7 +613,7 @@
 #pragma mark 删除按钮事件
 -(void)deleteClicked:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"确认" otherButtonTitles:@"取消", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alertView show];
     [alertView release];
 }
@@ -621,7 +621,7 @@
 #pragma mark UIAalertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 0)
+    if(buttonIndex == 1)
     {
         int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
         deletePage = page;

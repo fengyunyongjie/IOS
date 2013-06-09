@@ -802,9 +802,10 @@
 -(void)getImageLoad
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    UITableView *tableV = [table_view retain];
     if(isSort)
     {
-        __block NSArray *cellArrays = [table_view indexPathsForVisibleRows];
+        __block NSArray *cellArrays = [tableV indexPathsForVisibleRows];
         if(!cellArrays)
         {
             isLoadData = FALSE;
@@ -813,7 +814,7 @@
         NSLog(@"cellArrays:%@",cellArrays);
         for(int i=[cellArrays count]-1;isLoadImage && i>=0;i--)
         {
-            PhotoFileCell *cell = (PhotoFileCell *)[table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+            PhotoFileCell *cell = (PhotoFileCell *)[tableV cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
             NSArray *array = [cell cellArray];
             if(!array)
             {
@@ -844,7 +845,7 @@
     }
     else
     {
-        __block NSArray *cellArrays = [table_view indexPathsForVisibleRows];
+        __block NSArray *cellArrays = [tableV indexPathsForVisibleRows];
         if(!cellArrays)
         {
             isLoadData = FALSE;
@@ -852,7 +853,7 @@
         }
         for(int i=0;isLoadImage && i<[cellArrays count];i++)
         {
-            PhotoFileCell *cell = (PhotoFileCell *)[table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+            PhotoFileCell *cell = (PhotoFileCell *)[tableV cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
             NSArray *array = [cell cellArray];
             if(!array)
             {
@@ -881,36 +882,48 @@
             }
         }
     }
-    [pool drain];
+    isLoadData = FALSE;
+    [tableV release];
+    [pool release];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     isLoadImage = TRUE;
-    isLoadData = FALSE;
-    if(scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
+    if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
         isSort = TRUE;
         endFloat = scrollView.contentOffset.y;
+        isLoadData = TRUE;
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
     
-    if(scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
+    if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
         isSort = FALSE;
         endFloat = scrollView.contentOffset.y;
+        isLoadData = TRUE;
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
 }
 
-
--(void)downLoad
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if(downNumber<[downArray count] && isLoadData)
+    isLoadImage = TRUE;
+    if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
-        DownImage *downImage = [downArray objectAtIndex:downNumber];
-        [downImage setDelegate:self];
-        [downImage startDownload];
+        isSort = TRUE;
+        endFloat = scrollView.contentOffset.y;
+        isLoadData = TRUE;
+        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+    }
+    
+    if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat < scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
+    {
+        isSort = FALSE;
+        endFloat = scrollView.contentOffset.y;
+        isLoadData = TRUE;
+        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
 }
 
@@ -958,19 +971,13 @@
 #pragma mark 分享到朋友圈或会话
 -(void)shareButton
 {
-    NSLog(@"选中到了多少个：%i",[_dicReuseCells.allKeys count]);
-    if([_dicReuseCells.allKeys count]>0)
-    {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
-        [alertView show];
-        [alertView release];
-    }
+
 }
 
 #pragma mark UIActionSheetDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 0)
+    if(buttonIndex == 1)
     {
         hud = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:hud];
@@ -988,7 +995,7 @@
     NSLog(@"选中到了多少个：%i",[_dicReuseCells.allKeys count]);
     if([_dicReuseCells.allKeys count]>0)
     {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"确认" otherButtonTitles:@"取消", nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         [alertView show];
         [alertView release];
     }
@@ -1057,10 +1064,6 @@
     
     [self setUser_id:[[SCBSession sharedSession] userId]];
     [self setUser_token:[[SCBSession sharedSession] userToken]];
-    
-    isLoadImage = TRUE;
-    isSort = FALSE;
-//    [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     
     [hud hide:YES afterDelay:0.8f];
     [hud release];
