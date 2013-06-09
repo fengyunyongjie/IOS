@@ -757,10 +757,12 @@ typedef enum{
 -(void)operateSucess:(NSDictionary *)datadic
 {
     [self openFinderSucess:datadic];
-    if (!self.hud) {
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
     }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作成功";
     self.hud.mode=MBProgressHUDModeText;
@@ -817,11 +819,12 @@ typedef enum{
 -(void)removeSucess
 {
     [self updateFileList];
-    if (!self.hud) {
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
     }
-    [self.hud show:NO];
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];    [self.hud show:NO];
     self.hud.labelText=@"操作成功";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
@@ -832,10 +835,12 @@ typedef enum{
 {
     NSLog(@"openFinderUnsucess: 网络连接失败!!");
     [self updateFileList];
-    if (!self.hud) {
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
     }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
     self.hud.mode=MBProgressHUDModeText;
@@ -862,10 +867,13 @@ typedef enum{
 -(void)renameUnsucess
 {
     NSLog(@"openFinderUnsucess: 网络连接失败!!");
-    if (!self.hud) {
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
     }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
     self.hud.mode=MBProgressHUDModeText;
@@ -876,10 +884,12 @@ typedef enum{
 
 -(void)moveUnsucess
 {
-    if (!self.hud) {
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
     }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
     self.hud.mode=MBProgressHUDModeText;

@@ -60,6 +60,13 @@
 }
 - (BOOL)registAssert
 {
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
     BOOL rt = YES;
     NSString *loginName = self.userNameTextField.text;
     if (loginName==nil||[loginName isEqualToString:@""]) {
@@ -104,6 +111,12 @@
         NSLog(@"user_name;%@,user_password:%@",user_name,user_passwor);    
         [[SCBAccountManager sharedManager] setDelegate:self];
         [[SCBAccountManager sharedManager] UserLoginWithName:self.userNameTextField.text Password:self.passwordTextField.text];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
         self.hud.labelText=@"正在登录...";
         self.hud.mode=MBProgressHUDModeIndeterminate;
         [self.hud show:YES];
@@ -142,6 +155,12 @@
 }
 -(void)loginUnsucceed:(id)manager
 {
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"登录失败！";
     self.hud.mode=MBProgressHUDModeText;

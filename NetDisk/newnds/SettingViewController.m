@@ -113,6 +113,7 @@ typedef enum{
                 //scBox.UserLogout(callBackLogoutFunc,self);
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
+                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [self.rootViewController presendLoginViewController];
                 AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];

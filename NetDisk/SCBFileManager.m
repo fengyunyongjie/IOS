@@ -159,8 +159,21 @@
 	// Clear the activeDownload property to allow later attempts
     // Release the connection now that it's finished
     NSLog(@"connection:didFailWithError");
-    if (self.delegate!=nil) {
-        [self.delegate openFinderUnsucess];
+    if (self.delegate) {
+        switch (self.fm_type) {
+            case kFMTypeOpenFinder:
+                break;
+            case kFMTypeRemove:
+                [self.delegate removeUnsucess];
+                break;
+            case kFMTypeRename:
+                [self.delegate renameUnsucess];
+                break;
+            case kFMTypeMove:
+                [self.delegate moveUnsucess];
+                NSLog(@"移动成功");
+                break;
+        }
     }
 }
 
