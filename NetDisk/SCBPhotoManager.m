@@ -301,6 +301,21 @@
             [newFoldDelegate didFailWithError];
         }
     }
+    
+    else if([type_string isEqualToString:[[PHOTO_Delete componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([photoDelegate respondsToSelector:@selector(requstDelete:)])
+        {
+            [photoDelegate requstDelete:[NSDictionary dictionaryWithObject:@"3" forKey:@"code"]];
+        }
+    }
+    else if([type_string isEqualToString:[[FM_GETFILEINFO componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([photoDelegate respondsToSelector:@selector(getFileDetail:)])
+        {
+            [photoDelegate getFileDetail:[NSDictionary dictionaryWithObject:@"3" forKey:@"code"]];
+        }
+    }
 }
 
 
@@ -363,14 +378,6 @@
     else if([type_string isEqualToString:[[PHOTO_ALL componentsSeparatedByString:@"/"] lastObject]])
     {
         [self getMangerDiction:diction];
-//        if([photoDelegate respondsToSelector:@selector(getPhotoGeneral:photoDictioin:)])
-//        {
-//            [photoDelegate getPhotoGeneral:timeDictionary photoDictioin:photoDictionary];
-//        }
-//        if(timeLineNowNumber<timeLineTotalNumber)
-//        {
-//            [self getPhotoGeneral];
-//        }
     }
     else if([type_string isEqualToString:[[PHOTO_DETAIL componentsSeparatedByString:@"/"] lastObject]])
     {

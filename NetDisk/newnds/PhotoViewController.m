@@ -1039,10 +1039,17 @@
         [table_view reloadData];
         isLoadImage = TRUE;
         isSort = FALSE;
-//        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
         UINavigationItem *nav_item = [self navigationItem];
         [nav_item setRightBarButtonItem:done_item];
         hud.labelText=@"删除成功";
+        hud.mode=MBProgressHUDModeText;
+        [hud hide:YES afterDelay:0.8f];
+        [hud release];
+        hud = nil;
+    }
+    else
+    {
+        hud.labelText=@"删除失败";
         hud.mode=MBProgressHUDModeText;
         [hud hide:YES afterDelay:0.8f];
         [hud release];

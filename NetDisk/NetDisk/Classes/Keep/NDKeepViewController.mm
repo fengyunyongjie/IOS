@@ -287,7 +287,7 @@
         default:
             break;
     }
-    [m_hud setCaption:@"取消收藏成功"];
+    [m_hud setCaption:@"操作成功"];
     [m_hud setActivity:NO];
     [m_hud show];
     [m_hud hideAfter:0.5f];

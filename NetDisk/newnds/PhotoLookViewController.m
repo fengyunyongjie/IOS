@@ -520,6 +520,16 @@
         CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
         [centerButton setFrame:centerRect];
         [rightButton setHidden:NO];
+        if(isCliped)
+        {
+            CGRect leftRect = CGRectMake((160-100)/2, 5, 100, 33);
+            [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+            [leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+            [leftButton setFrame:leftRect];
+            CGRect centerRect = CGRectMake(160+(160-35)/2, 5, 35, 33);
+            [centerButton setFrame:centerRect];
+            [rightButton setHidden:YES];
+        }
     }
 }
 
@@ -649,8 +659,6 @@
 {
     if([[dictioinary objectForKey:@"code"] intValue] == 0)
     {
-        
-        
         /*
          重新添加数据
          */
@@ -769,27 +777,50 @@
         [hud release];
         hud = nil;
     }
+    else
+    {
+        hud.labelText=@"删除失败";
+        hud.mode=MBProgressHUDModeText;
+        [hud hide:YES afterDelay:0.8f];
+        [hud release];
+        hud = nil;
+    }
 }
 
 -(void)getFileDetail:(NSDictionary *)dictionary
 {
     NSLog(@"dictionary:%@",dictionary);
-    /*
-     得到数据后，添加到收藏
-     */
-    NSDictionary *dic = [[dictionary objectForKey:@"files"] objectAtIndex:0];
-    NSString *f_id = [dic objectForKey:@"f_id"];
-    [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
-    NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.labelText=@"收藏成功";
-    hud.mode=MBProgressHUDModeText;
-    [hud show:YES];
-    [hud hide:YES afterDelay:0.8f];
-    [hud release];
-    hud = nil;
-    [self isHiddenDelete:YES];
+    if([[dictionary objectForKey:@"code"] intValue] == 0)
+    {
+        /*
+         得到数据后，添加到收藏
+         */
+        NSDictionary *dic = [[dictionary objectForKey:@"files"] objectAtIndex:0];
+        NSString *f_id = [dic objectForKey:@"f_id"];
+        [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
+        NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
+        hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
+        hud.labelText=@"收藏成功";
+        hud.mode=MBProgressHUDModeText;
+        [hud show:YES];
+        [hud hide:YES afterDelay:0.8f];
+        [hud release];
+        hud = nil;
+        [self isHiddenDelete:YES];
+    }
+    else
+    {
+        hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
+        hud.labelText=@"收藏失败";
+        hud.mode=MBProgressHUDModeText;
+        [hud show:YES];
+        [hud hide:YES afterDelay:0.8f];
+        [hud release];
+        hud = nil;
+    }
+    
 }
 
 #pragma mark 下载回调
