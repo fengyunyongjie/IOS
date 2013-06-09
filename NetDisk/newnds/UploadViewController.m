@@ -155,23 +155,16 @@
                         //获取照片名称
                         demo.f_base_name = [[result defaultRepresentation] filename];
                         demo.result = [result retain];
-                        BOOL bl;
-                        if(!isOnce)
-                        {
-                            bl = [demo isPhotoExist];
-                        }
-                        else
-                        {
-                            bl = [demo isExistOneImage];
-                        }
-                        
+                        BOOL bl = [demo isExistOneImage];
                         if(!bl)
                         {
-                            if([demo insertTaskTable])
+                            bl = [demo isPhotoExist];
+                            if(!bl)
                             {
-                                [photoArray addObject:demo];
-                                isLoad = TRUE;
+                                [demo insertTaskTable];
                             }
+                            [photoArray addObject:demo];
+                            isLoad = TRUE;
                         }
                         [demo release];
                     }
@@ -274,7 +267,6 @@
             }
             else if([[self GetCurrntNet] isEqualToString:@"WLAN"])
             {
-                
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     isConnection = FALSE;
                     bl = FALSE;
@@ -287,6 +279,10 @@
                         [alert release];
                         isConnectionBl = TRUE;
                     }
+                    uploadNumber = 0;
+                    [photoArray removeAllObjects];
+                    isOnce = FALSE;
+                    isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
                         connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
@@ -297,6 +293,9 @@
             {
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     bl = FALSE;
+                    uploadNumber = 0;
+                    [photoArray removeAllObjects];
+                    isOnce = FALSE;
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
@@ -327,8 +326,11 @@
             else if([[self GetCurrntNet] isEqualToString:@"没有网络链接"])
             {
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    isConnection = FALSE;
                     bl = FALSE;
+                    uploadNumber = 0;
+                    [photoArray removeAllObjects];
+                    isOnce = FALSE;
+                    isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
                         connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
