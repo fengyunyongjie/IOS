@@ -155,10 +155,18 @@
                         //获取照片名称
                         demo.f_base_name = [[result defaultRepresentation] filename];
                         demo.result = [result retain];
-                        BOOL bl = [demo isExistOneImage];
-                        if(!bl)
+                        BOOL bl;
+                        if(!isOnce)
                         {
                             bl = [demo isPhotoExist];
+                        }
+                        else
+                        {
+                            bl = [demo isExistOneImage];
+                        }
+                        if(!bl)
+                        {
+                            bl = [demo isExistOneImage];
                             if(!bl)
                             {
                                 [demo insertTaskTable];
