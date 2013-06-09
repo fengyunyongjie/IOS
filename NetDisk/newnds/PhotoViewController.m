@@ -831,13 +831,14 @@
                 }
                 if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
                 {
-                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
-                    [downImage setFileId:cellTag.fileTag];
-                    [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
-                    [downImage setImageViewIndex:cellTag.imageTag];
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                        [downImage setFileId:cellTag.fileTag];
+                        [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+                        [downImage setImageViewIndex:cellTag.imageTag];
                         [downImage setDelegate:self];
                         [downImage startDownload];
+                        [downArray addObject:downImage];
                     });
                 }
             }
@@ -956,6 +957,11 @@
     }
     else
     {
+        for(int i=0;i<[downArray count];i++)
+        {
+            DownImage *downImage = [downArray objectAtIndex:i];
+            [downImage setDelegate:nil];
+        }
         PhotoLookViewController *photo_look_view = [[PhotoLookViewController alloc] init];
         [photo_look_view setHidesBottomBarWhenPushed:YES];
         //        [photo_look_view.navigationController setNavigationBarHidden:YES];

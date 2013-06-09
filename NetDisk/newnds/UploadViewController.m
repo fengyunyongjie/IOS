@@ -109,7 +109,7 @@
 #pragma mark 获取照片库信息
 -(void)getPhotoLibrary
 {
-    NSLog(@"判断是否可以上传");
+    NSLog(@"判断照片库是否更新");
     
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(app_delegate.isUnUpload)
@@ -139,7 +139,6 @@
         ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]init];//生成整个photolibrary句柄的实例
         //    NSMutableArray *mediaArray = [[NSMutableArray alloc]init];//存放media的数组
         __block BOOL first = TRUE;
-        uploadNumber = 0;
         [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有group
             if(first)
             {
@@ -742,6 +741,9 @@
 -(void)didFailWithError
 {
     NSLog(@"网络连接失败");
+    uploadNumber = 0;
+    [photoArray removeAllObjects];
+    isOnce = FALSE;
     isConnection = FALSE;
     if(connectionTimer==nil && !isStop)
     {

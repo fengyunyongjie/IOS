@@ -75,7 +75,6 @@
     bool isSort;
     
     NSOperationQueue *operationQueue;
-    
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;

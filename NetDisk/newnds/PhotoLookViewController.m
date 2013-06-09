@@ -33,12 +33,22 @@
     return self;
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    for(int i=0;i<[downArray count];i++)
+    {
+        DownImage *downImage = [downArray objectAtIndex:i];
+        [downImage setDelegate:nil];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     imageDic = [[NSMutableDictionary alloc] init];
     activityDic = [[NSMutableDictionary alloc] init];
+    downArray = [[NSMutableArray alloc] init];
     
     scollviewHeight = self.view.frame.size.height;
     self.view.backgroundColor = [UIColor blackColor];
@@ -361,16 +371,16 @@
     {
         NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
         imageview.image = [UIImage imageWithContentsOfFile:path];
-        
-        DownImage *downImage = [[[DownImage alloc] init] autorelease];
-        [downImage setFileId:demo.f_id];
-        [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
-        [downImage setImageViewIndex:ImageViewTag+i];
-        [downImage setIndex:ACTNUMBER+i];
-        [downImage setShowType:1];
         dispatch_async(dispatch_get_main_queue(), ^{
+            DownImage *downImage = [[[DownImage alloc] init] autorelease];
+            [downImage setFileId:demo.f_id];
+            [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
+            [downImage setImageViewIndex:ImageViewTag+i];
+            [downImage setIndex:ACTNUMBER+i];
+            [downImage setShowType:1];
             [downImage setDelegate:self];
             [downImage startDownload];
+            [downArray addObject:downImage];
         });
     }
     [imageview setContentMode:UIViewContentModeScaleAspectFit];

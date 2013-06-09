@@ -56,6 +56,8 @@
      双击事件
      */
     BOOL isDoubleClick;
+    
+    NSMutableArray *downArray;
 }
 
 @property (nonatomic, retain) UIScrollView *imageScrollView;
