@@ -29,7 +29,7 @@ static SCBAccountManager *_sharedAccountManager;
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPMethod:@"POST"];
-    NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 -(void)UserLoginWithName:(NSString *)user_name Password:(NSString *)user_pwd
 {
@@ -45,7 +45,8 @@ static SCBAccountManager *_sharedAccountManager;
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
-    NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [body release];
 }
 -(void)UserLogout
 {
@@ -65,7 +66,8 @@ static SCBAccountManager *_sharedAccountManager;
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
-    NSURLConnection *conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [body release];
 }
 #pragma mark NSURLConnectionDelegate Method
 - (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response

@@ -49,6 +49,7 @@
     self.imageScrollView.backgroundColor = [UIColor clearColor];
     self.imageScrollView.scrollEnabled = YES;
     self.imageScrollView.pagingEnabled = YES;
+    self.imageScrollView.showsHorizontalScrollIndicator = NO;
     self.imageScrollView.delegate = self;
     self.imageScrollView.contentSize = CGSizeMake(320*[tableArray count], scollviewHeight);
     
@@ -196,7 +197,7 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    [self loadActivity];
+    
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -351,25 +352,22 @@
     [s addGestureRecognizer:onceTap];
     [s setBounces:YES];
     
-    if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",demo.f_id]])
+    if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
     {
-        NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+        NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
         imageview.image = [UIImage imageWithContentsOfFile:path];
     }
     else
     {
-        CGRect activityRect = CGRectMake((320-20)/2, (scollviewHeight-20)/2, 20, 20);
-        UIActivityIndicatorView *activity_indicator = [[[UIActivityIndicatorView alloc] initWithFrame:activityRect] autorelease];
-        [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-        [activity_indicator startAnimating];
-        [activity_indicator setTag:ACTNUMBER+i];
-        [s addSubview:activity_indicator];
+        NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+        imageview.image = [UIImage imageWithContentsOfFile:path];
         
         DownImage *downImage = [[[DownImage alloc] init] autorelease];
         [downImage setFileId:demo.f_id];
-        [downImage setImageUrl:[NSString stringWithFormat:@"%i",demo.f_id]];
+        [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
         [downImage setImageViewIndex:ImageViewTag+i];
         [downImage setIndex:ACTNUMBER+i];
+        [downImage setShowType:1];
         dispatch_async(dispatch_get_main_queue(), ^{
             [downImage setDelegate:self];
             [downImage startDownload];
@@ -589,7 +587,7 @@
         if([app_delegate respondsToSelector:@selector(sendImageContentIsFiends:path:)])
         {
             //微信朋友圈
-            [app_delegate sendImageContentIsFiends:YES path:[NSString stringWithFormat:@"%i",demo.f_id]];
+            [app_delegate sendImageContentIsFiends:YES path:[NSString stringWithFormat:@"%iT",demo.f_id]];
         }
     }
     if(buttonIndex == 1)
@@ -597,7 +595,7 @@
         if([app_delegate respondsToSelector:@selector(sendImageContentIsFiends:path:)])
         {
             //微信好友
-            [app_delegate sendImageContentIsFiends:NO path:[NSString stringWithFormat:@"%i",demo.f_id]];
+            [app_delegate sendImageContentIsFiends:NO path:[NSString stringWithFormat:@"%iT",demo.f_id]];
         }
     }
     if(buttonIndex == 2)
@@ -615,7 +613,7 @@
 #pragma mark 删除按钮事件
 -(void)deleteClicked:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"确认" otherButtonTitles:@"取消", nil];
     [alertView show];
     [alertView release];
 }
@@ -623,7 +621,7 @@
 #pragma mark UIAalertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 1)
+    if(buttonIndex == 0)
     {
         int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
         deletePage = page;
@@ -681,6 +679,7 @@
         self.imageScrollView.backgroundColor = [UIColor clearColor];
         self.imageScrollView.scrollEnabled = YES;
         self.imageScrollView.pagingEnabled = YES;
+        self.imageScrollView.showsHorizontalScrollIndicator = NO;
         self.imageScrollView.delegate = self;
         
         
@@ -802,8 +801,6 @@
              UIImageView *imageV = (UIImageView *)[imageScrollView viewWithTag:indexTag];
              [imageV setImage:image];
              [imageV setContentMode:UIViewContentModeScaleAspectFit];
-             UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:index];
-             [activity_indicator stopAnimating];
          });
      }
 }

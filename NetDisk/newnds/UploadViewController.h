@@ -42,8 +42,15 @@
     
     //网络异常
     bool isConnectionBl;
-    NSTimer *timer;
     BOOL timerBL;
+    BOOL baseBL;
+    BOOL isConnection;
+    BOOL isOnce;
+    /*
+     上传检索
+     */
+    NSTimer *connectionTimer;
+    NSTimer *libaryTimer;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;

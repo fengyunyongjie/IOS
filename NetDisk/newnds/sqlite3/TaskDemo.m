@@ -17,31 +17,31 @@
 }
 
 #pragma mark 添加任务表数据
--(void)insertTaskTable
+-(BOOL)insertTaskTable
 {
     sqlite3_stmt *statement;
-    
+    __block BOOL bl = TRUE;
     const char *dbpath = [databasePath UTF8String];
     
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [InsertTaskTable UTF8String];
         int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
         if (success != SQLITE_OK) {
-            NSLog(@"Error: failed to insert:TASKTable");
+            bl = FALSE;
         }
         sqlite3_bind_int(statement, 1, f_id);
-//        sqlite3_bind_blob(statement, 2, [f_data bytes], [f_data length], NULL);
-//        sqlite3_bind_text(statement, 2, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 2, f_state);
         sqlite3_bind_text(statement, 3, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, f_lenght);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
-            NSLog(@"Error: failed to insert into the database with message.");
+            bl = FALSE;
         }
+        NSLog(@"success:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
     }
+    return bl;
 }
 
 #pragma mark 删除任务表
@@ -193,6 +193,34 @@
                     break;
 //                }
 //            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return bl;
+}
+
+#pragma mark 判断图片是否存在
+-(BOOL)isExistOneImage
+{
+    sqlite3_stmt *statement;
+    const char *dbpath = [databasePath UTF8String];
+    BOOL bl = FALSE;
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [SelectOneTaskTableOneceForFNAME UTF8String];
+        sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        sqlite3_bind_text(statement, 1, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
+        while (sqlite3_step(statement)==SQLITE_ROW) {
+            //            int bytes = sqlite3_column_bytes(statement, 2);
+            //            const void *value = sqlite3_column_blob(statement, 2);
+            //            if( value != NULL && bytes != 0 ){
+            //                NSData *data = [NSData dataWithBytes:value length:bytes];
+            //                if([f_data isEqualToData:data])
+            //                {
+            bl = TRUE;
+            break;
+            //                }
+            //            }
         }
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);

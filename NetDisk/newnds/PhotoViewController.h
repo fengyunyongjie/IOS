@@ -19,8 +19,8 @@
 
 #import <UIKit/UIKit.h>
 #import "SCBPhotoManager.h"
-#import "PhotoDetailViewController.h"
 #import "DownImage.h"
+#import "MBProgressHUD.h"
 
 /*
  1:公开版
@@ -30,7 +30,7 @@
 #define DEBUG_PUBLIC_EDITION 1
 #endif
 
-@interface PhotoViewController : UIViewController<SCBPhotoDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,DeleteDelegate,UIAlertViewDelegate,DownloaderDelegate>
+@interface PhotoViewController : UIViewController<SCBPhotoDelegate,UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UIAlertViewDelegate,DownloaderDelegate>
 {
     SCBPhotoManager *photoManager;
     NSInteger show_height;
@@ -73,11 +73,14 @@
      倒序
      */
     bool isSort;
+    
+    NSOperationQueue *operationQueue;
+    
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
 @property(nonatomic,retain) NSMutableDictionary *allDictionary;
-@property(retain,atomic) UITableView *table_view;
+@property(nonatomic,retain) __block UITableView *table_view;
 @property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
 @property(nonatomic,retain) NSString *user_id;
 @property(nonatomic,retain) NSString *user_token;
@@ -91,6 +94,8 @@
 
 @property(nonatomic,retain) __block NSMutableDictionary *tablediction;
 @property(nonatomic,retain) __block NSMutableArray *sectionarray;
+
+@property(nonatomic,retain) NSCondition *condition;
 
 #pragma mark -得到时间轴的列表
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary;

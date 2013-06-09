@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>新虹盘</string>
+	<string>虹盘</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

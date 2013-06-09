@@ -37,6 +37,7 @@
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [body release];
 }
 -(void)openFinderWithID:(NSString *)f_id
 {
@@ -55,6 +56,7 @@
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
+    [body release];
     
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
@@ -75,6 +77,7 @@
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
+    [body release];
     
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
@@ -96,6 +99,7 @@
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
+    [body release];
     
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
@@ -119,6 +123,7 @@
     [request setHTTPMethod:@"POST"];
     
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [body release];
 }
 #pragma mark - NSURLConnectionDelegate Methods
 

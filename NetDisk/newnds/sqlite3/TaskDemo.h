@@ -18,6 +18,7 @@
 #define SelectMoreTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=0"
 #define SelectOneTaskTableForTID @"SELECT * FROM TASKTABLE WHERE T_ID=?"
 #define SelectOneTaskTableForFID @"SELECT * FROM TASKTABLE WHERE F_ID=?"
+#define SelectOneTaskTableOneceForFNAME @"SELECT * FROM TASKTABLE WHERE F_BASE_NAME=?"
 #define SelectOneTaskTableForFNAME @"SELECT * FROM TASKTABLE WHERE F_BASE_NAME=? AND F_STATE=1"
 
 @interface TaskDemo : DBSqlite3
@@ -42,7 +43,7 @@
 -(id)init;
 
 #pragma mark 添加任务表数据
--(void)insertTaskTable;
+-(BOOL)insertTaskTable;
 
 #pragma mark 修改任务表
 -(void)updateTaskTable;
@@ -56,5 +57,7 @@
 
 #pragma mark 判断图片是否存在
 -(BOOL)isPhotoExist;
+#pragma mark 判断图片是否唯一
+-(BOOL)isExistOneImage;
 
 @end

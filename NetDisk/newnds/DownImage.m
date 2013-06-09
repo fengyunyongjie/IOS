@@ -41,21 +41,41 @@
     }
     else
     {
-        NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
-        fielStirng = [fielStirng base64String];
-        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@&default_pic=false",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
-        if(showType == 1)
-        {
-            s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
-        }
-        NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-        [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-        [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-        [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
-        [request setHTTPMethod:@"GET"];
-        
         activeDownload = [[NSMutableData alloc] init];
-        imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
+        if(showType == 0)
+        {
+            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
+            NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+            //    NSMutableString *body=[[NSMutableString alloc] init];
+            //    [body appendFormat:@"f_id=%@&f_skip=%d",f_id,0];
+            //    NSMutableData *myRequestData=[NSMutableData data];
+            //    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+            //[request setHTTPBody:myRequestData];
+            [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+            [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+            [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+            [request setValue:fielStirng forHTTPHeaderField:@"f_id"];
+            [request setHTTPMethod:@"GET"];
+            NSLog(@"%@",[request allHTTPHeaderFields]);
+            [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        }
+        else
+        {
+            NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
+            fielStirng = [fielStirng base64String];
+            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@&default_pic=false",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
+            if(showType == 1)
+            {
+                s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
+            }
+            NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+            [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+            [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+            [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+            [request setHTTPMethod:@"GET"];
+            imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        }
     }
     [image release];
 }
@@ -82,20 +102,7 @@
     NSLog(@"connectionDidFinishLoading:%@",connection);
     if([[diction objectForKey:@"code"] intValue] == 3)
     {
-        NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
-        fielStirng = [fielStirng base64String];
-        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@&default_pic=true",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
-        NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-        [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-        [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-        [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
-        [request setHTTPMethod:@"GET"];
-        if(activeDownload)
-        {
-            [activeDownload release];
-        }
-        activeDownload = [[NSMutableData alloc] init];
-        imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        [self startDownload];
     }
     else
     {
