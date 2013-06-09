@@ -51,6 +51,7 @@
      */
     NSTimer *connectionTimer;
     NSTimer *libaryTimer;
+    NSURLConnection *connection;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;

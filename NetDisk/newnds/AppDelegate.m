@@ -16,6 +16,7 @@
 
 @implementation AppDelegate
 @synthesize user_name;
+@synthesize isUnUpload;
 
 - (void)dealloc
 {

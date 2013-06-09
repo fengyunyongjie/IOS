@@ -9,6 +9,7 @@
 #import "SettingViewController.h"
 #import "SCBAccountManager.h"
 #import "YNFunctions.h"
+#import "AppDelegate.h"
 
 typedef enum{
     kAlertTypeExit,
@@ -114,6 +115,8 @@ typedef enum{
                 [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [self.rootViewController presendLoginViewController];
+                AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [app_delegate setIsUnUpload:YES];
             }
             break;
         case kAlertTypeClear:
