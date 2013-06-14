@@ -136,11 +136,14 @@
 #pragma mark -得到时间轴的列表
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary
 {
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    hud.mode=MBProgressHUDModeIndeterminate;
-    hud.labelText=@"正在加载";
-    [self.view addSubview:hud];
-    [hud show:YES];
+    if(hud == nil)
+    {
+        hud = [[MBProgressHUD alloc] initWithView:self.view];
+        hud.mode=MBProgressHUDModeIndeterminate;
+        hud.labelText=@"正在加载";
+        [self.view addSubview:hud];
+        [hud show:YES];
+    }
     
     [table_view clearsContextBeforeDrawing];
     [tablediction removeAllObjects];
@@ -977,7 +980,7 @@
 #pragma mark 分享到朋友圈或会话
 -(void)shareButton
 {
-
+    
 }
 
 #pragma mark UIActionSheetDelegate
@@ -1077,10 +1080,6 @@
     
     [self setUser_id:[[SCBSession sharedSession] userId]];
     [self setUser_token:[[SCBSession sharedSession] userToken]];
-    
-    [hud hide:YES afterDelay:0.8f];
-    [hud release];
-    hud = nil;
 }
 
 -(void)requestPhotoTimeLine
@@ -1101,6 +1100,9 @@
         }
         else
         {
+            [hud hide:YES afterDelay:0.8f];
+            [hud release];
+            hud = nil;
             [photoManager getPhotoTimeLine:NO];
         }
     });

@@ -29,8 +29,8 @@
 }
 -(void)dealloc
 {
-    [super dealloc];
     self.imageDownloadsInProgress=nil;
+    [super dealloc];
 }
 - (void)viewDidLoad
 {
