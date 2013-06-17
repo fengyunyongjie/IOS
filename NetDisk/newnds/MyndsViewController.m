@@ -741,12 +741,26 @@ typedef enum{
 
         }else
         {
+            //非图片文件必须加入收藏后才可以预览（其实我的意思是可以直接预览）
             if ([YNFunctions isUnlockFeature]) {
-                OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
-                [otherBrowser setHidesBottomBarWhenPushed:YES];
-                otherBrowser.dataDic=dic;
-                otherBrowser.title=f_name;
-                [self.navigationController pushViewController:otherBrowser animated:YES];
+                //先做文件类型判断，是否是为可预览文件，如果为否，不做任何操作
+                //判断文件是否下载完成，如果下载完成，打开预览，否则不做任何操作
+                NSString *fileName=[dic objectForKey:@"f_name"];
+                NSString *filePath=[YNFunctions getFMCachePath];
+                filePath=[filePath stringByAppendingPathComponent:fileName];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                    //文件存在，打开预览
+                    UIDocumentInteractionController *docIC=[[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]] autorelease];
+                    docIC.delegate=self;
+                    [docIC presentPreviewAnimated:YES];
+                }else{
+                    OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+                    [otherBrowser setHidesBottomBarWhenPushed:YES];
+                    otherBrowser.dataDic=dic;
+                    NSString *f_name=[dic objectForKey:@"f_name"];
+                    otherBrowser.title=f_name;
+                    [self.navigationController pushViewController:otherBrowser animated:YES];
+                }
 
             }
         }
@@ -1109,11 +1123,16 @@ typedef enum{
     IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
     if (iconDownloader != nil)
     {        
-        [self.tableView reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationNone];
     }
     
     // Remove the IconDownloader from the in progress list.
     // This will result in it being deallocated.
     [self.imageDownloadsInProgress removeObjectForKey:indexPath];
+}
+#pragma mark - UIDocumentInteractionControllerDelegate
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)interactionController
+{
+    return self;
 }
 @end

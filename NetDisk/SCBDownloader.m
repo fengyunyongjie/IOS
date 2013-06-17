@@ -101,6 +101,11 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    if (self.delegate) {
+        if ([(NSObject *)self.delegate respondsToSelector:@selector(downloadFail)]) {
+            [self.delegate downloadFail];
+        }
+    }
 	// Clear the activeDownload property to allow later attempts
     self.activeDownload = nil;
     

@@ -50,7 +50,8 @@ typedef enum{
     //[exitButton setBackgroundColor:[UIColor redColor]];
     [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit.png"] forState:UIControlStateNormal];
     [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit_on.png"] forState:UIControlStateHighlighted];
-    [exitButton setFrame:CGRectMake(10, 470, 301, 50)];
+    int y=self.tableView.frame.size.height-30;
+    [exitButton setFrame:CGRectMake(10, y, 301, 50)];
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
@@ -172,7 +173,7 @@ typedef enum{
             return 2;
             break;
         case 1:
-            return 3;
+            return 4;
             break;
         case 2:
             return 2;
@@ -277,9 +278,21 @@ typedef enum{
             descLabel.hidden = YES;
             titleLabel.textAlignment = UITextAlignmentLeft;
             switch (row) {
+                case 3:
+                {
+                    titleLabel.text = @"自动备份照片";
+                    NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
+                    if (switchFlag==nil) {
+                        m_switch.on = YES;
+                    }
+                    else{
+                        m_switch.on = [switchFlag boolValue];
+                    }
+                }
+                    break;
                 case 0:
                 {
-                    titleLabel.text = @"仅在连接WIFI时上传";
+                    titleLabel.text = @"仅通过WIFI进行上传下载";
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
                     if (switchFlag==nil) {
                         m_switch.on = YES;
@@ -364,7 +377,7 @@ typedef enum{
                 case 0:
                     descLabel.hidden = NO;
                     titleLabel.text = @"版本";
-                    descLabel.text = @"V1.1.0";
+                    descLabel.text = @"V1.1.1";
                     break;
                 case 1:
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;

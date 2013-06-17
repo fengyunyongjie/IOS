@@ -31,5 +31,6 @@
 
 @protocol SCBDownloaderDelegate
 -(void)fileDidDownload:(int)index;
+-(void)downloadFail;
 -(void)updateProgress:(long)size index:(int)index;
 @end

@@ -36,6 +36,7 @@
 {
     self.imageDownloadsInProgress=[NSMutableDictionary dictionary];
     [super viewDidLoad];
+    [[FavoritesData sharedFavoritesData] setFviewController:self];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -84,15 +85,33 @@
                                          reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.textLabel.text=@"fane";
     NSDictionary *dic=[[[FavoritesData sharedFavoritesData] allValues] objectAtIndex:indexPath.row];
+    
     NSString *name= [dic objectForKey:@"f_name"];
-    //NSString *f_modify=[dic objectForKey:@"f_modify"];
     NSString *t_fl = [[dic objectForKey:@"f_mime"] lowercaseString];
-    cell.textLabel.text=name;
     NSString *f_size=[dic objectForKey:@"f_size"];
-    cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[YNFunctions convertSize:f_size]];
-    //cell.detailTextLabel.text=f_modify;
+    NSString *f_id=[dic objectForKey:@"f_id"];
+    
+    cell.textLabel.text=name;
+    
+    NSString *fileName=[dic objectForKey:@"f_name"];
+    NSString *filePath=[YNFunctions getFMCachePath];
+    filePath=[filePath stringByAppendingPathComponent:fileName];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ 2013-6-17 14:59:32",[YNFunctions convertSize:f_size]];
+    }else if([f_id isEqualToString:[[FavoritesData sharedFavoritesData] currentDownloadID]])
+    {
+        if (self.text!=nil) {
+            cell.detailTextLabel.text=self.text;
+        }else
+        {
+            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ 0%已下载",[YNFunctions convertSize:f_size]];
+        }
+    }else
+    {
+        cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ 等待中...",[YNFunctions convertSize:f_size]];
+    }
+    
     if (cell.imageView.subviews.count==0) {
         UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
         CGRect r=[tagView frame];
@@ -101,17 +120,13 @@
         [tagView setFrame:r];
         [cell.imageView addSubview:tagView];
     }
-//    UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
     
-    if ([t_fl isEqualToString:@"directory"]) {
-        cell.imageView.image = [UIImage imageNamed:@"icon_Folder.png"];
-    }else if ([t_fl isEqualToString:@"png"]||
+    if ([t_fl isEqualToString:@"png"]||
               [t_fl isEqualToString:@"jpg"]||
               [t_fl isEqualToString:@"jpeg"]||
               [t_fl isEqualToString:@"bmp"]||
               [t_fl isEqualToString:@"gif"])
     {
-        //NSDictionary *dic = [self.listArray objectAtIndex:indexPath.row];
         NSString *compressaddr=[dic objectForKey:@"compressaddr"];
         compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
         NSString *path=[YNFunctions getIconCachePath];
@@ -217,22 +232,15 @@
         int index=0;
         for (int i=0;i<listArray.count;i++) {
             NSDictionary *dict=[listArray objectAtIndex:i];
-            NSString *f_mime=[[dict objectForKey:@"f_mime"] lowercaseString];
-            if ([f_mime isEqualToString:@"png"]||
-                [f_mime isEqualToString:@"jpg"]||
-                [f_mime isEqualToString:@"jpeg"]||
-                [f_mime isEqualToString:@"bmp"]||
-                [f_mime isEqualToString:@"gif"]) {
-                PhotoFile *demo = [[PhotoFile alloc] init];
-                [demo setF_date:[dict objectForKey:@"f_create"]];
-                [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
-                [array addObject:demo];
-                
-                if (i==indexPath.row) {
-                    index=array.count-1;
-                }
-                [demo release];
+            PhotoFile *demo = [[PhotoFile alloc] init];
+            [demo setF_date:[dict objectForKey:@"f_create"]];
+            [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
+            [array addObject:demo];
+            
+            if (i==indexPath.row) {
+                index=array.count-1;
             }
+            [demo release];
         }
         PhotoLookViewController *photoLookViewController = [[PhotoLookViewController alloc] init];
         [photoLookViewController setHidesBottomBarWhenPushed:YES];
@@ -243,7 +251,17 @@
         [photoLookViewController release];
     }else
     {
-        if ([YNFunctions isUnlockFeature]) {
+        //先做文件类型判断，是否是为可预览文件，如果为否，不做任何操作
+        //判断文件是否下载完成，如果下载完成，打开预览，否则不做任何操作
+        NSString *fileName=[dic objectForKey:@"f_name"];
+        NSString *filePath=[YNFunctions getFMCachePath];
+        filePath=[filePath stringByAppendingPathComponent:fileName];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            //文件存在，打开预览
+            UIDocumentInteractionController *docIC=[[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]] autorelease];
+            docIC.delegate=self;
+            [docIC presentPreviewAnimated:YES];
+        }else{
             OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
             [otherBrowser setHidesBottomBarWhenPushed:YES];
             otherBrowser.dataDic=dic;
@@ -313,11 +331,35 @@
     IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
     if (iconDownloader != nil)
     {
-        [self.tableView reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationNone];
     }
     
     // Remove the IconDownloader from the in progress list.
     // This will result in it being deallocated.
     [self.imageDownloadsInProgress removeObjectForKey:indexPath];
+}
+#pragma mark - UIDocumentInteractionControllerDelegate
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)interactionController
+{
+    return self;
+}
+#pragma mark - SCBDownloaderDelegate Methods
+-(void)fileDidDownload:(int)index
+{
+    [self.tableView reloadData];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+-(void)updateProgress:(long)size index:(int)index
+{
+    [self.tableView reloadData];
+    NSDictionary *dic=[[[FavoritesData sharedFavoritesData] allValues] objectAtIndex:index];
+    long t_size=[[dic objectForKey:@"f_size"] intValue];
+    NSString *s_size=[YNFunctions convertSize:[NSString stringWithFormat:@"%ld",size]];
+    NSString *s_tsize=[YNFunctions convertSize:[NSString stringWithFormat:@"%ld",t_size]];
+    int value=(size/(double)t_size)*100;
+    NSString *text=[NSString stringWithFormat:@"%@ %d%%已下载",s_tsize,value];
+    //NSLog(@"%@",text);
+    self.text=text;
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 @end

@@ -134,7 +134,6 @@
     [self.downloadLabel setText:text];
 }
 #pragma mark - UIDocumentInteractionControllerDelegate
-
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)interactionController
 {
     return self;

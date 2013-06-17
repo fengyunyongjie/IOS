@@ -13,7 +13,7 @@ typedef enum {
     kMyndsTypeSelect,
 } MyndsType;
 
-@interface MyndsViewController : UITableViewController
+@interface MyndsViewController : UITableViewController<UIDocumentInteractionControllerDelegate>
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSArray *finderArray;
