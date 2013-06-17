@@ -200,6 +200,7 @@
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
     
     for (UIView *v in scrollView.subviews){
+        NSLog(@"tag:%i;sTag:%i",v.tag,scrollView.tag);
         return v;
     }
     return nil;
@@ -207,11 +208,10 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
+    NSLog(@"okkk");
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    
     //加载当前页面，左右各十张
     isLoadImage = TRUE;
     [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
@@ -227,7 +227,10 @@
                 if ([s isKindOfClass:[UIScrollView class]]){
                     [s setZoomScale:1.0];
                     UIImageView *image = [[s subviews] objectAtIndex:0];
-                    image.frame = CGRectMake(0, 0, 320, scollviewHeight);
+                    CGSize imaSize = [self getImageSize:image.image];
+                    CGRect imageFrame = image.frame;
+                    imageFrame.size = imaSize;
+                    [image setFrame:imageFrame];
                 }
             }
         }
@@ -243,15 +246,48 @@
 }
 
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
+    
 }
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{
-    NSLog(@"Did zoom!");
-    UIView *v = [scrollView.subviews objectAtIndex:0];
-    if ([v isKindOfClass:[UIImageView class]]){
-        if (scrollView.zoomScale<1.0){
-//         v.center = CGPointMake(scrollView.frame.size.width/2.0, scrollView.frame.size.height/2.0);
+    NSLog(@"Did zoom!:%@",NSStringFromCGSize(scrollView.contentSize));
+    
+    if(scrollView.zoomScale != endScale)
+    {
+        CGRect sFrame = scrollView.frame;
+        if(scrollView.contentSize.width>=320)
+        {
+            sFrame.size.width = 320;
+            sFrame.origin.x = 320*(scrollView.tag-1);
         }
+        else
+        {
+            sFrame.size.width = scrollView.contentSize.width;
+            sFrame.origin.x = 320*(scrollView.tag-1)+(320-scrollView.contentSize.width)/2;
+        }
+        if(scrollView.contentSize.height>=scollviewHeight)
+        {
+            sFrame.size.height = scollviewHeight;
+            sFrame.origin.y = 0;
+        }
+        else
+        {
+            sFrame.size.height = scrollView.contentSize.height;
+            sFrame.origin.y = (scollviewHeight-scrollView.contentSize.height)/2;
+        }
+        
+        [scrollView setFrame:sFrame];
+        endScale = scrollView.zoomScale;
+    }
+    
+    if (scrollView.zoomScale<=1.0){
+        UIImageView *imageview = (UIImageView *)[scrollView viewWithTag:ImageViewTag+scrollView.tag-1];
+        CGSize size = [self getImageSize:imageview.image];
+        CGRect sFrame = scrollView.frame;
+        sFrame.origin.x = 320*(scrollView.tag-1)+(320-size.width)/2;
+        sFrame.origin.y = (scollviewHeight-size.height)/2;
+        sFrame.size = size;
+        [scrollView setFrame:sFrame];
     }
 }
 
@@ -341,7 +377,7 @@
     UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
     [onceTap setNumberOfTapsRequired:1];
     
-    UIScrollView *s = [[UIScrollView alloc] initWithFrame:CGRectMake(320*i, 0, 320, scollviewHeight)];
+    UIScrollView *s = [[UIScrollView alloc] init];
     s.backgroundColor = [UIColor clearColor];
     s.contentSize = CGSizeMake(320, scollviewHeight);
     s.showsHorizontalScrollIndicator = NO;
@@ -353,11 +389,10 @@
     [s setZoomScale:1.0];
     
     UIImageView *imageview = [[UIImageView alloc] init];
-    imageview.frame = CGRectMake(0, 0, 320, scollviewHeight);
     imageview.userInteractionEnabled = YES;
     imageview.tag = ImageViewTag+i;
     [imageview addGestureRecognizer:doubleTap];
-    [s addSubview:imageview];
+    
     
     [s addGestureRecognizer:onceTap];
     [s setBounces:YES];
@@ -383,13 +418,43 @@
             [downArray addObject:downImage];
         });
     }
-    [imageview setContentMode:UIViewContentModeScaleAspectFit];
+    CGSize size = [self getImageSize:imageview.image];
+    
+    CGRect sFrame = s.frame;
+    sFrame.origin.x = 320*i+(320-size.width)/2;
+    sFrame.origin.y = (scollviewHeight-size.height)/2;
+    sFrame.size = size;
+    [s setFrame:sFrame];
+    
+    CGRect imageFrame = imageview.frame;
+    imageFrame.origin.x = 0;
+    imageFrame.origin.y = 0;
+    imageFrame.size = size;
+    [imageview setFrame:imageFrame];
+    [s addSubview:imageview];
+    [s setContentSize:size];
     [self.imageScrollView addSubview:s];
     [imageDic setObject:demo forKey:[NSString stringWithFormat:@"%i",demo.f_id]];
     [onceTap release];
     [doubleTap release];
     [imageview release];
     [s release];
+}
+
+-(CGSize)getImageSize:(UIImage *)imageV
+{
+    CGSize size = imageV.size;
+    if(size.width>320)
+    {
+        size.height = 320*size.height/size.width;
+        size.width = 320;
+    }
+    if(size.height>scollviewHeight)
+    {
+        size.width = scollviewHeight*size.width/size.height;
+        size.height = scollviewHeight;
+    }
+    return size;
 }
 
 -(void)notImagePath
@@ -404,7 +469,7 @@
 
 #pragma mark -
 -(void)handleDoubleTap:(UIGestureRecognizer *)gesture{
-    NSLog(@"handleDoubleTap");
+    
     float newScale = 0;
     if(!isDoubleClick)
     {
@@ -416,10 +481,21 @@
         isDoubleClick = FALSE;
     }
     CGRect zoomRect = [self zoomRectForScale:newScale  inView:(UIScrollView*)gesture.view.superview withCenter:[gesture locationInView:gesture.view]];
+    NSLog(@"handleDoubleTap:%@",NSStringFromCGRect(zoomRect));
     UIView *view = gesture.view.superview;
     if ([view isKindOfClass:[UIScrollView class]]){
         UIScrollView *s = (UIScrollView *)view;
         [s zoomToRect:zoomRect animated:YES];
+        if(!isDoubleClick)
+        {
+            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-1];
+            CGSize size = [self getImageSize:imageview.image];
+            CGRect sFrame = s.frame;
+            sFrame.origin.x = 320*(s.tag-1)+(320-size.width)/2;
+            sFrame.origin.y = (scollviewHeight-size.height)/2;
+            sFrame.size = size;
+            [s setFrame:sFrame];
+        }
     }
 }
 
@@ -433,7 +509,7 @@
         [bottonToolBar setHidden:NO];
         if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
         {
-          PhotoFile *demo = [tableArray objectAtIndex:page];
+            PhotoFile *demo = [tableArray objectAtIndex:page];
             NSString *f_id = [NSString stringWithFormat:@"%i",demo.f_id];
             if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
                 [self isHiddenDelete:YES];
@@ -774,7 +850,7 @@
         }
         
         [self.view addSubview:self.imageScrollView];
-//        [self.view bringSubviewToFront:self.navigationController.navigationBar];
+        //        [self.view bringSubviewToFront:self.navigationController.navigationBar];
         [self.view bringSubviewToFront:bottonToolBar];
         
         self.imageScrollView.contentSize = CGSizeMake(320*[tableArray count], scollviewHeight);
@@ -836,14 +912,37 @@
 #pragma mark 下载回调
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
 {
-     if([[imageScrollView viewWithTag:indexTag] isKindOfClass:[UIImageView class]])
-     {
-         dispatch_async(dispatch_get_main_queue(), ^{
-             UIImageView *imageV = (UIImageView *)[imageScrollView viewWithTag:indexTag];
-             [imageV setImage:image];
-             [imageV setContentMode:UIViewContentModeScaleAspectFit];
-         });
-     }
+    if([[imageScrollView viewWithTag:indexTag] isKindOfClass:[UIImageView class]])
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImageView *imageV = (UIImageView *)[imageScrollView viewWithTag:indexTag];
+            [imageV setImage:image];
+            
+            
+            CGSize size = [self getImageSize:imageV.image];
+            
+            UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+1];
+            CGRect sFrame = s.frame;
+            sFrame.origin.x = 320*(indexTag-ImageViewTag)+(320-size.width)/2;
+            sFrame.origin.y = (scollviewHeight-size.height)/2;
+            sFrame.size = size;
+            [s setFrame:sFrame];
+            
+            CGRect imageFrame = imageV.frame;
+            imageFrame.origin.x = 0;
+            imageFrame.origin.y = 0;
+            imageFrame.size = size;
+            [imageV setFrame:imageFrame];
+            
+            //             CGSize size = [self getImageSize:imageV.image];
+            
+            //             CGRect imageFrame = imageV.frame;
+            //             imageFrame.origin.x = (320-size.width)/2;
+            //             imageFrame.origin.y = (scollviewHeight-size.height)/2;
+            //             imageFrame.size = size;
+            //             [imageV setFrame:imageFrame];
+        });
+    }
 }
 
 @end

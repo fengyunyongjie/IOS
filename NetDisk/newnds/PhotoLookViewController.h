@@ -56,7 +56,7 @@
      双击事件
      */
     BOOL isDoubleClick;
-    
+    float endScale;
     NSMutableArray *downArray;
 }
 
