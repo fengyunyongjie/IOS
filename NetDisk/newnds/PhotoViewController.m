@@ -75,14 +75,19 @@
     downArray = [[NSMutableArray alloc] init];
     tablediction = [[NSMutableDictionary alloc] init];
     sectionarray = [[NSMutableArray alloc] init];
+    
+    
     CGRect rect = CGRectMake(0, 0, 320, self.view.frame.size.height-49-44);
+    if([[[UIDevice currentDevice] systemVersion] floatValue] > 6.0)
+    {
+        rect = CGRectMake(0, 66, 320, self.view.frame.size.height-49-66);
+    }
     table_view = [[UITableView alloc] initWithFrame:rect];
     [table_view setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [table_view setDataSource:self];
     [table_view setDelegate:self];
     [self.view addSubview:table_view];
-    
-    selfLenght = self.view.frame.size.height-49-44;
+    selfLenght = self.view.frame.size.height-49-66;
     endFloat = 10000;
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
@@ -630,8 +635,40 @@
             UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
             image.tag = UIImageTag+demo.f_id;
             [cellT setImageTag:image.tag];
-            UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-            [image setImage:imageV];
+            
+            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]])
+            {
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]];
+                UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+                CGSize newImageSize;
+                if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+                {
+                    newImageSize.height = 200;
+                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+                else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+                {
+                    newImageSize.width = 200;
+                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+                else
+                {
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                }
+            }
+            else
+            {
+                UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+            }
             [cell.contentView addSubview:image];
             
             SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
@@ -659,10 +696,10 @@
             [cell.contentView addSubview:button];
             [button release];
         }
-        operation *queue = [[operation alloc] init];
-        [queue cellArray:cellArray imagev:imageArray];
-        [operationQueue addOperation:queue];
-        [queue release];
+        //        operation *queue = [[operation alloc] init];
+        //        [queue cellArray:cellArray imagev:imageArray];
+        //        [operationQueue addOperation:queue];
+        //        [queue release];
         [cell setCellArray:cellArray];
         [cellArray release];
         [imageArray release];
@@ -681,8 +718,40 @@
             UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
             image.tag = UIImageTag+demo.f_id;
             [cellT setImageTag:image.tag];
-            UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-            [image setImage:imageV];
+            
+            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]])
+            {
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]];
+                UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+                CGSize newImageSize;
+                if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+                {
+                    newImageSize.height = 200;
+                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+                else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+                {
+                    newImageSize.width = 200;
+                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+                else
+                {
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                }
+            }
+            else
+            {
+                UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+            }
             [cell.contentView addSubview:image];
             
             SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
@@ -710,10 +779,10 @@
             [cell.contentView addSubview:button];
             [button release];
         }
-        operation *queue = [[operation alloc] init];
-        [queue cellArray:cellArray imagev:imageArray];
-        [operationQueue addOperation:queue];
-        [queue release];
+        //        operation *queue = [[operation alloc] init];
+        //        [queue cellArray:cellArray imagev:imageArray];
+        //        [operationQueue addOperation:queue];
+        //        [queue release];
         [cell setCellArray:cellArray];
         [cellArray release];
     }
