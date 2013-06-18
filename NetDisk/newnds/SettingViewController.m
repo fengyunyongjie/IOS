@@ -79,9 +79,27 @@ typedef enum{
 }
 - (void)switchChange:(id)sender
 {
-    UISwitch *theSwith = (UISwitch *)sender;
-    NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
-    [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
+    switch ([(UISwitch*)sender tag]) {
+        case 0:
+        {
+            UISwitch *theSwith = (UISwitch *)sender;
+            NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
+            [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
+            NSLog(@"打开或关闭仅Wifi:: %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"]);
+        }
+            break;
+        case 3:
+        {
+            UISwitch *theSwith = (UISwitch *)sender;
+            NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
+            [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
+            NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
+        }
+            break;
+        default:
+            break;
+    }
+    
 }
 - (void)exitAccount:(id)sender
 {
@@ -115,6 +133,7 @@ typedef enum{
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
+                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [self.rootViewController presendLoginViewController];
                 AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -281,9 +300,9 @@ typedef enum{
                 case 3:
                 {
                     titleLabel.text = @"自动备份照片";
-                    NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
+                    NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"];
                     if (switchFlag==nil) {
-                        m_switch.on = YES;
+                        m_switch.on = NO;
                     }
                     else{
                         m_switch.on = [switchFlag boolValue];

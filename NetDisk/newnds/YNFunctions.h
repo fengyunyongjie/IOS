@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Reachability.h"
 
 @interface YNFunctions : NSObject
 +(double)getDirectorySizeForPath:(NSString*)path;
@@ -28,4 +29,12 @@
 + (NSString *)convertSize:(NSString *)sourceSize;
 #pragma mark --------屏蔽某些新功能
 +(BOOL)isUnlockFeature;
+#pragma mark --------获取网络状态
++(NetworkStatus)networkStatus;
+#pragma mark --------获取是否仅Wifi上传下载
++(BOOL)isOnlyWifi;
++(void)setIsOnlyWifi:(BOOL)value;
+#pragma mark --------获取是否打开自动上传照片
++(BOOL)isAutoUpload;
++(void)setIsAutoUpload:(BOOL)value;
 @end

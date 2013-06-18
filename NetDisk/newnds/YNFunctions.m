@@ -241,4 +241,38 @@
     }
     return NO;
 }
+#pragma mark --------获取网络状态
++(NetworkStatus)networkStatus
+{
+    Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.7cbox.cn"];
+    return [hostReach currentReachabilityStatus];
+}
+#pragma mark --------获取是否仅Wifi上传下载
++(BOOL)isOnlyWifi
+{
+    NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
+    if (value==nil) {
+        return YES;
+    }
+    return [value boolValue];
+}
++(void)setIsOnlyWifi:(BOOL)value
+{
+    NSString *strValue = [NSString stringWithFormat:@"%d",value];
+    [[NSUserDefaults standardUserDefaults] setObject:strValue forKey:@"switch_flag"];
+}
+#pragma mark --------获取是否打开自动上传照片
++(BOOL)isAutoUpload
+{
+    NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"];
+    if (value==nil) {
+        return NO;
+    }
+    return [value boolValue];
+}
++(void)setIsAutoUpload:(BOOL)value
+{
+    NSString *strValue = [NSString stringWithFormat:@"%d",value];
+    [[NSUserDefaults standardUserDefaults] setObject:strValue forKey:@"isAutoUpload"];
+}
 @end

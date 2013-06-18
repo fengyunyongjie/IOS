@@ -12,16 +12,17 @@
 #define CLIENT_TAG @"3"
 #define CONNECT_TIMEOUT 15
 #define RESPONSE_TIMEOUT 10
-#define SERVER_URL @"http://7cbox.cn/nds/api"
+//#define SERVER_URL @"http://7cbox.cn/nds/api"
 //#define SERVER_URL_NEW @"http://7cbox.cn/nds/api"
-//#define SERVER_URL @"http://192.168.1.5/nds/api"	//local host
+#define SERVER_URL @"http://192.168.1.5/nds/api"	//local host
 //#define SERVER_URL @"http://xianzhouhe.eicp.net/nds/api"	//local host
 
 #pragma mark - 用户管理
 //用户注册
 #define USER_REGISTER_URI @"/usr/register"
 //用户登录
-#define USER_LOGIN_URI @"/usr/login"
+//#define USER_LOGIN_URI @"/usr/login"
+#define USER_LOGIN_URI @"/account/login/"
 //用户注销
 #define USER_LOGOUT_URI @"/usr/logout"
 //获取用户当前存储空间信息；

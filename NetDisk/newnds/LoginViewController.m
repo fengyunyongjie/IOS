@@ -78,7 +78,7 @@
         NSRange rang  = [loginName rangeOfString:@"@"];
         if (rang.location==NSNotFound) {
             self.hud.labelText=@"请输入合法的用户名";
-            rt=NO;
+            //rt=NO;
         }
         else
         {
