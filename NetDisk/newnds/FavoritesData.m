@@ -91,6 +91,13 @@ static FavoritesData *_sharedFavoritesData;
 }
 -(void)startDownload
 {
+    if ([YNFunctions networkStatus]==NotReachable) {
+        NSLog(@"无网络");
+        self.currentDownloadID=nil;
+        self.isAllFileDownloadFinish=YES;
+        [self downloadFail];
+        return;
+    }
     if ([YNFunctions isOnlyWifi] && [YNFunctions networkStatus]!=ReachableViaWiFi) {
         NSLog(@"设置为仅Wifi上传下载，但Wifi网络不通！！！");
         self.currentDownloadID=nil;

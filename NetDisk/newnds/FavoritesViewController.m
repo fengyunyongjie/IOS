@@ -56,6 +56,7 @@
 {
     [[FavoritesData sharedFavoritesData] reloadData];
     [self.tableView reloadData];
+    [[FavoritesData sharedFavoritesData] startDownloading];
     [super viewDidAppear:animated];
 }
 - (void)didReceiveMemoryWarning
@@ -363,12 +364,19 @@
 #pragma mark - SCBDownloaderDelegate Methods
 -(void)fileDidDownload:(int)index
 {
-    [self.tableView reloadData];
+    int rows=[self.tableView numberOfRowsInSection:0];
+    if ([[FavoritesData sharedFavoritesData] count]!=rows) {
+        [self.tableView reloadData];
+    }
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    self.text=nil;
 }
 -(void)updateProgress:(long)size index:(int)index
 {
-    [self.tableView reloadData];
+    int rows=[self.tableView numberOfRowsInSection:0];
+    if ([[FavoritesData sharedFavoritesData] count]!=rows) {
+        [self.tableView reloadData];
+    }
     NSDictionary *dic=[[[FavoritesData sharedFavoritesData] allValues] objectAtIndex:index];
     long t_size=[[dic objectForKey:@"f_size"] intValue];
     NSString *s_size=[YNFunctions convertSize:[NSString stringWithFormat:@"%ld",size]];
@@ -377,6 +385,12 @@
     NSString *text=[NSString stringWithFormat:@"%@ %d%%已下载",s_tsize,value];
     //NSLog(@"%@",text);
     self.text=text;
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:index inSection:0];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    //[self.tableView cellForRowAtIndexPath:indexPath];
+}
+-(void)updateCell
+{
+    [self.tableView reloadData];
 }
 @end

@@ -67,6 +67,16 @@
 }
 -(void)presendLoginViewController
 {
+    NSString *version=[[NSUserDefaults standardUserDefaults] objectForKey:@"V1.1.1"];
+    if (version==nil) {
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
+        [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"version" forKey:@"V1.1.1"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
     NSString *userPwd  = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_pwd"];
     if (userName==nil&&userPwd==nil) {

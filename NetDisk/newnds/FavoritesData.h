@@ -25,4 +25,5 @@
 - (int)count;
 -(void)reloadData;
 -(NSArray *)allValues;
+-(void)startDownloading;
 @end
