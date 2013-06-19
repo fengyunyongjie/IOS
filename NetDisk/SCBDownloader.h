@@ -24,6 +24,7 @@
 @property(nonatomic,assign)id<SCBDownloaderDelegate> delegate;
 @property (nonatomic, retain) NSMutableData *activeDownload;
 @property(nonatomic,retain)NSURLConnection *fileConnection;
+@property(strong,nonatomic)NSString *tempSavedPath;
 
 -(void)startDownload;
 -(void)cancelDownload;

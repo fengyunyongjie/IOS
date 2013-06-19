@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuickLook/QuickLook.h>
 #import "IconDownloader.h"
 
-@interface FavoritesViewController : UITableViewController<IconDownloaderDelegate,UIDocumentInteractionControllerDelegate>
+@interface FavoritesViewController : UITableViewController<IconDownloaderDelegate,QLPreviewControllerDataSource,
+QLPreviewControllerDelegate,UIDocumentInteractionControllerDelegate>
 @property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
 @property (strong,nonatomic) NSString *text;
 @end

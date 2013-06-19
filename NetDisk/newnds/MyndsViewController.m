@@ -545,7 +545,14 @@ typedef enum{
                 UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
                 [tagView setHidden:YES];
             }
-
+            NSString *filePath=[YNFunctions getFMCachePath];
+            filePath=[filePath stringByAppendingPathComponent:name];
+            
+            UIImageView *tagImageView=(UIImageView *)[cell.imageView.subviews objectAtIndex:0];
+            [tagImageView setImage:[UIImage imageNamed:@"favorite_tag_n.png"]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                [tagImageView setImage:[UIImage imageNamed:@"favorite_tag.png"]];
+            }
         }
         text=name;
         

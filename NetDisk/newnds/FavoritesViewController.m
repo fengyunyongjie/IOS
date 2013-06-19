@@ -29,6 +29,7 @@
 }
 -(void)dealloc
 {
+    [[FavoritesData sharedFavoritesData] setFviewController:nil];
     self.imageDownloadsInProgress=nil;
     [super dealloc];
 }
@@ -87,18 +88,33 @@
     }
     NSDictionary *dic=[[[FavoritesData sharedFavoritesData] allValues] objectAtIndex:indexPath.row];
     
+    if (cell.imageView.subviews.count==0) {
+        UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag_n.png"]];
+        CGRect r=[tagView frame];
+        r.origin.x=20;
+        r.origin.y=20;
+        [tagView setFrame:r];
+        [cell.imageView addSubview:tagView];
+    }
+    
     NSString *name= [dic objectForKey:@"f_name"];
     NSString *t_fl = [[dic objectForKey:@"f_mime"] lowercaseString];
     NSString *f_size=[dic objectForKey:@"f_size"];
     NSString *f_id=[dic objectForKey:@"f_id"];
+    NSString *f_time=[dic objectForKey:@"f_time"];
+
     
     cell.textLabel.text=name;
     
     NSString *fileName=[dic objectForKey:@"f_name"];
     NSString *filePath=[YNFunctions getFMCachePath];
     filePath=[filePath stringByAppendingPathComponent:fileName];
+    
+    UIImageView *tagImageView=(UIImageView *)[cell.imageView.subviews objectAtIndex:0];
+    [tagImageView setImage:[UIImage imageNamed:@"favorite_tag_n.png"]];
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-        cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ 2013-6-17 14:59:32",[YNFunctions convertSize:f_size]];
+        cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[YNFunctions convertSize:f_size],f_time];
+        [tagImageView setImage:[UIImage imageNamed:@"favorite_tag.png"]];
     }else if([f_id isEqualToString:[[FavoritesData sharedFavoritesData] currentDownloadID]])
     {
         if (self.text!=nil) {
@@ -112,14 +128,7 @@
         cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ 等待中...",[YNFunctions convertSize:f_size]];
     }
     
-    if (cell.imageView.subviews.count==0) {
-        UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
-        CGRect r=[tagView frame];
-        r.origin.x=20;
-        r.origin.y=20;
-        [tagView setFrame:r];
-        [cell.imageView addSubview:tagView];
-    }
+
     
     if ([t_fl isEqualToString:@"png"]||
               [t_fl isEqualToString:@"jpg"]||
@@ -258,16 +267,16 @@
         filePath=[filePath stringByAppendingPathComponent:fileName];
         if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
             //文件存在，打开预览
-            UIDocumentInteractionController *docIC=[[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]] autorelease];
+            UIDocumentInteractionController *docIC=[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]];
             docIC.delegate=self;
             [docIC presentPreviewAnimated:YES];
         }else{
-            OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
-            [otherBrowser setHidesBottomBarWhenPushed:YES];
-            otherBrowser.dataDic=dic;
-            NSString *f_name=[dic objectForKey:@"f_name"];
-            otherBrowser.title=f_name;
-            [self.navigationController pushViewController:otherBrowser animated:YES];
+//            OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+//            [otherBrowser setHidesBottomBarWhenPushed:YES];
+//            otherBrowser.dataDic=dic;
+//            NSString *f_name=[dic objectForKey:@"f_name"];
+//            otherBrowser.title=f_name;
+//            [self.navigationController pushViewController:otherBrowser animated:YES];
         }
     }
 
@@ -343,6 +352,14 @@
 {
     return self;
 }
+//- (UIView *) documentInteractionControllerViewForPreview: (UIDocumentInteractionController *) controller
+//{
+//    return self.view;
+//}
+//- (CGRect) documentInteractionControllerRectForPreview: (UIDocumentInteractionController *) controller
+//{
+//    return [[UIScreen mainScreen] bounds];
+//}
 #pragma mark - SCBDownloaderDelegate Methods
 -(void)fileDidDownload:(int)index
 {

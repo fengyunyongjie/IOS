@@ -27,6 +27,7 @@
 }
 -(void)startDownload
 {
+    self.tempSavedPath=[self.savedPath stringByAppendingPathComponent:@".download"];
     self.activeDownload=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?f_id=%@&f_skip=%d",SERVER_URL,FM_DOWNLOAD_URI,self.fileId,0]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
@@ -79,23 +80,36 @@
     } else {
         NSLog(@"Response OK.");
     }
+    if (httpResponse && [httpResponse respondsToSelector:@selector(allHeaderFields)]) {
+        NSDictionary *httpResponseHeaderFields=[httpResponse allHeaderFields];
+        int code=-1;
+        code=[[httpResponseHeaderFields objectForKey:@"code"] intValue];
+        switch (code) {
+            case 0:
+                NSLog(@"0：下载请求成功");
+                break;
+            case 1:
+                NSLog(@"1：失败-服务端异常");
+                break;
+            case 2:
+                NSLog(@"2：无效的文件id（id不存在）");
+                break;
+            case 3:
+                NSLog(@"3：无权访问的文件id（非自己的文件、别人的 没有共享关系的文件）");
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [self.activeDownload appendData:data];
+    [data writeToFile:self.tempSavedPath atomically:NO];
     NSLog(@"connection:didReceiveData:");
-    NSError *jsonParsingError=nil;
-    
-    NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
-    if ([[dic objectForKey:@"code"] intValue]==0) {
-        NSLog(@"下载成功 数据大小：%d",[data length]);
-        if (delegate) {
-            [delegate updateProgress:[self.activeDownload length] index:self.index];
-        }
-    }else
-    {
-        NSLog(@"下载失败 数据大小：%d",[data length]);
+    if (delegate) {
+        [delegate updateProgress:[self.activeDownload length] index:self.index];
     }
 }
 

@@ -163,6 +163,15 @@
                 NSLog(@"%s",value);
                 [dic setObject:[NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 5)] forKey:@"compressaddr"];
             }
+            const char * time=(const char*)sqlite3_column_text(statement, 7);
+            if (time==NULL) {
+                NSLog(@"f_time==NULL");
+                [dic setObject:@"2013-06-19 12:17:17" forKey:@"f_time"];
+            }else
+            {
+                NSLog(@"f_time = %s",time);
+                [dic setObject:[NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)] forKey:@"f_time"];
+            }
             [tableArray addObject:dic];
         }
         sqlite3_finalize(statement);

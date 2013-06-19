@@ -19,6 +19,7 @@ static FavoritesData *_sharedFavoritesData;
         _sharedFavoritesData=[[self alloc] init];
         _sharedFavoritesData.isAllFileDownloadFinish=YES;
         _sharedFavoritesData.favoriteController=[[[FavoritesDBController alloc] init] autorelease];
+        _sharedFavoritesData.fviewController=nil;
         [_sharedFavoritesData reloadData];
         [_sharedFavoritesData startDownloading];
     }
