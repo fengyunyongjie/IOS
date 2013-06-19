@@ -27,4 +27,5 @@
 -(void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path;
 //微博授权
 - (void)ssoButtonPressed;
++ (NSString*)deviceString;;
 @end

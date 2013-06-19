@@ -22,6 +22,7 @@
     NSMutableArray *uploadArray;
     BOOL isSelected;
     int f_pid;
+    int f_id;
     int uploadNumber;
     SCBPhotoManager *photoManger;
     NSString *finishName;
@@ -52,6 +53,37 @@
     NSTimer *connectionTimer;
     NSTimer *libaryTimer;
     NSURLConnection *connection;
+    
+    /*
+     准备上传界面
+     */
+    UIImageView *waitBackGround;
+    UILabel *uploadWaitLabel;
+    UIButton *uploadWaitButton;
+    
+    /*
+     正在上传界面
+     */
+    UIImageView *uploadImageView;
+    UIProgressView *uploadProgressView;
+    UILabel *currFileNameLabel;
+    UILabel *uploadFinshPageLabel;
+    UIImageView *unWifiOrNetWorkImageView;
+    
+    /*
+     等待wifi中界面
+     */
+    
+    /*
+     用户无网络界面
+     */
+    /*
+     上传完成界面
+     */
+    UILabel *uploadFinshLabel;
+    UIImageView *uploadFinshImageView;
+    
+    NSString *deviceName;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -63,6 +95,19 @@
 @property (nonatomic,retain) NSMutableArray *photoArray;
 @property (nonatomic,retain) NSString *user_id;
 @property (nonatomic,retain) NSString *user_token;
+
+@property (nonatomic,retain) UIImageView *waitBackGround;
+@property (nonatomic,retain) UILabel *uploadWaitLabel;
+@property (nonatomic,retain) UIButton *uploadWaitButton;
+
+@property (nonatomic,retain) UIImageView *uploadImageView;
+@property (nonatomic,retain) UIProgressView *uploadProgressView;
+@property (nonatomic,retain) UILabel *currFileNameLabel;
+@property (nonatomic,retain) UILabel *uploadFinshPageLabel;
+@property (nonatomic,retain) UIImageView *unWifiOrNetWorkImageView;
+
+@property (nonatomic,retain) UILabel *uploadFinshLabel;
+@property (nonatomic,retain) UIImageView *uploadFinshImageView;
 
 -(NSString *)md5:(NSData *)concat;
 

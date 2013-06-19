@@ -78,10 +78,6 @@
     
     
     CGRect rect = CGRectMake(0, 0, 320, self.view.frame.size.height-49-44);
-    if([[[UIDevice currentDevice] systemVersion] floatValue] > 6.0)
-    {
-        rect = CGRectMake(0, 66, 320, self.view.frame.size.height-49-66);
-    }
     table_view = [[UITableView alloc] initWithFrame:rect];
     [table_view setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [table_view setDataSource:self];

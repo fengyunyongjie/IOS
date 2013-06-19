@@ -58,6 +58,32 @@
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
+////上传
+//-(NSURLConnection *)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image
+//{
+//    self.matableData = [NSMutableData data];
+//    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
+//    ASIFormDataRequest *request = [ ASIFormDataRequest requestWithURL:s_url];
+//    [request setPostBody:[NSMutableData dataWithData:image]];
+//    url_string = FM_UPLOAD_NEW;
+//    [request addRequestHeader:[[SCBSession sharedSession] userId] value:@"usr_id"];
+//    [request addRequestHeader:CLIENT_TAG value:@"client_tag"];
+//    [request addRequestHeader:[[SCBSession sharedSession] userToken] value:@"usr_token"];
+//    [request addRequestHeader:s_name value:@"s_name"];
+//    [request addRequestHeader:[NSString stringWithFormat:@"bytes=0-%@",skip] value:<#(NSString *)#>];
+//    
+//    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+//    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+//    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+//    [request setValue:s_name forHTTPHeaderField:@"s_name"];
+//    [request setValue:[NSString stringWithFormat:@"bytes=0-%@",skip] forHTTPHeaderField:@"Range"];
+//    [request setHTTPBody:image];
+//    [request setHTTPMethod:@"PUT"];
+//    NSLog(@"上传请求：%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+//    NSURLConnection *con = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+//    return con;
+//}
+
 //上传
 -(NSURLConnection *)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image
 {
