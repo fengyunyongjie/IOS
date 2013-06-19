@@ -51,6 +51,7 @@ typedef enum{
     [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit.png"] forState:UIControlStateNormal];
     [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit_on.png"] forState:UIControlStateHighlighted];
     int y=self.tableView.frame.size.height-30;
+    y=518;
     [exitButton setFrame:CGRectMake(10, y, 301, 50)];
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:exitButton];

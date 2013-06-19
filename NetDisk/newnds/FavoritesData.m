@@ -95,8 +95,10 @@ static FavoritesData *_sharedFavoritesData;
         NSLog(@"设置为仅Wifi上传下载，但Wifi网络不通！！！");
         self.currentDownloadID=nil;
         self.isAllFileDownloadFinish=YES;
+        [self downloadFail];
         return;
     }
+    
     if (!self.currentDownloader) {
         self.currentDownloader=[[[SCBDownloader alloc] init] autorelease];
     }
