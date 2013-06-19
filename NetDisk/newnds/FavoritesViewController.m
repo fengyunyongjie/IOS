@@ -122,7 +122,7 @@
             cell.detailTextLabel.text=self.text;
         }else
         {
-            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ 0%已下载",[YNFunctions convertSize:f_size]];
+            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ 0%%已下载",[YNFunctions convertSize:f_size]];
         }
     }else
     {
