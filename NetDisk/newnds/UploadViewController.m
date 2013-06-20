@@ -78,6 +78,7 @@
 - (void)viewDidLoad
 {
     baseBL = TRUE;
+    isAlert = TRUE;
     allHeight = self.view.frame.size.height - 49;
     //    int defHeight = (allHeight-260)/2;
     //    CGRect rect = CGRectMake((320-184)/2, defHeight, 184, 124);
@@ -368,6 +369,8 @@
             //wifi
             if([[self GetCurrntNet] isEqualToString:@"WIFI"])
             {
+                isWlanUpload = FALSE;
+                isAlert = TRUE;
                 if(!isConnection && uploadNumber<[photoArray count])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -385,6 +388,10 @@
             else if([[self GetCurrntNet] isEqualToString:@"WLAN"])
             {
                 dispatch_sync(dispatch_get_main_queue(), ^{
+                    
+                    isWlanUpload = FALSE;
+                    isAlert = TRUE;
+                    
                     isConnection = FALSE;
                     bl = FALSE;
                     
@@ -420,7 +427,8 @@
             else if([[self GetCurrntNet] isEqualToString:@"没有网络链接"])
             {
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    
+                    isWlanUpload = FALSE;
+                    isAlert = TRUE;
                     [self showUploadingView:NO];
                     [unWifiOrNetWorkImageView setImage:[UIImage imageNamed:@"Updata_ErrInternet.png"]];
                     [unWifiOrNetWorkImageView setHidden:NO];
@@ -444,8 +452,10 @@
         else
         {
             //非仅wifi
-            if([[self GetCurrntNet] isEqualToString:@"WIFI"] || [[self GetCurrntNet] isEqualToString:@"WLAN"])
+            if([[self GetCurrntNet] isEqualToString:@"WIFI"])
             {
+                isWlanUpload = FALSE;
+                isAlert = TRUE;
                 if(!isConnection && uploadNumber<[photoArray count])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -460,10 +470,26 @@
                 }
                 bl = TRUE;
             }
+            else if([[self GetCurrntNet] isEqualToString:@"WLAN"])
+            {
+                if(!isConnection && uploadNumber<[photoArray count])
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        isConnection = TRUE;
+                        if(connectionTimer)
+                        {
+                            [connectionTimer invalidate];
+                            connectionTimer = nil;
+                        }
+                        [self upLoad];
+                    });
+                }
+            }
             else if([[self GetCurrntNet] isEqualToString:@"没有网络链接"])
             {
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    
+                    isWlanUpload = FALSE;
+                    isAlert = TRUE;
                     [self showUploadingView:NO];
                     [unWifiOrNetWorkImageView setImage:[UIImage imageNamed:@"Updata_ErrInternet.png"]];
                     [unWifiOrNetWorkImageView setHidden:NO];
@@ -540,10 +566,16 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    
     if(buttonIndex == 0)
     {
+        isWlanUpload = FALSE;
         AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         [app_delegate.myTabBarController setSelectedIndex:4];
+    }
+    if(buttonIndex == 1)
+    {
+        isWlanUpload = TRUE;
     }
 }
 

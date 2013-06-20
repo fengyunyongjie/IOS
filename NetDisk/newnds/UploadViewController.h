@@ -84,6 +84,10 @@
     UIImageView *uploadFinshImageView;
     
     NSString *deviceName;
+    
+    //是否提示用户
+    BOOL isAlert;
+    BOOL isWlanUpload;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
