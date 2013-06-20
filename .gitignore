@@ -28,5 +28,6 @@ build/*
 
 *.xcworkspace
 
-xcuserdata
-UserInterfaceState.xcuserstate
+*.xcuserdata
+*.xcuserstate
+*.xcbkptlist
