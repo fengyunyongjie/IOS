@@ -272,7 +272,11 @@
             previewController.delegate=self;
             
             previewController.currentPreviewItemIndex=indexPath.row;
+            //[previewController.cu]
+            //int count=[previewController.navigationController.view.subviews count];
+            //NSLog(@"previewController.view.subviews count: %d",count);
             [previewController setHidesBottomBarWhenPushed:YES];
+            [previewController.tabBarController.tabBar setBackgroundColor:[UIColor blackColor]];
             [self.navigationController pushViewController:previewController animated:YES];
         }else{
 //            OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];

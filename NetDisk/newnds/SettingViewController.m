@@ -14,6 +14,8 @@
 typedef enum{
     kAlertTypeExit,
     kAlertTypeClear,
+    kAlertTypeWiFi,
+    kAlertTypeAuto,
 }kAlertType;
 
 @interface SettingViewController ()
@@ -85,7 +87,20 @@ typedef enum{
         {
             UISwitch *theSwith = (UISwitch *)sender;
             NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
-            [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
+            if ([YNFunctions isOnlyWifi]) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                    message:@"这可能会产生流量费用，您是否要继续？"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"取消"
+                                                          otherButtonTitles:@"继续", nil];
+                alertView.tag=kAlertTypeWiFi;
+                [alertView show];
+                [alertView release];
+            }else
+            {
+                //[[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
+                [YNFunctions setIsOnlyWifi:YES];
+            }
             NSLog(@"打开或关闭仅Wifi:: %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"]);
         }
             break;
@@ -93,7 +108,19 @@ typedef enum{
         {
             UISwitch *theSwith = (UISwitch *)sender;
             NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
-            [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
+            if (![YNFunctions isOnlyWifi] && ![YNFunctions isAutoUpload]) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                    message:@"这可能会产生流量费用，您是否要继续？"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"取消"
+                                                          otherButtonTitles:@"继续", nil];
+                alertView.tag=kAlertTypeAuto;
+                [alertView show];
+                [alertView release];
+            }else
+            {
+                [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
+            }
             NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
         }
             break;
@@ -150,6 +177,24 @@ typedef enum{
                 [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
                 [self.tableView reloadData];
             }
+            break;
+        case kAlertTypeWiFi:
+            if (buttonIndex==1) {
+                [YNFunctions setIsOnlyWifi:NO];
+            }else
+            {
+                [YNFunctions setIsOnlyWifi:YES];
+            }
+            [self.tableView reloadData];
+            break;
+        case kAlertTypeAuto:
+            if (buttonIndex==1) {
+                [YNFunctions setIsAutoUpload:YES];
+            }else
+            {
+                [YNFunctions setIsAutoUpload:NO];
+            }
+            [self.tableView reloadData];
             break;
         default:
             break;
@@ -222,7 +267,7 @@ typedef enum{
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -300,7 +345,12 @@ typedef enum{
             switch (row) {
                 case 3:
                 {
-                    titleLabel.text = @"自动备份照片";
+                    //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
+                    //titleLabel.hidden=YES;
+                    cell.textLabel.text=@"自动备份照片";
+                    [cell.textLabel setFont:titleLabel.font];
+                    cell.detailTextLabel.text=@"  (仅Wi-fi下,节省流量)";
+                    [cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"];
                     if (switchFlag==nil) {
                         m_switch.on = NO;
@@ -312,7 +362,7 @@ typedef enum{
                     break;
                 case 0:
                 {
-                    titleLabel.text = @"仅通过WIFI进行上传下载";
+                    titleLabel.text = @"仅在Wi-Fi下上传下载";
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
                     if (switchFlag==nil) {
                         m_switch.on = YES;
