@@ -170,7 +170,7 @@
     if ([deviceString isEqualToString:@"iPod3,1"])      return @"iPod Touch 3G";
     if ([deviceString isEqualToString:@"iPod4,1"])      return @"iPod Touch 4G";
     if ([deviceString isEqualToString:@"iPad1,1"])      return @"iPad";
-    if ([deviceString isEqualToString:@"iPad2,1"])      return @"iPad 2 (WiFi)";
+    if ([deviceString isEqualToString:@"iPad2,1"] || [deviceString isEqualToString:@"iPad2,4"])      return @"iPad 2 (WiFi)";
     if ([deviceString isEqualToString:@"iPad2,2"])      return @"iPad 2 (GSM)";
     if ([deviceString isEqualToString:@"iPad2,3"])      return @"iPad 2 (CDMA)";
     if ([deviceString isEqualToString:@"i386"])         return @"Simulator";

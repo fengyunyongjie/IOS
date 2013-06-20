@@ -10,6 +10,7 @@
 #import "SCBAccountManager.h"
 #import "YNFunctions.h"
 #import "AppDelegate.h"
+#import "UploadViewController.h"
 
 typedef enum{
     kAlertTypeExit,
@@ -108,6 +109,19 @@ typedef enum{
         {
             UISwitch *theSwith = (UISwitch *)sender;
             NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
+            
+            AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+            UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+            if([onStr isEqualToString:@"0"])
+            {
+                [uploadView stopAllDo];
+            }
+            else
+            {
+                [uploadView startSouStart];
+            }
+            
             if (![YNFunctions isOnlyWifi] && ![YNFunctions isAutoUpload]) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
                                                                     message:@"这可能会产生流量费用，您是否要继续？"
@@ -336,6 +350,7 @@ typedef enum{
             UISwitch *m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(210, 10, 40, 29)];
             [m_switch addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
             m_switch.on = YES;
+            switchTag = row;
             m_switch.tag = row;
             [cell.contentView addSubview:m_switch];
             [m_switch release];
@@ -471,6 +486,21 @@ typedef enum{
     
     
     return cell;
+}
+
+-(void)closeSwitch
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(switchTag>0)
+        {
+            UISwitch *m_switch = (UISwitch *)[self.view viewWithTag:switchTag];
+            if(m_switch.isOn)
+            {
+                m_switch.on = NO;
+                [self updateData];
+            }
+        }
+    });
 }
 
 /*

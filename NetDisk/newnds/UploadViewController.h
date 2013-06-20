@@ -88,6 +88,7 @@
     //是否提示用户
     BOOL isAlert;
     BOOL isWlanUpload;
+    SCBUploader *uploderDemo;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -112,10 +113,11 @@
 
 @property (nonatomic,retain) UILabel *uploadFinshLabel;
 @property (nonatomic,retain) UIImageView *uploadFinshImageView;
+@property (nonatomic,retain) SCBUploader *uploderDemo;
 
 -(NSString *)md5:(NSData *)concat;
 -(void)startSouStart;
-
+-(void)stopAllDo;
 @end
 
 

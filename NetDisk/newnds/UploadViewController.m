@@ -13,6 +13,7 @@
 #import "SCBSession.h"
 #import "AppDelegate.h"
 #import "YNFunctions.h"
+#import "SettingViewController.h"
 
 @interface UploadViewController ()
 
@@ -37,6 +38,7 @@
 @synthesize unWifiOrNetWorkImageView;
 @synthesize uploadFinshLabel;
 @synthesize uploadFinshImageView;
+@synthesize uploderDemo;
 
 @synthesize photoArray;
 
@@ -72,6 +74,7 @@
     [unWifiOrNetWorkImageView release];
     [uploadFinshLabel release];
     [uploadFinshImageView release];
+    [uploderDemo release];
     [super dealloc];
 }
 
@@ -128,7 +131,7 @@
     
     CGRect waitLabelRect = CGRectMake(10, y+240, 300, 20);
     uploadWaitLabel = [[UILabel alloc] initWithFrame:waitLabelRect];
-    [uploadWaitLabel setText:@"开启照片自动上传功能"];
+    [uploadWaitLabel setText:@"开启照片自动备份"];
     [uploadWaitLabel setFont:[UIFont systemFontOfSize:16]];
     [uploadWaitLabel setTextAlignment:NSTextAlignmentCenter];
     [uploadWaitLabel setBackgroundColor:[UIColor clearColor]];
@@ -178,7 +181,7 @@
     [self showUploadingView:YES];
     [self showUploadFinshView:YES];
     [self showStartUploadView:NO];
-    
+    connection = nil;
     isStop = TRUE;
     photoArray = [[NSMutableArray alloc] init];
     
@@ -188,22 +191,57 @@
     [super viewDidLoad];
 }
 
+-(void)stopAllDo
+{
+    if(uploderDemo)
+    {
+        [uploderDemo setUpLoadDelegate:nil];
+        uploderDemo = nil;
+    }
+    isSelected = FALSE;
+    isStop = YES;
+    isOnce = FALSE;
+    [photoArray removeAllObjects];
+    uploadNumber = 0;
+    if(connectionTimer)
+    {
+        [connectionTimer invalidate];
+        connectionTimer = nil;
+    }
+    if(libaryTimer)
+    {
+        [libaryTimer invalidate];
+        libaryTimer = nil;
+    }
+    [self showStartUploadView:NO];
+}
+
 -(void)startSouStart
 {
-    isStop = NO;
-    isSelected = TRUE;
-    [self getPhotoLibrary];
-    isConnection = FALSE;
-    
-    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoUpload"];
-    
-    if(!connectionTimer)
+    if(isStop)
     {
-        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
-    }
-    if(!libaryTimer)
-    {
-        libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        isStop = NO;
+        isSelected = TRUE;
+        [self getPhotoLibrary];
+        isConnection = FALSE;
+        [uploadWaitButton setTitle:@"加载中..." forState:UIControlStateNormal];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoUpload"];
+        });
+        
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:4];
+        SettingViewController *setting = (SettingViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        [setting closeSwitch];
+        
+        if(!connectionTimer)
+        {
+            connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+        }
+        if(!libaryTimer)
+        {
+            libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        }
     }
 }
 
@@ -218,29 +256,9 @@
 {
     NSLog(@"判断照片库是否更新");
     
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(app_delegate.isUnUpload)
+    if(isStop)
     {
-        [app_delegate setIsUnUpload:NO];
-        [uploadTypeButton setBackgroundImage:[UIImage imageNamed:@"upload_btn_lock.png"] forState:UIControlStateNormal];
-        isSelected = FALSE;
-        if(libaryTimer)
-        {
-            [libaryTimer invalidate];
-            libaryTimer = nil;
-        }
-        if(connectionTimer)
-        {
-            [connectionTimer invalidate];
-            connectionTimer = nil;
-        }
-        [uploadNumberLabel setText:@""];
-        [basePhotoLabel setText:[NSString stringWithFormat:@"本地照片："]];
-        [formatLabel setText:[NSString stringWithFormat:@"已上传照片："]];
-        [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-        uploadNumber = 0;
-        isStop = YES;
-        [photoArray removeAllObjects];
+        return;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]init];//生成整个photolibrary句柄的实例
@@ -293,8 +311,9 @@
                         if(connectionTimer == nil)
                         {
                             isConnection = FALSE;
-                            dispatch_sync(dispatch_get_main_queue(), ^{
-                                connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self isUPloadImage];
+                                connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
                             });
                         }
                     }
@@ -339,26 +358,9 @@
 -(BOOL)isUPloadImage
 {
     __block BOOL bl = FALSE;
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(app_delegate.isUnUpload)
+    if(isStop)
     {
-        [app_delegate setIsUnUpload:NO];
-        [uploadTypeButton setBackgroundImage:[UIImage imageNamed:@"upload_btn_lock.png"] forState:UIControlStateNormal];
-        isSelected = FALSE;
-        if(libaryTimer)
-        {
-            [libaryTimer invalidate];
-            libaryTimer = nil;
-        }
-        if(connectionTimer)
-        {
-            [connectionTimer invalidate];
-            connectionTimer = nil;
-        }
-        
-        uploadNumber = 0;
-        isStop = YES;
-        [photoArray removeAllObjects];
+        return bl;
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -420,7 +422,7 @@
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
-                        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+                        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
                     }
                 });
             }
@@ -444,7 +446,7 @@
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
-                        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+                        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
                     }
                 });
             }
@@ -531,16 +533,11 @@
     UIButton *button = sender;
     if(isSelected)
     {
-        [uploadNumberLabel setText:[NSString stringWithFormat:@""]];
-        [basePhotoLabel setText:[NSString stringWithFormat:@"本地照片："]];
-        [formatLabel setText:[NSString stringWithFormat:@"已上传照片："]];
-        [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
         isSelected = FALSE;
         isStop = YES;
         isOnce = FALSE;
         [photoArray removeAllObjects];
         uploadNumber = 0;
-        [button setBackgroundImage:[UIImage imageNamed:@"upload_btn_lock.png"] forState:UIControlStateNormal];
         if(connectionTimer)
         {
             [connectionTimer invalidate];
@@ -669,6 +666,7 @@
         [uploadProgressView setProgress:0];
         [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
         [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]-uploadNumber]];
+        [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
     });
     if(uploadNumber >= [photoArray count])
     {
@@ -680,7 +678,6 @@
         NSLog(@"1:打开文件目录");
         [photoManger openFinderWithID:@"1"];
     }
-    [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
 }
 
 //判断当前的网络是3g还是wifi
@@ -862,6 +859,11 @@
 
 -(void)uploadFinish:(NSDictionary *)dictionary
 {
+    if(connection)
+    {
+        [connection cancel];
+        connection = nil;
+    }
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(app_delegate.isUnUpload)
     {
@@ -911,8 +913,8 @@
     if(!isStop && [[dictionary objectForKey:@"code"] intValue] == 0 && uploadNumber < [photoArray count])
     {
         TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
-        SCBUploader *uploder = [[[SCBUploader alloc] init] autorelease];
-        [uploder setUpLoadDelegate:self];
+        uploderDemo = [[[SCBUploader alloc] init] autorelease];
+        [uploderDemo setUpLoadDelegate:self];
         finishName = [dictionary objectForKey:@"sname"];
         NSLog(@"3:开始上传：%@",finishName);
         if(demo.f_data == nil)
@@ -925,7 +927,7 @@
             demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
         }
         NSLog(@"demo.f_data:%i",[demo.f_data length]);
-        connection = [uploder requestUploadFile:[NSString stringWithFormat:@"%i",f_pid] f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+        connection = [uploderDemo requestUploadFile:[NSString stringWithFormat:@"%i",f_pid] f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
     }
 }
 
@@ -994,7 +996,7 @@
     isConnection = FALSE;
     if(connectionTimer==nil && !isStop)
     {
-        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
     }
 }
 

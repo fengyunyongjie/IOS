@@ -147,7 +147,15 @@
         NSMutableURLRequest *request = (NSMutableURLRequest *)[connection currentRequest];
         [request setTimeoutInterval:30];
         currSize += bytesWritten;
-        [upLoadDelegate uploadFiles:currSize];
+        if(upLoadDelegate)
+        {
+            [upLoadDelegate uploadFiles:currSize];
+        }
+        else
+        {
+            NSLog(@"该暂停了");
+            [connection cancel];
+        }
     }
 }
 
