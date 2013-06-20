@@ -247,6 +247,7 @@
 #pragma mark 优化数据得到自己想要的数据
 -(void)getMangerDiction:(NSDictionary *)dicion
 {
+    NSLog(@"dicion--------------------:%@",dicion);
     BOOL bl = FALSE;
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];

@@ -14,6 +14,7 @@
 #import "OpenViewController.h"
 #import "DefaultViewController.h"
 #import "sys/utsname.h"
+#import "UploadViewController.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -150,7 +151,7 @@
 
 #pragma mark 判断设备号
 
-+ (NSString*)deviceString
++ (NSString *)deviceString
 {
     // 需要
     struct utsname systemInfo;
@@ -197,6 +198,15 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    if(self.myTabBarController.selectedIndex == 3)
+    {
+        if([YNFunctions isAutoUpload])
+        {
+            UINavigationController *NavigationController = [[self.myTabBarController viewControllers] objectAtIndex:3];
+            UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+            [uploadView startSouStart];
+        }
+    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

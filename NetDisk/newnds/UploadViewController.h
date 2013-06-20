@@ -110,6 +110,7 @@
 @property (nonatomic,retain) UIImageView *uploadFinshImageView;
 
 -(NSString *)md5:(NSData *)concat;
+-(void)startSouStart;
 
 @end
 

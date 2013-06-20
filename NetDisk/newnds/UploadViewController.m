@@ -113,7 +113,7 @@
     //    [self.view addSubview:formatLabel];
     deviceName = [AppDelegate deviceString];
     float y = 40;
-    if(![[AppDelegate deviceString] isEqualToString:@"iPhone 5"])
+    if(![deviceName isEqualToString:@"iPhone 5"])
     {
         y = 0;
     }
@@ -700,14 +700,14 @@
             else
             {
                 f_pid = [[dictionary objectForKey:@"f_id"] intValue];
-                [photoManger requestNewFold:deviceName FID:f_pid];
+                [photoManger requestNewFold:[NSString stringWithFormat:@"来自于-%@",deviceName] FID:f_pid];
             }
         }
         else
         {
             if(bl && f_pid > 0)
             {
-                [photoManger requestNewFold:deviceName FID:f_pid];
+                [photoManger requestNewFold:[NSString stringWithFormat:@"来自于-%@",deviceName] FID:f_pid];
             }
             if(f_pid==0)
             {
@@ -737,7 +737,7 @@
                 [photoManger openFinderWithID:[NSString stringWithFormat:@"%i",f_pid]];
                 break;
             }
-            if([f_name isEqualToString:deviceName])
+            if([f_name isEqualToString:[NSString stringWithFormat:@"来自于-%@",deviceName]])
             {
                 f_id = [[[array objectAtIndex:i] objectForKey:@"f_id"] intValue];
                 [self requestVerify];
@@ -749,7 +749,7 @@
         }
         if(f_pid>0 && f_id==0 && bl)
         {
-            [photoManger requestNewFold:deviceName FID:f_pid];
+            [photoManger requestNewFold:[NSString stringWithFormat:@"来自于-%@",deviceName] FID:f_pid];
         }
     }
 }
