@@ -10,7 +10,7 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 
-@protocol UpLoadDelegate <NSObject>
+@protocol UpLoadDelegate <NSObject,ASIHTTPRequestDelegate>
 
 //上传效验
 -(void)uploadVerify:(NSDictionary *)dictionary;
@@ -25,7 +25,7 @@
 -(void)lookDescript:(NSDictionary *)dictionary;
 
 //上传文件流
--(void)uploadFiles:(NSDictionary *)dictionary;
+-(void)uploadFiles:(int)proress;
 
 //上传提交
 -(void)uploadCommit:(NSDictionary *)dictionary;
@@ -41,6 +41,7 @@
     id<UpLoadDelegate> upLoadDelegate;
     NSMutableData *matableData;
     NSString *url_string;
+    int currSize;
 }
 
 @property(nonatomic,retain) id<UpLoadDelegate> upLoadDelegate;

@@ -88,6 +88,12 @@
 		29852D14172CD42C001AD87A /* MBProgressHUD.h in Sources */ = {isa = PBXBuildFile; fileRef = 83D6813B1675B48E0054AB1A /* MBProgressHUD.h */; };
 		29852D15172CD42C001AD87A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D6813C1675B48E0054AB1A /* MBProgressHUD.m */; };
 		29852D18172CFDA6001AD87A /* MyndsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852D17172CFDA6001AD87A /* MyndsViewController.m */; };
+		298AB53517727FF200D067E1 /* Updata_Bt_Start.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB52F17727FF200D067E1 /* Updata_Bt_Start.png */; };
+		298AB53617727FF200D067E1 /* Updata_Complite.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB53017727FF200D067E1 /* Updata_Complite.png */; };
+		298AB53717727FF200D067E1 /* Updata_ErrInternet.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB53117727FF200D067E1 /* Updata_ErrInternet.png */; };
+		298AB53817727FF200D067E1 /* Updata_ErrWifi.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB53217727FF200D067E1 /* Updata_ErrWifi.png */; };
+		298AB53917727FF200D067E1 /* 按钮.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB53317727FF200D067E1 /* 按钮.png */; };
+		298AB53A17727FF200D067E1 /* 背景图.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB53417727FF200D067E1 /* 背景图.png */; };
 		298C1EDE17532F4F00D793F3 /* OtherBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298C1EDD17532F4F00D793F3 /* OtherBrowserViewController.m */; };
 		298C1EE2175340FF00D793F3 /* file_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 298C1EE1175340FF00D793F3 /* file_icon.png */; };
 		298C1EE4175345C600D793F3 /* OtherBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = 298C1EE3175345C600D793F3 /* OtherBrowser.xib */; };
@@ -361,6 +367,12 @@
 		29852CF7172CBCF5001AD87A /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		29852D16172CFDA6001AD87A /* MyndsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyndsViewController.h; sourceTree = "<group>"; };
 		29852D17172CFDA6001AD87A /* MyndsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyndsViewController.m; sourceTree = "<group>"; };
+		298AB52F17727FF200D067E1 /* Updata_Bt_Start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Updata_Bt_Start.png; sourceTree = "<group>"; };
+		298AB53017727FF200D067E1 /* Updata_Complite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Updata_Complite.png; sourceTree = "<group>"; };
+		298AB53117727FF200D067E1 /* Updata_ErrInternet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Updata_ErrInternet.png; sourceTree = "<group>"; };
+		298AB53217727FF200D067E1 /* Updata_ErrWifi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Updata_ErrWifi.png; sourceTree = "<group>"; };
+		298AB53317727FF200D067E1 /* 按钮.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "按钮.png"; sourceTree = "<group>"; };
+		298AB53417727FF200D067E1 /* 背景图.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "背景图.png"; sourceTree = "<group>"; };
 		298C1EDC17532F4F00D793F3 /* OtherBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherBrowserViewController.h; sourceTree = "<group>"; };
 		298C1EDD17532F4F00D793F3 /* OtherBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherBrowserViewController.m; sourceTree = "<group>"; };
 		298C1EE1175340FF00D793F3 /* file_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file_icon.png; sourceTree = "<group>"; };
@@ -1060,6 +1072,7 @@
 		29852D1C172D17E9001AD87A /* Upload */ = {
 			isa = PBXGroup;
 			children = (
+				298AB52E17727FF200D067E1 /* Upload */,
 				29B2B638174B1F6800E78183 /* UploadViewController.h */,
 				29B2B639174B1F6800E78183 /* UploadViewController.m */,
 				29B2B63A174B1F6800E78183 /* UploadViewController.xib */,
@@ -1090,6 +1103,19 @@
 				294CEEA91744B11500AF0D66 /* FavoritesData.m */,
 			);
 			name = Favorites;
+			sourceTree = "<group>";
+		};
+		298AB52E17727FF200D067E1 /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				298AB52F17727FF200D067E1 /* Updata_Bt_Start.png */,
+				298AB53017727FF200D067E1 /* Updata_Complite.png */,
+				298AB53117727FF200D067E1 /* Updata_ErrInternet.png */,
+				298AB53217727FF200D067E1 /* Updata_ErrWifi.png */,
+				298AB53317727FF200D067E1 /* 按钮.png */,
+				298AB53417727FF200D067E1 /* 背景图.png */,
+			);
+			path = Upload;
 			sourceTree = "<group>";
 		};
 		299D9F661754326900B61161 /* sqlite3 */ = {
@@ -2206,6 +2232,12 @@
 				2918548617587E2B00C566A3 /* regist_input_bg.png in Resources */,
 				29D72E0617718780008D830A /* favorite_tag_n@2x.png in Resources */,
 				29D72E0717718780008D830A /* favorite_tag_n.png in Resources */,
+				298AB53517727FF200D067E1 /* Updata_Bt_Start.png in Resources */,
+				298AB53617727FF200D067E1 /* Updata_Complite.png in Resources */,
+				298AB53717727FF200D067E1 /* Updata_ErrInternet.png in Resources */,
+				298AB53817727FF200D067E1 /* Updata_ErrWifi.png in Resources */,
+				298AB53917727FF200D067E1 /* 按钮.png in Resources */,
+				298AB53A17727FF200D067E1 /* 背景图.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

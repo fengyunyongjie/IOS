@@ -79,38 +79,38 @@
 {
     baseBL = TRUE;
     allHeight = self.view.frame.size.height - 49;
-//    int defHeight = (allHeight-260)/2;
-//    CGRect rect = CGRectMake((320-184)/2, defHeight, 184, 124);
-//    stateImageview = [[UIImageView alloc] initWithFrame:rect];
-//    [stateImageview setImage:[UIImage imageNamed:@"upload_bg.png"]];
-//    [self.view addSubview:stateImageview];
-//    
-//    rect = CGRectMake(78, rect.origin.y+92, 150, 25);
-//    uploadNumberLabel = [[UILabel alloc] initWithFrame:rect];
-//    [uploadNumberLabel setBackgroundColor:[UIColor clearColor]];
-//    [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
-//    [self.view addSubview:uploadNumberLabel];
-//    
-//    rect = CGRectMake((320-180)/2, rect.origin.y+40, 180, 25);
-//    nameLabel = [[UILabel alloc] initWithFrame:rect];
-//    [nameLabel setText:@"自动备份照片"];
-//    [self.view addSubview:nameLabel];
-//    
-//    rect = CGRectMake(180, rect.origin.y-4, 82, 33);
-//    uploadTypeButton = [[UIButton alloc] initWithFrame:rect];
-//    [uploadTypeButton setBackgroundImage:[UIImage imageNamed:@"upload_btn_lock.png"] forState:UIControlStateNormal];
-//    [uploadTypeButton addTarget:self action:@selector(updateTypeClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:uploadTypeButton];
-//    
-//    rect = CGRectMake((320-180)/2, rect.origin.y+4+40, 180, 25);
-//    basePhotoLabel = [[UILabel alloc] initWithFrame:rect];
-//    [basePhotoLabel setText:@"本地照片: "];
-//    [self.view addSubview:basePhotoLabel];
-//    
-//    rect = CGRectMake((320-180)/2, rect.origin.y+40, 180, 25);
-//    formatLabel = [[UILabel alloc] initWithFrame:rect];
-//    [formatLabel setText:@"已上传照片: "];
-//    [self.view addSubview:formatLabel];
+    //    int defHeight = (allHeight-260)/2;
+    //    CGRect rect = CGRectMake((320-184)/2, defHeight, 184, 124);
+    //    stateImageview = [[UIImageView alloc] initWithFrame:rect];
+    //    [stateImageview setImage:[UIImage imageNamed:@"upload_bg.png"]];
+    //    [self.view addSubview:stateImageview];
+    //
+    //    rect = CGRectMake(78, rect.origin.y+92, 150, 25);
+    //    uploadNumberLabel = [[UILabel alloc] initWithFrame:rect];
+    //    [uploadNumberLabel setBackgroundColor:[UIColor clearColor]];
+    //    [uploadNumberLabel setTextAlignment:NSTextAlignmentCenter];
+    //    [self.view addSubview:uploadNumberLabel];
+    //
+    //    rect = CGRectMake((320-180)/2, rect.origin.y+40, 180, 25);
+    //    nameLabel = [[UILabel alloc] initWithFrame:rect];
+    //    [nameLabel setText:@"自动备份照片"];
+    //    [self.view addSubview:nameLabel];
+    //
+    //    rect = CGRectMake(180, rect.origin.y-4, 82, 33);
+    //    uploadTypeButton = [[UIButton alloc] initWithFrame:rect];
+    //    [uploadTypeButton setBackgroundImage:[UIImage imageNamed:@"upload_btn_lock.png"] forState:UIControlStateNormal];
+    //    [uploadTypeButton addTarget:self action:@selector(updateTypeClick:) forControlEvents:UIControlEventTouchUpInside];
+    //    [self.view addSubview:uploadTypeButton];
+    //
+    //    rect = CGRectMake((320-180)/2, rect.origin.y+4+40, 180, 25);
+    //    basePhotoLabel = [[UILabel alloc] initWithFrame:rect];
+    //    [basePhotoLabel setText:@"本地照片: "];
+    //    [self.view addSubview:basePhotoLabel];
+    //
+    //    rect = CGRectMake((320-180)/2, rect.origin.y+40, 180, 25);
+    //    formatLabel = [[UILabel alloc] initWithFrame:rect];
+    //    [formatLabel setText:@"已上传照片: "];
+    //    [self.view addSubview:formatLabel];
     deviceName = [AppDelegate deviceString];
     float y = 40;
     if(![[AppDelegate deviceString] isEqualToString:@"iPhone 5"])
@@ -249,7 +249,7 @@
             if(first)
             {
                 first = FALSE;
-                 __block BOOL isLoad = FALSE;
+                __block BOOL isLoad = FALSE;
                 [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {//从group里面
                     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
                     NSString* assetType = [result valueForProperty:ALAssetPropertyType];
@@ -321,12 +321,12 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSLog(@"11111：%@",info);
-    [picker dismissModalViewControllerAnimated:YES]; 
+    [picker dismissModalViewControllerAnimated:YES];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [picker dismissModalViewControllerAnimated:YES]; 
+    [picker dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark 创建上传集合
@@ -707,7 +707,7 @@
         {
             if(bl && f_pid > 0)
             {
-               [photoManger requestNewFold:deviceName FID:f_pid];
+                [photoManger requestNewFold:deviceName FID:f_pid];
             }
             if(f_pid==0)
             {
@@ -806,14 +806,24 @@
             demo.f_lenght = [demo.f_data length];
             [demo updateTaskTableFName];
             
-            [uploadProgressView setProgress:1 animated:YES];
+            [uploadProgressView setProgress:1];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
             [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]-uploadNumber]];
             
             uploadNumber++;
-            isConnection = FALSE;
-            [NSThread sleepForTimeInterval:1.0];
-            [self isUPloadImage];
+            
+            if(!isStop && uploadNumber<[photoArray count])
+            {
+                isConnection = FALSE;
+                [self isUPloadImage];
+            }
+            else if(!isStop && uploadNumber >= [photoArray count])
+            {
+                [self showUploadFinshView:NO];
+                
+                [photoArray removeAllObjects];
+                uploadNumber = 0;
+            }
         }
     }
 }
@@ -924,7 +934,7 @@
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
         [demo updateTaskTableFName];
-        NSLog(@"f_id:%i",f_id); 
+        NSLog(@"f_id:%i",f_id);
     }
     NSLog(@"uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
     uploadNumber++;
@@ -956,9 +966,11 @@
     }
 }
 
--(void)uploadFiles:(NSDictionary *)dictionary
+-(void)uploadFiles:(int)proress
 {
-    
+    TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
+    float f = (float)proress / (float)[demo.f_data length];
+    [uploadProgressView setProgress:f animated:YES];
 }
 
 
@@ -966,7 +978,7 @@
 {
     UIImagePickerController * picker = [[UIImagePickerController alloc] init];
 	picker.delegate = self;
-    picker.allowsEditing = YES;  
+    picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     picker.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	[self presentModalViewController:picker animated:YES];
@@ -998,7 +1010,7 @@
 //    const char *cStr = [str UTF8String];
 //    unsigned char result[CC_MD5_DIGEST_LENGTH];
 //    CC_MD5( cStr, strlen(cStr), result );
-//    
+//
 //    NSMutableString *hash = [NSMutableString string];
 //    for(int i=0;i<CC_MD5_DIGEST_LENGTH;i++)
 //    {
@@ -1009,7 +1021,7 @@
 
 -(void)lookDescript:(NSDictionary *)dictionary
 {
-
+    
 }
 
 #pragma mark ------------------- 新UI设计
