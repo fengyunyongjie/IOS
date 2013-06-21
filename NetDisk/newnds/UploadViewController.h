@@ -47,6 +47,7 @@
     BOOL baseBL;
     BOOL isConnection;
     BOOL isOnce;
+    float y;
     /*
      上传检索
      */
@@ -89,6 +90,7 @@
     BOOL isAlert;
     BOOL isWlanUpload;
     SCBUploader *uploderDemo;
+    int netWorkState; //1表示Wi-Fi 2表示WLan 3无网络
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -118,6 +120,7 @@
 -(NSString *)md5:(NSData *)concat;
 -(void)startSouStart;
 -(void)stopAllDo;
+-(void)stopWiFi;
 @end
 
 

@@ -101,6 +101,10 @@ typedef enum{
             {
                 //[[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
                 [YNFunctions setIsOnlyWifi:YES];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                [uploadView stopWiFi];
             }
             NSLog(@"打开或关闭仅Wifi:: %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"]);
         }
@@ -109,19 +113,6 @@ typedef enum{
         {
             UISwitch *theSwith = (UISwitch *)sender;
             NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
-            
-            AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-            UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-            if([onStr isEqualToString:@"0"])
-            {
-                [uploadView stopAllDo];
-            }
-            else
-            {
-                [uploadView startSouStart];
-            }
-            
             if (![YNFunctions isOnlyWifi] && ![YNFunctions isAutoUpload]) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
                                                                     message:@"这可能会产生流量费用，您是否要继续？"
@@ -134,6 +125,17 @@ typedef enum{
             }else
             {
                 [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                if([onStr isEqualToString:@"0"])
+                {
+                    [uploadView stopAllDo];
+                }
+                else
+                {
+                    [uploadView startSouStart];
+                }
             }
             NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
         }
@@ -195,18 +197,34 @@ typedef enum{
         case kAlertTypeWiFi:
             if (buttonIndex==1) {
                 [YNFunctions setIsOnlyWifi:NO];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                [uploadView startSouStart];
             }else
             {
                 [YNFunctions setIsOnlyWifi:YES];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                [uploadView stopWiFi];
             }
             [self.tableView reloadData];
             break;
         case kAlertTypeAuto:
             if (buttonIndex==1) {
                 [YNFunctions setIsAutoUpload:YES];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                [uploadView startSouStart];
             }else
             {
                 [YNFunctions setIsAutoUpload:NO];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                [uploadView stopAllDo];
             }
             [self.tableView reloadData];
             break;
@@ -377,7 +395,7 @@ typedef enum{
                     break;
                 case 0:
                 {
-                    titleLabel.text = @"仅在Wi-Fi下上传下载";
+                    titleLabel.text = @"仅在Wi-Fi下上传/下载";
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
                     if (switchFlag==nil) {
                         m_switch.on = YES;

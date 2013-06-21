@@ -116,7 +116,7 @@
     //    [formatLabel setText:@"已上传照片: "];
     //    [self.view addSubview:formatLabel];
     deviceName = [AppDelegate deviceString];
-    float y = 40;
+    y = 40;
     if(![deviceName isEqualToString:@"iPhone 5"])
     {
         y = 0;
@@ -158,13 +158,16 @@
     CGRect progressRect = CGRectMake(40, y+250, 240, 2);
     uploadProgressView = [[UIProgressView alloc] initWithFrame:progressRect];
     [self.view addSubview:uploadProgressView];
-    CGRect currFileNameRect = CGRectMake(40, y+272, 240, 25);
+    CGRect currFileNameRect = CGRectMake(40, y+277, 240, 25);
     currFileNameLabel = [[UILabel alloc] initWithFrame:currFileNameRect];
     [currFileNameLabel setTextAlignment:NSTextAlignmentCenter];
+    [currFileNameLabel setTextColor:[UIColor colorWithRed:57.0/255.0 green:65.0/255.0 blue:92.0/255.0 alpha:1]];
     [self.view addSubview:currFileNameLabel];
     CGRect uploadFinshPageRect = CGRectMake(40, y+317, 240, 20);
     uploadFinshPageLabel = [[UILabel alloc] initWithFrame:uploadFinshPageRect];
     [uploadFinshPageLabel setTextAlignment:NSTextAlignmentCenter];
+    [uploadFinshPageLabel setFont:[UIFont systemFontOfSize:14]];
+    [uploadFinshPageLabel setTextColor:[UIColor colorWithRed:148.0/255.0 green:156.0/255.0 blue:170.0/255.0 alpha:1]];
     [self.view addSubview:uploadFinshPageLabel];
     
     //上传完成界面
@@ -175,6 +178,7 @@
     CGRect uploadFinshRect = CGRectMake(10, y+240, 300, 20);
     uploadFinshLabel = [[UILabel alloc] initWithFrame:uploadFinshRect];
     [uploadFinshLabel setText:@"现已全部完成，你的照片已上传到虹盘"];
+    [uploadFinshLabel setTextColor:[UIColor colorWithRed:57.0/255.0 green:65.0/255.0 blue:92.0/255.0 alpha:1]];
     [uploadFinshLabel setTextAlignment:NSTextAlignmentCenter];
     [self.view addSubview:uploadFinshLabel];
     
@@ -189,6 +193,53 @@
     [photoManger setNewFoldDelegate:self];
     
     [super viewDidLoad];
+}
+
+-(void)stopWiFi
+{
+    if(netWorkState==2)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if(uploderDemo)
+            {
+                [uploderDemo setUpLoadDelegate:nil];
+                uploderDemo = nil;
+            }
+            isWlanUpload = FALSE;
+            isAlert = TRUE;
+            
+            isConnection = FALSE;
+            
+            [self showUploadingView:NO];
+            [unWifiOrNetWorkImageView setImage:[UIImage imageNamed:@"Updata_ErrWifi.png"]];
+            [unWifiOrNetWorkImageView setHidden:NO];
+            [uploadImageView setHidden:YES];
+            [uploadProgressView setHidden:YES];
+            [uploadFinshPageLabel setHidden:NO];
+            [uploadFinshPageLabel setText:@"或者你可以去设置关闭”仅在Wi-Fi下上传/下载“"];
+            
+            uploadFinshPageLabel.numberOfLines=0;
+            CGSize size = [uploadFinshPageLabel sizeThatFits:CGSizeMake(uploadFinshPageLabel.frame.size.width-20, 0)];//假定label_1设置的固定宽度为100，自适应高
+            [uploadFinshPageLabel.text sizeWithFont:uploadFinshPageLabel.font
+                                  constrainedToSize:size
+                                      lineBreakMode:UILineBreakModeWordWrap];  //这句加上才能自适应
+            NSLog(@"字符在宽度不变，自适应高：%f",size.height);
+            CGRect rct = uploadFinshPageLabel.frame;
+            rct.size.height=size.height;
+            uploadFinshPageLabel.frame = rct;
+            [currFileNameLabel setText:@"等待Wi-Fi上传"];
+            
+            uploadNumber = 0;
+            [photoArray removeAllObjects];
+            isOnce = FALSE;
+            isConnection = FALSE;
+            if(connectionTimer==nil && !isStop)
+            {
+                connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+            }
+        });
+    }
 }
 
 -(void)stopAllDo
@@ -219,29 +270,42 @@
 
 -(void)startSouStart
 {
+    
     if(isStop)
     {
-        isStop = NO;
-        isSelected = TRUE;
-        [self getPhotoLibrary];
-        isConnection = FALSE;
-        [uploadWaitButton setTitle:@"加载中..." forState:UIControlStateNormal];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoUpload"];
-        });
-        
-        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:4];
-        SettingViewController *setting = (SettingViewController *)[NavigationController.viewControllers objectAtIndex:0];
-        [setting closeSwitch];
-        
-        if(!connectionTimer)
-        {
-            connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+        if (![YNFunctions isOnlyWifi]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"这可能会产生流量费用，您是否要继续？"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"取消"
+                                                      otherButtonTitles:@"继续", nil];
+            [alertView show];
+            [alertView release];
         }
-        if(!libaryTimer)
+        else
         {
-            libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+            isStop = NO;
+            isSelected = TRUE;
+            [self getPhotoLibrary];
+            isConnection = FALSE;
+            [uploadWaitButton setTitle:@"加载中..." forState:UIControlStateNormal];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoUpload"];
+            });
+            
+            AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:4];
+            SettingViewController *setting = (SettingViewController *)[NavigationController.viewControllers objectAtIndex:0];
+            [setting closeSwitch];
+            
+            if(!connectionTimer)
+            {
+                connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+            }
+            if(!libaryTimer)
+            {
+                libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+            }
         }
     }
 }
@@ -256,7 +320,6 @@
 -(void)getPhotoLibrary
 {
     NSLog(@"判断照片库是否更新");
-    
     if(isStop)
     {
         [self stopAllDo];
@@ -374,6 +437,7 @@
             //wifi
             if([[self GetCurrntNet] isEqualToString:@"WIFI"])
             {
+                netWorkState = 1;
                 isWlanUpload = FALSE;
                 isAlert = TRUE;
                 if(!isConnection && uploadNumber<[photoArray count])
@@ -392,7 +456,8 @@
             }
             else if([[self GetCurrntNet] isEqualToString:@"WLAN"])
             {
-                dispatch_sync(dispatch_get_main_queue(), ^{
+                netWorkState = 2;
+                dispatch_async(dispatch_get_main_queue(), ^{
                     
                     isWlanUpload = FALSE;
                     isAlert = TRUE;
@@ -406,7 +471,7 @@
                     [uploadImageView setHidden:YES];
                     [uploadProgressView setHidden:YES];
                     [uploadFinshPageLabel setHidden:NO];
-                    [uploadFinshPageLabel setText:@"你可以去设置界面关闭'仅WIFI'上传,使用2G/3G上传"];
+                    [uploadFinshPageLabel setText:@"或者你可以去设置关闭”仅在Wi-Fi下上传/下载“"];
                     
                     uploadFinshPageLabel.numberOfLines=0;
                     CGSize size = [uploadFinshPageLabel sizeThatFits:CGSizeMake(uploadFinshPageLabel.frame.size.width-20, 0)];//假定label_1设置的固定宽度为100，自适应高
@@ -417,7 +482,7 @@
                     CGRect rct = uploadFinshPageLabel.frame;
                     rct.size.height=size.height;
                     uploadFinshPageLabel.frame = rct;
-                    [currFileNameLabel setText:@"等待Wi-Fi"];
+                    [currFileNameLabel setText:@"等待Wi-Fi上传"];
                     
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
@@ -431,7 +496,8 @@
             }
             else if([[self GetCurrntNet] isEqualToString:@"没有网络链接"])
             {
-                dispatch_sync(dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    netWorkState = 3;
                     isWlanUpload = FALSE;
                     isAlert = TRUE;
                     [self showUploadingView:NO];
@@ -459,6 +525,7 @@
             //非仅wifi
             if([[self GetCurrntNet] isEqualToString:@"WIFI"])
             {
+                netWorkState = 1;
                 isWlanUpload = FALSE;
                 isAlert = TRUE;
                 if(!isConnection && uploadNumber<[photoArray count])
@@ -477,6 +544,7 @@
             }
             else if([[self GetCurrntNet] isEqualToString:@"WLAN"])
             {
+                netWorkState = 2;
                 if(!isConnection && uploadNumber<[photoArray count])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -492,7 +560,8 @@
             }
             else if([[self GetCurrntNet] isEqualToString:@"没有网络链接"])
             {
-                dispatch_sync(dispatch_get_main_queue(), ^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    netWorkState = 3;
                     isWlanUpload = FALSE;
                     isAlert = TRUE;
                     [self showUploadingView:NO];
@@ -567,15 +636,36 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
-    if(buttonIndex == 0)
-    {
-        isWlanUpload = FALSE;
-        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [app_delegate.myTabBarController setSelectedIndex:4];
-    }
+//    if(buttonIndex == 0)
+//    {
+//        isWlanUpload = FALSE;
+//        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//        [app_delegate.myTabBarController setSelectedIndex:4];
+//    }
     if(buttonIndex == 1)
     {
-        isWlanUpload = TRUE;
+        isStop = NO;
+        isSelected = TRUE;
+        [self getPhotoLibrary];
+        isConnection = FALSE;
+        [uploadWaitButton setTitle:@"加载中..." forState:UIControlStateNormal];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoUpload"];
+        });
+        
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:4];
+        SettingViewController *setting = (SettingViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        [setting closeSwitch];
+        
+        if(!connectionTimer)
+        {
+            connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+        }
+        if(!libaryTimer)
+        {
+            libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        }
     }
 }
 
@@ -604,12 +694,7 @@
     }
     if([YNFunctions isAutoUpload] && isStop)
     {
-        isStop = NO;
-        isSelected = TRUE;
-        [self getPhotoLibrary];
-        isConnection = FALSE;
-        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
-        libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        [self startSouStart];
     }
 }
 
@@ -664,11 +749,12 @@
         CGRect uploadImageRect = uploadImageView.frame;
         uploadImageRect.size = imageSize;
         uploadImageRect.origin.x = (320-imageSize.width)/2;
+        uploadImageRect.origin.y = (uploadProgressView.frame.origin.y-imageSize.height)/2;
         [uploadImageView setFrame:uploadImageRect];
         [uploadImageView setImage:[UIImage imageWithData:demo.f_data]];
         [uploadProgressView setProgress:0];
-        [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
-        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]-uploadNumber]];
+        [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
+        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]-uploadNumber]];
         [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
         [self showUploadingView:NO];
     });
@@ -1077,6 +1163,7 @@
     {
         [self showUploadingView:YES];
         [self showUploadFinshView:YES];
+        [unWifiOrNetWorkImageView setHidden:YES];
     }
 }
 
