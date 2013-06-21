@@ -214,6 +214,7 @@
         libaryTimer = nil;
     }
     [self showStartUploadView:NO];
+    [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
 }
 
 -(void)startSouStart
@@ -258,6 +259,7 @@
     
     if(isStop)
     {
+        [self stopAllDo];
         return;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -360,6 +362,7 @@
     __block BOOL bl = FALSE;
     if(isStop)
     {
+        [self stopAllDo];
         return bl;
     }
     
@@ -667,6 +670,7 @@
         [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
         [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]-uploadNumber]];
         [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
+        [self showUploadingView:NO];
     });
     if(uploadNumber >= [photoArray count])
     {

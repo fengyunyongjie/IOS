@@ -362,7 +362,7 @@ typedef enum{
                 {
                     //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
                     //titleLabel.hidden=YES;
-                    cell.textLabel.text=@"自动备份照片";
+                    cell.textLabel.text=@"照片自动备份";
                     [cell.textLabel setFont:titleLabel.font];
                     cell.detailTextLabel.text=@"  (仅Wi-fi下,节省流量)";
                     [cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
@@ -494,9 +494,9 @@ typedef enum{
         if(switchTag>0)
         {
             UISwitch *m_switch = (UISwitch *)[self.view viewWithTag:switchTag];
-            if(m_switch.isOn)
+            if(!m_switch.isOn)
             {
-                m_switch.on = NO;
+                m_switch.on = YES;
                 [self updateData];
             }
         }
