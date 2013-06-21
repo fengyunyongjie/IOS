@@ -1016,7 +1016,7 @@ typedef enum{
                 NSString *name=[dic objectForKey:@"f_name"];
                 NSString *f_id=[dic objectForKey:@"f_id"];
                 NSString *fildtext=[[alertView textFieldAtIndex:0] text];
-                if (![fildtext isEqualToString:name] && ![fildtext isEqualToString:@""]) {
+                if (![fildtext isEqualToString:name]) {
                     NSLog(@"重命名");
                     [self.fm cancelAllTask];
                     self.fm=[[[SCBFileManager alloc] init] autorelease];

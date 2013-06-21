@@ -177,6 +177,11 @@
     {
         cell.imageView.image = [UIImage imageNamed:@"icon_unkown.png"];
     }
+    [cell.imageView setFrame:CGRectMake(0, 0, 23, 23)];
+    [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    CGRect rect=[cell.imageView frame];
+    NSLog(@"%f,%f,%f,%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
+    
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -232,35 +237,6 @@
 {
     NSArray *listArray=[[FavoritesData sharedFavoritesData] allValues];
     NSDictionary *dic=[listArray objectAtIndex:indexPath.row];
-    NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
-//    if ([f_mime isEqualToString:@"png"]||
-//        [f_mime isEqualToString:@"jpg"]||
-//        [f_mime isEqualToString:@"jpeg"]||
-//        [f_mime isEqualToString:@"bmp"]||
-//        [f_mime isEqualToString:@"gif"]) {
-//        NSMutableArray *array=[NSMutableArray array];
-//        int index=0;
-//        for (int i=0;i<listArray.count;i++) {
-//            NSDictionary *dict=[listArray objectAtIndex:i];
-//            PhotoFile *demo = [[PhotoFile alloc] init];
-//            [demo setF_date:[dict objectForKey:@"f_create"]];
-//            [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
-//            [array addObject:demo];
-//            
-//            if (i==indexPath.row) {
-//                index=array.count-1;
-//            }
-//            [demo release];
-//        }
-//        PhotoLookViewController *photoLookViewController = [[PhotoLookViewController alloc] init];
-//        [photoLookViewController setHidesBottomBarWhenPushed:YES];
-//        [photoLookViewController setIsCliped:YES];
-//        [photoLookViewController setCurrPage:index];
-//        [photoLookViewController setTableArray:array];
-//        [self.navigationController pushViewController:photoLookViewController animated:YES];
-//        [photoLookViewController release];
-//    }else
-//    {
         //先做文件类型判断，是否是为可预览文件，如果为否，不做任何操作
         //判断文件是否下载完成，如果下载完成，打开预览，否则不做任何操作
         NSString *fileName=[dic objectForKey:@"f_name"];
@@ -279,14 +255,7 @@
             [previewController.tabBarController.tabBar setBackgroundColor:[UIColor blackColor]];
             [self.navigationController pushViewController:previewController animated:YES];
         }else{
-//            OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
-//            [otherBrowser setHidesBottomBarWhenPushed:YES];
-//            otherBrowser.dataDic=dic;
-//            NSString *f_name=[dic objectForKey:@"f_name"];
-//            otherBrowser.title=f_name;
-//            [self.navigationController pushViewController:otherBrowser animated:YES];
         }
-//    }
 
 }
 #pragma mark -

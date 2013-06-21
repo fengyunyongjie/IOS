@@ -29,6 +29,7 @@
 {
     self.tempSavedPath=[self.savedPath stringByAppendingString:@".download"];
     self.activeDownload=[NSMutableData data];
+    self.dataSize=0;
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?f_id=%@&f_skip=%d",SERVER_URL,FM_DOWNLOAD_URI,self.fileId,0]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
@@ -117,6 +118,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     //[self.activeDownload appendData:data];
+    self.dataSize+=[data length];
     //[data writeToFile:self.tempSavedPath atomically:NO];
     NSFileManager *fm=[NSFileManager defaultManager];
     if (![fm fileExistsAtPath:self.tempSavedPath]) {
@@ -131,7 +133,12 @@
     }
     NSLog(@"connection:didReceiveData:");
     if (delegate) {
-        [delegate updateProgress:[[[fm attributesOfItemAtPath:self.tempSavedPath error:nil] objectForKey:NSFileSize] longValue] index:self.index];
+        long fileSize=[[[fm attributesOfItemAtPath:self.tempSavedPath error:nil] objectForKey:NSFileSize] longValue];
+        [delegate updateProgress:fileSize index:self.index];
+        if (fileSize!=self.dataSize) {
+            [connection cancel];
+            [delegate downloadFail];
+        }
     }
 }
 

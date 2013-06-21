@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSMutableData *activeDownload;
 @property(nonatomic,retain)NSURLConnection *fileConnection;
 @property(strong,nonatomic)NSString *tempSavedPath;
+@property(assign,nonatomic)long dataSize;
 
 -(void)startDownload;
 -(void)cancelDownload;

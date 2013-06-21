@@ -170,6 +170,8 @@ static FavoritesData *_sharedFavoritesData;
 }
 -(void)downloadFail
 {
-    [self performSelector:@selector(startDownload) withObject:self afterDelay:10.0f];
+    self.currentDownloadID=nil;
+    self.isAllFileDownloadFinish=YES;
+    [self performSelector:@selector(startDownloading) withObject:self afterDelay:10.0f];
 }
 @end
