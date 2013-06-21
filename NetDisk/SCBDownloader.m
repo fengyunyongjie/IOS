@@ -27,11 +27,22 @@
 }
 -(void)startDownload
 {
-    self.tempSavedPath=[self.savedPath stringByAppendingPathComponent:@".download"];
+    self.tempSavedPath=[self.savedPath stringByAppendingString:@".download"];
     self.activeDownload=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?f_id=%@&f_skip=%d",SERVER_URL,FM_DOWNLOAD_URI,self.fileId,0]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
+    NSFileManager *fm=[NSFileManager defaultManager];
+    long fileSize=0;
+    if ([fm fileExistsAtPath:self.tempSavedPath]) {
+        NSLog(@"%@,\n下载临时文件已存在！",self.tempSavedPath);
+        if ([fm removeItemAtPath:self.tempSavedPath error:nil]) {
+            NSLog(@"文件删除成功！");
+        }
+    }else
+    {
+        fileSize=0;
+    }
     [body appendFormat:@"f_id=%@&f_skip=%d",self.fileId,0];
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -105,11 +116,22 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    [self.activeDownload appendData:data];
-    [data writeToFile:self.tempSavedPath atomically:NO];
+    //[self.activeDownload appendData:data];
+    //[data writeToFile:self.tempSavedPath atomically:NO];
+    NSFileManager *fm=[NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:self.tempSavedPath]) {
+        NSLog(@"%@,\n文件不存在！",self.tempSavedPath);
+        //[fm createFileAtPath:self.tempSavedPath contents:[NSData data] attributes:NSAttributedStringEnumerationReverse];
+        [data writeToFile:self.tempSavedPath atomically:YES];
+    }else
+    {
+        NSFileHandle *fh=[NSFileHandle fileHandleForWritingAtPath:self.tempSavedPath];
+        [fh seekToEndOfFile];
+        [fh writeData:data];
+    }
     NSLog(@"connection:didReceiveData:");
     if (delegate) {
-        [delegate updateProgress:[self.activeDownload length] index:self.index];
+        [delegate updateProgress:[[[fm attributesOfItemAtPath:self.tempSavedPath error:nil] objectForKey:NSFileSize] longValue] index:self.index];
     }
 }
 
@@ -157,7 +179,11 @@
     //[delegate fileDidDownload:self.index];
     NSLog(@"connectionDidFinishLoading");
     //UIImage *image=[[UIImage alloc] initWithData:self.activeDownload];
-    [self.activeDownload writeToFile:self.savedPath atomically:YES];
+    //[self.activeDownload writeToFile:self.savedPath atomically:YES];
+    NSError *error=[[NSError alloc] init];
+    if ([[NSFileManager defaultManager] moveItemAtPath:self.tempSavedPath toPath:self.savedPath error:&error]) {
+        NSLog(@"文件重命名成功");
+    }
     if (delegate) {
         [delegate fileDidDownload:self.index];
     }
