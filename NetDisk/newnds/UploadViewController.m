@@ -270,7 +270,6 @@
 
 -(void)startSouStart
 {
-    
     if(isStop)
     {
         if (![YNFunctions isOnlyWifi]) {
@@ -897,7 +896,7 @@
     else if(!isStop && uploadNumber >= [photoArray count])
     {
         [self showUploadFinshView:NO];
-        
+        uploderDemo = nil;
         [photoArray removeAllObjects];
         uploadNumber = 0;
     }
@@ -1064,13 +1063,14 @@
     uploadNumber++;
     if(!isStop && uploadNumber<[photoArray count])
     {
+        uploderDemo = nil;
         isConnection = FALSE;
         [self isUPloadImage];
     }
     else if(!isStop && uploadNumber >= [photoArray count])
     {
         [self showUploadFinshView:NO];
-        
+        uploderDemo = nil;
         [photoArray removeAllObjects];
         uploadNumber = 0;
     }

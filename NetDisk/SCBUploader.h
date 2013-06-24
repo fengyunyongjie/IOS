@@ -42,6 +42,7 @@
     NSMutableData *matableData;
     NSString *url_string;
     int currSize;
+    int macTimeOut;
 }
 
 @property(nonatomic,retain) id<UpLoadDelegate> upLoadDelegate;
