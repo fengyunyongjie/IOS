@@ -237,7 +237,7 @@
 {
     NSString *userName=[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
     if ([userName isEqualToString:@"fengyn@16feng.com"]) {
-        return YES;
+        return NO;
     }
     return NO;
 }

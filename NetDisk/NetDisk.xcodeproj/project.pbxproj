@@ -102,6 +102,7 @@
 		29A2D2F51733C2680013D65A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A58F4216636AD70075D243 /* libz.dylib */; };
 		29A747611746297B006299E4 /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A747601746297B006299E4 /* IconDownloader.m */; };
 		29AAC4E3175F4FAD0050B2A7 /* PhotoLookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AAC4E2175F4FAD0050B2A7 /* PhotoLookViewController.m */; };
+		29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */; };
 		29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */; };
 		29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B18AC7173CC37C00DBF2CB /* OptionCell.xib */; };
 		29B18ACB173CC5D700DBF2CB /* OptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18ACA173CC5D700DBF2CB /* OptionCell.m */; };
@@ -410,6 +411,8 @@
 		29A92A08171560B500B1B2A4 /* SCBoxSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBoxSDK.m; sourceTree = "<group>"; };
 		29AAC4E1175F4FAD0050B2A7 /* PhotoLookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoLookViewController.h; sourceTree = "<group>"; };
 		29AAC4E2175F4FAD0050B2A7 /* PhotoLookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoLookViewController.m; sourceTree = "<group>"; };
+		29AFC2C41778369E0074FBAC /* QLBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLBrowserViewController.h; sourceTree = "<group>"; };
+		29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QLBrowserViewController.m; sourceTree = "<group>"; };
 		29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
 		29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBrowserViewController.m; sourceTree = "<group>"; };
 		29B18AC7173CC37C00DBF2CB /* OptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OptionCell.xib; sourceTree = "<group>"; };
@@ -1171,6 +1174,8 @@
 			children = (
 				29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */,
 				29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */,
+				29AFC2C41778369E0074FBAC /* QLBrowserViewController.h */,
+				29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */,
 				298C1EDC17532F4F00D793F3 /* OtherBrowserViewController.h */,
 				298C1EDD17532F4F00D793F3 /* OtherBrowserViewController.m */,
 				298C1EE3175345C600D793F3 /* OtherBrowser.xib */,
@@ -2325,6 +2330,7 @@
 				29AAC4E3175F4FAD0050B2A7 /* PhotoLookViewController.m in Sources */,
 				29FA3B30176083B700FBA1B6 /* DefaultViewController.m in Sources */,
 				292D984B17644B3E00F57BFF /* operation.m in Sources */,
+				29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

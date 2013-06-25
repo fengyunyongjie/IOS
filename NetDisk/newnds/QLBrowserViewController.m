@@ -1,18 +1,18 @@
 //
-//  ImageBrowserViewController.m
+//  QLBrowserViewController.m
 //  NetDisk
 //
-//  Created by fengyongning on 13-5-10.
+//  Created by fengyongning on 13-6-24.
 //
 //
 
-#import "ImageBrowserViewController.h"
+#import "QLBrowserViewController.h"
 
-@interface ImageBrowserViewController ()
+@interface QLBrowserViewController ()
 
 @end
 
-@implementation ImageBrowserViewController
+@implementation QLBrowserViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -22,14 +22,26 @@
     }
     return self;
 }
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (NSInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.scrollView=[[[UIScrollView alloc] initWithFrame:self.view.bounds] autorelease];
-    [self.view addSubview:self.scrollView];
-    self.fileDownloaders=[[[NSMutableDictionary alloc] init] autorelease];
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -13,6 +13,7 @@
 #import "IconDownloader.h"
 #import "OtherBrowserViewController.h"
 #import "PhotoFile.h"
+#import "QLBrowserViewController.h"
 @interface FavoritesViewController ()
 
 @end
@@ -128,7 +129,23 @@
     {
         cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ 等待中...",[YNFunctions convertSize:f_size]];
     }
-    
+    if ([t_fl isEqualToString:@"png"]||
+        [t_fl isEqualToString:@"jpg"]||
+        [t_fl isEqualToString:@"jpeg"]||
+        [t_fl isEqualToString:@"bmp"]||
+        [t_fl isEqualToString:@"gif"])
+    {
+        CGRect r=[tagImageView frame];
+        r.origin.x=20;
+        r.origin.y=20;
+        [tagImageView setFrame:r];
+    }else
+    {
+        CGRect r=[tagImageView frame];
+        r.origin.x=25;
+        r.origin.y=25;
+        [tagImageView setFrame:r];
+    }
 
     
     if ([t_fl isEqualToString:@"png"]||
@@ -232,7 +249,6 @@
 */
 
 #pragma mark - Table view delegate
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *listArray=[[FavoritesData sharedFavoritesData] allValues];
@@ -243,17 +259,14 @@
         NSString *filePath=[YNFunctions getFMCachePath];
         filePath=[filePath stringByAppendingPathComponent:fileName];
         if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-            QLPreviewController *previewController=[[QLPreviewController alloc] init];
+            QLBrowserViewController *previewController=[[QLBrowserViewController alloc] init];
             previewController.dataSource=self;
             previewController.delegate=self;
             
             previewController.currentPreviewItemIndex=indexPath.row;
-            //[previewController.cu]
-            //int count=[previewController.navigationController.view.subviews count];
-            //NSLog(@"previewController.view.subviews count: %d",count);
             [previewController setHidesBottomBarWhenPushed:YES];
-            [previewController.tabBarController.tabBar setBackgroundColor:[UIColor blackColor]];
             [self.navigationController pushViewController:previewController animated:YES];
+            [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
         }else{
         }
 
@@ -387,11 +400,27 @@
     //NSLog(@"%@",text);
     self.text=text;
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:index inSection:0];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    //[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    UITableViewCell *cell=[self.tableView cellForRowAtIndexPath:indexPath];
+    cell.detailTextLabel.text=text;
     //[self.tableView cellForRowAtIndexPath:indexPath];
 }
 -(void)updateCell
 {
     [self.tableView reloadData];
 }
+//- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+//{
+//    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+//}
+//
+//- (BOOL)shouldAutorotate
+//{
+//    return NO;
+//}
+//
+//- (NSUInteger)supportedInterfaceOrientations
+//{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
 @end

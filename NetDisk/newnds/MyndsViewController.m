@@ -613,6 +613,24 @@ typedef enum{
         {
             cell.imageView.image = [UIImage imageNamed:@"icon_unkown.png"];
         }
+//        UIImageView *tagImageView=[cell.imageView.subviews objectAtIndex:0];
+//        if ([t_fl isEqualToString:@"png"]||
+//            [t_fl isEqualToString:@"jpg"]||
+//            [t_fl isEqualToString:@"jpeg"]||
+//            [t_fl isEqualToString:@"bmp"]||
+//            [t_fl isEqualToString:@"gif"])
+//        {
+//            CGRect r=[tagImageView frame];
+//            r.origin.x=20;
+//            r.origin.y=20;
+//            [tagImageView setFrame:r];
+//        }else
+//        {
+//            CGRect r=[tagImageView frame];
+//            r.origin.x=25;
+//            r.origin.y=25;
+//            [tagImageView setFrame:r];
+//        }
         
     }else
     {
