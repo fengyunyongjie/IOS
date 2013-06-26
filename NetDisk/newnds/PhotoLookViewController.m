@@ -127,9 +127,9 @@
     
     if(currPage+1==[tableArray count] && [tableArray count]>=3)
     {
-        startPage = currPage-3;
+        startPage = currPage-2;
         endPage = currPage-1;
-        for (int i = currPage-3; i<=currPage; i++){
+        for (int i = currPage-2; i<=currPage; i++){
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -1081,6 +1081,10 @@
     }
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return YES;
+}
 
 - (BOOL)shouldAutorotate{
     return YES;
