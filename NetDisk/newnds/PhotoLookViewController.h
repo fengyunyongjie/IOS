@@ -15,19 +15,8 @@
     /*
      缩放代码
      */
-    CGFloat offset;
-    float scollviewHeight;
     NSMutableArray *tableArray;
     NSInteger currPage;
-    
-    /*
-     添加头部和底部栏
-     */
-    UIButton *leftButton;
-    UIButton *centerButton;
-    UIButton *rightButton;
-    BOOL isCliped;
-    UIToolbar *bottonToolBar;
     
     /*
      操作提示
@@ -51,19 +40,34 @@
      滑动不加载数据
      */
     BOOL isLoadImage;
-    
-    /*
-     双击事件
-     */
-    BOOL isDoubleClick;
-    float endScale;
     NSMutableArray *downArray;
+    CGFloat currWidth;
+    CGFloat currHeight;
 }
 
 @property (nonatomic, retain) UIScrollView *imageScrollView;
 @property (nonatomic, retain) NSMutableArray *tableArray;
 @property (nonatomic, assign) NSInteger currPage;
-@property (nonatomic, assign) BOOL isCliped;
+
+@property(strong,nonatomic) NSMutableArray *imageViewArray;
+@property(assign,nonatomic) CGFloat offset;
+@property(assign,nonatomic) BOOL isDoubleClick;
+
+/*
+ 添加头部和底部栏
+ */
+@property(strong,nonatomic) UIButton *topLeftButton;
+@property(strong,nonatomic) UILabel *topTitleLabel;
+@property(strong,nonatomic) UIToolbar *topToolBar;
+
+@property(strong,nonatomic) UIButton *leftButton;
+@property(strong,nonatomic) UIButton *centerButton;
+@property(strong,nonatomic) UIButton *rightButton;
+@property(assign,nonatomic) BOOL isCliped;
+@property(strong,nonatomic) UIToolbar *bottonToolBar;
+@property(assign,nonatomic) BOOL isScape;
+@property(assign,nonatomic) int page;
+@property(assign,nonatomic) int endFloat;
 
 
 -(CGRect)zoomRectForScale:(float)scale inView:(UIScrollView*)scrollView withCenter:(CGPoint)center;

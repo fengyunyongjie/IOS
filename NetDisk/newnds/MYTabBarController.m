@@ -23,6 +23,10 @@
 @synthesize show_style,need_to_custom,normal_image,select_image,tab_bar_bg,delegate_custom,tab_delegate;
 @synthesize font_color,font,hidesBottomBarWhenPushed,hilighted_color,current_selected_tab_index;
 
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

@@ -20,6 +20,10 @@
 
 @implementation LoginViewController
 
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

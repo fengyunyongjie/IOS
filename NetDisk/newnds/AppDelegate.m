@@ -20,6 +20,7 @@
 @synthesize user_name;
 @synthesize isUnUpload;
 
+
 - (void)dealloc
 {
     [_window release];

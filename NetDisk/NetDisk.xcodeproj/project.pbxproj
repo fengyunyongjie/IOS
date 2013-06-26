@@ -19,6 +19,7 @@
 		2918548417587D2500C566A3 /* regist_bg_mid.png in Resources */ = {isa = PBXBuildFile; fileRef = 2918548317587D2500C566A3 /* regist_bg_mid.png */; };
 		2918548617587E2B00C566A3 /* regist_input_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 2918548517587E2B00C566A3 /* regist_input_bg.png */; };
 		291E0B15174B61CF007A72FB /* interestSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 291E0B14174B61CF007A72FB /* interestSelected.png */; };
+		291F5D8F177A699F007EFE03 /* Back_Normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 291F5D8E177A699F007EFE03 /* Back_Normal.png */; };
 		292344A21754AF11002FE3D0 /* PKReachability.h in Sources */ = {isa = PBXBuildFile; fileRef = 2939A64A174DE2820036EFD6 /* PKReachability.h */; };
 		292344A61754AF5C002FE3D0 /* Reachability.h in Sources */ = {isa = PBXBuildFile; fileRef = 292344A31754AF47002FE3D0 /* Reachability.h */; };
 		292344A81754B1FD002FE3D0 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 292344A71754B1FD002FE3D0 /* Reachability.m */; };
@@ -301,6 +302,7 @@
 		2918548317587D2500C566A3 /* regist_bg_mid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = regist_bg_mid.png; sourceTree = "<group>"; };
 		2918548517587E2B00C566A3 /* regist_input_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = regist_input_bg.png; sourceTree = "<group>"; };
 		291E0B14174B61CF007A72FB /* interestSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = interestSelected.png; sourceTree = "<group>"; };
+		291F5D8E177A699F007EFE03 /* Back_Normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back_Normal.png; sourceTree = "<group>"; };
 		292344A31754AF47002FE3D0 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		292344A71754B1FD002FE3D0 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		29262226172BD70000A95E97 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -1111,6 +1113,7 @@
 		298AB52E17727FF200D067E1 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
+				291F5D8E177A699F007EFE03 /* Back_Normal.png */,
 				298AB52F17727FF200D067E1 /* Updata_Bt_Start.png */,
 				298AB53017727FF200D067E1 /* Updata_Complite.png */,
 				298AB53117727FF200D067E1 /* Updata_ErrInternet.png */,
@@ -2243,6 +2246,7 @@
 				298AB53817727FF200D067E1 /* Updata_ErrWifi.png in Resources */,
 				298AB53917727FF200D067E1 /* 按钮.png in Resources */,
 				298AB53A17727FF200D067E1 /* 背景图.png in Resources */,
+				291F5D8F177A699F007EFE03 /* Back_Normal.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

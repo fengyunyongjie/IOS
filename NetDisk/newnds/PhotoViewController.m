@@ -1039,7 +1039,8 @@
         NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
         [photo_look_view setTableArray:[tablediction objectForKey:sectionString]];
         [photo_look_view setCurrPage:button.cell.pageTag];
-        [self.navigationController pushViewController:photo_look_view animated:YES];
+        [self presentModalViewController:photo_look_view animated:YES];
+//        [self.navigationController pushViewController:photo_look_view animated:YES];
         [photo_look_view release];
     }
     NSLog(@"button:%i",button.tag);

@@ -13,7 +13,25 @@
 #import "AppDelegate.h"
 
 #define ACTNUMBER 100000
+#define ScrollViewTag 100000
 #define ImageViewTag 200000
+#define ScollviewHeight self.view.frame.size.height //当前屏幕的高度
+#define ScollviewWidth self.view.frame.size.width //当前屏幕的宽度
+
+#define ImageContentSize CGSizeMake(320,ScollviewHeight) //每个UIScrollView的大小
+#define ScrollRect(index,size) CGRectMake(320*index, 0, 320, ScollviewHeight) //每个UIScrollView的坐标
+#define ImagePoint(size) CGPointMake((320-size.width)/2, (ScollviewHeight-size.height)/2) //imageview的起始点
+#define GetHeight(size) 320*size.height/size.width //获取等比例高度
+#define GetWidth(size) ScollviewHeight*size.width/size.height //获取等比例宽度
+
+//横屏后
+#define ScapeScrollviewRect CGRectMake(0, 0, ScollviewHeight+20, 300)
+#define ScapeTopLeftRect CGRectMake(0, 0, ScollviewHeight+20, 44)
+#define ScapeScrollRect(index,size) CGRectMake((ScollviewHeight+20)*index, 0, ScollviewHeight+20, 300) //每个UIScrollView的坐标
+#define ScapeImagePoint(size) CGPointMake((ScollviewHeight+20-size.width)/2, (300-size.height)/2) //imageview的起始点
+#define GetScapeHeight(size) (ScollviewHeight+20)*size.height/size.width //获取等比例高度
+#define GetScapeWidth(size) 300*size.width/size.height //获取等比例宽度
+
 @interface PhotoLookViewController ()
 @property float scale_;
 @end
@@ -49,19 +67,21 @@
     imageDic = [[NSMutableDictionary alloc] init];
     activityDic = [[NSMutableDictionary alloc] init];
     downArray = [[NSMutableArray alloc] init];
+    self.imageViewArray = [[NSMutableArray alloc] init];
     
-    scollviewHeight = self.view.frame.size.height;
     self.view.backgroundColor = [UIColor blackColor];
-    offset = 0.0;
+    self.offset = 0.0;
     scale_ = 1.0;
+    currWidth = 320;
+    currHeight = self.view.frame.size.height;
     
-    self.imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, scollviewHeight)];
+    self.imageScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     self.imageScrollView.backgroundColor = [UIColor clearColor];
     self.imageScrollView.scrollEnabled = YES;
     self.imageScrollView.pagingEnabled = YES;
     self.imageScrollView.showsHorizontalScrollIndicator = NO;
     self.imageScrollView.delegate = self;
-    self.imageScrollView.contentSize = CGSizeMake(320*[tableArray count], scollviewHeight);
+    self.imageScrollView.contentSize = CGSizeMake(320*[tableArray count], ScollviewHeight);
     
     if(currPage==0&&[tableArray count]>=3)
     {
@@ -140,50 +160,82 @@
     [self.view addSubview:self.imageScrollView];
     
     
+    //添加头部试图
+    CGRect topRect = CGRectMake(0, 0, 320, 44);
+    self.topToolBar = [[UIToolbar alloc] initWithFrame:topRect];
+    [self.topToolBar setBarStyle:UIBarStyleBlackTranslucent];
+    CGRect topLeftRect = CGRectMake(2, 7, 48, 30);
+    self.topLeftButton = [[UIButton alloc] initWithFrame:topLeftRect];
+    [self.topLeftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [self.topLeftButton.titleLabel setTextColor:[UIColor blackColor]];
+    [self.topLeftButton setTitle:@" 返回" forState:UIControlStateNormal];
+    [self.topLeftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.topLeftButton addTarget:self action:@selector(backClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.topLeftButton setBackgroundImage:[UIImage imageNamed:@"Back_Normal.png"] forState:UIControlStateNormal];
+    [self.topLeftButton setBackgroundColor:[UIColor clearColor]];
+    self.topLeftButton.showsTouchWhenHighlighted = YES;
+    [self.topToolBar addSubview:self.topLeftButton];
+    
+    CGRect topTitleRect = CGRectMake(0, 0, 320, 44);
+    self.topTitleLabel = [[UILabel alloc] initWithFrame:topTitleRect];
+    [self.topTitleLabel setTextColor:[UIColor whiteColor]];
+    [self.topTitleLabel setBackgroundColor:[UIColor clearColor]];
+    [self.topTitleLabel setText:[NSString stringWithFormat:@"1/%i",[self.imageViewArray count]]];
+    [self.topTitleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.topToolBar addSubview:self.topTitleLabel];
+    
+    [self.view addSubview:self.topToolBar];
+    
     //添加底部试图
-    CGRect bottonRect = CGRectMake(0, scollviewHeight-44, 320, 44);
-    bottonToolBar = [[UIToolbar alloc] initWithFrame:bottonRect];
-    [bottonToolBar setBarStyle:UIBarStyleBlackTranslucent];
+    CGRect bottonRect = CGRectMake(0, ScollviewHeight-44, 320, 44);
+    self.bottonToolBar = [[UIToolbar alloc] initWithFrame:bottonRect];
+    [self.bottonToolBar setBarStyle:UIBarStyleBlackTranslucent];
     
     
-    CGRect leftRect = CGRectMake(36, 5, 35, 33);
-    leftButton = [[UIButton alloc] initWithFrame:leftRect];
-    [leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [leftButton.titleLabel setTextColor:[UIColor blackColor]];
-    [leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
-    [leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [leftButton setBackgroundColor:[UIColor clearColor]];
-    [bottonToolBar addSubview:leftButton];
-    leftButton.showsTouchWhenHighlighted = YES;
+    int width = (currWidth-36*4)/3;
     
-    CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
-    centerButton = [[UIButton alloc] initWithFrame:centerRect];
-    [centerButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [centerButton.titleLabel setTextColor:[UIColor blackColor]];
-    [centerButton addTarget:self action:@selector(shareClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [centerButton setTitle:@"分享" forState:UIControlStateNormal];
-    [centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [centerButton setBackgroundColor:[UIColor clearColor]];
-    [bottonToolBar addSubview:centerButton];
-    centerButton.showsTouchWhenHighlighted = YES;
+    CGRect leftRect = CGRectMake(36, 5, width, 33);
+    self.leftButton = [[UIButton alloc] initWithFrame:leftRect];
+    [self.leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [self.leftButton.titleLabel setTextColor:[UIColor blackColor]];
+    [self.leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+    [self.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.leftButton setBackgroundColor:[UIColor clearColor]];
+    [self.bottonToolBar addSubview:self.leftButton];
+    self.leftButton.showsTouchWhenHighlighted = YES;
     
-    CGRect rightRect = CGRectMake(213+36, 5, 35, 33);
-    rightButton = [[UIButton alloc] initWithFrame:rightRect];
-    [rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [rightButton.titleLabel setTextColor:[UIColor blackColor]];
-    [rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [rightButton setTitle:@"删除" forState:UIControlStateNormal];
-    [rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [rightButton setBackgroundColor:[UIColor clearColor]];
-    rightButton.showsTouchWhenHighlighted = YES;
-    [bottonToolBar addSubview:rightButton];
+    CGRect centerRect = CGRectMake(width+36*2, 5, width, 33);
+    self.centerButton = [[UIButton alloc] initWithFrame:centerRect];
+    [self.centerButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [self.centerButton.titleLabel setTextColor:[UIColor blackColor]];
+    [self.centerButton setTitle:@"分享" forState:UIControlStateNormal];
+    [self.centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.centerButton addTarget:self action:@selector(shareClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.centerButton setBackgroundColor:[UIColor clearColor]];
+    [self.bottonToolBar addSubview:self.centerButton];
+    self.centerButton.showsTouchWhenHighlighted = YES;
     
-    [self.view addSubview:bottonToolBar];
+    CGRect rightRect = CGRectMake(width*2+36*3, 5, width, 33);
+    self.rightButton = [[UIButton alloc] initWithFrame:rightRect];
+    [self.rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [self.rightButton.titleLabel setTextColor:[UIColor blackColor]];
+    [self.rightButton setTitle:@"删除" forState:UIControlStateNormal];
+    [self.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.rightButton setBackgroundColor:[UIColor clearColor]];
+    self.rightButton.showsTouchWhenHighlighted = YES;
+    [self.bottonToolBar addSubview:self.rightButton];
     
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlackTranslucent];
-    [self.navigationController setNavigationBarHidden:YES];
-    [bottonToolBar setHidden:YES];
+    [self.view addSubview:self.bottonToolBar];
+    
+    [self.topToolBar setHidden:YES];
+    [self.bottonToolBar setHidden:YES];
+}
+
+-(void)backClick
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -200,7 +252,6 @@
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
     
     for (UIView *v in scrollView.subviews){
-        NSLog(@"tag:%i;sTag:%i",v.tag,scrollView.tag);
         return v;
     }
     return nil;
@@ -208,7 +259,7 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSLog(@"okkk");
+    
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -216,21 +267,41 @@
     isLoadImage = TRUE;
     [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
     
+    if(self.isScape)
+    {
+        self.page = self.imageScrollView.contentOffset.x/ScollviewHeight;
+    }
+    else
+    {
+        self.page = self.imageScrollView.contentOffset.x/320;
+    }
     if (scrollView == self.imageScrollView){
         CGFloat x = scrollView.contentOffset.x;
-        if (x==offset){
+        self.endFloat = x;
+        if (x==self.offset){
             
         }
         else {
-            offset = x;
+            self.offset = x;
             for (UIScrollView *s in scrollView.subviews){
                 if ([s isKindOfClass:[UIScrollView class]]){
                     [s setZoomScale:1.0];
                     UIImageView *image = [[s subviews] objectAtIndex:0];
-                    CGSize imaSize = [self getImageSize:image.image];
+                    CGSize imaSize;
                     CGRect imageFrame = image.frame;
+                    if(self.isScape)
+                    {
+                        imaSize = [self getSacpeImageSize:image.image];
+                        imageFrame.origin = ScapeImagePoint(imaSize);
+                    }
+                    else
+                    {
+                        imaSize = [self getImageSize:image.image];
+                        imageFrame.origin = ImagePoint(imaSize);
+                    }
                     imageFrame.size = imaSize;
                     [image setFrame:imageFrame];
+                    NSLog(@"imageFrame:%@",NSStringFromCGRect(imageFrame));
                 }
             }
         }
@@ -241,54 +312,43 @@
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     isLoadImage = FALSE;
-    [self.navigationController setNavigationBarHidden:YES];
-    [bottonToolBar setHidden:YES];
+    [self.topToolBar setHidden:YES];
+    [self.bottonToolBar setHidden:YES];
 }
 
-- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(float)scale {
-    
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    NSLog(@"ScollviewWidth:%f,ScollviewHeight:%f",ScollviewWidth,ScollviewHeight);
+    if(self.isScape)
+    {
+        self.page = self.imageScrollView.contentOffset.x/ScollviewHeight;
+    }
+    else
+    {
+        self.page = self.imageScrollView.contentOffset.x/320;
+    }
 }
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{
     NSLog(@"Did zoom!:%@",NSStringFromCGSize(scrollView.contentSize));
     
-    if(scrollView.zoomScale != endScale)
-    {
-        CGRect sFrame = scrollView.frame;
-        if(scrollView.contentSize.width>=320)
-        {
-            sFrame.size.width = 320;
-            sFrame.origin.x = 320*(scrollView.tag-1);
-        }
-        else
-        {
-            sFrame.size.width = scrollView.contentSize.width;
-            sFrame.origin.x = 320*(scrollView.tag-1)+(320-scrollView.contentSize.width)/2;
-        }
-        if(scrollView.contentSize.height>=scollviewHeight)
-        {
-            sFrame.size.height = scollviewHeight;
-            sFrame.origin.y = 0;
-        }
-        else
-        {
-            sFrame.size.height = scrollView.contentSize.height;
-            sFrame.origin.y = (scollviewHeight-scrollView.contentSize.height)/2;
-        }
-        
-        [scrollView setFrame:sFrame];
-        endScale = scrollView.zoomScale;
-    }
+    UIImageView *imageview = (UIImageView *)[scrollView viewWithTag:ImageViewTag+scrollView.tag-ScrollViewTag];
+    CGFloat xcenter = scrollView.center.x , ycenter = scrollView.center.y;
+    ycenter = scrollView.contentSize.height > scrollView.frame.size.height ? scrollView.contentSize.height/2 : ycenter;
     
-    if (scrollView.zoomScale<=1.0){
-        UIImageView *imageview = (UIImageView *)[scrollView viewWithTag:ImageViewTag+scrollView.tag-1];
-        CGSize size = [self getImageSize:imageview.image];
-        CGRect sFrame = scrollView.frame;
-        sFrame.origin.x = 320*(scrollView.tag-1)+(320-size.width)/2;
-        sFrame.origin.y = (scollviewHeight-size.height)/2;
-        sFrame.size = size;
-        [scrollView setFrame:sFrame];
+    NSLog(@"------xcenter:%f,ycenter:%f",xcenter,ycenter);
+    
+    xcenter = currWidth*(scrollView.tag-ScrollViewTag) + scrollView.contentSize.width > scrollView.frame.size.width ? scrollView.contentSize.width/2: xcenter;
+    if(scrollView.contentSize.width<=currWidth)
+    {
+        NSLog(@"scrollView.contentSize.width:%f",scrollView.contentSize.width);
+        xcenter = (currWidth-scrollView.contentSize.width)/2+scrollView.contentSize.width/2;
+        NSLog(@"xcenter:%f,currWidth:%f",xcenter,currWidth);
     }
+    if(scrollView.contentSize.height>=currHeight)
+    {
+        ycenter = scrollView.contentSize.height/2;
+    }
+    imageview.center = CGPointMake(xcenter, ycenter);
 }
 
 #pragma mark 加载符
@@ -299,7 +359,7 @@
     PhotoFile *demo = [tableArray objectAtIndex:page];
     if(![[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]] && ![[activityDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
     {
-        CGRect activityRect = CGRectMake(320*(page-1)+(320-20)/2, (scollviewHeight-20)/2, 20, 20);
+        CGRect activityRect = CGRectMake(320*(page-1)+(320-20)/2, (ScollviewHeight-20)/2, 20, 20);
         UIActivityIndicatorView *activity_indicator = [[[UIActivityIndicatorView alloc] initWithFrame:activityRect] autorelease];
         [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
         [activity_indicator startAnimating];
@@ -312,8 +372,16 @@
 #pragma mark 加载数据
 -(void)loadImage
 {
+    if(self.isScape)
+    {
+        self.page = self.imageScrollView.contentOffset.x/ScollviewHeight;
+    }
+    else
+    {
+        self.page = self.imageScrollView.contentOffset.x/320;
+    }
     //加载数据
-    int page = imageScrollView.contentOffset.x/320;
+    int page = self.page;
     //判断是否加载图片
     if(page-5>=0)
     {
@@ -371,142 +439,215 @@
 
 -(void)loadPageColoumn:(int)i
 {
-    PhotoFile *demo = [tableArray objectAtIndex:i];
-    UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-    [doubleTap setNumberOfTapsRequired:2];
-    UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
-    [onceTap setNumberOfTapsRequired:1];
-    
-    UIScrollView *s = [[UIScrollView alloc] init];
-    s.backgroundColor = [UIColor clearColor];
-    s.contentSize = CGSizeMake(320, scollviewHeight);
-    s.showsHorizontalScrollIndicator = NO;
-    s.showsVerticalScrollIndicator = NO;
-    s.delegate = self;
-    s.minimumZoomScale = 1.0;
-    s.maximumZoomScale = 3.0;
-    s.tag = i+1;
-    [s setZoomScale:1.0];
-    
-    UIImageView *imageview = [[UIImageView alloc] init];
-    imageview.userInteractionEnabled = YES;
-    imageview.tag = ImageViewTag+i;
-    [imageview addGestureRecognizer:doubleTap];
-    
-    
-    [s addGestureRecognizer:onceTap];
-    [s setBounces:YES];
-    
-    if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
+    if(self.isScape)
     {
-        NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
-        imageview.image = [UIImage imageWithContentsOfFile:path];
+        PhotoFile *demo = [tableArray objectAtIndex:i];
+        UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        [doubleTap setNumberOfTapsRequired:2];
+        UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
+        [onceTap setNumberOfTapsRequired:1];
+        
+        UIScrollView *s = [[UIScrollView alloc] init];
+        s.backgroundColor = [UIColor clearColor];
+        s.showsHorizontalScrollIndicator = NO;
+        s.showsVerticalScrollIndicator = NO;
+        s.delegate = self;
+        s.minimumZoomScale = 1.0;
+        s.maximumZoomScale = 3.0;
+        s.tag = i+ScrollViewTag;
+        [s setZoomScale:1.0];
+        
+        UIImageView *imageview = [[UIImageView alloc] init];
+        imageview.userInteractionEnabled = YES;
+        imageview.tag = ImageViewTag+i;
+        [imageview addGestureRecognizer:doubleTap];
+        
+        
+        [s addGestureRecognizer:onceTap];
+        
+        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
+        {
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
+            imageview.image = [UIImage imageWithContentsOfFile:path];
+        }
+        else
+        {
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+            imageview.image = [UIImage imageWithContentsOfFile:path];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                [downImage setFileId:demo.f_id];
+                [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
+                [downImage setImageViewIndex:ImageViewTag+i];
+                [downImage setIndex:ACTNUMBER+i];
+                [downImage setShowType:1];
+                [downImage setDelegate:self];
+                [downImage startDownload];
+                [downArray addObject:downImage];
+            });
+        }
+        
+        CGSize size = [self getSacpeImageSize:imageview.image];
+        [s setFrame:CGRectMake(currWidth*i, 0, currWidth, 300)];
+        NSLog(@"第%i个 s:%@",i,NSStringFromCGRect(s.frame));
+        CGRect imageFrame = imageview.frame;
+        imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
+        NSLog(@"imageFrame.origin:%@;size:%@",NSStringFromCGPoint(imageFrame.origin),NSStringFromCGSize(size));
+        imageFrame.size = size;
+        imageview.contentMode = UIViewContentModeScaleAspectFit;
+        [imageview setFrame:imageFrame];
+        
+        [s addSubview:imageview];
+        [s setContentSize:size];
+        [self.imageScrollView addSubview:s];
+        [imageDic setObject:demo forKey:[NSString stringWithFormat:@"%i",demo.f_id]];
+        [onceTap release];
+        [doubleTap release];
+        [imageview release];
+        [self.imageViewArray addObject:s];
+        [s release];
     }
     else
     {
-        NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
-        imageview.image = [UIImage imageWithContentsOfFile:path];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            DownImage *downImage = [[[DownImage alloc] init] autorelease];
-            [downImage setFileId:demo.f_id];
-            [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
-            [downImage setImageViewIndex:ImageViewTag+i];
-            [downImage setIndex:ACTNUMBER+i];
-            [downImage setShowType:1];
-            [downImage setDelegate:self];
-            [downImage startDownload];
-            [downArray addObject:downImage];
-        });
+        PhotoFile *demo = [tableArray objectAtIndex:i];
+        UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        [doubleTap setNumberOfTapsRequired:2];
+        UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
+        [onceTap setNumberOfTapsRequired:1];
+        
+        UIScrollView *s = [[UIScrollView alloc] init];
+        s.backgroundColor = [UIColor clearColor];
+        s.showsHorizontalScrollIndicator = NO;
+        s.showsVerticalScrollIndicator = NO;
+        s.delegate = self;
+        s.minimumZoomScale = 1.0;
+        s.maximumZoomScale = 3.0;
+        s.tag = i+ScrollViewTag;
+        [s setZoomScale:1.0];
+        
+        UIImageView *imageview = [[UIImageView alloc] init];
+        imageview.userInteractionEnabled = YES;
+        imageview.tag = ImageViewTag+i;
+        [imageview addGestureRecognizer:doubleTap];
+        
+        
+        [s addGestureRecognizer:onceTap];
+        [s setBounces:YES];
+        
+        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
+        {
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
+            imageview.image = [UIImage imageWithContentsOfFile:path];
+        }
+        else
+        {
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+            imageview.image = [UIImage imageWithContentsOfFile:path];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                [downImage setFileId:demo.f_id];
+                [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
+                [downImage setImageViewIndex:ImageViewTag+i];
+                [downImage setIndex:ACTNUMBER+i];
+                [downImage setShowType:1];
+                [downImage setDelegate:self];
+                [downImage startDownload];
+                [downArray addObject:downImage];
+            });
+        }
+        
+        CGSize size = [self getImageSize:imageview.image];
+        [s setFrame:ScrollRect(i,size)];
+        NSLog(@"第%i个 s:%@",i,NSStringFromCGRect(s.frame));
+        CGRect imageFrame = imageview.frame;
+        imageFrame.origin = ImagePoint(size);
+        NSLog(@"imageFrame.origin:%@",NSStringFromCGPoint(imageFrame.origin));
+        imageFrame.size = size;
+        imageview.contentMode = UIViewContentModeScaleAspectFit;
+        [imageview setFrame:imageFrame];
+        
+        [s addSubview:imageview];
+        [s setContentSize:size];
+        [self.imageScrollView addSubview:s];
+        [imageDic setObject:demo forKey:[NSString stringWithFormat:@"%i",demo.f_id]];
+        [onceTap release];
+        [doubleTap release];
+        [imageview release];
+        [self.imageViewArray addObject:s];
+        [s release];
     }
-    CGSize size = [self getImageSize:imageview.image];
     
-    CGRect sFrame = s.frame;
-    sFrame.origin.x = 320*i+(320-size.width)/2;
-    sFrame.origin.y = (scollviewHeight-size.height)/2;
-    sFrame.size = size;
-    [s setFrame:sFrame];
-    
-    CGRect imageFrame = imageview.frame;
-    imageFrame.origin.x = 0;
-    imageFrame.origin.y = 0;
-    imageFrame.size = size;
-    [imageview setFrame:imageFrame];
-    [s addSubview:imageview];
-    [s setContentSize:size];
-    [self.imageScrollView addSubview:s];
-    [imageDic setObject:demo forKey:[NSString stringWithFormat:@"%i",demo.f_id]];
-    [onceTap release];
-    [doubleTap release];
-    [imageview release];
-    [s release];
 }
 
+//竖屏
 -(CGSize)getImageSize:(UIImage *)imageV
 {
     CGSize size = imageV.size;
     if(size.width>320)
     {
-        size.height = 320*size.height/size.width;
+        size.height = GetHeight(size);
         size.width = 320;
     }
-    if(size.height>scollviewHeight)
+    if(size.height>ScollviewHeight)
     {
-        size.width = scollviewHeight*size.width/size.height;
-        size.height = scollviewHeight;
+        size.width = GetWidth(size);
+        size.height = ScollviewHeight;
     }
     return size;
 }
 
--(void)notImagePath
+//横屏
+-(CGSize)getSacpeImageSize:(UIImage *)imageV
 {
-    CGRect activityRect = CGRectMake((320-20)/2, (scollviewHeight-20)/2, 20, 20);
-    UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
-    [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-    [activity_indicator startAnimating];
-    [self.view addSubview:activity_indicator];
+    CGSize size = imageV.size;
+    
+    if(size.width>currWidth)
+    {
+        size.height = currWidth*size.height/size.width;
+        size.width = currWidth;
+    }
+    if(size.height>currHeight)
+    {
+        size.width = currHeight*size.width/size.height;
+        size.height = currHeight;
+    }
+    return size;
 }
 
 
 #pragma mark -
 -(void)handleDoubleTap:(UIGestureRecognizer *)gesture{
-    
-    float newScale = 0;
-    if(!isDoubleClick)
-    {
-        isDoubleClick = TRUE;
-        newScale = [(UIScrollView*)gesture.view.superview zoomScale] * 3.0;
-    }
-    else
-    {
-        isDoubleClick = FALSE;
-    }
-    CGRect zoomRect = [self zoomRectForScale:newScale  inView:(UIScrollView*)gesture.view.superview withCenter:[gesture locationInView:gesture.view]];
-    NSLog(@"handleDoubleTap:%@",NSStringFromCGRect(zoomRect));
+    NSLog(@"ScollviewWidth:%f,ScollviewHeight:%f",ScollviewWidth,ScollviewHeight);
+    NSLog(@"currWidth:%f,currHeight:%f",currWidth,currHeight);
+    float newScale = 1;
     UIView *view = gesture.view.superview;
     if ([view isKindOfClass:[UIScrollView class]]){
         UIScrollView *s = (UIScrollView *)view;
-        [s zoomToRect:zoomRect animated:YES];
-        if(!isDoubleClick)
+        if(!self.isDoubleClick || s.zoomScale<=1.0)
         {
-            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-1];
-            CGSize size = [self getImageSize:imageview.image];
-            CGRect sFrame = s.frame;
-            sFrame.origin.x = 320*(s.tag-1)+(320-size.width)/2;
-            sFrame.origin.y = (scollviewHeight-size.height)/2;
-            sFrame.size = size;
-            [s setFrame:sFrame];
+            self.isDoubleClick = TRUE;
+            newScale = [(UIScrollView*)gesture.view.superview zoomScale] * 3.0;
         }
+        else
+        {
+            self.isDoubleClick = FALSE;
+        }
+        CGRect zoomRect = [self zoomRectForScale:newScale  inView:(UIScrollView*)gesture.view.superview withCenter:[gesture locationInView:gesture.view]];
+        [s zoomToRect:zoomRect animated:YES];
     }
 }
 
 -(void)handleOnceTap:(UIGestureRecognizer *)gesture{
-    int page = imageScrollView.contentOffset.x/320;
     //单击头部和底部出现
-    if(bottonToolBar.hidden)
+    if(self.bottonToolBar.hidden)
     {
-        self.navigationItem.title = [NSString stringWithFormat:@"%i/%i",page+1,[tableArray count]];
-        [self.navigationController setNavigationBarHidden:NO];
-        [bottonToolBar setHidden:NO];
+        CGFloat x = self.imageScrollView.contentOffset.x;
+        self.page = x/currWidth;
+        currPage = self.page;
+        int page = self.page;
+        self.topTitleLabel.text = [NSString stringWithFormat:@"%i/%i",self.page+1,[self.tableArray count]];
+        [self.topToolBar setHidden:NO];
+        [self.bottonToolBar setHidden:NO];
         if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
         {
             PhotoFile *demo = [tableArray objectAtIndex:page];
@@ -522,9 +663,10 @@
     }
     else
     {
-        [self.navigationController setNavigationBarHidden:YES];
-        [bottonToolBar setHidden:YES];
+        [self.topToolBar setHidden:YES];
+        [self.bottonToolBar setHidden:YES];
     }
+    
 }
 
 #pragma mark - Utility methods
@@ -540,31 +682,6 @@
     zoomRect.origin.y    = center.y - (zoomRect.size.height / 2.0);
     
     return zoomRect;
-}
-
--(CGRect)resizeImageSize:(CGRect)rect{
-    //    NSLog(@"x:%f y:%f width:%f height:%f ", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-    CGRect newRect;
-    
-    CGSize newSize;
-    CGPoint newOri;
-    
-    CGSize oldSize = rect.size;
-    if (oldSize.width>=320.0 || oldSize.height>=scollviewHeight){
-        float scale = (oldSize.width/320.0>oldSize.height/scollviewHeight?oldSize.width/320.0:oldSize.height/scollviewHeight);
-        newSize.width = oldSize.width/scale;
-        newSize.height = oldSize.height/scale;
-    }
-    else {
-        newSize = oldSize;
-    }
-    newOri.x = (320.0-newSize.width)/2.0;
-    newOri.y = (scollviewHeight-newSize.height)/2.0;
-    
-    newRect.size = newSize;
-    newRect.origin = newOri;
-    
-    return newRect;
 }
 
 #pragma mark  这个路径下是否存在此图片
@@ -590,31 +707,36 @@
 {
     if(bl)
     {
-        CGRect leftRect = CGRectMake((160-100)/2, 5, 100, 33);
-        [leftButton setTitle:@"取消收藏" forState:UIControlStateNormal];
-        [leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-        [leftButton setFrame:leftRect];
-        CGRect centerRect = CGRectMake(160+(160-35)/2, 5, 35, 33);
-        [centerButton setFrame:centerRect];
-        [rightButton setHidden:YES];
+        float fWidth = (currWidth-36*3)/2;
+        CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
+        [self.leftButton setTitle:@"取消收藏" forState:UIControlStateNormal];
+        [self.leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        [self.leftButton setFrame:leftRect];
+        CGRect centerRect = CGRectMake(36*2+fWidth, 5, fWidth, 33);
+        [self.centerButton setFrame:centerRect];
+        [self.rightButton setHidden:YES];
     }
     else
     {
-        CGRect leftRect = CGRectMake(36, 5, 35, 33);
-        [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
-        [leftButton setFrame:leftRect];
-        CGRect centerRect = CGRectMake(107+36, 5, 35, 33);
-        [centerButton setFrame:centerRect];
-        [rightButton setHidden:NO];
+        float fWidth = (currWidth-36*4)/3;
+        CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
+        [self.leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+        [self.leftButton setFrame:leftRect];
+        CGRect centerRect = CGRectMake(fWidth+36*2, 5, fWidth, 33);
+        [self.centerButton setFrame:centerRect];
+        [self.rightButton setHidden:NO];
+        CGRect rightRect = CGRectMake(fWidth*2+36*3, 5, fWidth, 33);
+        [self.rightButton setFrame:rightRect];
         if(isCliped)
         {
-            CGRect leftRect = CGRectMake((160-100)/2, 5, 100, 33);
-            [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
-            [leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-            [leftButton setFrame:leftRect];
-            CGRect centerRect = CGRectMake(160+(160-35)/2, 5, 35, 33);
-            [centerButton setFrame:centerRect];
-            [rightButton setHidden:YES];
+            fWidth = (currWidth-36*3)/2;
+            CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
+            [self.leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+            [self.leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+            [self.leftButton setFrame:leftRect];
+            CGRect centerRect = CGRectMake(36*2+fWidth, 5, fWidth, 33);
+            [self.centerButton setFrame:centerRect];
+            [self.rightButton setHidden:YES];
         }
     }
 }
@@ -622,7 +744,7 @@
 #pragma mark 收藏按钮事件
 -(void)clipClicked:(id)sender
 {
-    int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+    int page = [[[self.topTitleLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
     PhotoFile *demo = nil;
     if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
     {
@@ -645,7 +767,7 @@
         }
         else
         {
-            [leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+            [self.leftButton setTitle:@"收藏" forState:UIControlStateNormal];
         }
     }
     else
@@ -672,7 +794,7 @@
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+    int page = [[[self.topTitleLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
     PhotoFile *demo = nil;
     if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
     {
@@ -719,7 +841,7 @@
 {
     if(buttonIndex == 1)
     {
-        int page = [[[self.navigationItem.title componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+        int page = [[[self.topTitleLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
         deletePage = page;
         PhotoFile *demo = nil;
         if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
@@ -763,13 +885,13 @@
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
         
-        offset = 0.0;
+        self.offset = 0.0;
         scale_ = 1.0;
         if(deletePage==[tableArray count])
         {
             currPage = deletePage-1;
         }
-        self.imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, scollviewHeight)];
+        self.imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, currWidth, currHeight)];
         self.imageScrollView.backgroundColor = [UIColor clearColor];
         self.imageScrollView.scrollEnabled = YES;
         self.imageScrollView.pagingEnabled = YES;
@@ -850,11 +972,11 @@
         }
         
         [self.view addSubview:self.imageScrollView];
-        //        [self.view bringSubviewToFront:self.navigationController.navigationBar];
-        [self.view bringSubviewToFront:bottonToolBar];
+        [self.view bringSubviewToFront:self.topToolBar];
+        [self.view bringSubviewToFront:self.bottonToolBar];
         
-        self.imageScrollView.contentSize = CGSizeMake(320*[tableArray count], scollviewHeight);
-        [self.imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
+        self.imageScrollView.contentSize = CGSizeMake(currWidth*[tableArray count], currHeight);
+        [self.imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
         [self handleOnceTap:nil];
         
         hud.labelText=@"删除成功";
@@ -918,31 +1040,207 @@
             UIImageView *imageV = (UIImageView *)[imageScrollView viewWithTag:indexTag];
             [imageV setImage:image];
             
+            if(self.isScape)
+            {
+                CGSize size = [self getSacpeImageSize:imageV.image];
+                UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+ScrollViewTag];
+                s.zoomScale = 1.0;
+                size = [self getSacpeImageSize:imageV.image];
+                [s setContentSize:size];
+                int x = s.tag-ScrollViewTag;
+                [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
+                NSLog(@"第%i个 s:%@",x,NSStringFromCGRect(s.frame));
+                CGRect imageFrame = imageV.frame;
+                imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
+                NSLog(@"imageFrame.origin:%@;size:%@",NSStringFromCGPoint(imageFrame.origin),NSStringFromCGSize(size));
+                imageFrame.size = size;
+                [imageV setFrame:imageFrame];
+            }
+            else
+            {
+                CGSize size = [self getImageSize:imageV.image];
+                UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+ScrollViewTag];
+                s.zoomScale = 1.0;
+                size = [self getImageSize:imageV.image];
+                [s setContentSize:size];
+                int x = s.tag-ScrollViewTag;
+                [s setFrame:ScrollRect(x,size)];
+                CGRect imageFrame = imageV.frame;
+                imageFrame.origin = ImagePoint(size);
+                imageFrame.size = size;
+                [imageV setFrame:imageFrame];
+            }
             
-            CGSize size = [self getImageSize:imageV.image];
-            
-            UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+1];
-            CGRect sFrame = s.frame;
-            sFrame.origin.x = 320*(indexTag-ImageViewTag)+(320-size.width)/2;
-            sFrame.origin.y = (scollviewHeight-size.height)/2;
-            sFrame.size = size;
-            [s setFrame:sFrame];
-            
-            CGRect imageFrame = imageV.frame;
-            imageFrame.origin.x = 0;
-            imageFrame.origin.y = 0;
-            imageFrame.size = size;
-            [imageV setFrame:imageFrame];
-            
-            //             CGSize size = [self getImageSize:imageV.image];
-            
-            //             CGRect imageFrame = imageV.frame;
-            //             imageFrame.origin.x = (320-size.width)/2;
-            //             imageFrame.origin.y = (scollviewHeight-size.height)/2;
-            //             imageFrame.size = size;
-            //             [imageV setFrame:imageFrame];
         });
     }
 }
+
+
+- (BOOL)shouldAutorotate{
+    return YES;
+}
+
+//旋转方向发生改变时
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+}
+//视图旋转动画前一半发生之前自动调用
+
+-(void)willAnimateFirstHalfOfRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+}
+//视图旋转动画后一半发生之前自动调用
+
+-(void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+}
+//视图旋转之前自动调用
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if(UIDeviceOrientationLandscapeRight == toInterfaceOrientation || UIDeviceOrientationLandscapeLeft == toInterfaceOrientation)
+    {
+        [self isScapeLeftOrRight:YES];
+        self.isScape = TRUE;
+    }
+    else
+    {
+        [self isScapeLeftOrRight:NO];
+        self.isScape = FALSE;
+    }
+}
+//视图旋转完成之后自动调用
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    
+}
+//视图旋转动画前一半发生之后自动调用
+
+-(void)didAnimateFirstHalfOfRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    
+}
+
+//横屏后，修改试图
+-(void)isScapeLeftOrRight:(BOOL)bl
+{
+    NSLog(@"ScollviewWidth:%f,ScollviewHeight:%f",ScollviewWidth,ScollviewHeight);
+    if(!self.page)
+    {
+        self.page = currPage;
+    }
+    if(bl)
+    {
+        currWidth = ScollviewHeight+20;
+        currHeight = ScollviewWidth-20;
+        //整个视图大小调整
+        [self.imageScrollView setFrame:CGRectMake(0, 0, currWidth, currHeight)];
+        [self.imageScrollView setContentSize:CGSizeMake(currWidth*[self.tableArray count], currHeight)];
+        
+        //头部视图大小调整
+        CGSize size = CGSizeMake(currWidth, self.bottonToolBar.frame.size.height);
+        CGRect rect = self.topToolBar.frame;
+        rect.size = size;
+        [self.topToolBar setFrame:rect];
+        [self.topTitleLabel setFrame:CGRectMake(0, 0, currWidth, 44)];
+        
+        //滚动视图大小调整
+        for(int i=0;i<[self.imageViewArray count];i++)
+        {
+            UIScrollView * s = (UIScrollView *)[self.imageViewArray objectAtIndex:i];
+            s.zoomScale = 1.0;
+            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
+            size = [self getSacpeImageSize:imageview.image];
+            [s setContentSize:size];
+            int x = s.tag-ScrollViewTag;
+            [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
+            NSLog(@"第%i个 s:%@",x,NSStringFromCGRect(s.frame));
+            CGRect imageFrame = imageview.frame;
+            imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
+            NSLog(@"imageFrame.origin:%@;size:%@",NSStringFromCGPoint(imageFrame.origin),NSStringFromCGSize(size));
+            imageFrame.size = size;
+            [imageview setFrame:imageFrame];
+            NSLog(@"对了");
+        }
+        [self.imageScrollView reloadInputViews];
+        [self.imageScrollView setContentOffset:CGPointMake(currWidth*self.page, 0) animated:NO];
+        
+        //底部视图大小调整
+        size = CGSizeMake(currWidth, self.bottonToolBar.frame.size.height);
+        rect = self.topToolBar.frame;
+        rect.origin = CGPointMake(0, currHeight-44);
+        rect.size = size;
+        [self.bottonToolBar setFrame:rect];
+        if(self.rightButton.hidden)
+        {
+            int width = (currWidth-36*3)/2;
+            [self.leftButton setFrame:CGRectMake(36, 0, width, 44)];
+            [self.centerButton setFrame:CGRectMake(36*2+width, 0, width, 44)];
+            [self.rightButton setFrame:CGRectMake(36*3+width*2, 0, width, 44)];
+        }
+        else
+        {
+            int width = (currWidth-36*4)/3;
+            [self.leftButton setFrame:CGRectMake(36, 0, width, 44)];
+            [self.centerButton setFrame:CGRectMake(36*2+width, 0, width, 44)];
+            [self.rightButton setFrame:CGRectMake(36*3+width*2, 0, width, 44)];
+        }
+        
+    }
+    else
+    {
+        currWidth = ScollviewWidth+20;
+        currHeight = ScollviewHeight-20;
+        //整个视图大小调整
+        [self.imageScrollView setFrame:CGRectMake(0, 0, currWidth, currHeight)];
+        [self.imageScrollView setContentSize:CGSizeMake(currWidth*[self.tableArray count], currWidth)];
+        
+        //头部视图大小调整
+        CGSize size = CGSizeMake(320, self.bottonToolBar.frame.size.height);
+        CGRect rect = self.topToolBar.frame;
+        rect.size = size;
+        [self.topToolBar setFrame:rect];
+        [self.topTitleLabel setFrame:CGRectMake(0, 0, 320, 44)];
+        
+        //滚动视图大小调整
+        for(int i=0;i<[self.imageViewArray count];i++)
+        {
+            UIScrollView * s = (UIScrollView *)[self.imageViewArray objectAtIndex:i];
+            s.zoomScale = 1.0;
+            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
+            size = [self getImageSize:imageview.image];
+            [s setContentSize:size];
+            int x = s.tag-ScrollViewTag;
+            [s setFrame:ScrollRect(x,size)];
+            CGRect imageFrame = imageview.frame;
+            imageFrame.origin = ImagePoint(size);
+            imageFrame.size = size;
+            [imageview setFrame:imageFrame];
+        }
+        [self.imageScrollView reloadInputViews];
+        [self.imageScrollView setContentOffset:CGPointMake(320*self.page, 0) animated:NO];
+        
+        //底部视图大小调整
+        size = CGSizeMake(currWidth, self.bottonToolBar.frame.size.height);
+        rect = self.topToolBar.frame;
+        rect.origin = CGPointMake(0, currHeight-44);
+        rect.size = size;
+        [self.bottonToolBar setFrame:rect];
+        if(self.rightButton.hidden)
+        {
+            int width = (currWidth-36*3)/2;
+            [self.leftButton setFrame:CGRectMake(36, 0, width, 44)];
+            [self.centerButton setFrame:CGRectMake(36*2+width, 0, width, 44)];
+            [self.rightButton setFrame:CGRectMake(36*3+width*2, 0, width, 44)];
+        }
+        else
+        {
+            int width = (currWidth-36*4)/3;
+            [self.leftButton setFrame:CGRectMake(36, 0, width, 44)];
+            [self.centerButton setFrame:CGRectMake(36*2+width, 0, width, 44)];
+            [self.rightButton setFrame:CGRectMake(36*3+width*2, 0, width, 44)];
+        }
+    }
+}
+
+
 
 @end
