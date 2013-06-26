@@ -270,7 +270,10 @@
             previewController.currentPreviewItemIndex=indexPath.row;
             [previewController setHidesBottomBarWhenPushed:YES];
 //            [self.navigationController pushViewController:previewController animated:YES];
-            [self presentModalViewController:previewController animated:YES];
+            //[self presentModalViewController:previewController animated:YES];
+            [self presentViewController:previewController animated:YES completion:^(void){
+                NSLog(@"%@",previewController);
+            }];
 //            [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
         }else{
         }
