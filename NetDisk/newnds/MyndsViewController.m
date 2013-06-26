@@ -761,7 +761,8 @@ typedef enum{
             [photoLookViewController setHidesBottomBarWhenPushed:YES];
             [photoLookViewController setCurrPage:index];
             [photoLookViewController setTableArray:array];
-            [self.navigationController pushViewController:photoLookViewController animated:YES];
+//            [self.navigationController pushViewController:photoLookViewController animated:YES];
+            [self presentModalViewController:photoLookViewController animated:YES];
             [photoLookViewController release];
 
         }else

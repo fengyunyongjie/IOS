@@ -292,16 +292,22 @@
                     if(self.isScape)
                     {
                         imaSize = [self getSacpeImageSize:image.image];
-                        imageFrame.origin = ScapeImagePoint(imaSize);
+                        [s setContentSize:imaSize];
+                        int x = s.tag-ScrollViewTag;
+                        [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
+                        imageFrame.origin = CGPointMake((currWidth-imaSize.width)/2, (currHeight-imaSize.height)/2);
                     }
                     else
                     {
                         imaSize = [self getImageSize:image.image];
+                        [s setContentSize:imaSize];
+                        int x = s.tag-ScrollViewTag;
+                        [s setFrame:ScrollRect(x,size)];
                         imageFrame.origin = ImagePoint(imaSize);
                     }
                     imageFrame.size = imaSize;
                     [image setFrame:imageFrame];
-                    NSLog(@"imageFrame:%@",NSStringFromCGRect(imageFrame));
+                    
                 }
             }
         }
@@ -1152,13 +1158,10 @@
             [s setContentSize:size];
             int x = s.tag-ScrollViewTag;
             [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
-            NSLog(@"第%i个 s:%@",x,NSStringFromCGRect(s.frame));
             CGRect imageFrame = imageview.frame;
             imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
-            NSLog(@"imageFrame.origin:%@;size:%@",NSStringFromCGPoint(imageFrame.origin),NSStringFromCGSize(size));
             imageFrame.size = size;
             [imageview setFrame:imageFrame];
-            NSLog(@"对了");
         }
         [self.imageScrollView reloadInputViews];
         [self.imageScrollView setContentOffset:CGPointMake(currWidth*self.page, 0) animated:NO];

@@ -248,6 +248,10 @@
 }
 */
 
+- (BOOL)shouldAutorotate{
+    return YES;
+}
+
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -265,8 +269,9 @@
             
             previewController.currentPreviewItemIndex=indexPath.row;
             [previewController setHidesBottomBarWhenPushed:YES];
-            [self.navigationController pushViewController:previewController animated:YES];
-            [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+//            [self.navigationController pushViewController:previewController animated:YES];
+            [self presentModalViewController:previewController animated:YES];
+//            [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
         }else{
         }
 
