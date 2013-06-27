@@ -75,11 +75,14 @@
     bool isSort;
     
     NSOperationQueue *operationQueue;
+    
+    BOOL isOnece;
+    NSTimer *timer;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
 @property(nonatomic,retain) NSMutableDictionary *allDictionary;
-@property(nonatomic,retain) __block UITableView *table_view;
+@property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
 @property(nonatomic,retain) NSString *user_id;
 @property(nonatomic,retain) NSString *user_token;
@@ -91,10 +94,11 @@
 @property(nonatomic,retain) UIBarButtonItem *right_item;
 @property(nonatomic,retain) UIBarButtonItem *done_item;
 
-@property(nonatomic,retain) __block NSMutableDictionary *tablediction;
-@property(nonatomic,retain) __block NSMutableArray *sectionarray;
+@property(nonatomic,retain) NSMutableDictionary *tablediction;
+@property(nonatomic,retain) NSMutableArray *sectionarray;
 
 @property(nonatomic,retain) NSCondition *condition;
+@property(nonatomic,retain) NSMutableArray *downCellArray; // 重用的cell
 
 #pragma mark -得到时间轴的列表
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary;

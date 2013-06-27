@@ -31,7 +31,7 @@
 @synthesize user_id,user_token;
 @synthesize _arrVisibleCells,_dicReuseCells,bottonView,allKeys;
 @synthesize deleteItem,right_item;
-@synthesize done_item;
+@synthesize done_item,downCellArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,6 +58,7 @@
     //初始化基本数据
     _dicReuseCells = [[NSMutableDictionary alloc] init];
     _arrVisibleCells = [[NSMutableArray alloc] init];
+    self.downCellArray = [[NSMutableArray alloc] init];
     //设置背景为黑色
     [self.view setBackgroundColor:[UIColor blackColor]];
     if(activity_indicator)
@@ -78,11 +79,11 @@
     
     
     CGRect rect = CGRectMake(0, 0, 320, self.view.frame.size.height-49-44);
-    table_view = [[UITableView alloc] initWithFrame:rect];
-    [table_view setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [table_view setDataSource:self];
-    [table_view setDelegate:self];
-    [self.view addSubview:table_view];
+    self.table_view = [[UITableView alloc] initWithFrame:rect];
+    [self.table_view setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.table_view setDataSource:self];
+    [self.table_view setDelegate:self];
+    [self.view addSubview:self.table_view];
     selfLenght = self.view.frame.size.height-49-66;
     endFloat = 10000;
     [super viewDidLoad];
@@ -104,10 +105,10 @@
         editBL = FALSE;
         [nav_item setLeftBarButtonItem:nil];
         [nav_item setRightBarButtonItem:right_item];
-        NSArray *cellArrays = [table_view indexPathsForVisibleRows];
+        NSArray *cellArrays = [self.table_view indexPathsForVisibleRows];
         for(int i=0;i<[cellArrays count];i++)
         {
-            PhotoFileCell *cell = (PhotoFileCell *)[table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+            PhotoFileCell *cell = (PhotoFileCell *)[self.table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
             NSArray *array = [cell cellArray];
             for(int j=0;j<[array count];j++)
             {
@@ -117,7 +118,7 @@
                     int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:k]] intValue];
                     if(cellTag.fileTag == fid)
                     {
-                        UIButton *button = (UIButton *)[table_view viewWithTag:cellTag.buttonTag];
+                        UIButton *button = (UIButton *)[self.table_view viewWithTag:cellTag.buttonTag];
                         [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
                         [button setSelected:NO];
                     }
@@ -146,7 +147,7 @@
         [hud show:YES];
     }
     
-    [table_view clearsContextBeforeDrawing];
+    [self.table_view clearsContextBeforeDrawing];
     [tablediction removeAllObjects];
     [sectionarray removeAllObjects];
     NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -287,12 +288,11 @@
         NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
     }
     
-    [table_view reloadData];
+    [self.table_view reloadData];
     
     isLoadImage = TRUE;
     isSort = TRUE;
     isLoadData = TRUE;
-    [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     
     [hud hide:YES afterDelay:0.8f];
     [hud release];
@@ -507,14 +507,14 @@
         [array removeObjectAtIndex:page];
         [allDictionary setObject:array forKey:timeLineString];
     }
-    [table_view reloadData];
+    [self.table_view reloadData];
 }
 
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
 {
     if(isLoadImage)
     {
-        NSObject *obj = [table_view viewWithTag:indexTag];
+        NSObject *obj = [self.table_view viewWithTag:indexTag];
         if(!obj)
         {
             return;
@@ -610,7 +610,7 @@
     }
     NSString *cellString = [NSString stringWithFormat:@"cellString:%i",cellNumber];
     cellNumber++;
-    PhotoFileCell *cell = [table_view dequeueReusableCellWithIdentifier:cellString];
+    PhotoFileCell *cell = [self.table_view dequeueReusableCellWithIdentifier:cellString];
     cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     NSString *sectionNumber = [sectionarray objectAtIndex:section];
@@ -785,7 +785,35 @@
         [cell setCellArray:cellArray];
         [cellArray release];
     }
+    if(isOnece)
+    {
+        if([downCellArray count]>5)
+        {
+            [downCellArray removeObjectAtIndex:0];
+        }
+        [downCellArray addObject:cell];
+    }
+    else
+    {
+        if([downCellArray count]<6)
+        {
+            [downCellArray addObject:cell];
+        }
+        if(!timer)
+        {
+            timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
+        }
+    }
     return cell;
+}
+
+-(void)FirstLoad
+{
+    if(!isOnece)
+    {
+        isOnece = TRUE;
+        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
+    }
 }
 
 -(void)getImageNewLoad:(CellTag *)cellT imageView:(UIImageView *)image_v
@@ -794,7 +822,7 @@
     UIImageView *image_view = [image_v retain];
     if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
     {
-        NSObject *obj = [table_view viewWithTag:cellTag.imageTag];
+        NSObject *obj = [self.table_view viewWithTag:cellTag.imageTag];
         if(!obj)
         {
             isLoadData = FALSE;
@@ -848,7 +876,7 @@
                 int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
                 if(cellTag.fileTag == fid)
                 {
-                    UIButton *button = (UIButton *)[table_view viewWithTag:cellTag.buttonTag];
+                    UIButton *button = (UIButton *)[self.table_view viewWithTag:cellTag.buttonTag];
                     [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
                     [button setSelected:NO];
                 }
@@ -873,90 +901,128 @@
 -(void)getImageLoad
 {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    UITableView *tableV = [table_view retain];
-    if(isSort)
+    if(!self.downCellArray)
     {
-        __block NSArray *cellArrays = [tableV indexPathsForVisibleRows];
-        if(!cellArrays)
-        {
-            isLoadData = FALSE;
-            return;
-        }
-        NSLog(@"cellArrays:%@",cellArrays);
-        for(int i=[cellArrays count]-1;isLoadImage && i>=0;i--)
-        {
-            PhotoFileCell *cell = (PhotoFileCell *)[tableV cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
-            NSArray *array = [cell cellArray];
-            if(!array)
-            {
-                isLoadData = FALSE;
-                return;
-            }
-            for(int j=0;isLoadImage && j<[array count];j++)
-            {
-                CellTag *cellTag = [array objectAtIndex:j];
-                if(!cellTag)
-                {
-                    isLoadData = FALSE;
-                    return;
-                }
-                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        DownImage *downImage = [[[DownImage alloc] init] autorelease];
-                        [downImage setFileId:cellTag.fileTag];
-                        [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
-                        [downImage setImageViewIndex:cellTag.imageTag];
-                        [downImage setDelegate:self];
-                        [downImage startDownload];
-                        [downArray addObject:downImage];
-                    });
-                }
-            }
-        }
+        isLoadData = FALSE;
+        return;
     }
-    else
+    for(int i=0;isLoadImage && i<[self.downCellArray count];i++)
     {
-        __block NSArray *cellArrays = [tableV indexPathsForVisibleRows];
-        if(!cellArrays)
+        PhotoFileCell *cell = (PhotoFileCell *)[self.downCellArray objectAtIndex:i];
+        NSArray *array = [cell cellArray];
+        if(!array)
         {
             isLoadData = FALSE;
             return;
         }
-        for(int i=0;isLoadImage && i<[cellArrays count];i++)
+        for(int j=0;isLoadImage && j<[array count];j++)
         {
-            PhotoFileCell *cell = (PhotoFileCell *)[tableV cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
-            NSArray *array = [cell cellArray];
-            if(!array)
+            CellTag *cellTag = [array objectAtIndex:j];
+            if(!cellTag)
             {
                 isLoadData = FALSE;
                 return;
             }
-            for(int j=0;isLoadImage && j<[array count];j++)
+            if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
             {
-                CellTag *cellTag = [array objectAtIndex:j];
-                if(!cellTag)
-                {
-                    isLoadData = FALSE;
-                    return;
-                }
-                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
-                {
+                dispatch_async(dispatch_get_main_queue(), ^{
                     DownImage *downImage = [[[DownImage alloc] init] autorelease];
                     [downImage setFileId:cellTag.fileTag];
                     [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
                     [downImage setImageViewIndex:cellTag.imageTag];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [downImage setDelegate:self];
-                        [downImage startDownload];
-                    });
-                }
+                    [downImage setDelegate:self];
+                    [downImage startDownload];
+                    [downArray addObject:downImage];
+                });
             }
         }
     }
-    isLoadData = FALSE;
-    [tableV release];
+    
+//    if(isSort)
+//    {
+//        NSArray *cellArrays = [self.table_view indexPathsForVisibleRows];
+//        if(!cellArrays || !isLoadImage || [cellArrays isEqual:[NSNull null]])
+//        {
+//            isLoadData = FALSE;
+//            return;
+//        }
+//        NSLog(@"cellArrays:%@",cellArrays);
+//        for(int i=[cellArrays count]-1;isLoadImage && i>=0;i--)
+//        {
+//            PhotoFileCell *cell = (PhotoFileCell *)[self.table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+//            NSArray *array = [cell cellArray];
+//            if(!array)
+//            {
+//                isLoadData = FALSE;
+//                return;
+//            }
+//            for(int j=0;isLoadImage && j<[array count];j++)
+//            {
+//                CellTag *cellTag = [array objectAtIndex:j];
+//                if(!cellTag)
+//                {
+//                    isLoadData = FALSE;
+//                    return;
+//                }
+//                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
+//                {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        DownImage *downImage = [[[DownImage alloc] init] autorelease];
+//                        [downImage setFileId:cellTag.fileTag];
+//                        [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+//                        [downImage setImageViewIndex:cellTag.imageTag];
+//                        [downImage setDelegate:self];
+//                        [downImage startDownload];
+//                        [downArray addObject:downImage];
+//                    });
+//                }
+//            }
+//        }
+//    }
+//    else
+//    {
+//        NSArray *cellArrays = [self.table_view indexPathsForVisibleRows];
+//        if(!cellArrays || !isLoadImage || [cellArrays isEqual:[NSNull null]])
+//        {
+//            isLoadData = FALSE;
+//            return;
+//        }
+//        for(int i=0;isLoadImage && i<[cellArrays count];i++)
+//        {
+//            PhotoFileCell *cell = (PhotoFileCell *)[self.table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+//            NSArray *array = [cell cellArray];
+//            if(!array)
+//            {
+//                isLoadData = FALSE;
+//                return;
+//            }
+//            NSLog(@"cellArrays:%@",cellArrays);
+//            for(int j=0;isLoadImage && j<[array count];j++)
+//            {
+//                CellTag *cellTag = [array objectAtIndex:j];
+//                if(!cellTag)
+//                {
+//                    isLoadData = FALSE;
+//                    return;
+//                }
+//                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
+//                {
+//                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
+//                    [downImage setFileId:cellTag.fileTag];
+//                    [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+//                    [downImage setImageViewIndex:cellTag.imageTag];
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [downImage setDelegate:self];
+//                        [downImage startDownload];
+//                    });
+//                }
+//            }
+//        }
+//    }
     [pool release];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        isLoadData = FALSE;
+    });
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -1114,7 +1180,7 @@
             }
         }
         [_dicReuseCells removeAllObjects];
-        [table_view reloadData];
+        [self.table_view reloadData];
         isLoadImage = TRUE;
         isSort = FALSE;
         UINavigationItem *nav_item = [self navigationItem];
@@ -1334,7 +1400,7 @@
 -(void)dealloc
 {
     [photoManager release];
-    [table_view release];
+    [self.table_view release];
     [allDictionary release];
     [activity_indicator release];
     [user_token release];
@@ -1347,6 +1413,7 @@
     [right_item release];
     [done_item release];
     [operationQueue release];
+    [downCellArray release];
     [super dealloc];
 }
 
