@@ -224,6 +224,7 @@ typedef enum{
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
                 UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                [uploadView setIsUpload:YES];
                 [uploadView startSouStart];
             }else
             {
@@ -389,7 +390,7 @@ typedef enum{
                     //titleLabel.hidden=YES;
                     cell.textLabel.text=@"照片自动备份";
                     [cell.textLabel setFont:titleLabel.font];
-                    cell.detailTextLabel.text=@"  仅Wi-Fi下进行,节省流量";
+                    cell.detailTextLabel.text=@"仅Wi-Fi下进行,节省流量";
                     [cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"];
                     if (switchFlag==nil) {

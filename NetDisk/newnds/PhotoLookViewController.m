@@ -275,6 +275,7 @@
     {
         self.page = self.imageScrollView.contentOffset.x/320;
     }
+    currPage = self.page;
     if (scrollView == self.imageScrollView){
         CGFloat x = scrollView.contentOffset.x;
         self.endFloat = x;
@@ -332,6 +333,7 @@
     {
         self.page = self.imageScrollView.contentOffset.x/320;
     }
+    currPage = self.page;
 }
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{
@@ -888,7 +890,7 @@
         
         if([tableArray count]==0)
         {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            [self dismissModalViewControllerAnimated:YES];
         }
         
         self.offset = 0.0;
@@ -1034,7 +1036,6 @@
         [hud release];
         hud = nil;
     }
-    
 }
 
 #pragma mark 下载回调
@@ -1102,7 +1103,7 @@
 //视图旋转动画后一半发生之前自动调用
 
 -(void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration {
-    
+   
 }
 //视图旋转之前自动调用
 
@@ -1119,14 +1120,15 @@
     }
 }
 //视图旋转完成之后自动调用
-
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    
+    [UIView animateWithDuration:0.1 animations:^{
+        [self scrollViewDidEndDecelerating:self.imageScrollView];
+    }];
 }
 //视图旋转动画前一半发生之后自动调用
 
 -(void)didAnimateFirstHalfOfRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    
+    NSLog(@"5");
 }
 
 //横屏后，修改试图
@@ -1168,7 +1170,7 @@
             [imageview setFrame:imageFrame];
         }
         [self.imageScrollView reloadInputViews];
-        [self.imageScrollView setContentOffset:CGPointMake(currWidth*self.page, 0) animated:NO];
+        [self.imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
         
         //底部视图大小调整
         size = CGSizeMake(currWidth, self.bottonToolBar.frame.size.height);
@@ -1223,7 +1225,7 @@
             [imageview setFrame:imageFrame];
         }
         [self.imageScrollView reloadInputViews];
-        [self.imageScrollView setContentOffset:CGPointMake(320*self.page, 0) animated:NO];
+        [self.imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
         
         //底部视图大小调整
         size = CGSizeMake(currWidth, self.bottonToolBar.frame.size.height);

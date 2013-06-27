@@ -91,6 +91,9 @@
     BOOL isWlanUpload;
     SCBUploader *uploderDemo;
     int netWorkState; //1表示Wi-Fi 2表示WLan 3无网络
+    
+    BOOL isUpload;
+    BOOL isOpenLibray;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -116,6 +119,8 @@
 @property (nonatomic,retain) UILabel *uploadFinshLabel;
 @property (nonatomic,retain) UIImageView *uploadFinshImageView;
 @property (nonatomic,retain) SCBUploader *uploderDemo;
+
+@property (nonatomic,assign) BOOL isUpload;
 
 -(NSString *)md5:(NSData *)concat;
 -(void)startSouStart;

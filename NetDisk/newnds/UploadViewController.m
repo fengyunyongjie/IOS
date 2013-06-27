@@ -13,7 +13,6 @@
 #import "SCBSession.h"
 #import "AppDelegate.h"
 #import "YNFunctions.h"
-#import "SettingViewController.h"
 
 @interface UploadViewController ()
 
@@ -39,6 +38,7 @@
 @synthesize uploadFinshLabel;
 @synthesize uploadFinshImageView;
 @synthesize uploderDemo;
+@synthesize isUpload;
 
 @synthesize photoArray;
 
@@ -204,6 +204,7 @@
             if(uploderDemo)
             {
                 [uploderDemo setUpLoadDelegate:nil];
+                [uploderDemo release];
                 uploderDemo = nil;
             }
             isWlanUpload = FALSE;
@@ -247,6 +248,7 @@
     if(uploderDemo)
     {
         [uploderDemo setUpLoadDelegate:nil];
+        [uploderDemo release];
         uploderDemo = nil;
     }
     isSelected = FALSE;
@@ -270,9 +272,10 @@
 
 -(void)startSouStart
 {
+    isOpenLibray = TRUE;
     if(isStop)
     {
-        if (![YNFunctions isOnlyWifi]) {
+        if (![YNFunctions isOnlyWifi] && !isUpload) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
                                                                 message:@"这可能会产生流量费用，您是否要继续？"
                                                                delegate:self
@@ -292,11 +295,6 @@
                 [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoUpload"];
             });
             
-            AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:4];
-            SettingViewController *setting = (SettingViewController *)[NavigationController.viewControllers objectAtIndex:0];
-            [setting closeSwitch];
-            
             if(!connectionTimer)
             {
                 connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
@@ -306,6 +304,7 @@
                 libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
             }
         }
+        isUpload = FALSE;
     }
 }
 
@@ -390,7 +389,16 @@
                 });
             }
         } failureBlock:^(NSError *error) {
-            NSLog(@"Enumerate the asset groups failed.");
+            if(isOpenLibray)
+            {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    [self stopAllDo];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t步骤：设置>隐私>照片>虹盘" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                    [alertView show];
+                    [alertView release];
+                    isOpenLibray = FALSE;
+                });
+            }
         }];
     });
 }
@@ -506,7 +514,7 @@
                     [uploadProgressView setHidden:YES];
                     [uploadFinshPageLabel setHidden:YES];
                     [currFileNameLabel setText:@"无法连接Internet，请检查网络"];
-                    
+                    isUpload = FALSE;
                     bl = FALSE;
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
@@ -579,7 +587,7 @@
                     CGRect rct = uploadFinshPageLabel.frame;
                     rct.size.height=size.height;
                     uploadFinshPageLabel.frame = rct;
-                    
+                    isUpload = FALSE;
                     bl = FALSE;
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
@@ -652,11 +660,6 @@
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoUpload"];
         });
         
-        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:4];
-        SettingViewController *setting = (SettingViewController *)[NavigationController.viewControllers objectAtIndex:0];
-        [setting closeSwitch];
-        
         if(!connectionTimer)
         {
             connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
@@ -665,6 +668,12 @@
         {
             libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
         }
+    }
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"isAutoUpload"];
+        });
     }
 }
 
@@ -724,6 +733,7 @@
         uploadNumber = 0;
         isStop = YES;
         [photoArray removeAllObjects];
+        return;
     }
     
     NSLog(@"开始请求");
@@ -896,7 +906,6 @@
     else if(!isStop && uploadNumber >= [photoArray count])
     {
         [self showUploadFinshView:NO];
-        uploderDemo = nil;
         [photoArray removeAllObjects];
         uploadNumber = 0;
     }
@@ -1002,7 +1011,13 @@
     if(!isStop && [[dictionary objectForKey:@"code"] intValue] == 0 && uploadNumber < [photoArray count])
     {
         TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
-        uploderDemo = [[[SCBUploader alloc] init] autorelease];
+        if(uploderDemo)
+        {
+            [uploderDemo setUpLoadDelegate:nil];
+            [uploderDemo release];
+            uploderDemo = nil;
+        }
+        uploderDemo = [[SCBUploader alloc] init];
         [uploderDemo setUpLoadDelegate:self];
         finishName = [dictionary objectForKey:@"sname"];
         NSLog(@"3:开始上传：%@",finishName);
@@ -1063,14 +1078,12 @@
     uploadNumber++;
     if(!isStop && uploadNumber<[photoArray count])
     {
-        uploderDemo = nil;
         isConnection = FALSE;
         [self isUPloadImage];
     }
     else if(!isStop && uploadNumber >= [photoArray count])
     {
         [self showUploadFinshView:NO];
-        uploderDemo = nil;
         [photoArray removeAllObjects];
         uploadNumber = 0;
     }
@@ -1079,7 +1092,13 @@
 -(void)didFailWithError
 {
     NSLog(@"网络连接失败");
-    
+    if(uploderDemo)
+    {
+        [uploderDemo setUpLoadDelegate:nil];
+        [uploderDemo release];
+        uploderDemo = nil;
+    }
+    isUpload = FALSE;
     uploadNumber = 0;
     [photoArray removeAllObjects];
     isOnce = FALSE;
