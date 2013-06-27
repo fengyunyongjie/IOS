@@ -196,8 +196,8 @@
     }
     [cell.imageView setFrame:CGRectMake(0, 0, 23, 23)];
     [cell.imageView setContentMode:UIViewContentModeScaleAspectFit];
-    CGRect rect=[cell.imageView frame];
-    NSLog(@"%f,%f,%f,%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
+    //CGRect rect=[cell.imageView frame];
+    //NSLog(@"%f,%f,%f,%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
     
     return cell;
 }
