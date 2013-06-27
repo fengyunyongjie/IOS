@@ -207,7 +207,11 @@ typedef enum{
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
                 UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-                [uploadView startSouStart];
+                [uploadView setIsUpload:YES];
+                if([YNFunctions isAutoUpload])
+                {
+                    [uploadView startSouStart];
+                }
             }else
             {
                 [YNFunctions setIsOnlyWifi:YES];

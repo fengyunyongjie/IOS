@@ -276,6 +276,7 @@
     if(isStop)
     {
         if (![YNFunctions isOnlyWifi] && !isUpload) {
+            [self stopAllDo];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
                                                                 message:@"这可能会产生流量费用，您是否要继续？"
                                                                delegate:self
@@ -393,7 +394,18 @@
             {
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     [self stopAllDo];
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t步骤：设置>隐私>照片>虹盘" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+                    NSLog(@"[[UIDevice currentDevice] systemVersion]:%@",[[UIDevice currentDevice] systemVersion]);
+                    
+                    NSString *titleString;
+                    if([[[UIDevice currentDevice] systemVersion] intValue]>=6.0)
+                    {
+                        titleString = @"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t步骤：设置>隐私>照片>虹盘";
+                    }
+                    else
+                    {
+                        titleString = @"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t\t步骤：设置>定位服务>虹盘";
+                    }
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:titleString delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
                     [alertView show];
                     [alertView release];
                     isOpenLibray = FALSE;
