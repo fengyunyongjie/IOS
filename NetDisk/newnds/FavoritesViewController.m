@@ -223,7 +223,20 @@
         NSArray *listArray=[[FavoritesData sharedFavoritesData] allValues];
         NSDictionary *dic=[listArray objectAtIndex:indexPath.row];
         NSString *f_id=[dic objectForKey:@"f_id"];
+        NSString *fileName=[dic objectForKey:@"f_name"];
+        NSString *filePath=[YNFunctions getFMCachePath];
+        filePath=[filePath stringByAppendingPathComponent:fileName];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            NSError *error=[[NSError alloc] init];
+            if ([[NSFileManager defaultManager] removeItemAtPath:filePath error:&error]) {
+                NSLog(@"删除本地收藏文件成功：%@",filePath);
+            }else
+            {
+                NSLog(@"删除本地收藏文件失败：%@",filePath);
+            }
+        }
         [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -389,11 +402,11 @@
 #pragma mark - SCBDownloaderDelegate Methods
 -(void)fileDidDownload:(int)index
 {
-    int rows=[self.tableView numberOfRowsInSection:0];
-    if ([[FavoritesData sharedFavoritesData] count]!=rows) {
-        [self.tableView reloadData];
-    }
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    //int rows=[self.tableView numberOfRowsInSection:0];
+    //if ([[FavoritesData sharedFavoritesData] count]!=rows) {
+    [self.tableView reloadData];
+    //}
+    //[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     self.text=nil;
 }
 -(void)updateProgress:(long)size index:(int)index
