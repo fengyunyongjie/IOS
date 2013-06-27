@@ -78,6 +78,13 @@ static FavoritesData *_sharedFavoritesData;
     }
     return nil;
 }
+-(void)stopDownloading
+{
+    self.currentDownloadID=nil;
+    [self.currentDownloader cancelDownload];
+    self.currentDownloader=nil;
+    self.isAllFileDownloadFinish=YES;
+}
 -(void)startDownloading
 {
     if (self.isAllFileDownloadFinish) {
@@ -95,14 +102,14 @@ static FavoritesData *_sharedFavoritesData;
         NSLog(@"无网络");
         self.currentDownloadID=nil;
         self.isAllFileDownloadFinish=YES;
-        [self downloadFail];
+        [self downloadFail:0];
         return;
     }
     if ([YNFunctions isOnlyWifi] && [YNFunctions networkStatus]!=ReachableViaWiFi) {
         NSLog(@"设置为仅Wifi上传下载，但Wifi网络不通！！！");
         self.currentDownloadID=nil;
         self.isAllFileDownloadFinish=YES;
-        [self downloadFail];
+        [self downloadFail:0];
         return;
     }
     
@@ -145,6 +152,11 @@ static FavoritesData *_sharedFavoritesData;
 {
     NSLog(@"文件下载完成");
     if (self.fviewController && [self.fviewController respondsToSelector:@selector(fileDidDownload:)]) {
+        int theIndex=-1;
+        theIndex=[self getIndexWithCurrentFID];
+        if (theIndex>=[self count]||theIndex<0) {
+            return;
+        }
         [self.fviewController fileDidDownload:[self getIndexWithCurrentFID]];
     }
     
@@ -159,6 +171,11 @@ static FavoritesData *_sharedFavoritesData;
 -(void)updateProgress:(long)size index:(int)index
 {
     if (self.fviewController && [self.fviewController respondsToSelector:@selector(updateProgress:index:)]) {
+        int theIndex=-1;
+        theIndex=[self getIndexWithCurrentFID];
+        if (theIndex>=[self count]||theIndex<0) {
+            return;
+        }
         [self.fviewController updateProgress:size index:[self getIndexWithCurrentFID]];
     }
 //    long t_size=[[self.dataDic objectForKey:@"f_size"] intValue];
@@ -168,8 +185,13 @@ static FavoritesData *_sharedFavoritesData;
 //    NSString *text=[NSString stringWithFormat:@"正在下载...(%@/%@)",s_size,s_tsize];
 //    [self.downloadLabel setText:text];
 }
--(void)downloadFail
+-(void)downloadFail:(int)error
 {
+    if (error==1) {
+        [self removeObjectForKey:self.currentDownloadID];
+        [self.fviewController updateCell];
+        NSLog(@"%@:文件在服务器不存在，在本地收藏列表删除！！！",self.currentDownloadID);
+    }
     self.currentDownloadID=nil;
     self.isAllFileDownloadFinish=YES;
     [self performSelector:@selector(startDownloading) withObject:self afterDelay:10.0f];

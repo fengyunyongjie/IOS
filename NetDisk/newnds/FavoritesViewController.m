@@ -338,7 +338,10 @@
     IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
     if (iconDownloader != nil)
     {
-        [self.tableView reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationNone];
+        UITableViewCell *cell=[self.tableView cellForRowAtIndexPath:iconDownloader.indexPathInTableView];
+        if (cell) {
+            [self.tableView reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationNone];
+        }
     }
     
     // Remove the IconDownloader from the in progress list.

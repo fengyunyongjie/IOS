@@ -11,6 +11,7 @@
 #import "YNFunctions.h"
 #import "AppDelegate.h"
 #import "UploadViewController.h"
+#import "FavoritesData.h"
 
 typedef enum{
     kAlertTypeExit,
@@ -105,6 +106,9 @@ typedef enum{
                 UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
                 UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
                 [uploadView stopWiFi];
+                if ([YNFunctions networkStatus]==ReachableViaWWAN) {
+                    [[FavoritesData sharedFavoritesData] stopDownloading];
+                }
             }
             NSLog(@"打开或关闭仅Wifi:: %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"]);
         }
@@ -179,6 +183,9 @@ typedef enum{
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                [[FavoritesData sharedFavoritesData] stopDownloading];
+                
                 [self.rootViewController presendLoginViewController];
                 AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 [app_delegate setIsUnUpload:YES];

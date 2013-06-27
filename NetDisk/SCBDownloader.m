@@ -105,9 +105,19 @@
                 break;
             case 2:
                 NSLog(@"2：无效的文件id（id不存在）");
+                if (self.delegate) {
+                    if ([(NSObject *)self.delegate respondsToSelector:@selector(downloadFail:)]) {
+                        [self.delegate downloadFail:1];
+                    }
+                }
                 break;
             case 3:
                 NSLog(@"3：无权访问的文件id（非自己的文件、别人的 没有共享关系的文件）");
+                if (self.delegate) {
+                    if ([(NSObject *)self.delegate respondsToSelector:@selector(downloadFail:)]) {
+                        [self.delegate downloadFail:1];
+                    }
+                }
                 break;
             default:
                 break;
@@ -137,7 +147,7 @@
         [delegate updateProgress:fileSize index:self.index];
         if (fileSize!=self.dataSize) {
             [connection cancel];
-            [delegate downloadFail];
+            [delegate downloadFail:0];
         }
     }
 }
@@ -145,8 +155,8 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     if (self.delegate) {
-        if ([(NSObject *)self.delegate respondsToSelector:@selector(downloadFail)]) {
-            [self.delegate downloadFail];
+        if ([(NSObject *)self.delegate respondsToSelector:@selector(downloadFail:)]) {
+            [self.delegate downloadFail:0];
         }
     }
 	// Clear the activeDownload property to allow later attempts

@@ -26,4 +26,5 @@
 -(void)reloadData;
 -(NSArray *)allValues;
 -(void)startDownloading;
+-(void)stopDownloading;
 @end

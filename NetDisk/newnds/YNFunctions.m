@@ -215,7 +215,7 @@
     nSize = [sourceSize floatValue]/1024.0;
     sSize = [NSString stringWithFormat:@"%.2f KB",nSize];
     if (nSize<1) {
-        sSize = [NSString stringWithFormat:@"%@ B",sourceSize];
+        sSize = [NSString stringWithFormat:@"%d B",[sourceSize intValue]];
         return sSize;
     }
     if (nSize>=1024) {

@@ -14,6 +14,7 @@
 @property (assign,nonatomic) id<IconDownloaderDelegate> delegate;
 @property (strong,nonatomic) NSMutableData *activeDownload;
 @property (strong,nonatomic) NSURLConnection *imageConnection;
+@property (assign,nonatomic) int code;
 -(void)startDownload;
 -(void)cancelDownload;
 @end
