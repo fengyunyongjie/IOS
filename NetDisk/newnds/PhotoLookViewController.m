@@ -88,6 +88,10 @@
         startPage = 0;
         endPage = currPage+2;
         for (int i = 0; i<currPage+3; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -102,6 +106,10 @@
         startPage = 0;
         endPage = [tableArray count]-1;
         for (int i = 0; i<[tableArray count]; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -116,6 +124,10 @@
         startPage = currPage-1;
         endPage = currPage+1;
         for (int i = currPage-1; i<currPage+2; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -130,6 +142,10 @@
         startPage = currPage-2;
         endPage = currPage-1;
         for (int i = currPage-2; i<=currPage; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -145,6 +161,10 @@
         startPage = 0;
         endPage = currPage-1;
         for (int i = 0; i<=currPage; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -395,6 +415,10 @@
     {
         for(int i=page-1;isLoadImage&&i>page-5;i--)
         {
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -407,6 +431,10 @@
     {
         for(int i=page-1;isLoadImage&&i>0;i--)
         {
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -421,6 +449,10 @@
     {
         for(int i=page;isLoadImage&&i<page+5;i++)
         {
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -434,6 +466,10 @@
     {
         for(int i=page;isLoadImage&&i<[tableArray count];i++)
         {
+            if(i>=[tableArray count])
+            {
+                break;
+            }
             PhotoFile *demo = [tableArray objectAtIndex:i];
             if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
             {
@@ -878,15 +914,24 @@
         /*
          重新添加数据
          */
+        if(deletePage<[tableArray count])
+        {
+            [tableArray removeObjectAtIndex:deletePage];
+        }
+        
         if(self.imageScrollView)
         {
             [self.imageScrollView removeFromSuperview];
             [self.imageScrollView release];
+            self.imageScrollView = nil;
             [imageDic removeAllObjects];
             [activityDic removeAllObjects];
         }
+        if(self.imageViewArray)
+        {
+            [self.imageViewArray removeAllObjects];
+        }
         
-        [tableArray removeObjectAtIndex:deletePage];
         
         if([tableArray count]==0)
         {
@@ -912,6 +957,10 @@
             startPage = 0;
             endPage = currPage+2;
             for (int i = 0; i<currPage+3; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
                 PhotoFile *demo = [tableArray objectAtIndex:i];
                 if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {
@@ -926,6 +975,14 @@
             startPage = 0;
             endPage = [tableArray count]-1;
             for (int i = 0; i<[tableArray count]; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                if(i<0)
+                {
+                    continue;
+                }
                 PhotoFile *demo = [tableArray objectAtIndex:i];
                 if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {
@@ -940,6 +997,14 @@
             startPage = currPage-1;
             endPage = currPage+1;
             for (int i = currPage-1; i<currPage+2; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                if(i<0)
+                {
+                    continue;
+                }
                 PhotoFile *demo = [tableArray objectAtIndex:i];
                 if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {
@@ -951,9 +1016,17 @@
         
         if(currPage+1==[tableArray count] && [tableArray count]>=3)
         {
-            startPage = currPage-3;
+            startPage = currPage-2;
             endPage = currPage-1;
-            for (int i = currPage-3; i<=currPage; i++){
+            for (int i = currPage-2; i<=currPage; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                if(i<0)
+                {
+                    continue;
+                }
                 PhotoFile *demo = [tableArray objectAtIndex:i];
                 if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {
@@ -969,6 +1042,10 @@
             startPage = 0;
             endPage = currPage-1;
             for (int i = 0; i<=currPage; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
                 PhotoFile *demo = [tableArray objectAtIndex:i];
                 if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {

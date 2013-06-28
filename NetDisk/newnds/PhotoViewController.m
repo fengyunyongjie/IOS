@@ -943,7 +943,9 @@
             }
         }
     }
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.downCellArray removeAllObjects];
+    });
 //    if(isSort)
 //    {
 //        NSArray *cellArrays = [self.table_view indexPathsForVisibleRows];

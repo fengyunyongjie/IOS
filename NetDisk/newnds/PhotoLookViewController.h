@@ -43,28 +43,30 @@
     NSMutableArray *downArray;
     CGFloat currWidth;
     CGFloat currHeight;
+    
+    NSInteger endCurrPage;
 }
 
 @property (nonatomic, retain) UIScrollView *imageScrollView;
 @property (nonatomic, retain) NSMutableArray *tableArray;
 @property (nonatomic, assign) NSInteger currPage;
 
-@property(strong,nonatomic) NSMutableArray *imageViewArray;
+@property(retain,nonatomic) NSMutableArray *imageViewArray;
 @property(assign,nonatomic) CGFloat offset;
 @property(assign,nonatomic) BOOL isDoubleClick;
 
 /*
  添加头部和底部栏
  */
-@property(strong,nonatomic) UIButton *topLeftButton;
-@property(strong,nonatomic) UILabel *topTitleLabel;
-@property(strong,nonatomic) UIToolbar *topToolBar;
+@property(retain,nonatomic) UIButton *topLeftButton;
+@property(retain,nonatomic) UILabel *topTitleLabel;
+@property(retain,nonatomic) UIToolbar *topToolBar;
 
-@property(strong,nonatomic) UIButton *leftButton;
-@property(strong,nonatomic) UIButton *centerButton;
-@property(strong,nonatomic) UIButton *rightButton;
+@property(retain,nonatomic) UIButton *leftButton;
+@property(retain,nonatomic) UIButton *centerButton;
+@property(retain,nonatomic) UIButton *rightButton;
 @property(assign,nonatomic) BOOL isCliped;
-@property(strong,nonatomic) UIToolbar *bottonToolBar;
+@property(retain,nonatomic) UIToolbar *bottonToolBar;
 @property(assign,nonatomic) BOOL isScape;
 @property(assign,nonatomic) int page;
 @property(assign,nonatomic) int endFloat;
