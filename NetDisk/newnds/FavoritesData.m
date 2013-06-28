@@ -155,7 +155,11 @@ static FavoritesData *_sharedFavoritesData;
         int theIndex=-1;
         theIndex=[self getIndexWithCurrentFID];
         if (theIndex>=[self count]||theIndex<0) {
+            NSLog(@"数组下标越界：：：：%d",theIndex);
             return;
+        }else
+        {
+            
         }
         [self.fviewController fileDidDownload:[self getIndexWithCurrentFID]];
     }
@@ -174,7 +178,11 @@ static FavoritesData *_sharedFavoritesData;
         int theIndex=-1;
         theIndex=[self getIndexWithCurrentFID];
         if (theIndex>=[self count]||theIndex<0) {
+            NSLog(@"数组下标越界：：：：%d",theIndex);
             return;
+        }else
+        {
+            
         }
         [self.fviewController updateProgress:size index:[self getIndexWithCurrentFID]];
     }
@@ -191,6 +199,7 @@ static FavoritesData *_sharedFavoritesData;
         [self removeObjectForKey:self.currentDownloadID];
         [self.fviewController updateCell];
         NSLog(@"%@:文件在服务器不存在，在本地收藏列表删除！！！",self.currentDownloadID);
+        return;
     }
     self.currentDownloadID=nil;
     self.isAllFileDownloadFinish=YES;

@@ -84,7 +84,8 @@ typedef enum{
 }
 - (void)switchChange:(id)sender
 {
-    switch ([(UISwitch*)sender tag]) {
+    int tag=[(UISwitch*)sender tag];
+    switch (tag) {
         case 0:
         {
             UISwitch *theSwith = (UISwitch *)sender;
