@@ -1239,16 +1239,16 @@
             [photoManager release];
             photoManager = nil;
         }
+        hud = [[MBProgressHUD alloc] initWithView:self.view];
+        hud.mode=MBProgressHUDModeIndeterminate;
+        hud.labelText=@"正在加载";
+        [self.view addSubview:hud];
+        [hud show:YES];
         //请求时间轴
         photoManager = [[SCBPhotoManager alloc] init];
         [photoManager setPhotoDelegate:self];
         if(!isFirst)
         {
-            hud = [[MBProgressHUD alloc] initWithView:self.view];
-            hud.mode=MBProgressHUDModeIndeterminate;
-            hud.labelText=@"正在加载";
-            [self.view addSubview:hud];
-            [hud show:YES];
             [photoManager getPhotoTimeLine:TRUE];
             isFirst = TRUE;
         }
