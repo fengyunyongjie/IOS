@@ -633,6 +633,10 @@
         NSMutableArray *imageArray = [[NSMutableArray alloc] init];
         for(int i=0;i<number;i++)
         {
+            if(row*3+i>=[array count])
+            {
+                break;
+            }
             CellTag *cellT = [[CellTag alloc] init];
             PhotoFile *demo = [array objectAtIndex:row*3+i];
             [cellT setFileTag:demo.f_id];
@@ -1102,7 +1106,6 @@
     }
     else
     {
-        isReload = TRUE;
         for(int i=0;i<[downArray count];i++)
         {
             DownImage *downImage = [downArray objectAtIndex:i];
@@ -1112,7 +1115,8 @@
         [photo_look_view setHidesBottomBarWhenPushed:YES];
         //        [photo_look_view.navigationController setNavigationBarHidden:YES];
         NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
-        [photo_look_view setTableArray:[tablediction objectForKey:sectionString]];
+        NSArray *array = [tablediction objectForKey:sectionString];
+        [photo_look_view setTableArray:[NSMutableArray arrayWithArray:[array retain]]];
         [photo_look_view setCurrPage:button.cell.pageTag];
         [self presentModalViewController:photo_look_view animated:YES];
 //        [self.navigationController pushViewController:photo_look_view animated:YES];
