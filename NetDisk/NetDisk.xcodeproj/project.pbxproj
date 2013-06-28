@@ -2368,7 +2368,7 @@
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "newnds/newnds-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/NetDisk/lib/armv6\"",
@@ -2400,7 +2400,7 @@
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				INFOPLIST_FILE = "newnds/newnds-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/NetDisk/lib/armv6\"",
@@ -2410,7 +2410,7 @@
 					"\"$(SRCROOT)/newnds/SDKExport\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CC0EB52C-D266-402A-984C-C1C5B0527302";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "10D64E7D-FA26-4D6D-A96B-E70AFC39B7C1";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
