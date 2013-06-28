@@ -28,6 +28,8 @@
 
 -(void)getFileDetail:(NSDictionary *)dictionary;
 
+-(void)didFailWithError;
+
 @end
 
 @protocol NewFoldDelegate <NSObject>

@@ -135,6 +135,11 @@
     }
 }
 
+-(void)didFailWithError
+{
+    isReload = FALSE;
+}
+
 #pragma mark -得到时间轴的列表
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary
 {
@@ -297,6 +302,7 @@
     [hud hide:YES afterDelay:0.8f];
     [hud release];
     hud = nil;
+    isReload = FALSE;
 }
 
 -(BOOL)startTimeMoreThanEndTime:(NSString *)sTime eTime:(NSString *)eTime
@@ -1094,6 +1100,7 @@
     }
     else
     {
+        isReload = TRUE;
         for(int i=0;i<[downArray count];i++)
         {
             DownImage *downImage = [downArray objectAtIndex:i];
@@ -1108,6 +1115,7 @@
         [self presentModalViewController:photo_look_view animated:YES];
 //        [self.navigationController pushViewController:photo_look_view animated:YES];
         [photo_look_view release];
+        
     }
     NSLog(@"button:%i",button.tag);
 }
@@ -1213,13 +1221,11 @@
     
     [self scrollViewDidEndDecelerating:nil];
     
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    hud.mode=MBProgressHUDModeIndeterminate;
-    hud.labelText=@"正在加载";
-    [self.view addSubview:hud];
-    [hud show:YES];
-    
-    [NSThread detachNewThreadSelector:@selector(requestPhotoTimeLine) toTarget:self withObject:nil];
+    if(!isReload)
+    {
+        isReload = TRUE;
+        [NSThread detachNewThreadSelector:@selector(requestPhotoTimeLine) toTarget:self withObject:nil];
+    }
     
     [self setUser_id:[[SCBSession sharedSession] userId]];
     [self setUser_token:[[SCBSession sharedSession] userToken]];
@@ -1238,6 +1244,11 @@
         [photoManager setPhotoDelegate:self];
         if(!isFirst)
         {
+            hud = [[MBProgressHUD alloc] initWithView:self.view];
+            hud.mode=MBProgressHUDModeIndeterminate;
+            hud.labelText=@"正在加载";
+            [self.view addSubview:hud];
+            [hud show:YES];
             [photoManager getPhotoTimeLine:TRUE];
             isFirst = TRUE;
         }

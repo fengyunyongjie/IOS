@@ -283,6 +283,10 @@
     {
         [photoDelegate getPhotoTiimeLine:nil];
     }
+    else
+    {
+        [photoDelegate didFailWithError];
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -316,6 +320,10 @@
         {
             [photoDelegate getFileDetail:[NSDictionary dictionaryWithObject:@"3" forKey:@"code"]];
         }
+    }
+    else if([type_string isEqualToString:[[PHOTO_ALL componentsSeparatedByString:@"/"] lastObject]])
+    {
+        [photoDelegate didFailWithError];
     }
 }
 

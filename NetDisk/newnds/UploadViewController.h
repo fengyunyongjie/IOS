@@ -121,6 +121,7 @@
 @property (nonatomic,retain) SCBUploader *uploderDemo;
 
 @property (nonatomic,assign) BOOL isUpload;
+@property (nonatomic,assign) BOOL isStop;
 
 -(NSString *)md5:(NSData *)concat;
 -(void)startSouStart;

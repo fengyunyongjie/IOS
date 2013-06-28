@@ -39,6 +39,7 @@
 @synthesize uploadFinshImageView;
 @synthesize uploderDemo;
 @synthesize isUpload;
+@synthesize isStop;
 
 @synthesize photoArray;
 

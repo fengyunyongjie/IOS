@@ -78,6 +78,7 @@
     
     BOOL isOnece;
     NSTimer *timer;
+    BOOL isReload;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
