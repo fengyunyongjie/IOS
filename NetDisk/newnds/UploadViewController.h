@@ -12,6 +12,7 @@
 #import "SCBPhotoManager.h"
 #import "SCBUploader.h"
 #import <CommonCrypto/CommonDigest.h>
+#import "BoderView.h"
 
 @interface UploadViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,NewFoldDelegate,UpLoadDelegate,UIAlertViewDelegate>
 {
@@ -65,7 +66,7 @@
     /*
      正在上传界面
      */
-    UIImageView *uploadImageView;
+    BoderView *uploadImageView;
     UIProgressView *uploadProgressView;
     UILabel *currFileNameLabel;
     UILabel *uploadFinshPageLabel;
@@ -94,6 +95,7 @@
     
     BOOL isUpload;
     BOOL isOpenLibray;
+    BOOL isGetLibary;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -110,7 +112,7 @@
 @property (nonatomic,retain) UILabel *uploadWaitLabel;
 @property (nonatomic,retain) UIButton *uploadWaitButton;
 
-@property (nonatomic,retain) UIImageView *uploadImageView;
+@property (nonatomic,retain) BoderView *uploadImageView;
 @property (nonatomic,retain) UIProgressView *uploadProgressView;
 @property (nonatomic,retain) UILabel *currFileNameLabel;
 @property (nonatomic,retain) UILabel *uploadFinshPageLabel;

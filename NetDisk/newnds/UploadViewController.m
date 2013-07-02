@@ -150,7 +150,7 @@
     [self.view addSubview:uploadWaitButton];
     
     CGRect uploadImageRect = CGRectMake(90, y+20, 140, 210);
-    uploadImageView = [[UIImageView alloc] initWithFrame:uploadImageRect];
+    uploadImageView = [[BoderView alloc] initWithFrame:uploadImageRect];
     [self.view addSubview:uploadImageView];
     CGRect unWifiOrNetWorkImageRect = CGRectMake(61, y+106, 198, 107);
     unWifiOrNetWorkImageView = [[UIImageView alloc] initWithFrame:unWifiOrNetWorkImageRect];
@@ -319,7 +319,14 @@
 #pragma mark 获取照片库信息
 -(void)getPhotoLibrary
 {
+//    isGetLibary ＝ YES;
     NSLog(@"判断照片库是否更新");
+    if(isGetLibary)
+    {
+        return;
+    }
+    isGetLibary = TRUE;
+    NSLog(@"查询图片");
     if(isStop)
     {
         [self stopAllDo];
@@ -344,6 +351,9 @@
                         demo.f_lenght = 0;
                         //获取照片名称
                         demo.f_base_name = [[result defaultRepresentation] filename];
+                        UIImage *image1 = [UIImage imageWithCGImage:[[result defaultRepresentation] fullResolutionImage]];
+                        UIImage *image2 = [UIImage imageWithCGImage:[[result defaultRepresentation] fullScreenImage]];
+                        NSLog(@"smalSize:%@;FullSize:%@",NSStringFromCGSize(image1.size),NSStringFromCGSize(image2.size));
                         demo.result = [result retain];
                         BOOL bl;
                         if(!isOnce)
@@ -369,6 +379,7 @@
                     [pool release];
                 }];
                 isOnce = TRUE;
+                isGetLibary = FALSE;
                 if(isLoad)
                 {
                     if(uploadNumber<[photoArray count] && !isStop)
@@ -773,7 +784,7 @@
         uploadImageRect.origin.x = (320-imageSize.width)/2;
         uploadImageRect.origin.y = (uploadProgressView.frame.origin.y-imageSize.height)/2;
         [uploadImageView setFrame:uploadImageRect];
-        [uploadImageView setImage:[UIImage imageWithData:demo.f_data]];
+        [uploadImageView.boderImageView setImage:[UIImage imageWithData:demo.f_data]];
         [uploadProgressView setProgress:0];
         [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
         [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]-uploadNumber]];

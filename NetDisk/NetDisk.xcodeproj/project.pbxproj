@@ -240,6 +240,8 @@
 		29C0775417584DC2005A5EFF /* PhotoFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C0775317584DC2005A5EFF /* PhotoFile.m */; };
 		29C077571758B0BE005A5EFF /* PhotoFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C077561758B0BD005A5EFF /* PhotoFileCell.m */; };
 		29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C17DD816560B7D0066CB13 /* QuartzCore.framework */; };
+		29CED3681781203C00899FAE /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CED3671781203C00899FAE /* MessageUI.framework */; };
+		29CED36E17812B7000899FAE /* BoderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CED36D17812B7000899FAE /* BoderView.m */; };
 		29CFD47D173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
 		29D0CD571757342D00B20294 /* FavoritesDBController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D0CD561757342D00B20294 /* FavoritesDBController.m */; };
 		29D72E031771753A008D830A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D72E021771753A008D830A /* QuickLook.framework */; };
@@ -560,6 +562,9 @@
 		29C0775317584DC2005A5EFF /* PhotoFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFile.m; sourceTree = "<group>"; };
 		29C077551758B0BD005A5EFF /* PhotoFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFileCell.h; sourceTree = "<group>"; };
 		29C077561758B0BD005A5EFF /* PhotoFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFileCell.m; sourceTree = "<group>"; };
+		29CED3671781203C00899FAE /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		29CED36C17812B7000899FAE /* BoderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoderView.h; sourceTree = "<group>"; };
+		29CED36D17812B7000899FAE /* BoderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoderView.m; sourceTree = "<group>"; };
 		29CFD47A173733FF001B6721 /* DownImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownImage.h; sourceTree = "<group>"; };
 		29CFD47B173733FF001B6721 /* DownImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownImage.m; sourceTree = "<group>"; };
 		29D0CD551757342D00B20294 /* FavoritesDBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesDBController.h; sourceTree = "<group>"; };
@@ -887,6 +892,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29CED3681781203C00899FAE /* MessageUI.framework in Frameworks */,
 				29D72E031771753A008D830A /* QuickLook.framework in Frameworks */,
 				2939A656174DE5F80036EFD6 /* AssetsLibrary.framework in Frameworks */,
 				29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */,
@@ -1084,6 +1090,8 @@
 				29DF5BD31755A760005D85E4 /* OpenViewController.h */,
 				29DF5BD41755A760005D85E4 /* OpenViewController.m */,
 				29DF5BD51755A760005D85E4 /* OpenViewController.xib */,
+				29CED36C17812B7000899FAE /* BoderView.h */,
+				29CED36D17812B7000899FAE /* BoderView.m */,
 			);
 			name = Upload;
 			sourceTree = "<group>";
@@ -1723,6 +1731,7 @@
 		83A3A0481650D0C700BEDB27 = {
 			isa = PBXGroup;
 			children = (
+				29CED3671781203C00899FAE /* MessageUI.framework */,
 				29D72E021771753A008D830A /* QuickLook.framework */,
 				29EFE853172A55AD0099B5A7 /* newnds */,
 				29A92A0A171560BE00B1B2A4 /* NewSDK */,
@@ -2335,6 +2344,7 @@
 				29FA3B30176083B700FBA1B6 /* DefaultViewController.m in Sources */,
 				292D984B17644B3E00F57BFF /* operation.m in Sources */,
 				29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */,
+				29CED36E17812B7000899FAE /* BoderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2395,7 +2405,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zhang danglun";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -2410,7 +2420,7 @@
 					"\"$(SRCROOT)/newnds/SDKExport\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "10D64E7D-FA26-4D6D-A96B-E70AFC39B7C1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2426,7 +2436,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2445,7 +2455,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "599340FB-7E15-4606-93B6-8179186E47D8";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = armv7;
 			};
@@ -2461,7 +2471,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2474,7 +2484,7 @@
 				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "599340FB-7E15-4606-93B6-8179186E47D8";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = armv7;
