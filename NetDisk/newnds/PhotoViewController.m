@@ -297,7 +297,6 @@
     
     isLoadImage = TRUE;
     isSort = TRUE;
-    isLoadData = TRUE;
     
     [hud hide:YES afterDelay:0.8f];
     [hud release];
@@ -610,19 +609,25 @@
 {
     int section = [indexPath section];
     int row = [indexPath row];
-    if(cellNumber>10)
+    if(cellNumber>5)
     {
         cellNumber = 0;
     }
     NSString *cellString = [NSString stringWithFormat:@"cellString:%i",cellNumber];
     cellNumber++;
     PhotoFileCell *cell = [self.table_view dequeueReusableCellWithIdentifier:cellString];
-    cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    if(cell == nil)
+    {
+        cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
     NSString *sectionNumber = [sectionarray objectAtIndex:section];
     NSArray *array = [tablediction objectForKey:sectionNumber];
     if([array count]/3 == row)
     {
+        cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
         cell.tag = row+UICellTag*section;
         int number = 3;
         if([array count]%3>0)
@@ -645,35 +650,35 @@
             image.tag = UIImageTag+demo.f_id;
             [cellT setImageTag:image.tag];
             
-//            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]])
-//            {
-//                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]];
-//                UIImage *imageV = [UIImage imageWithContentsOfFile:path];
-//                CGSize newImageSize;
-//                if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
-//                {
-//                    newImageSize.height = 200;
-//                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
-//                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-//                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-//                    imageS = [self imageFromImage:imageS inRect:imageRect];
-//                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-//                }
-//                else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
-//                {
-//                    newImageSize.width = 200;
-//                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
-//                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-//                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-//                    imageS = [self imageFromImage:imageS inRect:imageRect];
-//                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-//                }
-//                else
-//                {
-//                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-//                }
-//            }
-//            else
+            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]])
+            {
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]];
+                UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+                CGSize newImageSize;
+                if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+                {
+                    newImageSize.height = 200;
+                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+                else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+                {
+                    newImageSize.width = 200;
+                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+                else
+                {
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                }
+            }
+            else
             {
                 UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
                 [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
@@ -705,10 +710,31 @@
             [cell.contentView addSubview:button];
             [button release];
         }
-        operation *queue = [[operation alloc] init];
-        [queue cellArray:cellArray imagev:imageArray];
-        [operationQueue addOperation:queue];
-        [queue release];
+        
+        if(isOnece)
+        {
+            if([downCellArray count]>5)
+            {
+                [downCellArray removeObjectAtIndex:0];
+            }
+            [downCellArray addObject:cell];
+        }
+        else
+        {
+            if([downCellArray count]<6)
+            {
+                [downCellArray addObject:cell];
+            }
+            if(!timer)
+            {
+                timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
+            }
+        }
+        
+//        operation *queue = [[operation alloc] init];
+//        [queue cellArray:cellArray imagev:imageArray];
+//        [operationQueue addOperation:queue];
+//        [queue release];
         [cell setCellArray:cellArray];
         [cellArray release];
         [imageArray release];
@@ -728,35 +754,35 @@
             image.tag = UIImageTag+demo.f_id;
             [cellT setImageTag:image.tag];
             
-//            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]])
-//            {
-//                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]];
-//                UIImage *imageV = [UIImage imageWithContentsOfFile:path];
-//                CGSize newImageSize;
-//                if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
-//                {
-//                    newImageSize.height = 200;
-//                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
-//                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-//                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-//                    imageS = [self imageFromImage:imageS inRect:imageRect];
-//                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-//                }
-//                else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
-//                {
-//                    newImageSize.width = 200;
-//                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
-//                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-//                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-//                    imageS = [self imageFromImage:imageS inRect:imageRect];
-//                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-//                }
-//                else
-//                {
-//                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-//                }
-//            }
-//            else
+            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]])
+            {
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]];
+                UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+                CGSize newImageSize;
+                if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+                {
+                    newImageSize.height = 200;
+                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+                else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+                {
+                    newImageSize.width = 200;
+                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+                else
+                {
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                }
+            }
+            else
             {
                 UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
                 [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
@@ -788,32 +814,35 @@
             [cell.contentView addSubview:button];
             [button release];
         }
-        operation *queue = [[operation alloc] init];
-        [queue cellArray:cellArray imagev:imageArray];
-        [operationQueue addOperation:queue];
-        [queue release];
+        
+        if(isOnece)
+        {
+            if([downCellArray count]>5)
+            {
+                [downCellArray removeObjectAtIndex:0];
+            }
+            [downCellArray addObject:cell];
+        }
+        else
+        {
+            if([downCellArray count]<6)
+            {
+                [downCellArray addObject:cell];
+            }
+            if(!timer)
+            {
+                timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
+            }
+        }
+        
+//        operation *queue = [[operation alloc] init];
+//        [queue cellArray:cellArray imagev:imageArray];
+//        [operationQueue addOperation:queue];
+//        [queue release];
         [cell setCellArray:cellArray];
         [cellArray release];
     }
-    if(isOnece)
-    {
-        if([downCellArray count]>5)
-        {
-            [downCellArray removeObjectAtIndex:0];
-        }
-        [downCellArray addObject:cell];
-    }
-    else
-    {
-        if([downCellArray count]<6)
-        {
-            [downCellArray addObject:cell];
-        }
-        if(!timer)
-        {
-            timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
-        }
-    }
+    
     return cell;
 }
 
@@ -821,6 +850,7 @@
 {
     if(!isOnece)
     {
+        isLoadData = TRUE;
         isOnece = TRUE;
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
@@ -948,6 +978,7 @@
         }
     }
     dispatch_async(dispatch_get_main_queue(), ^{
+        isLoadData = FALSE;
         [self.downCellArray removeAllObjects];
     });
 //    if(isSort)
@@ -1032,13 +1063,11 @@
 //        }
 //    }
     [pool release];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        isLoadData = FALSE;
-    });
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    NSLog(@"isLoadData:%i",isLoadData);
     isLoadImage = TRUE;
     if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
@@ -1059,6 +1088,7 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    NSLog(@"isLoadData:%i",isLoadData);
     isLoadImage = TRUE;
     if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {

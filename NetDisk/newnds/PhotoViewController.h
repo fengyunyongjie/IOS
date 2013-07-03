@@ -44,7 +44,7 @@
     
     NSMutableArray *_arrVisibleCells; // 重用的cell
 	NSMutableDictionary *_dicReuseCells; //选中的数据
-    BOOL editBL;
+    BOOL editBL;  //是否为编辑状态，默认为false
     UIView *bottonView;
     NSMutableDictionary *photo_diction;
     

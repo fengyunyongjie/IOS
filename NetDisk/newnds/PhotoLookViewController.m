@@ -1159,14 +1159,17 @@
     }
 }
 
+//<ios 6.0
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return YES;
 }
 
+//>ios 6.0
 - (BOOL)shouldAutorotate{
     return YES;
 }
+
 
 //旋转方向发生改变时
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
