@@ -19,6 +19,27 @@
 {
     self.delegate=nil;
 }
+-(void)newFinderWithName:(NSString *)f_name pID:(NSString*)f_pid
+{
+    self.fm_type=kFMTypeNewFinder;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_name=%@&f_pid=%@",f_name,f_pid];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
 -(void)operateUpdateWithID:(NSString *)f_id
 {
     self.fm_type=kFMTypeOperateUpdate;
@@ -171,8 +192,11 @@
                 break;
             case kFMTypeMove:
                 [self.delegate moveUnsucess];
-                NSLog(@"移动成功");
                 break;
+            case kFMTypeNewFinder:
+                [self.delegate newFinderUnsucess];
+                break;
+
         }
     }
 }
@@ -206,6 +230,9 @@
                 case kFMTypeOperateUpdate:
                     [self.delegate operateSucess:dic];
                     break;
+                case kFMTypeNewFinder:
+                    [self.delegate newFinderSucess];
+                    break;
             }
         }
     }else
@@ -223,7 +250,9 @@
                     break;
                 case kFMTypeMove:
                     [self.delegate moveUnsucess];
-                    NSLog(@"移动成功");
+                    break;
+                case kFMTypeNewFinder:
+                    [self.delegate newFinderUnsucess];
                     break;
             }
         }

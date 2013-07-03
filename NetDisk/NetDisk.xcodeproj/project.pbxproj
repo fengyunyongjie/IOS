@@ -103,6 +103,7 @@
 		29A2D2F51733C2680013D65A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A58F4216636AD70075D243 /* libz.dylib */; };
 		29A747611746297B006299E4 /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A747601746297B006299E4 /* IconDownloader.m */; };
 		29AAC4E3175F4FAD0050B2A7 /* PhotoLookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AAC4E2175F4FAD0050B2A7 /* PhotoLookViewController.m */; };
+		29ACB0001783D51F00AC9E6A /* Bt_Operator.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */; };
 		29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */; };
 		29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */; };
 		29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B18AC7173CC37C00DBF2CB /* OptionCell.xib */; };
@@ -281,6 +282,10 @@
 		29EFE862172A55AD0099B5A7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE861172A55AD0099B5A7 /* Default@2x.png */; };
 		29EFE864172A55AD0099B5A7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */; };
 		29FA3B30176083B700FBA1B6 /* DefaultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */; };
+		29FAE9FA178265DD00C432DD /* Bg_Buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FAE9F6178265DD00C432DD /* Bg_Buttons.png */; };
+		29FAE9FB178265DD00C432DD /* Bt_Edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FAE9F7178265DD00C432DD /* Bt_Edit.png */; };
+		29FAE9FC178265DD00C432DD /* Bt_NewFolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FAE9F8178265DD00C432DD /* Bt_NewFolder.png */; };
+		29FAE9FD178265DD00C432DD /* Bt_Operator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FAE9F9178265DD00C432DD /* Bt_Operator@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -415,6 +420,7 @@
 		29A92A08171560B500B1B2A4 /* SCBoxSDK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBoxSDK.m; sourceTree = "<group>"; };
 		29AAC4E1175F4FAD0050B2A7 /* PhotoLookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoLookViewController.h; sourceTree = "<group>"; };
 		29AAC4E2175F4FAD0050B2A7 /* PhotoLookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoLookViewController.m; sourceTree = "<group>"; };
+		29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Operator.png; sourceTree = "<group>"; };
 		29AFC2C41778369E0074FBAC /* QLBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLBrowserViewController.h; sourceTree = "<group>"; };
 		29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QLBrowserViewController.m; sourceTree = "<group>"; };
 		29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
@@ -608,6 +614,10 @@
 		29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		29FA3B2E176083B700FBA1B6 /* DefaultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultViewController.h; sourceTree = "<group>"; };
 		29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultViewController.m; sourceTree = "<group>"; };
+		29FAE9F6178265DD00C432DD /* Bg_Buttons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bg_Buttons.png; sourceTree = "<group>"; };
+		29FAE9F7178265DD00C432DD /* Bt_Edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Edit.png; sourceTree = "<group>"; };
+		29FAE9F8178265DD00C432DD /* Bt_NewFolder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_NewFolder.png; sourceTree = "<group>"; };
+		29FAE9F9178265DD00C432DD /* Bt_Operator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_Operator@2x.png"; sourceTree = "<group>"; };
 		8312A8B9168BED730091ED59 /* ExecFileDownLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExecFileDownLoad.cpp; sourceTree = "<group>"; };
 		8312A8BA168BED730091ED59 /* ExecFileUpload.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExecFileUpload.cpp; sourceTree = "<group>"; };
 		8312A8C0168BEFF40091ED59 /* ExecFileDownLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExecFileDownLoad.h; sourceTree = "<group>"; };
@@ -1330,6 +1340,7 @@
 		29DE0CE817422C5B009C41C7 /* nds_img */ = {
 			isa = PBXGroup;
 			children = (
+				29FAE9F5178265CE00C432DD /* editList */,
 				29B3899A17431A48007313B1 /* btn_quit.png */,
 				29B3899B17431A48007313B1 /* btn_quit_on.png */,
 				298C1EE1175340FF00D793F3 /* file_icon.png */,
@@ -1427,6 +1438,18 @@
 				29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		29FAE9F5178265CE00C432DD /* editList */ = {
+			isa = PBXGroup;
+			children = (
+				29FAE9F6178265DD00C432DD /* Bg_Buttons.png */,
+				29FAE9F7178265DD00C432DD /* Bt_Edit.png */,
+				29FAE9F8178265DD00C432DD /* Bt_NewFolder.png */,
+				29FAE9F9178265DD00C432DD /* Bt_Operator@2x.png */,
+				29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */,
+			);
+			name = editList;
 			sourceTree = "<group>";
 		};
 		835C2FDC1670638000E83538 /* Engine */ = {
@@ -2256,6 +2279,11 @@
 				298AB53917727FF200D067E1 /* 按钮.png in Resources */,
 				298AB53A17727FF200D067E1 /* 背景图.png in Resources */,
 				291F5D8F177A699F007EFE03 /* Back_Normal.png in Resources */,
+				29FAE9FA178265DD00C432DD /* Bg_Buttons.png in Resources */,
+				29FAE9FB178265DD00C432DD /* Bt_Edit.png in Resources */,
+				29FAE9FC178265DD00C432DD /* Bt_NewFolder.png in Resources */,
+				29FAE9FD178265DD00C432DD /* Bt_Operator@2x.png in Resources */,
+				29ACB0001783D51F00AC9E6A /* Bt_Operator.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

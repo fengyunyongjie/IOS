@@ -23,6 +23,7 @@ typedef enum{
     kAlertTagDeleteOne,
     kAlertTagDeleteMore,
     kAlertTagRename,
+    kAlertTagNewFinder,
 }AlertTag;
 
 @implementation FileItem
@@ -51,13 +52,78 @@ typedef enum{
 @end
 
 @implementation MyndsViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
+-(void)newFinder:(id)sender
 {
-    self = [super initWithStyle:style];
+    NSLog(@"点击新建文件夹");
+    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [[alert textFieldAtIndex:0] setText:@""];
+    [alert setTag:kAlertTagNewFinder];
+    [alert show];
+}
+-(void)showMenu:(id)sender
+{
+    [self.ctrlView setHidden:!self.ctrlView.hidden];
+}
+- (id)init
+{
+    self = [super init];
     if (self) {
         // Custom initialization
+//        UIView *view=[[UIView alloc] init];
+//        self.view=view;
+        self.tableView=[[UITableView alloc] init];
         self.tableView.allowsSelectionDuringEditing=YES;
+        self.tableView.delegate=self;
+        self.tableView.dataSource=self;
+        [self.view addSubview:self.tableView];
+        self.tableView.frame=self.view.frame;
+        CGRect r=self.tableView.frame;
+        self.tableView.frame=r;
+        
+        self.ctrlView=[[UIView alloc] init];
+        r=self.view.frame;
+        r.size.height=120;
+        r.origin.x=140;
+        [self.ctrlView setFrame:r];
+        self.ctrlView.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
+        [self.view addSubview:self.ctrlView];
+        [self.ctrlView setHidden:YES];
+        
+        UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bg_Buttons.png"]];
+        r=CGRectMake(0, 0, 176, 112);
+        [bg setFrame:r];
+        [self.ctrlView addSubview:bg];
+        
+        //[self.view bringSubviewToFront:bg];
+        
+        UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
+        btnNewFinder.frame=CGRectMake(38, 30, 34, 34);
+        [btnNewFinder setImage:[UIImage imageNamed:@"Bt_NewFolder.png"] forState:UIControlStateNormal];
+        [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:btnNewFinder];
+        
+        UILabel *lblNewFinder=[[UILabel alloc] init];
+        lblNewFinder.text=@"新建文件夹";
+        lblNewFinder.font=[UIFont systemFontOfSize:12];
+        lblNewFinder.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
+        lblNewFinder.textColor=[UIColor whiteColor];
+        lblNewFinder.frame=CGRectMake(23, 72, 64, 20);
+        [self.ctrlView addSubview:lblNewFinder];
+        
+        UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
+        btnEdit.frame=CGRectMake(116, 30, 34, 34);
+        [btnEdit setImage:[UIImage imageNamed:@"Bt_Edit.png"] forState:UIControlStateNormal];
+        [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:btnEdit];
+        
+        UILabel *lblEdit=[[UILabel alloc] init];
+        lblEdit.text=@"编辑";
+        lblEdit.font=[UIFont systemFontOfSize:12];
+        lblEdit.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
+        lblEdit.textColor=[UIColor whiteColor];
+        lblEdit.frame=CGRectMake(119, 72, 29, 21);
+        [self.ctrlView addSubview:lblEdit];
     }
     return self;
 }
@@ -82,9 +148,11 @@ typedef enum{
 //    [self.toolBar setFrame:CGRectMake(0, wsize.height-50, wsize.width, 50)];
 //    [self.view.superview addSubview:self.toolBar];
 //    [self.view.superview layoutSubviews];
+
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.tableView.frame=self.view.frame;
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self setHidesBottomBarWhenPushed:NO];
     [self updateFileList];
@@ -127,7 +195,9 @@ typedef enum{
 - (void)viewDidAppear:(BOOL)animated
 {
     if (self.myndsType==kMyndsTypeDefault) {
-        self.editBtn=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
+//        self.editBtn=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:)];
+//        [self.editBtn setImage:[UIImage imageNamed:@"Bt_Operator.png"]];
+        self.editBtn=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bt_Operator.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:)];
         self.deleteBtn=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteAction:)];
         //[self.deleteBtn setEnabled:NO];
         [self.navigationItem setRightBarButtonItems:@[self.editBtn]];
@@ -213,7 +283,8 @@ typedef enum{
 //        NDAppDelegate *appDelegate =  (NDAppDelegate *)[UIApplication sharedApplication].delegate;
 //        [appDelegate clearCopyCache];
 //    }
-    [self setEditing:self.isEditing animated:YES];
+    //[self setEditing:self.isEditing animated:YES];
+    [self.tableView setEditing:self.isEditing animated:YES];
     
     
 //    [self hiddenBatchButton:m_editButton.selected];
@@ -904,9 +975,28 @@ typedef enum{
 //    [self.hud show:YES];
 //    [self.hud hide:YES afterDelay:1.0f];
 }
+-(void)newFinderSucess
+{
+    [self operateUpdate];
+}
+-(void)newFinderUnsucess;
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
 -(void)renameUnsucess
 {
-    NSLog(@"openFinderUnsucess: 网络连接失败!!");
     if (self.hud) {
         [self.hud removeFromSuperview];
     }
@@ -1074,6 +1164,29 @@ typedef enum{
                 }
 
             }
+            break;
+        }
+        case kAlertTagNewFinder:
+        {
+            if (buttonIndex==1) {
+                NSString *fildtext=[[alertView textFieldAtIndex:0] text];
+//                if (![fildtext isEqualToString:name]) {
+//                    NSLog(@"重命名");
+//                    [self.fm cancelAllTask];
+//                    self.fm=[[[SCBFileManager alloc] init] autorelease];
+//                    [self.fm renameWithID:f_id newName:fildtext];
+//                    [self.fm setDelegate:self];
+//                }
+                [self.fm cancelAllTask];
+                self.fm=[[[SCBFileManager alloc] init] autorelease];
+                [self.fm newFinderWithName:fildtext pID:self.f_id];
+                [self.fm setDelegate:self];
+                NSLog(@"点击确定");
+            }else
+            {
+                NSLog(@"点击其它");
+            }
+            //[self hideOptionCell];
             break;
         }
         default:

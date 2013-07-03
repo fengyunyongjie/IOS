@@ -9,7 +9,7 @@
 #import "RegistViewController.h"
 #import "MBProgressHUD.h"
 #import "SCBAccountManager.h"
-
+//[[NSUserDefaults standardUserDefaults] valueForKey:@"SBFormattedPhoneNumber"];
 @interface RegistViewController ()
 @property (strong ,nonatomic) MBProgressHUD *m_hud;
 @end

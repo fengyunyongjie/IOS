@@ -13,7 +13,7 @@ typedef enum {
     kMyndsTypeSelect,
 } MyndsType;
 
-@interface MyndsViewController : UITableViewController<UIDocumentInteractionControllerDelegate>
+@interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate>
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSArray *finderArray;
@@ -22,6 +22,8 @@ typedef enum {
 @property (assign,nonatomic) MyndsViewController *delegate;
 @property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
 @property (strong,nonatomic) UIToolbar *toolBar;
+@property (strong,nonatomic) UITableView *tableView;
+@property (strong,nonatomic) UIView *ctrlView;
 -(void)loadData;
 @end
 
