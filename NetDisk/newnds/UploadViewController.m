@@ -954,6 +954,9 @@
             demo.f_state = 1;
             demo.f_lenght = [demo.f_data length];
             [demo updateTaskTableFName];
+            [demo.result release];
+            [demo.f_data release];
+            
             [uploadProgressView setProgress:1];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
             [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]-uploadNumber]];
@@ -1095,8 +1098,8 @@
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
         [demo updateTaskTableFName];
+        [demo.result release];
         [demo.f_data release];
-        NSLog(@"f_id:%i",f_id);
     }
     NSLog(@"uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
     uploadNumber++;
