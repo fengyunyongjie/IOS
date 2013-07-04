@@ -29,6 +29,13 @@
 
 -(void)dealloc
 {
+    for(int i=0;i<[self.contentView.subviews count];i++)
+    {
+        UIView *view = [self.contentView.subviews objectAtIndex:i];
+        view = nil;
+    }
+    NSLog(@"cell已死");
+    
     [cellArray release];
     [super dealloc];
 }
