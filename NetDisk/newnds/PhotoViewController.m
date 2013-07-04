@@ -559,6 +559,7 @@
                 [image_view setImage:imageV];
             });
         }
+        NSLog(@"imageVCount:%i",imageV.retainCount);
         return;
     }
 }
@@ -609,25 +610,12 @@
 {
     int section = [indexPath section];
     int row = [indexPath row];
-    if(cellNumber>5)
-    {
-        cellNumber = 0;
-    }
-    NSString *cellString = [NSString stringWithFormat:@"cellString:%i",cellNumber];
-    cellNumber++;
-    PhotoFileCell *cell = [self.table_view dequeueReusableCellWithIdentifier:cellString];
-    if(cell == nil)
-    {
-        cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
+    PhotoFileCell *cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     NSString *sectionNumber = [sectionarray objectAtIndex:section];
     NSArray *array = [tablediction objectForKey:sectionNumber];
     if([array count]/3 == row)
     {
-        cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
         cell.tag = row+UICellTag*section;
         int number = 3;
         if([array count]%3>0)
@@ -635,7 +623,6 @@
             number = [array count]%3;
         }
         NSMutableArray *cellArray = [[NSMutableArray alloc] init];
-        NSMutableArray *imageArray = [[NSMutableArray alloc] init];
         for(int i=0;i<number;i++)
         {
             if(row*3+i>=[array count])
@@ -650,9 +637,9 @@
             image.tag = UIImageTag+demo.f_id;
             [cellT setImageTag:image.tag];
             
-            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]])
+            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",demo.f_id]])
             {
-                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]];
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
                 UIImage *imageV = [UIImage imageWithContentsOfFile:path];
                 CGSize newImageSize;
                 if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
@@ -692,7 +679,7 @@
             [cellT setPageTag:row*3+i];
             [cellArray addObject:cellT];
             [button setCell:cellT];
-            [imageArray addObject:image];
+            
             [image release];
             [cellT release];
             [button addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -709,6 +696,8 @@
             }
             [cell.contentView addSubview:button];
             [button release];
+            
+            NSLog(@"imageCount:%i",image.retainCount);
         }
         
         if(isOnece)
@@ -737,13 +726,11 @@
 //        [queue release];
         [cell setCellArray:cellArray];
         [cellArray release];
-        [imageArray release];
     }
     else
     {
         cell.tag = row+UICellTag*section;
         NSMutableArray *cellArray = [[NSMutableArray alloc] init];
-        NSMutableArray *imageArray = [[NSMutableArray alloc] init];
         for(int i=0;i<3;i++)
         {
             CellTag *cellT = [[CellTag alloc] init];
@@ -754,9 +741,9 @@
             image.tag = UIImageTag+demo.f_id;
             [cellT setImageTag:image.tag];
             
-            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]])
+            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",demo.f_id]])
             {
-                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",cellT.fileTag]];
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
                 UIImage *imageV = [UIImage imageWithContentsOfFile:path];
                 CGSize newImageSize;
                 if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
@@ -796,7 +783,7 @@
             [cellT setPageTag:row*3+i];
             [cellArray addObject:cellT];
             [button setCell:cellT];
-            [imageArray addObject:image];
+            
             [image release];
             [cellT release];
             [button addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -813,6 +800,8 @@
             }
             [cell.contentView addSubview:button];
             [button release];
+            
+            NSLog(@"imageCount:%i",image.retainCount);
         }
         
         if(isOnece)
@@ -842,7 +831,7 @@
         [cell setCellArray:cellArray];
         [cellArray release];
     }
-    
+    NSLog(@"countdd:%i",cell.retainCount);
     return cell;
 }
 
@@ -1147,6 +1136,7 @@
         NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
         NSArray *array = [tablediction objectForKey:sectionString];
         [photo_look_view setTableArray:[NSMutableArray arrayWithArray:[array retain]]];
+        [array release];
         [photo_look_view setCurrPage:button.cell.pageTag];
         [self presentModalViewController:photo_look_view animated:YES];
 //        [self.navigationController pushViewController:photo_look_view animated:YES];
@@ -1475,6 +1465,7 @@
 @synthesize cell;
 -(void)dealloc
 {
+    NSLog(@" cellTag 死了");
     [cell release];
     [super dealloc];
 }
