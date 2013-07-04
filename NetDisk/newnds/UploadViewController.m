@@ -351,9 +351,6 @@
                         demo.f_lenght = 0;
                         //获取照片名称
                         demo.f_base_name = [[result defaultRepresentation] filename];
-                        UIImage *image1 = [UIImage imageWithCGImage:[[result defaultRepresentation] fullResolutionImage]];
-                        UIImage *image2 = [UIImage imageWithCGImage:[[result defaultRepresentation] fullScreenImage]];
-                        NSLog(@"smalSize:%@;FullSize:%@",NSStringFromCGSize(image1.size),NSStringFromCGSize(image2.size));
                         demo.result = [result retain];
                         BOOL bl;
                         if(!isOnce)
@@ -952,11 +949,11 @@
         }
         else if([[dictionary objectForKey:@"code"] intValue] == 5 )
         {
+            [uploadData release];
             TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
             demo.f_state = 1;
             demo.f_lenght = [demo.f_data length];
             [demo updateTaskTableFName];
-            
             [uploadProgressView setProgress:1];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
             [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]-uploadNumber]];
@@ -965,6 +962,7 @@
             
             if(!isStop && uploadNumber<[photoArray count])
             {
+                [uploadImageView.boderImageView setImage:nil];
                 isConnection = FALSE;
                 [self isUPloadImage];
             }
@@ -1053,6 +1051,7 @@
             //获得照片图像数据
             [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
             demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+            [demo.result release];
         }
         NSLog(@"demo.f_data:%i",[demo.f_data length]);
         connection = [uploderDemo requestUploadFile:[NSString stringWithFormat:@"%i",f_pid] f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
@@ -1096,12 +1095,15 @@
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
         [demo updateTaskTableFName];
+        [demo.f_data release];
         NSLog(@"f_id:%i",f_id);
     }
     NSLog(@"uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
     uploadNumber++;
     if(!isStop && uploadNumber<[photoArray count])
     {
+        [uploadData release];
+        [uploadImageView.boderImageView setImage:nil];
         isConnection = FALSE;
         [self isUPloadImage];
     }
