@@ -58,6 +58,7 @@ typedef enum{
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     [[alert textFieldAtIndex:0] setText:@""];
+    [[alert textFieldAtIndex:0] setDelegate:self];
     [alert setTag:kAlertTagNewFinder];
     [alert show];
 }
@@ -152,7 +153,11 @@ typedef enum{
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    CGRect r=self.ctrlView.frame;
+    r.origin.y=0;
+    self.ctrlView.frame=r;
     self.tableView.frame=self.view.frame;
+    [self.ctrlView setHidden:YES];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self setHidesBottomBarWhenPushed:NO];
     [self updateFileList];
@@ -284,8 +289,8 @@ typedef enum{
 //        [appDelegate clearCopyCache];
 //    }
     //[self setEditing:self.isEditing animated:YES];
+    [self resetFileItems];
     [self.tableView setEditing:self.isEditing animated:YES];
-    
     
 //    [self hiddenBatchButton:m_editButton.selected];
 //    m_editButton.selected = !m_editButton.selected;
@@ -1182,6 +1187,7 @@ typedef enum{
                 [self.fm newFinderWithName:fildtext pID:self.f_id];
                 [self.fm setDelegate:self];
                 NSLog(@"点击确定");
+                [self.ctrlView setHidden:YES];
             }else
             {
                 NSLog(@"点击其它");
@@ -1273,5 +1279,12 @@ typedef enum{
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)interactionController
 {
     return self;
+}
+#pragma mark - UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (range.location >= 256)
+        return NO; // return NO to not change text
+    return YES;
 }
 @end
