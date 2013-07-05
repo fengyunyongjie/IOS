@@ -33,25 +33,26 @@
     /*
      字典类型把已经加载完成的数据存储
      */
-    NSMutableDictionary *imageDic;
     NSMutableDictionary *activityDic;
     
     /*
      滑动不加载数据
      */
     BOOL isLoadImage;
-    NSMutableArray *downArray;
     CGFloat currWidth;
     CGFloat currHeight;
     
     NSInteger endCurrPage;
+    
+    NSMutableArray *imageViewArray;
+    UIScrollView *imageScrollView;
 }
 
-@property (nonatomic, retain) UIScrollView *imageScrollView;
+@property (atomic, retain) UIScrollView *imageScrollView;
 @property (nonatomic, retain) NSMutableArray *tableArray;
 @property (nonatomic, assign) NSInteger currPage;
 
-@property(retain,nonatomic) NSMutableArray *imageViewArray;
+@property(retain,atomic) NSMutableArray *imageViewArray;
 @property(assign,nonatomic) CGFloat offset;
 @property(assign,nonatomic) BOOL isDoubleClick;
 

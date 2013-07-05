@@ -11,6 +11,7 @@
 #import "SCBSession.h"
 #import "MF_Base64Additions.h"
 #import "YNFunctions.h"
+#import "AppDelegate.h"
 
 @implementation DownImage
 @synthesize delegate;
@@ -25,13 +26,19 @@
 #pragma mark
 - (void)dealloc
 {
+    NSLog(@"下载类死亡：%i,%i",activeDownload.retainCount,imageConnection.retainCount);
     [activeDownload release];
-    [imageConnection cancel];
-    [imageConnection release];
+    if(imageConnection.retainCount==1)
+    {
+        [imageConnection cancel];
+        [imageConnection release];
+    }
     [super dealloc];
 }
 - (void)startDownload
 {
+    AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [apple setIsDownImageIsNil:FALSE];
     NSString *path = [self get_image_save_file_path:imageUrl];
     //查询本地是否已经有该图片
     UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
@@ -45,6 +52,7 @@
         NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
         if(showType == 0)
         {
+//            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?image_size=M",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
             NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
             NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
             //    NSMutableString *body=[[NSMutableString alloc] init];
@@ -111,16 +119,18 @@
         NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
         [activeDownload writeToFile:path atomically:YES];
         NSString *urlpath = [NSString stringWithFormat:@"%@",path];
-        NSLog(@"f_id:%i,urlpath:%@",self.fileId,urlpath);
         UIImage  *image = [UIImage imageWithContentsOfFile:urlpath];
-        NSLog(@"delegate:%@",delegate);
-        if(delegate && [delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
+        AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(!apple.isDownImageIsNil)
         {
-            [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
+            if(delegate && [delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
+            {
+                [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
+            }
         }
         else
         {
-            NSLog(@"delegate --------------------\n-----------------:%@",delegate);
+            NSLog(@"不能添加图片了－－－－－－－－－－－－－－－－");
         }
     }
 }

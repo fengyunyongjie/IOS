@@ -34,7 +34,7 @@
         UIView *view = [self.contentView.subviews objectAtIndex:i];
         view = nil;
     }
-    NSLog(@"cell已死");
+    NSLog(@"PhotoFileCell类已死");
     
     [cellArray release];
     [super dealloc];

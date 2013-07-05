@@ -22,6 +22,7 @@
 @property (strong, nonatomic) MYTabBarController *myTabBarController;
 @property (retain, nonatomic) NSString *user_name;
 @property (assign, nonatomic) BOOL isUnUpload;
+@property (assign, nonatomic) BOOL isDownImageIsNil;
 
 -(void)setLogin;
 -(void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path;

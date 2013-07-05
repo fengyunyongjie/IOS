@@ -73,7 +73,6 @@
         [activity_indicator startAnimating];
         [self.view addSubview:activity_indicator];
     }
-    downArray = [[NSMutableArray alloc] init];
     tablediction = [[NSMutableDictionary alloc] init];
     sectionarray = [[NSMutableArray alloc] init];
     
@@ -454,41 +453,6 @@
     
 }
 
-
-
--(void)getAllDown
-{
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    NSArray *allArray = [photo_diction allKeys];
-    int allcount = [allArray count];
-    for(int i=0;i<allcount;i++)
-    {
-        PhohoDemo *demo = [photo_diction objectForKey:[allArray objectAtIndex:i]];
-        DownImage *downImage = [[[DownImage alloc] init] autorelease];
-        [downImage setFileId:demo.f_id];
-        [downImage setImageUrl:demo.f_name];
-        [downImage setImageViewIndex:demo.f_id];
-        NSString *path = [self get_image_save_file_path:demo.f_name];
-        if(![self image_exists_at_file_path:path])
-        {
-            [downArray addObject:downImage];
-        }
-        
-    }
-    [pool release];
-    [self downImage];
-}
-
--(void)downImage
-{
-    if(downNumber<[downArray count])
-    {
-        DownImage *downImage = [downArray objectAtIndex:downNumber];
-        [downImage setDelegate:self];
-        [downImage startDownload];
-    }
-}
-
 #pragma mark 删除回调
 -(void)deleteForDeleteArray:(NSInteger)page timeLine:(NSString *)timeLineString
 {
@@ -527,40 +491,44 @@
         
         UIImageView *image_view = (UIImageView *)obj;
         UIImage *imageV = image;
-        CGSize newImageSize;
-        if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+        if(imageV.size.width>=imageV.size.height)
         {
-            newImageSize.height = 200;
-            newImageSize.width = 200*imageV.size.width/imageV.size.height;
-            UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-            CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-            imageS = [self imageFromImage:imageS inRect:imageRect];
-            if([image_view isKindOfClass:[UIImageView class]])
+            if(imageV.size.height<=200)
             {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [image_view setImage:imageS];
-                });
+                CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
+                imageV = [self imageFromImage:imageV inRect:imageRect];
+                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+            }
+            else
+            {
+                CGSize newImageSize;
+                newImageSize.height = 200;
+                newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                imageS = [self imageFromImage:imageS inRect:imageRect];
+                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
             }
         }
-        else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+        else if(imageV.size.width<=imageV.size.height)
         {
-            newImageSize.width = 200;
-            newImageSize.height = 200*imageV.size.height/imageV.size.width;
-            UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-            CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-            imageS = [self imageFromImage:imageS inRect:imageRect];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [image_view setImage:imageS];
-            });
+            if(imageV.size.width<=200)
+            {
+                CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
+                imageV = [self imageFromImage:imageV inRect:imageRect];
+                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+            }
+            else
+            {
+                CGSize newImageSize;
+                newImageSize.width = 200;
+                newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                imageS = [self imageFromImage:imageS inRect:imageRect];
+                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+            }
         }
-        else
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [image_view setImage:imageV];
-            });
-        }
-        NSLog(@"imageVCount:%i",imageV.retainCount);
-        return;
     }
 }
 
@@ -641,28 +609,44 @@
             {
                 NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
                 UIImage *imageV = [UIImage imageWithContentsOfFile:path];
-                CGSize newImageSize;
-                if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+                
+                if(imageV.size.width>=imageV.size.height)
                 {
-                    newImageSize.height = 200;
-                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                    if(imageV.size.height<=200)
+                    {
+                        CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
+                        imageV = [self imageFromImage:imageV inRect:imageRect];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    }
+                    else
+                    {
+                        CGSize newImageSize;
+                        newImageSize.height = 200;
+                        newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                        UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                        CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                        imageS = [self imageFromImage:imageS inRect:imageRect];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                    }
                 }
-                else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+                else if(imageV.size.width<=imageV.size.height)
                 {
-                    newImageSize.width = 200;
-                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-                }
-                else
-                {
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    if(imageV.size.width<=200)
+                    {
+                        CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
+                        imageV = [self imageFromImage:imageV inRect:imageRect];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    }
+                    else
+                    {
+                        CGSize newImageSize;
+                        newImageSize.width = 200;
+                        newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                        UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                        CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                        imageS = [self imageFromImage:imageS inRect:imageRect];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                    }
                 }
             }
             else
@@ -745,28 +729,43 @@
             {
                 NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
                 UIImage *imageV = [UIImage imageWithContentsOfFile:path];
-                CGSize newImageSize;
-                if(imageV.size.width>=imageV.size.height && imageV.size.height>200)
+                if(imageV.size.width>=imageV.size.height)
                 {
-                    newImageSize.height = 200;
-                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                    if(imageV.size.height<=200)
+                    {
+                        CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
+                        imageV = [self imageFromImage:imageV inRect:imageRect];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    }
+                    else
+                    {
+                        CGSize newImageSize;
+                        newImageSize.height = 200;
+                        newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                        UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                        CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                        imageS = [self imageFromImage:imageS inRect:imageRect];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                    }
                 }
-                else if(imageV.size.width<=imageV.size.height && imageV.size.width>200)
+                else if(imageV.size.width<=imageV.size.height)
                 {
-                    newImageSize.width = 200;
-                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-                }
-                else
-                {
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    if(imageV.size.width<=200)
+                    {
+                        CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
+                        imageV = [self imageFromImage:imageV inRect:imageRect];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    }
+                    else
+                    {
+                        CGSize newImageSize;
+                        newImageSize.width = 200;
+                        newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                        UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                        CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                        imageS = [self imageFromImage:imageS inRect:imageRect];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                    }
                 }
             }
             else
@@ -961,7 +960,6 @@
                     [downImage setImageViewIndex:cellTag.imageTag];
                     [downImage setDelegate:self];
                     [downImage startDownload];
-                    [downArray addObject:downImage];
                 });
             }
         }
@@ -970,87 +968,6 @@
         isLoadData = FALSE;
         [self.downCellArray removeAllObjects];
     });
-//    if(isSort)
-//    {
-//        NSArray *cellArrays = [self.table_view indexPathsForVisibleRows];
-//        if(!cellArrays || !isLoadImage || [cellArrays isEqual:[NSNull null]])
-//        {
-//            isLoadData = FALSE;
-//            return;
-//        }
-//        NSLog(@"cellArrays:%@",cellArrays);
-//        for(int i=[cellArrays count]-1;isLoadImage && i>=0;i--)
-//        {
-//            PhotoFileCell *cell = (PhotoFileCell *)[self.table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
-//            NSArray *array = [cell cellArray];
-//            if(!array)
-//            {
-//                isLoadData = FALSE;
-//                return;
-//            }
-//            for(int j=0;isLoadImage && j<[array count];j++)
-//            {
-//                CellTag *cellTag = [array objectAtIndex:j];
-//                if(!cellTag)
-//                {
-//                    isLoadData = FALSE;
-//                    return;
-//                }
-//                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
-//                {
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        DownImage *downImage = [[[DownImage alloc] init] autorelease];
-//                        [downImage setFileId:cellTag.fileTag];
-//                        [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
-//                        [downImage setImageViewIndex:cellTag.imageTag];
-//                        [downImage setDelegate:self];
-//                        [downImage startDownload];
-//                        [downArray addObject:downImage];
-//                    });
-//                }
-//            }
-//        }
-//    }
-//    else
-//    {
-//        NSArray *cellArrays = [self.table_view indexPathsForVisibleRows];
-//        if(!cellArrays || !isLoadImage || [cellArrays isEqual:[NSNull null]])
-//        {
-//            isLoadData = FALSE;
-//            return;
-//        }
-//        for(int i=0;isLoadImage && i<[cellArrays count];i++)
-//        {
-//            PhotoFileCell *cell = (PhotoFileCell *)[self.table_view cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
-//            NSArray *array = [cell cellArray];
-//            if(!array)
-//            {
-//                isLoadData = FALSE;
-//                return;
-//            }
-//            NSLog(@"cellArrays:%@",cellArrays);
-//            for(int j=0;isLoadImage && j<[array count];j++)
-//            {
-//                CellTag *cellTag = [array objectAtIndex:j];
-//                if(!cellTag)
-//                {
-//                    isLoadData = FALSE;
-//                    return;
-//                }
-//                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
-//                {
-//                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
-//                    [downImage setFileId:cellTag.fileTag];
-//                    [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
-//                    [downImage setImageViewIndex:cellTag.imageTag];
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        [downImage setDelegate:self];
-//                        [downImage startDownload];
-//                    });
-//                }
-//            }
-//        }
-//    }
     [pool release];
 }
 
@@ -1125,11 +1042,9 @@
     }
     else
     {
-        for(int i=0;i<[downArray count];i++)
-        {
-            DownImage *downImage = [downArray objectAtIndex:i];
-            [downImage setDelegate:nil];
-        }
+        AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [apple setIsDownImageIsNil:YES];
+        
         PhotoLookViewController *photo_look_view = [[PhotoLookViewController alloc] init];
         [photo_look_view setHidesBottomBarWhenPushed:YES];
         //        [photo_look_view.navigationController setNavigationBarHidden:YES];

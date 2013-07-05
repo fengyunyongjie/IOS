@@ -41,6 +41,7 @@
 @synthesize scale_,tableArray;
 @synthesize currPage;
 @synthesize isCliped;
+@synthesize imageViewArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,21 +54,14 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    for(int i=0;i<[downArray count];i++)
-    {
-        DownImage *downImage = [downArray objectAtIndex:i];
-        [downImage setDelegate:nil];
-    }
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    imageDic = [[NSMutableDictionary alloc] init];
     activityDic = [[NSMutableDictionary alloc] init];
-    downArray = [[NSMutableArray alloc] init];
-    self.imageViewArray = [[NSMutableArray alloc] init];
+    imageViewArray = [[NSMutableArray alloc] init];
     
     self.view.backgroundColor = [UIColor blackColor];
     self.offset = 0.0;
@@ -75,13 +69,13 @@
     currWidth = 320;
     currHeight = self.view.frame.size.height;
     
-    self.imageScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    self.imageScrollView.backgroundColor = [UIColor clearColor];
-    self.imageScrollView.scrollEnabled = YES;
-    self.imageScrollView.pagingEnabled = YES;
-    self.imageScrollView.showsHorizontalScrollIndicator = NO;
-    self.imageScrollView.delegate = self;
-    self.imageScrollView.contentSize = CGSizeMake(320*[tableArray count], ScollviewHeight);
+    imageScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    imageScrollView.backgroundColor = [UIColor clearColor];
+    imageScrollView.scrollEnabled = YES;
+    imageScrollView.pagingEnabled = YES;
+    imageScrollView.showsHorizontalScrollIndicator = NO;
+    imageScrollView.delegate = self;
+    imageScrollView.contentSize = CGSizeMake(320*[tableArray count], ScollviewHeight);
     
     if(currPage==0&&[tableArray count]>=3)
     {
@@ -91,11 +85,6 @@
             if(i>=[tableArray count])
             {
                 break;
-            }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
             }
             [self loadPageColoumn:i];
         }
@@ -110,11 +99,6 @@
             {
                 break;
             }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
-            }
             [self loadPageColoumn:i];
         }
     }
@@ -128,11 +112,6 @@
             {
                 break;
             }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
-            }
             [self loadPageColoumn:i];
         }
     }
@@ -145,11 +124,6 @@
             if(i>=[tableArray count])
             {
                 break;
-            }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
             }
             
             [self loadPageColoumn:i];
@@ -165,19 +139,13 @@
             {
                 break;
             }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
-            }
-            
             [self loadPageColoumn:i];
         }
     }
     
-    [self.imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
+    [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
     NSLog(@"320*currPage:%i",320*currPage);
-    [self.view addSubview:self.imageScrollView];
+    [self.view addSubview:imageScrollView];
     
     
     //添加头部试图
@@ -200,7 +168,7 @@
     self.topTitleLabel = [[UILabel alloc] initWithFrame:topTitleRect];
     [self.topTitleLabel setTextColor:[UIColor whiteColor]];
     [self.topTitleLabel setBackgroundColor:[UIColor clearColor]];
-    [self.topTitleLabel setText:[NSString stringWithFormat:@"1/%i",[self.imageViewArray count]]];
+    [self.topTitleLabel setText:[NSString stringWithFormat:@"1/%i",[imageViewArray count]]];
     [self.topTitleLabel setTextAlignment:NSTextAlignmentCenter];
     [self.topToolBar addSubview:self.topTitleLabel];
     
@@ -255,6 +223,8 @@
 
 -(void)backClick
 {
+    AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [apple setIsDownImageIsNil:YES];
     [self dismissModalViewControllerAnimated:YES];
 }
 
@@ -282,21 +252,43 @@
     
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(self.isScape)
+    {
+        self.page = imageScrollView.contentOffset.x/ScollviewHeight;
+    }
+    else
+    {
+        self.page = imageScrollView.contentOffset.x/320;
+    }
+    
+    for(int i=0;i<[imageViewArray count];i++)
+    {
+        UIScrollView *s = [imageViewArray objectAtIndex:i];
+        if(s.tag-ScrollViewTag!=self.page)
+        {
+            [s removeFromSuperview];
+            NSLog(@"viewCount:%i",s.retainCount);
+        }
+    }
+    for(int i=0;i<[imageScrollView.subviews count];i++)
+    {
+        UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
+        if(s.tag-ScrollViewTag!=self.page)
+        {
+            [s removeFromSuperview];
+            NSLog(@"viewCount:%i",s.retainCount);
+        }
+    }
+    [imageViewArray removeAllObjects];
+    
     //加载当前页面，左右各十张
     isLoadImage = TRUE;
     [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
     
-    if(self.isScape)
-    {
-        self.page = self.imageScrollView.contentOffset.x/ScollviewHeight;
-    }
-    else
-    {
-        self.page = self.imageScrollView.contentOffset.x/320;
-    }
     currPage = self.page;
-    if (scrollView == self.imageScrollView){
+    if (scrollView == imageScrollView){
         CGFloat x = scrollView.contentOffset.x;
         self.endFloat = x;
         if (x==self.offset){
@@ -328,11 +320,11 @@
                     }
                     imageFrame.size = imaSize;
                     [image setFrame:imageFrame];
-                    
                 }
             }
         }
     }
+    
 }
 
 #pragma mark 滑动隐藏
@@ -343,18 +335,32 @@
     [self.bottonToolBar setHidden:YES];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    NSLog(@"ScollviewWidth:%f,ScollviewHeight:%f",ScollviewWidth,ScollviewHeight);
-    if(self.isScape)
-    {
-        self.page = self.imageScrollView.contentOffset.x/ScollviewHeight;
-    }
-    else
-    {
-        self.page = self.imageScrollView.contentOffset.x/320;
-    }
-    currPage = self.page;
-}
+//-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+//{
+//    NSLog(@"22222222");
+//    for(int i=0;i<[imageViewArray count];i++)
+//    {
+//        UIScrollView *s = [imageViewArray objectAtIndex:i];
+//        [s removeFromSuperview];
+//    }
+//    [imageViewArray removeAllObjects];
+//    [imageDic removeAllObjects];
+//    
+//    //加载当前页面，左右各十张
+//    isLoadImage = TRUE;
+////    [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
+//    
+//    NSLog(@"ScollviewWidth:%f,ScollviewHeight:%f",ScollviewWidth,ScollviewHeight);
+//    if(self.isScape)
+//    {
+//        self.page = imageScrollView.contentOffset.x/ScollviewHeight;
+//    }
+//    else
+//    {
+//        self.page = imageScrollView.contentOffset.x/320;
+//    }
+//    currPage = self.page;
+//}
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{
     NSLog(@"Did zoom!:%@",NSStringFromCGSize(scrollView.contentSize));
@@ -385,7 +391,7 @@
     //加载数据
     int page = imageScrollView.contentOffset.x/320;
     PhotoFile *demo = [tableArray objectAtIndex:page];
-    if(![[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]] && ![[activityDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
+    if(![[activityDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
     {
         CGRect activityRect = CGRectMake(320*(page-1)+(320-20)/2, (ScollviewHeight-20)/2, 20, 20);
         UIActivityIndicatorView *activity_indicator = [[[UIActivityIndicatorView alloc] initWithFrame:activityRect] autorelease];
@@ -402,11 +408,11 @@
 {
     if(self.isScape)
     {
-        self.page = self.imageScrollView.contentOffset.x/ScollviewHeight;
+        self.page = imageScrollView.contentOffset.x/ScollviewHeight;
     }
     else
     {
-        self.page = self.imageScrollView.contentOffset.x/320;
+        self.page = imageScrollView.contentOffset.x/320;
     }
     //加载数据
     int page = self.page;
@@ -419,11 +425,7 @@
             {
                 break;
             }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
-            }
+            NSLog(@"重新加载：%i",i);
             [self loadPageColoumn:i];
         }
     }
@@ -435,12 +437,7 @@
             {
                 break;
             }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
-            }
-            
+            NSLog(@"重新加载：%i",i);
             [self loadPageColoumn:i];
         }
     }
@@ -453,12 +450,7 @@
             {
                 break;
             }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
-            }
-            
+            NSLog(@"重新加载：%i",i);
             [self loadPageColoumn:i];
         }
     }
@@ -470,12 +462,7 @@
             {
                 break;
             }
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-            {
-                continue;
-            }
-            
+            NSLog(@"重新加载：%i",i);
             [self loadPageColoumn:i];
         }
     }
@@ -483,6 +470,11 @@
 
 -(void)loadPageColoumn:(int)i
 {
+    UIView *view = [imageScrollView viewWithTag:i+ScrollViewTag];
+    if(view)
+    {
+        return;
+    }
     if(self.isScape)
     {
         PhotoFile *demo = [tableArray objectAtIndex:i];
@@ -519,7 +511,7 @@
             NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
             imageview.image = [UIImage imageWithContentsOfFile:path];
             dispatch_async(dispatch_get_main_queue(), ^{
-                DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                DownImage *downImage = [[DownImage alloc] init];
                 [downImage setFileId:demo.f_id];
                 [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
                 [downImage setImageViewIndex:ImageViewTag+i];
@@ -527,28 +519,23 @@
                 [downImage setShowType:1];
                 [downImage setDelegate:self];
                 [downImage startDownload];
-                [downArray addObject:downImage];
             });
         }
         
         CGSize size = [self getSacpeImageSize:imageview.image];
         [s setFrame:CGRectMake(currWidth*i, 0, currWidth, 300)];
-        NSLog(@"第%i个 s:%@",i,NSStringFromCGRect(s.frame));
         CGRect imageFrame = imageview.frame;
         imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
-        NSLog(@"imageFrame.origin:%@;size:%@",NSStringFromCGPoint(imageFrame.origin),NSStringFromCGSize(size));
         imageFrame.size = size;
         imageview.contentMode = UIViewContentModeScaleAspectFit;
         [imageview setFrame:imageFrame];
-        
         [s addSubview:imageview];
         [s setContentSize:size];
-        [self.imageScrollView addSubview:s];
-        [imageDic setObject:demo forKey:[NSString stringWithFormat:@"%i",demo.f_id]];
+        [imageScrollView addSubview:s];
+        [imageViewArray addObject:s];
         [onceTap release];
         [doubleTap release];
         [imageview release];
-        [self.imageViewArray addObject:s];
         [s release];
     }
     else
@@ -596,28 +583,24 @@
                 [downImage setShowType:1];
                 [downImage setDelegate:self];
                 [downImage startDownload];
-                [downArray addObject:downImage];
             });
         }
         
         CGSize size = [self getImageSize:imageview.image];
         [s setFrame:ScrollRect(i,size)];
-        NSLog(@"第%i个 s:%@",i,NSStringFromCGRect(s.frame));
         CGRect imageFrame = imageview.frame;
         imageFrame.origin = ImagePoint(size);
-        NSLog(@"imageFrame.origin:%@",NSStringFromCGPoint(imageFrame.origin));
         imageFrame.size = size;
         imageview.contentMode = UIViewContentModeScaleAspectFit;
         [imageview setFrame:imageFrame];
-        
         [s addSubview:imageview];
         [s setContentSize:size];
-        [self.imageScrollView addSubview:s];
-        [imageDic setObject:demo forKey:[NSString stringWithFormat:@"%i",demo.f_id]];
+        [imageScrollView addSubview:s];
+        
+        [imageViewArray addObject:s];
         [onceTap release];
         [doubleTap release];
         [imageview release];
-        [self.imageViewArray addObject:s];
         [s release];
     }
     
@@ -685,7 +668,7 @@
     //单击头部和底部出现
     if(self.bottonToolBar.hidden)
     {
-        CGFloat x = self.imageScrollView.contentOffset.x;
+        CGFloat x = imageScrollView.contentOffset.x;
         self.page = x/currWidth;
         currPage = self.page;
         int page = self.page;
@@ -919,17 +902,16 @@
             [tableArray removeObjectAtIndex:deletePage];
         }
         
-        if(self.imageScrollView)
+        if(imageScrollView)
         {
-            [self.imageScrollView removeFromSuperview];
-            [self.imageScrollView release];
-            self.imageScrollView = nil;
-            [imageDic removeAllObjects];
+            [imageScrollView removeFromSuperview];
+            [imageScrollView release];
+            imageScrollView = nil;
             [activityDic removeAllObjects];
         }
-        if(self.imageViewArray)
+        if(imageViewArray)
         {
-            [self.imageViewArray removeAllObjects];
+            [imageViewArray removeAllObjects];
         }
         
         
@@ -944,12 +926,12 @@
         {
             currPage = deletePage-1;
         }
-        self.imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, currWidth, currHeight)];
-        self.imageScrollView.backgroundColor = [UIColor clearColor];
-        self.imageScrollView.scrollEnabled = YES;
-        self.imageScrollView.pagingEnabled = YES;
-        self.imageScrollView.showsHorizontalScrollIndicator = NO;
-        self.imageScrollView.delegate = self;
+        imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, currWidth, currHeight)];
+        imageScrollView.backgroundColor = [UIColor clearColor];
+        imageScrollView.scrollEnabled = YES;
+        imageScrollView.pagingEnabled = YES;
+        imageScrollView.showsHorizontalScrollIndicator = NO;
+        imageScrollView.delegate = self;
         
         
         if(currPage==0&&[tableArray count]>=3)
@@ -960,11 +942,6 @@
                 if(i>=[tableArray count])
                 {
                     break;
-                }
-                PhotoFile *demo = [tableArray objectAtIndex:i];
-                if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-                {
-                    continue;
                 }
                 [self loadPageColoumn:i];
             }
@@ -980,11 +957,6 @@
                     break;
                 }
                 if(i<0)
-                {
-                    continue;
-                }
-                PhotoFile *demo = [tableArray objectAtIndex:i];
-                if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
                 {
                     continue;
                 }
@@ -1005,11 +977,6 @@
                 {
                     continue;
                 }
-                PhotoFile *demo = [tableArray objectAtIndex:i];
-                if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-                {
-                    continue;
-                }
                 [self loadPageColoumn:i];
             }
         }
@@ -1027,12 +994,6 @@
                 {
                     continue;
                 }
-                PhotoFile *demo = [tableArray objectAtIndex:i];
-                if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-                {
-                    continue;
-                }
-                
                 [self loadPageColoumn:i];
             }
         }
@@ -1046,22 +1007,17 @@
                 {
                     break;
                 }
-                PhotoFile *demo = [tableArray objectAtIndex:i];
-                if([[imageDic objectForKey:[NSString stringWithFormat:@"%i",demo.f_id]] isKindOfClass:[PhotoFile class]])
-                {
-                    continue;
-                }
                 
                 [self loadPageColoumn:i];
             }
         }
         
-        [self.view addSubview:self.imageScrollView];
+        [self.view addSubview:imageScrollView];
         [self.view bringSubviewToFront:self.topToolBar];
         [self.view bringSubviewToFront:self.bottonToolBar];
         
-        self.imageScrollView.contentSize = CGSizeMake(currWidth*[tableArray count], currHeight);
-        [self.imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
+        imageScrollView.contentSize = CGSizeMake(currWidth*[tableArray count], currHeight);
+        [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
         [self handleOnceTap:nil];
         
         hud.labelText=@"删除成功";
@@ -1115,21 +1071,40 @@
     }
 }
 
+-(void)getPhotoTiimeLine:(NSDictionary *)dictionary
+{
+    
+}
+
+-(void)getPhotoGeneral:(NSDictionary *)dictionary photoDictioin:(NSMutableDictionary *)photoDic
+{
+
+}
+
+-(void)getPhotoDetail:(NSDictionary *)dictionary
+{
+    
+}
+
+-(void)didFailWithError
+{
+    
+}
+
+
 #pragma mark 下载回调
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
 {
-    if([[imageScrollView viewWithTag:indexTag] isKindOfClass:[UIImageView class]])
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
+//    dispatch_async(dispatch_get_main_queue(), ^{
+        if([[imageScrollView viewWithTag:indexTag] isKindOfClass:[UIImageView class]])
+        {
             UIImageView *imageV = (UIImageView *)[imageScrollView viewWithTag:indexTag];
-            [imageV setImage:image];
-            
             if(self.isScape)
             {
-                CGSize size = [self getSacpeImageSize:imageV.image];
+                CGSize size = [self getSacpeImageSize:image];
                 UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+ScrollViewTag];
                 s.zoomScale = 1.0;
-                size = [self getSacpeImageSize:imageV.image];
+                size = [self getSacpeImageSize:image];
                 [s setContentSize:size];
                 int x = s.tag-ScrollViewTag;
                 [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
@@ -1142,10 +1117,10 @@
             }
             else
             {
-                CGSize size = [self getImageSize:imageV.image];
+                CGSize size = [self getImageSize:image];
                 UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+ScrollViewTag];
                 s.zoomScale = 1.0;
-                size = [self getImageSize:imageV.image];
+                size = [self getImageSize:image];
                 [s setContentSize:size];
                 int x = s.tag-ScrollViewTag;
                 [s setFrame:ScrollRect(x,size)];
@@ -1154,9 +1129,9 @@
                 imageFrame.size = size;
                 [imageV setFrame:imageFrame];
             }
-            
-        });
-    }
+            [imageV performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:YES];
+        }
+//    });
 }
 
 //<ios 6.0
@@ -1201,8 +1176,8 @@
 }
 //视图旋转完成之后自动调用
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [UIView animateWithDuration:0.1 animations:^{
-        [self scrollViewDidEndDecelerating:self.imageScrollView];
+    [UIView animateWithDuration:0.0 animations:^{
+        [self scrollViewDidEndDecelerating:imageScrollView];
     }];
 }
 //视图旋转动画前一半发生之后自动调用
@@ -1224,8 +1199,8 @@
         currWidth = ScollviewHeight+20;
         currHeight = ScollviewWidth-20;
         //整个视图大小调整
-        [self.imageScrollView setFrame:CGRectMake(0, 0, currWidth, currHeight)];
-        [self.imageScrollView setContentSize:CGSizeMake(currWidth*[self.tableArray count], currHeight)];
+        [imageScrollView setFrame:CGRectMake(0, 0, currWidth, currHeight)];
+        [imageScrollView setContentSize:CGSizeMake(currWidth*[self.tableArray count], currHeight)];
         
         //头部视图大小调整
         CGSize size = CGSizeMake(currWidth, self.bottonToolBar.frame.size.height);
@@ -1235,9 +1210,9 @@
         [self.topTitleLabel setFrame:CGRectMake(0, 0, currWidth, 44)];
         
         //滚动视图大小调整
-        for(int i=0;i<[self.imageViewArray count];i++)
+        for(int i=0;i<[imageViewArray count];i++)
         {
-            UIScrollView * s = (UIScrollView *)[self.imageViewArray objectAtIndex:i];
+            UIScrollView * s = (UIScrollView *)[imageViewArray objectAtIndex:i];
             s.zoomScale = 1.0;
             UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
             size = [self getSacpeImageSize:imageview.image];
@@ -1249,8 +1224,8 @@
             imageFrame.size = size;
             [imageview setFrame:imageFrame];
         }
-        [self.imageScrollView reloadInputViews];
-        [self.imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
+        [imageScrollView reloadInputViews];
+        [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
         
         //底部视图大小调整
         size = CGSizeMake(currWidth, self.bottonToolBar.frame.size.height);
@@ -1279,8 +1254,8 @@
         currWidth = ScollviewWidth+20;
         currHeight = ScollviewHeight-20;
         //整个视图大小调整
-        [self.imageScrollView setFrame:CGRectMake(0, 0, currWidth, currHeight)];
-        [self.imageScrollView setContentSize:CGSizeMake(currWidth*[self.tableArray count], currWidth)];
+        [imageScrollView setFrame:CGRectMake(0, 0, currWidth, currHeight)];
+        [imageScrollView setContentSize:CGSizeMake(currWidth*[self.tableArray count], currWidth)];
         
         //头部视图大小调整
         CGSize size = CGSizeMake(320, self.bottonToolBar.frame.size.height);
@@ -1290,9 +1265,9 @@
         [self.topTitleLabel setFrame:CGRectMake(0, 0, 320, 44)];
         
         //滚动视图大小调整
-        for(int i=0;i<[self.imageViewArray count];i++)
+        for(int i=0;i<[imageViewArray count];i++)
         {
-            UIScrollView * s = (UIScrollView *)[self.imageViewArray objectAtIndex:i];
+            UIScrollView * s = (UIScrollView *)[imageViewArray objectAtIndex:i];
             s.zoomScale = 1.0;
             UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
             size = [self getImageSize:imageview.image];
@@ -1304,8 +1279,8 @@
             imageFrame.size = size;
             [imageview setFrame:imageFrame];
         }
-        [self.imageScrollView reloadInputViews];
-        [self.imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
+        [imageScrollView reloadInputViews];
+        [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
         
         //底部视图大小调整
         size = CGSizeMake(currWidth, self.bottonToolBar.frame.size.height);
@@ -1330,6 +1305,12 @@
     }
 }
 
-
+-(void)dealloc
+{
+    NSLog(@"图片预览类死亡 tableArray:%i,imageScrollView:%i,imageViewArray:%i",tableArray.retainCount,imageScrollView.retainCount,imageViewArray.retainCount);
+    [imageScrollView release];
+    [imageViewArray release];
+    [super dealloc];
+}
 
 @end

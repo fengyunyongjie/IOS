@@ -50,7 +50,6 @@
     
     UIScrollView *scroll_view;
     
-    NSMutableArray *downArray;
     int downNumber;
     BOOL bl;
     UIBarButtonItem *deleteItem;
