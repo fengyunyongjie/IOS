@@ -118,13 +118,13 @@ typedef enum{
         [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnEdit];
         
-        UILabel *lblEdit=[[UILabel alloc] init];
-        lblEdit.text=@"编辑";
-        lblEdit.font=[UIFont systemFontOfSize:12];
-        lblEdit.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
-        lblEdit.textColor=[UIColor whiteColor];
-        lblEdit.frame=CGRectMake(119, 72, 29, 21);
-        [self.ctrlView addSubview:lblEdit];
+        self.lblEdit=[[UILabel alloc] init];
+        self.lblEdit.text=@"编辑";
+        self.lblEdit.font=[UIFont systemFontOfSize:12];
+        self.lblEdit.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
+        self.lblEdit.textColor=[UIColor whiteColor];
+        self.lblEdit.frame=CGRectMake(119, 72, 29, 21);
+        [self.ctrlView addSubview:self.lblEdit];
     }
     return self;
 }
@@ -273,14 +273,16 @@ typedef enum{
 {
     [self hideOptionCell];
     [self setIsEditing:!self.isEditing];
-    UIBarButtonItem *button = (UIBarButtonItem *)sender;
+    //UIBarButtonItem *button = (UIBarButtonItem *)sender;
     if (self.isEditing) {
-        [button setTitle:@"完成"];
+        //[button setTitle:@"完成"];
         //[self.navigationItem setRightBarButtonItems:@[self.editBtn,self.deleteBtn] animated:YES];
+        [self.lblEdit setText:@"取消"];
         [self.navigationItem setLeftBarButtonItem:self.deleteBtn];
     }else
     {
-        [button setTitle:@"编辑"];
+        //[button setTitle:@"编辑"];
+        [self.lblEdit setText:@"编辑"];
         [self.navigationItem setLeftBarButtonItem:nil];
         //[self.navigationItem setRightBarButtonItems:@[self.editBtn] animated:YES];
     }

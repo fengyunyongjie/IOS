@@ -24,6 +24,7 @@ typedef enum {
 @property (strong,nonatomic) UIToolbar *toolBar;
 @property (strong,nonatomic) UITableView *tableView;
 @property (strong,nonatomic) UIView *ctrlView;
+@property (strong,nonatomic) UILabel *lblEdit;
 -(void)loadData;
 @end
 
