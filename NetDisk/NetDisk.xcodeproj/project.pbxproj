@@ -243,6 +243,7 @@
 		29C0775417584DC2005A5EFF /* PhotoFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C0775317584DC2005A5EFF /* PhotoFile.m */; };
 		29C077571758B0BE005A5EFF /* PhotoFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C077561758B0BD005A5EFF /* PhotoFileCell.m */; };
 		29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C17DD816560B7D0066CB13 /* QuartzCore.framework */; };
+		29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CEC31B178AB15500EA002F /* SCBLinkManager.m */; };
 		29CED3681781203C00899FAE /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CED3671781203C00899FAE /* MessageUI.framework */; };
 		29CED36E17812B7000899FAE /* BoderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CED36D17812B7000899FAE /* BoderView.m */; };
 		29CFD47D173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
@@ -573,6 +574,8 @@
 		29C0775317584DC2005A5EFF /* PhotoFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFile.m; sourceTree = "<group>"; };
 		29C077551758B0BD005A5EFF /* PhotoFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFileCell.h; sourceTree = "<group>"; };
 		29C077561758B0BD005A5EFF /* PhotoFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFileCell.m; sourceTree = "<group>"; };
+		29CEC31A178AB15500EA002F /* SCBLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBLinkManager.h; sourceTree = "<group>"; };
+		29CEC31B178AB15500EA002F /* SCBLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBLinkManager.m; sourceTree = "<group>"; };
 		29CED3671781203C00899FAE /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		29CED36C17812B7000899FAE /* BoderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoderView.h; sourceTree = "<group>"; };
 		29CED36D17812B7000899FAE /* BoderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoderView.m; sourceTree = "<group>"; };
@@ -1182,6 +1185,8 @@
 				29A6FA9E171B86E2007E6C0A /* SCBMessageManager.m */,
 				29A6FAA0171B870F007E6C0A /* SCBFileManager.h */,
 				29A6FAA1171B870F007E6C0A /* SCBFileManager.m */,
+				29CEC31A178AB15500EA002F /* SCBLinkManager.h */,
+				29CEC31B178AB15500EA002F /* SCBLinkManager.m */,
 				29A6FAA3171B872A007E6C0A /* SCBShareManager.h */,
 				29A6FAA4171B872B007E6C0A /* SCBShareManager.m */,
 				29A6FAA6171B8744007E6C0A /* SCBPhotoManager.h */,
@@ -2383,6 +2388,7 @@
 				29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */,
 				29CED36E17812B7000899FAE /* BoderView.m in Sources */,
 				29B75B0417864A9F00A0AE34 /* NewFinderViewController.m in Sources */,
+				29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

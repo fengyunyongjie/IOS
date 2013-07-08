@@ -422,6 +422,12 @@ typedef enum{
     }
     [tableView insertRowsAtIndexPaths:@[self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
+-(void)toMore:(id)sender
+{
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"分享", nil];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+}
 -(void)toRename:(id)sender
 {
     NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
@@ -470,6 +476,23 @@ typedef enum{
     [self hideOptionCell];
 }
 -(void)toShared:(id)sender
+{
+    NSArray *activityItems=[[NSArray alloc] initWithObjects:@"?想和您分享虹盘的文件，链接地址：?", nil];
+    UIActivityViewController *activetyVC=[[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    
+    UIActivityViewControllerCompletionHandler myBlock=^(NSString *activityType,BOOL completed){
+        NSLog(@"%@",activityType);
+        if (completed) {
+            NSLog(@"completed");
+        }else
+        {
+            NSLog(@"cancled");
+        }
+    };
+    activetyVC.completionHandler=myBlock;
+    [self presentViewController:activetyVC animated:YES completion:nil];
+}
+-(void)toMove:(id)sender
 {
     
     MyndsViewController *moveViewController=[[[MyndsViewController alloc] init] autorelease];
@@ -533,11 +556,13 @@ typedef enum{
         UIBarButtonItem *item1=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tab_btn_favorite.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toFavorite:)];
         [item1 setTitle:@"收藏"];
         //UIBarButtonItem *item2=[[UIBarButtonItem alloc] initWithTitle:@"移动" style:UIBarButtonItemStyleDone target:self action:@selector(toShared:)];
-        UIBarButtonItem *item2=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_move.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toShared:)];
+        UIBarButtonItem *item2=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_move.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toMove:)];
         [item2 setTitle:@"移动"];
         //UIBarButtonItem *item3=[[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStyleDone target:self action:@selector(toDelete:)];
         UIBarButtonItem *item3=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_remove.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toDelete:)];
         [item3 setTitle:@"删除"];
+        UIBarButtonItem *itemMove=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bt_Operator.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toMore:)];
+        [itemMove setTitle:@"更多"];
         UIBarButtonItem *flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         NSDictionary *this=(NSDictionary *)[self.listArray objectAtIndex:indexPath.row-1];
         NSString *t_fl = [[this objectForKey:@"f_mime"] lowercaseString];
@@ -545,7 +570,7 @@ typedef enum{
             [toolbar setItems:@[flexible,item0,flexible,item2,flexible,item3,flexible]];
         }else
         {
-            [toolbar setItems:@[flexible,item0,flexible,item1,flexible,item2,flexible,item3,flexible]];
+            [toolbar setItems:@[flexible,item0,flexible,item1,flexible,item2,flexible,itemMove,flexible]];
         }
         
         [cell addSubview:toolbar];
@@ -1288,5 +1313,18 @@ typedef enum{
     if (range.location >= 256)
         return NO; // return NO to not change text
     return YES;
+}
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        NSLog(@"删除");
+        [self toDelete:nil];
+    }else if (buttonIndex == 1) {
+        NSLog(@"分享");
+        [self toShared:nil];
+    }else if(buttonIndex == 2) {
+        NSLog(@"取消");
+    }
 }
 @end
