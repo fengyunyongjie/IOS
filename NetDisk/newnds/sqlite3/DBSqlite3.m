@@ -26,7 +26,7 @@
     docsDir = [dirPaths objectAtIndex:0];
     
     // Build the path to the database file
-    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@hongPan.sqlite",[[SCBSession sharedSession] userId]]]];
+    databasePath = [[NSString alloc] initWithString:[docsDir stringByAppendingPathComponent:@"hongPan.sqlite"]];
     
     NSFileManager *filemgr = [NSFileManager defaultManager];
     
@@ -46,6 +46,21 @@
         }
     }
     return self;
+}
+
++(void)cleanSql
+{
+    // Get the documents directory
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString *docsDir = [dirPaths objectAtIndex:0];
+    
+    // Build the path to the database file
+    NSString *databasePath = [[NSString alloc] initWithString:[docsDir stringByAppendingPathComponent:@"hongPan.sqlite"]];
+    
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    BOOL bl = [filemgr removeItemAtPath:databasePath error:nil];
+    NSLog(@"bl:%i",bl);
 }
 
 @end

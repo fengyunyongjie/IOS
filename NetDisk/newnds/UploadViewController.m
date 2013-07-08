@@ -319,7 +319,7 @@
 #pragma mark 获取照片库信息
 -(void)getPhotoLibrary
 {
-//    isGetLibary ＝ YES;
+    //    isGetLibary ＝ YES;
     NSLog(@"判断照片库是否更新");
     if(isGetLibary)
     {
@@ -664,12 +664,12 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
-//    if(buttonIndex == 0)
-//    {
-//        isWlanUpload = FALSE;
-//        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//        [app_delegate.myTabBarController setSelectedIndex:4];
-//    }
+    //    if(buttonIndex == 0)
+    //    {
+    //        isWlanUpload = FALSE;
+    //        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    //        [app_delegate.myTabBarController setSelectedIndex:4];
+    //    }
     if(buttonIndex == 1)
     {
         isStop = NO;
@@ -784,7 +784,7 @@
         [uploadImageView.boderImageView setImage:[UIImage imageWithData:demo.f_data]];
         [uploadProgressView setProgress:0];
         [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
-        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]-uploadNumber]];
+        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
         [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
         [self showUploadingView:NO];
     });
@@ -954,14 +954,10 @@
             demo.f_state = 1;
             demo.f_lenght = [demo.f_data length];
             [demo updateTaskTableFName];
-            [demo.result release];
-            [demo.f_data release];
-            
+            [photoArray removeObjectAtIndex:0];
             [uploadProgressView setProgress:1];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
-            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]-uploadNumber]];
-            
-            uploadNumber++;
+            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
             
             if(!isStop && uploadNumber<[photoArray count])
             {
@@ -1054,7 +1050,6 @@
             //获得照片图像数据
             [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
             demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-            [demo.result release];
         }
         NSLog(@"demo.f_data:%i",[demo.f_data length]);
         connection = [uploderDemo requestUploadFile:[NSString stringWithFormat:@"%i",f_pid] f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
@@ -1091,18 +1086,16 @@
         NSInteger fid = [[dictionary objectForKey:@"fid"] intValue];
         TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
         [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
-        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]-uploadNumber]];
+        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
         [NSThread sleepForTimeInterval:1.0];
         
         demo.f_id = fid;
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
         [demo updateTaskTableFName];
-        [demo.result release];
-        [demo.f_data release];
+        [photoArray removeObjectAtIndex:0];
     }
     NSLog(@"uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
-    uploadNumber++;
     if(!isStop && uploadNumber<[photoArray count])
     {
         [uploadData release];

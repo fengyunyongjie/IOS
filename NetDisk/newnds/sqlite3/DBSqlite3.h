@@ -19,5 +19,6 @@
 }
 
 -(id)init;
++(void)cleanSql;
 
 @end

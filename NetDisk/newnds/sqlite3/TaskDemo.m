@@ -230,9 +230,19 @@
 
 -(void)dealloc
 {
-    [f_base_name release];
-    [f_data release];
-    [result release];
+    NSLog(@"上传类死亡");
+    if(f_base_name)
+    {
+        [f_base_name release];
+    }
+    if(f_data)
+    {
+        [f_data release];
+    }
+    if(result)
+    {
+        [result release];
+    }
     [super dealloc];
 }
 

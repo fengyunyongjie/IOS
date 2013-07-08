@@ -44,7 +44,6 @@
     
     NSInteger endCurrPage;
     
-    NSMutableArray *imageViewArray;
     UIScrollView *imageScrollView;
 }
 
@@ -52,7 +51,6 @@
 @property (nonatomic, retain) NSMutableArray *tableArray;
 @property (nonatomic, assign) NSInteger currPage;
 
-@property(retain,atomic) NSMutableArray *imageViewArray;
 @property(assign,nonatomic) CGFloat offset;
 @property(assign,nonatomic) BOOL isDoubleClick;
 

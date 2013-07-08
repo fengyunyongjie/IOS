@@ -28,7 +28,7 @@
     docsDir = [dirPaths objectAtIndex:0];
     
     // Build the path to the database file
-    databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@PhotoFile.sqlite",[[SCBSession sharedSession] userId]]]];
+    databasePath = [[NSString alloc] initWithString:[docsDir stringByAppendingPathComponent:@"hongPan.sqlite"]];
     
     NSFileManager *filemgr = [NSFileManager defaultManager];
     

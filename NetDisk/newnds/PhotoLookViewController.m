@@ -41,7 +41,6 @@
 @synthesize scale_,tableArray;
 @synthesize currPage;
 @synthesize isCliped;
-@synthesize imageViewArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,7 +60,6 @@
 {
     [super viewDidLoad];
     activityDic = [[NSMutableDictionary alloc] init];
-    imageViewArray = [[NSMutableArray alloc] init];
     
     self.view.backgroundColor = [UIColor blackColor];
     self.offset = 0.0;
@@ -143,7 +141,7 @@
         }
     }
     
-    [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
+    [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:YES];
     NSLog(@"320*currPage:%i",320*currPage);
     [self.view addSubview:imageScrollView];
     
@@ -168,7 +166,7 @@
     self.topTitleLabel = [[UILabel alloc] initWithFrame:topTitleRect];
     [self.topTitleLabel setTextColor:[UIColor whiteColor]];
     [self.topTitleLabel setBackgroundColor:[UIColor clearColor]];
-    [self.topTitleLabel setText:[NSString stringWithFormat:@"1/%i",[imageViewArray count]]];
+    [self.topTitleLabel setText:[NSString stringWithFormat:@"1/%i",[tableArray count]]];
     [self.topTitleLabel setTextAlignment:NSTextAlignmentCenter];
     [self.topToolBar addSubview:self.topTitleLabel];
     
@@ -262,16 +260,6 @@
     {
         self.page = imageScrollView.contentOffset.x/320;
     }
-    
-    for(int i=0;i<[imageViewArray count];i++)
-    {
-        UIScrollView *s = [imageViewArray objectAtIndex:i];
-        if(s.tag-ScrollViewTag!=self.page)
-        {
-            [s removeFromSuperview];
-            NSLog(@"viewCount:%i",s.retainCount);
-        }
-    }
     for(int i=0;i<[imageScrollView.subviews count];i++)
     {
         UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
@@ -281,7 +269,6 @@
             NSLog(@"viewCount:%i",s.retainCount);
         }
     }
-    [imageViewArray removeAllObjects];
     
     //加载当前页面，左右各十张
     isLoadImage = TRUE;
@@ -511,7 +498,7 @@
             NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
             imageview.image = [UIImage imageWithContentsOfFile:path];
             dispatch_async(dispatch_get_main_queue(), ^{
-                DownImage *downImage = [[DownImage alloc] init];
+                DownImage *downImage = [[[DownImage alloc] init] autorelease];
                 [downImage setFileId:demo.f_id];
                 [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
                 [downImage setImageViewIndex:ImageViewTag+i];
@@ -532,7 +519,6 @@
         [s addSubview:imageview];
         [s setContentSize:size];
         [imageScrollView addSubview:s];
-        [imageViewArray addObject:s];
         [onceTap release];
         [doubleTap release];
         [imageview release];
@@ -597,7 +583,6 @@
         [s setContentSize:size];
         [imageScrollView addSubview:s];
         
-        [imageViewArray addObject:s];
         [onceTap release];
         [doubleTap release];
         [imageview release];
@@ -633,6 +618,7 @@
         size.height = currWidth*size.height/size.width;
         size.width = currWidth;
     }
+    
     if(size.height>currHeight)
     {
         size.width = currHeight*size.width/size.height;
@@ -909,10 +895,6 @@
             imageScrollView = nil;
             [activityDic removeAllObjects];
         }
-        if(imageViewArray)
-        {
-            [imageViewArray removeAllObjects];
-        }
         
         
         if([tableArray count]==0)
@@ -1017,7 +999,7 @@
         [self.view bringSubviewToFront:self.bottonToolBar];
         
         imageScrollView.contentSize = CGSizeMake(currWidth*[tableArray count], currHeight);
-        [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
+        [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:YES];
         [self handleOnceTap:nil];
         
         hud.labelText=@"删除成功";
@@ -1104,7 +1086,6 @@
                 CGSize size = [self getSacpeImageSize:image];
                 UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+ScrollViewTag];
                 s.zoomScale = 1.0;
-                size = [self getSacpeImageSize:image];
                 [s setContentSize:size];
                 int x = s.tag-ScrollViewTag;
                 [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
@@ -1120,7 +1101,6 @@
                 CGSize size = [self getImageSize:image];
                 UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+ScrollViewTag];
                 s.zoomScale = 1.0;
-                size = [self getImageSize:image];
                 [s setContentSize:size];
                 int x = s.tag-ScrollViewTag;
                 [s setFrame:ScrollRect(x,size)];
@@ -1130,6 +1110,7 @@
                 [imageV setFrame:imageFrame];
             }
             [imageV performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:YES];
+            NSLog(@"image:%i",image.retainCount);
         }
 //    });
 }
@@ -1209,10 +1190,10 @@
         [self.topToolBar setFrame:rect];
         [self.topTitleLabel setFrame:CGRectMake(0, 0, currWidth, 44)];
         
-        //滚动视图大小调整
-        for(int i=0;i<[imageViewArray count];i++)
+        
+        for(int i=0;i<[imageScrollView.subviews count];i++)
         {
-            UIScrollView * s = (UIScrollView *)[imageViewArray objectAtIndex:i];
+            UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
             s.zoomScale = 1.0;
             UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
             size = [self getSacpeImageSize:imageview.image];
@@ -1224,6 +1205,22 @@
             imageFrame.size = size;
             [imageview setFrame:imageFrame];
         }
+        
+//        //滚动视图大小调整
+//        for(int i=0;i<[imageViewArray count];i++)
+//        {
+//            UIScrollView * s = (UIScrollView *)[imageViewArray objectAtIndex:i];
+//            s.zoomScale = 1.0;
+//            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
+//            size = [self getSacpeImageSize:imageview.image];
+//            [s setContentSize:size];
+//            int x = s.tag-ScrollViewTag;
+//            [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
+//            CGRect imageFrame = imageview.frame;
+//            imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
+//            imageFrame.size = size;
+//            [imageview setFrame:imageFrame];
+//        }
         [imageScrollView reloadInputViews];
         [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
         
@@ -1264,10 +1261,9 @@
         [self.topToolBar setFrame:rect];
         [self.topTitleLabel setFrame:CGRectMake(0, 0, 320, 44)];
         
-        //滚动视图大小调整
-        for(int i=0;i<[imageViewArray count];i++)
+        for(int i=0;i<[imageScrollView.subviews count];i++)
         {
-            UIScrollView * s = (UIScrollView *)[imageViewArray objectAtIndex:i];
+            UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
             s.zoomScale = 1.0;
             UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
             size = [self getImageSize:imageview.image];
@@ -1279,6 +1275,21 @@
             imageFrame.size = size;
             [imageview setFrame:imageFrame];
         }
+//        //滚动视图大小调整
+//        for(int i=0;i<[imageViewArray count];i++)
+//        {
+//            UIScrollView * s = (UIScrollView *)[imageViewArray objectAtIndex:i];
+//            s.zoomScale = 1.0;
+//            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
+//            size = [self getImageSize:imageview.image];
+//            [s setContentSize:size];
+//            int x = s.tag-ScrollViewTag;
+//            [s setFrame:ScrollRect(x,size)];
+//            CGRect imageFrame = imageview.frame;
+//            imageFrame.origin = ImagePoint(size);
+//            imageFrame.size = size;
+//            [imageview setFrame:imageFrame];
+//        }
         [imageScrollView reloadInputViews];
         [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
         
@@ -1307,9 +1318,8 @@
 
 -(void)dealloc
 {
-    NSLog(@"图片预览类死亡 tableArray:%i,imageScrollView:%i,imageViewArray:%i",tableArray.retainCount,imageScrollView.retainCount,imageViewArray.retainCount);
+    NSLog(@"图片预览类死亡 tableArray:%i,imageScrollView:%i",tableArray.retainCount,imageScrollView.retainCount);
     [imageScrollView release];
-    [imageViewArray release];
     [super dealloc];
 }
 

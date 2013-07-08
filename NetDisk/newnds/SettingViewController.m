@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "UploadViewController.h"
 #import "FavoritesData.h"
+#import "DBSqlite3.h"
 
 typedef enum{
     kAlertTypeExit,
@@ -184,12 +185,15 @@ typedef enum{
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-                
+                [DBSqlite3 cleanSql];
                 [[FavoritesData sharedFavoritesData] stopDownloading];
                 
                 [self.rootViewController presendLoginViewController];
-                AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [app_delegate setIsUnUpload:YES];
+                
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                [uploadView stopAllDo];
             }
             break;
         case kAlertTypeClear:

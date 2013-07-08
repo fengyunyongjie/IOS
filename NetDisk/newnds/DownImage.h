@@ -42,6 +42,8 @@
 - (BOOL)image_exists_at_file_path:(NSString *)image_path;
 //获取图片路径
 - (NSString*)get_image_save_file_path:(NSString*)image_path;
+//判断当前的网络是3g还是wifi
+-(NSString*) GetCurrntNet;
 
 @end
 
