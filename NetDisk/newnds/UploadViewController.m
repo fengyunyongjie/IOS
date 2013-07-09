@@ -381,9 +381,8 @@
                 {
                     if(uploadNumber<[photoArray count] && !isStop)
                     {
-                        if(connectionTimer == nil)
+                        if(connectionTimer == nil && !isConnection)
                         {
-                            isConnection = FALSE;
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 [self isUPloadImage];
                                 connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];

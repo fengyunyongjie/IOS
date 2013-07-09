@@ -53,8 +53,8 @@
         if(showType == 0)
         {
             NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
-            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?image_size=M",SERVER_URL,FM_DOWNLOAD_THUMB_URI_NEW]];
-//            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
+//            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?image_size=M",SERVER_URL,FM_DOWNLOAD_THUMB_URI_NEW]];
+            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
             NSMutableURLRequest *request=[[NSMutableURLRequest alloc] initWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
             [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
             [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
@@ -96,30 +96,30 @@
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    NSLog(@"重新下载图片");
-    if(activeDownload)
-    {
-        [activeDownload release];
-    }
-    if(imageConnection)
-    {
-        [imageConnection release];
-    }
-    activeDownload = [[NSMutableData alloc] init];
-    if(![[self GetCurrntNet] isEqualToString:@"没有网络链接"])
-    {
-        NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
-        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?image_size=M",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
-        NSMutableURLRequest *request=[[NSMutableURLRequest alloc] initWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-        [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-        [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-        [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
-        [request setValue:fielStirng forHTTPHeaderField:@"f_id"];
-        [request setHTTPMethod:@"GET"];
-        
-        imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-        [request release];
-    }
+//    NSLog(@"重新下载图片");
+//    if(activeDownload)
+//    {
+//        [activeDownload release];
+//    }
+//    if(imageConnection)
+//    {
+//        [imageConnection release];
+//    }
+//    activeDownload = [[NSMutableData alloc] init];
+//    if(![[self GetCurrntNet] isEqualToString:@"没有网络链接"])
+//    {
+//        NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
+//        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?image_size=M",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
+//        NSMutableURLRequest *request=[[NSMutableURLRequest alloc] initWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+//        [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+//        [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+//        [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+//        [request setValue:fielStirng forHTTPHeaderField:@"f_id"];
+//        [request setHTTPMethod:@"GET"];
+//        
+//        imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+//        [request release];
+//    }
 }
 
 //下载完成后将图片写入黑盒子，

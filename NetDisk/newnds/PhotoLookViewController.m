@@ -12,7 +12,7 @@
 #import "FavoritesData.h"
 #import "AppDelegate.h"
 
-#define ACTNUMBER 100000
+#define ACTNUMBER 400000
 #define ScrollViewTag 100000
 #define ImageViewTag 200000
 #define ScollviewHeight self.view.frame.size.height //当前屏幕的高度
@@ -60,7 +60,8 @@
 {
     [super viewDidLoad];
     activityDic = [[NSMutableDictionary alloc] init];
-    
+    currWidth = ScollviewWidth;
+    currHeight = ScollviewHeight;
     self.view.backgroundColor = [UIColor blackColor];
     self.offset = 0.0;
     scale_ = 1.0;
@@ -252,27 +253,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if(self.isScape)
-    {
-        self.page = imageScrollView.contentOffset.x/ScollviewHeight;
-    }
-    else
-    {
-        self.page = imageScrollView.contentOffset.x/320;
-    }
-    for(int i=0;i<[imageScrollView.subviews count];i++)
-    {
-        UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
-        if(s.tag-ScrollViewTag!=self.page)
-        {
-            [s removeFromSuperview];
-            NSLog(@"viewCount:%i",s.retainCount);
-        }
-    }
-    
-    //加载当前页面，左右各十张
-    isLoadImage = TRUE;
-    [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
+    self.page = imageScrollView.contentOffset.x/currWidth;
     
     currPage = self.page;
     if (scrollView == imageScrollView){
@@ -320,6 +301,34 @@
     isLoadImage = FALSE;
     [self.topToolBar setHidden:YES];
     [self.bottonToolBar setHidden:YES];
+    
+    for(int i=0;i<[imageScrollView.subviews count];i++)
+    {
+        UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
+        if(s.tag-ScrollViewTag!=self.page)
+        {
+            [s removeFromSuperview];
+            NSLog(@"viewCount:%i",s.retainCount);
+        }
+    }
+    
+    //加载当前页面，左右各十张
+    isLoadImage = TRUE;
+    [self loadImage];
+    
+//    int currIndex;
+//    if(self.isScape)
+//    {
+//        currIndex = imageScrollView.contentOffset.x/ScollviewHeight;
+//    }
+//    else
+//    {
+//        currIndex = imageScrollView.contentOffset.x/320;
+//    }
+//    if(self.page != currIndex)
+//    {
+        
+//    }
 }
 
 //-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -393,14 +402,7 @@
 #pragma mark 加载数据
 -(void)loadImage
 {
-    if(self.isScape)
-    {
-        self.page = imageScrollView.contentOffset.x/ScollviewHeight;
-    }
-    else
-    {
-        self.page = imageScrollView.contentOffset.x/320;
-    }
+    self.page = imageScrollView.contentOffset.x/currWidth;
     //加载数据
     int page = self.page;
     //判断是否加载图片
@@ -457,149 +459,178 @@
 
 -(void)loadPageColoumn:(int)i
 {
-    UIView *view = [imageScrollView viewWithTag:i+ScrollViewTag];
-    if(view)
-    {
-        return;
-    }
-    if(self.isScape)
-    {
-        PhotoFile *demo = [tableArray objectAtIndex:i];
-        UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-        [doubleTap setNumberOfTapsRequired:2];
-        UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
-        [onceTap setNumberOfTapsRequired:1];
-        
-        UIScrollView *s = [[UIScrollView alloc] init];
-        s.backgroundColor = [UIColor clearColor];
-        s.showsHorizontalScrollIndicator = NO;
-        s.showsVerticalScrollIndicator = NO;
-        s.delegate = self;
-        s.minimumZoomScale = 1.0;
-        s.maximumZoomScale = 3.0;
-        s.tag = i+ScrollViewTag;
-        [s setZoomScale:1.0];
-        
-        UIImageView *imageview = [[UIImageView alloc] init];
-        imageview.userInteractionEnabled = YES;
-        imageview.tag = ImageViewTag+i;
-        [imageview addGestureRecognizer:doubleTap];
-        
-        
-        [s addGestureRecognizer:onceTap];
-        
-        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
+    @autoreleasepool {
+        UIView *view = [imageScrollView viewWithTag:i+ScrollViewTag];
+        if(view)
         {
-            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
-            imageview.image = [UIImage imageWithContentsOfFile:path];
+            return;
+        }
+        if(self.isScape)
+        {
+            PhotoFile *demo = [tableArray objectAtIndex:i];
+            UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+            [doubleTap setNumberOfTapsRequired:2];
+            UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
+            [onceTap setNumberOfTapsRequired:1];
+            
+            UIScrollView *s = [[UIScrollView alloc] init];
+            s.backgroundColor = [UIColor clearColor];
+            s.showsHorizontalScrollIndicator = NO;
+            s.showsVerticalScrollIndicator = NO;
+            s.delegate = self;
+            s.minimumZoomScale = 1.0;
+            s.maximumZoomScale = 3.0;
+            s.tag = i+ScrollViewTag;
+            [s setZoomScale:1.0];
+            
+            UIImageView *imageview = [[UIImageView alloc] init];
+            imageview.userInteractionEnabled = YES;
+            imageview.tag = ImageViewTag+i;
+            [imageview addGestureRecognizer:doubleTap];
+            
+            __block BOOL isAction = FALSE;
+            [s addGestureRecognizer:onceTap];
+            
+            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
+            {
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
+                imageview.image = [UIImage imageWithContentsOfFile:path];
+            }
+            else
+            {
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+                imageview.image = [UIImage imageWithContentsOfFile:path];
+                isAction = YES;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                    [downImage setFileId:demo.f_id];
+                    [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
+                    [downImage setImageViewIndex:ImageViewTag+i];
+                    [downImage setIndex:ACTNUMBER+i];
+                    [downImage setShowType:1];
+                    [downImage setDelegate:self];
+                    [downImage startDownload];
+                });
+            }
+            
+            CGSize size = [self getSacpeImageSize:imageview.image];
+            [s setFrame:CGRectMake(currWidth*i, 0, currWidth, 300)];
+            CGRect imageFrame = imageview.frame;
+            imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
+            imageFrame.size = size;
+            imageview.contentMode = UIViewContentModeScaleAspectFit;
+            [imageview setFrame:imageFrame];
+            [s addSubview:imageview];
+            [s setContentSize:size];
+            if(isAction)
+            {
+                CGRect activityRect = CGRectMake((currWidth-20)/2, (currHeight-20)/2, 20, 20);
+                UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
+                [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+                [activity_indicator setTag:ACTNUMBER+i];
+                [s addSubview:activity_indicator];
+                [activity_indicator startAnimating];
+                [activity_indicator release];
+            }
+
+            [imageScrollView addSubview:s];
+            [onceTap release];
+            [doubleTap release];
+            [imageview release];
+            [s release];
         }
         else
         {
-            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
-            imageview.image = [UIImage imageWithContentsOfFile:path];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                DownImage *downImage = [[[DownImage alloc] init] autorelease];
-                [downImage setFileId:demo.f_id];
-                [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
-                [downImage setImageViewIndex:ImageViewTag+i];
-                [downImage setIndex:ACTNUMBER+i];
-                [downImage setShowType:1];
-                [downImage setDelegate:self];
-                [downImage startDownload];
-            });
+            PhotoFile *demo = [tableArray objectAtIndex:i];
+            UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+            [doubleTap setNumberOfTapsRequired:2];
+            UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
+            [onceTap setNumberOfTapsRequired:1];
+            
+            UIScrollView *s = [[UIScrollView alloc] init];
+            s.backgroundColor = [UIColor clearColor];
+            s.showsHorizontalScrollIndicator = NO;
+            s.showsVerticalScrollIndicator = NO;
+            s.delegate = self;
+            s.minimumZoomScale = 1.0;
+            s.maximumZoomScale = 3.0;
+            s.tag = i+ScrollViewTag;
+            [s setZoomScale:1.0];
+            
+            UIImageView *imageview = [[UIImageView alloc] init];
+            imageview.userInteractionEnabled = YES;
+            imageview.tag = ImageViewTag+i;
+            [imageview addGestureRecognizer:doubleTap];
+            
+            
+            [s addGestureRecognizer:onceTap];
+            __block BOOL isAction = FALSE;
+            
+            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
+            {
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
+                imageview.image = [UIImage imageWithContentsOfFile:path];
+            }
+            else
+            {
+                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+                imageview.image = [UIImage imageWithContentsOfFile:path];
+                isAction = YES;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                    [downImage setFileId:demo.f_id];
+                    [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
+                    [downImage setImageViewIndex:ImageViewTag+i];
+                    [downImage setIndex:ACTNUMBER+i];
+                    [downImage setShowType:1];
+                    [downImage setDelegate:self];
+                    [downImage startDownload];
+                });
+            }
+            
+            CGSize size = [self getImageSize:imageview.image];
+            [s setFrame:ScrollRect(i,size)];
+            CGRect imageFrame = imageview.frame;
+            imageFrame.origin = ImagePoint(size);
+            imageFrame.size = size;
+            imageview.contentMode = UIViewContentModeScaleAspectFit;
+            [imageview setFrame:imageFrame];
+            [s addSubview:imageview];
+            [s setContentSize:size];
+            if(isAction)
+            {
+                CGRect activityRect = CGRectMake((currWidth-20)/2, (currHeight-20)/2, 20, 20);
+                UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
+                [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+                [activity_indicator setTag:ACTNUMBER+i];
+                [s addSubview:activity_indicator];
+                [activity_indicator startAnimating];
+                [activity_indicator release];
+            }
+            [imageScrollView addSubview:s];
+            
+            [onceTap release];
+            [doubleTap release];
+            [imageview release];
+            [s release];
         }
-        
-        CGSize size = [self getSacpeImageSize:imageview.image];
-        [s setFrame:CGRectMake(currWidth*i, 0, currWidth, 300)];
-        CGRect imageFrame = imageview.frame;
-        imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
-        imageFrame.size = size;
-        imageview.contentMode = UIViewContentModeScaleAspectFit;
-        [imageview setFrame:imageFrame];
-        [s addSubview:imageview];
-        [s setContentSize:size];
-        [imageScrollView addSubview:s];
-        [onceTap release];
-        [doubleTap release];
-        [imageview release];
-        [s release];
     }
-    else
-    {
-        PhotoFile *demo = [tableArray objectAtIndex:i];
-        UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-        [doubleTap setNumberOfTapsRequired:2];
-        UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
-        [onceTap setNumberOfTapsRequired:1];
-        
-        UIScrollView *s = [[UIScrollView alloc] init];
-        s.backgroundColor = [UIColor clearColor];
-        s.showsHorizontalScrollIndicator = NO;
-        s.showsVerticalScrollIndicator = NO;
-        s.delegate = self;
-        s.minimumZoomScale = 1.0;
-        s.maximumZoomScale = 3.0;
-        s.tag = i+ScrollViewTag;
-        [s setZoomScale:1.0];
-        
-        UIImageView *imageview = [[UIImageView alloc] init];
-        imageview.userInteractionEnabled = YES;
-        imageview.tag = ImageViewTag+i;
-        [imageview addGestureRecognizer:doubleTap];
-        
-        
-        [s addGestureRecognizer:onceTap];
-        [s setBounces:YES];
-        
-        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
-        {
-            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
-            imageview.image = [UIImage imageWithContentsOfFile:path];
-        }
-        else
-        {
-            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
-            imageview.image = [UIImage imageWithContentsOfFile:path];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                DownImage *downImage = [[[DownImage alloc] init] autorelease];
-                [downImage setFileId:demo.f_id];
-                [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
-                [downImage setImageViewIndex:ImageViewTag+i];
-                [downImage setIndex:ACTNUMBER+i];
-                [downImage setShowType:1];
-                [downImage setDelegate:self];
-                [downImage startDownload];
-            });
-        }
-        
-        CGSize size = [self getImageSize:imageview.image];
-        [s setFrame:ScrollRect(i,size)];
-        CGRect imageFrame = imageview.frame;
-        imageFrame.origin = ImagePoint(size);
-        imageFrame.size = size;
-        imageview.contentMode = UIViewContentModeScaleAspectFit;
-        [imageview setFrame:imageFrame];
-        [s addSubview:imageview];
-        [s setContentSize:size];
-        [imageScrollView addSubview:s];
-        
-        [onceTap release];
-        [doubleTap release];
-        [imageview release];
-        [s release];
-    }
-    
 }
 
 //竖屏
 -(CGSize)getImageSize:(UIImage *)imageV
 {
     CGSize size = imageV.size;
-    if(size.width>320)
+    if(size.width==0 || size.height == 0)
+    {
+        return size;
+    }
+//    if(size.width>320)
     {
         size.height = GetHeight(size);
         size.width = 320;
     }
+    
     if(size.height>ScollviewHeight)
     {
         size.width = GetWidth(size);
@@ -612,8 +643,11 @@
 -(CGSize)getSacpeImageSize:(UIImage *)imageV
 {
     CGSize size = imageV.size;
-    
-    if(size.width>currWidth)
+    if(size.width==0 || size.height == 0)
+    {
+        return size;
+    }
+//    if(size.width>currWidth)
     {
         size.height = currWidth*size.height/size.width;
         size.width = currWidth;
@@ -1070,14 +1104,19 @@
 
 -(void)didFailWithError
 {
-    
+    if([[imageScrollView viewWithTag:ACTNUMBER+self.page] isKindOfClass:[UIActivityIndicatorView class]])
+    {
+        UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:ACTNUMBER+self.page];
+        [activity_indicator stopAnimating];
+        [activity_indicator removeFromSuperview];
+    }
 }
 
 
 #pragma mark 下载回调
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
 {
-//    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         if([[imageScrollView viewWithTag:indexTag] isKindOfClass:[UIImageView class]])
         {
             UIImageView *imageV = (UIImageView *)[imageScrollView viewWithTag:indexTag];
@@ -1112,7 +1151,14 @@
             [imageV performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:YES];
             NSLog(@"image:%i",image.retainCount);
         }
-//    });
+        
+        if([[imageScrollView viewWithTag:ACTNUMBER+self.page] isKindOfClass:[UIActivityIndicatorView class]])
+        {
+            UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:ACTNUMBER+self.page];
+            [activity_indicator stopAnimating];
+            [activity_indicator removeFromSuperview];
+        }
+    });
 }
 
 //<ios 6.0
