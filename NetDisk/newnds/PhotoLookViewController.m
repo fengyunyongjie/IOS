@@ -1033,7 +1033,7 @@
         [self.view bringSubviewToFront:self.bottonToolBar];
         
         imageScrollView.contentSize = CGSizeMake(currWidth*[tableArray count], currHeight);
-        [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:YES];
+        [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
         [self handleOnceTap:nil];
         
         hud.labelText=@"删除成功";
