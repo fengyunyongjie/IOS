@@ -86,5 +86,7 @@
 #define FM_UPLOAD_NEW @"/fm/upload/new"
 //新上传提交
 #define FM_UPLOAD_NEW_COMMIT @"/fm/upload/new/commit"
-
+#pragma mark - 分享链接
+//发布公开外链
+#define LINK_RELEASE_PUB_URI @"/link/release_pub"
 #endif

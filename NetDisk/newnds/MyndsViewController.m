@@ -18,6 +18,8 @@
 #import "IconDownloader.h"
 #import "ImageBrowserViewController.h"
 #import "OtherBrowserViewController.h"
+#import "SCBLinkManager.h"
+#import <MessageUI/MessageUI.h>
 
 typedef enum{
     kAlertTagDeleteOne,
@@ -25,7 +27,10 @@ typedef enum{
     kAlertTagRename,
     kAlertTagNewFinder,
 }AlertTag;
-
+typedef enum{
+    kActionSheetTagShare,
+    kActionSheetTagMore,
+}ActionSheetTag;
 @implementation FileItem
 
 + (FileItem*) fileItem
@@ -64,6 +69,10 @@ typedef enum{
 }
 -(void)showMenu:(id)sender
 {
+    if (self.selectedIndexPath) {
+        //[self.tableView deleteRowsAtIndexPaths:@[self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self hideOptionCell];
+    }
     [self.ctrlView setHidden:!self.ctrlView.hidden];
 }
 - (id)init
@@ -389,6 +398,7 @@ typedef enum{
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+    [self.ctrlView setHidden:YES];
     if (self.selectedIndexPath && self.selectedIndexPath.row==indexPath.row+1) {
         [self hideOptionCell];
         return;
@@ -425,6 +435,7 @@ typedef enum{
 -(void)toMore:(id)sender
 {
     UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"分享", nil];
+    [actionSheet setTag:kActionSheetTagMore];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
@@ -444,6 +455,18 @@ typedef enum{
     NSString *f_id=[dic objectForKey:@"f_id"];
     if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
         [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
+        NSString *fileName=[dic objectForKey:@"f_name"];
+        NSString *filePath=[YNFunctions getFMCachePath];
+        filePath=[filePath stringByAppendingPathComponent:fileName];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            NSError *error=[[NSError alloc] init];
+            if ([[NSFileManager defaultManager] removeItemAtPath:filePath error:&error]) {
+                NSLog(@"删除本地收藏文件成功：%@",filePath);
+            }else
+            {
+                NSLog(@"删除本地收藏文件失败：%@",filePath);
+            }
+        }
     }else
     {
         [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
@@ -477,20 +500,27 @@ typedef enum{
 }
 -(void)toShared:(id)sender
 {
-    NSArray *activityItems=[[NSArray alloc] initWithObjects:@"?想和您分享虹盘的文件，链接地址：?", nil];
-    UIActivityViewController *activetyVC=[[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    NSString *f_id=[dic objectForKey:@"f_id"];
     
-    UIActivityViewControllerCompletionHandler myBlock=^(NSString *activityType,BOOL completed){
-        NSLog(@"%@",activityType);
-        if (completed) {
-            NSLog(@"completed");
-        }else
-        {
-            NSLog(@"cancled");
-        }
-    };
-    activetyVC.completionHandler=myBlock;
-    [self presentViewController:activetyVC animated:YES completion:nil];
+    SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
+    [lm_temp setDelegate:self];
+    [lm_temp linkWithIDs:@[f_id]];
+    [self hideOptionCell];
+//    NSArray *activityItems=[[NSArray alloc] initWithObjects:@"?想和您分享虹盘的文件，链接地址：?", nil];
+//    UIActivityViewController *activetyVC=[[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+//    
+//    UIActivityViewControllerCompletionHandler myBlock=^(NSString *activityType,BOOL completed){
+//        NSLog(@"%@",activityType);
+//        if (completed) {
+//            NSLog(@"completed");
+//        }else
+//        {
+//            NSLog(@"cancled");
+//        }
+//    };
+//    activetyVC.completionHandler=myBlock;
+//    [self presentViewController:activetyVC animated:YES completion:nil];
 }
 -(void)toMove:(id)sender
 {
@@ -800,6 +830,7 @@ typedef enum{
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
+    [self.ctrlView setHidden:YES];
     if (self.selectedIndexPath) {
         [self hideOptionCell];
         return;
@@ -895,7 +926,50 @@ typedef enum{
         }
     }
 }
-
+#pragma mark - SCBLinkManagerDelegate
+-(void)releaseLinkSuccess:(NSString *)l_url
+{
+    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=6.0) {
+        NSArray *activityItems=[[NSArray alloc] initWithObjects:text, nil];
+        UIActivityViewController *activetyVC=[[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+        
+        UIActivityViewControllerCompletionHandler myBlock=^(NSString *activityType,BOOL completed){
+            NSLog(@"%@",activityType);
+            if (completed) {
+                NSLog(@"completed");
+            }else
+            {
+                NSLog(@"cancled");
+            }
+        };
+        activetyVC.completionHandler=myBlock;
+        [self presentViewController:activetyVC animated:YES completion:nil];
+    }else
+    {
+        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"短信分享" otherButtonTitles:@"邮件分享", nil];
+        [actionSheet setTitle:text];
+        [actionSheet setTag:kActionSheetTagShare];
+        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    }
+}
+-(void)releaseLinkUnsuccess;
+{
+    NSLog(@"openFinderUnsucess: 网络连接失败!!");
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"获取外链失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
 #pragma mark - SCBFileManagerDelegate
 -(void)operateSucess:(NSDictionary *)datadic
 {
@@ -1135,12 +1209,12 @@ typedef enum{
         {
             if (buttonIndex==1) {
                 NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-                [self removeFromDicWithObject:dic];
+                //[self removeFromDicWithObject:dic];
                 NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row-1 inSection:self.selectedIndexPath.section];
                 NSLog(@"%d",self.selectedIndexPath.section);
                 NSArray *indexesToDelete = @[indexPath,self.selectedIndexPath];
                 self.selectedIndexPath = nil;
-                [self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
+                //[self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
                 NSString *f_id=[dic objectForKey:@"f_id"];
                 [self.fm cancelAllTask];
                 self.fm=[[[SCBFileManager alloc] init] autorelease];
@@ -1186,8 +1260,8 @@ typedef enum{
                         [deleteObjects addObject:dic];
                     }
                 }
-                [self removeFromDicWithObjects:deleteObjects];
-                [self.tableView reloadData];
+                //[self removeFromDicWithObjects:deleteObjects];
+                //[self.tableView reloadData];
                 if (f_ids.count>0) {
                     [self.fm cancelAllTask];
                     self.fm=[[[SCBFileManager alloc] init] autorelease];
@@ -1317,14 +1391,32 @@ typedef enum{
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) {
-        NSLog(@"删除");
-        [self toDelete:nil];
-    }else if (buttonIndex == 1) {
-        NSLog(@"分享");
-        [self toShared:nil];
-    }else if(buttonIndex == 2) {
-        NSLog(@"取消");
+    switch ([actionSheet tag]) {
+        case kActionSheetTagMore:
+            if (buttonIndex == 0) {
+                NSLog(@"删除");
+                [self toDelete:nil];
+            }else if (buttonIndex == 1) {
+                NSLog(@"分享");
+                [self toShared:nil];
+            }else if(buttonIndex == 2) {
+                NSLog(@"取消");
+            }
+            break;
+        case kActionSheetTagShare:
+            if (buttonIndex == 0) {
+                NSLog(@"短信分享");
+                [self toDelete:nil];
+            }else if (buttonIndex == 1) {
+                NSLog(@"邮件分享");
+                [self toShared:nil];
+            }else if(buttonIndex == 2) {
+                NSLog(@"取消");
+            }
+            break;
+        default:
+            break;
     }
+    
 }
 @end
