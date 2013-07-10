@@ -54,11 +54,13 @@ typedef enum{
 @property (assign,nonatomic) BOOL isEditing;
 @property (strong,nonatomic) NSMutableArray *m_fileItems;
 @property(strong,nonatomic) MBProgressHUD *hud;
+@property (strong,nonatomic) NSArray *willDeleteObjects;
 @end
 
 @implementation MyndsViewController
 -(void)newFinder:(id)sender
 {
+    [self.ctrlView setHidden:YES];
     NSLog(@"点击新建文件夹");
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
@@ -82,6 +84,8 @@ typedef enum{
         // Custom initialization
 //        UIView *view=[[UIView alloc] init];
 //        self.view=view;
+//        self.view=[[UIControl alloc] initWithFrame:self.view.frame];
+//        [(UIControl *)self.view addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
         self.tableView=[[UITableView alloc] init];
         self.tableView.allowsSelectionDuringEditing=YES;
         self.tableView.delegate=self;
@@ -90,7 +94,6 @@ typedef enum{
         self.tableView.frame=self.view.frame;
         CGRect r=self.tableView.frame;
         self.tableView.frame=r;
-        
         self.ctrlView=[[UIView alloc] init];
         r=self.view.frame;
         r.size.height=120;
@@ -136,6 +139,12 @@ typedef enum{
         [self.ctrlView addSubview:self.lblEdit];
     }
     return self;
+}
+-(void)touchView:(id)sender
+{
+    if (!self.ctrlView.isHidden) {
+        [self.ctrlView setHidden:YES];
+    }
 }
 -(void)dealloc
 {
@@ -280,6 +289,7 @@ typedef enum{
 }
 - (void)editAction:(id)sender
 {
+    [self.ctrlView setHidden:YES];
     [self hideOptionCell];
     [self setIsEditing:!self.isEditing];
     //UIBarButtonItem *button = (UIBarButtonItem *)sender;
@@ -600,7 +610,7 @@ typedef enum{
             [toolbar setItems:@[flexible,item0,flexible,item2,flexible,item3,flexible]];
         }else
         {
-            [toolbar setItems:@[flexible,item0,flexible,item1,flexible,item2,flexible,itemMove,flexible]];
+            [toolbar setItems:@[flexible,item0,flexible,item1,flexible,item2,flexible,item3,flexible]];
         }
         
         [cell addSubview:toolbar];
@@ -1035,6 +1045,12 @@ typedef enum{
 }
 -(void)removeSucess
 {
+    if (self.willDeleteObjects) {
+        [self removeFromDicWithObjects:self.willDeleteObjects];
+        [self.tableView reloadData];
+    }
+    
+    //[self.tableView reloadData];
     [self updateFileList];
     if (self.hud) {
         [self.hud removeFromSuperview];
@@ -1215,6 +1231,7 @@ typedef enum{
                 NSArray *indexesToDelete = @[indexPath,self.selectedIndexPath];
                 self.selectedIndexPath = nil;
                 //[self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
+                self.willDeleteObjects=@[dic];
                 NSString *f_id=[dic objectForKey:@"f_id"];
                 [self.fm cancelAllTask];
                 self.fm=[[[SCBFileManager alloc] init] autorelease];
@@ -1260,6 +1277,7 @@ typedef enum{
                         [deleteObjects addObject:dic];
                     }
                 }
+                self.willDeleteObjects=deleteObjects;
                 //[self removeFromDicWithObjects:deleteObjects];
                 //[self.tableView reloadData];
                 if (f_ids.count>0) {
@@ -1307,6 +1325,10 @@ typedef enum{
 #pragma mark Deferred image loading (UIScrollViewDelegate)
 
 // Load images for all onscreen rows when scrolling is finished
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.ctrlView setHidden:YES];
+}
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate)
