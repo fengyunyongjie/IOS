@@ -601,8 +601,8 @@ typedef enum{
         //UIBarButtonItem *item3=[[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStyleDone target:self action:@selector(toDelete:)];
         UIBarButtonItem *item3=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_remove.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toDelete:)];
         [item3 setTitle:@"删除"];
-        UIBarButtonItem *itemMove=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bt_Operator.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toMore:)];
-        [itemMove setTitle:@"更多"];
+        UIBarButtonItem *itemMore=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Bt_Operator.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toMore:)];
+        [itemMore setTitle:@"更多"];
         UIBarButtonItem *flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         NSDictionary *this=(NSDictionary *)[self.listArray objectAtIndex:indexPath.row-1];
         NSString *t_fl = [[this objectForKey:@"f_mime"] lowercaseString];
@@ -610,7 +610,12 @@ typedef enum{
             [toolbar setItems:@[flexible,item0,flexible,item2,flexible,item3,flexible]];
         }else
         {
-            [toolbar setItems:@[flexible,item0,flexible,item1,flexible,item2,flexible,item3,flexible]];
+            if ([YNFunctions isOpenHideFeature]) {
+                [toolbar setItems:@[flexible,item0,flexible,item1,flexible,item2,flexible,itemMore,flexible]];
+            }else
+            {
+                [toolbar setItems:@[flexible,item0,flexible,item1,flexible,item2,flexible,item3,flexible]];
+            }
         }
         
         [cell addSubview:toolbar];

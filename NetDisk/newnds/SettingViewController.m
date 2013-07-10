@@ -19,11 +19,13 @@ typedef enum{
     kAlertTypeClear,
     kAlertTypeWiFi,
     kAlertTypeAuto,
+    kAlertTypeHideFeature,
 }kAlertType;
 
 @interface SettingViewController ()
 @property (strong,nonatomic) NSString *space_total;
 @property (strong,nonatomic) NSString *space_used;
+@property (assign,nonatomic) int tempCount;
 @end
 
 @implementation SettingViewController
@@ -61,6 +63,14 @@ typedef enum{
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
+}
+-(void)viewWillAppear:(BOOL)animated
+{
+    self.tempCount=0;
+}
+-(void)viewWillDisappear:(BOOL)animated
+{
+    self.tempCount=0;
 }
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -244,6 +254,13 @@ typedef enum{
                 [uploadView stopAllDo];
             }
             [self.tableView reloadData];
+            break;
+        case kAlertTypeHideFeature:
+        {
+            if (buttonIndex==1) {
+                [YNFunctions setIsOpenHideFeature:![YNFunctions isOpenHideFeature]];
+            }
+        }
             break;
         default:
             break;
@@ -634,6 +651,31 @@ typedef enum{
             switch (row) {
                 case 0:
                     //版本
+                    self.tempCount++;
+                    if (self.tempCount>=6) {
+                        self.tempCount=0;
+                        if ([YNFunctions isOpenHideFeature]) {
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                                message:@"是否关闭隐藏功能？"
+                                                                               delegate:self
+                                                                      cancelButtonTitle:@"取消"
+                                                                      otherButtonTitles:@"确定", nil];
+                            alertView.tag=kAlertTypeHideFeature;
+                            [alertView show];
+                            [alertView release];
+                        }else
+                        {
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                                message:@"是否打开隐藏功能？"
+                                                                               delegate:self
+                                                                      cancelButtonTitle:@"取消"
+                                                                      otherButtonTitles:@"确定", nil];
+                            alertView.tag=kAlertTypeHideFeature;
+                            [alertView show];
+                            [alertView release];
+                        }
+                        
+                    }
                     break;
                 case 1:
                     //评分

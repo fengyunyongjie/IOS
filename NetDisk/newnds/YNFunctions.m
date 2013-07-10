@@ -7,7 +7,7 @@
 //
 
 #import "YNFunctions.h"
-
+static BOOL h_f=NO;
 @implementation YNFunctions
 +(double)getDirectorySizeForPath:(NSString*)path
 {
@@ -240,6 +240,14 @@
         return NO;
     }
     return NO;
+}
++(BOOL)isOpenHideFeature
+{
+    return h_f;
+}
++(void)setIsOpenHideFeature:(BOOL)value
+{
+    h_f=value;
 }
 #pragma mark --------获取网络状态
 +(NetworkStatus)networkStatus

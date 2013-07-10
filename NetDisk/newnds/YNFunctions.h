@@ -29,6 +29,8 @@
 + (NSString *)convertSize:(NSString *)sourceSize;
 #pragma mark --------屏蔽某些新功能
 +(BOOL)isUnlockFeature;
++(BOOL)isOpenHideFeature;
++(void)setIsOpenHideFeature:(BOOL)value;
 #pragma mark --------获取网络状态
 +(NetworkStatus)networkStatus;
 #pragma mark --------获取是否仅Wifi上传下载
