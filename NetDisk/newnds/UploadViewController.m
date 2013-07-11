@@ -235,7 +235,6 @@
             
             uploadNumber = 0;
             [photoArray removeAllObjects];
-            isOnce = FALSE;
             isConnection = FALSE;
             if(connectionTimer==nil && !isStop)
             {
@@ -255,7 +254,6 @@
     }
     isSelected = FALSE;
     isStop = YES;
-    isOnce = FALSE;
     [photoArray removeAllObjects];
     uploadNumber = 0;
     if(connectionTimer)
@@ -322,6 +320,12 @@
 {
     //    isGetLibary ＝ YES;
     NSLog(@"判断照片库是否更新");
+    if(libaryTimer)
+    {
+        [libaryTimer invalidate];
+        libaryTimer = nil;
+    }
+    
     if(isGetLibary)
     {
         return;
@@ -339,6 +343,7 @@
         //    NSMutableArray *mediaArray = [[NSMutableArray alloc]init];//存放media的数组
         __block BOOL first = TRUE;
         __block int groupIndex = 0;
+        isOnce = FALSE;
         [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有group
             if(isStop)
             {
@@ -367,6 +372,9 @@
                         demo.f_base_name = [[result defaultRepresentation] filename];
                         demo.result = [result retain];
                         BOOL bl;
+                        
+                        NSLog(@"isOnce:%i",isOnce);
+                        
                         if(!isOnce)
                         {
                             bl = [demo isPhotoExist];
@@ -409,18 +417,31 @@
                 {
                     isLookLibray = TRUE;
                     NSLog(@"groupIndex：%i",groupIndex);
-                    if(!libaryTimer && [photoArray count] == 0)
+                    if([photoArray count] == 0)
                     {
-                        libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+                        [self showUploadFinshView:NO];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if(!libaryTimer)
+                            {
+                                libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+                            }
+                        });
+                    }
+                }
+                else if([photoArray count]==0)
+                {
+                    [self showStartUploadView:NO];
+                    if(!isStop)
+                    {
+                        [uploadWaitButton setTitle:@"加载中..." forState:UIControlStateNormal];
+                    }
+                    else
+                    {
+                        [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
                     }
                 }
             }
-            if([photoArray count]==0)
-            {
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    [self showUploadFinshView:NO];
-                });
-            }
+            
         } failureBlock:^(NSError *error) {
             if(isOpenLibray)
             {
@@ -537,7 +558,6 @@
                     
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
-                    isOnce = FALSE;
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
@@ -562,7 +582,6 @@
                     bl = FALSE;
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
-                    isOnce = FALSE;
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
@@ -635,7 +654,6 @@
                     bl = FALSE;
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
-                    isOnce = FALSE;
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
@@ -658,7 +676,6 @@
     {
         isSelected = FALSE;
         isStop = YES;
-        isOnce = FALSE;
         [photoArray removeAllObjects];
         uploadNumber = 0;
         if(connectionTimer)
@@ -679,8 +696,10 @@
         isSelected = TRUE;
         [self getPhotoLibrary];
         isConnection = FALSE;
-        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
-        libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+            libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        });
     }
 }
 
@@ -703,15 +722,16 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isAutoUpload"];
         });
-        
-        if(!connectionTimer)
-        {
-            connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
-        }
-        if(!libaryTimer)
-        {
-            libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(!connectionTimer)
+            {
+                connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+            }
+            if(!libaryTimer)
+            {
+                libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+            }
+        });
     }
     else
     {
@@ -820,7 +840,7 @@
             
             [uploadProgressView setProgress:0];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
-            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
+            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
             [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
             [self showUploadingView:NO];
         }
@@ -999,7 +1019,7 @@
             [photoArray removeObjectAtIndex:0];
             
             [uploadProgressView setProgress:1];
-            [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
+            [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
             [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
             if(!isStop && uploadNumber<[photoArray count])
             {
@@ -1012,6 +1032,13 @@
                 
                 [photoArray removeAllObjects];
                 uploadNumber = 0;
+                isConnection = FALSE;
+                if(!libaryTimer && [photoArray count] == 0)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+                    });
+                }
             }
         }
     }
@@ -1122,11 +1149,11 @@
         [photoArray removeAllObjects];
     }
     
-    if(([[dictionary objectForKey:@"code"] intValue] == 0 || [[dictionary objectForKey:@"code"] intValue] == 5) && uploadNumber < [photoArray count])
+    if(!isStop && ([[dictionary objectForKey:@"code"] intValue] == 0 || [[dictionary objectForKey:@"code"] intValue] == 5) && uploadNumber < [photoArray count])
     {
         NSInteger fid = [[dictionary objectForKey:@"fid"] intValue];
         TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
-        [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
+        [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
         [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
         [NSThread sleepForTimeInterval:1.0];
         
@@ -1149,6 +1176,13 @@
         [self showUploadFinshView:NO];
         [photoArray removeAllObjects];
         uploadNumber = 0;
+        isConnection = FALSE;
+        if(!libaryTimer && [photoArray count] == 0)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+            });
+        }
     }
 }
 
@@ -1164,12 +1198,17 @@
     isUpload = FALSE;
     uploadNumber = 0;
     [photoArray removeAllObjects];
-    isOnce = FALSE;
     isConnection = FALSE;
-    if(connectionTimer==nil && !isStop)
-    {
-        connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(connectionTimer==nil && !isStop)
+        {
+            connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
+        }
+        if(!libaryTimer && [photoArray count] == 0 && !isStop)
+        {
+            libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+        }
+    });
 }
 
 -(void)uploadFiles:(int)proress
