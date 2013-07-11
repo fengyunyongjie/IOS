@@ -30,6 +30,7 @@
             if (sqlite3_exec(contactDB, (const char *)[CreateFavoritesTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
                 NSLog(@"errMsg:%s",errMsg);
             }
+            sqlite3_close(contactDB);
         }
         else
         {

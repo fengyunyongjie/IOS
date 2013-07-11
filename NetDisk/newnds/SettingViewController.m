@@ -195,15 +195,17 @@ typedef enum{
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
+                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                [uploadView stopAllDo];
+                
                 [DBSqlite3 cleanSql];
                 [[FavoritesData sharedFavoritesData] stopDownloading];
                 
                 [self.rootViewController presendLoginViewController];
                 
-                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-                [uploadView stopAllDo];
+                
             }
             break;
         case kAlertTypeClear:

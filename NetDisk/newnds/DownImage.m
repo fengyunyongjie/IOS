@@ -96,6 +96,15 @@
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(!apple.isDownImageIsNil)
+    {
+        if(delegate && [delegate respondsToSelector:@selector(didFailWithError)])
+        {
+            [delegate didFailWithError];
+        }
+    }
+    
 //    NSLog(@"重新下载图片");
 //    if(activeDownload)
 //    {
@@ -126,7 +135,7 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.activeDownload options:NSJSONReadingMutableLeaves error:nil];
-    NSLog(@"connectionDidFinishLoading:%@.length:%i",diction,[activeDownload length]);
+    NSLog(@"connectionDidFinishLoading:%@.length:%i,fileId:%i",diction,[activeDownload length],fileId);
     if([[diction objectForKey:@"code"] intValue] == 1 || [[diction objectForKey:@"code"] intValue] == 3 )
     {
         [self connection:nil didFailWithError:nil];
@@ -143,6 +152,7 @@
         {
             if(delegate && [delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
             {
+                NSLog(@"index-------------:%i",index);
                 [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
             }
         }

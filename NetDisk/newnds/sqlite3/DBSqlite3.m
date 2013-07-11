@@ -7,9 +7,10 @@
 //
 
 #import "DBSqlite3.h"
-#import "SCBSession.h"
+#import "YNFunctions.h"
 
 @implementation DBSqlite3
+@synthesize databasePath;
 
 -(id)init
 {
@@ -17,49 +18,35 @@
     
     /*根据路径创建数据库并创建一个表contact(id nametext addresstext phonetext)*/
     
-    NSString *docsDir;
-    NSArray *dirPaths;
+    self.databasePath=[YNFunctions getDBCachePath];
+    self.databasePath=[self.databasePath stringByAppendingPathComponent:@"hongPan.sqlite"];
     
-    // Get the documents directory
-    dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    docsDir = [dirPaths objectAtIndex:0];
-    
-    // Build the path to the database file
-    databasePath = [[NSString alloc] initWithString:[docsDir stringByAppendingPathComponent:@"hongPan.sqlite"]];
-    
-    NSFileManager *filemgr = [NSFileManager defaultManager];
-    
-    if ([filemgr fileExistsAtPath:databasePath] == NO)
+    if (sqlite3_open([self.databasePath fileSystemRepresentation], &contactDB)==SQLITE_OK)
     {
-        const char *dbpath = [databasePath UTF8String];
-        if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK)
-        {
-            char *errMsg;
-            if (sqlite3_exec(contactDB, (const char *)[CreateTaskTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
-                NSLog(@"errMsg:%s",errMsg);
-            }
+        char *errMsg;
+        if (sqlite3_exec(contactDB, [CreateTaskTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+            NSLog(@"errMsg:%s",errMsg);
         }
-        else
-        {
-            NSLog(@"创建/打开数据库失败");
+        if (sqlite3_exec(contactDB, (const char *)[CreatePhotoFileTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+            NSLog(@"errMsg:%s",errMsg);
         }
+        sqlite3_close(contactDB);
     }
+    else
+    {
+        NSLog(@"创建/打开数据库失败");
+    }
+    
+    
     return self;
 }
 
 +(void)cleanSql
 {
-    // Get the documents directory
-    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString *docsDir = [dirPaths objectAtIndex:0];
-    
-    // Build the path to the database file
-    NSString *databasePath = [[NSString alloc] initWithString:[docsDir stringByAppendingPathComponent:@"hongPan.sqlite"]];
-    
+    NSString *databasePaths=[YNFunctions getDBCachePath];
+    databasePaths=[databasePaths stringByAppendingPathComponent:@"hongPan.sqlite"];
     NSFileManager *filemgr = [NSFileManager defaultManager];
-    BOOL bl = [filemgr removeItemAtPath:databasePath error:nil];
+    BOOL bl = [filemgr removeItemAtPath:databasePaths error:nil];
     NSLog(@"bl:%i",bl);
 }
 

@@ -11,7 +11,7 @@
 #import <Foundation/Foundation.h>
 @protocol DownloaderDelegate <NSObject>  //使用代理派发的原因在于，不知道何时下载完成，indexTag：将要显示图片的tag，imageUrl：图片的地址
 - (void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index;
-
+-(void)didFailWithError;
 @end
 
 @interface DownImage : NSObject {

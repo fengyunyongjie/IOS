@@ -7,7 +7,7 @@
 //
 
 #import "PhotoFile.h"
-#import "SCBSession.h"
+#import "YNFunctions.h"
 
 @implementation PhotoFile
 @synthesize f_id,f_date;
@@ -16,37 +16,7 @@
 -(id)init
 {
     // Do any additional setup after loading the view, typically from a nib.
-    
-    /*根据路径创建数据库并创建一个表contact(id nametext addresstext phonetext)*/
-    
-    NSString *docsDir;
-    NSArray *dirPaths;
-    
-    // Get the documents directory
-    dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    docsDir = [dirPaths objectAtIndex:0];
-    
-    // Build the path to the database file
-    databasePath = [[NSString alloc] initWithString:[docsDir stringByAppendingPathComponent:@"hongPan.sqlite"]];
-    
-    NSFileManager *filemgr = [NSFileManager defaultManager];
-    
-    if ([filemgr fileExistsAtPath:databasePath] == NO)
-    {
-        const char *dbpath = [databasePath UTF8String];
-        if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK)
-        {
-            char *errMsg;
-            if (sqlite3_exec(contactDB, (const char *)[CreatePhotoFileTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
-                NSLog(@"errMsg:%s",errMsg);
-            }
-        }
-        else
-        {
-            NSLog(@"创建/打开数据库失败");
-        }
-    }
+    self = [super init];
     return self;
 }
 
@@ -55,7 +25,7 @@
 {
     BOOL bl = FALSE;
     sqlite3_stmt *statement;
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [InsertPhotoFileTable UTF8String];
         int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
@@ -83,7 +53,7 @@
 -(void)deletePhotoFileTable
 {
     sqlite3_stmt *statement;
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeletePhotoFileTable UTF8String];
         int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
@@ -105,7 +75,7 @@
 -(void)deleteAllPhotoFileTable
 {
     sqlite3_stmt *statement;
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteAllPhotoFileTable UTF8String];
         int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
@@ -127,7 +97,7 @@
 -(void)updatePhotoFileTable
 {
     sqlite3_stmt *statement;
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [UpdatePhotoFileTable UTF8String];
         int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
@@ -151,7 +121,7 @@
 {
     NSMutableArray *tableArray = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [self.databasePath UTF8String];
     
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [SelectAllTaskTable UTF8String];
@@ -176,7 +146,7 @@
 {
     NSMutableArray *tableArray = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [self.databasePath UTF8String];
     
     NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -211,7 +181,7 @@
 {
     NSInteger count = 0;
     sqlite3_stmt *statement;
-    const char *dbpath = [databasePath UTF8String];
+    const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [SelectCountPhotoFileTable UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);

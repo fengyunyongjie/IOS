@@ -296,11 +296,13 @@
     
     isLoadImage = TRUE;
     isSort = TRUE;
+    isReload = FALSE;
     
     [hud hide:YES afterDelay:0.8f];
     [hud release];
     hud = nil;
-    isReload = FALSE;
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
 }
 
 -(BOOL)startTimeMoreThanEndTime:(NSString *)sTime eTime:(NSString *)eTime
@@ -683,27 +685,11 @@
             
             NSLog(@"imageCount:%i",image.retainCount);
         }
-        
-        if(isOnece)
+        if([downCellArray count]>5)
         {
-            if([downCellArray count]>5)
-            {
-                [downCellArray removeObjectAtIndex:0];
-            }
-            [downCellArray addObject:cell];
+            [downCellArray removeObjectAtIndex:0];
         }
-        else
-        {
-            if([downCellArray count]<6)
-            {
-                [downCellArray addObject:cell];
-            }
-            if(!timer)
-            {
-                timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
-            }
-        }
-        
+        [downCellArray addObject:cell];
 //        operation *queue = [[operation alloc] init];
 //        [queue cellArray:cellArray imagev:imageArray];
 //        [operationQueue addOperation:queue];
@@ -802,27 +788,11 @@
             
             NSLog(@"imageCount:%i",image.retainCount);
         }
-        
-        if(isOnece)
+        if([downCellArray count]>5)
         {
-            if([downCellArray count]>5)
-            {
-                [downCellArray removeObjectAtIndex:0];
-            }
-            [downCellArray addObject:cell];
+            [downCellArray removeObjectAtIndex:0];
         }
-        else
-        {
-            if([downCellArray count]<6)
-            {
-                [downCellArray addObject:cell];
-            }
-            if(!timer)
-            {
-                timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
-            }
-        }
-        
+        [downCellArray addObject:cell];
 //        operation *queue = [[operation alloc] init];
 //        [queue cellArray:cellArray imagev:imageArray];
 //        [operationQueue addOperation:queue];
@@ -836,12 +806,9 @@
 
 -(void)FirstLoad
 {
-    if(!isOnece)
-    {
-        isLoadData = TRUE;
-        isOnece = TRUE;
-        [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
-    }
+    isLoadData = TRUE;
+    isOnece = TRUE;
+    [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
 }
 
 -(void)getImageNewLoad:(CellTag *)cellT imageView:(UIImageView *)image_v
@@ -973,13 +940,13 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    NSLog(@"isLoadData:%i",isLoadData);
     isLoadImage = TRUE;
     if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
         isSort = TRUE;
         endFloat = scrollView.contentOffset.y;
         isLoadData = TRUE;
+        NSLog(@"isLoadData11111:%i",isLoadData);
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
     
@@ -988,19 +955,20 @@
         isSort = FALSE;
         endFloat = scrollView.contentOffset.y;
         isLoadData = TRUE;
+        NSLog(@"isLoadData11111:%i",isLoadData);
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"isLoadData:%i",isLoadData);
     isLoadImage = TRUE;
     if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
         isSort = TRUE;
         endFloat = scrollView.contentOffset.y;
         isLoadData = TRUE;
+        NSLog(@"isLoadData222222:%i",isLoadData);
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
     
@@ -1009,6 +977,7 @@
         isSort = FALSE;
         endFloat = scrollView.contentOffset.y;
         isLoadData = TRUE;
+        NSLog(@"isLoadData222222:%i",isLoadData);
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
 }

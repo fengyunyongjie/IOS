@@ -45,6 +45,7 @@
     NSInteger endCurrPage;
     
     UIScrollView *imageScrollView;
+    CGFloat enFloat;
 }
 
 @property (atomic, retain) UIScrollView *imageScrollView;

@@ -83,6 +83,7 @@
 {
     baseBL = TRUE;
     isAlert = TRUE;
+    libaryTimer = nil;
     allHeight = self.view.frame.size.height - 49;
     //    int defHeight = (allHeight-260)/2;
     //    CGRect rect = CGRectMake((320-184)/2, defHeight, 184, 124);
@@ -176,7 +177,7 @@
     uploadFinshImageView = [[UIImageView alloc] initWithFrame:uploadFinshImageRect];
     [uploadFinshImageView setImage:[UIImage imageNamed:@"Updata_Complite.png"]];
     [self.view addSubview:uploadFinshImageView];
-    CGRect uploadFinshRect = CGRectMake(10, y+240, 300, 20);
+    CGRect uploadFinshRect = CGRectMake(10, y+260, 300, 20);
     uploadFinshLabel = [[UILabel alloc] initWithFrame:uploadFinshRect];
     [uploadFinshLabel setText:@"现已全部完成，你的照片已上传到虹盘"];
     [uploadFinshLabel setTextColor:[UIColor colorWithRed:57.0/255.0 green:65.0/255.0 blue:92.0/255.0 alpha:1]];
@@ -192,7 +193,7 @@
     
     photoManger = [[SCBPhotoManager alloc] init];
     [photoManger setNewFoldDelegate:self];
-    
+    isLookLibray = TRUE;
     [super viewDidLoad];
 }
 
@@ -290,7 +291,11 @@
         {
             isStop = NO;
             isSelected = TRUE;
-            [self getPhotoLibrary];
+            if(isLookLibray)
+            {
+                isLookLibray = FALSE;
+                [self getPhotoLibrary];
+            }
             isConnection = FALSE;
             [uploadWaitButton setTitle:@"加载中..." forState:UIControlStateNormal];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -300,10 +305,6 @@
             if(!connectionTimer)
             {
                 connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
-            }
-            if(!libaryTimer)
-            {
-                libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
             }
         }
         isUpload = FALSE;
@@ -329,6 +330,7 @@
     NSLog(@"查询图片");
     if(isStop)
     {
+        isLookLibray = TRUE;
         [self stopAllDo];
         return;
     }
@@ -336,13 +338,25 @@
         ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]init];//生成整个photolibrary句柄的实例
         //    NSMutableArray *mediaArray = [[NSMutableArray alloc]init];//存放media的数组
         __block BOOL first = TRUE;
+        __block int groupIndex = 0;
         [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有group
+            if(isStop)
+            {
+                isLookLibray = TRUE;
+                return ;
+            }
             if(first)
             {
                 first = FALSE;
                 __block BOOL isLoad = FALSE;
-                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {//从group里面
-                    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                    if(isStop)
+                    {
+                        isLookLibray = TRUE;
+                        return ;
+                    }
+                    //从group里面
+                    groupIndex++;
                     NSString* assetType = [result valueForProperty:ALAssetPropertyType];
                     if ([assetType isEqualToString:ALAssetTypePhoto]) {
                         TaskDemo *demo = [[TaskDemo alloc] init];
@@ -373,7 +387,7 @@
                         }
                         [demo release];
                     }
-                    [pool release];
+                    NSLog(@"groupIndex++:%i",groupIndex);
                 }];
                 isOnce = TRUE;
                 isGetLibary = FALSE;
@@ -388,6 +402,16 @@
                                 connectionTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(isUPloadImage) userInfo:nil repeats:YES];
                             });
                         }
+                    }
+                }
+                NSLog(@"groupIndex：%i",group.numberOfAssets);
+                if(group.numberOfAssets == groupIndex-1)
+                {
+                    isLookLibray = TRUE;
+                    NSLog(@"groupIndex：%i",groupIndex);
+                    if(!libaryTimer && [photoArray count] == 0)
+                    {
+                        libaryTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
                     }
                 }
             }
@@ -760,32 +784,51 @@
     NSLog(@"------------------uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
     f_pid = 0;
     dispatch_async(dispatch_get_main_queue(), ^{
-        TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
-        ALAsset *result = demo.result;
-        NSError *error = nil;
-        Byte *data = malloc(result.defaultRepresentation.size);
-        
-        //获得照片图像数据
-        [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-        demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-        [self showUploadingView:NO];
-        UIImage *imageB = [UIImage imageWithData:demo.f_data];
-        CGSize imageSize = CGSizeMake(140, 140*imageB.size.height/imageB.size.width);
-        if(imageSize.height>210)
+        if(uploadNumber < [photoArray count])
         {
-            imageSize = CGSizeMake(210*imageSize.width/imageSize.height, 210);
+            TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
+            if(demo.f_data == nil)
+            {
+                ALAsset *result = demo.result;
+                NSError *error = nil;
+                Byte *data = malloc(result.defaultRepresentation.size);
+                
+                //获得照片图像数据
+                [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+                demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+                
+            }
+            [self showUploadingView:NO];
+            UIImage *imageB = [UIImage imageWithData:demo.f_data];
+            CGSize imageSize = imageB.size;
+            float width = uploadProgressView.frame.size.width;
+            if(imageSize.width>width)
+            {
+                imageSize = CGSizeMake(width, width*imageSize.height/imageSize.width);
+            }
+            float height = uploadProgressView.frame.origin.y-40;
+            if(imageSize.height>height)
+            {
+                imageSize = CGSizeMake(height*imageSize.width/imageSize.height, height);
+            }
+            CGRect uploadImageRect = uploadImageView.frame;
+            uploadImageRect.size = imageSize;
+            uploadImageRect.origin.x = (320-imageSize.width)/2;
+            uploadImageRect.origin.y = (uploadProgressView.frame.origin.y-imageSize.height)/2;
+            [uploadImageView setFrame:uploadImageRect];
+            [uploadImageView.boderImageView performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageWithData:demo.f_data] waitUntilDone:YES];
+            
+            [uploadProgressView setProgress:0];
+            [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
+            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
+            [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
+            [self showUploadingView:NO];
         }
-        CGRect uploadImageRect = uploadImageView.frame;
-        uploadImageRect.size = imageSize;
-        uploadImageRect.origin.x = (320-imageSize.width)/2;
-        uploadImageRect.origin.y = (uploadProgressView.frame.origin.y-imageSize.height)/2;
-        [uploadImageView setFrame:uploadImageRect];
-        [uploadImageView.boderImageView setImage:[UIImage imageWithData:demo.f_data]];
-        [uploadProgressView setProgress:0];
-        [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
-        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
-        [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
-        [self showUploadingView:NO];
+        else
+        {
+            NSLog(@"突然停止");
+        }
+        
     });
     if(uploadNumber >= [photoArray count])
     {
@@ -954,13 +997,12 @@
             demo.f_lenght = [demo.f_data length];
             [demo updateTaskTableFName];
             [photoArray removeObjectAtIndex:0];
+            
             [uploadProgressView setProgress:1];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传%@",demo.f_base_name]];
             [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
-            
             if(!isStop && uploadNumber<[photoArray count])
             {
-                [uploadImageView.boderImageView setImage:nil];
                 isConnection = FALSE;
                 [self isUPloadImage];
             }
@@ -1092,13 +1134,13 @@
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
         [demo updateTaskTableFName];
+        
         [photoArray removeObjectAtIndex:0];
     }
     NSLog(@"uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
     if(!isStop && uploadNumber<[photoArray count])
     {
         [uploadData release];
-        [uploadImageView.boderImageView setImage:nil];
         isConnection = FALSE;
         [self isUPloadImage];
     }

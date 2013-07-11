@@ -260,24 +260,23 @@
         //判断数据个数是否相等
         PhotoFile *photo_f = [[[PhotoFile alloc] init] autorelease];
         NSInteger count = [photo_f selectCountTaskTable];
-        if(count!=[allArray count])
+        if(count!=[allArray count] || [allArray count]==0)
         {
+            bl = TRUE;
             [photo_f deleteAllPhotoFileTable];
             for(int i=0;i<[allArray count];i++)
             {
                 NSDictionary *dictionary = [allArray objectAtIndex:i];
                 NSString *f_date = [dictionary objectForKey:@"f_date"];
                 int f_id = [[dictionary objectForKey:@"f_id"] intValue];
-                PhotoFile *photo_file = [[PhotoFile alloc] init];
+                PhotoFile *photo_file = [[[PhotoFile alloc] init] autorelease];
                 photo_file.f_id = f_id;
                 photo_file.f_date = f_date;
                 photo_file.f_time = [[dateFormatter dateFromString:f_date] timeIntervalSince1970];
                 NSLog(@"photo_file.f_time:%f",photo_file.f_time);
-                bl = [photo_file insertPhotoFileTable];
-                [photo_file release];
+                [photo_file insertPhotoFileTable];
             }
         }
-        
     }
     if(bl || isFirst)
     {

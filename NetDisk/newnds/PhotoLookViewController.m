@@ -246,117 +246,132 @@
     return nil;
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    
-}
-
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     self.page = imageScrollView.contentOffset.x/currWidth;
     
     currPage = self.page;
-    if (scrollView == imageScrollView){
-        CGFloat x = scrollView.contentOffset.x;
-        self.endFloat = x;
-        if (x==self.offset){
-            
-        }
-        else {
-            self.offset = x;
-            for (UIScrollView *s in scrollView.subviews){
-                if ([s isKindOfClass:[UIScrollView class]]){
-                    [s setZoomScale:1.0];
-                    UIImageView *image = [[s subviews] objectAtIndex:0];
-                    CGSize imaSize;
-                    CGRect imageFrame = image.frame;
-                    if(self.isScape)
-                    {
-                        imaSize = [self getSacpeImageSize:image.image];
-                        [s setContentSize:imaSize];
-                        int x = s.tag-ScrollViewTag;
-                        [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
-                        imageFrame.origin = CGPointMake((currWidth-imaSize.width)/2, (currHeight-imaSize.height)/2);
-                    }
-                    else
-                    {
-                        imaSize = [self getImageSize:image.image];
-                        [s setContentSize:imaSize];
-                        int x = s.tag-ScrollViewTag;
-                        [s setFrame:ScrollRect(x,size)];
-                        imageFrame.origin = ImagePoint(imaSize);
-                    }
-                    imageFrame.size = imaSize;
-                    [image setFrame:imageFrame];
-                }
-            }
-        }
-    }
     
+    int page = self.page;
+    if(page>=[tableArray count])
+    {
+        return;
+    }
+    [self loadPageColoumn:page];
+    NSLog(@"停止了。。。");
+//    if (scrollView == imageScrollView){
+//        CGFloat x = scrollView.contentOffset.x;
+//        self.endFloat = x;
+//        if (x==self.offset){
+//            
+//        }
+//        else {
+//            self.offset = x;
+//            for (UIScrollView *s in scrollView.subviews){
+//                if ([s isKindOfClass:[UIScrollView class]]){
+//                    [s setZoomScale:1.0];
+//                    UIImageView *image = [[s subviews] objectAtIndex:0];
+//                    CGSize imaSize;
+//                    CGRect imageFrame = image.frame;
+//                    if(self.isScape)
+//                    {
+//                        imaSize = [self getSacpeImageSize:image.image];
+//                        [s setContentSize:imaSize];
+//                        int x = s.tag-ScrollViewTag;
+//                        [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
+//                        imageFrame.origin = CGPointMake((currWidth-imaSize.width)/2, (currHeight-imaSize.height)/2);
+//                    }
+//                    else
+//                    {
+//                        imaSize = [self getImageSize:image.image];
+//                        [s setContentSize:imaSize];
+//                        int x = s.tag-ScrollViewTag;
+//                        [s setFrame:ScrollRect(x,size)];
+//                        imageFrame.origin = ImagePoint(imaSize);
+//                    }
+//                    imageFrame.size = imaSize;
+//                    [image setFrame:imageFrame];
+//                }
+//            }
+//        }
+//    }
 }
 
 #pragma mark 滑动隐藏
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    isLoadImage = FALSE;
     [self.topToolBar setHidden:YES];
     [self.bottonToolBar setHidden:YES];
     
-    for(int i=0;i<[imageScrollView.subviews count];i++)
-    {
-        UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
-        if(s.tag-ScrollViewTag!=self.page)
-        {
-            [s removeFromSuperview];
-            NSLog(@"viewCount:%i",s.retainCount);
-        }
-    }
-    
-    //加载当前页面，左右各十张
-    isLoadImage = TRUE;
-    [self loadImage];
-    
-//    int currIndex;
-//    if(self.isScape)
-//    {
-//        currIndex = imageScrollView.contentOffset.x/ScollviewHeight;
-//    }
-//    else
-//    {
-//        currIndex = imageScrollView.contentOffset.x/320;
-//    }
-//    if(self.page != currIndex)
-//    {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-//    }
+        if(isLoadImage)
+        {
+            NSLog(@"不进行预加载。。。");
+            return ;
+        }
+        
+        if(!isLoadImage)
+        {
+            NSLog(@"预加载开始。。。");
+            isLoadImage = TRUE;
+        }
+        
+        if(isLoadImage&&scrollView.contentOffset.x>enFloat)
+        {
+            for(int i=0;isLoadImage&&i<[imageScrollView.subviews count];i++)
+            {
+                UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
+                if(s.tag-ScrollViewTag!=self.page && s.tag-ScrollViewTag!=self.page+1 && s.tag-ScrollViewTag!=self.page+2)
+                {
+                    [s removeFromSuperview];
+                }
+            }
+            
+            //向右滑动
+            NSLog(@"向右滑动:%i",[imageScrollView.subviews count]);
+            //加载数据
+            self.page = imageScrollView.contentOffset.x/currWidth;
+            int page = self.page;
+            for(int i=page;i<page+3;i++)
+            {
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                [self loadPageColoumn:i];
+            }
+        }
+        
+        if(isLoadImage&&scrollView.contentOffset.x<enFloat)
+        {
+            for(int i=0;isLoadImage&&i<[imageScrollView.subviews count];i++)
+            {
+                UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
+                if(s.tag-ScrollViewTag!=self.page && s.tag-ScrollViewTag!=self.page-1 && s.tag-ScrollViewTag!=self.page-2)
+                {
+                    [s removeFromSuperview];
+                }
+            }
+            //向左滑动
+            NSLog(@"向左滑动:%i",[imageScrollView.subviews count]);
+            //加载数据
+            self.page = imageScrollView.contentOffset.x/currWidth;
+            int page = self.page;
+            for(int i=page;i>page-3;i--)
+            {
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                [self loadPageColoumn:i];
+            }
+        }
+        enFloat = scrollView.contentOffset.x;
+        isLoadImage = FALSE;
+        NSLog(@"预加载结束。。。");
+    });
 }
-
-//-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-//{
-//    NSLog(@"22222222");
-//    for(int i=0;i<[imageViewArray count];i++)
-//    {
-//        UIScrollView *s = [imageViewArray objectAtIndex:i];
-//        [s removeFromSuperview];
-//    }
-//    [imageViewArray removeAllObjects];
-//    [imageDic removeAllObjects];
-//    
-//    //加载当前页面，左右各十张
-//    isLoadImage = TRUE;
-////    [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
-//    
-//    NSLog(@"ScollviewWidth:%f,ScollviewHeight:%f",ScollviewWidth,ScollviewHeight);
-//    if(self.isScape)
-//    {
-//        self.page = imageScrollView.contentOffset.x/ScollviewHeight;
-//    }
-//    else
-//    {
-//        self.page = imageScrollView.contentOffset.x/320;
-//    }
-//    currPage = self.page;
-//}
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{
     NSLog(@"Did zoom!:%@",NSStringFromCGSize(scrollView.contentSize));
@@ -370,9 +385,7 @@
     xcenter = currWidth*(scrollView.tag-ScrollViewTag) + scrollView.contentSize.width > scrollView.frame.size.width ? scrollView.contentSize.width/2: xcenter;
     if(scrollView.contentSize.width<=currWidth)
     {
-        NSLog(@"scrollView.contentSize.width:%f",scrollView.contentSize.width);
         xcenter = (currWidth-scrollView.contentSize.width)/2+scrollView.contentSize.width/2;
-        NSLog(@"xcenter:%f,currWidth:%f",xcenter,currWidth);
     }
     if(scrollView.contentSize.height>=currHeight)
     {
@@ -406,9 +419,9 @@
     //加载数据
     int page = self.page;
     //判断是否加载图片
-    if(page-5>=0)
+    if(page-3>=0)
     {
-        for(int i=page-1;isLoadImage&&i>page-5;i--)
+        for(int i=page-1;isLoadImage&&i>page-3;i--)
         {
             if(i>=[tableArray count])
             {
@@ -431,9 +444,9 @@
         }
     }
     
-    if(page+5<=[tableArray count])
+    if(page+3<=[tableArray count])
     {
-        for(int i=page;isLoadImage&&i<page+5;i++)
+        for(int i=page;isLoadImage&&i<page+3;i++)
         {
             if(i>=[tableArray count])
             {
@@ -459,162 +472,173 @@
 
 -(void)loadPageColoumn:(int)i
 {
-    @autoreleasepool {
-        UIView *view = [imageScrollView viewWithTag:i+ScrollViewTag];
-        if(view)
+    NSLog(@"开始加载。。。");
+    UIView *view = [imageScrollView viewWithTag:i+ScrollViewTag];
+    if(view)
+    {
+        return;
+    }
+    if(self.isScape)
+    {
+        PhotoFile *demo = [tableArray objectAtIndex:i];
+        UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        [doubleTap setNumberOfTapsRequired:2];
+        UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
+        [onceTap setNumberOfTapsRequired:1];
+        
+        UIScrollView *s = [[UIScrollView alloc] init];
+        s.backgroundColor = [UIColor clearColor];
+        s.showsHorizontalScrollIndicator = NO;
+        s.showsVerticalScrollIndicator = NO;
+        s.delegate = self;
+        s.minimumZoomScale = 1.0;
+        s.maximumZoomScale = 3.0;
+        s.tag = i+ScrollViewTag;
+        [s setZoomScale:1.0];
+        
+        UIImageView *imageview = [[UIImageView alloc] init];
+        imageview.userInteractionEnabled = YES;
+        imageview.tag = ImageViewTag+i;
+        [imageview addGestureRecognizer:doubleTap];
+        
+        __block BOOL isAction = FALSE;
+        [s addGestureRecognizer:onceTap];
+        UIImage *oldImge = nil;
+        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
         {
-            return;
-        }
-        if(self.isScape)
-        {
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-            [doubleTap setNumberOfTapsRequired:2];
-            UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
-            [onceTap setNumberOfTapsRequired:1];
-            
-            UIScrollView *s = [[UIScrollView alloc] init];
-            s.backgroundColor = [UIColor clearColor];
-            s.showsHorizontalScrollIndicator = NO;
-            s.showsVerticalScrollIndicator = NO;
-            s.delegate = self;
-            s.minimumZoomScale = 1.0;
-            s.maximumZoomScale = 3.0;
-            s.tag = i+ScrollViewTag;
-            [s setZoomScale:1.0];
-            
-            UIImageView *imageview = [[UIImageView alloc] init];
-            imageview.userInteractionEnabled = YES;
-            imageview.tag = ImageViewTag+i;
-            [imageview addGestureRecognizer:doubleTap];
-            
-            __block BOOL isAction = FALSE;
-            [s addGestureRecognizer:onceTap];
-            
-            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
-            {
-                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
-                imageview.image = [UIImage imageWithContentsOfFile:path];
-            }
-            else
-            {
-                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
-                imageview.image = [UIImage imageWithContentsOfFile:path];
-                isAction = YES;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
-                    [downImage setFileId:demo.f_id];
-                    [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
-                    [downImage setImageViewIndex:ImageViewTag+i];
-                    [downImage setIndex:ACTNUMBER+i];
-                    [downImage setShowType:1];
-                    [downImage setDelegate:self];
-                    [downImage startDownload];
-                });
-            }
-            
-            CGSize size = [self getSacpeImageSize:imageview.image];
-            [s setFrame:CGRectMake(currWidth*i, 0, currWidth, 300)];
-            CGRect imageFrame = imageview.frame;
-            imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
-            imageFrame.size = size;
-            imageview.contentMode = UIViewContentModeScaleAspectFit;
-            [imageview setFrame:imageFrame];
-            [s addSubview:imageview];
-            [s setContentSize:size];
-            if(isAction)
-            {
-                CGRect activityRect = CGRectMake((currWidth-20)/2, (currHeight-20)/2, 20, 20);
-                UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
-                [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-                [activity_indicator setTag:ACTNUMBER+i];
-                [s addSubview:activity_indicator];
-                [activity_indicator startAnimating];
-                [activity_indicator release];
-            }
-
-            [imageScrollView addSubview:s];
-            [onceTap release];
-            [doubleTap release];
-            [imageview release];
-            [s release];
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
+            oldImge = [UIImage imageWithContentsOfFile:path];
         }
         else
         {
-            PhotoFile *demo = [tableArray objectAtIndex:i];
-            UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
-            [doubleTap setNumberOfTapsRequired:2];
-            UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
-            [onceTap setNumberOfTapsRequired:1];
-            
-            UIScrollView *s = [[UIScrollView alloc] init];
-            s.backgroundColor = [UIColor clearColor];
-            s.showsHorizontalScrollIndicator = NO;
-            s.showsVerticalScrollIndicator = NO;
-            s.delegate = self;
-            s.minimumZoomScale = 1.0;
-            s.maximumZoomScale = 3.0;
-            s.tag = i+ScrollViewTag;
-            [s setZoomScale:1.0];
-            
-            UIImageView *imageview = [[UIImageView alloc] init];
-            imageview.userInteractionEnabled = YES;
-            imageview.tag = ImageViewTag+i;
-            [imageview addGestureRecognizer:doubleTap];
-            
-            
-            [s addGestureRecognizer:onceTap];
-            __block BOOL isAction = FALSE;
-            
-            if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
-            {
-                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
-                imageview.image = [UIImage imageWithContentsOfFile:path];
-            }
-            else
-            {
-                NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
-                imageview.image = [UIImage imageWithContentsOfFile:path];
-                isAction = YES;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    DownImage *downImage = [[[DownImage alloc] init] autorelease];
-                    [downImage setFileId:demo.f_id];
-                    [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
-                    [downImage setImageViewIndex:ImageViewTag+i];
-                    [downImage setIndex:ACTNUMBER+i];
-                    [downImage setShowType:1];
-                    [downImage setDelegate:self];
-                    [downImage startDownload];
-                });
-            }
-            
-            CGSize size = [self getImageSize:imageview.image];
-            [s setFrame:ScrollRect(i,size)];
-            CGRect imageFrame = imageview.frame;
-            imageFrame.origin = ImagePoint(size);
-            imageFrame.size = size;
-            imageview.contentMode = UIViewContentModeScaleAspectFit;
-            [imageview setFrame:imageFrame];
-            [s addSubview:imageview];
-            [s setContentSize:size];
-            if(isAction)
-            {
-                CGRect activityRect = CGRectMake((currWidth-20)/2, (currHeight-20)/2, 20, 20);
-                UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
-                [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-                [activity_indicator setTag:ACTNUMBER+i];
-                [s addSubview:activity_indicator];
-                [activity_indicator startAnimating];
-                [activity_indicator release];
-            }
-            [imageScrollView addSubview:s];
-            
-            [onceTap release];
-            [doubleTap release];
-            [imageview release];
-            [s release];
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+            oldImge = [UIImage imageWithContentsOfFile:path];
+            isAction = YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                [downImage setFileId:demo.f_id];
+                [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
+                [downImage setImageViewIndex:ImageViewTag+i];
+                [downImage setIndex:ACTNUMBER+i];
+                NSLog(@"downImage index-------------:%i",ACTNUMBER+i);
+                [downImage setShowType:1];
+                [downImage setDelegate:self];
+                [downImage startDownload];
+            });
         }
+        
+        CGSize size = [self getSacpeImageSize:oldImge];
+//            UIImage *scaleImage = [self scaleFromImage:oldImge toSize:size];
+        imageview.image = oldImge;
+        
+        [s setFrame:CGRectMake(currWidth*i, 0, currWidth, 300)];
+        CGRect imageFrame = imageview.frame;
+        imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
+        imageFrame.size = size;
+        imageview.contentMode = UIViewContentModeScaleAspectFit;
+        [imageview setFrame:imageFrame];
+        [s addSubview:imageview];
+        [s setContentSize:size];
+        if(isAction)
+        {
+            CGRect activityRect = CGRectMake((currWidth-20)/2, (currHeight-20)/2, 20, 20);
+            UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
+            [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+            [activity_indicator setTag:ACTNUMBER+i];
+            
+            [s addSubview:activity_indicator];
+            NSLog(@"activity_indicator index-------------:%i",activity_indicator.tag);
+            [activity_indicator startAnimating];
+            [activity_indicator release];
+        }
+
+        [imageScrollView addSubview:s];
+        [onceTap release];
+        [doubleTap release];
+        [imageview release];
+        [s release];
     }
+    else
+    {
+        PhotoFile *demo = [tableArray objectAtIndex:i];
+        UITapGestureRecognizer *doubleTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+        [doubleTap setNumberOfTapsRequired:2];
+        UITapGestureRecognizer *onceTap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleOnceTap:)];
+        [onceTap setNumberOfTapsRequired:1];
+        
+        UIScrollView *s = [[UIScrollView alloc] init];
+        s.backgroundColor = [UIColor clearColor];
+        s.showsHorizontalScrollIndicator = NO;
+        s.showsVerticalScrollIndicator = NO;
+        s.delegate = self;
+        s.minimumZoomScale = 1.0;
+        s.maximumZoomScale = 3.0;
+        s.tag = i+ScrollViewTag;
+        [s setZoomScale:1.0];
+        
+        UIImageView *imageview = [[UIImageView alloc] init];
+        imageview.userInteractionEnabled = YES;
+        imageview.tag = ImageViewTag+i;
+        [imageview addGestureRecognizer:doubleTap];
+        
+        
+        [s addGestureRecognizer:onceTap];
+        __block BOOL isAction = FALSE;
+        UIImage *oldImge = nil;
+        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
+        {
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
+            oldImge = [UIImage imageWithContentsOfFile:path];
+        }
+        else
+        {
+            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+            oldImge = [UIImage imageWithContentsOfFile:path];
+            isAction = YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                [downImage setFileId:demo.f_id];
+                [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
+                [downImage setImageViewIndex:ImageViewTag+i];
+                [downImage setIndex:ACTNUMBER+i];
+                NSLog(@"downImage index-------------:%i",ACTNUMBER+i);
+                [downImage setShowType:1];
+                [downImage setDelegate:self];
+                [downImage startDownload];
+            });
+        }
+        
+        CGSize size = [self getSacpeImageSize:oldImge];
+//            UIImage *scaleImage = [self scaleFromImage:oldImge toSize:size];
+        imageview.image = oldImge;
+        
+        [s setFrame:ScrollRect(i,size)];
+        CGRect imageFrame = imageview.frame;
+        imageFrame.origin = ImagePoint(size);
+        imageFrame.size = size;
+        imageview.contentMode = UIViewContentModeScaleAspectFit;
+        [imageview setFrame:imageFrame];
+        [s addSubview:imageview];
+        [s setContentSize:size];
+        if(isAction)
+        {
+            CGRect activityRect = CGRectMake((currWidth-20)/2, (currHeight-20)/2, 20, 20);
+            UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
+            [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+            [activity_indicator setTag:ACTNUMBER+i];
+            [s addSubview:activity_indicator];
+            NSLog(@"activity_indicator index-------------:%i",activity_indicator.tag);
+            [activity_indicator startAnimating];
+            [activity_indicator release];
+        }
+        [imageScrollView addSubview:s];
+        
+        [onceTap release];
+        [doubleTap release];
+        [imageview release];
+        [s release];
+    }
+    NSLog(@"加载完成。。。");
 }
 
 //竖屏
@@ -625,7 +649,7 @@
     {
         return size;
     }
-//    if(size.width>320)
+    if(size.width>320)
     {
         size.height = GetHeight(size);
         size.width = 320;
@@ -647,7 +671,7 @@
     {
         return size;
     }
-//    if(size.width>currWidth)
+    if(size.width>currWidth)
     {
         size.height = currWidth*size.height/size.width;
         size.width = currWidth;
@@ -950,7 +974,6 @@
             [activityDic removeAllObjects];
         }
         
-        
         if([tableArray count]==0)
         {
             [self dismissModalViewControllerAnimated:YES];
@@ -968,7 +991,6 @@
         imageScrollView.pagingEnabled = YES;
         imageScrollView.showsHorizontalScrollIndicator = NO;
         imageScrollView.delegate = self;
-        
         
         if(currPage==0&&[tableArray count]>=3)
         {
@@ -1137,12 +1159,15 @@
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+    NSLog(@"下载完成后显示开始。。。");
         if([[imageScrollView viewWithTag:indexTag] isKindOfClass:[UIImageView class]])
         {
+            UIImage *scaleImage = image;
             UIImageView *imageV = (UIImageView *)[imageScrollView viewWithTag:indexTag];
             if(self.isScape)
             {
                 CGSize size = [self getSacpeImageSize:image];
+//                scaleImage = [self scaleFromImage:image toSize:size];
                 UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+ScrollViewTag];
                 s.zoomScale = 1.0;
                 [s setContentSize:size];
@@ -1158,6 +1183,7 @@
             else
             {
                 CGSize size = [self getImageSize:image];
+//                scaleImage = [self scaleFromImage:image toSize:size];
                 UIScrollView *s = (UIScrollView *)[self.view viewWithTag:indexTag-ImageViewTag+ScrollViewTag];
                 s.zoomScale = 1.0;
                 [s setContentSize:size];
@@ -1168,16 +1194,17 @@
                 imageFrame.size = size;
                 [imageV setFrame:imageFrame];
             }
-            [imageV performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:YES];
+            [imageV performSelectorOnMainThread:@selector(setImage:) withObject:scaleImage waitUntilDone:YES];
             NSLog(@"image:%i",image.retainCount);
         }
-        
-        if([[imageScrollView viewWithTag:ACTNUMBER+self.page] isKindOfClass:[UIActivityIndicatorView class]])
+        NSLog(@"appImageDidLoad index-------------:%i",index);
+        if([[imageScrollView viewWithTag:index] isKindOfClass:[UIActivityIndicatorView class]])
         {
-            UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:ACTNUMBER+self.page];
+            UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:index];
             [activity_indicator stopAnimating];
             [activity_indicator removeFromSuperview];
         }
+    NSLog(@"下载完成后显示结束。。。");
     });
 }
 
@@ -1256,37 +1283,28 @@
         [self.topToolBar setFrame:rect];
         [self.topTitleLabel setFrame:CGRectMake(0, 0, currWidth, 44)];
         
-        
+        //滚动视图大小调整
         for(int i=0;i<[imageScrollView.subviews count];i++)
         {
-            UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
-            s.zoomScale = 1.0;
-            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
-            size = [self getSacpeImageSize:imageview.image];
-            [s setContentSize:size];
-            int x = s.tag-ScrollViewTag;
-            [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
-            CGRect imageFrame = imageview.frame;
-            imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
-            imageFrame.size = size;
-            [imageview setFrame:imageFrame];
+            if([[imageScrollView.subviews objectAtIndex:i] isKindOfClass:[UIScrollView class]])
+            {
+                UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
+                s.zoomScale = 1.0;
+                UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
+                NSLog(@"size1:%@",NSStringFromCGSize(imageview.image.size));
+                size = [self getSacpeImageSize:imageview.image];
+                NSLog(@"size2:%@",NSStringFromCGSize(size));
+                [s setContentSize:size];
+                int x = s.tag-ScrollViewTag;
+                [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
+                CGRect imageFrame = imageview.frame;
+                imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
+                NSLog(@"size3:%@",NSStringFromCGSize(size));
+                imageFrame.size = size;
+                [imageview setFrame:imageFrame];
+                NSLog(@"size4:%@",NSStringFromCGSize(imageview.image.size));
+            }
         }
-        
-//        //滚动视图大小调整
-//        for(int i=0;i<[imageViewArray count];i++)
-//        {
-//            UIScrollView * s = (UIScrollView *)[imageViewArray objectAtIndex:i];
-//            s.zoomScale = 1.0;
-//            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
-//            size = [self getSacpeImageSize:imageview.image];
-//            [s setContentSize:size];
-//            int x = s.tag-ScrollViewTag;
-//            [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
-//            CGRect imageFrame = imageview.frame;
-//            imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
-//            imageFrame.size = size;
-//            [imageview setFrame:imageFrame];
-//        }
         [imageScrollView reloadInputViews];
         [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
         
@@ -1327,35 +1345,26 @@
         [self.topToolBar setFrame:rect];
         [self.topTitleLabel setFrame:CGRectMake(0, 0, 320, 44)];
         
+        //滚动视图大小调整
         for(int i=0;i<[imageScrollView.subviews count];i++)
         {
-            UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
-            s.zoomScale = 1.0;
-            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
-            size = [self getImageSize:imageview.image];
-            [s setContentSize:size];
-            int x = s.tag-ScrollViewTag;
-            [s setFrame:ScrollRect(x,size)];
-            CGRect imageFrame = imageview.frame;
-            imageFrame.origin = ImagePoint(size);
-            imageFrame.size = size;
-            [imageview setFrame:imageFrame];
+            if([[imageScrollView.subviews objectAtIndex:i] isKindOfClass:[UIScrollView class]])
+            {
+                UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
+                s.zoomScale = 1.0;
+                UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
+                NSLog(@"size1:%@",NSStringFromCGSize(imageview.image.size));
+                size = [self getImageSize:imageview.image];
+                NSLog(@"size2:%@",NSStringFromCGSize(size));
+                [s setContentSize:size];
+                int x = s.tag-ScrollViewTag;
+                [s setFrame:ScrollRect(x,size)];
+                CGRect imageFrame = imageview.frame;
+                imageFrame.origin = ImagePoint(size);
+                imageFrame.size = size;
+                [imageview setFrame:imageFrame];
+            }
         }
-//        //滚动视图大小调整
-//        for(int i=0;i<[imageViewArray count];i++)
-//        {
-//            UIScrollView * s = (UIScrollView *)[imageViewArray objectAtIndex:i];
-//            s.zoomScale = 1.0;
-//            UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
-//            size = [self getImageSize:imageview.image];
-//            [s setContentSize:size];
-//            int x = s.tag-ScrollViewTag;
-//            [s setFrame:ScrollRect(x,size)];
-//            CGRect imageFrame = imageview.frame;
-//            imageFrame.origin = ImagePoint(size);
-//            imageFrame.size = size;
-//            [imageview setFrame:imageFrame];
-//        }
         [imageScrollView reloadInputViews];
         [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
         
@@ -1387,6 +1396,24 @@
     NSLog(@"图片预览类死亡 tableArray:%i,imageScrollView:%i",tableArray.retainCount,imageScrollView.retainCount);
     [imageScrollView release];
     [super dealloc];
+}
+
+-(UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{
+	CGImageRef sourceImageRef = [image CGImage];
+	CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);
+	UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    CGImageRelease(newImageRef);
+	return newImage;
+}
+
+
+-(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 @end

@@ -6,6 +6,7 @@
 //
 //
 #define CreateTaskTable @"CREATE TABLE IF NOT EXISTS TASKTABLE(T_ID INTEGER PRIMARY KEY AUTOINCREMENT,F_ID INTEGER,F_DATA BLOB,F_STATE INTEGER,F_BASE_NAME TEXT,F_LENGHT INTEGER)"
+#define CreatePhotoFileTable @"CREATE TABLE IF NOT EXISTS PhotoFile(F_ID INTEGER PRIMARY KEY,F_DATE TEXT,F_TIME double)"
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
@@ -17,6 +18,8 @@
     
     NSString *databasePath;
 }
+
+@property(strong,retain) NSString *databasePath;
 
 -(id)init;
 +(void)cleanSql;

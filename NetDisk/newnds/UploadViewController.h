@@ -96,6 +96,7 @@
     BOOL isUpload;
     BOOL isOpenLibray;
     BOOL isGetLibary;
+    BOOL isLookLibray;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;

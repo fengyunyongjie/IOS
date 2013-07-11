@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "DBSqlite3.h"
-#define CreatePhotoFileTable @"CREATE TABLE IF NOT EXISTS PhotoFile(F_ID INTEGER PRIMARY KEY,F_DATE TEXT,F_TIME double)"
 
 #define InsertPhotoFileTable @"INSERT INTO PhotoFile(F_ID,F_DATE,F_TIME) VALUES (?,?,?)"
 #define DeletePhotoFileTable @"DELETE FROM PhotoFile WHERE F_ID=?"
