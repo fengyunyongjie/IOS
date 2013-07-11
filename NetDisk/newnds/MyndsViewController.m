@@ -94,24 +94,24 @@ typedef enum{
         self.tableView.frame=self.view.frame;
         CGRect r=self.tableView.frame;
         self.tableView.frame=r;
-        self.ctrlView=[[UIView alloc] init];
+        self.ctrlView=[[UIControl alloc] init];
         r=self.view.frame;
-        r.size.height=120;
-        r.origin.x=140;
+        //r.size.height=120;
+        //r.origin.x=140;
         [self.ctrlView setFrame:r];
+        [self.ctrlView addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
         self.ctrlView.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
         [self.view addSubview:self.ctrlView];
         [self.ctrlView setHidden:YES];
-        
         UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bg_Buttons.png"]];
-        r=CGRectMake(0, 0, 176, 112);
+        r=CGRectMake(0+140, 0, 176, 112);
         [bg setFrame:r];
         [self.ctrlView addSubview:bg];
         
         //[self.view bringSubviewToFront:bg];
         
         UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder.frame=CGRectMake(38, 30, 34, 34);
+        btnNewFinder.frame=CGRectMake(38+140, 30, 34, 34);
         [btnNewFinder setImage:[UIImage imageNamed:@"Bt_NewFolder.png"] forState:UIControlStateNormal];
         [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnNewFinder];
@@ -121,11 +121,11 @@ typedef enum{
         lblNewFinder.font=[UIFont systemFontOfSize:12];
         lblNewFinder.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
         lblNewFinder.textColor=[UIColor whiteColor];
-        lblNewFinder.frame=CGRectMake(23, 72, 64, 20);
+        lblNewFinder.frame=CGRectMake(23+140, 72, 64, 20);
         [self.ctrlView addSubview:lblNewFinder];
         
         UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnEdit.frame=CGRectMake(116, 30, 34, 34);
+        btnEdit.frame=CGRectMake(116+140, 30, 34, 34);
         [btnEdit setImage:[UIImage imageNamed:@"Bt_Edit.png"] forState:UIControlStateNormal];
         [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnEdit];
@@ -135,7 +135,7 @@ typedef enum{
         self.lblEdit.font=[UIFont systemFontOfSize:12];
         self.lblEdit.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
         self.lblEdit.textColor=[UIColor whiteColor];
-        self.lblEdit.frame=CGRectMake(119, 72, 29, 21);
+        self.lblEdit.frame=CGRectMake(119+140, 72, 29, 21);
         [self.ctrlView addSubview:self.lblEdit];
     }
     return self;
@@ -1411,7 +1411,7 @@ typedef enum{
 #pragma mark - UITextFieldDelegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (range.location >= 256)
+    if (range.location >= 255)
         return NO; // return NO to not change text
     return YES;
 }

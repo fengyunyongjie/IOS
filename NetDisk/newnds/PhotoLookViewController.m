@@ -798,7 +798,27 @@
         demo = [tableArray objectAtIndex:page];
     }
     NSString *f_id = [NSString stringWithFormat:@"%i",demo.f_id];
+    NSString *fileName=nil;
     if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
+        for (NSDictionary *dic in [[FavoritesData sharedFavoritesData] allValues]) {
+            if ([[dic objectForKey:@"f_id"] isEqualToString:f_id]) {
+                fileName=[dic objectForKey:@"f_name"];
+                break;
+            }
+        }
+        if (fileName) {
+            NSString *filePath=[YNFunctions getFMCachePath];
+            filePath=[filePath stringByAppendingPathComponent:fileName];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                NSError *error=[[NSError alloc] init];
+                if ([[NSFileManager defaultManager] removeItemAtPath:filePath error:&error]) {
+                    NSLog(@"删除本地收藏文件成功：%@",filePath);
+                }else
+                {
+                    NSLog(@"删除本地收藏文件失败：%@",filePath);
+                }
+            }
+        }
         [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
         hud = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:hud];
