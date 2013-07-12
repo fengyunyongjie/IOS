@@ -1137,6 +1137,8 @@
 {
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     
+    [table_view reloadData];
+    
     [self scrollViewDidEndDecelerating:nil];
     
     if(!isReload)
@@ -1358,7 +1360,6 @@
 -(void)dealloc
 {
     NSLog(@" cellTag 死了");
-    [cell release];
     [super dealloc];
 }
 
