@@ -142,7 +142,7 @@
         }
     }
     
-    [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:YES];
+    [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
     NSLog(@"320*currPage:%i",320*currPage);
     [self.view addSubview:imageScrollView];
     

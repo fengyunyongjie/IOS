@@ -354,6 +354,7 @@
             {
                 first = FALSE;
                 __block BOOL isLoad = FALSE;
+                int groupCount = group.numberOfAssets;
                 [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                     if(isStop)
                     {
@@ -416,11 +417,11 @@
                         }
                     }
                 }
-                NSLog(@"groupIndex：%i",group.numberOfAssets);
-                if(group.numberOfAssets <= groupIndex-1 || group.numberOfAssets==0)
+                NSLog(@"groupCount：%i",groupCount);
+                if(groupCount <= groupIndex-1 || groupCount==0)
                 {
                     isLookLibray = TRUE;
-                    NSLog(@"groupIndex：%i",groupIndex);
+                    NSLog(@"groupIndex：%i",groupCount);
                     if([photoArray count] == 0)
                     {
                         NSLog(@"照片库扫瞄完成");
@@ -824,6 +825,39 @@
                 demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
                 
             }
+            
+            if([demo.f_data length]==0)
+            {
+                if(uploadNumber<[photoArray count])
+                {
+                    TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
+                    demo.f_state = 1;
+                    demo.f_lenght = [demo.f_data length];
+                    [demo updateTaskTableFName];
+                    [photoArray removeObjectAtIndex:0];
+                }
+                if(!isStop && uploadNumber<[photoArray count])
+                {
+                    isConnection = FALSE;
+                    [self isUPloadImage];
+                }
+                else if(!isStop && uploadNumber >= [photoArray count])
+                {
+                    [self showUploadFinshView:NO];
+                    [photoArray removeAllObjects];
+                    uploadNumber = 0;
+                    isConnection = FALSE;
+                    if(!libaryTimer && [photoArray count] == 0)
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+                        });
+                    }
+                }
+                return ;
+            }
+
+            
             [self showUploadingView:NO];
             UIImage *imageB = [UIImage imageWithData:demo.f_data];
             CGSize imageSize = imageB.size;
@@ -1126,7 +1160,40 @@
             demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
         }
         NSLog(@"demo.f_data:%i",[demo.f_data length]);
-        connection = [uploderDemo requestUploadFile:[NSString stringWithFormat:@"%i",f_pid] f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+        if([demo.f_data length]==0)
+        {
+            if(uploadNumber<[photoArray count])
+            {
+                TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
+                demo.f_state = 1;
+                demo.f_lenght = [demo.f_data length];
+                [demo updateTaskTableFName];
+                [photoArray removeObjectAtIndex:0];
+            }
+            if(!isStop && uploadNumber<[photoArray count])
+            {
+                [uploadData release];
+                isConnection = FALSE;
+                [self isUPloadImage];
+            }
+            else if(!isStop && uploadNumber >= [photoArray count])
+            {
+                [self showUploadFinshView:NO];
+                [photoArray removeAllObjects];
+                uploadNumber = 0;
+                isConnection = FALSE;
+                if(!libaryTimer && [photoArray count] == 0)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
+                    });
+                }
+            }
+        }
+        else
+        {
+            connection = [uploderDemo requestUploadFile:[NSString stringWithFormat:@"%i",f_pid] f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+        }
     }
 }
 
@@ -1159,9 +1226,9 @@
     {
         NSInteger fid = [[dictionary objectForKey:@"fid"] intValue];
         TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
-        [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
-        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
-        [NSThread sleepForTimeInterval:1.0];
+//        [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
+//        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
+//        [NSThread sleepForTimeInterval:1.0];
         
         demo.f_id = fid;
         demo.f_state = 1;
