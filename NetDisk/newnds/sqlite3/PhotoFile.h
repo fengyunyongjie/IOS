@@ -14,7 +14,7 @@
 #define DeleteAllPhotoFileTable @"DELETE FROM PhotoFile"
 #define UpdatePhotoFileTable @"UPDATE PhotoFile SET F_DATE=?,F_TIME=? WHERE F_ID=?"
 #define SelectAllTaskTable @"SELECT * FROM PhotoFile"
-#define SelectMorePhotoFileTable @"SELECT * FROM PhotoFile WHERE F_TIME>? and F_TIME<=?"
+#define SelectMorePhotoFileTable @"SELECT * FROM PhotoFile WHERE F_TIME>? and F_TIME<=? order by F_TIME DESC"
 #define SelectCountPhotoFileTable @"SELECT COUNT(*) FROM PhotoFile"
 
 @interface PhotoFile : DBSqlite3

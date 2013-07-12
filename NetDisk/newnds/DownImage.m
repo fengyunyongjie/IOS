@@ -53,8 +53,8 @@
         if(showType == 0)
         {
             NSString *fielStirng = [NSString stringWithFormat:@"%i",self.fileId];
-//            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?image_size=M",SERVER_URL,FM_DOWNLOAD_THUMB_URI_NEW]];
-            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
+            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?image_size=M",SERVER_URL,FM_DOWNLOAD_THUMB_URI_NEW]];
+//            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_DOWNLOAD_THUMB_URI]];
             NSMutableURLRequest *request=[[NSMutableURLRequest alloc] initWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
             [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
             [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];

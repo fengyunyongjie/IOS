@@ -155,7 +155,7 @@
     double sDoubel = [[dateFormatter dateFromString:sDate] timeIntervalSince1970];
     double eDoubel = [[dateFormatter dateFromString:eDate] timeIntervalSince1970];
     
-    NSLog(@"SELECT * FROM PhotoFile WHERE F_TIME>%f and F_TIME<=%f",sDoubel,eDoubel);
+    NSLog(@"SELECT * FROM PhotoFile WHERE F_TIME>%f and F_TIME<=%f order by desc F_TIME",sDoubel,eDoubel);
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [SelectMorePhotoFileTable UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
