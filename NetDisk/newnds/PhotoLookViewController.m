@@ -51,14 +51,11 @@
     return self;
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    downArray = [[NSMutableArray alloc] init];
+    
     activityDic = [[NSMutableDictionary alloc] init];
     currWidth = ScollviewWidth;
     currHeight = ScollviewHeight;
@@ -222,9 +219,13 @@
 
 -(void)backClick
 {
-    AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [apple setIsDownImageIsNil:YES];
     [self dismissModalViewControllerAnimated:YES];
+    for(int i=0;i<[downArray count];i++)
+    {
+        DownImage *down = [downArray objectAtIndex:i];
+        [down setDelegate:nil];
+    }
+    [downArray release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -524,6 +525,7 @@
                 [downImage setShowType:1];
                 [downImage setDelegate:self];
                 [downImage startDownload];
+                [downArray addObject:downImage];
             });
         }
         
@@ -605,6 +607,7 @@
                 [downImage setShowType:1];
                 [downImage setDelegate:self];
                 [downImage startDownload];
+                [downArray addObject:downImage];
             });
         }
         

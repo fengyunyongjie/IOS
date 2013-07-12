@@ -46,6 +46,8 @@
     
     UIScrollView *imageScrollView;
     CGFloat enFloat;
+    
+    NSMutableArray *downArray;
 }
 
 @property (atomic, retain) UIScrollView *imageScrollView;

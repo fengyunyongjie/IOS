@@ -44,6 +44,8 @@
 
 - (void)viewDidLoad
 {
+    downArray = [[NSMutableArray alloc] init];
+    
     imageTa = 1000;
     operationQueue = [[NSOperationQueue alloc] init];
     //添加分享按钮
@@ -927,6 +929,7 @@
                     [downImage setImageViewIndex:cellTag.imageTag];
                     [downImage setDelegate:self];
                     [downImage startDownload];
+                    [downArray addObject:downImage];
                 });
             }
         }
@@ -1011,8 +1014,13 @@
     }
     else
     {
-        AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [apple setIsDownImageIsNil:YES];
+        for(int i=0;i<[downArray count];i++)
+        {
+            DownImage *down = [downArray objectAtIndex:i];
+            [down setDelegate:nil];
+        }
+        [downArray release];
+        downArray = [[NSMutableArray alloc] init];
         
         PhotoLookViewController *photo_look_view = [[PhotoLookViewController alloc] init];
         [photo_look_view setHidesBottomBarWhenPushed:YES];

@@ -19,7 +19,6 @@
 @implementation AppDelegate
 @synthesize user_name;
 @synthesize isUnUpload;
-@synthesize isDownImageIsNil;
 
 
 - (void)dealloc

@@ -34,8 +34,6 @@
 }
 - (void)startDownload
 {
-    AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [apple setIsDownImageIsNil:FALSE];
     NSString *path = [self get_image_save_file_path:imageUrl];
     //查询本地是否已经有该图片
     BOOL bl = [self image_exists_at_file_path:path];
@@ -79,7 +77,6 @@
             [request setHTTPMethod:@"GET"];
             imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
             [request release];
-            NSLog(@"fielStirng:%i",fielStirng.retainCount);
         }
     }
 }
@@ -96,13 +93,9 @@
 }
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(!apple.isDownImageIsNil)
+    if(delegate && [delegate respondsToSelector:@selector(didFailWithError)])
     {
-        if(delegate && [delegate respondsToSelector:@selector(didFailWithError)])
-        {
-            [delegate didFailWithError];
-        }
+        [delegate didFailWithError];
     }
     
 //    NSLog(@"重新下载图片");
@@ -147,14 +140,11 @@
         NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
         [activeDownload writeToFile:path atomically:YES];
         UIImage  *image = [[UIImage alloc] initWithContentsOfFile:path];
-        AppDelegate *apple = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        if(!apple.isDownImageIsNil)
+        
+        if(delegate && [delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
         {
-            if(delegate && [delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
-            {
-                NSLog(@"index-------------:%i",index);
-                [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
-            }
+            NSLog(@"index-------------:%i",index);
+            [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
         }
         else
         {
