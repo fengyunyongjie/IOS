@@ -378,17 +378,21 @@
                         if(!isOnce)
                         {
                             bl = [demo isPhotoExist];
+                            NSLog(@"1:%i",bl);
                         }
                         else
                         {
                             bl = [demo isExistOneImage];
+                            NSLog(@"2:%i",bl);
                         }
                         if(!bl)
                         {
                             bl = [demo isExistOneImage];
+                            NSLog(@"3:%i",bl);
                             if(!bl)
                             {
                                 [demo insertTaskTable];
+                                NSLog(@"4:%i",bl);
                             }
                             [photoArray addObject:demo];
                             isLoad = TRUE;
@@ -413,31 +417,21 @@
                     }
                 }
                 NSLog(@"groupIndex：%i",group.numberOfAssets);
-                if(group.numberOfAssets == groupIndex-1)
+                if(group.numberOfAssets <= groupIndex-1 || group.numberOfAssets==0)
                 {
                     isLookLibray = TRUE;
                     NSLog(@"groupIndex：%i",groupIndex);
                     if([photoArray count] == 0)
                     {
+                        NSLog(@"照片库扫瞄完成");
                         [self showUploadFinshView:NO];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             if(!libaryTimer)
                             {
+                                NSLog(@"计时器开启");
                                 libaryTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(getPhotoLibrary) userInfo:nil repeats:YES];
                             }
                         });
-                    }
-                }
-                else if([photoArray count]==0)
-                {
-                    [self showStartUploadView:NO];
-                    if(!isStop)
-                    {
-                        [uploadWaitButton setTitle:@"加载中..." forState:UIControlStateNormal];
-                    }
-                    else
-                    {
-                        [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
                     }
                 }
             }
@@ -512,6 +506,10 @@
                 netWorkState = 1;
                 isWlanUpload = FALSE;
                 isAlert = TRUE;
+                if([photoArray count]==0 && isLookLibray)
+                {
+                    [self getPhotoLibrary];
+                }
                 if(!isConnection && uploadNumber<[photoArray count])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -598,6 +596,10 @@
                 netWorkState = 1;
                 isWlanUpload = FALSE;
                 isAlert = TRUE;
+                if([photoArray count]==0 && isLookLibray)
+                {
+                    [self getPhotoLibrary];
+                }
                 if(!isConnection && uploadNumber<[photoArray count])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -615,6 +617,10 @@
             else if([[self GetCurrntNet] isEqualToString:@"WLAN"])
             {
                 netWorkState = 2;
+                if([photoArray count]==0 && isLookLibray)
+                {
+                    [self getPhotoLibrary];
+                }
                 if(!isConnection && uploadNumber<[photoArray count])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -840,7 +846,7 @@
             
             [uploadProgressView setProgress:0];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
-            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
+            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
             [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
             [self showUploadingView:NO];
         }
@@ -1020,7 +1026,7 @@
             
             [uploadProgressView setProgress:1];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
-            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
+            [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
             if(!isStop && uploadNumber<[photoArray count])
             {
                 isConnection = FALSE;
@@ -1154,7 +1160,7 @@
         NSInteger fid = [[dictionary objectForKey:@"fid"] intValue];
         TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
         [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
-        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下%i",[photoArray count]]];
+        [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
         [NSThread sleepForTimeInterval:1.0];
         
         demo.f_id = fid;
