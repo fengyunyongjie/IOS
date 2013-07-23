@@ -250,6 +250,14 @@
 		29B996CE174E1B4700204068 /* login_btn_login_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996C9174E1B4700204068 /* login_btn_login_h.png */; };
 		29B996D1174E1EE200204068 /* login_btn_regist_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996D0174E1EE200204068 /* login_btn_regist_h.png */; };
 		29BC8B1D17445F8700ED3DBB /* icon_Load.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BC8B1C17445F8700ED3DBB /* icon_Load.png */; };
+		29BD65A6179E6A0000D78890 /* Bk_MySpace.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BD659F179E6A0000D78890 /* Bk_MySpace.png */; };
+		29BD65A7179E6A0000D78890 /* Bt_MyShareCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BD65A0179E6A0000D78890 /* Bt_MyShareCh.png */; };
+		29BD65A8179E6A0000D78890 /* Bt_MyShareDef.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BD65A1179E6A0000D78890 /* Bt_MyShareDef.png */; };
+		29BD65A9179E6A0000D78890 /* Bt_PartakeshareCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BD65A2179E6A0000D78890 /* Bt_PartakeshareCh.png */; };
+		29BD65AA179E6A0000D78890 /* Bt_PartakeshareDef.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BD65A3179E6A0000D78890 /* Bt_PartakeshareDef.png */; };
+		29BD65AB179E6A0000D78890 /* Bt_PersonspaceCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BD65A4179E6A0000D78890 /* Bt_PersonspaceCh.png */; };
+		29BD65AC179E6A0000D78890 /* Bt_PersonspaceDef.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BD65A5179E6A0000D78890 /* Bt_PersonspaceDef.png */; };
+		29BD65AE179E763D00D78890 /* space.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BD65AD179E763D00D78890 /* space.png */; };
 		29BFAD4C174C6306000AFE7A /* 111.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BFAD4B174C6306000AFE7A /* 111.png */; };
 		29C0775417584DC2005A5EFF /* PhotoFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C0775317584DC2005A5EFF /* PhotoFile.m */; };
 		29C077571758B0BE005A5EFF /* PhotoFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C077561758B0BD005A5EFF /* PhotoFileCell.m */; };
@@ -593,6 +601,14 @@
 		29B996C9174E1B4700204068 /* login_btn_login_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_login_h.png; sourceTree = "<group>"; };
 		29B996D0174E1EE200204068 /* login_btn_regist_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_regist_h.png; sourceTree = "<group>"; };
 		29BC8B1C17445F8700ED3DBB /* icon_Load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_Load.png; sourceTree = "<group>"; };
+		29BD659F179E6A0000D78890 /* Bk_MySpace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_MySpace.png; sourceTree = "<group>"; };
+		29BD65A0179E6A0000D78890 /* Bt_MyShareCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_MyShareCh.png; sourceTree = "<group>"; };
+		29BD65A1179E6A0000D78890 /* Bt_MyShareDef.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_MyShareDef.png; sourceTree = "<group>"; };
+		29BD65A2179E6A0000D78890 /* Bt_PartakeshareCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_PartakeshareCh.png; sourceTree = "<group>"; };
+		29BD65A3179E6A0000D78890 /* Bt_PartakeshareDef.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_PartakeshareDef.png; sourceTree = "<group>"; };
+		29BD65A4179E6A0000D78890 /* Bt_PersonspaceCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_PersonspaceCh.png; sourceTree = "<group>"; };
+		29BD65A5179E6A0000D78890 /* Bt_PersonspaceDef.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_PersonspaceDef.png; sourceTree = "<group>"; };
+		29BD65AD179E763D00D78890 /* space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space.png; sourceTree = "<group>"; };
 		29BFAD4B174C6306000AFE7A /* 111.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 111.png; sourceTree = "<group>"; };
 		29C0775217584DC2005A5EFF /* PhotoFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFile.h; sourceTree = "<group>"; };
 		29C0775317584DC2005A5EFF /* PhotoFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFile.m; sourceTree = "<group>"; };
@@ -1398,6 +1414,21 @@
 			path = login;
 			sourceTree = "<group>";
 		};
+		29BD659E179E69FF00D78890 /* MySpace */ = {
+			isa = PBXGroup;
+			children = (
+				29BD65AD179E763D00D78890 /* space.png */,
+				29BD659F179E6A0000D78890 /* Bk_MySpace.png */,
+				29BD65A0179E6A0000D78890 /* Bt_MyShareCh.png */,
+				29BD65A1179E6A0000D78890 /* Bt_MyShareDef.png */,
+				29BD65A2179E6A0000D78890 /* Bt_PartakeshareCh.png */,
+				29BD65A3179E6A0000D78890 /* Bt_PartakeshareDef.png */,
+				29BD65A4179E6A0000D78890 /* Bt_PersonspaceCh.png */,
+				29BD65A5179E6A0000D78890 /* Bt_PersonspaceDef.png */,
+			);
+			path = MySpace;
+			sourceTree = "<group>";
+		};
 		29DE0CE817422C5B009C41C7 /* nds_img */ = {
 			isa = PBXGroup;
 			children = (
@@ -1461,6 +1492,7 @@
 		29EFE853172A55AD0099B5A7 /* newnds */ = {
 			isa = PBXGroup;
 			children = (
+				29BD659E179E69FF00D78890 /* MySpace */,
 				299D9F661754326900B61161 /* sqlite3 */,
 				2910C30B17436B7C00195008 /* DataBase */,
 				29DE0CE817422C5B009C41C7 /* nds_img */,
@@ -2359,6 +2391,14 @@
 				29ABD277179E618C00EE7164 /* Bt_UsercentreCh.png in Resources */,
 				29ABD278179E618C00EE7164 /* Bt_UsercentreDef.png in Resources */,
 				29C714FF179E7345008D04EB /* Bt_Back.png in Resources */,
+				29BD65A6179E6A0000D78890 /* Bk_MySpace.png in Resources */,
+				29BD65A7179E6A0000D78890 /* Bt_MyShareCh.png in Resources */,
+				29BD65A8179E6A0000D78890 /* Bt_MyShareDef.png in Resources */,
+				29BD65A9179E6A0000D78890 /* Bt_PartakeshareCh.png in Resources */,
+				29BD65AA179E6A0000D78890 /* Bt_PartakeshareDef.png in Resources */,
+				29BD65AB179E6A0000D78890 /* Bt_PersonspaceCh.png in Resources */,
+				29BD65AC179E6A0000D78890 /* Bt_PersonspaceDef.png in Resources */,
+				29BD65AE179E763D00D78890 /* space.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

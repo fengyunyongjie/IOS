@@ -18,6 +18,7 @@
 #import "PhotoViewController.h"
 #import "FavoritesViewController.h"
 #import "UploadViewController.h"
+#import "MainViewController.h"
 
 @interface MYTabBarController ()
 
@@ -95,84 +96,82 @@
 }
 -(void)resetData
 {
-//    UINavigationController *viewController1,*viewController2,*viewController3,*viewController4,*viewController5,*viewController6,*viewController7,*viewController8;
-//    viewController1=[[[UINavigationController alloc] init] autorelease];
-//    MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
-//    rootView1.f_id=@"1";
-//    rootView1.myndsType=kMyndsTypeDefault;
-//    rootView1.title=@"我的空间";
-//    [rootView1.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
-//    [viewController1 pushViewController:rootView1 animated:YES];
-//    
-//    
-//    viewController2=[[[UINavigationController alloc] init] autorelease];
-//    viewController2.title=@"Second";
-//    
-//    FavoritesViewController * rootView2=[[[FavoritesViewController alloc] init] autorelease];
-//    rootView2.title=@"收藏";
-//    [rootView2.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
-//    [viewController2 pushViewController:rootView2 animated:YES];
-//    
-//    viewController3=[[[UINavigationController alloc] init] autorelease];
-//    viewController3.title=@"Third";
-//    PhotoViewController * rootView3=[[[PhotoViewController alloc] init] autorelease];
-//    rootView3.title=@"照片";
-//    [rootView3.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_photo.png"]];
-//    [viewController3 pushViewController:rootView3 animated:YES];
-//    
-//    viewController4=[[[UINavigationController alloc] init] autorelease];
-//    viewController4.title=@"fourth";
-//    
-//    UploadViewController * rootView4=[[[UploadViewController alloc] initWithNibName:@"UploadViewController" bundle:nil] autorelease];
-//    rootView4.title=@"上传";
-//    [rootView4.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_upload.png"]];
-//    [viewController4 pushViewController:rootView4 animated:YES];
-//    
-//    viewController5=[[[UINavigationController alloc] init] autorelease];
-//    viewController5.title=@"fifth";
-//    SettingViewController * rootView5=[[[SettingViewController alloc] init] autorelease];
-//    [rootView5 setRootViewController:self];
-//    rootView5.title=@"设置";
-//    [rootView5.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_setting.png"]];
-//    [viewController5 pushViewController:rootView5 animated:YES];
-//    
-//    viewController6=[[[UINavigationController alloc] init] autorelease];
-//    viewController6.title=@"sexth";
-//    UIViewController * rootView6=[[[UIViewController alloc] init] autorelease];
-//    rootView6.title=@"共享空间";
-//    [rootView6.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
-//    [viewController6 pushViewController:rootView6 animated:YES];
-//    
-//    viewController7=[[[UINavigationController alloc] init] autorelease];
-//    viewController7.title=@"seven";
-//    UIViewController * rootView7=[[[UIViewController alloc] init] autorelease];
-//    rootView7.title=@"回收站";
-//    [rootView7.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
-//    [viewController7 pushViewController:rootView7 animated:YES];
-//    
-//    viewController8=[[[UINavigationController alloc] init] autorelease];
-//    viewController8.title=@"eight";
-//    UIViewController * rootView8=[[[UIViewController alloc] init] autorelease];
-//    rootView8.title=@"我的好友";
-//    [rootView8.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
-//    [viewController8 pushViewController:rootView8 animated:YES];
-//    
-//    [viewController1.navigationBar setBarStyle:UIBarStyleBlack];
-//    [viewController2.navigationBar setBarStyle:UIBarStyleBlack];
-//    [viewController3.navigationBar setBarStyle:UIBarStyleBlack];
-//    [viewController4.navigationBar setBarStyle:UIBarStyleBlack];
-//    [viewController5.navigationBar setBarStyle:UIBarStyleBlack];
-//    [viewController6.navigationBar setBarStyle:UIBarStyleBlack];
-//    [viewController7.navigationBar setBarStyle:UIBarStyleBlack];
-//    [viewController8.navigationBar setBarStyle:UIBarStyleBlack];
-//    if ([YNFunctions isUnlockFeature]) {
-//        self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5,viewController6,viewController7,viewController8, nil];
-//    }else
-//    {
-//        self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5, nil];
-//    }
-//    self.selectedIndex=0;
-//    [self.moreNavigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    UINavigationController *viewController1,*viewController2,*viewController3,*viewController4,*viewController5,*viewController6,*viewController7,*viewController8;
+    viewController1=[[[UINavigationController alloc] init] autorelease];
+    MainViewController *rootView1=[[[MainViewController alloc] init ]autorelease];
+    //rootView1.f_id=@"1";
+    //rootView1.myndsType=kMyndsTypeDefault;
+    rootView1.title=@"我的空间";
+    [rootView1.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
+    [viewController1 pushViewController:rootView1 animated:YES];
+    
+    
+    viewController2=[[[UINavigationController alloc] init] autorelease];
+    viewController2.title=@"Second";
+    FavoritesViewController * rootView2=[[[FavoritesViewController alloc] init] autorelease];
+    rootView2.title=@"收藏";
+    [rootView2.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_favorite.png"]];
+    [viewController2 pushViewController:rootView2 animated:YES];
+    
+    viewController3=[[[UINavigationController alloc] init] autorelease];
+    viewController3.title=@"Third";
+    PhotoViewController * rootView3=[[[PhotoViewController alloc] init] autorelease];
+    rootView3.title=@"照片";
+    [rootView3.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_photo.png"]];
+    [viewController3 pushViewController:rootView3 animated:YES];
+    
+    viewController4=[[[UINavigationController alloc] init] autorelease];
+    viewController4.title=@"fourth";
+    UploadViewController * rootView4=[[[UploadViewController alloc] initWithNibName:@"UploadViewController" bundle:nil] autorelease];
+    rootView4.title=@"上传";
+    [rootView4.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_upload.png"]];
+    [viewController4 pushViewController:rootView4 animated:YES];
+    
+    viewController5=[[[UINavigationController alloc] init] autorelease];
+    viewController5.title=@"fifth";
+    SettingViewController * rootView5=[[[SettingViewController alloc] init] autorelease];
+    [rootView5 setRootViewController:self];
+    rootView5.title=@"设置";
+    [rootView5.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_setting.png"]];
+    [viewController5 pushViewController:rootView5 animated:YES];
+    
+    viewController6=[[[UINavigationController alloc] init] autorelease];
+    viewController6.title=@"sexth";
+    UIViewController * rootView6=[[[UIViewController alloc] init] autorelease];
+    rootView6.title=@"共享空间";
+    [rootView6.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
+    [viewController6 pushViewController:rootView6 animated:YES];
+    
+    viewController7=[[[UINavigationController alloc] init] autorelease];
+    viewController7.title=@"seven";
+    UIViewController * rootView7=[[[UIViewController alloc] init] autorelease];
+    rootView7.title=@"回收站";
+    [rootView7.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
+    [viewController7 pushViewController:rootView7 animated:YES];
+    
+    viewController8=[[[UINavigationController alloc] init] autorelease];
+    viewController8.title=@"eight";
+    UIViewController * rootView8=[[[UIViewController alloc] init] autorelease];
+    rootView8.title=@"我的好友";
+    [rootView8.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
+    [viewController8 pushViewController:rootView8 animated:YES];
+    
+    [viewController1.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController2.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController3.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController4.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController5.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController6.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController7.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController8.navigationBar setBarStyle:UIBarStyleBlack];
+    if ([YNFunctions isUnlockFeature]) {
+        self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5,viewController6,viewController7,viewController8, nil];
+    }else
+    {
+        self.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4,viewController5, nil];
+    }
+    self.selectedIndex=0;
+    [self.moreNavigationController.navigationBar setBarStyle:UIBarStyleBlack];
 }
 
 
