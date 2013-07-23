@@ -97,6 +97,12 @@
     BOOL isOpenLibray;
     BOOL isGetLibary;
     BOOL isLookLibray;
+    
+    /*
+     自定义navBar
+     */
+    UIView *topView;
+    BOOL isNeedBackButton;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -125,6 +131,7 @@
 
 @property (nonatomic,assign) BOOL isUpload;
 @property (nonatomic,assign) BOOL isStop;
+@property(nonatomic,assign) BOOL isNeedBackButton;
 
 -(NSString *)md5:(NSData *)concat;
 -(void)startSouStart;

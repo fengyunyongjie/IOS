@@ -14,6 +14,10 @@
 #import "AppDelegate.h"
 #import "YNFunctions.h"
 
+#define TableViewHeight self.view.frame.size.height-TabBarHeight-44
+#define ChangeTabWidth 90
+#define RightButtonBoderWidth 10
+
 @interface UploadViewController ()
 
 @end
@@ -40,6 +44,7 @@
 @synthesize uploderDemo;
 @synthesize isUpload;
 @synthesize isStop;
+@synthesize isNeedBackButton;
 
 @synthesize photoArray;
 
@@ -81,6 +86,64 @@
 
 - (void)viewDidLoad
 {
+    //添加头部试图
+    [self.navigationController setNavigationBarHidden:YES];
+    topView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)] autorelease];
+    UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    [images setImage:[UIImage imageNamed:@"Bk_Title.png"]];
+    [topView addSubview:images];
+    [imageV release];
+    //返回按钮
+    if(isNeedBackButton)
+    {
+        UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
+        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
+        [back_button setBackgroundImage:back_image forState:UIControlStateNormal];
+        [topView addSubview:back_button];
+        [back_button release];
+    }
+    //把色值转换成图片
+    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
+    UIGraphicsBeginImageContext(rect_image.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context,
+                                   [hilighted_color CGColor]);
+    CGContextFillRect(context, rect_image);
+    UIImage * imge = [[[UIImage alloc] init] autorelease];
+    imge = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    //选项卡栏目
+    UIButton *phoot_button = [[UIButton alloc] init];
+    [phoot_button setTag:23];
+    [phoot_button setFrame:CGRectMake(320/2-ChangeTabWidth, 0, ChangeTabWidth, 44)];
+    [phoot_button setTitle:@"上传进度" forState:UIControlStateNormal];
+    [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
+    [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    [topView addSubview:phoot_button];
+    [self clicked_uploadState:phoot_button];
+    [phoot_button release];
+    
+    UIButton *file_button = [[UIButton alloc] init];
+    [file_button setTag:24];
+    [file_button setFrame:CGRectMake(320/2, 0, ChangeTabWidth, 44)];
+    [file_button setTitle:@"上传历史" forState:UIControlStateNormal];
+    [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [file_button addTarget:self action:@selector(clicked_uploadHistory:) forControlEvents:UIControlEventTouchDown];
+    [file_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    [topView addSubview:file_button];
+    [file_button release];
+    
+    //更多按钮
+    UIButton *more_button = [[UIButton alloc] init];
+    UIImage *moreImage = [UIImage imageNamed:@"Bt_More.png"];
+    [more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
+    [more_button setBackgroundImage:moreImage forState:UIControlStateNormal];
+    [more_button addTarget:self action:@selector(clicked_more:) forControlEvents:UIControlEventTouchDown];
+    [topView addSubview:more_button];
+    [more_button release];
+    [self.view addSubview:topView];
+    
     baseBL = TRUE;
     isAlert = TRUE;
     libaryTimer = nil;
@@ -196,6 +259,54 @@
     isLookLibray = TRUE;
     [super viewDidLoad];
 }
+
+-(void)clicked_uploadState:(id)sender
+{
+    UIButton *button = sender;
+    //把色值转换成图片
+    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
+    UIGraphicsBeginImageContext(rect_image.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context,
+                                   [hilighted_color CGColor]);
+    CGContextFillRect(context, rect_image);
+    UIImage * imge = [[[UIImage alloc] init] autorelease];
+    imge = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [button setBackgroundImage:imge forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
+    [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [file_button setBackgroundImage:nil forState:UIControlStateNormal];
+}
+
+-(void)clicked_uploadHistory:(id)sender
+{
+    UIButton *button = sender;
+    //把色值转换成图片
+    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
+    UIGraphicsBeginImageContext(rect_image.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context,
+                                   [hilighted_color CGColor]);
+    CGContextFillRect(context, rect_image);
+    UIImage * imge = [[[UIImage alloc] init] autorelease];
+    imge = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [button setBackgroundImage:imge forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    UIButton *photo_button = (UIButton *)[self.view viewWithTag:23];
+    [photo_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [photo_button setBackgroundImage:nil forState:UIControlStateNormal];
+}
+
+-(void)clicked_more:(id)sender
+{
+    
+}
+
 
 -(void)stopWiFi
 {

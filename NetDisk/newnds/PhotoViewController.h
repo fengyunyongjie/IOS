@@ -78,6 +78,12 @@
     BOOL isOnece;
     NSTimer *timer;
     BOOL isReload;
+    
+    /*
+     自定义navBar
+     */
+    UIView *topView;
+    BOOL isNeedBackButton;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
@@ -99,6 +105,8 @@
 
 @property(nonatomic,retain) NSCondition *condition;
 @property(nonatomic,retain) NSMutableArray *downCellArray; // 重用的cell
+
+@property(nonatomic,assign) BOOL isNeedBackButton;
 
 #pragma mark -得到时间轴的列表
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary;

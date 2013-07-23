@@ -7,6 +7,8 @@
 //
 #define TabBarS_Width 50
 #define TabBarWidth (320-TabBarS_Width)
+#define ImageViewBorder 3
+#define LabelViewBorder 20
 
 #import "MYTabBarController.h"
 #import "YNFunctions.h"
@@ -354,7 +356,7 @@
         {
             if (show_way == UItabbarControllerHorizontal)
             {
-                rect = CGRectMake(TabBarS_Width/2+i*TabBarWidth/tab_num, 2, TabBarWidth/tab_num, show_size);
+                rect = CGRectMake(TabBarS_Width/2+i*TabBarWidth/tab_num, ImageViewBorder, TabBarWidth/tab_num, show_size);
             }
             else
             {
@@ -414,7 +416,7 @@
                 UIImage *image = [[[self.viewControllers objectAtIndex:i] tabBarItem] image];
                 UIImageView *top_image = [[UIImageView alloc] initWithImage:image];
                 [top_image setTag:tab_num+1];
-                CGRect frame = CGRectMake((rect.size.width - image.size.width*height/image.size.height)/2, 5, image.size.width*height/image.size.height, height);
+                CGRect frame = CGRectMake((rect.size.width - image.size.width*height/image.size.height)/2, ImageViewBorder, image.size.width*height/image.size.height, height);
                 NSLog(@"top_image:%@",NSStringFromCGRect(frame));
                 [top_image setFrame:frame];
                 [tools_view addSubview:top_image];
@@ -424,7 +426,7 @@
                 }
                 [top_image release];
                 
-                frame = CGRectMake(rect.origin.x, rect.origin.y+rect.size.height-20, rect.size.width, 13);
+                frame = CGRectMake(rect.origin.x, rect.origin.y+rect.size.height-LabelViewBorder, rect.size.width, 13);
                 NSString *item_text = [[[self.viewControllers objectAtIndex:i] tabBarItem] title];
                 if ([item_text length] > 0)
                 {

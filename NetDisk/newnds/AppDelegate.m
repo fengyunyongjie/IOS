@@ -6,6 +6,7 @@
 //
 //
 //#import "MobClick.h"
+
 #import "AppDelegate.h"
 //#import "LoginViewController.h"
 #import "MYTabBarController.h"
@@ -21,7 +22,6 @@
 #import "PhotoViewController.h"
 #import "FavoritesViewController.h"
 #import "UploadViewController.h"
-
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -46,15 +46,16 @@
     [self.myTabBarController setNormal_image:[NSArray arrayWithObjects:@"Bt_MySpaceDef.png",@"Bt_FamilyDef.png",@"Bt_TransferDef.png",@"Bt_UsercentreDef.png", nil]];
     [self.myTabBarController setSelect_image:[NSArray arrayWithObjects:@"Bt_MySpaceCh.png",@"Bt_FamilyCh.png",@"Bt_TransferCh.png",@"Bt_UsercentreCh.png",nil]];
     [self.myTabBarController setShow_style:UItabbarControllerShowStyleIconAndText];
-    [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, 55)];
+    [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, TabBarHeight)];
     [self.myTabBarController setFont:[UIFont boldSystemFontOfSize:12.0]];
     [self.myTabBarController setFont_color:[UIColor whiteColor]];
-    UIColor *hilighted_color = [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0];
+    
     [self.myTabBarController setHilighted_color:hilighted_color];
     DefaultViewController *viewController=[[[DefaultViewController alloc] init] autorelease];
     self.window.rootViewController=viewController;
     //程序启动时，在代码中向微信终端注册你的id
     [WXApi registerApp:@"wxdcc0186c9f173352"];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self.window makeKeyAndVisible];
     //处理其它程序调用本程序打开文件
     if ([YNFunctions isUnlockFeature]) {
@@ -282,7 +283,7 @@
     viewController3=[[[UINavigationController alloc] initWithRootViewController:rootView3] autorelease];
     
     SettingViewController * rootView4=[[[SettingViewController alloc] init] autorelease];
-    rootView4.tabBarItem.title=@"设置";
+    rootView4.tabBarItem.title=@"个人中心";
     [rootView4.tabBarItem setImage:[UIImage imageNamed:@"Bt_UsercentreDef.png"]];
     viewController4=[[[UINavigationController alloc] initWithRootViewController:rootView4] autorelease];
     
