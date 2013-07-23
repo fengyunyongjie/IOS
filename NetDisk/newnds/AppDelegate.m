@@ -15,6 +15,13 @@
 #import "DefaultViewController.h"
 #import "sys/utsname.h"
 #import "UploadViewController.h"
+#import "LoginViewController.h"
+#import "SettingViewController.h"
+#import "MyndsViewController.h"
+#import "PhotoViewController.h"
+#import "FavoritesViewController.h"
+#import "UploadViewController.h"
+
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -34,6 +41,16 @@
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
+    [self.myTabBarController setNeed_to_custom:YES style:2];
+    [self.myTabBarController setTab_bar_bg:[UIImage imageNamed:@"Bk_Nav.png"]];
+    [self.myTabBarController setNormal_image:[NSArray arrayWithObjects:@"Bt_MySpaceDef.png",@"Bt_FamilyDef.png",@"Bt_TransferDef.png",@"Bt_UsercentreDef.png", nil]];
+    [self.myTabBarController setSelect_image:[NSArray arrayWithObjects:@"Bt_MySpaceCh.png",@"Bt_FamilyCh.png",@"Bt_TransferCh.png",@"Bt_UsercentreCh.png",nil]];
+    [self.myTabBarController setShow_style:UItabbarControllerShowStyleIconAndText];
+    [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, 55)];
+    [self.myTabBarController setFont:[UIFont boldSystemFontOfSize:12.0]];
+    [self.myTabBarController setFont_color:[UIColor whiteColor]];
+    UIColor *hilighted_color = [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0];
+    [self.myTabBarController setHilighted_color:hilighted_color];
     DefaultViewController *viewController=[[[DefaultViewController alloc] init] autorelease];
     self.window.rootViewController=viewController;
     //程序启动时，在代码中向微信终端注册你的id
@@ -49,13 +66,16 @@
             [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
         }
     }
+    
     [self performSelector:@selector(goMainViewController) withObject:self afterDelay:1.0f];
+    
     return YES;
 }
 -(void)goMainViewController
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [self addTabBarView];
     self.window.rootViewController=self.myTabBarController;
+    
 }
 - (void) onReq:(BaseReq*)req
 {
@@ -239,4 +259,57 @@
     NSLog(@"devToken=%@",deviceToken);
     //[self alertNotice:@"" withMSG:[NSString stringWithFormat:@"devToken=%@",deviceToken] cancleButtonTitle:@"Ok" otherButtonTitle:@""];
 }
+
+-(void)addTabBarView
+{
+    UINavigationController *viewController1,*viewController2,*viewController3,*viewController4;
+    
+    MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
+    rootView1.f_id=@"1";
+    rootView1.myndsType=kMyndsTypeDefault;
+    rootView1.tabBarItem.title=@"我的空间";
+    [rootView1.tabBarItem setImage:[UIImage imageNamed:@"Bt_MySpaceDef.png"]];
+    viewController1=[[[UINavigationController alloc] initWithRootViewController:rootView1] autorelease];
+    
+    PhotoViewController * rootView2=[[[PhotoViewController alloc] init] autorelease];
+    rootView2.tabBarItem.title=@"家庭空间";
+    [rootView2.tabBarItem setImage:[UIImage imageNamed:@"Bt_FamilyDef.png"]];
+    viewController2=[[[UINavigationController alloc] initWithRootViewController:rootView2] autorelease];
+    
+    UploadViewController * rootView3=[[[UploadViewController alloc] initWithNibName:@"UploadViewController" bundle:nil] autorelease];
+    rootView3.tabBarItem.title=@"传输管理";
+    [rootView3.tabBarItem setImage:[UIImage imageNamed:@"Bt_TransferDef.png"]];
+    viewController3=[[[UINavigationController alloc] initWithRootViewController:rootView3] autorelease];
+    
+    SettingViewController * rootView4=[[[SettingViewController alloc] init] autorelease];
+    rootView4.tabBarItem.title=@"设置";
+    [rootView4.tabBarItem setImage:[UIImage imageNamed:@"Bt_UsercentreDef.png"]];
+    viewController4=[[[UINavigationController alloc] initWithRootViewController:rootView4] autorelease];
+    
+    [viewController1.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController2.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController3.navigationBar setBarStyle:UIBarStyleBlack];
+    [viewController4.navigationBar setBarStyle:UIBarStyleBlack];
+    self.myTabBarController.viewControllers=[NSArray arrayWithObjects:viewController1,viewController2,viewController3,viewController4, nil];
+    self.myTabBarController.selectedIndex=0;
+    [self.myTabBarController.moreNavigationController.navigationBar setBarStyle:UIBarStyleBlack];
+}
+
+-(void)myRoom
+{
+    [self.myTabBarController setSelectedIndex:0];
+}
+
+-(void)isHiddenTabbar:(BOOL)bl
+{
+    if (bl) {
+        //隐藏
+        
+    }
+    else
+    {
+        //显示
+    }
+}
+
 @end
