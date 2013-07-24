@@ -42,7 +42,20 @@ typedef enum{
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setTableView:[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped]];
+    
+    [self.navigationController setNavigationBarHidden:YES];
+    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIView *nbar=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    UIImageView *niv=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Title.png"]];
+    niv.frame=nbar.frame;
+    [nbar addSubview:niv];
+    [self.view addSubview: nbar];
+    
+    self.tableView=[[[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped] autorelease];
+    self.tableView.dataSource=self;
+    self.tableView.delegate=self;
+    [self.view addSubview:self.tableView];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -67,6 +80,10 @@ typedef enum{
 -(void)viewWillAppear:(BOOL)animated
 {
     self.tempCount=0;
+    CGRect r=self.view.frame;
+    r.origin.y=44;
+    r.size.height=self.view.frame.size.height-44;
+    self.tableView.frame=r;
 }
 -(void)viewWillDisappear:(BOOL)animated
 {

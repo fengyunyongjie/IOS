@@ -7,6 +7,7 @@
 //
 
 #import "MainViewController.h"
+#import "MyndsViewController.h"
 
 @interface MainViewController ()
 
@@ -21,11 +22,14 @@
         // Custom initialization
     }
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    UIView *nbar=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 73/2)];
-    UIImageView *niv=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+    UIView *nbar=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    UIImageView *niv=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Title.png"]];
+    niv.frame=nbar.frame;
     [nbar addSubview:niv];
     [self.view addSubview: nbar];
+    
     CGRect r=self.view.frame;
+    r.origin.y=44;
     r.size.height=343/2;
     UIImageView *headerView=[[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_MySpace.png"]] autorelease];
     headerView.frame=r;
@@ -35,7 +39,7 @@
     self.tableView.dataSource=self;
     [self.view addSubview:self.tableView];
     r=self.view.frame;
-    r.origin.y=343/2;
+    r.origin.y=343/2+44;
     r.size.height=r.size.height-r.origin.y;
     self.tableView.frame=r;
     return self;
@@ -128,6 +132,23 @@
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+}
+#pragma mark - Table view delegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.row) {
+        case 0:
+        {
+            MyndsViewController *viewController=[[[MyndsViewController alloc] init] autorelease];
+            viewController.f_id=@"1";
+            viewController.myndsType=kMyndsTypeDefault;
+            viewController.title=@"个人空间";
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
+            break;
+        default:
+            break;
+    }
 }
 @end

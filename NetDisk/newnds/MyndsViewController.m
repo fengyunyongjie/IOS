@@ -20,7 +20,7 @@
 #import "OtherBrowserViewController.h"
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
-
+#define TabBarHeight 60
 typedef enum{
     kAlertTagDeleteOne,
     kAlertTagDeleteMore,
@@ -81,18 +81,23 @@ typedef enum{
 {
     self = [super init];
     if (self) {
-        // Custom initialization
-//        UIView *view=[[UIView alloc] init];
-//        self.view=view;
-//        self.view=[[UIControl alloc] initWithFrame:self.view.frame];
-//        [(UIControl *)self.view addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.view setBackgroundColor:[UIColor whiteColor]];
+        UIView *nbar=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        UIImageView *niv=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Title.png"]];
+        niv.frame=nbar.frame;
+        [nbar addSubview:niv];
+        [self.view addSubview: nbar];
+        
         self.tableView=[[UITableView alloc] init];
         self.tableView.allowsSelectionDuringEditing=YES;
         self.tableView.delegate=self;
         self.tableView.dataSource=self;
         [self.view addSubview:self.tableView];
-        self.tableView.frame=self.view.frame;
-        CGRect r=self.tableView.frame;
+        CGRect r=self.view.frame;
+        r.origin.y=44;
+        self.tableView.frame=r;
+        r=self.tableView.frame;
         self.tableView.frame=r;
         self.ctrlView=[[UIControl alloc] init];
         r=self.view.frame;
@@ -174,7 +179,10 @@ typedef enum{
     CGRect r=self.ctrlView.frame;
     r.origin.y=0;
     self.ctrlView.frame=r;
-    self.tableView.frame=self.view.frame;
+    r=self.view.frame;
+    r.origin.y=44;
+    r.size.height=self.view.frame.size.height-44;
+    self.tableView.frame=r;
     [self.ctrlView setHidden:YES];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     [self setHidesBottomBarWhenPushed:NO];

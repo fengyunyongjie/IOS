@@ -22,6 +22,7 @@
 #import "PhotoViewController.h"
 #import "FavoritesViewController.h"
 #import "UploadViewController.h"
+#import "MainViewController.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -264,10 +265,11 @@
 -(void)addTabBarView
 {
     UINavigationController *viewController1,*viewController2,*viewController3,*viewController4;
-    
-    MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
-    rootView1.f_id=@"1";
-    rootView1.myndsType=kMyndsTypeDefault;
+   
+//    MyndsViewController *rootView1=[[[MyndsViewController alloc] init ]autorelease];
+//    rootView1.f_id=@"1";
+//    rootView1.myndsType=kMyndsTypeDefault;
+    MainViewController *rootView1=[[[MainViewController alloc] init] autorelease];
     rootView1.tabBarItem.title=@"我的空间";
     [rootView1.tabBarItem setImage:[UIImage imageNamed:@"Bt_MySpaceDef.png"]];
     viewController1=[[[UINavigationController alloc] initWithRootViewController:rootView1] autorelease];
