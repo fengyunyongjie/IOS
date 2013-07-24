@@ -305,6 +305,21 @@
 		29EFE860172A55AD0099B5A7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE85F172A55AD0099B5A7 /* Default.png */; };
 		29EFE862172A55AD0099B5A7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE861172A55AD0099B5A7 /* Default@2x.png */; };
 		29EFE864172A55AD0099B5A7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */; };
+		29F00CFC179FC251005162DE /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = 29F00CE3179FC251005162DE /* minus.png */; };
+		29F00CFD179FC251005162DE /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29F00CE4179FC251005162DE /* minus@2x.png */; };
+		29F00CFE179FC251005162DE /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 29F00CE5179FC251005162DE /* overlay.png */; };
+		29F00CFF179FC251005162DE /* overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29F00CE6179FC251005162DE /* overlay@2x.png */; };
+		29F00D00179FC251005162DE /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 29F00CE7179FC251005162DE /* plus.png */; };
+		29F00D01179FC251005162DE /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29F00CE8179FC251005162DE /* plus@2x.png */; };
+		29F00D02179FC251005162DE /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 29F00CE9179FC251005162DE /* video.png */; };
+		29F00D03179FC251005162DE /* video@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29F00CEA179FC251005162DE /* video@2x.png */; };
+		29F00D04179FC251005162DE /* QBAssetCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F00CEC179FC251005162DE /* QBAssetCollectionViewController.m */; };
+		29F00D05179FC251005162DE /* QBImagePickerAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F00CEF179FC251005162DE /* QBImagePickerAssetCell.m */; };
+		29F00D06179FC251005162DE /* QBImagePickerAssetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F00CF2179FC251005162DE /* QBImagePickerAssetView.m */; };
+		29F00D07179FC251005162DE /* QBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F00CF5179FC251005162DE /* QBImagePickerController.m */; };
+		29F00D08179FC251005162DE /* QBImagePickerFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F00CF7179FC251005162DE /* QBImagePickerFooterView.m */; };
+		29F00D09179FC251005162DE /* QBImagePickerGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F00CF9179FC251005162DE /* QBImagePickerGroupCell.m */; };
+		29F00D0A179FC251005162DE /* QBImagePickerVideoInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F00CFB179FC251005162DE /* QBImagePickerVideoInfoView.m */; };
 		29FA3B30176083B700FBA1B6 /* DefaultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */; };
 		29FAE9FA178265DD00C432DD /* Bg_Buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FAE9F6178265DD00C432DD /* Bg_Buttons.png */; };
 		29FAE9FB178265DD00C432DD /* Bt_Edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FAE9F7178265DD00C432DD /* Bt_Edit.png */; };
@@ -663,6 +678,31 @@
 		29EFE85F172A55AD0099B5A7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29EFE861172A55AD0099B5A7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		29F00CE3179FC251005162DE /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
+		29F00CE4179FC251005162DE /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus@2x.png"; sourceTree = "<group>"; };
+		29F00CE5179FC251005162DE /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
+		29F00CE6179FC251005162DE /* overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay@2x.png"; sourceTree = "<group>"; };
+		29F00CE7179FC251005162DE /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		29F00CE8179FC251005162DE /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
+		29F00CE9179FC251005162DE /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
+		29F00CEA179FC251005162DE /* video@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@2x.png"; sourceTree = "<group>"; };
+		29F00CEB179FC251005162DE /* QBAssetCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetCollectionViewController.h; sourceTree = "<group>"; };
+		29F00CEC179FC251005162DE /* QBAssetCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetCollectionViewController.m; sourceTree = "<group>"; };
+		29F00CED179FC251005162DE /* QBAssetCollectionViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetCollectionViewControllerDelegate.h; sourceTree = "<group>"; };
+		29F00CEE179FC251005162DE /* QBImagePickerAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerAssetCell.h; sourceTree = "<group>"; };
+		29F00CEF179FC251005162DE /* QBImagePickerAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerAssetCell.m; sourceTree = "<group>"; };
+		29F00CF0179FC251005162DE /* QBImagePickerAssetCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerAssetCellDelegate.h; sourceTree = "<group>"; };
+		29F00CF1179FC251005162DE /* QBImagePickerAssetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerAssetView.h; sourceTree = "<group>"; };
+		29F00CF2179FC251005162DE /* QBImagePickerAssetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerAssetView.m; sourceTree = "<group>"; };
+		29F00CF3179FC251005162DE /* QBImagePickerAssetViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerAssetViewDelegate.h; sourceTree = "<group>"; };
+		29F00CF4179FC251005162DE /* QBImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerController.h; sourceTree = "<group>"; };
+		29F00CF5179FC251005162DE /* QBImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerController.m; sourceTree = "<group>"; };
+		29F00CF6179FC251005162DE /* QBImagePickerFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerFooterView.h; sourceTree = "<group>"; };
+		29F00CF7179FC251005162DE /* QBImagePickerFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerFooterView.m; sourceTree = "<group>"; };
+		29F00CF8179FC251005162DE /* QBImagePickerGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerGroupCell.h; sourceTree = "<group>"; };
+		29F00CF9179FC251005162DE /* QBImagePickerGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerGroupCell.m; sourceTree = "<group>"; };
+		29F00CFA179FC251005162DE /* QBImagePickerVideoInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerVideoInfoView.h; sourceTree = "<group>"; };
+		29F00CFB179FC251005162DE /* QBImagePickerVideoInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerVideoInfoView.m; sourceTree = "<group>"; };
 		29FA3B2E176083B700FBA1B6 /* DefaultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultViewController.h; sourceTree = "<group>"; };
 		29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultViewController.m; sourceTree = "<group>"; };
 		29FAE9F6178265DD00C432DD /* Bg_Buttons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bg_Buttons.png; sourceTree = "<group>"; };
@@ -1187,6 +1227,7 @@
 		298AB52E17727FF200D067E1 /* Upload */ = {
 			isa = PBXGroup;
 			children = (
+				29F00CE1179FC251005162DE /* QBAssetPicker */,
 				291F5D8E177A699F007EFE03 /* Back_Normal.png */,
 				298AB52F17727FF200D067E1 /* Updata_Bt_Start.png */,
 				298AB53017727FF200D067E1 /* Updata_Complite.png */,
@@ -1532,6 +1573,46 @@
 				29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		29F00CE1179FC251005162DE /* QBAssetPicker */ = {
+			isa = PBXGroup;
+			children = (
+				29F00CE2179FC251005162DE /* image */,
+				29F00CEB179FC251005162DE /* QBAssetCollectionViewController.h */,
+				29F00CEC179FC251005162DE /* QBAssetCollectionViewController.m */,
+				29F00CED179FC251005162DE /* QBAssetCollectionViewControllerDelegate.h */,
+				29F00CEE179FC251005162DE /* QBImagePickerAssetCell.h */,
+				29F00CEF179FC251005162DE /* QBImagePickerAssetCell.m */,
+				29F00CF0179FC251005162DE /* QBImagePickerAssetCellDelegate.h */,
+				29F00CF1179FC251005162DE /* QBImagePickerAssetView.h */,
+				29F00CF2179FC251005162DE /* QBImagePickerAssetView.m */,
+				29F00CF3179FC251005162DE /* QBImagePickerAssetViewDelegate.h */,
+				29F00CF4179FC251005162DE /* QBImagePickerController.h */,
+				29F00CF5179FC251005162DE /* QBImagePickerController.m */,
+				29F00CF6179FC251005162DE /* QBImagePickerFooterView.h */,
+				29F00CF7179FC251005162DE /* QBImagePickerFooterView.m */,
+				29F00CF8179FC251005162DE /* QBImagePickerGroupCell.h */,
+				29F00CF9179FC251005162DE /* QBImagePickerGroupCell.m */,
+				29F00CFA179FC251005162DE /* QBImagePickerVideoInfoView.h */,
+				29F00CFB179FC251005162DE /* QBImagePickerVideoInfoView.m */,
+			);
+			path = QBAssetPicker;
+			sourceTree = "<group>";
+		};
+		29F00CE2179FC251005162DE /* image */ = {
+			isa = PBXGroup;
+			children = (
+				29F00CE3179FC251005162DE /* minus.png */,
+				29F00CE4179FC251005162DE /* minus@2x.png */,
+				29F00CE5179FC251005162DE /* overlay.png */,
+				29F00CE6179FC251005162DE /* overlay@2x.png */,
+				29F00CE7179FC251005162DE /* plus.png */,
+				29F00CE8179FC251005162DE /* plus@2x.png */,
+				29F00CE9179FC251005162DE /* video.png */,
+				29F00CEA179FC251005162DE /* video@2x.png */,
+			);
+			path = image;
 			sourceTree = "<group>";
 		};
 		29FAE9F5178265CE00C432DD /* editList */ = {
@@ -2399,6 +2480,14 @@
 				29BD65AB179E6A0000D78890 /* Bt_PersonspaceCh.png in Resources */,
 				29BD65AC179E6A0000D78890 /* Bt_PersonspaceDef.png in Resources */,
 				29BD65AE179E763D00D78890 /* space.png in Resources */,
+				29F00CFC179FC251005162DE /* minus.png in Resources */,
+				29F00CFD179FC251005162DE /* minus@2x.png in Resources */,
+				29F00CFE179FC251005162DE /* overlay.png in Resources */,
+				29F00CFF179FC251005162DE /* overlay@2x.png in Resources */,
+				29F00D00179FC251005162DE /* plus.png in Resources */,
+				29F00D01179FC251005162DE /* plus@2x.png in Resources */,
+				29F00D02179FC251005162DE /* video.png in Resources */,
+				29F00D03179FC251005162DE /* video@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2491,6 +2580,13 @@
 				29B75B0417864A9F00A0AE34 /* NewFinderViewController.m in Sources */,
 				29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */,
 				29C53AC3179CC03C00078CBE /* MainViewController.m in Sources */,
+				29F00D04179FC251005162DE /* QBAssetCollectionViewController.m in Sources */,
+				29F00D05179FC251005162DE /* QBImagePickerAssetCell.m in Sources */,
+				29F00D06179FC251005162DE /* QBImagePickerAssetView.m in Sources */,
+				29F00D07179FC251005162DE /* QBImagePickerController.m in Sources */,
+				29F00D08179FC251005162DE /* QBImagePickerFooterView.m in Sources */,
+				29F00D09179FC251005162DE /* QBImagePickerGroupCell.m in Sources */,
+				29F00D0A179FC251005162DE /* QBImagePickerVideoInfoView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

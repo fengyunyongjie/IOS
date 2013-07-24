@@ -180,83 +180,83 @@
     //    formatLabel = [[UILabel alloc] initWithFrame:rect];
     //    [formatLabel setText:@"已上传照片: "];
     //    [self.view addSubview:formatLabel];
-    deviceName = [AppDelegate deviceString];
-    y = 40;
-    if(![deviceName isEqualToString:@"iPhone 5"])
-    {
-        y = 0;
-    }
-    
-    //准备上传界面
-    //背景图
-    CGRect waitBackRect = CGRectMake(0, y, 320, 222);
-    waitBackGround = [[UIImageView alloc] initWithFrame:waitBackRect];
-    [waitBackGround setImage:[UIImage imageNamed:@"背景图.png"]];
-    [self.view addSubview:waitBackGround];
-    
-    CGRect waitLabelRect = CGRectMake(10, y+240, 300, 20);
-    uploadWaitLabel = [[UILabel alloc] initWithFrame:waitLabelRect];
-    [uploadWaitLabel setText:@"开启照片自动备份"];
-    [uploadWaitLabel setFont:[UIFont systemFontOfSize:16]];
-    [uploadWaitLabel setTextAlignment:NSTextAlignmentCenter];
-    [uploadWaitLabel setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:uploadWaitLabel];
-    //上传按钮
-    CGRect waitButtonRect = CGRectMake(89, y+290, 142, 33);
-    uploadWaitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [uploadWaitButton setFrame:waitButtonRect];
-    [uploadWaitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
-    [uploadWaitButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
-    [uploadWaitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [uploadWaitButton setBackgroundImage:[UIImage imageNamed:@"Updata_Bt_Start.png"] forState:UIControlStateNormal];
-    [uploadWaitButton addTarget:self action:@selector(startSouStart) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:uploadWaitButton];
-    
-    CGRect uploadImageRect = CGRectMake(90, y+20, 140, 210);
-    uploadImageView = [[BoderView alloc] initWithFrame:uploadImageRect];
-    [self.view addSubview:uploadImageView];
-    CGRect unWifiOrNetWorkImageRect = CGRectMake(61, y+106, 198, 107);
-    unWifiOrNetWorkImageView = [[UIImageView alloc] initWithFrame:unWifiOrNetWorkImageRect];
-    [self.view addSubview:unWifiOrNetWorkImageView];
-    
-    CGRect progressRect = CGRectMake(40, y+250, 240, 2);
-    uploadProgressView = [[UIProgressView alloc] initWithFrame:progressRect];
-    [self.view addSubview:uploadProgressView];
-    CGRect currFileNameRect = CGRectMake(40, y+277, 240, 25);
-    currFileNameLabel = [[UILabel alloc] initWithFrame:currFileNameRect];
-    [currFileNameLabel setTextAlignment:NSTextAlignmentCenter];
-    [currFileNameLabel setTextColor:[UIColor colorWithRed:57.0/255.0 green:65.0/255.0 blue:92.0/255.0 alpha:1]];
-    [self.view addSubview:currFileNameLabel];
-    CGRect uploadFinshPageRect = CGRectMake(40, y+317, 240, 20);
-    uploadFinshPageLabel = [[UILabel alloc] initWithFrame:uploadFinshPageRect];
-    [uploadFinshPageLabel setTextAlignment:NSTextAlignmentCenter];
-    [uploadFinshPageLabel setFont:[UIFont systemFontOfSize:14]];
-    [uploadFinshPageLabel setTextColor:[UIColor colorWithRed:148.0/255.0 green:156.0/255.0 blue:170.0/255.0 alpha:1]];
-    [self.view addSubview:uploadFinshPageLabel];
-    
-    //上传完成界面
-    CGRect uploadFinshImageRect = CGRectMake(0, y, 320, 222);
-    uploadFinshImageView = [[UIImageView alloc] initWithFrame:uploadFinshImageRect];
-    [uploadFinshImageView setImage:[UIImage imageNamed:@"Updata_Complite.png"]];
-    [self.view addSubview:uploadFinshImageView];
-    CGRect uploadFinshRect = CGRectMake(10, y+260, 300, 20);
-    uploadFinshLabel = [[UILabel alloc] initWithFrame:uploadFinshRect];
-    [uploadFinshLabel setText:@"现已全部完成，你的照片已上传到虹盘"];
-    [uploadFinshLabel setTextColor:[UIColor colorWithRed:57.0/255.0 green:65.0/255.0 blue:92.0/255.0 alpha:1]];
-    [uploadFinshLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:uploadFinshLabel];
-    
-    [self showUploadingView:YES];
-    [self showUploadFinshView:YES];
-    [self showStartUploadView:NO];
-    connection = nil;
-    isStop = TRUE;
-    photoArray = [[NSMutableArray alloc] init];
-    
-    photoManger = [[SCBPhotoManager alloc] init];
-    [photoManger setNewFoldDelegate:self];
-    isLookLibray = TRUE;
+//    deviceName = [AppDelegate deviceString];
+//    y = 40;
+//    if(![deviceName isEqualToString:@"iPhone 5"])
+//    {
+//        y = 0;
+//    }
+//    
+//    //准备上传界面
+//    //背景图
+//    CGRect waitBackRect = CGRectMake(0, y, 320, 222);
+//    waitBackGround = [[UIImageView alloc] initWithFrame:waitBackRect];
+//    [waitBackGround setImage:[UIImage imageNamed:@"背景图.png"]];
+//    [self.view addSubview:waitBackGround];
+//    
+//    CGRect waitLabelRect = CGRectMake(10, y+240, 300, 20);
+//    uploadWaitLabel = [[UILabel alloc] initWithFrame:waitLabelRect];
+//    [uploadWaitLabel setText:@"开启照片自动备份"];
+//    [uploadWaitLabel setFont:[UIFont systemFontOfSize:16]];
+//    [uploadWaitLabel setTextAlignment:NSTextAlignmentCenter];
+//    [uploadWaitLabel setBackgroundColor:[UIColor clearColor]];
+//    [self.view addSubview:uploadWaitLabel];
+//    //上传按钮
+//    CGRect waitButtonRect = CGRectMake(89, y+290, 142, 33);
+//    uploadWaitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [uploadWaitButton setFrame:waitButtonRect];
+//    [uploadWaitButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
+//    [uploadWaitButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
+//    [uploadWaitButton setTitle:@"开启" forState:UIControlStateNormal];
+//    [uploadWaitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [uploadWaitButton setBackgroundImage:[UIImage imageNamed:@"Updata_Bt_Start.png"] forState:UIControlStateNormal];
+//    [uploadWaitButton addTarget:self action:@selector(startSouStart) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:uploadWaitButton];
+//    
+//    CGRect uploadImageRect = CGRectMake(90, y+20, 140, 210);
+//    uploadImageView = [[BoderView alloc] initWithFrame:uploadImageRect];
+//    [self.view addSubview:uploadImageView];
+//    CGRect unWifiOrNetWorkImageRect = CGRectMake(61, y+106, 198, 107);
+//    unWifiOrNetWorkImageView = [[UIImageView alloc] initWithFrame:unWifiOrNetWorkImageRect];
+//    [self.view addSubview:unWifiOrNetWorkImageView];
+//    
+//    CGRect progressRect = CGRectMake(40, y+250, 240, 2);
+//    uploadProgressView = [[UIProgressView alloc] initWithFrame:progressRect];
+//    [self.view addSubview:uploadProgressView];
+//    CGRect currFileNameRect = CGRectMake(40, y+277, 240, 25);
+//    currFileNameLabel = [[UILabel alloc] initWithFrame:currFileNameRect];
+//    [currFileNameLabel setTextAlignment:NSTextAlignmentCenter];
+//    [currFileNameLabel setTextColor:[UIColor colorWithRed:57.0/255.0 green:65.0/255.0 blue:92.0/255.0 alpha:1]];
+//    [self.view addSubview:currFileNameLabel];
+//    CGRect uploadFinshPageRect = CGRectMake(40, y+317, 240, 20);
+//    uploadFinshPageLabel = [[UILabel alloc] initWithFrame:uploadFinshPageRect];
+//    [uploadFinshPageLabel setTextAlignment:NSTextAlignmentCenter];
+//    [uploadFinshPageLabel setFont:[UIFont systemFontOfSize:14]];
+//    [uploadFinshPageLabel setTextColor:[UIColor colorWithRed:148.0/255.0 green:156.0/255.0 blue:170.0/255.0 alpha:1]];
+//    [self.view addSubview:uploadFinshPageLabel];
+//    
+//    //上传完成界面
+//    CGRect uploadFinshImageRect = CGRectMake(0, y, 320, 222);
+//    uploadFinshImageView = [[UIImageView alloc] initWithFrame:uploadFinshImageRect];
+//    [uploadFinshImageView setImage:[UIImage imageNamed:@"Updata_Complite.png"]];
+//    [self.view addSubview:uploadFinshImageView];
+//    CGRect uploadFinshRect = CGRectMake(10, y+260, 300, 20);
+//    uploadFinshLabel = [[UILabel alloc] initWithFrame:uploadFinshRect];
+//    [uploadFinshLabel setText:@"现已全部完成，你的照片已上传到虹盘"];
+//    [uploadFinshLabel setTextColor:[UIColor colorWithRed:57.0/255.0 green:65.0/255.0 blue:92.0/255.0 alpha:1]];
+//    [uploadFinshLabel setTextAlignment:NSTextAlignmentCenter];
+//    [self.view addSubview:uploadFinshLabel];
+//    
+//    [self showUploadingView:YES];
+//    [self showUploadFinshView:YES];
+//    [self showStartUploadView:NO];
+//    connection = nil;
+//    isStop = TRUE;
+//    photoArray = [[NSMutableArray alloc] init];
+//    
+//    photoManger = [[SCBPhotoManager alloc] init];
+//    [photoManger setNewFoldDelegate:self];
+//    isLookLibray = TRUE;
     [super viewDidLoad];
 }
 
@@ -861,6 +861,17 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    //上传使用
+    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
+    imagePickerController.delegate = self;
+    imagePickerController.allowsMultipleSelection = YES;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
+    [navigationController setNavigationBarHidden:YES];
+    [self presentModalViewController:navigationController animated:YES];
+    [imagePickerController release];
+    [navigationController release];
+    return;
     baseBL = TRUE;
     if([[SCBSession sharedSession] userId] != user_id || [[SCBSession sharedSession] userToken] != user_token)
     {

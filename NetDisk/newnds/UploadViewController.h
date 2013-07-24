@@ -13,8 +13,9 @@
 #import "SCBUploader.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "BoderView.h"
+#import "QBImagePickerController.h"
 
-@interface UploadViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,NewFoldDelegate,UpLoadDelegate,UIAlertViewDelegate>
+@interface UploadViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,NewFoldDelegate,UpLoadDelegate,UIAlertViewDelegate,QBImagePickerControllerDelegate>
 {
     float allHeight;
     //装载所有图片信息
