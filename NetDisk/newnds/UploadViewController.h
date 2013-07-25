@@ -104,6 +104,8 @@
      */
     UIView *topView;
     BOOL isNeedBackButton;
+    
+    BOOL isNeedChangeUpload;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -129,6 +131,7 @@
 @property (nonatomic,retain) UILabel *uploadFinshLabel;
 @property (nonatomic,retain) UIImageView *uploadFinshImageView;
 @property (nonatomic,retain) SCBUploader *uploderDemo;
+@property (nonatomic,assign) BOOL isNeedChangeUpload;
 
 @property (nonatomic,assign) BOOL isUpload;
 @property (nonatomic,assign) BOOL isStop;
@@ -138,6 +141,8 @@
 -(void)startSouStart;
 -(void)stopAllDo;
 -(void)stopWiFi;
+-(void)changeUpload:(NSMutableOrderedSet *)array_;
+
 @end
 
 

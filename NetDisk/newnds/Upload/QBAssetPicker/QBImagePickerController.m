@@ -12,7 +12,7 @@
 #define QBY 20
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
 #define ChangeTabWidth 90
-#define RightButtonBoderWidth 10
+#define RightButtonBoderWidth 0
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 #define BottonViewHeight self.view.frame.size.height-TabBarHeight+QBY
 
@@ -153,18 +153,18 @@
     [phoot_button setFrame:CGRectMake((320-ChangeTabWidth)/2, 0, ChangeTabWidth, 44)];
     [phoot_button setTitle:@"照片管理" forState:UIControlStateNormal];
     [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
+    //    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
     [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [topView addSubview:phoot_button];
     
+    
     //更多按钮
     UIButton *more_button = [[UIButton alloc] initWithFrame:CGRectMake(320-RightButtonBoderWidth-40, 0, 40, 44)];
-    //    UIImage *moreImage = [UIImage imageNamed:@"Bt_More.png"];
     [more_button setTitle:@"全选" forState:UIControlStateNormal];
     [more_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    //    [more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
-    //    [more_button setBackgroundImage:moreImage forState:UIControlStateNormal];
     [more_button addTarget:self action:@selector(clicked_more:) forControlEvents:UIControlEventTouchDown];
+    [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    [more_button.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [topView addSubview:more_button];
     [self.view addSubview:topView];
     
@@ -175,33 +175,43 @@
     [botton_image setImage:[UIImage imageNamed:@"Bk_Nav.png"]];
     [bottonView addSubview:botton_image];
     [botton_image release];
-    UILabel *change_label = [[UILabel alloc] initWithFrame:CGRectMake(3, 2, 100, 16)];
-    [change_label setText:@"选择上传路径"];
-    [change_label setFont:[UIFont systemFontOfSize:14]];
-    [change_label setTextColor:[UIColor whiteColor]];
-    [change_label setBackgroundColor:[UIColor clearColor]];
-    [bottonView addSubview:change_label];
-    [change_label release];
     
-    UIButton *my_file = [[UIButton alloc] initWithFrame:CGRectMake(3, 20, 250, 38)];
-    [my_file setTitle:@"我的文件" forState:UIControlStateNormal];
-    [my_file setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    my_file.layer.borderColor = [[UIColor whiteColor] CGColor];
-    my_file.layer.borderWidth = 1;
-    my_file.layer.shadowRadius = 5;
-    [bottonView addSubview:my_file];
-    [my_file release];
-    
-    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake(256, 20, 320-256, 38)];
-    [upload_button setTitle:@"上传" forState:UIControlStateNormal];
-    [upload_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    upload_button.layer.borderColor = [[UIColor whiteColor] CGColor];
-    upload_button.layer.borderWidth = 1;
-    upload_button.layer.shadowRadius = 5;
+    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
+    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOk.png"] forState:UIControlStateNormal];
+    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOkCh.png"] forState:UIControlStateHighlighted];
+    [upload_button addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
     [bottonView addSubview:upload_button];
     [upload_button release];
     
+    UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
+    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
+    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
+    [upload_back_button addTarget:self action:@selector(clicked_uploading:) forControlEvents:UIControlEventTouchUpInside];
+    [bottonView addSubview:upload_back_button];
+    [upload_back_button release];
+    
     [self.view addSubview:bottonView];
+}
+
+-(void)clicked_back
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+-(void)clicked_more:(id)sender
+{
+    
+}
+
+-(void)clicked_changeMyFile:(id)sender
+{
+    //请求所有的数据文件
+}
+
+-(void)clicked_uploading:(id)sender
+{
+    //开始上传
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated

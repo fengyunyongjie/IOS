@@ -15,7 +15,7 @@
 #define QBY 20
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
 #define ChangeTabWidth 90
-#define RightButtonBoderWidth 10
+#define RightButtonBoderWidth 0
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 #define BottonViewHeight self.view.frame.size.height-TabBarHeight+QBY
 
@@ -25,7 +25,9 @@
 // Views
 #import "QBImagePickerAssetCell.h"
 #import "QBImagePickerFooterView.h"
+#import "QBImageFileViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UploadViewController.h"
 
 @interface QBAssetCollectionViewController ()
 
@@ -90,6 +92,7 @@
         [back_button setBackgroundImage:back_image forState:UIControlStateNormal];
         [topView addSubview:back_button];
     }
+    
     //把色值转换成图片
     CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
     UIGraphicsBeginImageContext(rect_image.size);
@@ -106,72 +109,53 @@
     [phoot_button setFrame:CGRectMake((320-ChangeTabWidth)/2, 0, ChangeTabWidth, 44)];
     [phoot_button setTitle:@"照片管理" forState:UIControlStateNormal];
     [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
-    [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-    [topView addSubview:phoot_button];
-    
-//    UIButton *phoot_button = [[UIButton alloc] init];
-//    [phoot_button setTag:23];
-//    [phoot_button setFrame:CGRectMake(320/2-ChangeTabWidth, 0, ChangeTabWidth, 44)];
-//    [phoot_button setTitle:@"上传进度" forState:UIControlStateNormal];
-//    [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
 //    [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-//    [topView addSubview:phoot_button];
-//    
-//    UIButton *file_button = [[UIButton alloc] init];
-//    [file_button setTag:24];
-//    [file_button setFrame:CGRectMake(320/2, 0, ChangeTabWidth, 44)];
-//    [file_button setTitle:@"上传历史" forState:UIControlStateNormal];
-//    [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    [file_button addTarget:self action:@selector(clicked_uploadHistory:) forControlEvents:UIControlEventTouchDown];
-//    [file_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-//    [topView addSubview:file_button];
+    [topView addSubview:phoot_button];
+    
     
     //更多按钮
     UIButton *more_button = [[UIButton alloc] initWithFrame:CGRectMake(320-RightButtonBoderWidth-40, 0, 40, 44)];
-//    UIImage *moreImage = [UIImage imageNamed:@"Bt_More.png"];
     [more_button setTitle:@"全选" forState:UIControlStateNormal];
     [more_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    [more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
-//    [more_button setBackgroundImage:moreImage forState:UIControlStateNormal];
     [more_button addTarget:self action:@selector(clicked_more:) forControlEvents:UIControlEventTouchDown];
+    [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    [more_button.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [topView addSubview:more_button];
     [self.view addSubview:topView];
     
+    //添加选择文件
+    CGRect change_rect = CGRectMake(2, BottonViewHeight-28, 316, 24);
+    change_myFile_button = [[UIButton alloc] initWithFrame:change_rect];
+    [change_myFile_button setTitle:@"选择文件" forState:UIControlStateNormal];
+    [change_myFile_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [change_myFile_button.layer setBorderWidth:1];
+    [change_myFile_button.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    [change_myFile_button addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:change_myFile_button];
+    
     //添加底部视图
     NSLog(@"BottonViewHeight:%f",BottonViewHeight);
+    
     bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, BottonViewHeight, 320, 60)];
     UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
     [botton_image setImage:[UIImage imageNamed:@"Bk_Nav.png"]];
     [bottonView addSubview:botton_image];
     [botton_image release];
-    UILabel *change_label = [[UILabel alloc] initWithFrame:CGRectMake(3, 2, 100, 16)];
-    [change_label setText:@"选择上传路径"];
-    [change_label setFont:[UIFont systemFontOfSize:14]];
-    [change_label setTextColor:[UIColor whiteColor]];
-    [change_label setBackgroundColor:[UIColor clearColor]];
-    [bottonView addSubview:change_label];
-    [change_label release];
     
-    UIButton *my_file = [[UIButton alloc] initWithFrame:CGRectMake(3, 20, 250, 38)];
-    [my_file setTitle:@"我的文件" forState:UIControlStateNormal];
-    [my_file setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    my_file.layer.borderColor = [[UIColor whiteColor] CGColor];
-    my_file.layer.borderWidth = 1;
-    my_file.layer.shadowRadius = 5;
-    [bottonView addSubview:my_file];
-    [my_file release];
-    
-    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake(256, 20, 320-256, 38)];
-    [upload_button setTitle:@"上传" forState:UIControlStateNormal];
-    [upload_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    upload_button.layer.borderColor = [[UIColor whiteColor] CGColor];
-    upload_button.layer.borderWidth = 1;
-    upload_button.layer.shadowRadius = 5;
+    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
+    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOk.png"] forState:UIControlStateNormal];
+    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOkCh.png"] forState:UIControlStateHighlighted];
+    [upload_button addTarget:self action:@selector(clicked_startUpload:) forControlEvents:UIControlEventTouchUpInside];
     [bottonView addSubview:upload_button];
     [upload_button release];
     
+    UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
+    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
+    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
+    [upload_back_button addTarget:self action:@selector(clicked_uploading:) forControlEvents:UIControlEventTouchUpInside];
+    [bottonView addSubview:upload_back_button];
+    [upload_back_button release];
     [self.view addSubview:bottonView];
     
 }
@@ -213,34 +197,67 @@
     [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES];
 }
 
+-(void)clicked_changeMyFile:(id)sender
+{
+    NSLog(@"clicked_changeMyFile count:%i",[self.selectedAssets count]);
+    QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
+    [self presentModalViewController:qbImage_fileView animated:YES];
+    [qbImage_fileView release];
+}
+
+-(void)clicked_startUpload:(id)sender
+{
+    UploadViewController *upLoad_viewController = [[UploadViewController alloc] init];
+    [upLoad_viewController changeUpload:self.selectedAssets];
+    [upLoad_viewController release];
+}
+
+-(void)newFold:(NSDictionary *)dictionary
+{
+    
+}
+
+-(void)openFile:(NSDictionary *)dictionary
+{
+    NSLog(@"dictionary:%@",dictionary);
+    fileArray = [dictionary objectForKey:@"files"];
+}
+
+-(void)clicked_uploading:(id)sender
+{
+    //开始上传
+    
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Reload
-    [self reloadData];
-    
-    if (self.fullScreenLayoutEnabled) {
-        // Set bar styles
-//        self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-//        self.navigationController.navigationBar.translucent = YES;
-//        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
+    if(!isFirst)
+    {
+        isFirst = TRUE;
+        // Reload
+        [self reloadData];
         
-//        CGFloat top = 0;
-//        if (![[UIApplication sharedApplication] isStatusBarHidden]) top = top + 20;
-//        if (!self.navigationController.navigationBarHidden) top = top + 44;
-//        self.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0);
-//        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(top, 0, 0, 0);
+        if (self.fullScreenLayoutEnabled) {
+            // Set bar styles
+            //        self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+            //        self.navigationController.navigationBar.translucent = YES;
+            //        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
+            //        CGFloat top = 0;
+            //        if (![[UIApplication sharedApplication] isStatusBarHidden]) top = top + 20;
+            //        if (!self.navigationController.navigationBarHidden) top = top + 44;
+            //        self.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0);
+            //        self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(top, 0, 0, 0);
+            [self setWantsFullScreenLayout:YES];
+        }
+        [self.view bringSubviewToFront:change_myFile_button];
+        // Scroll to bottom
+        NSInteger numberOfRows = [self.tableView numberOfRowsInSection:2];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(numberOfRows - 1) inSection:2];
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
         
-        [self setWantsFullScreenLayout:YES];
+        [self.navigationController setNavigationBarHidden:YES];
     }
-    
-    // Scroll to bottom
-    NSInteger numberOfRows = [self.tableView numberOfRowsInSection:2];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(numberOfRows - 1) inSection:2];
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-    
-    [self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -248,7 +265,7 @@
     [super viewDidAppear:animated];
     
     // Flash scroll indicators
-    [self.tableView flashScrollIndicators];
+//    [self.tableView flashScrollIndicators];
 }
 
 - (void)setShowsCancelButton:(BOOL)showsCancelButton
@@ -517,6 +534,10 @@
             NSInteger numberOfAssetsInRow = self.view.bounds.size.width / self.imageSize.width;
             CGFloat margin = round((self.view.bounds.size.width - self.imageSize.width * numberOfAssetsInRow) / (numberOfAssetsInRow + 1));
             heightForRow = margin + self.imageSize.height;
+            if(([indexPath row]+1)*numberOfAssetsInRow >= self.assets.count)
+            {
+                heightForRow += 3;
+            }
         }
             break;
     }

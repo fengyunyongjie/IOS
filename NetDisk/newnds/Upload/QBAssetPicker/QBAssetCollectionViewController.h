@@ -18,15 +18,20 @@
 
 // Controllers
 #import "QBImagePickerController.h"
+#import "SCBPhotoManager.h"
 
-@interface QBAssetCollectionViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, QBImagePickerAssetCellDelegate>
+@interface QBAssetCollectionViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, QBImagePickerAssetCellDelegate,NewFoldDelegate>
 {
     /*
      自定义navBar
      */
     UIView *topView;
     UIView *bottonView;
+    UIButton *change_myFile_button;
     BOOL isNeedBackButton;
+    SCBPhotoManager *photoManger;
+    NSArray *fileArray;
+    BOOL isFirst;
 }
 
 @property (nonatomic, retain) id<QBAssetCollectionViewControllerDelegate> delegate;

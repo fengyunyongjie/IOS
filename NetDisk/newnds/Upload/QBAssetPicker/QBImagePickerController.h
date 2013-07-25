@@ -43,6 +43,7 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
      */
     UIView *topView;
     UIView *bottonView;
+    UIButton *change_myFile_button;
     BOOL isNeedBackButton;
 }
 
