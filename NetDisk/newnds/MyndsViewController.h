@@ -11,6 +11,8 @@
 typedef enum {
     kMyndsTypeDefault,
     kMyndsTypeSelect,
+    kMyndsTypeMyShare,
+    kMyndsTypeShare,
 } MyndsType;
 
 @interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate>
@@ -25,6 +27,7 @@ typedef enum {
 @property (strong,nonatomic) UITableView *tableView;
 @property (strong,nonatomic) UIControl *ctrlView;
 @property (strong,nonatomic) UILabel *lblEdit;
+@property (strong,nonatomic) UILabel *titleLabel;
 -(void)loadData;
 @end
 

@@ -21,6 +21,7 @@
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
 #define TabBarHeight 60
+#define RightButtonBoderWidth 10
 typedef enum{
     kAlertTagDeleteOne,
     kAlertTagDeleteMore,
@@ -69,6 +70,10 @@ typedef enum{
     [alert setTag:kAlertTagNewFinder];
     [alert show];
 }
+-(void)back:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 -(void)showMenu:(id)sender
 {
     if (self.selectedIndexPath) {
@@ -83,12 +88,41 @@ typedef enum{
     if (self) {
         
         [self.view setBackgroundColor:[UIColor whiteColor]];
+        //顶视图
         UIView *nbar=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
         UIImageView *niv=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Title.png"]];
         niv.frame=nbar.frame;
         [nbar addSubview:niv];
         [self.view addSubview: nbar];
+        //标题
+        self.titleLabel=[[UILabel alloc] init];
+        self.titleLabel.text=self.title;
+        self.titleLabel.font=[UIFont boldSystemFontOfSize:18];
+        self.titleLabel.textAlignment=UITextAlignmentCenter;
+        self.titleLabel.backgroundColor=[UIColor clearColor];
+        self.titleLabel.frame=CGRectMake(60, 0, 200, 44);
+        [nbar addSubview:self.titleLabel];
         
+        //返回按钮
+        if(1)
+        {
+            UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
+            UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
+            [back_button setBackgroundImage:back_image forState:UIControlStateNormal];
+            [back_button addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+            [nbar addSubview:back_button];
+            [back_button release];
+        }
+        //更多按钮
+        UIButton *more_button = [[UIButton alloc] init];
+        UIImage *moreImage = [UIImage imageNamed:@"Bt_More.png"];
+        [more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
+        [more_button setBackgroundImage:moreImage forState:UIControlStateNormal];
+        [more_button addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchUpInside];
+        [nbar addSubview:more_button];
+        [more_button release];
+        
+        //表视图
         self.tableView=[[UITableView alloc] init];
         self.tableView.allowsSelectionDuringEditing=YES;
         self.tableView.delegate=self;
@@ -99,6 +133,8 @@ typedef enum{
         self.tableView.frame=r;
         r=self.tableView.frame;
         self.tableView.frame=r;
+        
+        //操作菜单
         self.ctrlView=[[UIControl alloc] init];
         r=self.view.frame;
         //r.size.height=120;
@@ -113,8 +149,7 @@ typedef enum{
         [bg setFrame:r];
         [self.ctrlView addSubview:bg];
         
-        //[self.view bringSubviewToFront:bg];
-        
+        //按钮－新建文件夹
         UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
         btnNewFinder.frame=CGRectMake(38+140, 30, 34, 34);
         [btnNewFinder setImage:[UIImage imageNamed:@"Bt_NewFolder.png"] forState:UIControlStateNormal];
@@ -129,6 +164,7 @@ typedef enum{
         lblNewFinder.frame=CGRectMake(23+140, 72, 64, 20);
         [self.ctrlView addSubview:lblNewFinder];
         
+        //按钮－编辑
         UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
         btnEdit.frame=CGRectMake(116+140, 30, 34, 34);
         [btnEdit setImage:[UIImage imageNamed:@"Bt_Edit.png"] forState:UIControlStateNormal];
@@ -142,6 +178,15 @@ typedef enum{
         self.lblEdit.textColor=[UIColor whiteColor];
         self.lblEdit.frame=CGRectMake(119+140, 72, 29, 21);
         [self.ctrlView addSubview:self.lblEdit];
+        
+        //表格操作菜单
+        UIView *cellMenu=[[UIView alloc] init];
+        cellMenu.frame=CGRectMake(0, 70, 320, 180);
+        UIImageView *imageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_OptionBar.png" ]];
+        [cellMenu addSubview:imageView];
+        [cellMenu setHidden:YES];
+        [self.tableView addSubview:cellMenu];
+        [self.tableView bringSubviewToFront:cellMenu];
     }
     return self;
 }
@@ -176,8 +221,10 @@ typedef enum{
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.titleLabel.text=self.navigationItem.title;
+    
     CGRect r=self.ctrlView.frame;
-    r.origin.y=0;
+    r.origin.y=44;
     self.ctrlView.frame=r;
     r=self.view.frame;
     r.origin.y=44;
@@ -596,7 +643,7 @@ typedef enum{
         r.size.height=50;
         UIToolbar *toolbar=[[[UIToolbar alloc] initWithFrame:r] autorelease];
         //[toolbar setBackgroundImage:[UIImage imageNamed:@"option_bar.png"] forToolbarPosition:UIToolbarPositionTop barMetrics:UIBarMetricsDefault];
-        [toolbar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"option_bar.png"]] atIndex:1];
+        [toolbar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_OptionBar.png"]] atIndex:1];
         //UIBarButtonItem *item0=[[UIBarButtonItem alloc] initWithTitle:@"重命名" style:UIBarButtonItemStyleDone target:self action:@selector(toRename:)];
         UIBarButtonItem *item0=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"option_bar_edit.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toRename:)];
         [item0 setTitle:@"重命名"];
@@ -881,8 +928,8 @@ typedef enum{
         if (self.myndsType==kMyndsTypeSelect){
             viewController.delegate=self.delegate;
         }
-        [self.navigationController pushViewController:viewController animated:YES];
         viewController.title=f_name;
+        [self.navigationController pushViewController:viewController animated:YES];
     }else
     {
         if (self.myndsType!=kMyndsTypeDefault) {
