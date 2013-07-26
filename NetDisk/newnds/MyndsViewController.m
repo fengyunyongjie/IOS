@@ -113,50 +113,157 @@ typedef enum{
         self.tableView.frame=r;
         self.tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
         
+//        //操作菜单
+//        self.ctrlView=[[UIControl alloc] init];
+//        r=self.view.frame;
+//        //r.size.height=120;
+//        //r.origin.x=140;
+//        [self.ctrlView setFrame:r];
+//        [self.ctrlView addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
+//        self.ctrlView.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
+//        [self.view addSubview:self.ctrlView];
+//        [self.ctrlView setHidden:YES];
+//        UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bg_Buttons.png"]];
+//        r=CGRectMake(0+140, 0, 176, 112);
+//        [bg setFrame:r];
+//        [self.ctrlView addSubview:bg];
+//        
+//        //按钮－新建文件夹
+//        UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
+//        btnNewFinder.frame=CGRectMake(38+140, 30, 34, 34);
+//        [btnNewFinder setImage:[UIImage imageNamed:@"Bt_NewFolder.png"] forState:UIControlStateNormal];
+//        [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.ctrlView addSubview:btnNewFinder];
+//        
+//        UILabel *lblNewFinder=[[UILabel alloc] init];
+//        lblNewFinder.text=@"新建文件夹";
+//        lblNewFinder.font=[UIFont systemFontOfSize:12];
+//        lblNewFinder.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
+//        lblNewFinder.textColor=[UIColor whiteColor];
+//        lblNewFinder.frame=CGRectMake(23+140, 72, 64, 20);
+//        [self.ctrlView addSubview:lblNewFinder];
+//        
+//        //按钮－编辑
+//        UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
+//        btnEdit.frame=CGRectMake(116+140, 30, 34, 34);
+//        [btnEdit setImage:[UIImage imageNamed:@"Bt_Edit.png"] forState:UIControlStateNormal];
+//        [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.ctrlView addSubview:btnEdit];
+//        
+//        self.lblEdit=[[UILabel alloc] init];
+//        self.lblEdit.text=@"编辑";
+//        self.lblEdit.font=[UIFont systemFontOfSize:12];
+//        self.lblEdit.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
+//        self.lblEdit.textColor=[UIColor whiteColor];
+//        self.lblEdit.frame=CGRectMake(119+140, 72, 29, 21);
+//        [self.ctrlView addSubview:self.lblEdit];
+        
         //操作菜单
         self.ctrlView=[[UIControl alloc] init];
-        r=self.view.frame;
-        //r.size.height=120;
-        //r.origin.x=140;
-        [self.ctrlView setFrame:r];
+        self.ctrlView.frame=self.view.frame;
         [self.ctrlView addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
-        self.ctrlView.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
         [self.view addSubview:self.ctrlView];
         [self.ctrlView setHidden:YES];
-        UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bg_Buttons.png"]];
-        r=CGRectMake(0+140, 0, 176, 112);
-        [bg setFrame:r];
+        UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_na.png"]];
+        bg.frame=CGRectMake(25, 44, 270, 175);
         [self.ctrlView addSubview:bg];
         
-        //按钮－新建文件夹
+        //按钮－新建文件夹0,0
         UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder.frame=CGRectMake(38+140, 30, 34, 34);
-        [btnNewFinder setImage:[UIImage imageNamed:@"Bt_NewFolder.png"] forState:UIControlStateNormal];
+        btnNewFinder.frame=CGRectMake(25, 44, 90, 87);
+        [btnNewFinder setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
+        [btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnNewFinder];
-        
-        UILabel *lblNewFinder=[[UILabel alloc] init];
-        lblNewFinder.text=@"新建文件夹";
+        UILabel *lblNewFinder=[[[UILabel alloc] init] autorelease];
+        lblNewFinder.text=@"上传";
+        lblNewFinder.textAlignment=UITextAlignmentCenter;
         lblNewFinder.font=[UIFont systemFontOfSize:12];
-        lblNewFinder.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
         lblNewFinder.textColor=[UIColor whiteColor];
-        lblNewFinder.frame=CGRectMake(23+140, 72, 64, 20);
+        lblNewFinder.backgroundColor=[UIColor clearColor];
+        lblNewFinder.frame=CGRectMake(25, 59+44, 90, 21);
         [self.ctrlView addSubview:lblNewFinder];
         
-        //按钮－编辑
+        //按钮－编辑0,1
         UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnEdit.frame=CGRectMake(116+140, 30, 34, 34);
-        [btnEdit setImage:[UIImage imageNamed:@"Bt_Edit.png"] forState:UIControlStateNormal];
-        [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+        btnEdit.frame=CGRectMake(25+90, 44, 90, 87);
+        [btnEdit setImage:[UIImage imageNamed:@"Bt_naSeach.png"] forState:UIControlStateNormal];
+        [btnEdit setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [btnEdit addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnEdit];
-        
-        self.lblEdit=[[UILabel alloc] init];
-        self.lblEdit.text=@"编辑";
+        self.lblEdit=[[[UILabel alloc] init] autorelease];
+        self.lblEdit.text=@"搜索";
+        self.lblEdit.textAlignment=UITextAlignmentCenter;
         self.lblEdit.font=[UIFont systemFontOfSize:12];
-        self.lblEdit.backgroundColor=[UIColor colorWithWhite:0 alpha:0];
         self.lblEdit.textColor=[UIColor whiteColor];
-        self.lblEdit.frame=CGRectMake(119+140, 72, 29, 21);
+        self.lblEdit.backgroundColor=[UIColor clearColor];
+        self.lblEdit.frame=CGRectMake(25+90, 59+44, 90, 21);
         [self.ctrlView addSubview:self.lblEdit];
+        
+        //按钮－新建文件夹 0，2
+        UIButton *btnNewFinder02= [UIButton buttonWithType:UIButtonTypeCustom];
+        btnNewFinder02.frame=CGRectMake(25+(90*2), 44, 90, 87);
+        [btnNewFinder02 setImage:[UIImage imageNamed:@"Bt_naNews.png"] forState:UIControlStateNormal];
+        [btnNewFinder02 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [btnNewFinder02 addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:btnNewFinder02];
+        UILabel *lblNewFinder02=[[[UILabel alloc] init] autorelease];
+        lblNewFinder02.text=@"消息";
+        lblNewFinder02.textAlignment=UITextAlignmentCenter;
+        lblNewFinder02.font=[UIFont systemFontOfSize:12];
+        lblNewFinder02.textColor=[UIColor whiteColor];
+        lblNewFinder02.backgroundColor=[UIColor clearColor];
+        lblNewFinder02.frame=CGRectMake(25+(90*2), 59+44, 90, 21);
+        [self.ctrlView addSubview:lblNewFinder02];
+        
+        //按钮－新建文件夹 1，0
+        UIButton *btnNewFinder10= [UIButton buttonWithType:UIButtonTypeCustom];
+        btnNewFinder10.frame=CGRectMake(25, 44+88, 90, 87);
+        [btnNewFinder10 setImage:[UIImage imageNamed:@"Bt_naEdit.png"] forState:UIControlStateNormal];
+        [btnNewFinder10 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [btnNewFinder10 addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:btnNewFinder10];
+        UILabel *lblNewFinder10=[[[UILabel alloc] init] autorelease];
+        lblNewFinder10.text=@"编辑";
+        lblNewFinder10.textAlignment=UITextAlignmentCenter;
+        lblNewFinder10.font=[UIFont systemFontOfSize:12];
+        lblNewFinder10.textColor=[UIColor whiteColor];
+        lblNewFinder10.backgroundColor=[UIColor clearColor];
+        lblNewFinder10.frame=CGRectMake(25, 59+88+44, 90, 21);
+        [self.ctrlView addSubview:lblNewFinder10];
+        
+        //按钮－新建文件夹 1，1
+        UIButton *btnNewFinder11= [UIButton buttonWithType:UIButtonTypeCustom];
+        btnNewFinder11.frame=CGRectMake(25+90, 44+88, 90, 87);
+        [btnNewFinder11 setImage:[UIImage imageNamed:@"Bt_naCreateForlder.png"] forState:UIControlStateNormal];
+        [btnNewFinder11 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [btnNewFinder11 addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:btnNewFinder11];
+        UILabel *lblNewFinder11=[[[UILabel alloc] init] autorelease];
+        lblNewFinder11.text=@"新建文件夹";
+        lblNewFinder11.textAlignment=UITextAlignmentCenter;
+        lblNewFinder11.font=[UIFont systemFontOfSize:12];
+        lblNewFinder11.textColor=[UIColor whiteColor];
+        lblNewFinder11.backgroundColor=[UIColor clearColor];
+        lblNewFinder11.frame=CGRectMake(25+90, 59+88+44, 90, 21);
+        [self.ctrlView addSubview:lblNewFinder11];
+        
+//        //按钮－新建文件夹 1，2
+//        UIButton *btnNewFinder12= [UIButton buttonWithType:UIButtonTypeCustom];
+//        btnNewFinder12.frame=CGRectMake(25+(90*2), 44+88, 90, 87);
+//        [btnNewFinder12 setImage:[UIImage imageNamed:@"Bt_DownloadF.png"] forState:UIControlStateNormal];
+//        [btnNewFinder12 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+//        [btnNewFinder12 addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.ctrlView addSubview:btnNewFinder12];
+//        UILabel *lblNewFinde12r=[[[UILabel alloc] init] autorelease];
+//        lblNewFinde12r.text=@"新建文件夹";
+//        lblNewFinde12r.textAlignment=UITextAlignmentCenter;
+//        lblNewFinde12r.font=[UIFont systemFontOfSize:12];
+//        lblNewFinde12r.textColor=[UIColor whiteColor];
+//        lblNewFinde12r.backgroundColor=[UIColor clearColor];
+//        lblNewFinde12r.frame=CGRectMake(25+(90*2), 59+88+44, 90, 21);
+//        [self.ctrlView addSubview:lblNewFinde12r];
+        
         
         //表格操作菜单
         self.cellMenu=[[UIView alloc] init];
@@ -225,6 +332,44 @@ typedef enum{
         lblDel.backgroundColor=[UIColor clearColor];
         lblDel.frame=CGRectMake(249, 45, 42, 21);
         [self.cellMenu addSubview:lblDel];
+        
+        //新建文件夹视图
+        self.newFinderView=[[[UIView alloc] init] autorelease];
+        self.newFinderView.frame=self.view.frame;
+        [self.view addSubview:self.newFinderView];
+        [self.newFinderView setHidden:YES];
+        UIImageView *newFinderBg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_CreateFolder.png"]];
+        newFinderBg.frame=CGRectMake(25, 100, 270, 176);
+        [self.newFinderView addSubview:newFinderBg];
+        UILabel *lblTitle=[[[UILabel alloc] initWithFrame:CGRectMake(91, 110, 138, 21)] autorelease];
+        lblTitle.textColor=[UIColor whiteColor];
+        lblTitle.backgroundColor=[UIColor clearColor];
+        lblTitle.textAlignment=UITextAlignmentCenter;
+        lblTitle.text=@"新建文件夹";
+        [self.newFinderView addSubview:lblTitle];
+        UIButton *btnOk=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnOk.frame=CGRectMake(25, 221, 135, 55);
+        //btnOk.titleLabel.text=@"确定";
+        [btnOk setTitle:@"确定" forState:UIControlStateNormal];
+        [btnOk setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [btnOk setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btnOk addTarget:self action:@selector(okNewFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [self.newFinderView addSubview:btnOk];
+        UIButton *btnCancel=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnCancel.frame=CGRectMake(160, 221, 135, 55);
+        [btnCancel setTitle:@"取消" forState:UIControlStateNormal];
+        [btnCancel setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        btnCancel.titleLabel.textColor=[UIColor whiteColor];
+        [btnCancel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btnCancel addTarget:self action:@selector(cancelNewFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [self.newFinderView addSubview:btnCancel];
+        self.tfdFinderName=[[[UITextField alloc] initWithFrame:CGRectMake(83, 159, 190, 30)] autorelease];
+        self.tfdFinderName.placeholder=@"文件夹名称";
+        self.tfdFinderName.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
+        self.tfdFinderName.borderStyle=UITextBorderStyleNone;
+        self.tfdFinderName.delegate=self;
+        [self.newFinderView addSubview:self.tfdFinderName];
+        
     }
     return self;
 }
@@ -264,7 +409,7 @@ typedef enum{
     
     CGRect r=self.ctrlView.frame;
     r.origin.y=44;
-    self.ctrlView.frame=r;
+    self.ctrlView.frame=self.view.frame;
     r=self.view.frame;
     r.origin.y=44;
     r.size.height=self.view.frame.size.height-44;
@@ -361,6 +506,29 @@ typedef enum{
 }
 
 #pragma mark - 操作方法
+-(void)cancelNewFinder:(id)sender
+{
+    [self.tfdFinderName endEditing:YES];
+    [self.newFinderView setHidden:YES];
+}
+-(void)okNewFinder:(id)sender
+{
+    [self.tfdFinderName endEditing:YES];
+    NSString *fildtext=[self.tfdFinderName text];
+    //                if (![fildtext isEqualToString:name]) {
+    //                    NSLog(@"重命名");
+    //                    [self.fm cancelAllTask];
+    //                    self.fm=[[[SCBFileManager alloc] init] autorelease];
+    //                    [self.fm renameWithID:f_id newName:fildtext];
+    //                    [self.fm setDelegate:self];
+    //                }
+    [self.fm cancelAllTask];
+    self.fm=[[[SCBFileManager alloc] init] autorelease];
+    [self.fm newFinderWithName:fildtext pID:self.f_id];
+    [self.fm setDelegate:self];
+    NSLog(@"点击确定");
+    [self.newFinderView setHidden:YES];
+}
 - (void)moveFileToHere:(id)sender
 {
     [self.delegate moveFileToID:self.f_id];
@@ -490,12 +658,13 @@ typedef enum{
 {
     [self.ctrlView setHidden:YES];
     NSLog(@"点击新建文件夹");
-    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-    [[alert textFieldAtIndex:0] setText:@""];
-    [[alert textFieldAtIndex:0] setDelegate:self];
-    [alert setTag:kAlertTagNewFinder];
-    [alert show];
+    [self.newFinderView setHidden:NO];
+//    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+//    [[alert textFieldAtIndex:0] setText:@""];
+//    [[alert textFieldAtIndex:0] setDelegate:self];
+//    [alert setTag:kAlertTagNewFinder];
+//    [alert show];
 }
 -(void)back:(id)sender
 {

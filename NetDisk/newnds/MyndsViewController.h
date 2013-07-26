@@ -29,6 +29,8 @@ typedef enum {
 @property (strong,nonatomic) UILabel *lblEdit;
 @property (strong,nonatomic) UILabel *titleLabel;
 @property (strong,nonatomic) UIView *cellMenu;
+@property (strong,nonatomic) UIView *newFinderView;
+@property (strong,nonatomic) UITextField *tfdFinderName;
 -(void)loadData;
 @end
 
