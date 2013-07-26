@@ -173,7 +173,7 @@ typedef enum{
         btnNewFinder.frame=CGRectMake(25, 44, 90, 87);
         [btnNewFinder setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
         [btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [btnNewFinder addTarget:self action:@selector(goUpload:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnNewFinder];
         UILabel *lblNewFinder=[[[UILabel alloc] init] autorelease];
         lblNewFinder.text=@"上传";
@@ -189,23 +189,23 @@ typedef enum{
         btnEdit.frame=CGRectMake(25+90, 44, 90, 87);
         [btnEdit setImage:[UIImage imageNamed:@"Bt_naSeach.png"] forState:UIControlStateNormal];
         [btnEdit setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnEdit addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [btnEdit addTarget:self action:@selector(goSearch:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnEdit];
-        self.lblEdit=[[[UILabel alloc] init] autorelease];
-        self.lblEdit.text=@"搜索";
-        self.lblEdit.textAlignment=UITextAlignmentCenter;
-        self.lblEdit.font=[UIFont systemFontOfSize:12];
-        self.lblEdit.textColor=[UIColor whiteColor];
-        self.lblEdit.backgroundColor=[UIColor clearColor];
-        self.lblEdit.frame=CGRectMake(25+90, 59+44, 90, 21);
-        [self.ctrlView addSubview:self.lblEdit];
+        UILabel *lblNewFinder01=[[[UILabel alloc] init] autorelease];
+        lblNewFinder01.text=@"搜索";
+        lblNewFinder01.textAlignment=UITextAlignmentCenter;
+        lblNewFinder01.font=[UIFont systemFontOfSize:12];
+        lblNewFinder01.textColor=[UIColor whiteColor];
+        lblNewFinder01.backgroundColor=[UIColor clearColor];
+        lblNewFinder01.frame=CGRectMake(25+90, 59+44, 90, 21);
+        [self.ctrlView addSubview:lblNewFinder01];
         
         //按钮－新建文件夹 0，2
         UIButton *btnNewFinder02= [UIButton buttonWithType:UIButtonTypeCustom];
         btnNewFinder02.frame=CGRectMake(25+(90*2), 44, 90, 87);
         [btnNewFinder02 setImage:[UIImage imageNamed:@"Bt_naNews.png"] forState:UIControlStateNormal];
         [btnNewFinder02 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnNewFinder02 addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [btnNewFinder02 addTarget:self action:@selector(goMessage:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnNewFinder02];
         UILabel *lblNewFinder02=[[[UILabel alloc] init] autorelease];
         lblNewFinder02.text=@"消息";
@@ -221,16 +221,16 @@ typedef enum{
         btnNewFinder10.frame=CGRectMake(25, 44+88, 90, 87);
         [btnNewFinder10 setImage:[UIImage imageNamed:@"Bt_naEdit.png"] forState:UIControlStateNormal];
         [btnNewFinder10 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnNewFinder10 addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [btnNewFinder10 addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.ctrlView addSubview:btnNewFinder10];
-        UILabel *lblNewFinder10=[[[UILabel alloc] init] autorelease];
-        lblNewFinder10.text=@"编辑";
-        lblNewFinder10.textAlignment=UITextAlignmentCenter;
-        lblNewFinder10.font=[UIFont systemFontOfSize:12];
-        lblNewFinder10.textColor=[UIColor whiteColor];
-        lblNewFinder10.backgroundColor=[UIColor clearColor];
-        lblNewFinder10.frame=CGRectMake(25, 59+88+44, 90, 21);
-        [self.ctrlView addSubview:lblNewFinder10];
+        self.lblEdit=[[[UILabel alloc] init] autorelease];
+        self.lblEdit.text=@"编辑";
+        self.lblEdit.textAlignment=UITextAlignmentCenter;
+        self.lblEdit.font=[UIFont systemFontOfSize:12];
+        self.lblEdit.textColor=[UIColor whiteColor];
+        self.lblEdit.backgroundColor=[UIColor clearColor];
+        self.lblEdit.frame=CGRectMake(25, 59+88+44, 90, 21);
+        [self.ctrlView addSubview:self.lblEdit];
         
         //按钮－新建文件夹 1，1
         UIButton *btnNewFinder11= [UIButton buttonWithType:UIButtonTypeCustom];
@@ -653,6 +653,19 @@ typedef enum{
     self.fm=[[[SCBFileManager alloc] init] autorelease];
     [self.fm setDelegate:self];
     [self.fm openFinderWithID:self.f_id];
+}
+
+-(void)goUpload:(id)sender
+{
+    NSLog(@"点击上传");
+}
+-(void)goSearch:(id)sender
+{
+    NSLog(@"点击搜索");
+}
+-(void)goMessage:(id)sender
+{
+    NSLog(@"点击消息");
 }
 -(void)newFinder:(id)sender
 {
