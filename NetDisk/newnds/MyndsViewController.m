@@ -1033,7 +1033,7 @@ typedef enum{
             {
                 //UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:path]];
                 UIImage *icon=[UIImage imageWithContentsOfFile:path];
-                CGSize itemSize = CGSizeMake(40, 40);
+                CGSize itemSize = CGSizeMake(160, 100);
                 UIGraphicsBeginImageContext(itemSize);
                 CGRect theR=CGRectMake(0, 0, itemSize.width, itemSize.height);
                 if (icon.size.width>icon.size.height) {
@@ -1044,7 +1044,7 @@ typedef enum{
                     theR.size.height=icon.size.height/(icon.size.width/itemSize.width);
                     theR.origin.y=-(theR.size.height/2)-itemSize.height;
                 }
-                CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+                CGRect imageRect = CGRectMake(35, 5, 90, 90);
                 [icon drawInRect:imageRect];
                 UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
