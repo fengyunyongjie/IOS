@@ -21,8 +21,9 @@
 #import "MyndsViewController.h"
 #import "PhotoViewController.h"
 #import "FavoritesViewController.h"
-#import "UploadViewController.h"
+//#import "UploadViewController.h"
 #import "MainViewController.h"
+#import "ChangeUploadViewController.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -279,7 +280,8 @@
     [rootView2.tabBarItem setImage:[UIImage imageNamed:@"Bt_FamilyDef.png"]];
     viewController2=[[[UINavigationController alloc] initWithRootViewController:rootView2] autorelease];
     
-    UploadViewController * rootView3=[[[UploadViewController alloc] initWithNibName:@"UploadViewController" bundle:nil] autorelease];
+//    UploadViewController * rootView3=[[[UploadViewController alloc] initWithNibName:@"UploadViewController" bundle:nil] autorelease];
+    ChangeUploadViewController *rootView3 = [[[ChangeUploadViewController alloc] init] autorelease];
     rootView3.tabBarItem.title=@"传输管理";
     [rootView3.tabBarItem setImage:[UIImage imageNamed:@"Bt_TransferDef.png"]];
     viewController3=[[[UINavigationController alloc] initWithRootViewController:rootView3] autorelease];

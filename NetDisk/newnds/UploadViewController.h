@@ -15,11 +15,12 @@
 #import "BoderView.h"
 #import "QBImagePickerController.h"
 
-@interface UploadViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,NewFoldDelegate,UpLoadDelegate,UIAlertViewDelegate,QBImagePickerControllerDelegate>
+@interface UploadViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,NewFoldDelegate,UpLoadDelegate,UIAlertViewDelegate,QBImagePickerControllerDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     float allHeight;
     //装载所有图片信息
     NSMutableArray *photoArray;
+    NSMutableArray *historyArray;
     //上传集合
     NSMutableArray *uploadArray;
     BOOL isSelected;
@@ -106,6 +107,7 @@
     BOOL isNeedBackButton;
     
     BOOL isNeedChangeUpload;
+    UITableView *uploadListTableView;
 }
 @property (retain, nonatomic) UIImageView *stateImageview;
 @property (retain, nonatomic) UILabel *nameLabel;
@@ -136,12 +138,14 @@
 @property (nonatomic,assign) BOOL isUpload;
 @property (nonatomic,assign) BOOL isStop;
 @property(nonatomic,assign) BOOL isNeedBackButton;
+@property(nonatomic,retain) UITableView *uploadListTableView;
 
 -(NSString *)md5:(NSData *)concat;
 -(void)startSouStart;
 -(void)stopAllDo;
 -(void)stopWiFi;
 -(void)changeUpload:(NSMutableOrderedSet *)array_;
+-(void)changeDeviceName:(NSString *)device_name;
 
 @end
 

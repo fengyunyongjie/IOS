@@ -9,7 +9,7 @@
 #import "TaskDemo.h"
 
 @implementation TaskDemo
-@synthesize f_id,f_base_name,f_data,f_state,t_id,f_lenght,result;
+@synthesize f_id,f_base_name,f_data,f_state,t_id,f_lenght,result,proess;
 
 -(id)init
 {
@@ -34,6 +34,7 @@
         sqlite3_bind_int(statement, 2, f_state);
         sqlite3_bind_text(statement, 3, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, f_lenght);
+//        sqlite3_bind_blob(statement, 5, [f_data bytes], f_lenght, NULL);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
@@ -104,7 +105,7 @@
 
 
 #pragma mark 查询任务表所有数据
--(NSArray *)selectAllTaskTable
+-(NSMutableArray *)selectAllTaskTable
 {
     NSMutableArray *tableArray = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
@@ -118,12 +119,12 @@
             TaskDemo *demo = [[TaskDemo alloc] init];
             demo.t_id = sqlite3_column_int(statement, 0);
             demo.f_id = sqlite3_column_int(statement, 1);
-            //            int bytes = sqlite3_column_bytes(statement, 2);
-            //            const void *value = sqlite3_column_blob(statement, 2);
-            //            if( value != NULL && bytes != 0 ){
-            //                NSData *data = [NSData dataWithBytes:value length:bytes];
-            //                demo.f_data = data;
-            //            }
+//            int bytes = sqlite3_column_bytes(statement, 2);
+//            const void *value = sqlite3_column_blob(statement, 2);
+//            if( value != NULL && bytes != 0 ){
+//                NSData *data = [NSData dataWithBytes:value length:bytes];
+//                demo.f_data = data;
+//            }
             demo.f_state = sqlite3_column_int(statement, 3);
             demo.f_base_name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
             demo.f_lenght = sqlite3_column_int(statement, 5);
@@ -133,7 +134,40 @@
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
     }
-    return [tableArray autorelease];
+    return tableArray;
+}
+
+//查询所有完成的纪录
+-(NSMutableArray *)selectFinishTaskTable
+{
+    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+    sqlite3_stmt *statement;
+    const char *dbpath = [self.databasePath UTF8String];
+    
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [SelectFinishTaskTable UTF8String];
+        sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        
+        while (sqlite3_step(statement)==SQLITE_ROW) {
+            TaskDemo *demo = [[TaskDemo alloc] init];
+            demo.t_id = sqlite3_column_int(statement, 0);
+            demo.f_id = sqlite3_column_int(statement, 1);
+//            int bytes = sqlite3_column_bytes(statement, 2);
+//            const void *value = sqlite3_column_blob(statement, 2);
+//            if( value != NULL && bytes != 0 ){
+//                NSData *data = [NSData dataWithBytes:value length:bytes];
+//                demo.f_data = data;
+//            }
+            demo.f_state = sqlite3_column_int(statement, 3);
+            demo.f_base_name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
+            demo.f_lenght = sqlite3_column_int(statement, 5);
+            [tableArray addObject:demo];
+            [demo release];
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return tableArray;
 }
 
 #pragma mark 查询任务表所有数据
@@ -152,12 +186,12 @@
             TaskDemo *demo = [[TaskDemo alloc] init];
             demo.t_id = sqlite3_column_int(statement, 0);
             demo.f_id = sqlite3_column_int(statement, 1);
-            //            int bytes = sqlite3_column_bytes(statement, 2);
-            //            const void *value = sqlite3_column_blob(statement, 2);
-            //            if( value != NULL && bytes != 0 ){
-            //                NSData *data = [NSData dataWithBytes:value length:bytes];
-            //                demo.f_data = data;
-            //            }
+//            int bytes = sqlite3_column_bytes(statement, 2);
+//            const void *value = sqlite3_column_blob(statement, 2);
+//            if( value != NULL && bytes != 0 ){
+//                NSData *data = [NSData dataWithBytes:value length:bytes];
+//                demo.f_data = data;
+//            }
             demo.f_state = sqlite3_column_int(statement, 3);
             demo.f_base_name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
             demo.f_lenght = sqlite3_column_int(statement, 5);

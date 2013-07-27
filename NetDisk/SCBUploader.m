@@ -252,7 +252,6 @@
 -(void)dealloc
 {
     [matableData release];
-    [upLoadDelegate release];
     [super dealloc];
 }
 

@@ -166,6 +166,7 @@
     [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [more_button.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [topView addSubview:more_button];
+    [more_button setHidden:YES];
     [self.view addSubview:topView];
     
     //添加底部视图
@@ -186,7 +187,7 @@
     UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
-    [upload_back_button addTarget:self action:@selector(clicked_uploading:) forControlEvents:UIControlEventTouchUpInside];
+    [upload_back_button addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
     [bottonView addSubview:upload_back_button];
     [upload_back_button release];
     
@@ -206,12 +207,12 @@
 -(void)clicked_changeMyFile:(id)sender
 {
     //请求所有的数据文件
+    [self dismissModalViewControllerAnimated:YES];
 }
 
--(void)clicked_uploading:(id)sender
+-(void)clicked_uploadStop:(id)sender
 {
-    //开始上传
-    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -223,19 +224,19 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
         if (indexPath == nil) {
-            self.previousBarStyle = self.navigationController.navigationBar.barStyle;
-            self.previousBarTranslucent = self.navigationController.navigationBar.translucent;
-            self.previousStatusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
-            
-            self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-            self.navigationController.navigationBar.translucent = YES;
+//            self.previousBarStyle = self.navigationController.navigationBar.barStyle;
+//            self.previousBarTranslucent = self.navigationController.navigationBar.translucent;
+//            self.previousStatusBarStyle = [[UIApplication sharedApplication] statusBarStyle];
+//            
+//            self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+//            self.navigationController.navigationBar.translucent = YES;
 //            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
             
-            CGFloat top = 0;
-            if (![[UIApplication sharedApplication] isStatusBarHidden]) top = top + 20;
-            if (!self.navigationController.navigationBarHidden) top = top + 44;
-            self.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0);
-            self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(top, 0, 0, 0);
+//            CGFloat top = 0;
+//            if (![[UIApplication sharedApplication] isStatusBarHidden]) top = top + 20;
+//            if (!self.navigationController.navigationBarHidden) top = top + 44;
+//            self.tableView.contentInset = UIEdgeInsetsMake(top, 0, 0, 0);
+//            self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(top, 0, 0, 0);
             
             [self setWantsFullScreenLayout:YES];
         }
@@ -468,6 +469,17 @@
     }
     
     return description;
+}
+
+- (void)changeDeviceName:(NSString *)device_name
+{
+    [self.delegate changeDeviceName:device_name];
+}
+
+- (void)changeUpload:(NSMutableOrderedSet *)array_
+{
+    [self.delegate changeUpload:array_];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

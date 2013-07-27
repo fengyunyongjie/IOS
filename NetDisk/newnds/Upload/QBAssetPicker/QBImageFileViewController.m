@@ -6,17 +6,18 @@
 //
 //
 
-#define TabBarHeight 60
+//#define TabBarHeight 60
 #define QBY 0
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
-#define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
+//#define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 #define BottonViewHeight self.view.frame.size.height-TabBarHeight+QBY
 
 #import "QBImageFileViewController.h"
 #import "FileItemTableCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
 
 @interface QBImageFileViewController ()
 
@@ -25,6 +26,7 @@
 @implementation QBImageFileViewController
 @synthesize table_view;
 @synthesize fileArray;
+@synthesize qbDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -84,6 +86,7 @@
     [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [more_button.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [topView addSubview:more_button];
+    [more_button setHidden:YES];
     [self.view addSubview:topView];
     
     CGRect change_rect = CGRectMake(0, BottonViewHeight-26, 320, 24);
@@ -109,7 +112,7 @@
     UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
-    [upload_back_button addTarget:self action:@selector(clicked_uploading:) forControlEvents:UIControlEventTouchUpInside];
+    [upload_back_button addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
     [bottonView addSubview:upload_back_button];
     [upload_back_button release];
     
@@ -130,14 +133,19 @@
         [photoManger setNewFoldDelegate:self];
     }
     [photoManger openFinderWithID:@"1"];
-    [url_array addObject:@"1"];
+    FileDeviceName *file_device = [[FileDeviceName alloc] init];
+    [file_device setDeviceName:[AppDelegate deviceString]];
+    [file_device setF_id:@"1"];
+    [url_array addObject:file_device];
+    [file_device release];
 }
 
 -(void)clicked_back
 {
     if([url_array count]>1)
     {
-        [photoManger openFinderWithID:[url_array objectAtIndex:[url_array count]-2]];
+        FileDeviceName *file_device = (FileDeviceName *)[url_array objectAtIndex:[url_array count]-2];
+        [photoManger openFinderWithID:file_device.f_id];
         [url_array removeObjectAtIndex:[url_array count]-1];
     }
     else
@@ -158,7 +166,10 @@
 
 -(void)clicked_changeMyFile:(id)sender
 {
-    
+    FileDeviceName *deviceName = [url_array lastObject];
+    [self.qbDelegate uploadFileder:deviceName.deviceName];
+    [self dismissModalViewControllerAnimated:YES];
+    NSLog(@"deviceName:%@",deviceName.deviceName);
 }
 
 -(void)newFold:(NSDictionary *)dictionary
@@ -189,10 +200,9 @@
     [table_view reloadData];
 }
 
--(void)clicked_uploading:(id)sender
+-(void)clicked_uploadStop:(id)sender
 {
-    //开始上传
-    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -------- TableViewDelegate
@@ -237,7 +247,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         NSDictionary *this=(NSDictionary *)[self.fileArray objectAtIndex:indexPath.row];
         [photoManger openFinderWithID:[this objectForKey:@"f_id"]];
-        [url_array addObject:[this objectForKey:@"f_id"]];
+        FileDeviceName *file_device = [[FileDeviceName alloc] init];
+        [file_device setDeviceName:[this objectForKey:@"f_name"]];
+        [file_device setF_id:[this objectForKey:@"f_id"]];
+        [url_array addObject:file_device];
+        [file_device release];
     });
 }
 
@@ -250,6 +264,19 @@
 - (void)dealloc
 {
     [table_view release];
+    [super dealloc];
+}
+
+@end
+
+
+@implementation FileDeviceName
+@synthesize deviceName,f_id;
+
+-(void)dealloc
+{
+    [deviceName release];
+    [f_id release];
     [super dealloc];
 }
 

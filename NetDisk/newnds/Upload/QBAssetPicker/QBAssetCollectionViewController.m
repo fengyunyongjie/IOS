@@ -86,6 +86,7 @@
     //返回按钮
     if(isNeedBackButton)
     {
+        //添加背景
         UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
         UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
         [back_button addTarget:self action:@selector(clicked_back) forControlEvents:UIControlEventTouchUpInside];
@@ -153,7 +154,7 @@
     UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
-    [upload_back_button addTarget:self action:@selector(clicked_uploading:) forControlEvents:UIControlEventTouchUpInside];
+    [upload_back_button addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
     [bottonView addSubview:upload_back_button];
     [upload_back_button release];
     [self.view addSubview:bottonView];
@@ -201,15 +202,16 @@
 {
     NSLog(@"clicked_changeMyFile count:%i",[self.selectedAssets count]);
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
+    [qbImage_fileView setQbDelegate:self];
     [self presentModalViewController:qbImage_fileView animated:YES];
     [qbImage_fileView release];
 }
 
 -(void)clicked_startUpload:(id)sender
 {
-    UploadViewController *upLoad_viewController = [[UploadViewController alloc] init];
-    [upLoad_viewController changeUpload:self.selectedAssets];
-    [upLoad_viewController release];
+    [self.delegate changeDeviceName:device_name];
+    [self.delegate changeUpload:self.selectedAssets];
+    NSLog(@"device_name--------:%@",device_name);
 }
 
 -(void)newFold:(NSDictionary *)dictionary
@@ -223,10 +225,14 @@
     fileArray = [dictionary objectForKey:@"files"];
 }
 
--(void)clicked_uploading:(id)sender
+-(void)clicked_uploadStop:(id)sender
 {
-    //开始上传
-    
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+-(void)uploadFileder:(NSString *)deviceName
+{
+    device_name = deviceName;
 }
 
 - (void)viewWillAppear:(BOOL)animated

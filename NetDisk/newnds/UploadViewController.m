@@ -13,10 +13,12 @@
 #import "SCBSession.h"
 #import "AppDelegate.h"
 #import "YNFunctions.h"
+#import "UploadViewCell.h"
 
-#define TableViewHeight self.view.frame.size.height-TabBarHeight-44
+#define TableViewHeight self.view.frame.size.height
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 10
+#define UploadProessTag 10000
 
 @interface UploadViewController ()
 
@@ -46,6 +48,7 @@
 @synthesize isStop;
 @synthesize isNeedBackButton;
 @synthesize isNeedChangeUpload;
+@synthesize uploadListTableView;
 
 @synthesize photoArray;
 
@@ -93,7 +96,6 @@
     UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     [images setImage:[UIImage imageNamed:@"Bk_Title.png"]];
     [topView addSubview:images];
-    [imageV release];
     //返回按钮
     if(isNeedBackButton)
     {
@@ -141,6 +143,7 @@
     [more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
     [more_button setBackgroundImage:moreImage forState:UIControlStateNormal];
     [more_button addTarget:self action:@selector(clicked_more:) forControlEvents:UIControlEventTouchDown];
+    [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [topView addSubview:more_button];
     [more_button release];
     [self.view addSubview:topView];
@@ -251,6 +254,7 @@
 //    [self showUploadingView:YES];
 //    [self showUploadFinshView:YES];
 //    [self showStartUploadView:NO];
+    //准备选择文件上传
     connection = nil;
     isStop = TRUE;
     photoArray = [[NSMutableArray alloc] init];
@@ -258,7 +262,23 @@
     photoManger = [[SCBPhotoManager alloc] init];
     [photoManger setNewFoldDelegate:self];
     isLookLibray = TRUE;
+    [self uploadListShow];
     [super viewDidLoad];
+}
+
+-(void)uploadListShow
+{
+    if(self.uploadListTableView == nil)
+    {
+        CGRect rect = CGRectMake(0, 44, 320, TableViewHeight);
+        self.uploadListTableView = [[UITableView alloc] initWithFrame:rect];
+        [self.uploadListTableView setDataSource:self];
+        [self.uploadListTableView setDelegate:self];
+        self.uploadListTableView.showsVerticalScrollIndicator = NO;
+        self.uploadListTableView.alwaysBounceVertical = YES;
+        self.uploadListTableView.alwaysBounceHorizontal = NO;
+        [self.view addSubview:self.uploadListTableView];
+    }
 }
 
 -(void)clicked_uploadState:(id)sender
@@ -280,6 +300,13 @@
     UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
     [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [file_button setBackgroundImage:nil forState:UIControlStateNormal];
+    
+    //显示上传进度
+    TaskDemo *demo = [[TaskDemo alloc] init];
+    [photoArray removeAllObjects];
+    photoArray = [demo selectAllTaskTable];
+    [self.uploadListTableView reloadData];
+    [demo release];
 }
 
 -(void)clicked_uploadHistory:(id)sender
@@ -301,6 +328,21 @@
     UIButton *photo_button = (UIButton *)[self.view viewWithTag:23];
     [photo_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [photo_button setBackgroundImage:nil forState:UIControlStateNormal];
+    
+    //显示上传历史
+    TaskDemo *demo = [[TaskDemo alloc] init];
+    [photoArray removeAllObjects];
+    if(historyArray)
+    {
+        [historyArray release];
+    }
+    else
+    {
+        historyArray = [[NSMutableArray alloc] init];
+    }
+    historyArray = [demo selectFinishTaskTable];
+    [self.uploadListTableView reloadData];
+    [demo release];
 }
 
 -(void)clicked_more:(id)sender
@@ -347,6 +389,7 @@
             
             uploadNumber = 0;
             [photoArray removeAllObjects];
+            [self.uploadListTableView reloadData];
             isConnection = FALSE;
             if(connectionTimer==nil && !isStop)
             {
@@ -367,6 +410,7 @@
     isSelected = FALSE;
     isStop = YES;
     [photoArray removeAllObjects];
+    [self.uploadListTableView reloadData];
     uploadNumber = 0;
     if(connectionTimer)
     {
@@ -431,29 +475,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
--(void)changeUpload:(NSMutableOrderedSet *)array_
-{
-    [self viewDidLoad];
-    isNeedChangeUpload = YES;
-    
-    if(photoArray==nil)
-    {
-        photoArray = [[NSMutableArray alloc] init];
-    }
-    for(ALAsset *asset in array_)
-    {
-        TaskDemo *demo = [[TaskDemo alloc] init];
-        demo.f_state = 0;
-        demo.f_data = nil;
-        demo.f_lenght = 0;
-        //获取照片名称
-        demo.f_base_name = [[asset defaultRepresentation] filename];
-        demo.result = [asset retain];
-        [photoArray addObject:demo];
-    }
-    [self startSouStart];
 }
 
 #pragma mark 获取照片库信息
@@ -698,6 +719,7 @@
                     
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
+                    [self.uploadListTableView reloadData];
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
@@ -722,6 +744,7 @@
                     bl = FALSE;
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
+                    [self.uploadListTableView reloadData];
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
@@ -802,6 +825,7 @@
                     bl = FALSE;
                     uploadNumber = 0;
                     [photoArray removeAllObjects];
+                    [self.uploadListTableView reloadData];
                     isConnection = FALSE;
                     if(connectionTimer==nil && !isStop)
                     {
@@ -825,6 +849,7 @@
         isSelected = FALSE;
         isStop = YES;
         [photoArray removeAllObjects];
+        [self.uploadListTableView reloadData];
         uploadNumber = 0;
         if(connectionTimer)
         {
@@ -923,6 +948,7 @@
         uploadNumber = 0;
         isStop = YES;
         [photoArray removeAllObjects];
+        [self.uploadListTableView reloadData];
         user_id = [[SCBSession sharedSession] userId];
         user_token = [[SCBSession sharedSession] userToken];
     }
@@ -959,6 +985,7 @@
         uploadNumber = 0;
         isStop = YES;
         [photoArray removeAllObjects];
+        [self.uploadListTableView reloadData];
         return;
     }
     
@@ -990,6 +1017,7 @@
                     demo.f_lenght = [demo.f_data length];
                     [demo updateTaskTableFName];
                     [photoArray removeObjectAtIndex:0];
+                    [self.uploadListTableView reloadData];
                 }
                 if(!isStop && uploadNumber<[photoArray count])
                 {
@@ -1000,6 +1028,7 @@
                 {
                     [self showUploadFinshView:NO];
                     [photoArray removeAllObjects];
+                    [self.uploadListTableView reloadData];
                     uploadNumber = 0;
                     isConnection = FALSE;
                     if(!libaryTimer && [photoArray count] == 0 && !isNeedChangeUpload)
@@ -1106,14 +1135,14 @@
             else
             {
                 f_pid = [[dictionary objectForKey:@"f_id"] intValue];
-                [photoManger requestNewFold:[NSString stringWithFormat:@"来自于-%@",deviceName] FID:f_pid];
+                [photoManger requestNewFold:deviceName FID:f_pid];
             }
         }
         else
         {
             if(bl && f_pid > 0)
             {
-                [photoManger requestNewFold:[NSString stringWithFormat:@"来自于-%@",deviceName] FID:f_pid];
+                [photoManger requestNewFold:deviceName FID:f_pid];
             }
             if(f_pid==0)
             {
@@ -1125,7 +1154,7 @@
 
 -(void)openFile:(NSDictionary *)dictionary
 {
-    NSLog(@"打开成功 dictionary:%@",dictionary);
+    NSLog(@"打开成功 dictionary:%@ deviceName:%@",dictionary,deviceName);
     BOOL bl = FALSE;
     if([[dictionary objectForKey:@"code"] intValue] == 0 && !isStop && uploadNumber<[photoArray count])
     {
@@ -1143,7 +1172,7 @@
                 [photoManger openFinderWithID:[NSString stringWithFormat:@"%i",f_pid]];
                 break;
             }
-            if([f_name isEqualToString:[NSString stringWithFormat:@"来自于-%@",deviceName]])
+            if([f_name isEqualToString:deviceName])
             {
                 f_id = [[[array objectAtIndex:i] objectForKey:@"f_id"] intValue];
                 [self requestVerify];
@@ -1155,7 +1184,7 @@
         }
         if(f_pid>0 && f_id==0 && bl)
         {
-            [photoManger requestNewFold:[NSString stringWithFormat:@"来自于-%@",deviceName] FID:f_pid];
+            [photoManger requestNewFold:deviceName FID:f_pid];
         }
     }
 }
@@ -1185,6 +1214,7 @@
     {
         [self showUploadFinshView:NO];
         [photoArray removeAllObjects];
+        [self.uploadListTableView reloadData];
         uploadNumber = 0;
     }
 }
@@ -1211,9 +1241,17 @@
             demo.f_state = 1;
             demo.f_lenght = [demo.f_data length];
             [demo updateTaskTableFName];
+            UploadViewCell *cell = (UploadViewCell *)[self.uploadListTableView viewWithTag:UploadProessTag+demo.f_id];
+            if([cell isKindOfClass:[UploadViewCell class]])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [cell.progressView setProgress:1];
+                });
+            }
             [photoArray removeObjectAtIndex:0];
+            [self.uploadListTableView reloadData];
             
-            [uploadProgressView setProgress:1];
+//            [uploadProgressView setProgress:1];
             [currFileNameLabel setText:[NSString stringWithFormat:@"正在上传 %@",demo.f_base_name]];
             [uploadFinshPageLabel setText:[NSString stringWithFormat:@"剩下 %i",[photoArray count]]];
             if(!isStop && uploadNumber<[photoArray count])
@@ -1226,6 +1264,7 @@
                 [self showUploadFinshView:NO];
                 
                 [photoArray removeAllObjects];
+                [self.uploadListTableView reloadData];
                 uploadNumber = 0;
                 isConnection = FALSE;
                 if(!libaryTimer && [photoArray count] == 0 && !isNeedChangeUpload)
@@ -1266,6 +1305,7 @@
         uploadNumber = 0;
         isStop = YES;
         [photoArray removeAllObjects];
+        [self.uploadListTableView reloadData];
     }
     
     NSLog(@"uploadFinishdictionary:%@",dictionary);
@@ -1273,8 +1313,16 @@
     {
         if([[dictionary objectForKey:@"code"] intValue] == 0)
         {
-            [uploadProgressView setProgress:1 animated:YES];
+            
+//            [uploadProgressView setProgress:1 animated:YES];
             TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
+            UploadViewCell *cell = (UploadViewCell *)[uploadListTableView viewWithTag:UploadProessTag+demo.f_id];
+            if([cell isKindOfClass:[UploadViewCell class]])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [cell.progressView setProgress:1 animated:YES];
+                });
+            }
             SCBUploader *uploder = [[[SCBUploader alloc] init] autorelease];
             [uploder setUpLoadDelegate:self];
             NSLog(@"4:提交上传表单:%@",finishName);
@@ -1324,6 +1372,7 @@
                 demo.f_lenght = [demo.f_data length];
                 [demo updateTaskTableFName];
                 [photoArray removeObjectAtIndex:0];
+                [self.uploadListTableView reloadData];
             }
             if(!isStop && uploadNumber<[photoArray count])
             {
@@ -1335,6 +1384,7 @@
             {
                 [self showUploadFinshView:NO];
                 [photoArray removeAllObjects];
+                [self.uploadListTableView reloadData];
                 uploadNumber = 0;
                 isConnection = FALSE;
                 if(!libaryTimer && [photoArray count] == 0 && !isNeedChangeUpload)
@@ -1375,6 +1425,7 @@
         uploadNumber = 0;
         isStop = YES;
         [photoArray removeAllObjects];
+        [self.uploadListTableView reloadData];
     }
     
     if(!isStop && ([[dictionary objectForKey:@"code"] intValue] == 0 || [[dictionary objectForKey:@"code"] intValue] == 5) && uploadNumber < [photoArray count])
@@ -1391,7 +1442,9 @@
         [demo updateTaskTableFName];
         
         [photoArray removeObjectAtIndex:0];
+        [self.uploadListTableView reloadData];
     }
+    
     NSLog(@"uploadNumber:%i;[photoArray count]:%i",uploadNumber,[photoArray count]);
     if(!isStop && uploadNumber<[photoArray count])
     {
@@ -1403,6 +1456,7 @@
     {
         [self showUploadFinshView:NO];
         [photoArray removeAllObjects];
+        [self.uploadListTableView reloadData];
         uploadNumber = 0;
         isConnection = FALSE;
         if(!libaryTimer && [photoArray count] == 0 && !isNeedChangeUpload)
@@ -1426,6 +1480,7 @@
     isUpload = FALSE;
     uploadNumber = 0;
     [photoArray removeAllObjects];
+    [self.uploadListTableView reloadData];
     isConnection = FALSE;
     dispatch_async(dispatch_get_main_queue(), ^{
         if(connectionTimer==nil && !isStop)
@@ -1443,7 +1498,15 @@
 {
     TaskDemo *demo = [photoArray objectAtIndex:uploadNumber];
     float f = (float)proress / (float)[demo.f_data length];
-    [uploadProgressView setProgress:f animated:YES];
+    NSLog(@"UploadProessTag+demo.f_id:%i",UploadProessTag+demo.f_id);
+    UploadViewCell *cell = (UploadViewCell *)[self.uploadListTableView viewWithTag:UploadProessTag+demo.f_id];
+    if([cell isKindOfClass:[UploadViewCell class]])
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [cell.progressView setProgress:f animated:YES];
+        });
+    }
+//    [uploadProgressView setProgress:f animated:YES];
 }
 
 
@@ -1576,6 +1639,114 @@
         [self showUploadingView:YES];
         [unWifiOrNetWorkImageView setHidden:YES];
     }
+}
+
+#pragma mark --- QBImagePickerControllerDelegate
+
+-(void)changeDeviceName:(NSString *)device_name
+{
+    NSRange deviceRange = [device_name rangeOfString:@"来自于-"];
+    if(deviceRange.length>0)
+    {
+        deviceName = [[NSString alloc] initWithString:device_name];
+    }
+    else
+    {
+        if([device_name isEqualToString:@"(null)"] || [device_name length]==0)
+        {
+            device_name = [AppDelegate deviceString];
+        }
+        deviceName = [[NSString alloc] initWithFormat:@"来自于-%@",device_name];
+    }
+}
+
+-(void)changeUpload:(NSMutableOrderedSet *)array_
+{
+    isNeedChangeUpload = YES;
+    
+    if(photoArray==nil)
+    {
+        photoArray = [[NSMutableArray alloc] init];
+    }
+    int i=0;
+    for(ALAsset *asset in array_)
+    {
+        TaskDemo *demo = [[TaskDemo alloc] init];
+        demo.f_state = 0;
+        demo.f_data = nil;
+        demo.f_lenght = 0;
+        demo.f_id = i;
+        i++;
+        //获取照片名称
+        demo.f_base_name = [[asset defaultRepresentation] filename];
+        ALAsset *result = [asset retain];
+        NSError *error = nil;
+        Byte *data = malloc(result.defaultRepresentation.size);
+        
+        //获得照片图像数据
+        [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+        demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+        [photoArray insertObject:demo atIndex:0];
+        [demo insertTaskTable];
+    }
+    [self startSouStart];
+    [self.uploadListTableView reloadData];
+    NSLog(@"回到上传管理页面");
+}
+
+#pragma mark tableViewDelegate
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    int count = 0;
+    if(photoArray)
+    {
+        count = [photoArray count];
+    }
+    return [NSString stringWithFormat:@"正在上传(%i)",count];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    int count = 0;
+    if(photoArray)
+    {
+        count = [photoArray count];
+    }
+    return count;
+}
+
+-(float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 20;
+}
+
+-(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellString = @"uploadHistoryCell";
+    UploadViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellString];
+    if(cell==nil)
+    {
+        cell = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
+    if(photoArray)
+    {
+        TaskDemo *demo = [photoArray objectAtIndex:indexPath.row];
+        [cell setTag:UploadProessTag+demo.f_id];
+        NSLog(@"cellTag:%i",demo.f_data.length);
+        [cell setUploadDemo:demo];
+    }
+    return cell;
 }
 
 @end

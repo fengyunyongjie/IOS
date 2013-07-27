@@ -33,6 +33,8 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
 - (NSString *)imagePickerController:(QBImagePickerController *)imagePickerController descriptionForNumberOfPhotos:(NSUInteger)numberOfPhotos;
 - (NSString *)imagePickerController:(QBImagePickerController *)imagePickerController descriptionForNumberOfVideos:(NSUInteger)numberOfVideos;
 - (NSString *)imagePickerController:(QBImagePickerController *)imagePickerController descriptionForNumberOfPhotos:(NSUInteger)numberOfPhotos numberOfVideos:(NSUInteger)numberOfVideos;
+-(void)changeUpload:(NSMutableOrderedSet *)array_;
+-(void)changeDeviceName:(NSString *)device_name;
 
 @end
 
@@ -59,3 +61,5 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
 @property (nonatomic, assign) NSUInteger maximumNumberOfSelection;
 
 @end
+
+

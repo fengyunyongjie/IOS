@@ -16,6 +16,7 @@
 #define UpdateTaskTableForName @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=? WHERE F_BASE_NAME=?"
 #define SelectAllTaskTable @"SELECT * FROM TASKTABLE where F_STATE=0"
 #define SelectMoreTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=0"
+#define SelectFinishTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=1"
 #define SelectOneTaskTableForTID @"SELECT * FROM TASKTABLE WHERE T_ID=?"
 #define SelectOneTaskTableForFID @"SELECT * FROM TASKTABLE WHERE F_ID=?"
 #define SelectOneTaskTableOneceForFNAME @"SELECT * FROM TASKTABLE WHERE F_BASE_NAME=?"
@@ -30,6 +31,7 @@
     NSString *f_base_name;
     NSInteger f_lenght;
     ALAsset *result;
+    CGFloat proess;
 }
 
 @property(nonatomic,assign) NSInteger t_id;
@@ -39,6 +41,7 @@
 @property(nonatomic,retain) NSString *f_base_name;
 @property(nonatomic,assign) NSInteger f_lenght;
 @property(nonatomic,retain) ALAsset *result;
+@property(nonatomic,assign) CGFloat proess;
 
 -(id)init;
 
@@ -50,7 +53,10 @@
 -(void)updateTaskTableFName;
 
 #pragma mark 查询任务表所有数据
--(NSArray *)selectAllTaskTable;
+-(NSMutableArray *)selectAllTaskTable;
+
+//查询所有完成的纪录
+-(NSMutableArray *)selectFinishTaskTable;
 
 #pragma mark 查询任务表所有数据
 -(NSArray *)selectAllTaskTableForFNAME;
