@@ -303,47 +303,64 @@ typedef enum{
         lblMove.frame=CGRectMake(19, 45, 42, 21);
         [self.cellMenu addSubview:lblMove];
         //重命名按钮
-        UIButton *btnRename=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnRename.frame=CGRectMake(80, 8, 60, 60);
-        [btnRename setImage:[UIImage imageNamed:@"Bt_RenameF.png"] forState:UIControlStateNormal];
-        [btnRename addTarget:self action:@selector(toRename:) forControlEvents:UIControlEventTouchUpInside];
-        [self.cellMenu addSubview:btnRename];
-        UILabel *lblRename=[[[UILabel alloc] init] autorelease];
-        lblRename.text=@"命命名";
-        lblRename.textAlignment=UITextAlignmentCenter;
-        lblRename.font=[UIFont systemFontOfSize:12];
-        lblRename.textColor=[UIColor whiteColor];
-        lblRename.backgroundColor=[UIColor clearColor];
-        lblRename.frame=CGRectMake(89, 45, 42, 21);
-        [self.cellMenu addSubview:lblRename];
+        self.btnRename=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnRename.frame=CGRectMake(90, 8, 60, 60);
+        [self.btnRename setImage:[UIImage imageNamed:@"Bt_RenameF.png"] forState:UIControlStateNormal];
+        [self.btnRename addTarget:self action:@selector(toRename:) forControlEvents:UIControlEventTouchUpInside];
+        [self.cellMenu addSubview:self.btnRename];
+        self.lblRename=[[[UILabel alloc] init] autorelease];
+        self.lblRename.text=@"命命名";
+        self.lblRename.textAlignment=UITextAlignmentCenter;
+        self.lblRename.font=[UIFont systemFontOfSize:12];
+        self.lblRename.textColor=[UIColor whiteColor];
+        self.lblRename.backgroundColor=[UIColor clearColor];
+        self.lblRename.frame=CGRectMake(99, 45, 42, 21);
+        [self.cellMenu addSubview:self.lblRename];
         //下载按钮
-        UIButton *btnDownload=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnDownload.frame=CGRectMake(160, 8, 60, 60);
-        [btnDownload setImage:[UIImage imageNamed:@"Bt_DownloadF.png"] forState:UIControlStateNormal];
-        [btnDownload addTarget:self action:@selector(toFavorite:) forControlEvents:UIControlEventTouchUpInside];
-        [self.cellMenu addSubview:btnDownload];
-        UILabel *lblDownload=[[[UILabel alloc] init] autorelease];
-        lblDownload.text=@"下载";
-        lblDownload.textAlignment=UITextAlignmentCenter;
-        lblDownload.font=[UIFont systemFontOfSize:12];
-        lblDownload.textColor=[UIColor whiteColor];
-        lblDownload.backgroundColor=[UIColor clearColor];
-        lblDownload.frame=CGRectMake(169, 45, 42, 21);
-        [self.cellMenu addSubview:lblDownload];
+        self.btnDownload=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnDownload.frame=CGRectMake(170, 8, 60, 60);
+        [self.btnDownload setImage:[UIImage imageNamed:@"Bt_DownloadF.png"] forState:UIControlStateNormal];
+        [self.btnDownload addTarget:self action:@selector(toFavorite:) forControlEvents:UIControlEventTouchUpInside];
+        [self.cellMenu addSubview:self.btnDownload];
+        self.lblDownload=[[[UILabel alloc] init] autorelease];
+        self.lblDownload.text=@"下载";
+        self.lblDownload.textAlignment=UITextAlignmentCenter;
+        self.lblDownload.font=[UIFont systemFontOfSize:12];
+        self.lblDownload.textColor=[UIColor whiteColor];
+        self.lblDownload.backgroundColor=[UIColor clearColor];
+        self.lblDownload.frame=CGRectMake(179, 45, 42, 21);
+        [self.cellMenu addSubview:self.lblDownload];
         //删除按钮
-        UIButton *btnDel=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnDel.frame=CGRectMake(240, 8, 60, 60);
-        [btnDel setImage:[UIImage imageNamed:@"Bt_DelF.png"] forState:UIControlStateNormal];
-        [btnDel addTarget:self action:@selector(toDelete:) forControlEvents:UIControlEventTouchUpInside];
-        [self.cellMenu addSubview:btnDel];
-        UILabel *lblDel=[[[UILabel alloc] init] autorelease];
-        lblDel.text=@"删除";
-        lblDel.textAlignment=UITextAlignmentCenter;
-        lblDel.font=[UIFont systemFontOfSize:12];
-        lblDel.textColor=[UIColor whiteColor];
-        lblDel.backgroundColor=[UIColor clearColor];
-        lblDel.frame=CGRectMake(249, 45, 42, 21);
-        [self.cellMenu addSubview:lblDel];
+        self.btnDel=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnDel.frame=CGRectMake(250, 8, 60, 60);
+        [self.btnDel setImage:[UIImage imageNamed:@"Bt_DelF.png"] forState:UIControlStateNormal];
+        [self.btnDel addTarget:self action:@selector(toDelete:) forControlEvents:UIControlEventTouchUpInside];
+        [self.cellMenu addSubview:self.btnDel];
+        self.lblDel=[[[UILabel alloc] init] autorelease];
+        self.lblDel.text=@"删除";
+        self.lblDel.textAlignment=UITextAlignmentCenter;
+        self.lblDel.font=[UIFont systemFontOfSize:12];
+        self.lblDel.textColor=[UIColor whiteColor];
+        self.lblDel.backgroundColor=[UIColor clearColor];
+        self.lblDel.frame=CGRectMake(259, 45, 42, 21);
+        [self.cellMenu addSubview:self.lblDel];
+        self.btnDel.hidden=YES;
+        self.lblDel.hidden=YES;
+        //更多按钮
+        self.btnMore=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnMore.frame=CGRectMake(250, 8, 60, 60);
+        [self.btnMore setImage:[UIImage imageNamed:@"Bt_MoreF.png"] forState:UIControlStateNormal];
+        [self.btnMore addTarget:self action:@selector(toMore:) forControlEvents:UIControlEventTouchUpInside];
+        [self.cellMenu addSubview:self.btnMore];
+        self.lblMore=[[[UILabel alloc] init] autorelease];
+        self.lblMore.text=@"更多";
+        self.lblMore.textAlignment=UITextAlignmentCenter;
+        self.lblMore.font=[UIFont systemFontOfSize:12];
+        self.lblMore.textColor=[UIColor whiteColor];
+        self.lblMore.backgroundColor=[UIColor clearColor];
+        self.lblMore.frame=CGRectMake(259, 45, 42, 21);
+        [self.cellMenu addSubview:self.lblMore];
+        
         
         //新建文件夹视图
         self.newFinderView=[[[UIView alloc] init] autorelease];
@@ -424,7 +441,7 @@ typedef enum{
     self.ctrlView.frame=self.view.frame;
     r=self.view.frame;
     r.origin.y=44;
-    r.size.height=self.view.frame.size.height-44;
+    r.size.height=self.view.frame.size.height-56;
     self.tableView.frame=r;
     [self.ctrlView setHidden:YES];
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
@@ -838,7 +855,30 @@ typedef enum{
         [self hideOptionCell];
         return;
     }
-    
+    int row=indexPath.row;
+    NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
+    NSDictionary *this=(NSDictionary *)[a objectAtIndex:row];
+    NSString *t_fl = [[this objectForKey:@"f_mime"] lowercaseString];
+    if ([t_fl isEqualToString:@"directory"]) {
+        self.btnRename.frame=CGRectMake(130, 8, 60, 60);
+        self.lblRename.frame=CGRectMake(139, 45, 42, 21);
+        self.btnDel.hidden=NO;
+        self.lblDel.hidden=NO;
+        self.btnDownload.hidden=YES;
+        self.lblDownload.hidden=YES;
+        self.btnMore.hidden=YES;
+        self.lblMore.hidden=YES;
+    }else{
+        self.btnRename.frame=CGRectMake(90, 8, 60, 60);
+        self.lblRename.frame=CGRectMake(99, 45, 42, 21);
+        self.btnDel.hidden=YES;
+        self.lblDel.hidden=YES;
+        self.btnDownload.hidden=NO;
+        self.lblDownload.hidden=NO;
+        self.btnMore.hidden=NO;
+        self.lblMore.hidden=NO;
+
+    }
     CGRect r=self.cellMenu.frame;
     r.origin.y=(indexPath.row+1) * 50-8;
     self.cellMenu.frame=r;

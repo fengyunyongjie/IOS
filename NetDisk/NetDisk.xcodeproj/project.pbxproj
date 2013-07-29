@@ -149,6 +149,9 @@
 		29ABD277179E618C00EE7164 /* Bt_UsercentreCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ABD26C179E618C00EE7164 /* Bt_UsercentreCh.png */; };
 		29ABD278179E618C00EE7164 /* Bt_UsercentreDef.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ABD26D179E618C00EE7164 /* Bt_UsercentreDef.png */; };
 		29ACB0001783D51F00AC9E6A /* Bt_Operator.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */; };
+		29AF11BF17A5F17300F32F1F /* ChangeUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AF11BA17A5F17300F32F1F /* ChangeUploadViewController.m */; };
+		29AF11C017A5F17300F32F1F /* UploadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AF11BC17A5F17300F32F1F /* UploadFile.m */; };
+		29AF11C117A5F17300F32F1F /* UploadViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AF11BE17A5F17300F32F1F /* UploadViewCell.m */; };
 		29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */; };
 		29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */; };
 		29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B18AC7173CC37C00DBF2CB /* OptionCell.xib */; };
@@ -544,6 +547,12 @@
 		29ABD26C179E618C00EE7164 /* Bt_UsercentreCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UsercentreCh.png; sourceTree = "<group>"; };
 		29ABD26D179E618C00EE7164 /* Bt_UsercentreDef.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UsercentreDef.png; sourceTree = "<group>"; };
 		29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Operator.png; sourceTree = "<group>"; };
+		29AF11B917A5F17300F32F1F /* ChangeUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeUploadViewController.h; sourceTree = "<group>"; };
+		29AF11BA17A5F17300F32F1F /* ChangeUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeUploadViewController.m; sourceTree = "<group>"; };
+		29AF11BB17A5F17300F32F1F /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
+		29AF11BC17A5F17300F32F1F /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
+		29AF11BD17A5F17300F32F1F /* UploadViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewCell.h; sourceTree = "<group>"; };
+		29AF11BE17A5F17300F32F1F /* UploadViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewCell.m; sourceTree = "<group>"; };
 		29AFC2C41778369E0074FBAC /* QLBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLBrowserViewController.h; sourceTree = "<group>"; };
 		29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QLBrowserViewController.m; sourceTree = "<group>"; };
 		29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
@@ -1273,6 +1282,12 @@
 				298AB52E17727FF200D067E1 /* Upload */,
 				29B2B638174B1F6800E78183 /* UploadViewController.h */,
 				29B2B639174B1F6800E78183 /* UploadViewController.m */,
+				29AF11B917A5F17300F32F1F /* ChangeUploadViewController.h */,
+				29AF11BA17A5F17300F32F1F /* ChangeUploadViewController.m */,
+				29AF11BB17A5F17300F32F1F /* UploadFile.h */,
+				29AF11BC17A5F17300F32F1F /* UploadFile.m */,
+				29AF11BD17A5F17300F32F1F /* UploadViewCell.h */,
+				29AF11BE17A5F17300F32F1F /* UploadViewCell.m */,
 				29B2B63A174B1F6800E78183 /* UploadViewController.xib */,
 				29DF5BD31755A760005D85E4 /* OpenViewController.h */,
 				29DF5BD41755A760005D85E4 /* OpenViewController.m */,
