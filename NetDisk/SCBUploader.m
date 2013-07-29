@@ -59,29 +59,6 @@
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
-////上传
-//-(NSURLConnection *)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image
-//{
-//    self.matableData = [NSMutableData data];
-//    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
-//    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:s_url];
-////    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:s_url];
-//    url_string = FM_UPLOAD_NEW;
-//    [request addRequestHeader:[[SCBSession sharedSession] userId] value:@"usr_id"];
-//    [request addRequestHeader:CLIENT_TAG value:@"client_tag"];
-//    [request addRequestHeader:[[SCBSession sharedSession] userToken] value:@"usr_token"];
-//    [request addRequestHeader:s_name value:@"s_name"];
-//    [request addRequestHeader:[NSString stringWithFormat:@"bytes=0-%@",skip] value:@"Range"];
-//
-//
-//    [request appendPostData:image];
-//    [request setRequestMethod:@"PUT"];
-//    NSLog(@"上传请求：%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-//    [request setUploadProgressDelegate:self];
-//    [request startAsynchronous];
-//    return nil;
-//}
-
 - (void)setDoubleValue:(double)newProgress
 {
     NSLog(@"newProgress:%f",newProgress);

@@ -237,9 +237,11 @@
 //上传文件流
 -(void)uploadFiles:(int)proress
 {
+    NSLog(@"得到上传流");
     float f = (float)proress / (float)[demo.f_data length];
     [demo setProess:f];
     [delegate upProess:f fileTag:currTag];
+    NSLog(@"uploadFiles-----------:%f",f);
 }
 
 //上传提交
@@ -247,7 +249,7 @@
 {
     NSLog(@"dictionary:%@",dictionary);
     NSLog(@"5:完成");
-        
+    
     if([[dictionary objectForKey:@"code"] intValue] == 0 || [[dictionary objectForKey:@"code"] intValue] == 5)
     {
         NSInteger fid = [[dictionary objectForKey:@"fid"] intValue];
@@ -283,6 +285,7 @@
 
 -(void)dealloc
 {
+    [demo release];
     [photoManger release];
     [uploderDemo release];
     [finishName release];

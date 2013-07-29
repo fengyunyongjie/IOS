@@ -21,7 +21,8 @@
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
 #define TabBarHeight 60
-#define RightButtonBoderWidth 10
+#define ChangeTabWidth 90
+#define RightButtonBoderWidth 0
 typedef enum{
     kAlertTagDeleteOne,
     kAlertTagDeleteMore,
@@ -80,14 +81,24 @@ typedef enum{
         self.titleLabel.backgroundColor=[UIColor clearColor];
         self.titleLabel.frame=CGRectMake(60, 0, 200, 44);
         [nbar addSubview:self.titleLabel];
-        
+        //把色值转换成图片
+        CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
+        UIGraphicsBeginImageContext(rect_image.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context,
+                                       [hilighted_color CGColor]);
+        CGContextFillRect(context, rect_image);
+        UIImage * imge = [[[UIImage alloc] init] autorelease];
+        imge = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
         //返回按钮
         if(1)
         {
             UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
             UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
-            [back_button setBackgroundImage:back_image forState:UIControlStateNormal];
             [back_button addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+            [back_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+            [back_button setImage:back_image forState:UIControlStateNormal];
             [nbar addSubview:back_button];
             [back_button release];
         }
@@ -95,7 +106,8 @@ typedef enum{
         UIButton *more_button = [[UIButton alloc] init];
         UIImage *moreImage = [UIImage imageNamed:@"Bt_More.png"];
         [more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
-        [more_button setBackgroundImage:moreImage forState:UIControlStateNormal];
+        [more_button setImage:moreImage forState:UIControlStateNormal];
+        [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
         [more_button addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchUpInside];
         [nbar addSubview:more_button];
         [more_button release];

@@ -13,7 +13,7 @@
 
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define ChangeTabWidth 90
-#define RightButtonBoderWidth 10
+#define RightButtonBoderWidth 0
 #define UploadProessTag 10000
 
 @interface ChangeUploadViewController ()
@@ -95,13 +95,7 @@
     UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     [images setImage:[UIImage imageNamed:@"Bk_Title.png"]];
     [topView addSubview:images];
-    //返回按钮
-    UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
-    UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
-    [back_button setBackgroundImage:back_image forState:UIControlStateNormal];
-    [topView addSubview:back_button];
-    [back_button setHidden:YES];
-    [back_button release];
+    
     //把色值转换成图片
     CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
     UIGraphicsBeginImageContext(rect_image.size);
@@ -112,6 +106,16 @@
     UIImage * imge = [[[UIImage alloc] init] autorelease];
     imge = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
+    //返回按钮
+    UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
+    UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
+    [back_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    [back_button setImage:back_image forState:UIControlStateNormal];
+    [topView addSubview:back_button];
+    [back_button setHidden:YES];
+    [back_button release];
+    
     //选项卡栏目
     UIButton *phoot_button = [[UIButton alloc] init];
     [phoot_button setTag:23];

@@ -23,7 +23,7 @@
 
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define ChangeTabWidth 90
-#define RightButtonBoderWidth 10
+#define RightButtonBoderWidth 0
 
 @interface PhotoViewController ()
 
@@ -57,15 +57,6 @@
     [imageV setImage:[UIImage imageNamed:@"Bk_Title.png"]];
     [topView addSubview:imageV];
     [imageV release];
-    //返回按钮
-    if(isNeedBackButton)
-    {
-        UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
-        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
-        [back_button setBackgroundImage:back_image forState:UIControlStateNormal];
-        [topView addSubview:back_button];
-        [back_button release];
-    }
     //把色值转换成图片
     CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
     UIGraphicsBeginImageContext(rect_image.size);
@@ -76,6 +67,16 @@
     UIImage * imge = [[[UIImage alloc] init] autorelease];
     imge = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    //返回按钮
+    if(isNeedBackButton)
+    {
+        UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
+        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
+        [back_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+        [back_button setImage:back_image forState:UIControlStateNormal];
+        [topView addSubview:back_button];
+        [back_button release];
+    }
     //选项卡栏目
     UIButton *phoot_button = [[UIButton alloc] init];
     [phoot_button setTag:23];
@@ -102,7 +103,8 @@
     UIButton *more_button = [[UIButton alloc] init];
     UIImage *moreImage = [UIImage imageNamed:@"Bt_More.png"];
     [more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
-    [more_button setBackgroundImage:moreImage forState:UIControlStateNormal];
+    [more_button setImage:moreImage forState:UIControlStateNormal];
+    [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [more_button addTarget:self action:@selector(clicked_more:) forControlEvents:UIControlEventTouchDown];
     [topView addSubview:more_button];
     [more_button release];
