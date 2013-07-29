@@ -147,6 +147,24 @@
             [self.navigationController pushViewController:viewController animated:YES];
         }
             break;
+        case 1:
+        {
+            MyndsViewController *viewController=[[[MyndsViewController alloc] init] autorelease];
+            viewController.f_id=@"1";
+            viewController.myndsType=kMyndsTypeMyShare;
+            viewController.title=@"我的共享";
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
+            break;
+        case 2:
+        {
+            MyndsViewController *viewController=[[[MyndsViewController alloc] init] autorelease];
+            viewController.f_id=@"1";
+            viewController.myndsType=kMyndsTypeShare;
+            viewController.title=@"参与共享";
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
+            break;
         default:
             break;
     }

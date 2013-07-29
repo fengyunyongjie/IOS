@@ -7,9 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-
+typedef enum{
+    kSMTypeOpenFinder,
+}kSMType;
+@protocol SCBShareManagerDelegate;
 @interface SCBShareManager : NSObject
+@property (nonatomic,assign)id<SCBShareManagerDelegate> delegate;
+@property (strong,nonatomic) NSMutableData *activeData;
+@property (assign,nonatomic) kSMType *sm_type;
+-(void)cancelAllTask;
+
 //打开共享/share
+-(void)openFinderWithID:(NSString *)f_id shareType:(NSString *)share_type;
 //设置共享/share/create
 //新建/share/mkdir
 //重命名/share/rename
@@ -25,4 +34,8 @@
 //打开共享回收站/share/trash
 //彻底删除/share/trash/del
 //清空回收站/share/trash/delall
+@end
+@protocol SCBShareManagerDelegate
+-(void)openFinderSucess:(NSDictionary *)datadic;
+-(void)openFinderUnsucess;
 @end

@@ -8,6 +8,7 @@
 
 #import "MyndsViewController.h"
 #import "SCBFileManager.h"
+#import "SCBShareManager.h"
 #import "FileItemTableCell.h"
 #import "YNFunctions.h"
 #import "AppDelegate.h"
@@ -48,6 +49,7 @@ typedef enum{
 
 @interface MyndsViewController ()
 @property (strong,nonatomic) SCBFileManager *fm;
+@property (strong,nonatomic) SCBShareManager *sm;
 @property (strong,nonatomic) SCBFileManager *fm_move;
 @property (strong,nonatomic) NSIndexPath *selectedIndexPath;
 @property (strong,nonatomic) UITableViewCell *optionCell;
@@ -512,6 +514,8 @@ typedef enum{
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
+    [self.sm cancelAllTask];
+    self.sm=nil;
     [self.fm cancelAllTask];
     self.fm=nil;
     [self.fm_move cancelAllTask];
@@ -677,11 +681,26 @@ typedef enum{
     //    if (self.fm) {
     //        return;
     //    }
-    [self.fm cancelAllTask];
-    self.fm=nil;
-    self.fm=[[[SCBFileManager alloc] init] autorelease];
-    [self.fm setDelegate:self];
-    [self.fm openFinderWithID:self.f_id];
+    if (self.myndsType==kMyndsTypeMyShare) {
+        [self.sm cancelAllTask];
+        self.sm=nil;
+        self.sm=[[[SCBShareManager alloc] init] autorelease];
+        [self.sm setDelegate:self];
+        [self.sm openFinderWithID:self.f_id shareType:@"O"];
+    }else if (self.myndsType==kMyndsTypeMyShare) {
+        [self.sm cancelAllTask];
+        self.sm=nil;
+        self.sm=[[[SCBShareManager alloc] init] autorelease];
+        [self.sm setDelegate:self];
+        [self.sm openFinderWithID:self.f_id shareType:@"M"];
+    }else
+    {
+        [self.fm cancelAllTask];
+        self.fm=nil;
+        self.fm=[[[SCBFileManager alloc] init] autorelease];
+        [self.fm setDelegate:self];
+        [self.fm openFinderWithID:self.f_id];
+    }
 }
 
 -(void)goUpload:(id)sender
@@ -881,6 +900,9 @@ typedef enum{
     }
     CGRect r=self.cellMenu.frame;
     r.origin.y=(indexPath.row+1) * 50-8;
+    if (r.origin.y+r.size.height > self.tableView.contentSize.height) {
+        r.origin.y=self.tableView.contentSize.height-r.size.height;
+    }
     self.cellMenu.frame=r;
     [self.cellMenu setHidden:NO];
     

@@ -57,6 +57,8 @@
 #define FM_GETFILEINFO @"/fm/getFileInfo"
 
 #pragma mark - 共享管理
+//打开共享文件夹
+#define SHARE_OPEN_URI @"/share/open"
 
 
 #pragma mark - 意见管理
