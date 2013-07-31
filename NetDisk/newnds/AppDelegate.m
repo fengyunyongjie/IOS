@@ -294,6 +294,7 @@
 //    rootView1.f_id=@"1";
 //    rootView1.myndsType=kMyndsTypeDefault;
     MainViewController *rootView1=[[[MainViewController alloc] init] autorelease];
+    rootView1.title=@"我的空间";
     rootView1.tabBarItem.title=@"我的空间";
     [rootView1.tabBarItem setImage:[UIImage imageNamed:@"Bt_MySpaceDef.png"]];
     viewController1=[[[UINavigationController alloc] initWithRootViewController:rootView1] autorelease];
