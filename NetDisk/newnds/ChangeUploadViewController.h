@@ -27,6 +27,8 @@
     BOOL isHistoryShow;
     //上传至文件夹目录名称
     NSString *deviceName;
+    //更多信息的内容
+    UIControl *more_control;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -34,5 +36,6 @@
 @property(nonatomic,retain) NSMutableArray *uploadingList;
 @property(nonatomic,retain) NSMutableArray *historyList;
 @property(nonatomic,assign) BOOL isHistoryShow;
+@property(nonatomic,retain) UIControl *more_control;
 
 @end

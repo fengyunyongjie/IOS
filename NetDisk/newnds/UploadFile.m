@@ -17,6 +17,7 @@
 @synthesize deviceName;
 @synthesize delegate;
 @synthesize finishName;
+@synthesize connection;
 
 -(id)init
 {
@@ -34,9 +35,11 @@
 //上传暂停
 -(void)upStop
 {
+    isStop = TRUE;
     if(connection)
     {
         [connection cancel];
+        connection = nil;
     }
 }
 
@@ -46,6 +49,7 @@
     if(connection)
     {
         [connection cancel];
+        connection = nil;
     }
 }
 
@@ -54,12 +58,16 @@
 {
     NSLog(@"1:打开文件目录");
     [photoManger openFinderWithID:@"1"];
-    currTag = demo.f_id;
+    currTag = demo.index_id;
 }
 
 //请求认证
 -(void)requestVerify
 {
+    if(isStop)
+    {
+        return;
+    }
     if(demo.f_data == nil)
     {
         ALAsset *result = demo.result;
@@ -78,6 +86,10 @@
 
 -(void)newFold:(NSDictionary *)dictionary
 {
+    if(isStop)
+    {
+        return;
+    }
     NSLog(@"newFold dictionary:%@",dictionary);
     BOOL bl = FALSE;
     if(f_pid > 0)
@@ -112,6 +124,10 @@
 
 -(void)openFile:(NSDictionary *)dictionary
 {
+    if(isStop)
+    {
+        return;
+    }
     NSLog(@"打开成功 dictionary:%@ ",dictionary);
     BOOL bl = FALSE;
         if(f_pid>0)
@@ -153,6 +169,10 @@
 //上传效验
 -(void)uploadVerify:(NSDictionary *)dictionary
 {
+    if(isStop)
+    {
+        return;
+    }
     NSLog(@"upload:%@",dictionary);
     if([[dictionary objectForKey:@"code"] intValue] == 0 )
     {
@@ -164,12 +184,11 @@
         demo.f_lenght = [demo.f_data length];
         [demo updateTaskTableFName];
         [delegate upFinish:currTag];
-        [self dealloc];
     }
     else
     {
-        [delegate upError:currTag];
-        [self dealloc];
+        [delegate upFinish:currTag];
+//        [delegate upError:currTag];
     }
     
 }
@@ -177,6 +196,10 @@
 //申请上传状态
 -(void)requestUploadState:(NSDictionary *)dictionary
 {
+    if(isStop)
+    {
+        return;
+    }
     NSLog(@"dictionary:%@",dictionary);
     if([[dictionary objectForKey:@"code"] intValue] == 0)
     {
@@ -194,7 +217,8 @@
         if([demo.f_data length]==0)
         {
             NSLog(@"验证失败");
-            [delegate upError:currTag];
+            [delegate upFinish:currTag];
+//            [delegate upError:currTag];
         }
         else
         {
@@ -207,12 +231,12 @@
 //上传文件完成
 -(void)uploadFinish:(NSDictionary *)dictionary
 {
-    NSLog(@"uploadFinishdictionary:%@",dictionary);
-    if(connection)
+    connection = nil;
+    if(isStop)
     {
-        [connection cancel];
-        connection = nil;
+        return;
     }
+    NSLog(@"uploadFinishdictionary:%@",dictionary);
         
     NSLog(@"uploadFinishdictionary:%@",dictionary);
     if([[dictionary objectForKey:@"code"] intValue] == 0)
@@ -224,7 +248,8 @@
     else
     {
         NSLog(@"上传失败");
-        [delegate upError:currTag];
+        [delegate upFinish:currTag];
+//        [delegate upError:currTag];
     }
 }
 
@@ -237,6 +262,10 @@
 //上传文件流
 -(void)uploadFiles:(int)proress
 {
+    if(isStop)
+    {
+        return;
+    }
     NSLog(@"得到上传流");
     float f = (float)proress / (float)[demo.f_data length];
     [demo setProess:f];
@@ -247,6 +276,10 @@
 //上传提交
 -(void)uploadCommit:(NSDictionary *)dictionary
 {
+    if(isStop)
+    {
+        return;
+    }
     NSLog(@"dictionary:%@",dictionary);
     NSLog(@"5:完成");
     
@@ -257,11 +290,10 @@
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
         NSLog(@"Url-------:%@",demo.databasePath);
-        [demo updateTaskTableFName];
+        [demo insertTaskTable];
         [delegate upFinish:currTag];
         [uploadData release];
     }
-    [self dealloc];
 }
 
 

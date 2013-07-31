@@ -44,6 +44,7 @@
     //上传代理
     id<UploadFileDelegate> delegate;
     NSInteger currTag;
+    BOOL isStop;
 }
 
 @property(nonatomic,retain) TaskDemo *demo;

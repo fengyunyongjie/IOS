@@ -26,6 +26,7 @@
 @synthesize uploadingList;
 @synthesize historyList;
 @synthesize isHistoryShow;
+@synthesize more_control;
 
 #pragma mark －－－－－上传代理
 
@@ -36,18 +37,16 @@
     UploadViewCell *cell = (UploadViewCell *)[self.uploadListTableView viewWithTag:UploadProessTag+fileTag];
     if([cell isKindOfClass:[UploadViewCell class]])
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [cell.progressView setProgress:1 animated:YES];
-        });
-        
+        [cell.jinDuView setCurrFloat:1];
         [uploadingList removeObjectAtIndex:0];
-        [self.uploadListTableView reloadData];
         if([uploadingList count]>0)
         {
             UploadFile *upload_file = [uploadingList objectAtIndex:0];
+            upload_file.demo.f_state = 2;
             [upload_file setDelegate:self];
             [upload_file upload];
         }
+        [self.uploadListTableView reloadData];
     }
 }
 
@@ -59,9 +58,10 @@
     if([cell isKindOfClass:[UploadViewCell class]])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell.progressView setProgress:proress animated:YES];
+            [cell.jinDuView setCurrFloat:proress];
         });
     }
+    NSLog(@"上传进行时-------------");
 }
 
 //上传失败
@@ -71,7 +71,7 @@
     if([cell isKindOfClass:[UploadViewCell class]])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell.progressView setProgress:0.5 animated:YES];
+            [cell.jinDuView setCurrFloat:1];
         });
     }
 }
@@ -158,6 +158,52 @@
     self.uploadListTableView.alwaysBounceVertical = YES;
     self.uploadListTableView.alwaysBounceHorizontal = NO;
     [self.view addSubview:self.uploadListTableView];
+    
+    
+    //添加更多数据
+    self.more_control = [[UIControl alloc] initWithFrame:self.view.bounds];
+    [self.more_control addTarget:self action:@selector(clicked_more_control:) forControlEvents:UIControlEventTouchDown];
+    //添加背景
+    CGRect bgIamge_rect = CGRectMake(320-180-20, 44, 180, 88);
+    UIImageView *bgIamgeView = [[UIImageView alloc] initWithFrame:bgIamge_rect];
+    [bgIamgeView setImage:[UIImage imageNamed:@"Bk_na.png"]];
+    [self.more_control addSubview:bgIamgeView];
+    //全部开始
+    UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
+    float x = bgIamge_rect.origin.x;
+    float y = bgIamge_rect.origin.y;
+    btnNewFinder.frame=CGRectMake(x, y, 90, 88);
+    [btnNewFinder setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
+    [btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+    [btnNewFinder addTarget:self action:@selector(clicked_uploadAll:) forControlEvents:UIControlEventTouchUpInside];
+    [self.more_control addSubview:btnNewFinder];
+    UILabel *lblNewFinder=[[[UILabel alloc] init] autorelease];
+    lblNewFinder.text=@"全部上传";
+    lblNewFinder.textAlignment=UITextAlignmentCenter;
+    lblNewFinder.font=[UIFont systemFontOfSize:12];
+    lblNewFinder.textColor=[UIColor whiteColor];
+    lblNewFinder.backgroundColor=[UIColor clearColor];
+    lblNewFinder.frame=CGRectMake(x, y+44, 90, 21);
+    [self.more_control addSubview:lblNewFinder];
+    
+    //全部清除
+    UIButton *btnDeleteFinder= [UIButton buttonWithType:UIButtonTypeCustom];
+    btnDeleteFinder.frame=CGRectMake(x+90, y, 90, 88);
+    [btnDeleteFinder setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
+    [btnDeleteFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+    [btnDeleteFinder addTarget:self action:@selector(clicked_clearAll:) forControlEvents:UIControlEventTouchUpInside];
+    [self.more_control addSubview:btnDeleteFinder];
+    lblNewFinder=[[[UILabel alloc] init] autorelease];
+    lblNewFinder.text=@"全部清空";
+    lblNewFinder.textAlignment=UITextAlignmentCenter;
+    lblNewFinder.font=[UIFont systemFontOfSize:12];
+    lblNewFinder.textColor=[UIColor whiteColor];
+    lblNewFinder.backgroundColor=[UIColor clearColor];
+    lblNewFinder.frame=CGRectMake(x+90, y+44, 90, 21);
+    [self.more_control addSubview:lblNewFinder];
+    [self.view addSubview:self.more_control];
+    [self.more_control setHidden:YES];
+    //全部清空
 }
 
 #pragma mark －－－－－头部视图的几个方法
@@ -184,11 +230,7 @@
     
     //显示上传进度
     isHistoryShow = NO;
-//    TaskDemo *demo = [[TaskDemo alloc] init];
-//    [photoArray removeAllObjects];
-//    photoArray = [demo selectAllTaskTable];
     [self.uploadListTableView reloadData];
-//    [demo release];
 }
 
 -(void)clicked_uploadHistory:(id)sender
@@ -212,32 +254,74 @@
     [photo_button setBackgroundImage:nil forState:UIControlStateNormal];
     
     //显示上传历史
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        isHistoryShow = YES;
-        TaskDemo *demo = [[TaskDemo alloc] init];
-        if(historyList)
-        {
-            historyList = nil;
-        }
-        historyList = [demo selectFinishTaskTable];
-        [self.uploadListTableView reloadData];
-        [demo release];
-    });
+    isHistoryShow = YES;
+    TaskDemo *demo = [[TaskDemo alloc] init];
+    if(historyList)
+    {
+        historyList = nil;
+    }
+    historyList = [demo selectFinishTaskTable];
+    [self.uploadListTableView reloadData];
+    [demo release];
+}
+
+-(void)clicked_more_control:(id)sender
+{
+    if(!self.more_control.hidden)
+    {
+        [self.more_control setHidden:YES];
+    }
 }
 
 -(void)clicked_more:(id)sender
 {
-    //打开照片库
-    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
-    imagePickerController.delegate = self;
-    imagePickerController.allowsMultipleSelection = YES;
+    [self.more_control setHidden:NO];
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
-    [navigationController setNavigationBarHidden:YES];
-    [self presentModalViewController:navigationController animated:YES];
-    [imagePickerController release];
-    [navigationController release];
+    
+    
+    
+//    //打开照片库
+//    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
+//    imagePickerController.delegate = self;
+//    imagePickerController.allowsMultipleSelection = YES;
+//    
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
+//    [navigationController setNavigationBarHidden:YES];
+//    [self presentModalViewController:navigationController animated:YES];
+//    [imagePickerController release];
+//    [navigationController release];
 }
+
+-(void)clicked_uploadAll:(id)sender
+{
+    [self.more_control setHidden:YES];
+}
+
+-(void)clicked_clearAll:(id)sender
+{
+    TaskDemo *demo = [[TaskDemo alloc] init];
+    BOOL bl = [demo deleteAllTaskTable];
+    NSLog(@"删除：%i",bl);
+    [demo release];
+    if(isHistoryShow)
+    {
+        if([historyList count]>0)
+        {
+            [historyList removeAllObjects];
+            [self.uploadListTableView reloadData];
+        }
+    }
+    else
+    {
+        if([uploadingList count]>0)
+        {
+            [uploadingList removeAllObjects];
+            [self.uploadListTableView reloadData];
+        }
+    }
+    [self.more_control setHidden:YES];
+}
+
 #pragma mark ------照片库代理方法
 -(void)changeUpload:(NSMutableOrderedSet *)array_
 {
@@ -251,27 +335,22 @@
         {
             uploadingList = [[NSMutableArray alloc] init];
         }
-        int i=0;
+        int i=[array_ count];
         for(ALAsset *asset in array_)
         {
             TaskDemo *demo = [[TaskDemo alloc] init];
-            demo.f_state = 0;
+            demo.f_state = 3;
             demo.f_data = nil;
             demo.f_lenght = 0;
-            demo.f_id = i;
+            i-=1;
+            demo.index_id = i;
+            NSLog(@"i--------------:%i",i);
             demo.proess = 0;
             demo.result = [asset retain];
-            i++;
-            //获取照片名称
             demo.f_base_name = [[asset defaultRepresentation] filename];
-            NSError *error = nil;
-            Byte *data = malloc(asset.defaultRepresentation.size);
-            //获得照片图像数据
-            [asset.defaultRepresentation getBytes:data fromOffset:0 length:asset.defaultRepresentation.size error:&error];
-            demo.f_data = [NSData dataWithBytesNoCopy:data length:asset.defaultRepresentation.size];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            [demo insertTaskTable];
-            });
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//                [demo insertTaskTable];
+//            });
             UploadFile *upload_file = [[UploadFile alloc] init];
             [upload_file setDemo:demo];
             [demo release];
@@ -282,6 +361,7 @@
         if([uploadingList count]>0)
         {
             UploadFile *upload_file = [uploadingList objectAtIndex:0];
+            upload_file.demo.f_state = 2;
             [upload_file setDelegate:self];
             [upload_file upload];
         }
@@ -324,6 +404,7 @@
         {
             count = [uploadingList count];
         }
+        return [NSString stringWithFormat:@"正在上传(%i)",count];
     }
     else
     {
@@ -331,9 +412,8 @@
         {
             count = [historyList count];
         }
+        return [NSString stringWithFormat:@"上传成功(%i)",count];
     }
-    
-    return [NSString stringWithFormat:@"正在上传(%i)",count];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -361,6 +441,43 @@
     return 20;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    CGRect header_rect = CGRectMake(0, 0, 320, 20);
+    UILabel *label = [[UILabel alloc] initWithFrame:header_rect];
+
+    int count = 0;
+    if(!isHistoryShow)
+    {
+        if(uploadingList)
+        {
+            count = [uploadingList count];
+        }
+        label.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
+    }
+    else
+    {
+        if(historyList)
+        {
+            count = [historyList count];
+        }
+        label.text =  [NSString stringWithFormat:@" 上传成功(%i)",count];
+    }
+    [label setTextColor:[UIColor whiteColor]];
+    [label setBackgroundColor:[UIColor colorWithRed:71.0/255.0 green:85.0/255.0 blue:96.0/255.0 alpha:1]];
+    [label setFont:[UIFont systemFontOfSize:14]];
+    return [label autorelease];
+}
+
+//- (UITableViewHeaderFooterView *)headerViewForSection:(NSInteger)section NS_AVAILABLE_IOS(6_0){
+//    CGRect header_rect = CGRectMake(0, 0, 320, 20);
+//    UITableViewHeaderFooterView *headerFooterView = [[UITableViewHeaderFooterView alloc] initWithFrame:header_rect];
+//    [headerFooterView.textLabel setFont:[UIFont systemFontOfSize:10]];
+//    CGRect text_rect = CGRectMake(0, 0, 320, 10);
+//    [headerFooterView.textLabel setFrame:text_rect];
+//    return [headerFooterView autorelease];
+//}
+
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 50;
@@ -381,7 +498,8 @@
         if(uploadingList)
         {
             UploadFile *demo = [uploadingList objectAtIndex:indexPath.row];
-            [cell setTag:UploadProessTag+demo.demo.f_id];
+            demo.demo.index_id = [indexPath row];
+            [cell setTag:UploadProessTag+demo.demo.index_id];
             NSLog(@"cellTag:%i",cell.tag);
             [cell setUploadDemo:demo.demo];
         }
@@ -391,7 +509,8 @@
         if(historyList)
         {
             TaskDemo *demo = [historyList objectAtIndex:indexPath.row];
-            [cell setTag:UploadProessTag+demo.f_id];
+            demo.index_id = [indexPath row];
+            [cell setTag:UploadProessTag+demo.index_id];
             NSLog(@"cellTag:%i",demo.f_data.length);
             [cell setUploadDemo:demo];
         }
@@ -402,10 +521,28 @@
 
 #pragma mark cell代理方法
 
--(void)deletCell:(id)uploadCell
+-(void)deletCell:(TaskDemo *)taskDemo
 {
-//    UploadViewCell *cell = uploadCell;
-    NSLog(@"得到删除回调");
+    if(isHistoryShow)
+    {
+        if(taskDemo.index_id<[historyList count])
+        {
+            [taskDemo deleteTaskTable];
+            [historyList removeObjectAtIndex:taskDemo.index_id];
+            [self.uploadListTableView reloadData];
+        }
+    }
+    else
+    {
+        if(taskDemo.index_id<[uploadingList count])
+        {
+            UploadFile *demo = [uploadingList objectAtIndex:taskDemo.index_id];
+            [demo upStop];
+            [uploadingList removeObjectAtIndex:taskDemo.index_id];
+            [self.uploadListTableView reloadData];
+        }
+    }
+    //删除数据库的历史记录
 }
 
 - (void)didReceiveMemoryWarning

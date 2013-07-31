@@ -149,9 +149,6 @@
 		29ABD277179E618C00EE7164 /* Bt_UsercentreCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ABD26C179E618C00EE7164 /* Bt_UsercentreCh.png */; };
 		29ABD278179E618C00EE7164 /* Bt_UsercentreDef.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ABD26D179E618C00EE7164 /* Bt_UsercentreDef.png */; };
 		29ACB0001783D51F00AC9E6A /* Bt_Operator.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */; };
-		29AF11BF17A5F17300F32F1F /* ChangeUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AF11BA17A5F17300F32F1F /* ChangeUploadViewController.m */; };
-		29AF11C017A5F17300F32F1F /* UploadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AF11BC17A5F17300F32F1F /* UploadFile.m */; };
-		29AF11C117A5F17300F32F1F /* UploadViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AF11BE17A5F17300F32F1F /* UploadViewCell.m */; };
 		29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */; };
 		29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */; };
 		29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B18AC7173CC37C00DBF2CB /* OptionCell.xib */; };
@@ -302,9 +299,11 @@
 		29BFAD4C174C6306000AFE7A /* 111.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BFAD4B174C6306000AFE7A /* 111.png */; };
 		29C0775417584DC2005A5EFF /* PhotoFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C0775317584DC2005A5EFF /* PhotoFile.m */; };
 		29C077571758B0BE005A5EFF /* PhotoFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C077561758B0BD005A5EFF /* PhotoFileCell.m */; };
+		29C2D51B17A7A491004FD7D6 /* CustomJinDu.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C2D51A17A7A491004FD7D6 /* CustomJinDu.m */; };
 		29C53AC3179CC03C00078CBE /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C53AC2179CC03C00078CBE /* MainViewController.m */; };
 		29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C17DD816560B7D0066CB13 /* QuartzCore.framework */; };
 		29C714FF179E7345008D04EB /* Bt_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C714FE179E7345008D04EB /* Bt_Back.png */; };
+		29CE187317A89425003D81AD /* UploadAll.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CE187217A89425003D81AD /* UploadAll.m */; };
 		29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CEC31B178AB15500EA002F /* SCBLinkManager.m */; };
 		29CED3681781203C00899FAE /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CED3671781203C00899FAE /* MessageUI.framework */; };
 		29CED36E17812B7000899FAE /* BoderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CED36D17812B7000899FAE /* BoderView.m */; };
@@ -719,9 +718,13 @@
 		29C0775317584DC2005A5EFF /* PhotoFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFile.m; sourceTree = "<group>"; };
 		29C077551758B0BD005A5EFF /* PhotoFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFileCell.h; sourceTree = "<group>"; };
 		29C077561758B0BD005A5EFF /* PhotoFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFileCell.m; sourceTree = "<group>"; };
+		29C2D51917A7A491004FD7D6 /* CustomJinDu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomJinDu.h; sourceTree = "<group>"; };
+		29C2D51A17A7A491004FD7D6 /* CustomJinDu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomJinDu.m; sourceTree = "<group>"; };
 		29C53AC1179CC03C00078CBE /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		29C53AC2179CC03C00078CBE /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		29C714FE179E7345008D04EB /* Bt_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Back.png; sourceTree = "<group>"; };
+		29CE187117A89425003D81AD /* UploadAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadAll.h; sourceTree = "<group>"; };
+		29CE187217A89425003D81AD /* UploadAll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadAll.m; sourceTree = "<group>"; };
 		29CEC31A178AB15500EA002F /* SCBLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBLinkManager.h; sourceTree = "<group>"; };
 		29CEC31B178AB15500EA002F /* SCBLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBLinkManager.m; sourceTree = "<group>"; };
 		29CED3671781203C00899FAE /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -1302,6 +1305,10 @@
 				29BE13D517A3A6020029E2C6 /* UploadFile.m */,
 				29BE13D617A3A6020029E2C6 /* UploadViewCell.h */,
 				29BE13D717A3A6020029E2C6 /* UploadViewCell.m */,
+				29C2D51917A7A491004FD7D6 /* CustomJinDu.h */,
+				29C2D51A17A7A491004FD7D6 /* CustomJinDu.m */,
+				29CE187117A89425003D81AD /* UploadAll.h */,
+				29CE187217A89425003D81AD /* UploadAll.m */,
 			);
 			name = Upload;
 			sourceTree = "<group>";
@@ -2764,6 +2771,8 @@
 				29BE13D917A3A6020029E2C6 /* UploadViewCell.m in Sources */,
 				29BE13DC17A3A6100029E2C6 /* ChangeUploadViewController.m in Sources */,
 				29BE13E317A3A61B0029E2C6 /* PhotoCell.m in Sources */,
+				29C2D51B17A7A491004FD7D6 /* CustomJinDu.m in Sources */,
+				29CE187317A89425003D81AD /* UploadAll.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2855,8 +2864,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2874,8 +2883,8 @@
 				HEADER_SEARCH_PATHS = ./NetDisk/lib/include;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "7152C2F7-1252-446F-9129-05ECD05948B1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7152C2F7-1252-446F-9129-05ECD05948B1";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = armv7;
 			};
@@ -2890,8 +2899,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2903,8 +2912,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "7152C2F7-1252-446F-9129-05ECD05948B1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7152C2F7-1252-446F-9129-05ECD05948B1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = armv7;

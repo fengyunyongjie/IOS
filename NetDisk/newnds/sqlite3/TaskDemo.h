@@ -10,8 +10,9 @@
 #import "DBSqlite3.h"
 #import "ALAsset+AGIPC.h"
 
-#define InsertTaskTable @"INSERT INTO TASKTABLE(F_ID,F_STATE,F_BASE_NAME,F_LENGHT) VALUES (?,?,?,?)"
-#define DeleteTskTable @"DELETE FROM TASKTABLE WHERE T_ID=?"
+#define InsertTaskTable @"INSERT INTO TASKTABLE(F_ID,F_STATE,F_BASE_NAME,F_LENGHT,F_DATA) VALUES (?,?,?,?,?)"
+#define DeleteTskTable @"DELETE FROM TASKTABLE WHERE F_ID=?"
+#define DeleteALLTskTable @"DELETE FROM TASKTABLE"
 #define UpdateTaskTable @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=? WHERE T_ID=?"
 #define UpdateTaskTableForName @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=? WHERE F_BASE_NAME=?"
 #define SelectAllTaskTable @"SELECT * FROM TASKTABLE where F_STATE=0"
@@ -32,6 +33,7 @@
     NSInteger f_lenght;
     ALAsset *result;
     CGFloat proess;
+    int index_id;
 }
 
 @property(nonatomic,assign) NSInteger t_id;
@@ -42,11 +44,16 @@
 @property(nonatomic,assign) NSInteger f_lenght;
 @property(nonatomic,retain) ALAsset *result;
 @property(nonatomic,assign) CGFloat proess;
+@property(nonatomic,assign) int index_id;
 
 -(id)init;
 
 #pragma mark 添加任务表数据
 -(BOOL)insertTaskTable;
+#pragma mark 删除单个数据
+-(BOOL)deleteTaskTable;
+#pragma mark 删除所有数据
+-(BOOL)deleteAllTaskTable;
 
 #pragma mark 修改任务表
 -(void)updateTaskTable;

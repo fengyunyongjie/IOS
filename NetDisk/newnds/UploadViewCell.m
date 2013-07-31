@@ -9,7 +9,7 @@
 #import "UploadViewCell.h"
 
 @implementation UploadViewCell
-@synthesize demo,button_dele_button,imageView,progressView,contentView,label_name;
+@synthesize demo,button_dele_button,imageView,contentView,label_name;
 @synthesize delegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -26,9 +26,11 @@
         [self.label_name setBackgroundColor:[UIColor clearColor]];
         [self addSubview:self.label_name];
         
-        CGRect progress_rect = CGRectMake(60, 30, 200, 1);
-        self.progressView = [[UIProgressView alloc] initWithFrame:progress_rect];
-        [self addSubview:self.progressView];
+        CGRect progress_rect = CGRectMake(60, 30, 200, 3);
+        self.jinDuView = [[CustomJinDu alloc] initWithFrame:progress_rect];
+        [self addSubview:self.jinDuView];
+//        self.progressView = [[UIProgressView alloc] initWithFrame:progress_rect];
+//        [self addSubview:self.progressView];
         
         CGRect button_rect = CGRectMake(270, 10, 30, 30);
         self.button_dele_button = [[UIButton alloc] initWithFrame:button_rect];
@@ -42,30 +44,105 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-    // Configure the view for the selected state
 }
 
 -(void)setUploadDemo:(TaskDemo *)demo_
 {
     self.demo = demo_;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [self.imageView setImage:[UIImage imageWithData:self.demo.f_data]];
-    });
-    if(demo.f_state == 1)
+    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:nil] waitUntilDone:YES];
+    if(self.demo.f_state == 1)
     {
-        [self.progressView setProgress:1];
+        [self.jinDuView showText:@"完成"];
+    }
+    else if(self.demo.f_state == 2)
+    {
+        [self.jinDuView setCurrFloat:demo.proess];
     }
     else
     {
-        [self.progressView setProgress:demo.proess];
+        [self.jinDuView showText:@"暂停"];
     }
-    
     [self.label_name setText:self.demo.f_base_name];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        if(self.demo.result==nil && self.demo.f_data==nil)
+        {
+            return;
+        }
+        if(self.demo.f_data==nil)
+        {
+            //获取照片名称
+            ALAsset *asset = self.demo.result;
+            demo.f_base_name = [[asset defaultRepresentation] filename];
+            NSError *error = nil;
+            Byte *data = malloc(asset.defaultRepresentation.size);
+            //获得照片图像数据
+            [asset.defaultRepresentation getBytes:data fromOffset:0 length:asset.defaultRepresentation.size error:&error];
+            demo.f_data = [NSData dataWithBytesNoCopy:data length:asset.defaultRepresentation.size];
+        }
+        UIImage *imageV = [UIImage imageWithData:self.demo.f_data];
+        if(imageV.size.width>=imageV.size.height)
+        {
+            if(imageV.size.height<=88)
+            {
+                CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
+                imageV = [self imageFromImage:imageV inRect:imageRect];
+                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+            }
+            else
+            {
+                CGSize newImageSize;
+                newImageSize.height = 88;
+                newImageSize.width = 88*imageV.size.width/imageV.size.height;
+                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                CGRect imageRect = CGRectMake((newImageSize.width-88)/2, 0, 88, 88);
+                imageS = [self imageFromImage:imageS inRect:imageRect];
+                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+            }
+        }
+        else if(imageV.size.width<=imageV.size.height)
+        {
+            if(imageV.size.width<=88)
+            {
+                CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
+                imageV = [self imageFromImage:imageV inRect:imageRect];
+                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+            }
+            else
+            {
+                CGSize newImageSize;
+                newImageSize.width = 88;
+                newImageSize.height = 88*imageV.size.height/imageV.size.width;
+                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                CGRect imageRect = CGRectMake(0, (newImageSize.height-88)/2, 88, 88);
+                imageS = [self imageFromImage:imageS inRect:imageRect];
+                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+            }
+        }
+    });
+    
+}
+
+-(UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{
+	CGImageRef sourceImageRef = [image CGImage];
+	CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);
+	UIImage *newImage = [UIImage imageWithCGImage:newImageRef];
+    CGImageRelease(newImageRef);
+	return newImage;
+}
+
+
+-(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 -(void)deleteSelf
 {
-    [delegate deletCell:self];
+    [delegate deletCell:self.demo];
 }
 
 @end

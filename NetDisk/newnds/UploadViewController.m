@@ -116,7 +116,7 @@
         [topView addSubview:back_button];
         [back_button release];
     }
-    
+    [self.tabBarController setHidesBottomBarWhenPushed:YES];
     //选项卡栏目
     UIButton *phoot_button = [[UIButton alloc] init];
     [phoot_button setTag:23];
@@ -1247,7 +1247,7 @@
             if([cell isKindOfClass:[UploadViewCell class]])
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [cell.progressView setProgress:1];
+                    [cell.jinDuView setCurrFloat:1];
                 });
             }
             [photoArray removeObjectAtIndex:0];
@@ -1322,7 +1322,7 @@
             if([cell isKindOfClass:[UploadViewCell class]])
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [cell.progressView setProgress:1 animated:YES];
+                    [cell.jinDuView setCurrFloat:1];
                 });
             }
             SCBUploader *uploder = [[[SCBUploader alloc] init] autorelease];
@@ -1505,7 +1505,7 @@
     if([cell isKindOfClass:[UploadViewCell class]])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell.progressView setProgress:f animated:YES];
+            [cell.jinDuView setCurrFloat:f];
         });
     }
 //    [uploadProgressView setProgress:f animated:YES];

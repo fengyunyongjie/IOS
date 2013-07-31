@@ -103,6 +103,26 @@
     return path;
 }
 
+- (void) sendImageContentIsFiends:(BOOL)bl text:(NSString *)text
+{
+    BOOL isSuccess =[WXApi isWXAppInstalled];
+    if(!isSuccess)
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的手机还没有安装微信客户端" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
+        [alert show];
+        [alert release];
+        return;
+    }
+    SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
+    req.bText = YES;
+    req.text = text;
+    if(bl)
+    {
+        req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
+    }
+    [WXApi sendReq:req];
+}
+
 - (void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path
 {
     BOOL isSuccess =[WXApi isWXAppInstalled]; 

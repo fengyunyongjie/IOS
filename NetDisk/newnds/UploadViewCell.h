@@ -10,9 +10,11 @@
 
 //引用类
 #import "TaskDemo.h"
+#import "CustomJinDu.h"
+
 @protocol UploadViewCellDelegate <NSObject>
 
--(void)deletCell:(id)uploadCell;
+-(void)deletCell:(TaskDemo *)taskDemo;
 
 @end
 
@@ -20,19 +22,19 @@
 {
     UIImageView *imageView;
     UILabel *label_name;
-    UIProgressView *progressView;
+//    UIProgressView *progressView;
     UIButton *button_dele_button;
     TaskDemo *demo;
-    
+    CustomJinDu *jinDuView;
     id<UploadViewCellDelegate> delegate;
 }
 
 @property(nonatomic,retain) UIImageView *imageView;
 @property(nonatomic,retain) UILabel *label_name;
-@property(nonatomic,retain) UIProgressView *progressView;
+//@property(nonatomic,retain) UIProgressView *progressView;
 @property(nonatomic,retain) UIButton *button_dele_button;
 @property(nonatomic,retain) TaskDemo *demo;
-
+@property(nonatomic,retain) CustomJinDu *jinDuView;
 @property(nonatomic,retain) id<UploadViewCellDelegate> delegate;
 
 -(void)setUploadDemo:(TaskDemo *)demo_;
