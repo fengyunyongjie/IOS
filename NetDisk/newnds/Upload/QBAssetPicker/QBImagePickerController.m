@@ -480,8 +480,8 @@
 
 - (void)changeUpload:(NSMutableOrderedSet *)array_
 {
-    [self.delegate changeUpload:array_];
     [self dismissModalViewControllerAnimated:YES];
+    [self.delegate changeUpload:array_];
 }
 
 @end

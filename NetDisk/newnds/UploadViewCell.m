@@ -32,7 +32,7 @@
 //        self.progressView = [[UIProgressView alloc] initWithFrame:progress_rect];
 //        [self addSubview:self.progressView];
         
-        CGRect button_rect = CGRectMake(270, 10, 30, 30);
+        CGRect button_rect = CGRectMake(270, 0, 50, 50);
         self.button_dele_button = [[UIButton alloc] initWithFrame:button_rect];
         [self.button_dele_button setBackgroundImage:[UIImage imageNamed:@"Bt_Cancle.png"] forState:UIControlStateNormal];
         [self.button_dele_button addTarget:self action:@selector(deleteSelf) forControlEvents:UIControlEventTouchUpInside];
@@ -60,7 +60,7 @@
     }
     else if(self.demo.state == 0)
     {
-        [self.jinDuView showText:@"暂停"];
+        [self.jinDuView showText:@"等待中..."];
     }
     [self.label_name setText:self.demo.f_base_name];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{

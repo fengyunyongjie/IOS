@@ -28,6 +28,8 @@
     NSString *deviceName;
     //更多信息的内容
     UIControl *more_control;
+    
+    UILabel *title_leble;
 }
 
 @property(nonatomic,retain) UIView *topView;

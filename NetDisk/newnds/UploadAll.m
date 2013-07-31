@@ -87,6 +87,7 @@
     {
         UploadFile *upload_file = [self.uploadAllList objectAtIndex:0];
         upload_file.demo.state = 1;
+        upload_file.demo.index_id = 0;
         [upload_file setDelegate:self];
         [upload_file upload];
         
@@ -97,7 +98,6 @@
         if([uploadView isKindOfClass:[ChangeUploadViewController class]])
         {
             [uploadView setUploadingList:self.uploadAllList];
-            [uploadView.uploadListTableView reloadData];
         }
     }
 }
@@ -146,7 +146,6 @@
     if([uploadView isKindOfClass:[ChangeUploadViewController class]])
     {
         [uploadView setUploadingList:self.uploadAllList];
-        [uploadView.uploadListTableView reloadData];
     }
 }
 //上传进行时，发送上传进度数据
@@ -163,7 +162,7 @@
             [uploadView setUploadingList:self.uploadAllList];
             [uploadView.uploadListTableView reloadData];
         }
-        [uploadView upProess:proress fileTag:0];
+        [uploadView upProess:proress fileTag:fileTag];
     }
 }
 

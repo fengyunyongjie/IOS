@@ -190,7 +190,7 @@
     //全部清除
     UIButton *btnDeleteFinder= [UIButton buttonWithType:UIButtonTypeCustom];
     btnDeleteFinder.frame=CGRectMake(x+90, y, 90, 88);
-    [btnDeleteFinder setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
+    [btnDeleteFinder setImage:[UIImage imageNamed:@"Bt_naDelAll@2x.png"] forState:UIControlStateNormal];
     [btnDeleteFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
     [btnDeleteFinder addTarget:self action:@selector(clicked_clearAll:) forControlEvents:UIControlEventTouchUpInside];
     [self.more_control addSubview:btnDeleteFinder];
@@ -205,6 +205,11 @@
     [self.view addSubview:self.more_control];
     [self.more_control setHidden:YES];
     //全部清空
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self.uploadListTableView reloadData];
 }
 
 #pragma mark －－－－－头部视图的几个方法
@@ -318,6 +323,8 @@
         {
             UploadFile *upload_file = (UploadFile *)[self.uploadingList objectAtIndex:0];
             [upload_file upStop];
+            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [app_delegate.upload_all setIsUpload:NO];
             [self.uploadingList removeAllObjects];
             [self.uploadListTableView reloadData];
         }
@@ -381,7 +388,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     CGRect header_rect = CGRectMake(0, 0, 320, 20);
-    UILabel *label = [[UILabel alloc] initWithFrame:header_rect];
+    title_leble = [[UILabel alloc] initWithFrame:header_rect];
 
     int count = 0;
     if(!isHistoryShow)
@@ -390,7 +397,7 @@
         {
             count = [self.uploadingList count];
         }
-        label.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
+        title_leble.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
     }
     else
     {
@@ -398,12 +405,12 @@
         {
             count = [historyList count];
         }
-        label.text =  [NSString stringWithFormat:@" 上传成功(%i)",count];
+        title_leble.text =  [NSString stringWithFormat:@" 上传成功(%i)",count];
     }
-    [label setTextColor:[UIColor whiteColor]];
-    [label setBackgroundColor:[UIColor colorWithRed:71.0/255.0 green:85.0/255.0 blue:96.0/255.0 alpha:1]];
-    [label setFont:[UIFont systemFontOfSize:14]];
-    return [label autorelease];
+    [title_leble setTextColor:[UIColor whiteColor]];
+    [title_leble setBackgroundColor:[UIColor colorWithRed:71.0/255.0 green:85.0/255.0 blue:96.0/255.0 alpha:1]];
+    [title_leble setFont:[UIFont systemFontOfSize:14]];
+    return [title_leble autorelease];
 }
 
 //- (UITableViewHeaderFooterView *)headerViewForSection:(NSInteger)section NS_AVAILABLE_IOS(6_0){
@@ -466,7 +473,8 @@
         {
             [taskDemo deleteTaskTable];
             [historyList removeObjectAtIndex:taskDemo.index_id];
-            [self.uploadListTableView reloadData];
+            NSIndexPath *index_path = [NSIndexPath indexPathForItem:taskDemo.index_id inSection:0];
+            [self.uploadListTableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:index_path, nil] withRowAnimation:UITableViewRowAnimationRight];
         }
     }
     else
@@ -476,13 +484,34 @@
             UploadFile *demo = [self.uploadingList objectAtIndex:taskDemo.index_id];
             [demo upStop];
             AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [app_delegate.upload_all setIsUpload:NO];
             [taskDemo deleteTaskTable];
+            [app_delegate.upload_all setIsUpload:NO];
             [self.uploadingList removeObjectAtIndex:taskDemo.index_id];
-            [self.uploadListTableView reloadData];
+            app_delegate.upload_all.uploadAllList = self.uploadingList;
+            NSIndexPath *index_path = [NSIndexPath indexPathForItem:taskDemo.index_id inSection:0];
+            [self.uploadListTableView beginUpdates];
+            [self.uploadListTableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:index_path, nil] withRowAnimation:UITableViewRowAnimationRight];
+            [self.uploadListTableView endUpdates];
+            [app_delegate.upload_all startUpload];
         }
     }
-    //删除数据库的历史记录
+//    int count = 0;
+//    if(!isHistoryShow)
+//    {
+//        if(self.uploadingList)
+//        {
+//            count = [self.uploadingList count];
+//        }
+//        title_leble.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
+//    }
+//    else
+//    {
+//        if(historyList)
+//        {
+//            count = [historyList count];
+//        }
+//        title_leble.text =  [NSString stringWithFormat:@" 上传成功(%i)",count];
+//    }
 }
 
 - (void)didReceiveMemoryWarning

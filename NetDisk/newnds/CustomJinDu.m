@@ -22,7 +22,7 @@
         backLabel.layer.borderWidth = 0.5;
         backLabel.layer.borderColor = [[UIColor blackColor] CGColor];
         [backLabel setTextColor:[UIColor colorWithRed:180.0/255.0 green:181.0/255.0 blue:181.0/255.0 alpha:1]];
-        [backLabel setFont:[UIFont systemFontOfSize:16]];
+        [backLabel setFont:[UIFont systemFontOfSize:12]];
         CGRect currLabelRect = CGRectMake(0.1f, 0.1f, 0, frame.size.height-0.2f);
         [self addSubview:backLabel];
         

@@ -39,6 +39,7 @@
 		291E0B15174B61CF007A72FB /* interestSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 291E0B14174B61CF007A72FB /* interestSelected.png */; };
 		291F5D8F177A699F007EFE03 /* Back_Normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 291F5D8E177A699F007EFE03 /* Back_Normal.png */; };
 		291F866C17A8B84400DA7B7B /* ChangeUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F866B17A8B84400DA7B7B /* ChangeUploadViewController.m */; };
+		291F866E17A8FA9200DA7B7B /* Bt_naDelAll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 291F866D17A8FA9200DA7B7B /* Bt_naDelAll@2x.png */; };
 		29228C7A17A2104E00DD3E8D /* Bt_DelF@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29228C7017A2104E00DD3E8D /* Bt_DelF@2x.png */; };
 		29228C7B17A2104E00DD3E8D /* Bt_MoveF@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29228C7117A2104E00DD3E8D /* Bt_MoveF@2x.png */; };
 		29228C7C17A2104E00DD3E8D /* Bt_naCreateForlder.png in Resources */ = {isa = PBXBuildFile; fileRef = 29228C7217A2104E00DD3E8D /* Bt_naCreateForlder.png */; };
@@ -409,6 +410,7 @@
 		291F5D8E177A699F007EFE03 /* Back_Normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back_Normal.png; sourceTree = "<group>"; };
 		291F866A17A8B84400DA7B7B /* ChangeUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeUploadViewController.h; sourceTree = "<group>"; };
 		291F866B17A8B84400DA7B7B /* ChangeUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeUploadViewController.m; sourceTree = "<group>"; };
+		291F866D17A8FA9200DA7B7B /* Bt_naDelAll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_naDelAll@2x.png"; sourceTree = "<group>"; };
 		29228C7017A2104E00DD3E8D /* Bt_DelF@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_DelF@2x.png"; sourceTree = "<group>"; };
 		29228C7117A2104E00DD3E8D /* Bt_MoveF@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_MoveF@2x.png"; sourceTree = "<group>"; };
 		29228C7217A2104E00DD3E8D /* Bt_naCreateForlder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_naCreateForlder.png; sourceTree = "<group>"; };
@@ -1342,6 +1344,7 @@
 				298AB53217727FF200D067E1 /* Updata_ErrWifi.png */,
 				298AB53317727FF200D067E1 /* 按钮.png */,
 				298AB53417727FF200D067E1 /* 背景图.png */,
+				291F866D17A8FA9200DA7B7B /* Bt_naDelAll@2x.png */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -2663,6 +2666,7 @@
 				29228C8E17A2511400DD3E8D /* Bt_MoreF@2x.png in Resources */,
 				29228C8F17A2511400DD3E8D /* Bt_ShareF.png in Resources */,
 				29228C9017A2511400DD3E8D /* Bt_ShareF@2x.png in Resources */,
+				291F866E17A8FA9200DA7B7B /* Bt_naDelAll@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2813,6 +2817,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -2845,6 +2850,7 @@
 					"\"$(SRCROOT)/newnds/SDKExport\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -2860,8 +2866,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2879,8 +2885,8 @@
 				HEADER_SEARCH_PATHS = ./NetDisk/lib/include;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
-				PROVISIONING_PROFILE = "7152C2F7-1252-446F-9129-05ECD05948B1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7152C2F7-1252-446F-9129-05ECD05948B1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = armv7;
 			};
@@ -2895,8 +2901,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2908,8 +2914,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "7152C2F7-1252-446F-9129-05ECD05948B1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7152C2F7-1252-446F-9129-05ECD05948B1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = armv7;
