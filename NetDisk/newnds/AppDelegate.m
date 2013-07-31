@@ -309,6 +309,7 @@
     SettingViewController * rootView4=[[[SettingViewController alloc] init] autorelease];
     rootView4.tabBarItem.title=@"个人中心";
     [rootView4.tabBarItem setImage:[UIImage imageNamed:@"Bt_UsercentreDef.png"]];
+    rootView4.rootViewController=self.myTabBarController;
     viewController4=[[[UINavigationController alloc] initWithRootViewController:rootView4] autorelease];
     
     [viewController1.navigationBar setBarStyle:UIBarStyleBlack];

@@ -71,6 +71,8 @@
         tab_btn = [[NSMutableArray alloc] initWithCapacity:0];
         view_manager = [[NSMutableArray alloc] initWithCapacity:0];
 //        [self resetData];
+        CGRect r=self.tabBar.frame;
+        r.size.height=60;
     }
     return self;
 }
@@ -179,6 +181,10 @@
 {
     [super viewDidLoad];
     [self.tabBar insertSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tab_bg.png"]] atIndex:1];
+    CGRect r=self.tabBar.frame;
+    r.size.height=60;
+    self.tabBar.frame=r;
+    [self.tabBar setHidden:YES];
 	// Do any additional setup after loading the view.
 }
 
@@ -212,6 +218,8 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    CGRect r=self.tabBar.frame;
+    
     [self presendLoginViewController];
     self.view.hidden=NO;
     [super viewDidAppear:animated];

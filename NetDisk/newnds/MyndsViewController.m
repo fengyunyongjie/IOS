@@ -603,11 +603,19 @@ typedef enum{
         //[self.navigationItem setRightBarButtonItems:@[self.editBtn,self.deleteBtn] animated:YES];
         [self.lblEdit setText:@"取消"];
         [self.navigationItem setLeftBarButtonItem:self.deleteBtn];
+        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+        [appDelegate.myTabBarController setHidesTabBarWithAnimate:YES];
+//        CGRect r=self.view.frame;
+//        r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
+//        self.view.frame=r;
+//        //self.tabBarController.tabBar.hidden=YES;
     }else
     {
         //[button setTitle:@"编辑"];
         [self.lblEdit setText:@"编辑"];
         [self.navigationItem setLeftBarButtonItem:nil];
+        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+        [appDelegate.myTabBarController setHidesTabBarWithAnimate:NO];
         //[self.navigationItem setRightBarButtonItems:@[self.editBtn] animated:YES];
     }
     //   if (!button.selected) {
@@ -848,6 +856,62 @@ typedef enum{
         //[self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     [self.cellMenu setHidden:YES];
+}
+-(void)pasteBoard:(NSString *)content
+{
+    [[UIPasteboard generalPasteboard] setString:content];
+}
+-(void)mailShare:(NSString *)content
+{
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+        picker.mailComposeDelegate = self;
+        
+        [picker setSubject:content];
+        
+        
+        // Set up recipients
+        //NSArray *toRecipients = [NSArray arrayWithObject:@"first@example.com"];
+        //NSArray *ccRecipients = [NSArray arrayWithObjects:@"second@example.com", @"third@example.com", nil];
+        //NSArray *bccRecipients = [NSArray arrayWithObject:@"fourth@example.com"];
+        
+        //[picker setToRecipients:toRecipients];
+        //[picker setCcRecipients:ccRecipients];
+        //[picker setBccRecipients:bccRecipients];
+        
+        // Attach an image to the email
+        //NSString *path = [[NSBundle mainBundle] pathForResource:@"rainy" ofType:@"jpg"];
+        //NSData *myData = [NSData dataWithContentsOfFile:path];
+        //[picker addAttachmentData:myData mimeType:@"image/jpeg" fileName:@"rainy"];
+        
+        // Fill out the email body text
+        NSString *emailBody = content;
+        [picker setMessageBody:emailBody isHTML:NO];
+        
+        [self presentModalViewController:picker animated:YES];
+        [picker release];
+    }
+}
+-(void)messageShare:(NSString *)content
+{
+    if ([MFMessageComposeViewController canSendText]) {
+        MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+        picker.messageComposeDelegate = self;
+        
+        [picker setBody:content];
+        [self presentModalViewController:picker animated:YES];
+        [picker release];
+    }
+}
+-(void)weixin:(NSString *)content
+{
+    AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:NO text:content];
+}
+-(void)frends:(NSString *)content
+{
+    AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:YES text:content];
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -1329,24 +1393,24 @@ typedef enum{
 -(void)releaseLinkSuccess:(NSString *)l_url
 {
     NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=6.0) {
-        NSArray *activityItems=[[NSArray alloc] initWithObjects:text, nil];
-        UIActivityViewController *activetyVC=[[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
-        
-        UIActivityViewControllerCompletionHandler myBlock=^(NSString *activityType,BOOL completed){
-            NSLog(@"%@",activityType);
-            if (completed) {
-                NSLog(@"completed");
-            }else
-            {
-                NSLog(@"cancled");
-            }
-        };
-        activetyVC.completionHandler=myBlock;
-        [self presentViewController:activetyVC animated:YES completion:nil];
-    }else
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=6.0) {
+//        NSArray *activityItems=[[NSArray alloc] initWithObjects:text, nil];
+//        UIActivityViewController *activetyVC=[[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+//        
+//        UIActivityViewControllerCompletionHandler myBlock=^(NSString *activityType,BOOL completed){
+//            NSLog(@"%@",activityType);
+//            if (completed) {
+//                NSLog(@"completed");
+//            }else
+//            {
+//                NSLog(@"cancled");
+//            }
+//        };
+//        activetyVC.completionHandler=myBlock;
+//        [self presentViewController:activetyVC animated:YES completion:nil];
+//    }else
     {
-        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"短信分享" otherButtonTitles:@"邮件分享", nil];
+        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制",@"微信",@"朋友圈", nil];
         [actionSheet setTitle:text];
         [actionSheet setTag:kActionSheetTagShare];
         [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
@@ -1817,11 +1881,24 @@ typedef enum{
         case kActionSheetTagShare:
             if (buttonIndex == 0) {
                 NSLog(@"短信分享");
-                [self toDelete:nil];
+                //[self toDelete:nil];
+                [self messageShare:actionSheet.title];
             }else if (buttonIndex == 1) {
                 NSLog(@"邮件分享");
-                [self toShared:nil];
+                //[self toShared:nil];
+                [self mailShare:actionSheet.title];
             }else if(buttonIndex == 2) {
+                NSLog(@"复制");
+                [self pasteBoard:actionSheet.title];
+            }else if(buttonIndex == 3) {
+                NSLog(@"微信");
+                [self weixin:actionSheet.title];
+            }else if(buttonIndex == 4) {
+                NSLog(@"朋友圈");
+                [self frends:actionSheet.title];
+            }else if(buttonIndex == 5) {
+                NSLog(@"新浪");
+            }else if(buttonIndex == 6) {
                 NSLog(@"取消");
             }
             break;
@@ -1830,4 +1907,63 @@ typedef enum{
     }
     
 }
+#pragma mark -
+#pragma mark Dismiss Mail/SMS view controller
+
+// Dismisses the email composition interface when users tap Cancel or Send. Proceeds to update the
+// message field with the result of the operation.
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+	NSString *resultValue=@"";
+	// Notifies users about errors associated with the interface
+	switch (result)
+	{
+		case MFMailComposeResultCancelled:
+			resultValue = @"Result: Mail sending canceled";
+			break;
+		case MFMailComposeResultSaved:
+			resultValue = @"Result: Mail saved";
+			break;
+		case MFMailComposeResultSent:
+			resultValue = @"Result: Mail sent";
+			break;
+		case MFMailComposeResultFailed:
+			resultValue = @"Result: Mail sending failed";
+			break;
+		default:
+			resultValue = @"Result: Mail not sent";
+			break;
+	}
+    NSLog(@"%@",resultValue);
+	[self dismissModalViewControllerAnimated:YES];
+}
+
+
+// Dismisses the message composition interface when users tap Cancel or Send. Proceeds to update the
+// feedback message field with the result of the operation.
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+	
+	NSString *resultValue=@"";
+	// Notifies users about errors associated with the interface
+	switch (result)
+	{
+		case MessageComposeResultCancelled:
+			resultValue = @"Result: SMS sending canceled";
+			break;
+		case MessageComposeResultSent:
+			resultValue = @"Result: SMS sent";
+			break;
+		case MessageComposeResultFailed:
+			resultValue = @"Result: SMS sending failed";
+			break;
+		default:
+			resultValue = @"Result: SMS not sent";
+			break;
+	}
+    NSLog(@"%@",resultValue);
+	[self dismissModalViewControllerAnimated:YES];
+}
+
+
 @end
