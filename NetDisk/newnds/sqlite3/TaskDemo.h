@@ -10,11 +10,11 @@
 #import "DBSqlite3.h"
 #import "ALAsset+AGIPC.h"
 
-#define InsertTaskTable @"INSERT INTO TASKTABLE(F_ID,F_STATE,F_BASE_NAME,F_LENGHT,F_DATA) VALUES (?,?,?,?,?)"
+#define InsertTaskTable @"INSERT INTO TASKTABLE(F_ID,F_STATE,F_BASE_NAME,F_LENGHT,F_DATA,DEVICE_NAME) VALUES (?,?,?,?,?,?)"
 #define DeleteTskTable @"DELETE FROM TASKTABLE WHERE F_ID=?"
 #define DeleteALLTskTable @"DELETE FROM TASKTABLE"
 #define UpdateTaskTable @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=? WHERE T_ID=?"
-#define UpdateTaskTableForName @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=? WHERE F_BASE_NAME=?"
+#define UpdateTaskTableForName @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=?,F_DATA=? WHERE F_BASE_NAME=?"
 #define SelectAllTaskTable @"SELECT * FROM TASKTABLE where F_STATE=0"
 #define SelectMoreTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=0"
 #define SelectFinishTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=1"
@@ -34,6 +34,9 @@
     ALAsset *result;
     CGFloat proess;
     int index_id;
+    int state;
+    //to
+    NSString *deviceName;
 }
 
 @property(nonatomic,assign) NSInteger t_id;
@@ -45,6 +48,8 @@
 @property(nonatomic,retain) ALAsset *result;
 @property(nonatomic,assign) CGFloat proess;
 @property(nonatomic,assign) int index_id;
+@property(nonatomic,assign) int state;
+@property(nonatomic,retain) NSString *deviceName;
 
 -(id)init;
 

@@ -713,8 +713,32 @@ typedef enum{
 
 -(void)goUpload:(id)sender
 {
+    //打开照片库
+    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
+    imagePickerController.delegate = self;
+    imagePickerController.allowsMultipleSelection = YES;
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
+    [navigationController setNavigationBarHidden:YES];
+    [self presentModalViewController:navigationController animated:YES];
+    [imagePickerController release];
+    [navigationController release];
     NSLog(@"点击上传");
 }
+
+#pragma mark QBImagePickerControllerDelegate
+
+-(void)changeUpload:(NSMutableOrderedSet *)array_
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all changeUpload:array_];
+}
+-(void)changeDeviceName:(NSString *)device_name
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all changeDeviceName:device_name];
+}
+
 -(void)goSearch:(id)sender
 {
     NSLog(@"点击搜索");

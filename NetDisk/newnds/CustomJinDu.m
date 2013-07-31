@@ -47,7 +47,18 @@
 
 -(void)setCurrFloat:(float)currFloat_
 {
+    CGRect backLabelRect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    [backLabel setFrame:backLabelRect];
+    [backLabel setHidden:NO];
+    [backLabel setText:@""];
+    backLabel.layer.borderWidth = 0.5;
+    backLabel.layer.borderColor = [[UIColor blackColor] CGColor];
+    [currLabel setHidden:NO];
     float width = currFloat_*self.frame.size.width-0.2;
+    if(width>(self.frame.size.width-0.2))
+    {
+        width = self.frame.size.width-0.2;
+    }
     CGRect currLabelRect = CGRectMake(0.1f, 0.1f, width, self.frame.size.height-0.2);
     [currLabel setFrame:currLabelRect];
 }

@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 //引用代理类
 #import "UploadFile.h"
-#import "QBImagePickerController.h"
 #import "UploadViewCell.h"
 
-@interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate,UploadViewCellDelegate>
+@interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,UploadViewCellDelegate>
 {
     //头部视图
     UIView *topView;
@@ -37,5 +36,10 @@
 @property(nonatomic,retain) NSMutableArray *historyList;
 @property(nonatomic,assign) BOOL isHistoryShow;
 @property(nonatomic,retain) UIControl *more_control;
+
+//上传成功
+-(void)upFinish:(NSInteger)fileTag;
+//上传进行时，发送上传进度数据
+-(void)upProess:(float)proress fileTag:(NSInteger)fileTag;
 
 @end

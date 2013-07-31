@@ -28,18 +28,21 @@
 @implementation AppDelegate
 @synthesize user_name;
 @synthesize isUnUpload;
+@synthesize upload_all;
 
-
+@class UploadAll;
 - (void)dealloc
 {
     [_window release];
     [_myTabBarController release];
     [user_name release];
+//    [upload_all release];
     [super dealloc];
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |    UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
+    upload_all = [[UploadAll alloc] init];
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];

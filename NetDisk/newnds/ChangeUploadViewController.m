@@ -10,11 +10,12 @@
 #import "ChangeUploadViewController.h"
 //引用的类
 #import "AppDelegate.h"
-
+#import "UploadAll.h"
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
-#define UploadProessTag 10000
+#define UploadProessTag 100000
+#define UploadFinishProessTag 200000
 
 @interface ChangeUploadViewController ()
 
@@ -38,13 +39,13 @@
     if([cell isKindOfClass:[UploadViewCell class]])
     {
         [cell.jinDuView setCurrFloat:1];
-        [uploadingList removeObjectAtIndex:0];
-        if([uploadingList count]>0)
+        [self.uploadingList removeObjectAtIndex:0];
+        if([self.uploadingList count]>0)
         {
-            UploadFile *upload_file = [uploadingList objectAtIndex:0];
+            UploadFile *upload_file = [self.uploadingList objectAtIndex:0];
             upload_file.demo.f_state = 2;
-            [upload_file setDelegate:self];
-            [upload_file upload];
+//            [upload_file setDelegate:self];
+//            [upload_file upload];
         }
         [self.uploadListTableView reloadData];
     }
@@ -54,7 +55,7 @@
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag
 {
     NSLog(@"上传进行时，发送上传进度数据");
-    UploadViewCell *cell = (UploadViewCell *)[self.uploadListTableView viewWithTag:UploadProessTag+fileTag];
+    UploadViewCell *cell = (UploadViewCell *)[self.uploadListTableView viewWithTag:UploadProessTag];
     if([cell isKindOfClass:[UploadViewCell class]])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -230,6 +231,8 @@
     
     //显示上传进度
     isHistoryShow = NO;
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.uploadingList = app_delegate.upload_all.uploadAllList;
     [self.uploadListTableView reloadData];
 }
 
@@ -276,10 +279,6 @@
 -(void)clicked_more:(id)sender
 {
     [self.more_control setHidden:NO];
-    
-    
-    
-    
 //    //打开照片库
 //    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
 //    imagePickerController.delegate = self;
@@ -295,6 +294,8 @@
 -(void)clicked_uploadAll:(id)sender
 {
     [self.more_control setHidden:YES];
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all startUpload];
 }
 
 -(void)clicked_clearAll:(id)sender
@@ -313,79 +314,15 @@
     }
     else
     {
-        if([uploadingList count]>0)
+        if([self.uploadingList count]>0)
         {
-            [uploadingList removeAllObjects];
+            UploadFile *upload_file = (UploadFile *)[self.uploadingList objectAtIndex:0];
+            [upload_file upStop];
+            [self.uploadingList removeAllObjects];
             [self.uploadListTableView reloadData];
         }
     }
     [self.more_control setHidden:YES];
-}
-
-#pragma mark ------照片库代理方法
--(void)changeUpload:(NSMutableOrderedSet *)array_
-{
-    UIButton *photo_button = (UIButton *)[self.view viewWithTag:23];
-    [self clicked_uploadState:photo_button];
-    isHistoryShow = FALSE;
-    
-    if(!isHistoryShow)
-    {
-        if(uploadingList==nil)
-        {
-            uploadingList = [[NSMutableArray alloc] init];
-        }
-        int i=[array_ count];
-        for(ALAsset *asset in array_)
-        {
-            TaskDemo *demo = [[TaskDemo alloc] init];
-            demo.f_state = 3;
-            demo.f_data = nil;
-            demo.f_lenght = 0;
-            i-=1;
-            demo.index_id = i;
-            NSLog(@"i--------------:%i",i);
-            demo.proess = 0;
-            demo.result = [asset retain];
-            demo.f_base_name = [[asset defaultRepresentation] filename];
-//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-//                [demo insertTaskTable];
-//            });
-            UploadFile *upload_file = [[UploadFile alloc] init];
-            [upload_file setDemo:demo];
-            [demo release];
-            [upload_file setDeviceName:deviceName];
-            [uploadingList insertObject:upload_file atIndex:0];
-            [upload_file release];
-        }
-        if([uploadingList count]>0)
-        {
-            UploadFile *upload_file = [uploadingList objectAtIndex:0];
-            upload_file.demo.f_state = 2;
-            [upload_file setDelegate:self];
-            [upload_file upload];
-        }
-        [self.uploadListTableView reloadData];
-    }
-    NSLog(@"回到上传管理页面");
-}
-
--(void)changeDeviceName:(NSString *)device_name
-{
-    NSRange deviceRange = [device_name rangeOfString:@"来自于-"];
-    if(deviceRange.length>0)
-    {
-        deviceName = [[NSString alloc] initWithString:device_name];
-    }
-    else
-    {
-        if([device_name isEqualToString:@"(null)"] || [device_name length]==0)
-        {
-            device_name = [AppDelegate deviceString];
-        }
-        deviceName = [[NSString alloc] initWithFormat:@"来自于-%@",device_name];
-    }
-    NSLog(@"deviceName:%@",deviceName);
 }
 
 
@@ -400,9 +337,9 @@
     int count = 0;
     if(!isHistoryShow)
     {
-        if(uploadingList)
+        if(self.uploadingList)
         {
-            count = [uploadingList count];
+            count = [self.uploadingList count];
         }
         return [NSString stringWithFormat:@"正在上传(%i)",count];
     }
@@ -421,9 +358,9 @@
     int count = 0;
     if(!isHistoryShow)
     {
-        if(uploadingList)
+        if(self.uploadingList)
         {
-            count = [uploadingList count];
+            count = [self.uploadingList count];
         }
     }
     else
@@ -449,9 +386,9 @@
     int count = 0;
     if(!isHistoryShow)
     {
-        if(uploadingList)
+        if(self.uploadingList)
         {
-            count = [uploadingList count];
+            count = [self.uploadingList count];
         }
         label.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
     }
@@ -495,12 +432,12 @@
     
     if(!isHistoryShow)
     {
-        if(uploadingList)
+        if(self.uploadingList)
         {
-            UploadFile *demo = [uploadingList objectAtIndex:indexPath.row];
+            UploadFile *demo = [self.uploadingList objectAtIndex:indexPath.row];
+            [cell setTag:UploadProessTag+[indexPath row]];
             demo.demo.index_id = [indexPath row];
-            [cell setTag:UploadProessTag+demo.demo.index_id];
-            NSLog(@"cellTag:%i",cell.tag);
+            NSLog(@"cellTag:%i",demo.demo.state);
             [cell setUploadDemo:demo.demo];
         }
     }
@@ -509,8 +446,8 @@
         if(historyList)
         {
             TaskDemo *demo = [historyList objectAtIndex:indexPath.row];
+            [cell setTag:UploadFinishProessTag+[indexPath row]];
             demo.index_id = [indexPath row];
-            [cell setTag:UploadProessTag+demo.index_id];
             NSLog(@"cellTag:%i",demo.f_data.length);
             [cell setUploadDemo:demo];
         }
@@ -534,11 +471,14 @@
     }
     else
     {
-        if(taskDemo.index_id<[uploadingList count])
+        if(taskDemo.index_id<[self.uploadingList count])
         {
-            UploadFile *demo = [uploadingList objectAtIndex:taskDemo.index_id];
+            UploadFile *demo = [self.uploadingList objectAtIndex:taskDemo.index_id];
             [demo upStop];
-            [uploadingList removeObjectAtIndex:taskDemo.index_id];
+            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [app_delegate.upload_all setIsUpload:NO];
+            [taskDemo deleteTaskTable];
+            [self.uploadingList removeObjectAtIndex:taskDemo.index_id];
             [self.uploadListTableView reloadData];
         }
     }

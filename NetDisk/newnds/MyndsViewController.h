@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBImagePickerController.h"
 
 typedef enum {
     kMyndsTypeDefault,
@@ -15,7 +16,8 @@ typedef enum {
     kMyndsTypeShare,
 } MyndsType;
 
-@interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate>
+
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSArray *finderArray;

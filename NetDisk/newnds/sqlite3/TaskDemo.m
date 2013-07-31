@@ -7,9 +7,11 @@
 //
 
 #import "TaskDemo.h"
+#import "UploadFile.h"
 
 @implementation TaskDemo
 @synthesize f_id,f_base_name,f_data,f_state,t_id,f_lenght,result,proess,index_id;
+@synthesize deviceName,state;
 
 -(id)init
 {
@@ -34,7 +36,8 @@
         sqlite3_bind_int(statement, 2, f_state);
         sqlite3_bind_text(statement, 3, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, f_lenght);
-        sqlite3_bind_blob(statement, 5, [f_data bytes], f_lenght, NULL);
+        sqlite3_bind_blob(statement, 5, [f_data bytes], [f_data length], NULL);
+        sqlite3_bind_text(statement, 6, [deviceName UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
@@ -138,11 +141,12 @@
             NSLog(@"Error: failed to insert:TASKTable");
         }
         sqlite3_bind_int(statement, 1, f_id);
-        //        sqlite3_bind_blob(statement, 2, [f_data bytes], f_lenght, NULL);
         sqlite3_bind_int(statement, 2, f_state);
         sqlite3_bind_text(statement, 3, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, f_lenght);
-        sqlite3_bind_text(statement, 5, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_blob(statement, 5, [f_data bytes], f_lenght, NULL);
+        sqlite3_bind_text(statement, 6, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
+        
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             NSLog(@"Error: failed to insert into the database with message.");
@@ -164,22 +168,29 @@
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [SelectAllTaskTable UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
-        
+        int i=0;
         while (sqlite3_step(statement)==SQLITE_ROW) {
+            UploadFile *upload_file = [[UploadFile alloc] init];
+            
             TaskDemo *demo = [[TaskDemo alloc] init];
             demo.t_id = sqlite3_column_int(statement, 0);
             demo.f_id = sqlite3_column_int(statement, 1);
-//            int bytes = sqlite3_column_bytes(statement, 2);
-//            const void *value = sqlite3_column_blob(statement, 2);
-//            if( value != NULL && bytes != 0 ){
-//                NSData *data = [NSData dataWithBytes:value length:bytes];
-//                demo.f_data = data;
-//            }
+            int bytes = sqlite3_column_bytes(statement, 2);
+            const void *value = sqlite3_column_blob(statement, 2);
+            if( value != NULL && bytes != 0 ){
+                NSData *data = [NSData dataWithBytes:value length:bytes];
+                demo.f_data = data;
+            }
             demo.f_state = sqlite3_column_int(statement, 3);
             demo.f_base_name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
             demo.f_lenght = sqlite3_column_int(statement, 5);
-            [tableArray addObject:demo];
+            demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
+            demo.index_id = i;
+            [upload_file setDemo:demo];
+            [tableArray addObject:upload_file];
             [demo release];
+            [upload_file release];
+            i++;
         }
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
@@ -211,10 +222,11 @@
             demo.f_state = sqlite3_column_int(statement, 3);
             demo.f_base_name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
             demo.f_lenght = sqlite3_column_int(statement, 5);
+            demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
             demo.index_id = i;
-            i++;
             [tableArray addObject:demo];
             [demo release];
+            i++;
         }
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
@@ -330,6 +342,10 @@
     if(result)
     {
         [result release];
+    }
+    if(deviceName)
+    {
+        [deviceName release];
     }
     [super dealloc];
 }

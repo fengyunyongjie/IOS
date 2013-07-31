@@ -54,11 +54,11 @@
     {
         [self.jinDuView showText:@"完成"];
     }
-    else if(self.demo.f_state == 2)
+    else if(self.demo.state == 1)
     {
         [self.jinDuView setCurrFloat:demo.proess];
     }
-    else
+    else if(self.demo.state == 0)
     {
         [self.jinDuView showText:@"暂停"];
     }

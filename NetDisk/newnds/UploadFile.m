@@ -56,9 +56,10 @@
 //上传开始
 -(void)upload
 {
-    NSLog(@"1:打开文件目录");
     [photoManger openFinderWithID:@"1"];
     currTag = demo.index_id;
+    deviceName = demo.deviceName;
+    NSLog(@"1:打开文件目录:%@",deviceName);
 }
 
 //请求认证
@@ -290,7 +291,7 @@
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
         NSLog(@"Url-------:%@",demo.databasePath);
-        [demo insertTaskTable];
+        [demo updateTaskTableFName];
         [delegate upFinish:currTag];
         [uploadData release];
     }
