@@ -39,6 +39,8 @@ typedef enum {
 @property (strong,nonatomic) UILabel *lblDel;
 @property (strong,nonatomic) UIButton *btnMore;
 @property (strong,nonatomic) UILabel *lblMore;
+@property (strong,nonatomic) UIButton *btnShare;
+@property (strong,nonatomic) UILabel *lblShare;
 -(void)loadData;
 @end
 
