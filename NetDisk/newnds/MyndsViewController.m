@@ -1434,7 +1434,7 @@ typedef enum{
 //        [self presentViewController:activetyVC animated:YES completion:nil];
 //    }else
     {
-        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制",@"微信",@"朋友圈", nil];
+        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
         [actionSheet setTitle:text];
         [actionSheet setTag:kActionSheetTagShare];
         [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
