@@ -28,8 +28,19 @@
     NSString *deviceName;
     //更多信息的内容
     UIControl *more_control;
+    //背景图
+    UIImageView *bgIamgeView;
+    //全部开始
+    UIButton *uploadAll_button;
+    UILabel *uploadAll_label;
+    //全部清空
+    UIButton *deleteAll_button;
+    UILabel *deleteAll_label;
     
     UILabel *title_leble;
+    
+    //是否全部上传
+    BOOL isUploadAll;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -38,10 +49,17 @@
 @property(nonatomic,retain) NSMutableArray *historyList;
 @property(nonatomic,assign) BOOL isHistoryShow;
 @property(nonatomic,retain) UIControl *more_control;
+@property(nonatomic,assign) BOOL isUploadAll;
 
 //上传成功
 -(void)upFinish:(NSInteger)fileTag;
 //上传进行时，发送上传进度数据
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag;
+//删除上传时列表
+-(void)deleteUploadingIndexRow:(int)row_;
+//删除上传记录列表
+-(void)deleteFinishIndexRow:(int)row_;
+//更新上传记录列表
+-(void)updateReloadData;
 
 @end

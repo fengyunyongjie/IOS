@@ -87,17 +87,22 @@
     {
         UploadFile *upload_file = [self.uploadAllList objectAtIndex:0];
         upload_file.demo.state = 1;
-        upload_file.demo.index_id = 0;
         [upload_file setDelegate:self];
         [upload_file upload];
-        
         isUpload = TRUE;
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
         ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
         if([uploadView isKindOfClass:[ChangeUploadViewController class]])
         {
-            [uploadView setUploadingList:self.uploadAllList];
+            if([uploadView.uploadingList count]==0)
+            {
+                [uploadView setUploadingList:self.uploadAllList];
+                if(!uploadView.isUploadAll)
+                {
+                    [uploadView setIsUploadAll:YES];
+                }
+            }
         }
     }
 }
@@ -127,27 +132,28 @@
 //上传成功
 -(void)upFinish:(NSInteger)fileTag
 {
-    
     if([self.uploadAllList count]>0)
     {
-        [self.uploadAllDelegate upFinish:fileTag];
-        [self.uploadAllList removeObjectAtIndex:0];
-        if([self.uploadAllList count]>0)
+        
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+        ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[ChangeUploadViewController class]])
         {
-            UploadFile *upload_file = [self.uploadAllList objectAtIndex:0];
-            upload_file.demo.state = 1;
-            [upload_file setDelegate:self];
-            [upload_file upload];
+            [uploadView deleteUploadingIndexRow:0];
+            if(!uploadView.isUploadAll)
+            {
+                [uploadView setIsUploadAll:YES];
+            }
+        }
+        else
+        {
+            [self.uploadAllList removeObjectAtIndex:0];
+            [self startUpload];
         }
     }
-    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
-    ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-    if([uploadView isKindOfClass:[ChangeUploadViewController class]])
-    {
-        [uploadView setUploadingList:self.uploadAllList];
-    }
 }
+
 //上传进行时，发送上传进度数据
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag
 {
@@ -161,6 +167,10 @@
         {
             [uploadView setUploadingList:self.uploadAllList];
             [uploadView.uploadListTableView reloadData];
+        }
+        if(!uploadView.isUploadAll)
+        {
+            [uploadView setIsUploadAll:YES];
         }
         [uploadView upProess:proress fileTag:fileTag];
     }

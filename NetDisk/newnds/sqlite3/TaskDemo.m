@@ -63,7 +63,7 @@
         if (success != SQLITE_OK) {
             bl = FALSE;
         }
-        sqlite3_bind_int(statement, 1, f_id);
+        sqlite3_bind_text(statement, 1, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
