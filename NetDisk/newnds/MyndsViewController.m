@@ -559,7 +559,7 @@ typedef enum{
     //                }
     [self.fm cancelAllTask];
     self.fm=[[[SCBFileManager alloc] init] autorelease];
-    [self.fm newFinderWithName:fildtext pID:self.f_id];
+    [self.fm newFinderWithName:fildtext pID:self.f_id sID:[[SCBSession sharedSession] spaceID]];
     [self.fm setDelegate:self];
     NSLog(@"点击确定");
     [self.newFinderView setHidden:YES];

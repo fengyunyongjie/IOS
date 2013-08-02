@@ -19,14 +19,14 @@
 {
     self.delegate=nil;
 }
--(void)newFinderWithName:(NSString *)f_name pID:(NSString*)f_pid
+-(void)newFinderWithName:(NSString *)f_name pID:(NSString*)f_pid sID:(NSString *)s_id;
 {
     self.fm_type=kFMTypeNewFinder;
     self.activeData=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_name=%@&f_pid=%@",f_name,f_pid];
+    [body appendFormat:@"f_name=%@&f_pid=%@&space_id=%@",f_name,f_pid,s_id];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
