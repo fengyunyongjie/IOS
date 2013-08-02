@@ -18,7 +18,8 @@
 
 #pragma mark - 用户管理
 //用户注册
-#define USER_REGISTER_URI @"/usr/register"
+//#define USER_REGISTER_URI @"/usr/register"
+#define USER_REGISTER_URI @"/account/register"
 //用户登录
 //#define USER_LOGIN_URI @"/usr/login"
 #define USER_LOGIN_URI @"/account/login/"
@@ -34,7 +35,9 @@
 
 #pragma mark - 文件管理
 //打开网盘
-#define FM_URI @"/fm"//新建
+//#define FM_URI @"/fm"
+#define FM_URI @"/fm/open"
+//新建
 #define FM_MKDIR_URI @"/fm/mkdir"
 //移除/fm/rm
 #define FM_RM_URI @"/fm/rm"

@@ -15,6 +15,11 @@
 }
 @property(nonatomic,retain)NSString *userId;
 @property(nonatomic,retain)NSString *userToken;
+@property(strong,nonatomic)NSString *userName;
+@property(strong,nonatomic)NSString *userPwd;
+@property(strong,nonatomic)NSString *userTag;
+@property(strong,nonatomic)NSString *homeID;
+@property(strong,nonatomic)NSString *spaceID;
 +(SCBSession *)sharedSession;
 //-(id)initWithUserID:(NSString *)usr_id Token:usr_token;
 @end

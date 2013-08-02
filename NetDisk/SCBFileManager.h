@@ -24,7 +24,7 @@ typedef enum {
 @property (assign,nonatomic) kFMType fm_type;
 -(void)cancelAllTask;
 //打开网盘/fm
--(void)openFinderWithID:(NSString *)f_id;      //无分页：所以cursor=0,offset=-1;
+-(void)openFinderWithID:(NSString *)f_id sID:(NSString *)s_id;      //无分页：所以cursor=0,offset=-1;
 -(void)operateUpdateWithID:(NSString *)f_id;
 //新建/fm/mkdir
 -(void)newFinderWithName:(NSString *)f_name pID:(NSString*)f_pid;

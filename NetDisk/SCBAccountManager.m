@@ -60,7 +60,7 @@ static SCBAccountManager *_sharedAccountManager;
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
     NSString *mi_ma =[user_pwd base64String];
-    [body appendFormat:@"usr_name=%@&usr_pwd=%@",user_name,mi_ma];
+    [body appendFormat:@"usr_name=%@&usr_pwd=%@&check_code=%@",user_name,mi_ma,@"23452"];
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
@@ -149,11 +149,19 @@ static SCBAccountManager *_sharedAccountManager;
     switch (self.type) {
         case kUserLogin:
             if ([[dic objectForKey:@"code"] intValue]==0) {
+                NSLog(@"登录成功:\n%@",dic);
                 [[SCBSession sharedSession] setUserId:(NSString *)[dic objectForKey:@"usr_id"]];
                 [[SCBSession sharedSession] setUserToken:(NSString *)[dic objectForKey:@"usr_token"]];
+                [[SCBSession sharedSession] setHomeID:(NSString *)[dic objectForKey:@"home_id"]];
+                [[SCBSession sharedSession] setSpaceID:(NSString *)[dic objectForKey:@"space_id"]];
+                [[SCBSession sharedSession] setUserTag:(NSString *)[dic objectForKey:@"usr_tag"]];
+                
                 
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"home_id"]  forKey:@"home_id"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"space_id"]  forKey:@"space_id"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_tag"]  forKey:@"usr_tag"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 NSLog(@"%@",[[SCBSession sharedSession] userId]);
@@ -167,12 +175,18 @@ static SCBAccountManager *_sharedAccountManager;
             break;
         case kUserRegist:
             if ([[dic objectForKey:@"code"] intValue]==0) {
-                NSLog(@"注册成功！！！");
+                NSLog(@"注册成功:\n%@",dic);
                 [[SCBSession sharedSession] setUserId:(NSString *)[dic objectForKey:@"usr_id"]];
                 [[SCBSession sharedSession] setUserToken:(NSString *)[dic objectForKey:@"usr_token"]];
+                [[SCBSession sharedSession] setHomeID:(NSString *)[dic objectForKey:@"home_id"]];
+                [[SCBSession sharedSession] setSpaceID:(NSString *)[dic objectForKey:@"space_id"]];
+                [[SCBSession sharedSession] setUserTag:(NSString *)[dic objectForKey:@"usr_tag"]];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"home_id"]  forKey:@"home_id"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"space_id"]  forKey:@"space_id"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_tag"]  forKey:@"usr_tag"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [self.delegate registSucceed];
             }else

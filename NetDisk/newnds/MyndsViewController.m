@@ -9,6 +9,7 @@
 #import "MyndsViewController.h"
 #import "SCBFileManager.h"
 #import "SCBShareManager.h"
+#import "SCBSession.h"
 #import "FileItemTableCell.h"
 #import "YNFunctions.h"
 #import "AppDelegate.h"
@@ -21,6 +22,7 @@
 #import "OtherBrowserViewController.h"
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
+
 #define TabBarHeight 60
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -655,7 +657,7 @@ typedef enum{
     self.fm=nil;
     self.fm=[[[SCBFileManager alloc] init] autorelease];
     [self.fm setDelegate:self];
-    [self.fm operateUpdateWithID:self.f_id];
+    [self.fm operateUpdateWithID:self.f_id ];
 }
 - (void)updateFileList
 {
@@ -707,7 +709,7 @@ typedef enum{
         self.fm=nil;
         self.fm=[[[SCBFileManager alloc] init] autorelease];
         [self.fm setDelegate:self];
-        [self.fm openFinderWithID:self.f_id];
+        [self.fm openFinderWithID:self.f_id sID:[[SCBSession sharedSession] spaceID]];
     }
 }
 
