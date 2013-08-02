@@ -30,7 +30,7 @@
 @synthesize isUnUpload;
 @synthesize upload_all;
 
-@class UploadAll;
+//@class UploadAll;
 - (void)dealloc
 {
     [_window release];
@@ -72,16 +72,46 @@
             [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
         }
     }
-    
-    [self performSelector:@selector(goMainViewController) withObject:self afterDelay:1.0f];
+    //预先加载所有视图
+    [self addTabBarView];
+    [self goMainViewController];
+    //判断是否开机启动
+    if(![self isFirstLoad])
+    {
+        //开机启动画面
+        firstLoadView = [[FirstLoadViewController alloc] init];
+        [firstLoadView setDelegate:self];
+        [self.window addSubview:firstLoadView.view];
+    }
+    else
+    {
+        //进入主界面
+        [self performSelector:@selector(goMainViewController) withObject:self afterDelay:1.0f];
+    }
     
     return YES;
 }
+
+//进入主界面
+-(void)uploadFinish
+{
+    [firstLoadView.view setHidden:YES];
+    //记录用户操作
+    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isFirstLoad"];
+}
+
+-(BOOL)isFirstLoad
+{
+    NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"isFirstLoad"];
+    if (value==nil) {
+        return NO;
+    }
+    return [value boolValue];
+}
+
 -(void)goMainViewController
 {
-    [self addTabBarView];
     self.window.rootViewController=self.myTabBarController;
-    
 }
 - (void) onReq:(BaseReq*)req
 {

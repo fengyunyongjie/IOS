@@ -527,7 +527,7 @@
 }
 
 #pragma mark 新建文件夹
--(void)requestNewFold:(NSString *)name FID:(int)f_id
+-(void)requestNewFold:(NSString *)name FID:(int)f_id space_id:(NSString *)space_id
 {
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URL]];
@@ -537,7 +537,7 @@
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_name=%@&f_pid=%i",name,f_id];
+    [body appendFormat:@"f_name=%@&f_pid=%i&space_id=%i",name,f_id,space_id];
     NSLog(@"body:%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -549,14 +549,15 @@
 }
 
 #pragma mark 打开文件目录
--(void)openFinderWithID:(NSString *)f_id
+-(void)openFinderWithID:(NSString *)f_id space_id:(NSString *)space_id
 {
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     url_string = FM_URI;
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",f_id,0,-1];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&space_id=%@&iszone=%@&sort=%@&sort_direct=%@",f_id,0,-1,space_id,@"1",@"f_modify",@"asc"];
+    
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];

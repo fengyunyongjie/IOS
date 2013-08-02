@@ -26,6 +26,7 @@
     NSString *deviceName;
     id<UploadAllFileDelegate> uploadAllDelegate;
     BOOL isUpload;
+    NSString *space_id;
 }
 
 -(id)init;
@@ -33,7 +34,10 @@
 @property(nonatomic,retain) NSMutableArray *uploadAllList;
 @property(nonatomic,retain) id<UploadAllFileDelegate> uploadAllDelegate;
 @property(nonatomic,assign) BOOL isUpload;
+@property(nonatomic,retain) NSString *space_id;
 
 -(void)startUpload;
+-(void)changeUpload:(NSMutableOrderedSet *)array_;
+-(void)changeDeviceName:(NSString *)device_name;
 
 @end

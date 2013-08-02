@@ -22,6 +22,7 @@
 #import "OtherBrowserViewController.h"
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
+#import "UploadAll.h"
 
 #define TabBarHeight 60
 #define ChangeTabWidth 90
@@ -491,6 +492,8 @@ typedef enum{
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    NSLog(@"[[[SCBSession sharedSession] spaceID] integerValue]:%@",[[SCBSession sharedSession] spaceID]);
+    
     if (self.myndsType==kMyndsTypeDefault) {
 //        self.editBtn=[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(showMenu:)];
 //        [self.editBtn setImage:[UIImage imageNamed:@"Bt_Operator.png"]];
@@ -733,6 +736,8 @@ typedef enum{
 -(void)changeUpload:(NSMutableOrderedSet *)array_
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all setSpace_id:[[[SCBSession sharedSession] spaceID] integerValue]];
+    NSLog(@"[[[SCBSession sharedSession] spaceID] integerValue]:%@",[[SCBSession sharedSession] spaceID]);
     [app_delegate.upload_all changeUpload:array_];
 }
 -(void)changeDeviceName:(NSString *)device_name

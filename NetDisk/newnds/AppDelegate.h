@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WXApi.h"
 #import "MYTabBarController.h"
+#import "FirstLoadViewController.h"
 
 //新浪微博微博
 #define kAppKey         @"706445160"
@@ -17,10 +18,11 @@
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 
 @class UploadAll;
-@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,WXApiDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,WXApiDelegate,FirstLoadDelegate>
 {
     NSString *user_name;
     UploadAll *upload_all;
+    FirstLoadViewController *firstLoadView;
 }
 
 @property (strong, nonatomic) UIWindow *window;

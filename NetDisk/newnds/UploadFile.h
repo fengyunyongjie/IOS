@@ -45,6 +45,7 @@
     id<UploadFileDelegate> delegate;
     NSInteger currTag;
     BOOL isStop;
+    NSString *space_id;
 }
 
 @property(nonatomic,retain) TaskDemo *demo;
@@ -54,6 +55,7 @@
 @property(nonatomic,retain) NSString *finishName;
 @property(nonatomic,retain) NSURLConnection *connection;
 @property(nonatomic,retain) id<UploadFileDelegate> delegate;
+@property(nonatomic,retain) NSString *space_id;
 
 //上传开始
 -(void)upload;

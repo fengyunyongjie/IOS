@@ -16,6 +16,7 @@
 @synthesize uploadAllList;
 @synthesize uploadAllDelegate;
 @synthesize isUpload;
+@synthesize space_id;
 
 -(id)init
 {
@@ -29,9 +30,10 @@
     return self;
 }
 
-#pragma mark ------照片库代理方法
 -(void)changeUpload:(NSMutableOrderedSet *)array_
 {
+    NSLog(@"有多少:%i",self.space_id);
+    NSLog(@"有多少:%i",space_id);
     int i=0;
     if([self.uploadAllList count]==0)
     {
@@ -57,6 +59,8 @@
         demo.result = [asset retain];
         demo.f_base_name = [[asset defaultRepresentation] filename];
         demo.deviceName = deviceName;
+        demo.space_id = self.space_id;
+        NSLog(@"demo.spcae_id:%i",demo.space_id);
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             ALAsset *result = demo.result;
             NSError *error = nil;
@@ -69,6 +73,7 @@
         UploadFile *upload_file = [[UploadFile alloc] init];
         [upload_file setDemo:demo];
         [upload_file setDeviceName:deviceName];
+        [upload_file setSpace_id:self.space_id];
         [self.uploadAllList addObject:upload_file];
         [demo release];
         [upload_file release];

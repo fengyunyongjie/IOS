@@ -95,8 +95,8 @@
 #pragma mark 请求删除文件
 -(void)requestDeletePhoto:(NSArray *)deleteId;
 #pragma mark 新建文件夹
--(void)requestNewFold:(NSString *)name FID:(int)f_id;
+-(void)requestNewFold:(NSString *)name FID:(int)f_id space_id:(NSString *)space_id;
 #pragma mark 打开文件目录
--(void)openFinderWithID:(NSString *)f_id;
+-(void)openFinderWithID:(NSString *)f_id space_id:(NSString *)space_id;
 
 @end

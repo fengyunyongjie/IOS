@@ -18,6 +18,7 @@
 @synthesize delegate;
 @synthesize finishName;
 @synthesize connection;
+@synthesize space_id;
 
 -(id)init
 {
@@ -56,7 +57,7 @@
 //上传开始
 -(void)upload
 {
-    [photoManger openFinderWithID:@"1"];
+    [photoManger openFinderWithID:@"1" space_id:self.space_id];
     currTag = demo.index_id;
     deviceName = demo.deviceName;
     NSLog(@"1:打开文件目录:%@",deviceName);
@@ -107,18 +108,18 @@
         else
         {
             f_pid = [[dictionary objectForKey:@"f_id"] intValue];
-            [photoManger requestNewFold:deviceName FID:f_pid];
+            [photoManger requestNewFold:deviceName FID:f_pid space_id:self.space_id];
         }
     }
     else
     {
         if(bl && f_pid > 0)
         {
-            [photoManger requestNewFold:deviceName FID:f_pid];
+            [photoManger requestNewFold:deviceName FID:f_pid space_id:self.space_id];
         }
         if(f_pid==0)
         {
-            [photoManger requestNewFold:@"手机照片" FID:1];
+            [photoManger requestNewFold:@"手机照片"  FID:1 space_id:self.space_id];
         }
     }
 }
@@ -142,7 +143,7 @@
             if([f_name isEqualToString:@"手机照片"])
             {
                 f_pid = [[[array objectAtIndex:i] objectForKey:@"f_id"] intValue];
-                [photoManger openFinderWithID:[NSString stringWithFormat:@"%i",f_pid]];
+                [photoManger openFinderWithID:[NSString stringWithFormat:@"%i",f_pid] space_id:self.space_id];
                 break;
             }
             if([f_name isEqualToString:deviceName])
@@ -153,11 +154,11 @@
         }
         if(f_pid==0)
         {
-            [photoManger requestNewFold:@"手机照片" FID:1];
+            [photoManger requestNewFold:@"手机照片" FID:1 space_id:self.space_id];
         }
         if(f_pid>0 && f_id==0 && bl)
         {
-            [photoManger requestNewFold:deviceName FID:f_pid];
+            [photoManger requestNewFold:deviceName FID:f_pid space_id:self.space_id];
         }
 }
 
