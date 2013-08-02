@@ -697,7 +697,7 @@ typedef enum{
         self.sm=[[[SCBShareManager alloc] init] autorelease];
         [self.sm setDelegate:self];
         [self.sm openFinderWithID:self.f_id shareType:@"O"];
-    }else if (self.myndsType==kMyndsTypeMyShare) {
+    }else if (self.myndsType==kMyndsTypeShare) {
         [self.sm cancelAllTask];
         self.sm=nil;
         self.sm=[[[SCBShareManager alloc] init] autorelease];
