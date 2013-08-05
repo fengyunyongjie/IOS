@@ -292,6 +292,13 @@
 		29B75B0417864A9F00A0AE34 /* NewFinderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B75B0217864A9F00A0AE34 /* NewFinderViewController.m */; };
 		29B75B0517864A9F00A0AE34 /* NewFinderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B75B0317864A9F00A0AE34 /* NewFinderViewController.xib */; };
 		29B84DE0174B4C2F009073C7 /* share60@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B84DDE174B4C2F009073C7 /* share60@2X.png */; };
+		29B9768C17AF2F8E00C14556 /* FirstLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B9768B17AF2F8E00C14556 /* FirstLoadViewController.m */; };
+		29B9769417AF2FDB00C14556 /* Page_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9768E17AF2FDB00C14556 /* Page_1.png */; };
+		29B9769517AF2FDB00C14556 /* Page_1@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9768F17AF2FDB00C14556 /* Page_1@iPhone5.png */; };
+		29B9769617AF2FDB00C14556 /* Page_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9769017AF2FDB00C14556 /* Page_2.png */; };
+		29B9769717AF2FDB00C14556 /* Page_2@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9769117AF2FDB00C14556 /* Page_2@iPhone5.png */; };
+		29B9769817AF2FDB00C14556 /* Page_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9769217AF2FDB00C14556 /* Page_3.png */; };
+		29B9769917AF2FDB00C14556 /* Page_3@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9769317AF2FDB00C14556 /* Page_3@iPhone5.png */; };
 		29B996C4174DF3A500204068 /* SettingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B996C3174DF3A500204068 /* SettingData.m */; };
 		29B996CB174E1B4700204068 /* input_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996C6174E1B4700204068 /* input_bg.png */; };
 		29B996CC174E1B4700204068 /* login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996C7174E1B4700204068 /* login_bg.png */; };
@@ -714,6 +721,14 @@
 		29B75B0217864A9F00A0AE34 /* NewFinderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewFinderViewController.m; sourceTree = "<group>"; };
 		29B75B0317864A9F00A0AE34 /* NewFinderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewFinderViewController.xib; sourceTree = "<group>"; };
 		29B84DDE174B4C2F009073C7 /* share60@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share60@2X.png"; sourceTree = "<group>"; };
+		29B9768A17AF2F8E00C14556 /* FirstLoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstLoadViewController.h; sourceTree = "<group>"; };
+		29B9768B17AF2F8E00C14556 /* FirstLoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstLoadViewController.m; sourceTree = "<group>"; };
+		29B9768E17AF2FDB00C14556 /* Page_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Page_1.png; sourceTree = "<group>"; };
+		29B9768F17AF2FDB00C14556 /* Page_1@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Page_1@iPhone5.png"; sourceTree = "<group>"; };
+		29B9769017AF2FDB00C14556 /* Page_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Page_2.png; sourceTree = "<group>"; };
+		29B9769117AF2FDB00C14556 /* Page_2@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Page_2@iPhone5.png"; sourceTree = "<group>"; };
+		29B9769217AF2FDB00C14556 /* Page_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Page_3.png; sourceTree = "<group>"; };
+		29B9769317AF2FDB00C14556 /* Page_3@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Page_3@iPhone5.png"; sourceTree = "<group>"; };
 		29B996C2174DF3A500204068 /* SettingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingData.h; sourceTree = "<group>"; };
 		29B996C3174DF3A500204068 /* SettingData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingData.m; sourceTree = "<group>"; };
 		29B996C6174E1B4700204068 /* input_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = input_bg.png; sourceTree = "<group>"; };
@@ -1626,6 +1641,19 @@
 			name = Top;
 			sourceTree = "<group>";
 		};
+		29B9768D17AF2FDB00C14556 /* First */ = {
+			isa = PBXGroup;
+			children = (
+				29B9768E17AF2FDB00C14556 /* Page_1.png */,
+				29B9768F17AF2FDB00C14556 /* Page_1@iPhone5.png */,
+				29B9769017AF2FDB00C14556 /* Page_2.png */,
+				29B9769117AF2FDB00C14556 /* Page_2@iPhone5.png */,
+				29B9769217AF2FDB00C14556 /* Page_3.png */,
+				29B9769317AF2FDB00C14556 /* Page_3@iPhone5.png */,
+			);
+			path = First;
+			sourceTree = "<group>";
+		};
 		29B996C5174E1B4700204068 /* login */ = {
 			isa = PBXGroup;
 			children = (
@@ -1726,6 +1754,9 @@
 				29852CF4172CB2B5001AD87A /* MYTabBarController.m */,
 				29FA3B2E176083B700FBA1B6 /* DefaultViewController.h */,
 				29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */,
+				29B9768A17AF2F8E00C14556 /* FirstLoadViewController.h */,
+				29B9768B17AF2F8E00C14556 /* FirstLoadViewController.m */,
+				29B9768D17AF2FDB00C14556 /* First */,
 				29ABD262179E618C00EE7164 /* MainImage */,
 				29EFE854172A55AD0099B5A7 /* Supporting Files */,
 			);
@@ -2707,6 +2738,12 @@
 				29C98B0B17ABA01800CF8FAF /* Bt_Filter.png in Resources */,
 				29C98B0C17ABA01800CF8FAF /* Bk_Filter.png in Resources */,
 				29C98B0E17ABA35900CF8FAF /* Bt_Title.png in Resources */,
+				29B9769417AF2FDB00C14556 /* Page_1.png in Resources */,
+				29B9769517AF2FDB00C14556 /* Page_1@iPhone5.png in Resources */,
+				29B9769617AF2FDB00C14556 /* Page_2.png in Resources */,
+				29B9769717AF2FDB00C14556 /* Page_2@iPhone5.png in Resources */,
+				29B9769817AF2FDB00C14556 /* Page_3.png in Resources */,
+				29B9769917AF2FDB00C14556 /* Page_3@iPhone5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2813,6 +2850,7 @@
 				29C2D51B17A7A491004FD7D6 /* CustomJinDu.m in Sources */,
 				29CE187317A89425003D81AD /* UploadAll.m in Sources */,
 				291F866C17A8B84400DA7B7B /* ChangeUploadViewController.m in Sources */,
+				29B9768C17AF2F8E00C14556 /* FirstLoadViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,6 +14,9 @@ typedef enum {
     kMyndsTypeSelect,
     kMyndsTypeMyShare,
     kMyndsTypeShare,
+    kMyndsTypeDefaultSearch,
+    kMyndsTypeMyShareSearch,
+    kMyndsTypeShareSearch,
 } MyndsType;
 
 @interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate>
@@ -43,6 +46,8 @@ typedef enum {
 @property (strong,nonatomic) UILabel *lblMore;
 @property (strong,nonatomic) UIButton *btnShare;
 @property (strong,nonatomic) UILabel *lblShare;
+@property (strong,nonatomic) UIView *searchView;
+@property (strong,nonatomic) UITextField *tfdSearch;
 -(void)loadData;
 @end
 

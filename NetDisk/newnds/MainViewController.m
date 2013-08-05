@@ -163,7 +163,7 @@
     UILabel *tlabel;
     switch (indexPath.row) {
         case 0:
-            cell.textLabel.text=@"个人空间";
+            cell.textLabel.text=@"我的空间";
             cell.textLabel.textColor=[UIColor colorWithRed:66/255.0 green:75/255.0 blue:83/255.0 alpha:1.0f];
             cell.imageView.image=[UIImage imageNamed:@"space.png"];
             UIImageView *imageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bt_PersonspaceDef.png"] highlightedImage:[UIImage imageNamed:@"Bt_PersonspaceCh.png"]];
@@ -224,7 +224,7 @@
             MyndsViewController *viewController=[[[MyndsViewController alloc] init] autorelease];
             viewController.f_id=@"1";
             viewController.myndsType=kMyndsTypeDefault;
-            viewController.title=@"个人空间";
+            viewController.title=@"我的空间";
             [self.navigationController pushViewController:viewController animated:YES];
         }
             break;

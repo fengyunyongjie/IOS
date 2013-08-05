@@ -47,7 +47,8 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d",f_id,0,-1];
+    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&space_id=%@&iszone=%@&sort=%@&sort_direct=%@",f_id,0,-1,s_id,@"1",@"f_modify",@"asc"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -60,7 +61,7 @@
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     [body release];
 }
--(void)openFinderWithID:(NSString *)f_id  sID:(NSString *)s_id
+-(void)openFinderWithID:(NSString *)f_id sID:(NSString *)s_id
 {
     self.fm_type=kFMTypeOpenFinder;
     self.activeData=[NSMutableData data];
