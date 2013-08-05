@@ -11,10 +11,7 @@
 		2910C308174369A600195008 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2910C304174369A600195008 /* FMDatabaseAdditions.m */; };
 		2910C309174369A600195008 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 2910C306174369A600195008 /* FMResultSet.m */; };
 		2910C30A17436A7F00195008 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 831E7A411668CC420089A012 /* libsqlite3.dylib */; };
-		2910C30E17436B9D00195008 /* DBSqlite.m in Sources */ = {isa = PBXBuildFile; fileRef = 2910C30D17436B9D00195008 /* DBSqlite.m */; };
 		2910C310174370C300195008 /* sample.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 2910C30F174370C300195008 /* sample.sqlite */; };
-		2910C3131743752400195008 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2910C3121743752400195008 /* UserInfo.m */; };
-		2910C3161743803D00195008 /* DBTimeLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 2910C3151743803C00195008 /* DBTimeLine.m */; };
 		2910C31D17438AEF00195008 /* libWeChatSDK_armv7_armv7s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2910C31917438AEF00195008 /* libWeChatSDK_armv7_armv7s.a */; };
 		2918548417587D2500C566A3 /* regist_bg_mid.png in Resources */ = {isa = PBXBuildFile; fileRef = 2918548317587D2500C566A3 /* regist_bg_mid.png */; };
 		2918548617587E2B00C566A3 /* regist_input_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 2918548517587E2B00C566A3 /* regist_input_bg.png */; };
@@ -321,6 +318,7 @@
 		29C98B0B17ABA01800CF8FAF /* Bt_Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0917ABA01800CF8FAF /* Bt_Filter.png */; };
 		29C98B0C17ABA01800CF8FAF /* Bk_Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0A17ABA01800CF8FAF /* Bk_Filter.png */; };
 		29C98B0E17ABA35900CF8FAF /* Bt_Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0D17ABA35900CF8FAF /* Bt_Title.png */; };
+		29CB860217AFB13C00C7629B /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860117AFB13C00C7629B /* UserInfo.m */; };
 		29CE187317A89425003D81AD /* UploadAll.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CE187217A89425003D81AD /* UploadAll.m */; };
 		29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CEC31B178AB15500EA002F /* SCBLinkManager.m */; };
 		29CED3681781203C00899FAE /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CED3671781203C00899FAE /* MessageUI.framework */; };
@@ -392,13 +390,7 @@
 		2910C304174369A600195008 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
 		2910C305174369A600195008 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
 		2910C306174369A600195008 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
-		2910C30C17436B9D00195008 /* DBSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSqlite.h; sourceTree = "<group>"; };
-		2910C30D17436B9D00195008 /* DBSqlite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSqlite.m; sourceTree = "<group>"; };
 		2910C30F174370C300195008 /* sample.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = sample.sqlite; sourceTree = "<group>"; };
-		2910C3111743752400195008 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
-		2910C3121743752400195008 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
-		2910C3141743803C00195008 /* DBTimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBTimeLine.h; sourceTree = "<group>"; };
-		2910C3151743803C00195008 /* DBTimeLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBTimeLine.m; sourceTree = "<group>"; };
 		2910C31817438AEF00195008 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		2910C31917438AEF00195008 /* libWeChatSDK_armv7_armv7s.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK_armv7_armv7s.a; sourceTree = "<group>"; };
 		2910C31A17438AEF00195008 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
@@ -758,6 +750,8 @@
 		29C98B0917ABA01800CF8FAF /* Bt_Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Filter.png; sourceTree = "<group>"; };
 		29C98B0A17ABA01800CF8FAF /* Bk_Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Filter.png; sourceTree = "<group>"; };
 		29C98B0D17ABA35900CF8FAF /* Bt_Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Title.png; sourceTree = "<group>"; };
+		29CB860017AFB13C00C7629B /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
+		29CB860117AFB13C00C7629B /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		29CE187117A89425003D81AD /* UploadAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadAll.h; sourceTree = "<group>"; };
 		29CE187217A89425003D81AD /* UploadAll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadAll.m; sourceTree = "<group>"; };
 		29CEC31A178AB15500EA002F /* SCBLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBLinkManager.h; sourceTree = "<group>"; };
@@ -1155,19 +1149,6 @@
 			path = newnds/FMDB;
 			sourceTree = "<group>";
 		};
-		2910C30B17436B7C00195008 /* DataBase */ = {
-			isa = PBXGroup;
-			children = (
-				2910C3141743803C00195008 /* DBTimeLine.h */,
-				2910C3151743803C00195008 /* DBTimeLine.m */,
-				2910C3111743752400195008 /* UserInfo.h */,
-				2910C3121743752400195008 /* UserInfo.m */,
-				2910C30C17436B9D00195008 /* DBSqlite.h */,
-				2910C30D17436B9D00195008 /* DBSqlite.m */,
-			);
-			name = DataBase;
-			sourceTree = "<group>";
-		};
 		2910C31717438AEE00195008 /* SDKExport */ = {
 			isa = PBXGroup;
 			children = (
@@ -1437,6 +1418,8 @@
 		299D9F661754326900B61161 /* sqlite3 */ = {
 			isa = PBXGroup;
 			children = (
+				29CB860017AFB13C00C7629B /* UserInfo.h */,
+				29CB860117AFB13C00C7629B /* UserInfo.m */,
 				299D9F671754326900B61161 /* DBSqlite3.h */,
 				299D9F681754326900B61161 /* DBSqlite3.m */,
 				299D9F691754326900B61161 /* TaskDemo.h */,
@@ -1736,7 +1719,6 @@
 			children = (
 				29390F2E17AA444D00C9BE49 /* MySpace */,
 				299D9F661754326900B61161 /* sqlite3 */,
-				2910C30B17436B7C00195008 /* DataBase */,
 				29DE0CE817422C5B009C41C7 /* nds_img */,
 				29B18AC0173C973700DBF2CB /* Browsers */,
 				29639037173A3E98009C5530 /* FileItemTableCell.h */,
@@ -2802,9 +2784,6 @@
 				2910C307174369A600195008 /* FMDatabase.m in Sources */,
 				2910C308174369A600195008 /* FMDatabaseAdditions.m in Sources */,
 				2910C309174369A600195008 /* FMResultSet.m in Sources */,
-				2910C30E17436B9D00195008 /* DBSqlite.m in Sources */,
-				2910C3131743752400195008 /* UserInfo.m in Sources */,
-				2910C3161743803D00195008 /* DBTimeLine.m in Sources */,
 				294CEEA7174489A300AF0D66 /* FavoritesViewController.m in Sources */,
 				294CEEAA1744B11500AF0D66 /* FavoritesData.m in Sources */,
 				29A747611746297B006299E4 /* IconDownloader.m in Sources */,
@@ -2851,6 +2830,7 @@
 				29CE187317A89425003D81AD /* UploadAll.m in Sources */,
 				291F866C17A8B84400DA7B7B /* ChangeUploadViewController.m in Sources */,
 				29B9768C17AF2F8E00C14556 /* FirstLoadViewController.m in Sources */,
+				29CB860217AFB13C00C7629B /* UserInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
