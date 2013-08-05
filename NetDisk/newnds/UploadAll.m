@@ -32,8 +32,8 @@
 
 -(void)changeUpload:(NSMutableOrderedSet *)array_
 {
-    NSLog(@"有多少:%i",self.space_id);
-    NSLog(@"有多少:%i",space_id);
+    NSLog(@"有多少:%@",self.space_id);
+    NSLog(@"有多少:%@",space_id);
     int i=0;
     if([self.uploadAllList count]==0)
     {
@@ -60,7 +60,7 @@
         demo.f_base_name = [[asset defaultRepresentation] filename];
         demo.deviceName = deviceName;
         demo.space_id = self.space_id;
-        NSLog(@"demo.spcae_id:%i",demo.space_id);
+        NSLog(@"demo.spcae_id:%@",demo.space_id);
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             ALAsset *result = demo.result;
             NSError *error = nil;
@@ -145,7 +145,7 @@
         ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
         if([uploadView isKindOfClass:[ChangeUploadViewController class]])
         {
-            [uploadView deleteUploadingIndexRow:0];
+            [uploadView deleteUploadingIndexRow:0 isDeleteRecory:NO];
             if(!uploadView.isUploadAll)
             {
                 [uploadView setIsUploadAll:YES];

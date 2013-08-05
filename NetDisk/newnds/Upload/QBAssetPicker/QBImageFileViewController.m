@@ -18,6 +18,7 @@
 #import "FileItemTableCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
+#import "SCBSession.h"
 
 @interface QBImageFileViewController ()
 
@@ -40,7 +41,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(app_delegate.myTabBarController.selectedIndex==0)
+    {
+        space_id = [[SCBSession sharedSession] homeID];
+    }
+    else if(app_delegate.myTabBarController.selectedIndex==1)
+    {
+        space_id = [[SCBSession sharedSession] spaceID];
+    }
     //添加头部试图
     topView = [[UIView alloc] initWithFrame:CGRectMake(0, QBY, 320, 44)];
     UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
@@ -134,7 +143,7 @@
         photoManger = [[SCBPhotoManager alloc] init];
         [photoManger setNewFoldDelegate:self];
     }
-    [photoManger openFinderWithID:@"1"];
+    [photoManger openFinderWithID:@"1" space_id:space_id];
     FileDeviceName *file_device = [[FileDeviceName alloc] init];
     [file_device setDeviceName:[AppDelegate deviceString]];
     [file_device setF_id:@"1"];
@@ -147,7 +156,7 @@
     if([url_array count]>1)
     {
         FileDeviceName *file_device = (FileDeviceName *)[url_array objectAtIndex:[url_array count]-2];
-        [photoManger openFinderWithID:file_device.f_id];
+        [photoManger openFinderWithID:file_device.f_id space_id:space_id];
         [url_array removeObjectAtIndex:[url_array count]-1];
     }
     else
@@ -248,7 +257,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSDictionary *this=(NSDictionary *)[self.fileArray objectAtIndex:indexPath.row];
-        [photoManger openFinderWithID:[this objectForKey:@"f_id"]];
+        [photoManger openFinderWithID:[this objectForKey:@"f_id"] space_id:space_id];
         FileDeviceName *file_device = [[FileDeviceName alloc] init];
         [file_device setDeviceName:[this objectForKey:@"f_name"]];
         [file_device setF_id:[this objectForKey:@"f_id"]];

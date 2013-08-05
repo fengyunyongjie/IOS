@@ -79,6 +79,7 @@
     if(scroll_view.contentOffset.x>WIDTH*3 || page==3)
     {
         [self.delegate uploadFinish];
+        [self.view setHidden:YES];
     }
 }
 

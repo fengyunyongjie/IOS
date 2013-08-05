@@ -30,6 +30,9 @@
         if (sqlite3_exec(contactDB, (const char *)[CreatePhotoFileTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
             NSLog(@"errMsg:%s",errMsg);
         }
+        if (sqlite3_exec(contactDB, (const char *)[CreateUserinfoTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+            NSLog(@"errMsg:%s",errMsg);
+        }
         sqlite3_close(contactDB);
     }
     else

@@ -29,6 +29,7 @@
     NSMutableArray *fileArray;
     NSMutableArray *url_array;
     id<QBImageFileViewDelegate> qbDelegate;
+    NSString *space_id;
 }
 @property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) NSMutableArray *fileArray;

@@ -56,7 +56,7 @@
 //上传进行时，发送上传进度数据
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag;
 //删除上传时列表
--(void)deleteUploadingIndexRow:(int)row_;
+-(void)deleteUploadingIndexRow:(int)row_ isDeleteRecory:(BOOL)isDelete;
 //删除上传记录列表
 -(void)deleteFinishIndexRow:(int)row_;
 //更新上传记录列表

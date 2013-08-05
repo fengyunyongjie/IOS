@@ -32,13 +32,16 @@
 
 
 #pragma mark ----删除上传时列表
--(void)deleteUploadingIndexRow:(int)row_
+-(void)deleteUploadingIndexRow:(int)row_ isDeleteRecory:(BOOL)isDelete
 {
     if(row_<[self.uploadingList count])
     {
         UploadFile *demo = [self.uploadingList objectAtIndex:row_];
         AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [demo.demo deleteTaskTable];
+        if(isDelete)
+        {
+            [demo.demo deleteTaskTable];
+        }
         if(row_ == 0)
         {
             [demo upStop];
@@ -223,6 +226,7 @@
     [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
     [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [topView addSubview:phoot_button];
+    isHistoryShow = YES;
     [self clicked_uploadState:phoot_button];
     [phoot_button release];
     
@@ -312,62 +316,68 @@
 
 -(void)clicked_uploadState:(id)sender
 {
-    isHistoryShow = NO;
-    UIButton *button = sender;
-    //把色值转换成图片
-    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
-    UIGraphicsBeginImageContext(rect_image.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context,
-                                   [hilighted_color CGColor]);
-    CGContextFillRect(context, rect_image);
-    UIImage * imge = [[[UIImage alloc] init] autorelease];
-    imge = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [button setBackgroundImage:imge forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
-    [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [file_button setBackgroundImage:nil forState:UIControlStateNormal];
-    
-    //显示上传进度
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    self.uploadingList = app_delegate.upload_all.uploadAllList;
-    [self.uploadListTableView reloadData];
+    if(isHistoryShow)
+    {
+        isHistoryShow = NO;
+        UIButton *button = sender;
+        //把色值转换成图片
+        CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
+        UIGraphicsBeginImageContext(rect_image.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context,
+                                       [hilighted_color CGColor]);
+        CGContextFillRect(context, rect_image);
+        UIImage * imge = [[[UIImage alloc] init] autorelease];
+        imge = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        [button setBackgroundImage:imge forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
+        [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [file_button setBackgroundImage:nil forState:UIControlStateNormal];
+        
+        //显示上传进度
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.uploadingList = app_delegate.upload_all.uploadAllList;
+        [self.uploadListTableView reloadData];
+    }
 }
 
 -(void)clicked_uploadHistory:(id)sender
 {
-    //显示上传历史
-    isHistoryShow = YES;
-    UIButton *button = sender;
-    //把色值转换成图片
-    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
-    UIGraphicsBeginImageContext(rect_image.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context,
-                                   [hilighted_color CGColor]);
-    CGContextFillRect(context, rect_image);
-    UIImage * imge = [[[UIImage alloc] init] autorelease];
-    imge = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [button setBackgroundImage:imge forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    UIButton *photo_button = (UIButton *)[self.view viewWithTag:23];
-    [photo_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [photo_button setBackgroundImage:nil forState:UIControlStateNormal];
-    
-    
-    TaskDemo *demo = [[TaskDemo alloc] init];
-    if(historyList)
+    if(!isHistoryShow)
     {
-        historyList = nil;
+        UIButton *button = sender;
+        //把色值转换成图片
+        CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
+        UIGraphicsBeginImageContext(rect_image.size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextSetFillColorWithColor(context,
+                                       [hilighted_color CGColor]);
+        CGContextFillRect(context, rect_image);
+        UIImage * imge = [[[UIImage alloc] init] autorelease];
+        imge = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        [button setBackgroundImage:imge forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        UIButton *photo_button = (UIButton *)[self.view viewWithTag:23];
+        [photo_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [photo_button setBackgroundImage:nil forState:UIControlStateNormal];
+        //显示上传历史
+        isHistoryShow = YES;
+        TaskDemo *demo = [[TaskDemo alloc] init];
+        if(historyList)
+        {
+            historyList = nil;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            historyList = [demo selectFinishTaskTable];
+            [self.uploadListTableView reloadData];
+        });
+        [demo release];
     }
-    historyList = [demo selectFinishTaskTable];
-    [self.uploadListTableView reloadData];
-    [demo release];
 }
 
 -(void)clicked_more_control:(id)sender
@@ -592,7 +602,7 @@
     }
     else
     {
-        [self deleteUploadingIndexRow:taskDemo.index_id];
+        [self deleteUploadingIndexRow:taskDemo.index_id isDeleteRecory:YES];
 //        if(taskDemo.index_id<[self.uploadingList count])
 //        {
 //            UploadFile *demo = [self.uploadingList objectAtIndex:taskDemo.index_id];

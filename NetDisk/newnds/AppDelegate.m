@@ -24,6 +24,7 @@
 //#import "UploadViewController.h"
 #import "MainViewController.h"
 #import "ChangeUploadViewController.h"
+#import "UserInfo.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -86,7 +87,7 @@
     else
     {
         //进入主界面
-        [self performSelector:@selector(goMainViewController) withObject:self afterDelay:1.0f];
+        [firstLoadView.view setHidden:YES];
     }
     
     return YES;
@@ -95,18 +96,18 @@
 //进入主界面
 -(void)uploadFinish
 {
-    [firstLoadView.view setHidden:YES];
     //记录用户操作
-    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isFirstLoad"];
+    UserInfo *info = [[[UserInfo alloc] init] autorelease];
+    info.isTrue = YES;
+    info.keyString = @"isFirstLoad";
+    [info insertUserinfo];
 }
 
 -(BOOL)isFirstLoad
 {
-    NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"isFirstLoad"];
-    if (value==nil) {
-        return NO;
-    }
-    return [value boolValue];
+    UserInfo *info = [[[UserInfo alloc] init] autorelease];
+    info.keyString = @"isFirstLoad";
+    return [info selectIsTrueForKey];
 }
 
 -(void)goMainViewController

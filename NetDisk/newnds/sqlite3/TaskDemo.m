@@ -26,20 +26,22 @@
     sqlite3_stmt *statement;
     __block BOOL bl = TRUE;
     const char *dbpath = [self.databasePath UTF8String];
-    
+    NSLog(@"insertTaskTable space_id:%@",space_id);
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [InsertTaskTable UTF8String];
         int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
         if (success != SQLITE_OK) {
             bl = FALSE;
         }
+        NSString *sapce_ = [NSString stringWithFormat:@"%@",space_id];
+        
         sqlite3_bind_int(statement, 1, f_id);
         sqlite3_bind_int(statement, 2, f_state);
         sqlite3_bind_text(statement, 3, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, f_lenght);
         sqlite3_bind_blob(statement, 5, [f_data bytes], [f_data length], NULL);
         sqlite3_bind_text(statement, 6, [deviceName UTF8String], -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(statement, 7, [space_id UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 7, [sapce_ UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;

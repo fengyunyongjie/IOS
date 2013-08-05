@@ -11,7 +11,8 @@
 /*
     重新编写选择视图
  */
-#define TabBarHeight 60
+#define TabBarHeight 88
+#define TabBarButtonHeight TabBarHeight-45
 #define QBY 20
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
 #define ChangeTabWidth 90
@@ -127,38 +128,41 @@
     [topView addSubview:more_button];
     [self.view addSubview:topView];
     
-    //添加选择文件
-    CGRect change_rect = CGRectMake(2, BottonViewHeight-28, 316, 24);
-    change_myFile_button = [[UIButton alloc] initWithFrame:change_rect];
-    [change_myFile_button setTitle:@"选择文件" forState:UIControlStateNormal];
-    [change_myFile_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [change_myFile_button.layer setBorderWidth:1];
-    [change_myFile_button.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    [change_myFile_button addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:change_myFile_button];
+    
     
     //添加底部视图
     NSLog(@"BottonViewHeight:%f",BottonViewHeight);
     
-    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, BottonViewHeight, 320, 60)];
+    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, BottonViewHeight, 320, TabBarHeight)];
     UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
-    [botton_image setImage:[UIImage imageNamed:@"Bk_Nav.png"]];
+    [botton_image setImage:[UIImage imageNamed:@"Bk_naBottom.png"]];
     [bottonView addSubview:botton_image];
     [botton_image release];
     
-    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
+    //添加选择文件
+    CGRect change_rect = CGRectMake(2, 5, 316, 35);
+    change_myFile_button = [[UIButton alloc] initWithFrame:change_rect];
+    [change_myFile_button setBackgroundImage:[UIImage imageNamed:@"Bt_SelectFolder.png"] forState:UIControlStateNormal];
+    [change_myFile_button setTitle:@"选择文件" forState:UIControlStateNormal];
+    [change_myFile_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [change_myFile_button addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
+    [bottonView addSubview:change_myFile_button];
+    
+    //添加选定按钮
+    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, 45+(TabBarButtonHeight-29)/2, 29, 29)];
     [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOk.png"] forState:UIControlStateNormal];
     [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOkCh.png"] forState:UIControlStateHighlighted];
     [upload_button addTarget:self action:@selector(clicked_startUpload:) forControlEvents:UIControlEventTouchUpInside];
     [bottonView addSubview:upload_button];
     [upload_button release];
     
-    UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
+    UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, 45+(TabBarButtonHeight-29)/2, 29, 29)];
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
     [upload_back_button addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
     [bottonView addSubview:upload_back_button];
     [upload_back_button release];
+    
     [self.view addSubview:bottonView];
     
 }
@@ -239,6 +243,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if([device_name length]>0)
+    {
+        [change_myFile_button setTitle:device_name forState:UIControlStateNormal];
+    }
     [super viewWillAppear:animated];
     if(!isFirst)
     {
