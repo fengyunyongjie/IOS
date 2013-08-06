@@ -288,6 +288,7 @@ typedef enum{
         self.cellMenu.frame=CGRectMake(0, 70, 320, 65);
         UIImageView *imageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_OptionBar.png" ]];
         imageView.frame=CGRectMake(0, 0, 320, 65);
+        [imageView setTag:2012];
         [self.cellMenu addSubview:imageView];
         [self.cellMenu setHidden:YES];
         [self.tableView addSubview:self.cellMenu];
@@ -314,7 +315,7 @@ typedef enum{
         [self.btnRename addTarget:self action:@selector(toRename:) forControlEvents:UIControlEventTouchUpInside];
         [self.cellMenu addSubview:self.btnRename];
         self.lblRename=[[[UILabel alloc] init] autorelease];
-        self.lblRename.text=@"命命名";
+        self.lblRename.text=@"重命名";
         self.lblRename.textAlignment=UITextAlignmentCenter;
         self.lblRename.font=[UIFont systemFontOfSize:12];
         self.lblRename.textColor=[UIColor whiteColor];
@@ -404,6 +405,23 @@ typedef enum{
         self.tfdFinderName.delegate=self;
         [self.newFinderView addSubview:self.tfdFinderName];
         
+        //搜索视图
+        self.searchView=[[UIView alloc] initWithFrame:CGRectMake(0, 44, self.view.frame.size.width, 36)];
+        UIImageView *searchBg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Seach.png"]];
+        searchBg.frame=CGRectMake(0, 0, self.view.frame.size.width, 36);
+        [self.searchView addSubview:searchBg];
+        [self.view addSubview: self.searchView];
+        self.tfdSearch=[[[UITextField alloc] initWithFrame:CGRectMake(10, 3, 265, 30)] autorelease];
+        self.tfdSearch.placeholder=@"搜索：我的虹盘";
+        self.tfdSearch.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
+        self.tfdSearch.borderStyle=UITextBorderStyleNone;
+        self.tfdSearch.delegate=self;
+        [self.searchView addSubview:self.tfdSearch];
+        UIButton *btnSearchOk=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSearchOk.frame=CGRectMake(283, 2, 32, 32);
+        [btnSearchOk setImage:[UIImage imageNamed:@"Bt_Seach.png"] forState:UIControlStateNormal];
+        [btnSearchOk addTarget:self action:@selector(searchAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.searchView addSubview:btnSearchOk];
     }
     return self;
 }
@@ -798,24 +816,26 @@ typedef enum{
     NSLog(@"点击上传");
 }
 
-#pragma mark QBImagePickerControllerDelegate
-
--(void)changeUpload:(NSMutableOrderedSet *)array_
-{
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [app_delegate.upload_all setSpace_id:[[SCBSession sharedSession] spaceID]];
-    NSLog(@"[[[SCBSession sharedSession] spaceID] integerValue]:%@",[[SCBSession sharedSession] spaceID]);
-    [app_delegate.upload_all changeUpload:array_];
-}
--(void)changeDeviceName:(NSString *)device_name
-{
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [app_delegate.upload_all changeDeviceName:device_name];
-}
-
 -(void)goSearch:(id)sender
 {
     NSLog(@"点击搜索");
+    MyndsViewController *viewController =[[[MyndsViewController alloc] init] autorelease];
+    viewController.f_id=self.f_id;
+    switch (self.myndsType) {
+        case kMyndsTypeDefault:
+            viewController.myndsType=kMyndsTypeDefaultSearch;
+            break;
+        case kMyndsTypeMyShare:
+            viewController.myndsType=kMyndsTypeMyShareSearch;
+            break;
+        case kMyndsTypeShare:
+            viewController.myndsType=kMyndsTypeShareSearch;
+            break;
+        default:
+            break;
+    }
+    viewController.title=@"搜索";
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 -(void)goMessage:(id)sender
 {
@@ -1011,6 +1031,21 @@ typedef enum{
     AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
     [appDelegate sendImageContentIsFiends:YES text:content];
 }
+#pragma mark - QBImagePickerControllerDelegate
+
+-(void)changeUpload:(NSMutableOrderedSet *)array_
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all setSpace_id:[[SCBSession sharedSession] spaceID]];
+    NSLog(@"[[[SCBSession sharedSession] spaceID] integerValue]:%@",[[SCBSession sharedSession] spaceID]);
+    [app_delegate.upload_all changeUpload:array_];
+}
+-(void)changeDeviceName:(NSString *)device_name
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all changeDeviceName:device_name];
+}
+
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -1071,8 +1106,20 @@ typedef enum{
     }
     CGRect r=self.cellMenu.frame;
     r.origin.y=(indexPath.row+1) * 50-8;
-    if (r.origin.y+r.size.height > self.tableView.contentSize.height) {
-        r.origin.y=self.tableView.contentSize.height-r.size.height;
+    if (r.origin.y+r.size.height>self.tableView.frame.size.height &&r.origin.y+r.size.height > self.tableView.contentSize.height) {
+        r.origin.y=(indexPath.row+1)*50-r.size.height-50;
+        UIImageView *imageView=(UIImageView *)[self.cellMenu viewWithTag:2012];
+        imageView.transform=CGAffineTransformMakeScale(1.0, -1.0);
+        CGRect r=imageView.frame;
+        r.origin.y=10;
+        imageView.frame=r;
+    }else
+    {
+        UIImageView *imageView=(UIImageView *)[self.cellMenu viewWithTag:2012];
+        imageView.transform=CGAffineTransformMakeScale(1.0, 1.0);
+        CGRect r=imageView.frame;
+        r.origin.y=0;
+        imageView.frame=r;
     }
     self.cellMenu.frame=r;
     [self.cellMenu setHidden:NO];
