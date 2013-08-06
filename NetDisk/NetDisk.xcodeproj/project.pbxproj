@@ -319,6 +319,8 @@
 		29C98B0C17ABA01800CF8FAF /* Bk_Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0A17ABA01800CF8FAF /* Bk_Filter.png */; };
 		29C98B0E17ABA35900CF8FAF /* Bt_Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0D17ABA35900CF8FAF /* Bt_Title.png */; };
 		29CB860217AFB13C00C7629B /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860117AFB13C00C7629B /* UserInfo.m */; };
+		29CB860717B0790E00C7629B /* MessagePushCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860417B0790E00C7629B /* MessagePushCell.m */; };
+		29CB860817B0790E00C7629B /* MessagePushController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860617B0790E00C7629B /* MessagePushController.m */; };
 		29CE187317A89425003D81AD /* UploadAll.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CE187217A89425003D81AD /* UploadAll.m */; };
 		29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CEC31B178AB15500EA002F /* SCBLinkManager.m */; };
 		29CED3681781203C00899FAE /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CED3671781203C00899FAE /* MessageUI.framework */; };
@@ -752,6 +754,10 @@
 		29C98B0D17ABA35900CF8FAF /* Bt_Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Title.png; sourceTree = "<group>"; };
 		29CB860017AFB13C00C7629B /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		29CB860117AFB13C00C7629B /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
+		29CB860317B0790E00C7629B /* MessagePushCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePushCell.h; sourceTree = "<group>"; };
+		29CB860417B0790E00C7629B /* MessagePushCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePushCell.m; sourceTree = "<group>"; };
+		29CB860517B0790E00C7629B /* MessagePushController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePushController.h; sourceTree = "<group>"; };
+		29CB860617B0790E00C7629B /* MessagePushController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePushController.m; sourceTree = "<group>"; };
 		29CE187117A89425003D81AD /* UploadAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadAll.h; sourceTree = "<group>"; };
 		29CE187217A89425003D81AD /* UploadAll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadAll.m; sourceTree = "<group>"; };
 		29CEC31A178AB15500EA002F /* SCBLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBLinkManager.h; sourceTree = "<group>"; };
@@ -1738,6 +1744,10 @@
 				29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */,
 				29B9768A17AF2F8E00C14556 /* FirstLoadViewController.h */,
 				29B9768B17AF2F8E00C14556 /* FirstLoadViewController.m */,
+				29CB860317B0790E00C7629B /* MessagePushCell.h */,
+				29CB860417B0790E00C7629B /* MessagePushCell.m */,
+				29CB860517B0790E00C7629B /* MessagePushController.h */,
+				29CB860617B0790E00C7629B /* MessagePushController.m */,
 				29B9768D17AF2FDB00C14556 /* First */,
 				29ABD262179E618C00EE7164 /* MainImage */,
 				29EFE854172A55AD0099B5A7 /* Supporting Files */,
@@ -2831,6 +2841,8 @@
 				291F866C17A8B84400DA7B7B /* ChangeUploadViewController.m in Sources */,
 				29B9768C17AF2F8E00C14556 /* FirstLoadViewController.m in Sources */,
 				29CB860217AFB13C00C7629B /* UserInfo.m in Sources */,
+				29CB860717B0790E00C7629B /* MessagePushCell.m in Sources */,
+				29CB860817B0790E00C7629B /* MessagePushController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
