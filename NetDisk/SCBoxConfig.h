@@ -49,6 +49,8 @@
 //修改好友备注/friendships/friend/remark/update
 #define FRIENDSHIPS_FRIEND_REMARK_UPDATE @"/friendships/friend/remark/update"
 //删除好友/friendships/friend/del
+#define FRIENDSHIPS_FRIEND_DEL @"/friendships/friend/del"
+
 #pragma mark - 3.短消息管理
 //获取短消息列表/msgs
 //发送短消息/msg/send
