@@ -321,6 +321,19 @@
 		29CB860217AFB13C00C7629B /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860117AFB13C00C7629B /* UserInfo.m */; };
 		29CB860717B0790E00C7629B /* MessagePushCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860417B0790E00C7629B /* MessagePushCell.m */; };
 		29CB860817B0790E00C7629B /* MessagePushController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860617B0790E00C7629B /* MessagePushController.m */; };
+		29CB861717B0A21700C7629B /* Bk_naBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB860A17B0A21700C7629B /* Bk_naBottom.png */; };
+		29CB861817B0A21700C7629B /* Bt_Cancle.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB860B17B0A21700C7629B /* Bt_Cancle.png */; };
+		29CB861917B0A21700C7629B /* Bt_naDelAll.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB860C17B0A21700C7629B /* Bt_naDelAll.png */; };
+		29CB861A17B0A21700C7629B /* Bt_naDelAll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB860D17B0A21700C7629B /* Bt_naDelAll@2x.png */; };
+		29CB861B17B0A21700C7629B /* Bt_naPasueAll.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB860E17B0A21700C7629B /* Bt_naPasueAll.png */; };
+		29CB861C17B0A21700C7629B /* Bt_naPasueAll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB860F17B0A21700C7629B /* Bt_naPasueAll@2x.png */; };
+		29CB861D17B0A21700C7629B /* Bt_NewsAccept.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB861017B0A21700C7629B /* Bt_NewsAccept.png */; };
+		29CB861E17B0A21700C7629B /* Bt_NewsRefuse.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB861117B0A21700C7629B /* Bt_NewsRefuse.png */; };
+		29CB861F17B0A21700C7629B /* Bt_SelectFolder.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB861217B0A21700C7629B /* Bt_SelectFolder.png */; };
+		29CB862017B0A21700C7629B /* Bt_UploadCancle.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB861317B0A21700C7629B /* Bt_UploadCancle.png */; };
+		29CB862117B0A21700C7629B /* Bt_UploadCancleCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB861417B0A21700C7629B /* Bt_UploadCancleCh.png */; };
+		29CB862217B0A21700C7629B /* Bt_UploadOk.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB861517B0A21700C7629B /* Bt_UploadOk.png */; };
+		29CB862317B0A21700C7629B /* Bt_UploadOkCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CB861617B0A21700C7629B /* Bt_UploadOkCh.png */; };
 		29CE187317A89425003D81AD /* UploadAll.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CE187217A89425003D81AD /* UploadAll.m */; };
 		29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CEC31B178AB15500EA002F /* SCBLinkManager.m */; };
 		29CED3681781203C00899FAE /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CED3671781203C00899FAE /* MessageUI.framework */; };
@@ -758,6 +771,19 @@
 		29CB860417B0790E00C7629B /* MessagePushCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePushCell.m; sourceTree = "<group>"; };
 		29CB860517B0790E00C7629B /* MessagePushController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePushController.h; sourceTree = "<group>"; };
 		29CB860617B0790E00C7629B /* MessagePushController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePushController.m; sourceTree = "<group>"; };
+		29CB860A17B0A21700C7629B /* Bk_naBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_naBottom.png; sourceTree = "<group>"; };
+		29CB860B17B0A21700C7629B /* Bt_Cancle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Cancle.png; sourceTree = "<group>"; };
+		29CB860C17B0A21700C7629B /* Bt_naDelAll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_naDelAll.png; sourceTree = "<group>"; };
+		29CB860D17B0A21700C7629B /* Bt_naDelAll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_naDelAll@2x.png"; sourceTree = "<group>"; };
+		29CB860E17B0A21700C7629B /* Bt_naPasueAll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_naPasueAll.png; sourceTree = "<group>"; };
+		29CB860F17B0A21700C7629B /* Bt_naPasueAll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_naPasueAll@2x.png"; sourceTree = "<group>"; };
+		29CB861017B0A21700C7629B /* Bt_NewsAccept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_NewsAccept.png; sourceTree = "<group>"; };
+		29CB861117B0A21700C7629B /* Bt_NewsRefuse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_NewsRefuse.png; sourceTree = "<group>"; };
+		29CB861217B0A21700C7629B /* Bt_SelectFolder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_SelectFolder.png; sourceTree = "<group>"; };
+		29CB861317B0A21700C7629B /* Bt_UploadCancle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UploadCancle.png; sourceTree = "<group>"; };
+		29CB861417B0A21700C7629B /* Bt_UploadCancleCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UploadCancleCh.png; sourceTree = "<group>"; };
+		29CB861517B0A21700C7629B /* Bt_UploadOk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UploadOk.png; sourceTree = "<group>"; };
+		29CB861617B0A21700C7629B /* Bt_UploadOkCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UploadOkCh.png; sourceTree = "<group>"; };
 		29CE187117A89425003D81AD /* UploadAll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadAll.h; sourceTree = "<group>"; };
 		29CE187217A89425003D81AD /* UploadAll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadAll.m; sourceTree = "<group>"; };
 		29CEC31A178AB15500EA002F /* SCBLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBLinkManager.h; sourceTree = "<group>"; };
@@ -1660,6 +1686,26 @@
 			path = login;
 			sourceTree = "<group>";
 		};
+		29CB860917B0A21600C7629B /* Translfer */ = {
+			isa = PBXGroup;
+			children = (
+				29CB860A17B0A21700C7629B /* Bk_naBottom.png */,
+				29CB860B17B0A21700C7629B /* Bt_Cancle.png */,
+				29CB860C17B0A21700C7629B /* Bt_naDelAll.png */,
+				29CB860D17B0A21700C7629B /* Bt_naDelAll@2x.png */,
+				29CB860E17B0A21700C7629B /* Bt_naPasueAll.png */,
+				29CB860F17B0A21700C7629B /* Bt_naPasueAll@2x.png */,
+				29CB861017B0A21700C7629B /* Bt_NewsAccept.png */,
+				29CB861117B0A21700C7629B /* Bt_NewsRefuse.png */,
+				29CB861217B0A21700C7629B /* Bt_SelectFolder.png */,
+				29CB861317B0A21700C7629B /* Bt_UploadCancle.png */,
+				29CB861417B0A21700C7629B /* Bt_UploadCancleCh.png */,
+				29CB861517B0A21700C7629B /* Bt_UploadOk.png */,
+				29CB861617B0A21700C7629B /* Bt_UploadOkCh.png */,
+			);
+			path = Translfer;
+			sourceTree = "<group>";
+		};
 		29DE0CE817422C5B009C41C7 /* nds_img */ = {
 			isa = PBXGroup;
 			children = (
@@ -1723,6 +1769,7 @@
 		29EFE853172A55AD0099B5A7 /* newnds */ = {
 			isa = PBXGroup;
 			children = (
+				29CB860917B0A21600C7629B /* Translfer */,
 				29390F2E17AA444D00C9BE49 /* MySpace */,
 				299D9F661754326900B61161 /* sqlite3 */,
 				29DE0CE817422C5B009C41C7 /* nds_img */,
@@ -2736,6 +2783,19 @@
 				29B9769717AF2FDB00C14556 /* Page_2@iPhone5.png in Resources */,
 				29B9769817AF2FDB00C14556 /* Page_3.png in Resources */,
 				29B9769917AF2FDB00C14556 /* Page_3@iPhone5.png in Resources */,
+				29CB861717B0A21700C7629B /* Bk_naBottom.png in Resources */,
+				29CB861817B0A21700C7629B /* Bt_Cancle.png in Resources */,
+				29CB861917B0A21700C7629B /* Bt_naDelAll.png in Resources */,
+				29CB861A17B0A21700C7629B /* Bt_naDelAll@2x.png in Resources */,
+				29CB861B17B0A21700C7629B /* Bt_naPasueAll.png in Resources */,
+				29CB861C17B0A21700C7629B /* Bt_naPasueAll@2x.png in Resources */,
+				29CB861D17B0A21700C7629B /* Bt_NewsAccept.png in Resources */,
+				29CB861E17B0A21700C7629B /* Bt_NewsRefuse.png in Resources */,
+				29CB861F17B0A21700C7629B /* Bt_SelectFolder.png in Resources */,
+				29CB862017B0A21700C7629B /* Bt_UploadCancle.png in Resources */,
+				29CB862117B0A21700C7629B /* Bt_UploadCancleCh.png in Resources */,
+				29CB862217B0A21700C7629B /* Bt_UploadOk.png in Resources */,
+				29CB862317B0A21700C7629B /* Bt_UploadOkCh.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,14 +31,23 @@
 
 #pragma mark - 2.好友管理
 //获取群组列表/friendships/groups
+#define FRIENDSHIPS_GROUPS @"/friendships/groups"
 //获取所有群组及好友列表/friendships/groups/deep
+#define FRIENDSHIPS_GROUPS_DEEP @"/friendships/groups/deep"
 //创建群组/friendships/group/create
+#define FRIENDSHOPS_GROUP_CREATE @"/friendships/group/create"
 //修改群组/friendships/group/update
+#define FRIENDSHIPS_GROUP_UPDATE @"/friendships/group/update"
 //删除群组/friendships/group/del
+#define FRIENDSHIP_GROUP_DEL @"/friendships/group/del"
 //获取好友列表/friendships/friends
+#define FRIENDSHIPS_FRIENDS @"/friendships/friends"
 //添加好友/friendships/friend/create
+#define FRIENDSHIPS_FRIEND_CREATE @"/friendships/friend/create"
 //移动好友/friendships/friend/move
+#define FRIENDSHIPS_FRIEND_MOVE @"/friendships/friend/move"
 //修改好友备注/friendships/friend/remark/update
+#define FRIENDSHIPS_FRIEND_REMARK_UPDATE @"/friendships/friend/remark/update"
 //删除好友/friendships/friend/del
 #pragma mark - 3.短消息管理
 //获取短消息列表/msgs
@@ -47,6 +56,16 @@
 //删除所有短消息/msg/delall
 
 #pragma mark - 4.文件管理
+//获取消息列表
+#define MSGS @"/msgs"
+//发送短消息
+#define MSG_SEND @"/msg/send"
+//删除短消息
+#define MSG_DEL @"/msg/del"
+//删除所有短消息
+#define MSG_DELALL @"/msg/delall"
+
+#pragma mark - 文件管理
 //打开网盘
 //#define FM_URI @"/fm"
 #define FM_URI @"/fm/open"
@@ -87,6 +106,8 @@
 //退出共享/share/member/exit
 
 #pragma mark - 6.意见管理
+
+#pragma mark - 意见管理
 
 #pragma mark - 照片管理
 #pragma mark - 获取用户的所有的拍摄信息

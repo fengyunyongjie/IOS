@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCBMessageManager.h"
 
-@interface MessagePushController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
+@interface MessagePushController : UIViewController<UITableViewDataSource,UITableViewDelegate,SCBMessageManagerDelegate>
 {
     UITableView *table_view;
     /*
@@ -16,10 +18,13 @@
      */
     UIView *topView;
     NSMutableArray *table_array;
+    SCBMessageManager *messageManager;
 }
 
 @property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) UIView *topView;
 @property(nonatomic,retain) NSMutableArray *table_array;
+@property(nonatomic,retain) SCBMessageManager *messageManager;
+
 
 @end

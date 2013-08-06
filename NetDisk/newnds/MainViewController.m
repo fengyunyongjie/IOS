@@ -8,6 +8,8 @@
 
 #import "MainViewController.h"
 #import "MyndsViewController.h"
+#import "MessagePushController.h"
+
 #define TabBarHeight 60
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -134,6 +136,9 @@
 }
 -(void)goMessage:(id)sender
 {
+    MessagePushController *messagePush = [[MessagePushController alloc] init];
+    [self.navigationController pushViewController:messagePush animated:YES];
+    [messagePush release];
     NSLog(@"点击消息");
 }
 -(void)touchView:(id)sender

@@ -7,16 +7,30 @@
 //
 
 #import "SCBFriendManager.h"
+#import "SCBoxConfig.h"
+#import "SCBSession.h"
 
 @implementation SCBFriendManager
-//获取群组列表/friendships/groups
-//获取所有群组及好友列表/friendships/groups/deep
-//创建群组/friendships/group/create
-//修改群组/friendships/group/update
-//删除群组/friendships/group/del
-//获取好友列表/friendships/friends
-//添加好友/friendships/friend/create
-//移动好友/friendships/friend/move
-//修改好友备注/friendships/friend/remark/update
-//删除好友/friendships/friend/del
+
+-(void)getFriendshipsGroups:(int)cursor offset:(int)offset
+{
+    self.matableData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,MSGS]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = MSGS;
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"cursor=%i&offset=%i",cursor,offset];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    NSLog(@"--------------------------------------------------请求的参数：%@",body);
+    [body release];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
 @end

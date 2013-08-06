@@ -23,6 +23,7 @@
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
 #import "UploadAll.h"
+#import "MessagePushController.h"
 
 #define TabBarHeight 60
 #define ChangeTabWidth 90
@@ -839,6 +840,9 @@ typedef enum{
 }
 -(void)goMessage:(id)sender
 {
+    MessagePushController *messagePush = [[MessagePushController alloc] init];
+    [self.navigationController pushViewController:messagePush animated:YES];
+    [messagePush release];
     NSLog(@"点击消息");
 }
 -(void)newFinder:(id)sender
