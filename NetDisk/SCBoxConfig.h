@@ -16,7 +16,7 @@
 #define SERVER_URL @"http://192.168.1.5/nds/api"	//local host
 //#define SERVER_URL @"http://192.168.1.27/nds/api"	//local host
 
-#pragma mark - 用户管理
+#pragma mark - 1.用户管理
 //用户注册
 //#define USER_REGISTER_URI @"/usr/register"
 #define USER_REGISTER_URI @"/account/register"
@@ -29,11 +29,24 @@
 #define USER_SPACE_URI @"/usr/space"
 
 
-#pragma mark - 好友管理
-#pragma mark - 短消息管理
+#pragma mark - 2.好友管理
+//获取群组列表/friendships/groups
+//获取所有群组及好友列表/friendships/groups/deep
+//创建群组/friendships/group/create
+//修改群组/friendships/group/update
+//删除群组/friendships/group/del
+//获取好友列表/friendships/friends
+//添加好友/friendships/friend/create
+//移动好友/friendships/friend/move
+//修改好友备注/friendships/friend/remark/update
+//删除好友/friendships/friend/del
+#pragma mark - 3.短消息管理
+//获取短消息列表/msgs
+//发送短消息/msg/send
+//删除短消息/msg/del
+//删除所有短消息/msg/delall
 
-
-#pragma mark - 文件管理
+#pragma mark - 4.文件管理
 //打开网盘
 //#define FM_URI @"/fm"
 #define FM_URI @"/fm/open"
@@ -48,7 +61,8 @@
 //文件下载
 #define FM_DOWNLOAD_URI @"/fm/download"
 #define FM_DOWNLOAD_NEW_URI @"/fm/download/new"
-
+//搜索/fm/search
+#define FM_SEARCH_URI @"/fm/search"
 //缩略图下载
 #define FM_DOWNLOAD_THUMB_URI @"/fm/download/thumb"
 //新缩略图下载
@@ -58,12 +72,21 @@
 //获取文件详细信息
 #define FM_GETFILEINFO @"/fm/getFileInfo"
 
-#pragma mark - 共享管理
+#pragma mark - 5.共享管理
 //打开共享文件夹
 #define SHARE_OPEN_URI @"/share/open"
+//新建/share/mkdir
+//重命名/share/rename
+//剪切粘贴/share/cutpaste
+//删除/share/rm
+//搜索/share/search
+#define SHARE_SEARCH_URI @"/share/search"
+//取消共享/share/cancel
+//获取共享成员列表/share/members
+//踢除共享成员/share/member/rm
+//退出共享/share/member/exit
 
-
-#pragma mark - 意见管理
+#pragma mark - 6.意见管理
 
 #pragma mark - 照片管理
 #pragma mark - 获取用户的所有的拍摄信息
@@ -90,7 +113,7 @@
 #define FM_UPLOAD_NEW @"/fm/upload/new"
 //新上传提交
 #define FM_UPLOAD_NEW_COMMIT @"/fm/upload/new/commit"
-#pragma mark - 分享链接
+#pragma mark - 7.分享链接
 //发布公开外链
 #define LINK_RELEASE_PUB_URI @"/link/release_pub"
 #endif

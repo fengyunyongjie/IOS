@@ -48,6 +48,7 @@ typedef enum {
 @property (strong,nonatomic) UILabel *lblShare;
 @property (strong,nonatomic) UIView *searchView;
 @property (strong,nonatomic) UITextField *tfdSearch;
+@property (strong,nonatomic) UIButton *more_button;
 -(void)loadData;
 @end
 

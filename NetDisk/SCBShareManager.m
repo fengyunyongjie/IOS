@@ -19,6 +19,26 @@
 {
     self.delegate=nil;
 }
+-(void)searchWithQueryparam:(NSString *)f_queryparam shareType:(NSString *)share_type
+{
+    self.sm_type=kSMTypeSearch;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_SEARCH_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_pid=%@&f_queryparam=%@&cursor=%d&offset=%d&shareType=%@",@"1",f_queryparam,0,-1,share_type];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [body release];
+}
 -(void)openFinderWithID:(NSString *)f_id shareType:(NSString *)share_type
 {
     self.sm_type=kSMTypeOpenFinder;
@@ -94,28 +114,15 @@
     if ([[dic objectForKey:@"code"] intValue]==0) {
         NSLog(@"操作成功 数据大小：%d",[self.activeData length]);
         if (self.delegate) {
-//            switch (self.fm_type) {
-//                case kFMTypeOpenFinder:
-//                    [self.delegate openFinderSucess:dic];
-//                    break;
-//                case kFMTypeRemove:
-//                    [self.delegate removeSucess];
-//                    break;
-//                case kFMTypeRename:
-//                    [self.delegate renameSucess];
-//                    break;
-//                case kFMTypeMove:
-//                    [self.delegate moveSucess];
-//                    NSLog(@"移动成功");
-//                    break;
-//                case kFMTypeOperateUpdate:
-//                    [self.delegate operateSucess:dic];
-//                    break;
-//                case kFMTypeNewFinder:
-//                    [self.delegate newFinderSucess];
-//                    break;
-//            }
-            [self.delegate openFinderSucess:dic];
+            switch (self.sm_type) {
+                case kSMTypeOpenFinder:
+                    [self.delegate openFinderSucess:dic];
+                    break;
+                case kSMTypeSearch:
+                    [self.delegate searchSucess:dic];
+                    break;
+
+            }
         }
     }else
     {

@@ -14,6 +14,7 @@ typedef enum {
     kFMTypeMove,
     kFMTypeOperateUpdate,
     kFMTypeNewFinder,
+    kFMTypeSearch,
 }kFMType;
 @protocol SCBFileManagerDelegate;
 @interface SCBFileManager : NSObject
@@ -36,6 +37,7 @@ typedef enum {
 //移除/fm/rm
 -(void)removeFileWithIDs:(NSArray*)f_ids;
 //搜索/fm/search
+-(void)searchWithQueryparam:(NSString *)f_queryparam;
 //打开网盘收站/fm/trash
 //彻底删除/fm/trash/del
 //清空回收站/fm/trash/delall
@@ -56,6 +58,7 @@ typedef enum {
 //下载/fm/download/new/
 @end
 @protocol SCBFileManagerDelegate
+-(void)searchSucess:(NSDictionary *)datadic;
 -(void)operateSucess:(NSDictionary *)datadic;
 -(void)openFinderSucess:(NSDictionary *)datadic;
 -(void)openFinderUnsucess;

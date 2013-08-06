@@ -108,14 +108,14 @@ typedef enum{
             [back_button release];
         }
         //更多按钮
-        UIButton *more_button = [[UIButton alloc] init];
+        self.more_button = [[UIButton alloc] init];
         UIImage *moreImage = [UIImage imageNamed:@"Bt_More.png"];
-        [more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
-        [more_button setImage:moreImage forState:UIControlStateNormal];
-        [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-        [more_button addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchUpInside];
-        [nbar addSubview:more_button];
-        [more_button release];
+        [self.more_button setFrame:CGRectMake(320-RightButtonBoderWidth-moreImage.size.width/2, (44-moreImage.size.height/2)/2, moreImage.size.width/2, moreImage.size.height/2)];
+        [self.more_button setImage:moreImage forState:UIControlStateNormal];
+        [self.more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+        [self.more_button addTarget:self action:@selector(showMenu:) forControlEvents:UIControlEventTouchUpInside];
+        [nbar addSubview:self.more_button];
+        [self.more_button release];
         
         //表视图
         self.tableView=[[UITableView alloc] init];
@@ -449,6 +449,31 @@ typedef enum{
     r.size.height=self.view.frame.size.height-56;
     self.tableView.frame=r;
     [self.ctrlView setHidden:YES];
+
+    switch (self.myndsType) {
+        case kMyndsTypeDefaultSearch:
+        case kMyndsTypeMyShareSearch:
+        case kMyndsTypeShareSearch:
+        {
+            r=self.view.frame;
+            r.origin.y=44+36;
+            r.size.height=self.view.frame.size.height-44-12-36;
+            self.tableView.frame=r;
+            [self.searchView setHidden:NO];
+            [self.more_button setHidden:YES];
+        }
+            break;
+        default:
+        {
+            r=self.view.frame;
+            r.origin.y=44;
+            r.size.height=self.view.frame.size.height-44-12;
+            self.tableView.frame=r;
+            [self.searchView setHidden:YES];
+            [self.more_button setHidden:NO];
+        }
+            break;
+    }
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     
     [self setHidesBottomBarWhenPushed:NO];
@@ -544,6 +569,42 @@ typedef enum{
 }
 
 #pragma mark - 操作方法
+-(void)searchAction:(id)sender
+{
+    [self.tfdSearch endEditing:YES];
+    switch (self.myndsType) {
+        case kMyndsTypeDefaultSearch:
+        {
+            [self.fm cancelAllTask];
+            self.fm=nil;
+            self.fm=[[[SCBFileManager alloc] init] autorelease];
+            [self.fm setDelegate:self];
+            [self.fm searchWithQueryparam:self.tfdSearch.text];
+        }
+            break;
+        case kMyndsTypeMyShareSearch:
+        {
+            [self.sm cancelAllTask];
+            self.sm=nil;
+            self.sm=[[[SCBShareManager alloc] init] autorelease];
+            [self.sm setDelegate:self];
+            [self.sm searchWithQueryparam:self.tfdSearch.text shareType:@"O"];
+        }
+            break;
+        case kMyndsTypeShareSearch:
+        {
+            [self.sm cancelAllTask];
+            self.sm=nil;
+            self.sm=[[[SCBShareManager alloc] init] autorelease];
+            [self.sm setDelegate:self];
+            [self.sm searchWithQueryparam:self.tfdSearch.text shareType:@"M"];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
 -(void)cancelNewFinder:(id)sender
 {
     [self.tfdFinderName endEditing:YES];
@@ -664,6 +725,9 @@ typedef enum{
 }
 - (void)updateFileList
 {
+    if (self.myndsType==kMyndsTypeDefaultSearch||self.myndsType==kMyndsTypeMyShareSearch||self.myndsType==kMyndsTypeShareSearch) {
+        return;
+    }
     NSString *dataFilePath=[YNFunctions getDataCachePath];
     dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
     if ([[NSFileManager defaultManager] fileExistsAtPath:dataFilePath])
@@ -706,6 +770,9 @@ typedef enum{
         self.sm=[[[SCBShareManager alloc] init] autorelease];
         [self.sm setDelegate:self];
         [self.sm openFinderWithID:self.f_id shareType:@"M"];
+    }else if(self.myndsType==kMyndsTypeDefaultSearch){
+    }else if(self.myndsType==kMyndsTypeMyShareSearch){
+    }else if(self.myndsType==kMyndsTypeShareSearch){
     }else
     {
         [self.fm cancelAllTask];
@@ -959,6 +1026,15 @@ typedef enum{
             }
             return [a count];
         }
+    }
+    switch (self.myndsType) {
+        case kMyndsTypeDefaultSearch:
+        case kMyndsTypeMyShareSearch:
+        case kMyndsTypeShareSearch:
+        {
+            return 0;
+        }
+            break;
     }
     return 1;
 }
@@ -1352,6 +1428,15 @@ typedef enum{
         if (self.myndsType==kMyndsTypeSelect){
             viewController.delegate=self.delegate;
         }
+        if (self.myndsType==kMyndsTypeDefaultSearch) {
+            viewController.myndsType=kMyndsTypeDefault;
+        }else if (self.myndsType==kMyndsTypeMyShareSearch)
+        {
+            viewController.myndsType=kMyndsTypeMyShare;
+        }else if (self.myndsType==kMyndsTypeShareSearch)
+        {
+            viewController.myndsType=kMyndsTypeShare;
+        }
         viewController.title=f_name;
         [self.navigationController pushViewController:viewController animated:YES];
     }else
@@ -1480,6 +1565,47 @@ typedef enum{
     self.hud.margin=10.f;
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)searchSucess:(NSDictionary *)datadic
+{
+    self.dataDic=datadic;
+    self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
+    NSMutableArray *a=[NSMutableArray array];
+    NSMutableArray *b=[NSMutableArray array];
+    for (int i=0; i<self.listArray.count; i++) {
+        FileItem *fileItem=[[[FileItem alloc]init]autorelease];
+        [a addObject:fileItem];
+        [fileItem setChecked:NO];
+        NSDictionary *dic=[self.listArray objectAtIndex:i];
+        NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
+        if ([f_mime isEqualToString:@"directory"]) {
+            [b addObject:dic];
+        }
+    }
+    self.m_fileItems=a;
+    self.finderArray=b;
+    if (self.dataDic) {
+        [self.tableView reloadData];
+    }else
+    {
+        [self goSearch:nil];
+    }
+    NSLog(@"SearchSucess:");
+    if (self.dataDic)
+    {
+        NSString *dataFilePath=[YNFunctions getDataCachePath];
+        dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:@"search_result"]];
+        
+        NSError *jsonParsingError=nil;
+        NSData *data=[NSJSONSerialization dataWithJSONObject:self.dataDic options:0 error:&jsonParsingError];
+        BOOL isWrite=[data writeToFile:dataFilePath atomically:YES];
+        if (isWrite) {
+            NSLog(@"写入文件成功：%@",dataFilePath);
+        }else
+        {
+            NSLog(@"写入文件失败：%@",dataFilePath);
+        }
+    }
 }
 -(void)openFinderSucess:(NSDictionary *)datadic
 {
