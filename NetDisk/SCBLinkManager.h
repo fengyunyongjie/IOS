@@ -21,5 +21,5 @@ typedef enum {
 @end
 @protocol SCBLinkManagerDelegate
 -(void)releaseLinkSuccess:(NSString *)l_url;
--(void)releaseLinkUnsuccess;
+-(void)releaseLinkUnsuccess:(NSString *)error_info;
 @end

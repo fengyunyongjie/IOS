@@ -239,7 +239,7 @@ static BOOL h_f=NO;
     if ([userName isEqualToString:@"fengyn@16feng.com"]) {
         return NO;
     }
-    return NO;
+    return YES;
 }
 +(BOOL)isOpenHideFeature
 {

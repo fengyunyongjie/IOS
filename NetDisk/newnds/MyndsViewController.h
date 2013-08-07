@@ -49,6 +49,8 @@ typedef enum {
 @property (strong,nonatomic) UIView *searchView;
 @property (strong,nonatomic) UITextField *tfdSearch;
 @property (strong,nonatomic) UIButton *more_button;
+@property (strong,nonatomic) UIControl *selectView;
+@property (strong,nonatomic) NSArray *selectBtns;
 -(void)loadData;
 @end
 

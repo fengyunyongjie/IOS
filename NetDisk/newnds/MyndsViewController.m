@@ -29,6 +29,13 @@
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
 typedef enum{
+    kSelectFileTypeDefault,
+    kSelectFileTypeImage,
+    kSelectFileTypeVideo,
+    kSelectFileTypeAudio,
+    kSelectFileTypeDocument,
+}SelectFileType;
+typedef enum{
     kAlertTagDeleteOne,
     kAlertTagDeleteMore,
     kAlertTagRename,
@@ -79,13 +86,19 @@ typedef enum{
         niv.frame=nbar.frame;
         [nbar addSubview:niv];
         [self.view addSubview: nbar];
+        //标题按钮
+        UIButton *btnTitle=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnTitle.frame=CGRectMake(60, 0, 200, 44);
+        [btnTitle setBackgroundImage:[UIImage imageNamed:@"Bt_Title.png"] forState:UIControlStateNormal];
+        [btnTitle addTarget:self action:@selector(showTitleMenu:) forControlEvents:UIControlEventTouchUpInside];
+        [nbar addSubview:btnTitle];
         //标题
         self.titleLabel=[[UILabel alloc] init];
         self.titleLabel.text=self.title;
         self.titleLabel.font=[UIFont boldSystemFontOfSize:18];
         self.titleLabel.textAlignment=UITextAlignmentCenter;
         self.titleLabel.backgroundColor=[UIColor clearColor];
-        self.titleLabel.frame=CGRectMake(60, 0, 200, 44);
+        self.titleLabel.frame=CGRectMake(80, 0, 160, 44);
         [nbar addSubview:self.titleLabel];
         //把色值转换成图片
         CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
@@ -282,6 +295,63 @@ typedef enum{
 //        lblNewFinde12r.frame=CGRectMake(25+(90*2), 59+88+44, 90, 21);
 //        [self.ctrlView addSubview:lblNewFinde12r];
         
+        //筛选菜单
+        self.selectView=[[UIControl alloc] init];
+        [self.selectView addTarget:self action:@selector(hideSender:) forControlEvents:UIControlEventTouchUpInside];
+        self.selectView.frame=self.view.frame;
+        UIImageView *selectBgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Filter.png"]];
+        selectBgView.frame=CGRectMake(55, 0+44, 210, 169);
+        [self.selectView addSubview:selectBgView];
+        [self.view addSubview:self.selectView];
+        UIButton *btnSelect1=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect1.frame=CGRectMake(60, 14+44, 199, 29);
+        [btnSelect1 setTitle:@"默认" forState:UIControlStateNormal];
+        [btnSelect1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect1 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect1 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect1 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect1 setTag:kSelectFileTypeDefault];
+        [self.selectView addSubview:btnSelect1];
+        UIButton *btnSelect2=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect2.frame=CGRectMake(60, 43+44, 199, 29);
+        [btnSelect2 setTitle:@"图片" forState:UIControlStateNormal];
+        [btnSelect2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect2 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect2 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect2 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect2 setTag:kSelectFileTypeImage];
+        [self.selectView addSubview:btnSelect2];
+        UIButton *btnSelect3=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect3.frame=CGRectMake(60, 72+44, 199, 29);
+        [btnSelect3 setTitle:@"视频" forState:UIControlStateNormal];
+        [btnSelect3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect3 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect3 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect3 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect3 setTag:kSelectFileTypeVideo];
+        [self.selectView addSubview:btnSelect3];
+        UIButton *btnSelect4=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect4.frame=CGRectMake(60, 101+44, 199, 29);
+        [btnSelect4 setTitle:@"音乐" forState:UIControlStateNormal];
+        [btnSelect4 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect4 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect4 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect4 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect4 setTag:kSelectFileTypeAudio];
+        [self.selectView addSubview:btnSelect4];
+        UIButton *btnSelect5=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect5.frame=CGRectMake(60, 130+44, 199, 29);
+        [btnSelect5 setTitle:@"文档" forState:UIControlStateNormal];
+        [btnSelect5 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect5 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect5 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect5 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect5 setTag:kSelectFileTypeDocument];
+        [self.selectView addSubview:btnSelect5];
+        self.selectBtns=@[btnSelect1,btnSelect2,btnSelect3,btnSelect4,btnSelect5];
+        [btnSelect1 setSelected:YES];
+        [self.selectView setHidden:YES];
+        
         
         //表格操作菜单
         self.cellMenu=[[UIView alloc] init];
@@ -469,6 +539,7 @@ typedef enum{
     r.size.height=self.view.frame.size.height-56;
     self.tableView.frame=r;
     [self.ctrlView setHidden:YES];
+    self.selectView.frame=self.view.frame;
 
     switch (self.myndsType) {
         case kMyndsTypeDefaultSearch:
@@ -589,6 +660,32 @@ typedef enum{
 }
 
 #pragma mark - 操作方法
+-(void)hideSender:(id)sender
+{
+    UIView *view=(UIView *)sender;
+    [view setHidden:YES];
+}
+-(void)selectFileType:(id)sender
+{
+    for (UIButton *btn in self.selectBtns) {
+        [btn setSelected:NO];
+    }
+    UIButton *btn=nil;
+//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeDefault];
+//    [btn setSelected:NO];
+//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeImage];
+//    [btn setSelected:NO];
+//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeVideo];
+//    [btn setSelected:NO];
+//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeAudio];
+//    [btn setSelected:NO];
+//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeDocument];
+//    [btn setSelected:NO];
+    
+    btn=(UIButton *)sender;
+    [btn setSelected:YES];
+    [self.selectView setHidden:YES];
+}
 - (void)endEdit:(id)sender
 {
     [self.tfdFinderName endEditing:YES];
@@ -866,6 +963,10 @@ typedef enum{
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+-(void)showTitleMenu:(id)sender
+{
+    [self.selectView setHidden:NO];
+}
 -(void)showMenu:(id)sender
 {
     if (self.selectedIndexPath) {
@@ -990,14 +1091,29 @@ typedef enum{
 -(void)pasteBoard:(NSString *)content
 {
     [[UIPasteboard generalPasteboard] setString:content];
+    
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"已经复制成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 -(void)mailShare:(NSString *)content
 {
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
     if ([MFMailComposeViewController canSendMail]) {
         MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
         picker.mailComposeDelegate = self;
         
-        [picker setSubject:content];
+        [picker setSubject:text];
         
         
         // Set up recipients
@@ -1015,7 +1131,7 @@ typedef enum{
         //[picker addAttachmentData:myData mimeType:@"image/jpeg" fileName:@"rainy"];
         
         // Fill out the email body text
-        NSString *emailBody = content;
+        NSString *emailBody = text;
         [picker setMessageBody:emailBody isHTML:NO];
         
         [self presentModalViewController:picker animated:YES];
@@ -1024,24 +1140,30 @@ typedef enum{
 }
 -(void)messageShare:(NSString *)content
 {
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
     if ([MFMessageComposeViewController canSendText]) {
         MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
         picker.messageComposeDelegate = self;
         
-        [picker setBody:content];
+        [picker setBody:text];
         [self presentModalViewController:picker animated:YES];
         [picker release];
     }
 }
 -(void)weixin:(NSString *)content
 {
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
     AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-    [appDelegate sendImageContentIsFiends:NO text:content];
+    [appDelegate sendImageContentIsFiends:NO text:text];
 }
 -(void)frends:(NSString *)content
 {
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
     AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-    [appDelegate sendImageContentIsFiends:YES text:content];
+    [appDelegate sendImageContentIsFiends:YES text:text];
 }
 #pragma mark - QBImagePickerControllerDelegate
 
@@ -1279,7 +1401,7 @@ typedef enum{
         }else
         {
             NSString *f_size=[this objectForKey:@"f_size"];
-            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",f_modify,[YNFunctions convertSize:f_size]];
+            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[YNFunctions convertSize:f_size],f_modify];
         //是否显示收藏图标
             NSObject *tag=nil;
             tag=[[FavoritesData sharedFavoritesData] isExistsWithFID:f_id];
@@ -1567,7 +1689,7 @@ typedef enum{
 #pragma mark - SCBLinkManagerDelegate
 -(void)releaseLinkSuccess:(NSString *)l_url
 {
-    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+//    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
 //    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=6.0) {
 //        NSArray *activityItems=[[NSArray alloc] initWithObjects:text, nil];
 //        UIActivityViewController *activetyVC=[[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
@@ -1586,13 +1708,13 @@ typedef enum{
 //    }else
     {
         UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
-        [actionSheet setTitle:text];
+        [actionSheet setTitle:l_url];
         [actionSheet setTag:kActionSheetTagShare];
         [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
         [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     }
 }
--(void)releaseLinkUnsuccess;
+-(void)releaseLinkUnsuccess:(NSString *)error_info
 {
     NSLog(@"openFinderUnsucess: 网络连接失败!!");
     if (self.hud) {
@@ -1602,7 +1724,8 @@ typedef enum{
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.hud];
     [self.hud show:NO];
-    self.hud.labelText=@"获取外链失败";
+    //self.hud.labelText=@"获取外链失败";
+    self.hud.labelText=error_info;
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];

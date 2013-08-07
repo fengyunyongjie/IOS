@@ -74,7 +74,7 @@
     if (self.delegate) {
         switch (self.lm_type) {
             case kLMTypeReleaseLink:
-                [self.delegate releaseLinkUnsuccess];
+                [self.delegate releaseLinkUnsuccess:@"网络有问题"];
                 break;
         }
     }
@@ -104,7 +104,10 @@
         if (self.delegate) {
             switch (self.lm_type) {
                 case kLMTypeReleaseLink:
-                    [self.delegate releaseLinkUnsuccess];
+                {
+                    NSString *info=(NSString *)[dic objectForKey:@"info"];
+                    [self.delegate releaseLinkUnsuccess:info];
+                }
                     break;
             }
         }
