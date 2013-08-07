@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SCBMessageManager.h"
+#import "SCBFriendManager.h"
 
-
-@interface MessagePushController : UIViewController<UITableViewDataSource,UITableViewDelegate,SCBMessageManagerDelegate>
+@interface MessagePushController : UIViewController<UITableViewDataSource,UITableViewDelegate,SCBMessageManagerDelegate,SCBFriendManagerDelegate>
 {
     UITableView *table_view;
     /*
@@ -19,12 +19,14 @@
     UIView *topView;
     NSMutableArray *table_array;
     SCBMessageManager *messageManager;
+    SCBFriendManager *friendManager;
 }
 
 @property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) UIView *topView;
 @property(nonatomic,retain) NSMutableArray *table_array;
 @property(nonatomic,retain) SCBMessageManager *messageManager;
+@property(nonatomic,retain) SCBFriendManager *friendManager;
 
 
 @end

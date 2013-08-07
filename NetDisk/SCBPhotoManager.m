@@ -537,7 +537,7 @@
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_name=%@&f_pid=%i&space_id=%i",name,f_id,space_id];
+    [body appendFormat:@"f_name=%@&f_pid=%i&space_id=%@",name,f_id,space_id];
     NSLog(@"body:%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];

@@ -25,6 +25,7 @@
 @synthesize table_view;
 @synthesize table_array;
 @synthesize messageManager;
+@synthesize friendManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -90,6 +91,9 @@
     messageManager = [[SCBMessageManager alloc] init];
     [messageManager setDelegate:self];
     [messageManager selectMessages:1 cursor:0 offset:-1 unread:0];
+    
+    //好友管理
+    friendManager = [[SCBFriendManager alloc] init];
 }
 
 -(void)back_clicked:(id)sender
@@ -125,7 +129,6 @@
         [cell firstLoad:70];
     }
     
-    
     NSDictionary *diction = [table_array objectAtIndex:[indexPath row]];
     NSString *text = [diction objectForKey:@"msg_content"];
     NSString *time = [diction objectForKey:@"msg_sendtime"];
@@ -136,8 +139,9 @@
     [cell.refused_button setTag:RefusedTag+[indexPath row]];
     [cell.refused_button addTarget:self action:@selector(refused_button_cilicked:) forControlEvents:UIControlEventTouchUpInside];
     NSString *msg_type = [diction objectForKey:@"msg_type"];
+    NSString *msg_sort = [diction objectForKey:@"msg_sort"];
     NSString *msg_sender_remark = [diction objectForKey:@"msg_sender_remark"];
-    [cell setUpdate:text timeString:time msg_type:msg_type msg_sender_remark:msg_sender_remark];
+    [cell setUpdate:text timeString:time msg_type:msg_type msg_sender_remark:msg_sender_remark msg_sort:msg_sort];
     return cell;
 }
 
@@ -145,6 +149,24 @@
 {
     UIButton *button = sender;
     int row = button.tag-AcceptTag;
+    NSDictionary *diction = [table_array objectAtIndex:row];
+    int type = [[diction objectForKey:@"msg_type"] intValue];
+    if(type == 1)
+    {
+        
+    }
+    else if(type == 2)
+    {
+        
+    }
+    else if(type == 3)
+    {
+        
+    }
+    else if(type == 4)
+    {
+        
+    }
 }
 
 -(void)deleteMessage:(int)row
@@ -161,6 +183,24 @@
 {
     UIButton *button = sender;
     int row = button.tag-RefusedTag;
+    NSDictionary *diction = [table_array objectAtIndex:row];
+    int type = [[diction objectForKey:@"msg_type"] intValue];
+    if(type == 1)
+    {
+        
+    }
+    else if(type == 2)
+    {
+        
+    }
+    else if(type == 3)
+    {
+        
+    }
+    else if(type == 4)
+    {
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -190,6 +230,68 @@
 -(void)error
 {
     NSLog(@"error---------------------");
+}
+
+#pragma mark -----  SCBFriendManagerDelegate
+
+//获取群组列表
+-(void)getFriendshipsGroups:(NSDictionary *)dictionary
+{
+
+}
+
+//获取所有群组及好友列表/friendships/groups/deep
+-(void)getFriendshipsGroupsDeep:(NSDictionary *)dictionary
+{
+
+}
+
+//创建群组/friendships/group/create
+-(void)getFriendshipsGroupsCreate:(NSDictionary *)dictionary
+{
+
+}
+
+//修改群组/friendships/group/update
+-(void)getFriendshipsGroupsUpdate:(NSDictionary *)dictionary
+{
+
+}
+
+//删除群组/friendships/group/del
+-(void)getFriendshipsGroupDel:(NSDictionary *)dictionary
+{
+
+}
+
+//获取好友列表/friendships/friends
+-(void)getFriendshipsFriends:(NSDictionary *)dictionary
+{
+
+}
+
+//添加好友/friendships/friend/create
+-(void)getFriendshipsFriendsCreate:(NSDictionary *)dictionary
+{
+
+}
+
+//移动好友/friendships/friend/move
+-(void)getFriendshipsFriendMove:(NSDictionary *)dictionary
+{
+
+}
+
+//修改好友备注/friendships/friend/remark/update
+-(void)getFriendshipsFriendRemarkUpdate:(NSDictionary *)dictionary
+{
+
+}
+
+//删除好友/friendships/friend/del
+-(void)getFriendshipsFriendDel:(NSDictionary *)dictionary
+{
+
 }
 
 -(void)dealloc

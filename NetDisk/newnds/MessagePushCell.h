@@ -36,7 +36,7 @@
 @property(nonatomic,retain) UIButton *accept_button;
 @property(nonatomic,retain) UIButton *refused_button;
 
--(void)setUpdate:(NSString *)title timeString:(NSString *)timeString msg_type:(NSString *)msg_type msg_sender_remark:(NSString *)msg_sender_remark;
+-(void)setUpdate:(NSString *)title timeString:(NSString *)timeString msg_type:(NSString *)msg_type msg_sender_remark:(NSString *)msg_sender_remark msg_sort:(NSString *)msg_sort;
 -(void)firstLoad:(CGFloat)height;
 
 @end

@@ -59,7 +59,7 @@
 -(void)requestUploadState:(NSString *)s_name;
 
 //上传提交
--(void)requestUploadCommit:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name device:(NSString *)deviceName skip:(NSString *)skip f_md5:(NSString *)f_md5 img_createtime:(NSString *)dateString;
+-(void)requestUploadCommit:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name device:(NSString *)deviceName skip:(NSString *)skip f_md5:(NSString *)f_md5 img_createtime:(NSString *)dateString  space_id:(NSString *)space_id;
 //
 ////查看上传记录
 //-(void)lookDescript:(NSDictionary *)dictionary;

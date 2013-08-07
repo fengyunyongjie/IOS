@@ -90,7 +90,7 @@
 
 
 //上传提交
--(void)requestUploadCommit:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name device:(NSString *)deviceName skip:(NSString *)skip f_md5:(NSString *)f_md5 img_createtime:(NSString *)dateString
+-(void)requestUploadCommit:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name device:(NSString *)deviceName skip:(NSString *)skip f_md5:(NSString *)f_md5 img_createtime:(NSString *)dateString space_id:(NSString *)space_id
 {
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
@@ -108,6 +108,7 @@
     [body appendString:[NSString stringWithFormat:@"&f_md5=%@",f_md5]];
     [body appendString:@"&img_size="];
     [body appendString:@"&img_createtime="];
+    [body appendFormat:@"&space_id=%@",space_id];
     NSLog(@"body:%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];

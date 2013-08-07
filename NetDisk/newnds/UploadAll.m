@@ -14,7 +14,6 @@
 
 @implementation UploadAll
 @synthesize uploadAllList;
-@synthesize uploadAllDelegate;
 @synthesize isUpload;
 @synthesize space_id;
 
@@ -162,7 +161,6 @@
 //上传进行时，发送上传进度数据
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag
 {
-    [self.uploadAllDelegate upProess:proress fileTag:fileTag];
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
     ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];

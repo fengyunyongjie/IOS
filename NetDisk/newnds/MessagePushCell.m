@@ -27,49 +27,79 @@
 }
 
 
--(void)setUpdate:(NSString *)title timeString:(NSString *)timeString msg_type:(NSString *)msg_type msg_sender_remark:(NSString *)msg_sender_remark
+-(void)setUpdate:(NSString *)title timeString:(NSString *)timeString msg_type:(NSString *)msg_type msg_sender_remark:(NSString *)msg_sender_remark msg_sort:(NSString *)msg_sort
 {
-    int type = [msg_type intValue];
-    switch (type) {
-        case 1:
-            title = [NSString stringWithFormat:AddFirendToMe,msg_sender_remark];
-            break;
-        case 2:
-            title = [NSString stringWithFormat:AddFirendToOther];
-            break;
-        case 3:
-            title = [NSString stringWithFormat:AddFamilyToMe,msg_sender_remark];
-            break;
-        case 4:
-            title = [NSString stringWithFormat:AddFirendToSelf,msg_sender_remark,title];
-            break;
-        case 5:
-            title = [NSString stringWithFormat:AddShared,msg_sender_remark,title];
-            break;
-        case 6:
-            title = [NSString stringWithFormat:GetOutShared,msg_sender_remark,title];
-            break;
-        case 7:
-            title = [NSString stringWithFormat:EscShared,msg_sender_remark,title];
-            break;
-        case 8:
-            title = [NSString stringWithFormat:AccoutSelfEsc,msg_sender_remark,title];
-            break;
-        case 9:
-            title = [NSString stringWithFormat:UpdateNameShared,msg_sender_remark,title,title];
-            break;
-        case 10:
-            title = [NSString stringWithFormat:DeleteFile,msg_sender_remark,title];
-            break;
-        case 11:
-            title = [NSString stringWithFormat:NewFlod,msg_sender_remark,title,title];
-            break;
-        case 12:
-            title = [NSString stringWithFormat:NewAdd,msg_sender_remark,title];
-            break;
-        default:
-            break;
+    int friend_type = [msg_type intValue];
+    int sort_type = [msg_sort intValue];
+    if(friend_type == 0)
+    {
+        switch (sort_type) {
+            case 0:
+                title = [NSString stringWithFormat:AddFirendToMe,msg_sender_remark];
+                break;
+            case 1:
+                title = [NSString stringWithFormat:AddFirendToSelf,msg_sender_remark,title];
+                break;
+            case 2:
+                title = [NSString stringWithFormat:AddShared,msg_sender_remark,title];
+                break;
+            case 3:
+                title = [NSString stringWithFormat:GetOutShared,msg_sender_remark,title];
+                break;
+            case 4:
+                title = [NSString stringWithFormat:EscShared,msg_sender_remark,title];
+                break;
+            default:
+                break;
+        }
     }
+    if(friend_type == 1)
+    {
+        switch (sort_type) {
+            case 0:
+                title = [NSString stringWithFormat:AddFirendToMe,msg_sender_remark];
+                break;
+            case 1:
+                title = [NSString stringWithFormat:AddFirendToSelf,msg_sender_remark,title];
+                break;
+            case 2:
+                title = [NSString stringWithFormat:AddShared,msg_sender_remark,title];
+                break;
+            case 3:
+                title = [NSString stringWithFormat:GetOutShared,msg_sender_remark,title];
+                break;
+            case 4:
+                title = [NSString stringWithFormat:EscShared,msg_sender_remark,title];
+                break;
+            default:
+                break;
+        }
+    }
+//    switch (sort_type) {
+//        case 2:
+//            title = [NSString stringWithFormat:AddFirendToOther];
+//            break;
+//        case 3:
+//            title = [NSString stringWithFormat:AddFamilyToMe,msg_sender_remark];
+//            break;
+//        case 8:
+//            title = [NSString stringWithFormat:AccoutSelfEsc,msg_sender_remark,title];
+//            break;
+//        case 9:
+//            title = [NSString stringWithFormat:UpdateNameShared,msg_sender_remark,title,title];
+//            break;
+//        case 10:
+//            title = [NSString stringWithFormat:DeleteFile,msg_sender_remark,title];
+//            break;
+//        case 11:
+//            title = [NSString stringWithFormat:NewFlod,msg_sender_remark,title,title];
+//            break;
+//        case 12:
+//            title = [NSString stringWithFormat:NewAdd,msg_sender_remark,title];
+//            break;
+//        default:
+//            break;
+//    }
     
     [title_label setText:title];
     [time_label setText:timeString];
@@ -113,6 +143,7 @@
     [accept_button setBackgroundImage:[UIImage imageNamed:@"Bt_NewsAccept.png"] forState:UIControlStateNormal];
     [accept_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [accept_button setTitle:@"接受" forState:UIControlStateNormal];
+    [accept_button setHidden:YES];
     [self addSubview:accept_button];
     
     CGRect refused_rect = CGRectMake(320-boderWidth-50, (height-22)/2, 50, 22);
@@ -120,6 +151,7 @@
     [refused_button setBackgroundImage:[UIImage imageNamed:@"Bt_NewsRefuse.png"] forState:UIControlStateNormal];
     [refused_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [refused_button setTitle:@"拒绝" forState:UIControlStateNormal];
+    [refused_button setHidden:YES];
     [self addSubview:refused_button];
 }
 

@@ -9,6 +9,7 @@
 #import "UploadFile.h"
 //需要引用的类
 #import <CommonCrypto/CommonDigest.h>
+#import "WebData.h"
 
 @implementation UploadFile
 @synthesize demo;
@@ -245,7 +246,7 @@
     {
         [delegate upProess:1 fileTag:currTag];
         NSLog(@"4:提交上传表单:%@",finishName);
-        [uploderDemo requestUploadCommit:[NSString stringWithFormat:@"%i",f_id] f_name:demo.f_base_name s_name:finishName device:@"" skip:@"" f_md5:uploadData img_createtime:@""];
+        [uploderDemo requestUploadCommit:[NSString stringWithFormat:@"%i",f_id] f_name:demo.f_base_name s_name:finishName device:@"" skip:@"" f_md5:uploadData img_createtime:@"" space_id:space_id];
     }
     else
     {
@@ -293,6 +294,12 @@
         demo.f_lenght = [demo.f_data length];
         NSLog(@"Url-------:%@",demo.databasePath);
         [demo updateTaskTableFName];
+        
+        WebData *web = [[WebData alloc] init];
+        web.photo_name = demo.f_base_name;
+        web.photo_id = [NSString stringWithFormat:@"%i",demo.f_id];
+        [web insertWebData];
+        [web release];
         [delegate upFinish:currTag];
         [uploadData release];
     }

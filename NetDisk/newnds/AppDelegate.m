@@ -98,15 +98,15 @@
 {
     //记录用户操作
     UserInfo *info = [[[UserInfo alloc] init] autorelease];
-//    info.isTrue = YES;
-//    info.keyString = @"isFirstLoad";
+    info.isTrue = YES;
+    info.keyString = @"isFirstLoad";
     [info insertUserinfo];
 }
 
 -(BOOL)isFirstLoad
 {
     UserInfo *info = [[[UserInfo alloc] init] autorelease];
-//    info.keyString = @"isFirstLoad";
+    info.keyString = @"isFirstLoad";
     return [info selectIsTrueForKey];
 }
 
