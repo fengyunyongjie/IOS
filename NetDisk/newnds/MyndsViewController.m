@@ -370,8 +370,9 @@ typedef enum{
         
         
         //新建文件夹视图
-        self.newFinderView=[[[UIView alloc] init] autorelease];
+        self.newFinderView=[[[UIControl alloc] init] autorelease];
         self.newFinderView.frame=self.view.frame;
+        [self.newFinderView addTarget:self action:@selector(endEdit:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.newFinderView];
         [self.newFinderView setHidden:YES];
         UIImageView *newFinderBg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_CreateFolder.png"]];
@@ -588,6 +589,10 @@ typedef enum{
 }
 
 #pragma mark - 操作方法
+- (void)endEdit:(id)sender
+{
+    [self.tfdFinderName endEditing:YES];
+}
 -(void)searchAction:(id)sender
 {
     [self.tfdSearch endEditing:YES];
@@ -866,6 +871,9 @@ typedef enum{
     if (self.selectedIndexPath) {
         //[self.tableView deleteRowsAtIndexPaths:@[self.selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self hideOptionCell];
+    }
+    if (!self.newFinderView.hidden) {
+        return;
     }
     [self.ctrlView setHidden:!self.ctrlView.hidden];
 }

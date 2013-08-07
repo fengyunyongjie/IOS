@@ -117,6 +117,7 @@
 {
     [self.navigationController setNavigationBarHidden:YES];
     self.titleLabel.text=self.title;
+    [self.tableView reloadData];
     self.ctrlView.frame=self.view.frame;
     //[self.navigationController.navigationBar
      //setBackgroundColor:[UIColor orangeColor]];
@@ -163,6 +164,7 @@
         //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     }
+    //cell.selectionStyle=UITableViewCellSelectionStyleNone;
     cell.selectedBackgroundView=[[[UIView alloc] initWithFrame:cell.frame] autorelease];
     cell.selectedBackgroundView.backgroundColor=[UIColor colorWithRed:255/255.0f green:181/255.0f blue:94/255.0f alpha:1];
     UILabel *tlabel;
