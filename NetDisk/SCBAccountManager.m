@@ -157,7 +157,8 @@ static SCBAccountManager *_sharedAccountManager;
                 [[SCBSession sharedSession] setSpaceID:(NSString *)[dic objectForKey:@"space_id"]];
                 [[SCBSession sharedSession] setUserTag:(NSString *)[dic objectForKey:@"usr_tag"]];
                 
-                [APService setTags:nil alias:[dic objectForKey:@"space_id"]];
+                NSString *alias=[NSString stringWithFormat:@"%@",[dic objectForKey:@"space_id"]];
+                [APService setTags:nil alias:alias];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
@@ -183,8 +184,8 @@ static SCBAccountManager *_sharedAccountManager;
                 [[SCBSession sharedSession] setHomeID:(NSString *)[dic objectForKey:@"home_id"]];
                 [[SCBSession sharedSession] setSpaceID:(NSString *)[dic objectForKey:@"space_id"]];
                 [[SCBSession sharedSession] setUserTag:(NSString *)[dic objectForKey:@"usr_tag"]];
-                
-                [APService setTags:nil alias:[dic objectForKey:@"space_id"]];
+                NSString *alias=[NSString stringWithFormat:@"%@",[dic objectForKey:@"space_id"]];
+                [APService setTags:nil alias:alias];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
