@@ -118,11 +118,12 @@
             else if ([password length]<6||[password length]>16) {
                 self.m_hud.labelText=@"输入密码在6-16位";
                 rt=NO;
-            }else if(![password isEqualToString:passwordA])
-            {
-                self.m_hud.labelText=@"两次输入的密码不一致";
-                rt=NO;
             }
+//            else if(![password isEqualToString:passwordA])
+//            {
+//                self.m_hud.labelText=@"两次输入的密码不一致";
+//                rt=NO;
+//            }
         }
     }
     [self.m_hud show:NO];

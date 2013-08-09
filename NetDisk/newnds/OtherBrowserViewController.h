@@ -19,6 +19,7 @@
 @property (assign,nonatomic) BOOL isFinished;
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSString *savePath;
+@property (strong,nonatomic) UILabel *titleLabel;
 -(IBAction)openWithOthersApp:(id)sender;
 -(IBAction)shared:(id)sender;
 -(IBAction)download:(id)sender;

@@ -25,6 +25,7 @@
 #import "MainViewController.h"
 #import "ChangeUploadViewController.h"
 #import "UserInfo.h"
+#import "APService.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -90,6 +91,16 @@
         [firstLoadView.view setHidden:YES];
     }
     
+    // Required
+    [APService
+     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                         UIRemoteNotificationTypeSound |
+                                         UIRemoteNotificationTypeAlert)];
+    // Required
+    [APService setupWithOption:launchOptions];
+    
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kAPNetworkDidReceiveMessageNotification object:nil];
     return YES;
 }
 
@@ -102,7 +113,13 @@
     info.keyString = @"isFirstLoad";
     [info insertUserinfo];
 }
-
+- (void)networkDidReceiveMessage:(NSNotification *)notification {
+    NSDictionary * userInfo = [notification userInfo];
+    NSString *content = [userInfo valueForKey:@"content"];
+    NSString *extras = [userInfo valueForKey:@"extras"];
+    NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //自定义参数，key是自己定义的
+    
+}
 -(BOOL)isFirstLoad
 {
     UserInfo *info = [[[UserInfo alloc] init] autorelease];
@@ -313,10 +330,16 @@
     NSLog(@"Error in registration. Error: %@", err);
 }
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    // Required
+    [APService registerDeviceToken:deviceToken];
+    
     NSLog(@"devToken=%@",deviceToken);
     //[self alertNotice:@"" withMSG:[NSString stringWithFormat:@"devToken=%@",deviceToken] cancleButtonTitle:@"Ok" otherButtonTitle:@""];
 }
-
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    // Required
+    [APService handleRemoteNotification:userInfo];
+}
 -(void)addTabBarView
 {
     UINavigationController *viewController1,*viewController2,*viewController3,*viewController4;

@@ -24,6 +24,7 @@
 #import <MessageUI/MessageUI.h>
 #import "UploadAll.h"
 #import "MessagePushController.h"
+#import "QLBrowserViewController.h"
 
 #define TabBarHeight 60
 #define ChangeTabWidth 90
@@ -1669,10 +1670,25 @@ typedef enum{
                 NSString *filePath=[YNFunctions getFMCachePath];
                 filePath=[filePath stringByAppendingPathComponent:fileName];
                 if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-                    //文件存在，打开预览
-                    UIDocumentInteractionController *docIC=[[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]] autorelease];
-                    docIC.delegate=self;
-                    [docIC presentPreviewAnimated:YES];
+//                    //文件存在，打开预览
+//                    UIDocumentInteractionController *docIC=[[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:filePath]] autorelease];
+//                    docIC.delegate=self;
+//                    [docIC presentPreviewAnimated:YES];
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                        QLBrowserViewController *previewController=[[QLBrowserViewController alloc] init];
+                        previewController.dataSource=self;
+                        previewController.delegate=self;
+                        
+                        previewController.currentPreviewItemIndex=0;
+                        [previewController setHidesBottomBarWhenPushed:YES];
+                        //            [self.navigationController pushViewController:previewController animated:YES];
+                        //[self presentModalViewController:previewController animated:YES];
+                        [self presentViewController:previewController animated:YES completion:^(void){
+                            NSLog(@"%@",previewController);
+                        }];
+                        //            [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+                    }else{
+                    }
                 }else{
                     OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
                     [otherBrowser setHidesBottomBarWhenPushed:YES];
@@ -2304,5 +2320,38 @@ typedef enum{
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-
+#pragma mark - QLPreviewControllerDataSource
+// Returns the number of items that the preview controller should preview
+- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)previewController
+{
+    NSInteger numToPreview = 0;
+    //
+    //    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    //    if (selectedIndexPath.section == 0)
+    //        numToPreview = NUM_DOCS;
+    //    else
+    //        numToPreview = self.documentURLs.count;
+    //
+    //    return numToPreview;
+    numToPreview=[self.tableView numberOfRowsInSection:0];
+    //return numToPreview;
+    return 1;
+}
+- (void)previewControllerDidDismiss:(QLPreviewController *)controller
+{
+    // if the preview dismissed (done button touched), use this method to post-process previews
+}
+// returns the item that the preview controller should preview
+- (id)previewController:(QLPreviewController *)previewController previewItemAtIndex:(NSInteger)idx
+{
+    NSURL *fileURL = nil;
+    
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    NSDictionary *dic=[self.listArray objectAtIndex:selectedIndexPath.row];
+    NSString *fileName=[dic objectForKey:@"f_name"];
+    NSString *filePath=[YNFunctions getFMCachePath];
+    filePath=[filePath stringByAppendingPathComponent:fileName];
+    fileURL=[NSURL fileURLWithPath:filePath];
+    return fileURL;
+}
 @end

@@ -10,6 +10,7 @@
 #import "SCBoxConfig.h"
 #import "SCBSession.h"
 #import "MF_Base64Additions.h"
+#import "APService.h"
 static SCBAccountManager *_sharedAccountManager;
 @implementation SCBAccountManager
 +(SCBAccountManager *)sharedManager
@@ -156,6 +157,7 @@ static SCBAccountManager *_sharedAccountManager;
                 [[SCBSession sharedSession] setSpaceID:(NSString *)[dic objectForKey:@"space_id"]];
                 [[SCBSession sharedSession] setUserTag:(NSString *)[dic objectForKey:@"usr_tag"]];
                 
+                [APService setTags:nil alias:[dic objectForKey:@"space_id"]];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
@@ -181,6 +183,8 @@ static SCBAccountManager *_sharedAccountManager;
                 [[SCBSession sharedSession] setHomeID:(NSString *)[dic objectForKey:@"home_id"]];
                 [[SCBSession sharedSession] setSpaceID:(NSString *)[dic objectForKey:@"space_id"]];
                 [[SCBSession sharedSession] setUserTag:(NSString *)[dic objectForKey:@"usr_tag"]];
+                
+                [APService setTags:nil alias:[dic objectForKey:@"space_id"]];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];

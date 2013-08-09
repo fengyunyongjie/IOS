@@ -304,7 +304,22 @@
 		29B996CD174E1B4700204068 /* login_btn_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996C8174E1B4700204068 /* login_btn_login.png */; };
 		29B996CE174E1B4700204068 /* login_btn_login_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996C9174E1B4700204068 /* login_btn_login_h.png */; };
 		29B996D1174E1EE200204068 /* login_btn_regist_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996D0174E1EE200204068 /* login_btn_regist_h.png */; };
+		29BAD62D17B4C15300F258F4 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BAD62B17B4C15300F258F4 /* libPushSDK.a */; };
+		29BAD62F17B4C61300F258F4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BAD62E17B4C61300F258F4 /* CoreTelephony.framework */; };
+		29BAD63117B4C62A00F258F4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BAD63017B4C62A00F258F4 /* CoreFoundation.framework */; };
+		29BAD63317B4C6CD00F258F4 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29BAD63217B4C6CD00F258F4 /* PushConfig.plist */; };
+		29BAD63517B4C8C800F258F4 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BAD63417B4C8C800F258F4 /* libPushSDK-Simulator.a */; };
 		29BC8B1D17445F8700ED3DBB /* icon_Load.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BC8B1C17445F8700ED3DBB /* icon_Load.png */; };
+		29BCC81517B348E400108473 /* Bk_Pic.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC80C17B348E400108473 /* Bk_Pic.png */; };
+		29BCC81617B348E400108473 /* Bk_Treaty.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC80D17B348E400108473 /* Bk_Treaty.png */; };
+		29BCC81717B348E400108473 /* Bt_OK.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC80E17B348E400108473 /* Bt_OK.png */; };
+		29BCC81817B348E400108473 /* Bt_ShowPwd.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC80F17B348E400108473 /* Bt_ShowPwd.png */; };
+		29BCC81917B348E400108473 /* Bt_ToLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81017B348E400108473 /* Bt_ToLogin.png */; };
+		29BCC81A17B348E400108473 /* Edit_PwdClk.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81117B348E400108473 /* Edit_PwdClk.png */; };
+		29BCC81B17B348E400108473 /* Edit_PwdNor.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81217B348E400108473 /* Edit_PwdNor.png */; };
+		29BCC81C17B348E400108473 /* Edit_UserClk.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81317B348E400108473 /* Edit_UserClk.png */; };
+		29BCC81D17B348E400108473 /* Edit_UserNor.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81417B348E400108473 /* Edit_UserNor.png */; };
+		29BCC81F17B34A5600108473 /* Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81E17B34A5600108473 /* Title.png */; };
 		29BE13D817A3A6020029E2C6 /* UploadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE13D517A3A6020029E2C6 /* UploadFile.m */; };
 		29BE13D917A3A6020029E2C6 /* UploadViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE13D717A3A6020029E2C6 /* UploadViewCell.m */; };
 		29BE13E317A3A61B0029E2C6 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE13DE17A3A61B0029E2C6 /* PhotoCell.m */; };
@@ -749,7 +764,23 @@
 		29B996C8174E1B4700204068 /* login_btn_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_login.png; sourceTree = "<group>"; };
 		29B996C9174E1B4700204068 /* login_btn_login_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_login_h.png; sourceTree = "<group>"; };
 		29B996D0174E1EE200204068 /* login_btn_regist_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_regist_h.png; sourceTree = "<group>"; };
+		29BAD62917B4C15300F258F4 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		29BAD62B17B4C15300F258F4 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
+		29BAD62E17B4C61300F258F4 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		29BAD63017B4C62A00F258F4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		29BAD63217B4C6CD00F258F4 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		29BAD63417B4C8C800F258F4 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
 		29BC8B1C17445F8700ED3DBB /* icon_Load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_Load.png; sourceTree = "<group>"; };
+		29BCC80C17B348E400108473 /* Bk_Pic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Pic.png; sourceTree = "<group>"; };
+		29BCC80D17B348E400108473 /* Bk_Treaty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Treaty.png; sourceTree = "<group>"; };
+		29BCC80E17B348E400108473 /* Bt_OK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_OK.png; sourceTree = "<group>"; };
+		29BCC80F17B348E400108473 /* Bt_ShowPwd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_ShowPwd.png; sourceTree = "<group>"; };
+		29BCC81017B348E400108473 /* Bt_ToLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_ToLogin.png; sourceTree = "<group>"; };
+		29BCC81117B348E400108473 /* Edit_PwdClk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Edit_PwdClk.png; sourceTree = "<group>"; };
+		29BCC81217B348E400108473 /* Edit_PwdNor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Edit_PwdNor.png; sourceTree = "<group>"; };
+		29BCC81317B348E400108473 /* Edit_UserClk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Edit_UserClk.png; sourceTree = "<group>"; };
+		29BCC81417B348E400108473 /* Edit_UserNor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Edit_UserNor.png; sourceTree = "<group>"; };
+		29BCC81E17B34A5600108473 /* Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Title.png; sourceTree = "<group>"; };
 		29BE13D417A3A6020029E2C6 /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
 		29BE13D517A3A6020029E2C6 /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
 		29BE13D617A3A6020029E2C6 /* UploadViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewCell.h; sourceTree = "<group>"; };
@@ -1153,6 +1184,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29BAD63117B4C62A00F258F4 /* CoreFoundation.framework in Frameworks */,
+				29BAD62F17B4C61300F258F4 /* CoreTelephony.framework in Frameworks */,
 				29CED3681781203C00899FAE /* MessageUI.framework in Frameworks */,
 				29D72E031771753A008D830A /* QuickLook.framework in Frameworks */,
 				2939A656174DE5F80036EFD6 /* AssetsLibrary.framework in Frameworks */,
@@ -1166,6 +1199,8 @@
 				29EFE851172A55AD0099B5A7 /* Foundation.framework in Frameworks */,
 				29EFE852172A55AD0099B5A7 /* CoreGraphics.framework in Frameworks */,
 				2910C31D17438AEF00195008 /* libWeChatSDK_armv7_armv7s.a in Frameworks */,
+				29BAD62D17B4C15300F258F4 /* libPushSDK.a in Frameworks */,
+				29BAD63517B4C8C800F258F4 /* libPushSDK-Simulator.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1696,6 +1731,49 @@
 			path = login;
 			sourceTree = "<group>";
 		};
+		29BAD62717B4C14400F258F4 /* JPush */ = {
+			isa = PBXGroup;
+			children = (
+				29BAD62817B4C15300F258F4 /* lib */,
+			);
+			name = JPush;
+			sourceTree = "<group>";
+		};
+		29BAD62817B4C15300F258F4 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				29BAD63417B4C8C800F258F4 /* libPushSDK-Simulator.a */,
+				29BAD62917B4C15300F258F4 /* APService.h */,
+				29BAD62B17B4C15300F258F4 /* libPushSDK.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		29BCC80A17B348B300108473 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				29BCC80B17B348E400108473 /* Login-Regist */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		29BCC80B17B348E400108473 /* Login-Regist */ = {
+			isa = PBXGroup;
+			children = (
+				29BCC81E17B34A5600108473 /* Title.png */,
+				29BCC80C17B348E400108473 /* Bk_Pic.png */,
+				29BCC80D17B348E400108473 /* Bk_Treaty.png */,
+				29BCC80E17B348E400108473 /* Bt_OK.png */,
+				29BCC80F17B348E400108473 /* Bt_ShowPwd.png */,
+				29BCC81017B348E400108473 /* Bt_ToLogin.png */,
+				29BCC81117B348E400108473 /* Edit_PwdClk.png */,
+				29BCC81217B348E400108473 /* Edit_PwdNor.png */,
+				29BCC81317B348E400108473 /* Edit_UserClk.png */,
+				29BCC81417B348E400108473 /* Edit_UserNor.png */,
+			);
+			path = "Login-Regist";
+			sourceTree = "<group>";
+		};
 		29CB860917B0A21600C7629B /* Translfer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1779,6 +1857,7 @@
 		29EFE853172A55AD0099B5A7 /* newnds */ = {
 			isa = PBXGroup;
 			children = (
+				29BCC80A17B348B300108473 /* Images */,
 				29CB860917B0A21600C7629B /* Translfer */,
 				29390F2E17AA444D00C9BE49 /* MySpace */,
 				299D9F661754326900B61161 /* sqlite3 */,
@@ -1824,6 +1903,7 @@
 				29EFE85F172A55AD0099B5A7 /* Default.png */,
 				29EFE861172A55AD0099B5A7 /* Default@2x.png */,
 				29EFE863172A55AD0099B5A7 /* Default-568h@2x.png */,
+				29BAD63217B4C6CD00F258F4 /* PushConfig.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2184,6 +2264,9 @@
 		83A3A0481650D0C700BEDB27 = {
 			isa = PBXGroup;
 			children = (
+				29BAD63017B4C62A00F258F4 /* CoreFoundation.framework */,
+				29BAD62E17B4C61300F258F4 /* CoreTelephony.framework */,
+				29BAD62717B4C14400F258F4 /* JPush */,
 				29CED3671781203C00899FAE /* MessageUI.framework */,
 				29D72E021771753A008D830A /* QuickLook.framework */,
 				29EFE853172A55AD0099B5A7 /* newnds */,
@@ -2806,6 +2889,17 @@
 				29CB862117B0A21700C7629B /* Bt_UploadCancleCh.png in Resources */,
 				29CB862217B0A21700C7629B /* Bt_UploadOk.png in Resources */,
 				29CB862317B0A21700C7629B /* Bt_UploadOkCh.png in Resources */,
+				29BCC81517B348E400108473 /* Bk_Pic.png in Resources */,
+				29BCC81617B348E400108473 /* Bk_Treaty.png in Resources */,
+				29BCC81717B348E400108473 /* Bt_OK.png in Resources */,
+				29BCC81817B348E400108473 /* Bt_ShowPwd.png in Resources */,
+				29BCC81917B348E400108473 /* Bt_ToLogin.png in Resources */,
+				29BCC81A17B348E400108473 /* Edit_PwdClk.png in Resources */,
+				29BCC81B17B348E400108473 /* Edit_PwdNor.png in Resources */,
+				29BCC81C17B348E400108473 /* Edit_UserClk.png in Resources */,
+				29BCC81D17B348E400108473 /* Edit_UserNor.png in Resources */,
+				29BCC81F17B34A5600108473 /* Title.png in Resources */,
+				29BAD63317B4C6CD00F258F4 /* PushConfig.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2947,6 +3041,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				HEADER_SEARCH_PATHS = (
+					./NetDisk/lib/include,
+					"$(SRCROOT)/lib",
+				);
 				INFOPLIST_FILE = "newnds/newnds-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -2956,6 +3054,7 @@
 					"\"$(SRCROOT)/NetDisk/lib/i386\"",
 					"\"$(SRCROOT)/UMAnalytics_Sdk_2.1.3.OpenUDID\"",
 					"\"$(SRCROOT)/newnds/SDKExport\"",
+					"\"$(SRCROOT)/lib\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2981,6 +3080,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				HEADER_SEARCH_PATHS = (
+					./NetDisk/lib/include,
+					"$(SRCROOT)/lib",
+				);
 				INFOPLIST_FILE = "newnds/newnds-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -2990,6 +3093,7 @@
 					"\"$(SRCROOT)/NetDisk/lib/i386\"",
 					"\"$(SRCROOT)/UMAnalytics_Sdk_2.1.3.OpenUDID\"",
 					"\"$(SRCROOT)/newnds/SDKExport\"",
+					"\"$(SRCROOT)/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
