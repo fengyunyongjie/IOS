@@ -153,7 +153,7 @@
     baseBL = TRUE;
     isAlert = TRUE;
     libaryTimer = nil;
-    allHeight = self.view.frame.size.height - 49;
+    allHeight = self.view.frame.size.height - TabBarHeight;
 //    int defHeight = (allHeight-260)/2;
 //    CGRect rect = CGRectMake((320-184)/2, defHeight, 184, 124);
 //    stateImageview = [[UIImageView alloc] initWithFrame:rect];

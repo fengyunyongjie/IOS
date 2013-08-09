@@ -9,6 +9,7 @@
 #define TabBarWidth (320-TabBarS_Width)
 #define ImageViewBorder 3
 #define LabelViewBorder 20
+#define TabBarHeight 60
 
 #import "MYTabBarController.h"
 #import "YNFunctions.h"
@@ -210,10 +211,7 @@
 - (void)loadView
 {
     [super loadView];
-    if (self.need_to_custom) {
-        [self setNeed_to_custom:YES];
-        [self show_custom_view_layer];
-    }
+    [self show_custom_view_layer];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -286,7 +284,7 @@
         animation.subtype = kCATransitionFromTop;
         
         CGRect frame = [custom_view frame];
-        frame.origin.y = allHeight-49;
+        frame.origin.y = allHeight-TabBarHeight;
         [custom_view setFrame:frame];
         [custom_view.layer removeAllAnimations];
         [custom_view.layer addAnimation:animation forKey:@"animated"];

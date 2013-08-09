@@ -13,6 +13,7 @@
 @synthesize f_id,f_base_name,f_data,f_state,t_id,f_lenght,result,proess,index_id;
 @synthesize deviceName,state;
 @synthesize space_id;
+@synthesize p_id;
 
 -(id)init
 {
@@ -42,6 +43,7 @@
         sqlite3_bind_blob(statement, 5, [f_data bytes], [f_data length], NULL);
         sqlite3_bind_text(statement, 6, [deviceName UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(statement, 7, [sapce_ UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 8, [p_id UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
@@ -190,8 +192,10 @@
             demo.f_lenght = sqlite3_column_int(statement, 5);
             demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
             demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
+            demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
             demo.index_id = i;
             [upload_file setSpace_id:demo.space_id];
+            [upload_file setF_id:demo.p_id];
             [upload_file setDemo:demo];
             [tableArray addObject:upload_file];
             [demo release];
@@ -230,6 +234,7 @@
             demo.f_lenght = sqlite3_column_int(statement, 5);
             demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
             demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
+            demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
             demo.index_id = i;
             [tableArray addObject:demo];
             [demo release];
@@ -268,6 +273,7 @@
             demo.f_lenght = sqlite3_column_int(statement, 5);
             demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
             demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
+            demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
             [tableArray addObject:demo];
             [demo release];
         }

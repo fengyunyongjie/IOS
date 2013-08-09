@@ -34,6 +34,7 @@
     NSArray *fileArray;
     BOOL isFirst;
     NSString *device_name;
+    NSString *f_id;
 }
 
 @property (nonatomic, retain) id<QBAssetCollectionViewControllerDelegate> delegate;
@@ -53,5 +54,7 @@
 @property (nonatomic, assign) NSUInteger maximumNumberOfSelection;
 
 @property (nonatomic, assign) BOOL isNeedBackButton;
+@property (nonatomic, assign) NSString *device_name;
+@property (nonatomic, retain) NSString *f_id;
 
 @end

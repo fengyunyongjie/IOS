@@ -791,10 +791,11 @@ typedef enum{
         //[self.navigationItem setRightBarButtonItems:@[self.editBtn,self.deleteBtn] animated:YES];
         [self.lblEdit setText:@"取消"];
         [self.navigationItem setLeftBarButtonItem:self.deleteBtn];
-        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-        [appDelegate.myTabBarController setHidesTabBarWithAnimate:YES];
+//        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+        MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+        [myTabbar setHidesTabBarWithAnimate:YES];
 //        CGRect r=self.view.frame;
-//        r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
+//        r.size.height=[[UIScreen mainScreen] bounds].size.height+TabBarHeight;
 //        self.view.frame=r;
 //        //self.tabBarController.tabBar.hidden=YES;
     }else
@@ -802,8 +803,9 @@ typedef enum{
         //[button setTitle:@"编辑"];
         [self.lblEdit setText:@"编辑"];
         [self.navigationItem setLeftBarButtonItem:nil];
-        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-        [appDelegate.myTabBarController setHidesTabBarWithAnimate:NO];
+//        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+        MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+        [myTabbar setHidesTabBarWithAnimate:NO];
         //[self.navigationItem setRightBarButtonItems:@[self.editBtn] animated:YES];
     }
     //   if (!button.selected) {
@@ -911,7 +913,9 @@ typedef enum{
     QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
     imagePickerController.delegate = self;
     imagePickerController.allowsMultipleSelection = YES;
-
+    imagePickerController.f_id  = self.f_id;
+    [imagePickerController requestFileDetail];
+    NSLog(@"self.f_id:%@",self.f_id);
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
     [navigationController setNavigationBarHidden:YES];
     [self presentModalViewController:navigationController animated:YES];
@@ -1179,6 +1183,12 @@ typedef enum{
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate.upload_all changeDeviceName:device_name];
+}
+
+-(void)changeFileId:(NSString *)f_id
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all changeFileId:f_id];
 }
 
 #pragma mark - Table view data source

@@ -35,10 +35,13 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
 - (NSString *)imagePickerController:(QBImagePickerController *)imagePickerController descriptionForNumberOfPhotos:(NSUInteger)numberOfPhotos numberOfVideos:(NSUInteger)numberOfVideos;
 -(void)changeUpload:(NSMutableOrderedSet *)array_;
 -(void)changeDeviceName:(NSString *)device_name;
+-(void)changeFileId:(NSString *)f_id;
 
 @end
 
-@interface QBImagePickerController : UIViewController <UITableViewDataSource, UITableViewDelegate, QBAssetCollectionViewControllerDelegate>
+#import "SCBPhotoManager.h"
+
+@interface QBImagePickerController : UIViewController <UITableViewDataSource, UITableViewDelegate, QBAssetCollectionViewControllerDelegate,SCBPhotoDelegate>
 {
     /*
      自定义navBar
@@ -47,6 +50,9 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
     UIView *bottonView;
     UIButton *change_myFile_button;
     BOOL isNeedBackButton;
+    NSString *f_id;
+    SCBPhotoManager *photoManager;
+    NSString *f_name;
 }
 
 @property (nonatomic, retain) id<QBImagePickerControllerDelegate> delegate;
@@ -59,6 +65,12 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
 @property (nonatomic, assign) BOOL limitsMaximumNumberOfSelection;
 @property (nonatomic, assign) NSUInteger minimumNumberOfSelection;
 @property (nonatomic, assign) NSUInteger maximumNumberOfSelection;
+
+@property (nonatomic,retain) SCBPhotoManager *photoManager;
+@property (nonatomic,retain) NSString *f_id;
+@property (nonatomic,retain) NSString *f_name;
+
+-(void)requestFileDetail;
 
 @end
 

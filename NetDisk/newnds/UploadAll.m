@@ -16,6 +16,7 @@
 @synthesize uploadAllList;
 @synthesize isUpload;
 @synthesize space_id;
+@synthesize f_id;
 
 -(id)init
 {
@@ -59,6 +60,8 @@
         demo.f_base_name = [[asset defaultRepresentation] filename];
         demo.deviceName = deviceName;
         demo.space_id = self.space_id;
+        demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
+        NSLog(@"demo.f_id:%@",demo.p_id);
         NSLog(@"demo.spcae_id:%@",demo.space_id);
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             ALAsset *result = demo.result;
@@ -73,6 +76,7 @@
         [upload_file setDemo:demo];
         [upload_file setDeviceName:deviceName];
         [upload_file setSpace_id:self.space_id];
+        [upload_file setF_id:self.f_id];
         [self.uploadAllList addObject:upload_file];
         [demo release];
         [upload_file release];
@@ -117,20 +121,13 @@
     {
         isUpload = FALSE;
     }
-    NSRange deviceRange = [device_name rangeOfString:@"来自于-"];
-    if(deviceRange.length>0)
-    {
-        deviceName = [[NSString alloc] initWithString:device_name];
-    }
-    else
-    {
-        if([device_name isEqualToString:@"(null)"] || [device_name length]==0)
-        {
-            device_name = [AppDelegate deviceString];
-        }
-        deviceName = [[NSString alloc] initWithFormat:@"来自于-%@",device_name];
-    }
+    deviceName = [[NSString alloc] initWithString:device_name];
     NSLog(@"deviceName:%@",deviceName);
+}
+
+-(void)changeFileId:(NSString *)f_id_
+{
+    f_id = f_id_;
 }
 
 //上传成功

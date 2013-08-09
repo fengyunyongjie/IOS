@@ -23,5 +23,6 @@
 - (NSString *)assetCollectionViewController:(QBAssetCollectionViewController *)assetCollectionViewController descriptionForNumberOfPhotos:(NSUInteger)numberOfPhotos numberOfVideos:(NSUInteger)numberOfVideos;
 -(void)changeUpload:(NSMutableOrderedSet *)array_;
 -(void)changeDeviceName:(NSString *)device_name;
+-(void)changeFileId:(NSString *)f_id;
 
 @end

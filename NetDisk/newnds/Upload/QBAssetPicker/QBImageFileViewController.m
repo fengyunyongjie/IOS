@@ -28,6 +28,8 @@
 @synthesize table_view;
 @synthesize fileArray;
 @synthesize qbDelegate;
+@synthesize f_name;
+@synthesize f_id;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,12 +46,15 @@
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(app_delegate.myTabBarController.selectedIndex==0)
     {
-        space_id = [[SCBSession sharedSession] homeID];
+        space_id = [[SCBSession sharedSession] spaceID];
     }
     else if(app_delegate.myTabBarController.selectedIndex==1)
     {
-        space_id = [[SCBSession sharedSession] spaceID];
+        space_id = [[SCBSession sharedSession] homeID];
     }
+    
+    NSLog(@"space_id:%@",space_id);
+    
     //添加头部试图
     topView = [[UIView alloc] initWithFrame:CGRectMake(0, QBY, 320, 44)];
     UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
@@ -143,10 +148,10 @@
         photoManger = [[SCBPhotoManager alloc] init];
         [photoManger setNewFoldDelegate:self];
     }
-    [photoManger openFinderWithID:@"1" space_id:space_id];
+    [photoManger openFinderWithID:self.f_id space_id:space_id];
     FileDeviceName *file_device = [[FileDeviceName alloc] init];
     [file_device setDeviceName:[AppDelegate deviceString]];
-    [file_device setF_id:@"1"];
+    [file_device setF_id:self.f_id];
     [url_array addObject:file_device];
     [file_device release];
 }
@@ -179,6 +184,7 @@
 {
     FileDeviceName *deviceName = [url_array lastObject];
     [self.qbDelegate uploadFileder:deviceName.deviceName];
+    [self.qbDelegate uploadFiledId:deviceName.f_id];
     [self dismissModalViewControllerAnimated:YES];
     NSLog(@"deviceName:%@",deviceName.deviceName);
 }

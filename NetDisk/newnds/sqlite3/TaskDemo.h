@@ -10,7 +10,7 @@
 #import "DBSqlite3.h"
 #import "ALAsset+AGIPC.h"
 
-#define InsertTaskTable @"INSERT INTO TASKTABLE(F_ID,F_STATE,F_BASE_NAME,F_LENGHT,F_DATA,DEVICE_NAME,SPACE_ID) VALUES (?,?,?,?,?,?,?)"
+#define InsertTaskTable @"INSERT INTO TASKTABLE(F_ID,F_STATE,F_BASE_NAME,F_LENGHT,F_DATA,DEVICE_NAME,SPACE_ID,P_ID) VALUES (?,?,?,?,?,?,?,?)"
 #define DeleteTskTable @"DELETE FROM TASKTABLE WHERE F_BASE_NAME=?"
 #define DeleteALLTskTable @"DELETE FROM TASKTABLE"
 #define UpdateTaskTable @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=? WHERE T_ID=?"
@@ -38,6 +38,7 @@
     //to
     NSString *deviceName;
     NSString *space_id;
+    NSString *p_id;
 }
 
 @property(nonatomic,assign) NSInteger t_id;
@@ -52,6 +53,7 @@
 @property(nonatomic,assign) int state;
 @property(nonatomic,retain) NSString *deviceName;
 @property(nonatomic,retain) NSString *space_id;
+@property(nonatomic,retain) NSString *p_id;
 
 -(id)init;
 

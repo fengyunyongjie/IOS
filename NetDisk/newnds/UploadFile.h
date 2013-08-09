@@ -20,7 +20,7 @@
 -(void)upError:(NSInteger)fileTag;
 @end
 
-@interface UploadFile : NSObject <NewFoldDelegate,UpLoadDelegate>
+@interface UploadFile : NSObject <NewFoldDelegate,UpLoadDelegate,SCBPhotoDelegate>
 {
     //上传需要的参数
     TaskDemo *demo;
@@ -30,8 +30,8 @@
     SCBUploader *uploderDemo;
     
     //上传至文件夹目录ID
-    int f_pid;
-    int f_id;
+    NSString *f_pid;
+    NSString *f_id;
     
     //上传至文件夹目录名称
     NSString *deviceName;
@@ -56,6 +56,8 @@
 @property(nonatomic,retain) NSURLConnection *connection;
 @property(nonatomic,retain) id<UploadFileDelegate> delegate;
 @property(nonatomic,retain) NSString *space_id;
+@property(nonatomic,assign) NSString *f_pid;
+@property(nonatomic,assign) NSString *f_id;
 
 //上传开始
 -(void)upload;

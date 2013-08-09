@@ -12,6 +12,7 @@
 @protocol QBImageFileViewDelegate <NSObject>
 
 -(void)uploadFileder:(NSString *)deviceName;
+-(void)uploadFiledId:(NSString *)f_id_;
 
 @end
 
@@ -30,10 +31,14 @@
     NSMutableArray *url_array;
     id<QBImageFileViewDelegate> qbDelegate;
     NSString *space_id;
+    NSString *f_name;
+    NSString *f_id;
 }
 @property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) NSMutableArray *fileArray;
 @property(nonatomic,retain) id<QBImageFileViewDelegate> qbDelegate;
+@property(nonatomic,retain) NSString *f_name;
+@property(nonatomic,retain) NSString *f_id;
 
 @end
 

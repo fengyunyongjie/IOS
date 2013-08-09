@@ -36,6 +36,7 @@
 @end
 
 @implementation QBImagePickerController
+@synthesize f_id,f_name;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -78,10 +79,18 @@
     return self;
 }
 
+-(void)requestFileDetail
+{
+    [photoManager getDetail:[self.f_id intValue]];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
+    photoManager = [[SCBPhotoManager alloc] init];
+    [photoManager setPhotoDelegate:self];
+    
     void (^assetsGroupsEnumerationBlock)(ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *assetsGroup, BOOL *stop) {
         if (assetsGroup) {
             switch(self.filterType) {
@@ -194,6 +203,20 @@
     [upload_back_button release];
     
     [self.view addSubview:bottonView];
+}
+
+#pragma mark SCBPhotoManagerDelegate
+
+-(void)getFileDetail:(NSDictionary *)dictionary
+{
+    NSLog(@"dictionary:%@",dictionary);
+    NSArray *array = [dictionary objectForKey:@"files"];
+    if([array count]>0)
+    {
+        NSDictionary *diction = [array objectAtIndex:0];
+        self.f_name = [diction objectForKey:@"f_name"];
+        NSLog(@"--------- f_name:%@",self.f_name);
+    }
 }
 
 -(void)clicked_back
@@ -376,7 +399,9 @@
     assetCollectionViewController.limitsMaximumNumberOfSelection = self.limitsMaximumNumberOfSelection;
     assetCollectionViewController.minimumNumberOfSelection = self.minimumNumberOfSelection;
     assetCollectionViewController.maximumNumberOfSelection = self.maximumNumberOfSelection;
-    
+    assetCollectionViewController.f_id = self.f_id;
+    assetCollectionViewController.device_name = self.f_name;
+    NSLog(@"f_name-----:%@",self.f_name);
     [self.navigationController pushViewController:assetCollectionViewController animated:YES];
 }
 
@@ -478,10 +503,16 @@
     [self.delegate changeDeviceName:device_name];
 }
 
+-(void)changeFileId:(NSString *)f_id_
+{
+    [self.delegate changeFileId:f_id];
+}
+
 - (void)changeUpload:(NSMutableOrderedSet *)array_
 {
-    [self dismissModalViewControllerAnimated:YES];
+    NSLog(@"array_:%@",array_);
     [self.delegate changeUpload:array_];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end
