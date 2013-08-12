@@ -353,6 +353,72 @@ typedef enum{
         [btnSelect1 setSelected:YES];
         [self.selectView setHidden:YES];
         
+        //编辑操作菜单
+        self.editView=[[[UIView alloc] init] autorelease];
+        self.editView.frame=CGRectMake(0,self.view.frame.size.height-60, 320,60);
+//        UIImageView *imgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_OptionBar.png"]];
+//        imgView.frame=CGRectMake(0, -10, 320, 60);
+//        [self.editView addSubview:imgView];
+        [self.editView setBackgroundColor:[UIColor blackColor]];
+        [self.editView setHidden:YES];
+        [self.view addSubview:self.editView];
+        //移动按钮
+        UIButton *editBtn1=[UIButton buttonWithType:UIButtonTypeCustom];
+        editBtn1.frame=CGRectMake(10, 0, 60, 60);
+        [editBtn1 setImage:[UIImage imageNamed:@"Bt_ShareF.png"] forState:UIControlStateNormal];
+        [editBtn1 addTarget:self action:@selector(sharedAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.editView addSubview:editBtn1];
+        UILabel *editLbl1=[[[UILabel alloc] init] autorelease];
+        editLbl1.text=@"分享";
+        editLbl1.textAlignment=UITextAlignmentCenter;
+        editLbl1.font=[UIFont systemFontOfSize:12];
+        editLbl1.textColor=[UIColor whiteColor];
+        editLbl1.backgroundColor=[UIColor clearColor];
+        editLbl1.frame=CGRectMake(19, 45, 42, 21);
+        [self.editView addSubview:editLbl1];
+        //移动按钮
+        UIButton *editBtn2=[UIButton buttonWithType:UIButtonTypeCustom];
+        editBtn2.frame=CGRectMake(10+80, 0, 60, 60);
+        [editBtn2 setImage:[UIImage imageNamed:@"Bt_MoveF.png"] forState:UIControlStateNormal];
+        [editBtn2 addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
+        [self.editView addSubview:editBtn2];
+        UILabel *editLbl2=[[[UILabel alloc] init] autorelease];
+        editLbl2.text=@"移动";
+        editLbl2.textAlignment=UITextAlignmentCenter;
+        editLbl2.font=[UIFont systemFontOfSize:12];
+        editLbl2.textColor=[UIColor whiteColor];
+        editLbl2.backgroundColor=[UIColor clearColor];
+        editLbl2.frame=CGRectMake(19+80, 45, 42, 21);
+        [self.editView addSubview:editLbl2];
+        //移动按钮
+        UIButton *editBtn3=[UIButton buttonWithType:UIButtonTypeCustom];
+        editBtn3.frame=CGRectMake(10+80+80, 0, 60, 60);
+        [editBtn3 setImage:[UIImage imageNamed:@"Bt_AllF.png"] forState:UIControlStateNormal];
+        [editBtn3 addTarget:self action:@selector(allSelect:) forControlEvents:UIControlEventTouchUpInside];
+        [self.editView addSubview:editBtn3];
+        UILabel *editLbl3=[[[UILabel alloc] init] autorelease];
+        editLbl3.text=@"全选";
+        editLbl3.textAlignment=UITextAlignmentCenter;
+        editLbl3.font=[UIFont systemFontOfSize:12];
+        editLbl3.textColor=[UIColor whiteColor];
+        editLbl3.backgroundColor=[UIColor clearColor];
+        editLbl3.frame=CGRectMake(19+80+80, 45, 42, 21);
+        [self.editView addSubview:editLbl3];
+        //移动按钮
+        UIButton *editBtn4=[UIButton buttonWithType:UIButtonTypeCustom];
+        editBtn4.frame=CGRectMake(10+80+80+80, 0, 60, 60);
+        [editBtn4 setImage:[UIImage imageNamed:@"Bt_DelF.png"] forState:UIControlStateNormal];
+        [editBtn4 addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.editView addSubview:editBtn4];
+        UILabel *editLbl4=[[[UILabel alloc] init] autorelease];
+        editLbl4.text=@"删除";
+        editLbl4.textAlignment=UITextAlignmentCenter;
+        editLbl4.font=[UIFont systemFontOfSize:12];
+        editLbl4.textColor=[UIColor whiteColor];
+        editLbl4.backgroundColor=[UIColor clearColor];
+        editLbl4.frame=CGRectMake(19+80+80+80, 45, 42, 21);
+        [self.editView addSubview:editLbl4];
+        
         
         //表格操作菜单
         self.cellMenu=[[UIView alloc] init];
@@ -535,10 +601,11 @@ typedef enum{
     CGRect r=self.ctrlView.frame;
     r.origin.y=44;
     self.ctrlView.frame=self.view.frame;
-    r=self.view.frame;
-    r.origin.y=44;
-    r.size.height=self.view.frame.size.height-56;
-    self.tableView.frame=r;
+//    r=self.view.frame;
+//    r.origin.y=44;
+//    r.size.height=self.view.frame.size.height-44-60;
+//    self.tableView.frame=r;
+    //CGRectMake(0, 44, 320, [[UIScreen mainScreen] bounds].size.height-20-44-60);
     [self.ctrlView setHidden:YES];
     self.selectView.frame=self.view.frame;
 
@@ -549,17 +616,23 @@ typedef enum{
         {
             r=self.view.frame;
             r.origin.y=44+36;
-            r.size.height=self.view.frame.size.height-44-12-36;
+            r.size.height=self.view.frame.size.height-44-60-36;
             self.tableView.frame=r;
             [self.searchView setHidden:NO];
             [self.more_button setHidden:YES];
+        }
+            break;
+        case kMyndsTypeSelect:
+        {
+            self.tableView.frame=self.view.frame;
+            [self.searchView setHidden:YES];
         }
             break;
         default:
         {
             r=self.view.frame;
             r.origin.y=44;
-            r.size.height=self.view.frame.size.height-44-12;
+            r.size.height=self.view.frame.size.height-44-60;
             self.tableView.frame=r;
             [self.searchView setHidden:YES];
             [self.more_button setHidden:NO];
@@ -780,6 +853,31 @@ typedef enum{
     [alertView setTag:kAlertTagDeleteMore];
     [alertView release];
 }
+-(void)allSelect:(id)sender
+{
+    BOOL isAllSelect=YES;
+    for (int i=0;i<self.m_fileItems.count;i++) {
+        FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+        //[fileItem setChecked:YES];
+        if (!fileItem.checked) {
+            isAllSelect=NO;
+        }
+
+    }
+    if (isAllSelect) {
+        for (int i=0;i<self.m_fileItems.count;i++) {
+            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+            [fileItem setChecked:NO];
+        }
+    }else
+    {
+        for (int i=0;i<self.m_fileItems.count;i++) {
+            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+            [fileItem setChecked:YES];
+        }
+    }
+    [self.tableView reloadData];
+}
 - (void)editAction:(id)sender
 {
     [self.ctrlView setHidden:YES];
@@ -794,6 +892,7 @@ typedef enum{
 //        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
         MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
         [myTabbar setHidesTabBarWithAnimate:YES];
+        [self.editView setHidden:NO];
 //        CGRect r=self.view.frame;
 //        r.size.height=[[UIScreen mainScreen] bounds].size.height+TabBarHeight;
 //        self.view.frame=r;
@@ -806,6 +905,7 @@ typedef enum{
 //        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
         MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
         [myTabbar setHidesTabBarWithAnimate:NO];
+        [self.editView setHidden:YES];
         //[self.navigationItem setRightBarButtonItems:@[self.editBtn] animated:YES];
     }
     //   if (!button.selected) {
@@ -1035,8 +1135,32 @@ typedef enum{
 }
 -(void)moveFileToID:(NSString *)f_id
 {
-    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-    NSString *m_fid=[dic objectForKey:@"f_id"];
+    NSMutableArray *willMoveObjects=[[[NSMutableArray alloc] init] autorelease];
+    if ([self.tableView isEditing]) {
+        for (int i=0;i<self.m_fileItems.count;i++) {
+            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+            if (fileItem.checked) {
+                NSDictionary *dic=[self.listArray objectAtIndex:i];
+                NSString *m_fid=[dic objectForKey:@"f_id"];
+                if ([f_id intValue]==[m_fid intValue]) {
+                    return;
+                }
+                [willMoveObjects addObject:m_fid];
+            }
+        }
+        if ([willMoveObjects count]<=0) {
+            return;
+        }
+    }else
+    {
+        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+        NSString *m_fid=[dic objectForKey:@"f_id"];
+        
+        if ([f_id intValue]==[m_fid intValue]) {
+            return;
+        }
+        willMoveObjects=@[m_fid];
+    }
     if (self.fm_move) {
         [self.fm cancelAllTask];
     }else
@@ -1044,10 +1168,26 @@ typedef enum{
         self.fm_move=[[[SCBFileManager alloc] init] autorelease];
     }
     self.fm_move.delegate=self;
-    if ([f_id intValue]!=[m_fid intValue]) {
-        [self.fm_move moveFileIDs:@[m_fid] toPID:f_id];
-    }
+    [self.fm_move moveFileIDs:willMoveObjects toPID:f_id];
     [self hideOptionCell];
+}
+-(void)sharedAction:(id)sender
+{
+    NSMutableArray *f_ids=[NSMutableArray array];
+    for (int i=0;i<self.m_fileItems.count;i++) {
+        FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+        if (fileItem.checked) {
+            NSDictionary *dic=[self.listArray objectAtIndex:i];
+            NSString *f_id=[dic objectForKey:@"f_id"];
+            [f_ids addObject:f_id];
+        }
+    }
+    if ([f_ids count]<=0) {
+        return;
+    }
+    SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
+    [lm_temp setDelegate:self];
+    [lm_temp linkWithIDs:f_ids];
 }
 -(void)toShared:(id)sender
 {

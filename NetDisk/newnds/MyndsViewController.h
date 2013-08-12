@@ -51,6 +51,7 @@ typedef enum {
 @property (strong,nonatomic) UIButton *more_button;
 @property (strong,nonatomic) UIControl *selectView;
 @property (strong,nonatomic) NSArray *selectBtns;
+@property (strong,nonatomic) UIView *editView;
 -(void)loadData;
 @end
 

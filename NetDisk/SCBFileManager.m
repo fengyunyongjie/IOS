@@ -131,7 +131,7 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MOVE_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    NSString *fids=[f_ids componentsJoinedByString:@","];
+    NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
     NSString *s_id=[[SCBSession sharedSession] spaceID];
     [body appendFormat:@"f_pid=%@&f_ids[]=%@&space_id=%@",f_pid,fids,s_id];
     NSLog(@"move: %@",body);

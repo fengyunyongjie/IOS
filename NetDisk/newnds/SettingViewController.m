@@ -13,6 +13,7 @@
 #import "UploadViewController.h"
 #import "FavoritesData.h"
 #import "DBSqlite3.h"
+#import "ReportViewController.h"
 
 typedef enum{
     kAlertTypeExit,
@@ -26,6 +27,7 @@ typedef enum{
 @property (strong,nonatomic) NSString *space_total;
 @property (strong,nonatomic) NSString *space_used;
 @property (assign,nonatomic) int tempCount;
+@property (strong,nonatomic) UILabel *titleLabel;
 @end
 
 @implementation SettingViewController
@@ -52,10 +54,21 @@ typedef enum{
     [nbar addSubview:niv];
     [self.view addSubview: nbar];
     
+    //标题
+    self.titleLabel=[[UILabel alloc] init];
+    self.titleLabel.text=self.title;
+    self.titleLabel.font=[UIFont boldSystemFontOfSize:18];
+    self.titleLabel.textAlignment=UITextAlignmentCenter;
+    self.titleLabel.backgroundColor=[UIColor clearColor];
+    self.titleLabel.frame=CGRectMake(60, 0, 200, 44);
+    [nbar addSubview:self.titleLabel];
+
     self.tableView=[[[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped] autorelease];
     self.tableView.dataSource=self;
     self.tableView.delegate=self;
     [self.view addSubview:self.tableView];
+    [self.tableView setBackgroundColor:[UIColor whiteColor]];
+    [self.tableView setBackgroundView:nil];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -71,7 +84,7 @@ typedef enum{
     [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit.png"] forState:UIControlStateNormal];
     [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit_on.png"] forState:UIControlStateHighlighted];
     int y=self.tableView.frame.size.height-30;
-    y=518;
+    y=608;
     [exitButton setFrame:CGRectMake(10, y, 301, 50)];
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:exitButton];
@@ -79,10 +92,11 @@ typedef enum{
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+    self.titleLabel.text=self.title;
     self.tempCount=0;
     CGRect r=self.view.frame;
     r.origin.y=44;
-    r.size.height=self.view.frame.size.height-44;
+    r.size.height=self.view.frame.size.height-44-60;
     self.tableView.frame=r;
 }
 -(void)viewWillDisappear:(BOOL)animated
@@ -318,13 +332,13 @@ typedef enum{
     // Return the number of rows in the section.
     switch (section) {
         case 0:
-            return 2;
+            return 3;
             break;
         case 1:
             return 4;
             break;
         case 2:
-            return 2;
+            return 3;
             break;
         case 3:
             return 1;
@@ -371,6 +385,7 @@ typedef enum{
         
         
     }
+    [cell setBackgroundColor:[UIColor colorWithRed:225/255.0f green:225/255.0f blue:225/255.0f alpha:1.0f]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
     UILabel *titleLabel = (UILabel *)[cell.contentView  viewWithTag:1];
@@ -395,6 +410,20 @@ typedef enum{
                 }
                     break;
                 case 1:
+                {
+                    titleLabel.text = @"昵称";
+//                    NSString *spaceInfo;
+//                    if ([self.space_total isEqualToString:@""]) {
+//                        spaceInfo=@"获取中...";
+//                    }else
+//                    {
+//                        spaceInfo=[NSString stringWithFormat:@"%@/%@",self.space_used,self.space_total];
+//                    }
+//                    descLabel.text=spaceInfo;
+//                    descLabel.textColor = [UIColor grayColor];
+                }
+                    break;
+                case 2:
                 {
                     titleLabel.text = @"网盘用量";
                     NSString *spaceInfo;
@@ -538,6 +567,12 @@ typedef enum{
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     descLabel.hidden = YES;
                     titleLabel.text = @"评分";
+                    break;
+                case 2:
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    descLabel.hidden = YES;
+                    titleLabel.text = @"意见反馈";
                     break;
                 default:
                     break;
@@ -697,6 +732,15 @@ typedef enum{
                 case 1:
                     //评分
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                    break;
+                case 2:
+                    //意见反馈
+                {
+//                    UIViewController *viewController=[[UIViewController alloc] init];
+//                    [self.navigationController pushViewController:viewController animated:YES];
+                    ReportViewController *viewController=[[ReportViewController alloc] initWithNibName:@"ReportViewController" bundle:nil];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                }
                     break;
                 default:
                     break;

@@ -100,6 +100,8 @@
 		29639039173A3E98009C5530 /* FileItemTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29639038173A3E98009C5530 /* FileItemTableCell.m */; };
 		2963903D173A3EC1009C5530 /* Placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903A173A3EC0009C5530 /* Placeholder.png */; };
 		2963903E173A3EC1009C5530 /* Selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903B173A3EC1009C5530 /* Selected.png */; };
+		296E39C917B8D80200A43F29 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E39C717B8D80200A43F29 /* ReportViewController.m */; };
+		296E39CA17B8D80200A43F29 /* ReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 296E39C817B8D80200A43F29 /* ReportViewController.xib */; };
 		298075DD174A141F00B138FE /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298075DB174A141F00B138FE /* RegistViewController.m */; };
 		298075DE174A141F00B138FE /* RegistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 298075DC174A141F00B138FE /* RegistViewController.xib */; };
 		298075DF174A1CAF00B138FE /* input3_createbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A66086169982B90065C73C /* input3_createbg.png */; };
@@ -540,6 +542,9 @@
 		29639038173A3E98009C5530 /* FileItemTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileItemTableCell.m; sourceTree = "<group>"; };
 		2963903A173A3EC0009C5530 /* Placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Placeholder.png; sourceTree = "<group>"; };
 		2963903B173A3EC1009C5530 /* Selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Selected.png; sourceTree = "<group>"; };
+		296E39C617B8D80200A43F29 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
+		296E39C717B8D80200A43F29 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		296E39C817B8D80200A43F29 /* ReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportViewController.xib; sourceTree = "<group>"; };
 		298075DA174A141F00B138FE /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
 		298075DB174A141F00B138FE /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
 		298075DC174A141F00B138FE /* RegistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistViewController.xib; sourceTree = "<group>"; };
@@ -1457,6 +1462,9 @@
 			children = (
 				29852CF6172CBCF5001AD87A /* SettingViewController.h */,
 				29852CF7172CBCF5001AD87A /* SettingViewController.m */,
+				296E39C617B8D80200A43F29 /* ReportViewController.h */,
+				296E39C717B8D80200A43F29 /* ReportViewController.m */,
+				296E39C817B8D80200A43F29 /* ReportViewController.xib */,
 				29B996C2174DF3A500204068 /* SettingData.h */,
 				29B996C3174DF3A500204068 /* SettingData.m */,
 			);
@@ -2900,6 +2908,7 @@
 				29BCC81D17B348E400108473 /* Edit_UserNor.png in Resources */,
 				29BCC81F17B34A5600108473 /* Title.png in Resources */,
 				29BAD63317B4C6CD00F258F4 /* PushConfig.plist in Resources */,
+				296E39CA17B8D80200A43F29 /* ReportViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3009,6 +3018,7 @@
 				29CB860817B0790E00C7629B /* MessagePushController.m in Sources */,
 				29A3D84917B1DF0900A13C0B /* AutomaticUpload.m in Sources */,
 				29A3D84C17B1F97C00A13C0B /* WebData.m in Sources */,
+				296E39C917B8D80200A43F29 /* ReportViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
