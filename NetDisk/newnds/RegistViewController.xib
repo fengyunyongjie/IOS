@@ -409,7 +409,7 @@
 						<string key="NSFrame">{{0, 283}, {82, 1}}</string>
 						<reference key="NSSuperview" ref="440518768"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="220727382"/>
+						<reference key="NSNextKeyView" ref="552191048"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -517,7 +517,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">虹盘注册</string>
-						<object class="NSColor" key="IBUITextColor" id="810000586">
+						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
 							<string key="IBUIColorCocoaTouchKeyPath">darkTextColor</string>
@@ -594,34 +594,38 @@
 						<reference key="IBUIFontDescription" ref="803517478"/>
 						<reference key="IBUIFont" ref="667280748"/>
 					</object>
-					<object class="IBUILabel" id="220727382">
+					<object class="IBUIButton" id="552191048">
 						<reference key="NSNextResponder" ref="440518768"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{14, 263}, {48, 21}}</string>
+						<string key="NSFrame">{{16, 259}, {58, 27}}</string>
 						<reference key="NSSuperview" ref="440518768"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="338462802"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<int key="IBUIContentMode">7</int>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">查看协议</string>
-						<reference key="IBUITextColor" ref="810000586"/>
-						<nil key="IBUIHighlightedColor"/>
-						<int key="IBUIBaselineAdjustment">0</int>
-						<int key="IBUITextAlignment">1</int>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<string key="IBUIHighlightedTitle">查看协议</string>
+						<string key="IBUINormalTitle">查看协议</string>
+						<object class="NSColor" key="IBUIHighlightedTitleColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC4zNzYyMjYwNDkzAA</bytes>
+						</object>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="789546733"/>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
-							<int key="type">1</int>
+							<int key="type">2</int>
 							<double key="pointSize">12</double>
 						</object>
 						<object class="NSFont" key="IBUIFont">
-							<string key="NSName">Helvetica</string>
+							<string key="NSName">Helvetica-Bold</string>
 							<double key="NSSize">12</double>
 							<int key="NSfFlags">16</int>
 						</object>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 				</array>
 				<string key="NSFrameSize">{320, 568}</string>
@@ -734,6 +738,15 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">282</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">lookXY:</string>
+						<reference key="source" ref="552191048"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">284</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -854,7 +867,7 @@
 							<reference ref="584833730"/>
 							<reference ref="462818144"/>
 							<reference ref="379864484"/>
-							<reference ref="220727382"/>
+							<reference ref="552191048"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -914,8 +927,8 @@
 						<reference key="parent" ref="440518768"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">275</int>
-						<reference key="object" ref="220727382"/>
+						<int key="objectID">283</int>
+						<reference key="object" ref="552191048"/>
 						<reference key="parent" ref="440518768"/>
 					</object>
 				</array>
@@ -943,7 +956,8 @@
 				<string key="272.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="273.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="274.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="275.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="283.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="1" key="283.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="35.CustomClassName">UIControl</string>
 				<string key="35.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -957,7 +971,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">282</int>
+			<int key="maxID">284</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -967,6 +981,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="comeBack:">id</string>
 						<string key="endEdit:">id</string>
+						<string key="lookXY:">id</string>
 						<string key="regitst:">id</string>
 						<string key="showPasswd:">id</string>
 					</dictionary>
@@ -977,6 +992,10 @@
 						</object>
 						<object class="IBActionInfo" key="endEdit:">
 							<string key="name">endEdit:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="lookXY:">
+							<string key="name">lookXY:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="regitst:">

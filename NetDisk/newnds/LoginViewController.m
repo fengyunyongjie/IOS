@@ -57,7 +57,10 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (IBAction)forgetPswd:(id)sender
+{
+    
+}
 - (IBAction)userRegister:(id)sender
 {
     RegistViewController *regist=[[[RegistViewController alloc] initWithNibName:@"RegistViewController" bundle:nil] autorelease];

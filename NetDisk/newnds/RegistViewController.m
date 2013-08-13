@@ -53,6 +53,10 @@
 {
     [self.m_passwordTextField setSecureTextEntry:!self.m_passwordTextField.secureTextEntry];
 }
+- (IBAction)lookXY:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.7cbox.cn/agreement.html"]];
+}
 -(void)registSucceed
 {
      [self.m_hud removeFromSuperview];

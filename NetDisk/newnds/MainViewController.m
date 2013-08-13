@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "MyndsViewController.h"
 #import "MessagePushController.h"
+#import "MYTabBarController.h"
 
 #define TabBarHeight 60
 #define ChangeTabWidth 90
@@ -121,6 +122,10 @@
     self.ctrlView.frame=self.view.frame;
     //[self.navigationController.navigationBar
      //setBackgroundColor:[UIColor orangeColor]];
+    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+    if (myTabbar.IsTabBarHiden) {
+        [myTabbar setHidesTabBarWithAnimate:NO];
+    }
 }
 - (void)didReceiveMemoryWarning
 {

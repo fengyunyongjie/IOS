@@ -15,4 +15,5 @@
 - (IBAction)login:(id)sender;
 - (IBAction)userRegister:(id)sender;
 - (IBAction)endEdit:(id)sender;
+- (IBAction)forgetPswd:(id)sender;
 @end

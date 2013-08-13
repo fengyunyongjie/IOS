@@ -654,6 +654,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">forgetPswd:</string>
+						<reference key="source" ref="241152652"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">150</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">userRegister:</string>
 						<reference key="source" ref="278553280"/>
 						<reference key="destination" ref="372490531"/>
@@ -867,7 +876,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">149</int>
+			<int key="maxID">150</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -876,8 +885,8 @@
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="endEdit:">id</string>
+						<string key="forgetPswd:">id</string>
 						<string key="login:">id</string>
-						<string key="showPasswd:">id</string>
 						<string key="userRegister:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -885,12 +894,12 @@
 							<string key="name">endEdit:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="login:">
-							<string key="name">login:</string>
+						<object class="IBActionInfo" key="forgetPswd:">
+							<string key="name">forgetPswd:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="showPasswd:">
-							<string key="name">showPasswd:</string>
+						<object class="IBActionInfo" key="login:">
+							<string key="name">login:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="userRegister:">

@@ -213,12 +213,12 @@ typedef enum{
         [self.ctrlView addSubview:bg];
         
         //按钮－新建文件夹0,0
-        UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder.frame=CGRectMake(25, 44, 90, 87);
-        [btnNewFinder setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
-        [btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnNewFinder addTarget:self action:@selector(goUpload:) forControlEvents:UIControlEventTouchUpInside];
-        [self.ctrlView addSubview:btnNewFinder];
+        self.btnUpload= [UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnUpload.frame=CGRectMake(25, 44, 90, 87);
+        [self.btnUpload setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
+        [self.btnUpload setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [self.btnUpload addTarget:self action:@selector(goUpload:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:self.btnUpload];
         UILabel *lblNewFinder=[[[UILabel alloc] init] autorelease];
         lblNewFinder.text=@"上传";
         lblNewFinder.textAlignment=UITextAlignmentCenter;
@@ -229,12 +229,12 @@ typedef enum{
         [self.ctrlView addSubview:lblNewFinder];
         
         //按钮－编辑0,1
-        UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnEdit.frame=CGRectMake(25+90, 44, 90, 87);
-        [btnEdit setImage:[UIImage imageNamed:@"Bt_naSeach.png"] forState:UIControlStateNormal];
-        [btnEdit setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnEdit addTarget:self action:@selector(goSearch:) forControlEvents:UIControlEventTouchUpInside];
-        [self.ctrlView addSubview:btnEdit];
+        self.btnSearch= [UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnSearch.frame=CGRectMake(25+90, 44, 90, 87);
+        [self.btnSearch setImage:[UIImage imageNamed:@"Bt_naSeach.png"] forState:UIControlStateNormal];
+        [self.btnSearch setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [self.btnSearch addTarget:self action:@selector(goSearch:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:self.btnSearch];
         UILabel *lblNewFinder01=[[[UILabel alloc] init] autorelease];
         lblNewFinder01.text=@"搜索";
         lblNewFinder01.textAlignment=UITextAlignmentCenter;
@@ -261,12 +261,12 @@ typedef enum{
         [self.ctrlView addSubview:lblNewFinder02];
         
         //按钮－新建文件夹 1，0
-        UIButton *btnNewFinder10= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder10.frame=CGRectMake(25, 44+88, 90, 87);
-        [btnNewFinder10 setImage:[UIImage imageNamed:@"Bt_naEdit.png"] forState:UIControlStateNormal];
-        [btnNewFinder10 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnNewFinder10 addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.ctrlView addSubview:btnNewFinder10];
+        self.btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnEdit.frame=CGRectMake(25, 44+88, 90, 87);
+        [self.btnEdit setImage:[UIImage imageNamed:@"Bt_naEdit.png"] forState:UIControlStateNormal];
+        [self.btnEdit setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [self.btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:self.btnEdit];
         self.lblEdit=[[[UILabel alloc] init] autorelease];
         self.lblEdit.text=@"编辑";
         self.lblEdit.textAlignment=UITextAlignmentCenter;
@@ -277,12 +277,12 @@ typedef enum{
         [self.ctrlView addSubview:self.lblEdit];
         
         //按钮－新建文件夹 1，1
-        UIButton *btnNewFinder11= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder11.frame=CGRectMake(25+90, 44+88, 90, 87);
-        [btnNewFinder11 setImage:[UIImage imageNamed:@"Bt_naCreateForlder.png"] forState:UIControlStateNormal];
-        [btnNewFinder11 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnNewFinder11 addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
-        [self.ctrlView addSubview:btnNewFinder11];
+        self.btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnNewFinder.frame=CGRectMake(25+90, 44+88, 90, 87);
+        [self.btnNewFinder setImage:[UIImage imageNamed:@"Bt_naCreateForlder.png"] forState:UIControlStateNormal];
+        [self.btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [self.btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:self.btnNewFinder];
         UILabel *lblNewFinder11=[[[UILabel alloc] init] autorelease];
         lblNewFinder11.text=@"新建文件夹";
         lblNewFinder11.textAlignment=UITextAlignmentCenter;
@@ -308,62 +308,7 @@ typedef enum{
 //        lblNewFinde12r.frame=CGRectMake(25+(90*2), 59+88+44, 90, 21);
 //        [self.ctrlView addSubview:lblNewFinde12r];
         
-        //筛选菜单
-        self.selectView=[[UIControl alloc] init];
-        [self.selectView addTarget:self action:@selector(hideSender:) forControlEvents:UIControlEventTouchUpInside];
-        self.selectView.frame=self.view.frame;
-        UIImageView *selectBgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Filter.png"]];
-        selectBgView.frame=CGRectMake(55, 0+44, 210, 169);
-        [self.selectView addSubview:selectBgView];
-        [self.view addSubview:self.selectView];
-        UIButton *btnSelect1=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect1.frame=CGRectMake(60, 14+44, 199, 29);
-        [btnSelect1 setTitle:@"默认" forState:UIControlStateNormal];
-        [btnSelect1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [btnSelect1 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
-        [btnSelect1 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
-        [btnSelect1 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
-        [btnSelect1 setTag:kSelectFileTypeDefault];
-        [self.selectView addSubview:btnSelect1];
-        UIButton *btnSelect2=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect2.frame=CGRectMake(60, 43+44, 199, 29);
-        [btnSelect2 setTitle:@"图片" forState:UIControlStateNormal];
-        [btnSelect2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [btnSelect2 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
-        [btnSelect2 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
-        [btnSelect2 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
-        [btnSelect2 setTag:kSelectFileTypeImage];
-        [self.selectView addSubview:btnSelect2];
-        UIButton *btnSelect3=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect3.frame=CGRectMake(60, 72+44, 199, 29);
-        [btnSelect3 setTitle:@"视频" forState:UIControlStateNormal];
-        [btnSelect3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [btnSelect3 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
-        [btnSelect3 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
-        [btnSelect3 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
-        [btnSelect3 setTag:kSelectFileTypeVideo];
-        [self.selectView addSubview:btnSelect3];
-        UIButton *btnSelect4=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect4.frame=CGRectMake(60, 101+44, 199, 29);
-        [btnSelect4 setTitle:@"音乐" forState:UIControlStateNormal];
-        [btnSelect4 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [btnSelect4 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
-        [btnSelect4 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
-        [btnSelect4 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
-        [btnSelect4 setTag:kSelectFileTypeAudio];
-        [self.selectView addSubview:btnSelect4];
-        UIButton *btnSelect5=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect5.frame=CGRectMake(60, 130+44, 199, 29);
-        [btnSelect5 setTitle:@"文档" forState:UIControlStateNormal];
-        [btnSelect5 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [btnSelect5 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
-        [btnSelect5 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
-        [btnSelect5 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
-        [btnSelect5 setTag:kSelectFileTypeDocument];
-        [self.selectView addSubview:btnSelect5];
-        self.selectBtns=@[btnSelect1,btnSelect2,btnSelect3,btnSelect4,btnSelect5];
-        [btnSelect1 setSelected:YES];
-        [self.selectView setHidden:YES];
+        
         
         //编辑操作菜单
         self.editView=[[[UIView alloc] init] autorelease];
@@ -371,7 +316,7 @@ typedef enum{
 //        UIImageView *imgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_OptionBar.png"]];
 //        imgView.frame=CGRectMake(0, -10, 320, 60);
 //        [self.editView addSubview:imgView];
-        [self.editView setBackgroundColor:[UIColor blackColor]];
+        [self.editView setBackgroundColor:[UIColor colorWithRed:74/255.0f green:81/255.0f blue:88/255.0f alpha:1.0f]];
         [self.editView setHidden:YES];
         [self.view addSubview:self.editView];
         //移动按钮
@@ -573,6 +518,64 @@ typedef enum{
         [btnSearchOk setImage:[UIImage imageNamed:@"Bt_Seach.png"] forState:UIControlStateNormal];
         [btnSearchOk addTarget:self action:@selector(searchAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.searchView addSubview:btnSearchOk];
+        
+        //筛选菜单
+        self.selectView=[[UIControl alloc] init];
+        [self.selectView addTarget:self action:@selector(hideSender:) forControlEvents:UIControlEventTouchUpInside];
+        self.selectView.frame=self.view.frame;
+        UIImageView *selectBgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Filter.png"]];
+        selectBgView.frame=CGRectMake(55, 0+44, 210, 169);
+        [self.selectView addSubview:selectBgView];
+        [self.view addSubview:self.selectView];
+        [self.view bringSubviewToFront:self.selectView];
+        UIButton *btnSelect1=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect1.frame=CGRectMake(60, 14+44, 199, 29);
+        [btnSelect1 setTitle:@"默认" forState:UIControlStateNormal];
+        [btnSelect1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect1 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect1 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect1 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect1 setTag:kSelectFileTypeDefault];
+        [self.selectView addSubview:btnSelect1];
+        UIButton *btnSelect2=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect2.frame=CGRectMake(60, 43+44, 199, 29);
+        [btnSelect2 setTitle:@"图片" forState:UIControlStateNormal];
+        [btnSelect2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect2 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect2 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect2 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect2 setTag:kSelectFileTypeImage];
+        [self.selectView addSubview:btnSelect2];
+        UIButton *btnSelect3=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect3.frame=CGRectMake(60, 72+44, 199, 29);
+        [btnSelect3 setTitle:@"视频" forState:UIControlStateNormal];
+        [btnSelect3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect3 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect3 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect3 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect3 setTag:kSelectFileTypeVideo];
+        [self.selectView addSubview:btnSelect3];
+        UIButton *btnSelect4=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect4.frame=CGRectMake(60, 101+44, 199, 29);
+        [btnSelect4 setTitle:@"音乐" forState:UIControlStateNormal];
+        [btnSelect4 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect4 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect4 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect4 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect4 setTag:kSelectFileTypeAudio];
+        [self.selectView addSubview:btnSelect4];
+        UIButton *btnSelect5=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnSelect5.frame=CGRectMake(60, 130+44, 199, 29);
+        [btnSelect5 setTitle:@"文档" forState:UIControlStateNormal];
+        [btnSelect5 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnSelect5 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
+        [btnSelect5 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
+        [btnSelect5 addTarget:self action:@selector(selectFileType:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSelect5 setTag:kSelectFileTypeDocument];
+        [self.selectView addSubview:btnSelect5];
+        self.selectBtns=@[btnSelect1,btnSelect2,btnSelect3,btnSelect4,btnSelect5];
+        [btnSelect1 setSelected:YES];
+        [self.selectView setHidden:YES];
     }
     return self;
 }
@@ -608,6 +611,17 @@ typedef enum{
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    NSString *fid=[NSString stringWithFormat:@"%@",self.f_id];
+    if ((self.myndsType==kMyndsTypeShare&&[fid isEqualToString:@"1"])||(self.myndsType==kMyndsTypeMyShare&&[fid isEqualToString:@"1"])) {
+        [self.btnNewFinder setEnabled:NO];
+        [self.btnUpload setEnabled:NO];
+        [self.btnEdit setEnabled:NO];
+//        cell.accessoryType=UITableViewCellAccessoryNone;
+    }
+    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+    if (myTabbar.IsTabBarHiden) {
+        [myTabbar setHidesTabBarWithAnimate:NO];
+    }
     self.titleLabel.text=self.navigationItem.title;
     
     CGRect r=self.ctrlView.frame;
@@ -1103,6 +1117,7 @@ typedef enum{
     [self.ctrlView setHidden:YES];
     NSLog(@"点击新建文件夹");
     [self.newFinderView setHidden:NO];
+    self.tfdFinderName.text=@"";
 //    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 //    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
 //    [[alert textFieldAtIndex:0] setText:@""];
@@ -1629,6 +1644,10 @@ typedef enum{
             case kMyndsTypeMyShareSearch:
             case kMyndsTypeShareSearch:
             {
+                NSString *fid=[NSString stringWithFormat:@"%@",self.f_id];
+                if ((self.myndsType==kMyndsTypeShare&&[fid isEqualToString:@"1"])||(self.myndsType==kMyndsTypeMyShare&&[fid isEqualToString:@"1"])) {
+                    cell.accessoryType=UITableViewCellAccessoryNone;
+                }else
                 cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
             }
                 break;
@@ -1919,7 +1938,7 @@ typedef enum{
         }else
         {
             //非图片文件必须加入收藏后才可以预览（其实我的意思是可以直接预览）
-            if ([YNFunctions isUnlockFeature]) {
+            if (YES) {
                 //先做文件类型判断，是否是为可预览文件，如果为否，不做任何操作
                 //判断文件是否下载完成，如果下载完成，打开预览，否则不做任何操作
                 NSString *fileName=[dic objectForKey:@"f_name"];
@@ -1946,12 +1965,12 @@ typedef enum{
                     }else{
                     }
                 }else{
-                    OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
-                    [otherBrowser setHidesBottomBarWhenPushed:YES];
-                    otherBrowser.dataDic=dic;
-                    NSString *f_name=[dic objectForKey:@"f_name"];
-                    otherBrowser.title=f_name;
-                    [self.navigationController pushViewController:otherBrowser animated:YES];
+//                    OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+//                    [otherBrowser setHidesBottomBarWhenPushed:YES];
+//                    otherBrowser.dataDic=dic;
+//                    NSString *f_name=[dic objectForKey:@"f_name"];
+//                    otherBrowser.title=f_name;
+//                    [self.navigationController pushViewController:otherBrowser animated:YES];
                 }
 
             }

@@ -18,5 +18,6 @@
 - (BOOL)registAssert;
 - (IBAction)endEdit:(id)sender;
 - (IBAction)showPasswd:(id)sender;
+- (IBAction)lookXY:(id)sender;
 
 @end
