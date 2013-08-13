@@ -29,6 +29,8 @@
 @synthesize isHistoryShow;
 @synthesize more_control;
 @synthesize isUploadAll;
+@synthesize isAutomaticUpload;
+@synthesize headerView;
 
 
 #pragma mark ----删除上传时列表
@@ -50,7 +52,7 @@
         
         [self.uploadingList removeObjectAtIndex:row_];
         
-        if(!isHistoryShow)
+        if(!isHistoryShow && [self.uploadListTableView.indexPathsForVisibleRows count]>0)
         {
             [self.uploadListTableView beginUpdates];
             NSIndexPath *index_path = [NSIndexPath indexPathForRow:row_ inSection:0];
@@ -309,7 +311,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self.uploadListTableView reloadData];
+//    [self.uploadListTableView reloadData];
 }
 
 #pragma mark －－－－－头部视图的几个方法
@@ -628,6 +630,33 @@
 //            app_delegate.upload_all.uploadAllList = self.uploadingList;
 //            [app_delegate.upload_all startUpload];
 //        }
+    }
+}
+
+//自动备份上传
+-(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo
+{
+    if(headerView==nil)
+    {
+        static NSString *headerString = @"headerView";
+        headerView = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headerString];
+        CGRect rect = headerView.frame;
+        rect.size.height = 50;
+        [headerView setFrame:rect];
+    }
+    self.uploadListTableView.tableHeaderView = headerView;
+    [headerView setTag:-100];
+    [headerView setUploadDemo:taskdemo];
+    [headerView.button_dele_button setHidden:YES];
+    [headerView.jinDuView setCurrFloat:progess];
+}
+
+//关闭自动备份上传
+-(void)stopAutomatic
+{
+    if(self.uploadListTableView.tableHeaderView)
+    {
+        self.uploadListTableView.tableHeaderView = nil;
     }
 }
 

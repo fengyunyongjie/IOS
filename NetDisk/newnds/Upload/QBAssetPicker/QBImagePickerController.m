@@ -13,12 +13,12 @@
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
-#define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 #define BottonViewHeight self.view.frame.size.height-TabBarHeight+QBY
 
 #import "QBImagePickerController.h"
 #import "QBImagePickerGroupCell.h"
 #import "QBAssetCollectionViewController.h"
+#import "AppDelegate.h"
 @interface QBImagePickerController ()
 
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
@@ -37,6 +37,17 @@
 
 @implementation QBImagePickerController
 @synthesize f_id,f_name;
+
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
+
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return NO;
+}
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -221,7 +232,11 @@
 
 -(void)clicked_back
 {
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
+    
 }
 
 -(void)clicked_more:(id)sender
@@ -232,12 +247,18 @@
 -(void)clicked_changeMyFile:(id)sender
 {
     //请求所有的数据文件
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
 
 -(void)clicked_uploadStop:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -512,7 +533,10 @@
 {
     NSLog(@"array_:%@",array_);
     [self.delegate changeUpload:array_];
-    [self dismissModalViewControllerAnimated:YES];
+//    [self dismissModalViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
 
 @end

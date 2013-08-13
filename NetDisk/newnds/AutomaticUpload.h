@@ -17,30 +17,27 @@
  
  */
 
-@protocol UploadAllFileDelegate <NSObject>
-//上传成功
--(void)upFinish:(NSInteger)fileTag;
-//上传进行时，发送上传进度数据
--(void)upProess:(float)proress fileTag:(NSInteger)fileTag;
-
-@end
-
 #import <Foundation/Foundation.h>
 #import "UploadFile.h"
+#import "ChangeUploadViewController.h"
 
 @interface AutomaticUpload : NSObject <UploadFileDelegate>
 {
-    NSMutableArray *assetArray;
-    id<UploadAllFileDelegate> uploadAllDelegate;
     NSString *space_id;
     NSString *deviceName;
+    NSString *f_id;
+    ChangeUploadViewController *uploadViewController;
+    ALAssetsLibrary *assetsLibrary;
+    NSMutableOrderedSet *assetArray;
+    UploadFile *upload_file;
 }
 
-@property(nonatomic,retain) NSMutableArray *assetArray;
-@property(nonatomic,retain) id<UploadAllFileDelegate> uploadAllDelegate;
+@property(nonatomic,retain) NSMutableOrderedSet *assetArray;
+@property(nonatomic,retain) NSString *f_id;
+@property(nonatomic,retain) NSString *deviceName;
 
 //比对本地数据库
--(NSMutableArray *)isHaveData;
+-(void)isHaveData;
 
 //开启自动上传
 -(void)startAutomaticUpload;

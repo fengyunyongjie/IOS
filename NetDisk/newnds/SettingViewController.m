@@ -173,15 +173,13 @@ typedef enum{
             {
                 [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
                 if([onStr isEqualToString:@"0"])
                 {
-                    [uploadView stopAllDo];
+                    [appleDate.maticUpload colseAutomaticUpload];
                 }
                 else
                 {
-                    [uploadView startSouStart];
+                    [appleDate.maticUpload isHaveData];
                 }
             }
             NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
@@ -251,20 +249,15 @@ typedef enum{
             if (buttonIndex==1) {
                 [YNFunctions setIsOnlyWifi:NO];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-                [uploadView setIsUpload:YES];
                 if([YNFunctions isAutoUpload])
                 {
-                    [uploadView startSouStart];
+                    [appleDate.maticUpload isHaveData];
                 }
             }else
             {
                 [YNFunctions setIsOnlyWifi:YES];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-                [uploadView stopWiFi];
+                [appleDate.maticUpload colseAutomaticUpload];
             }
             [self.tableView reloadData];
             break;
@@ -272,10 +265,7 @@ typedef enum{
             if (buttonIndex==1) {
                 [YNFunctions setIsAutoUpload:YES];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-                [uploadView setIsUpload:YES];
-                [uploadView startSouStart];
+                [appleDate.maticUpload isHaveData];
             }else
             {
                 [YNFunctions setIsAutoUpload:NO];

@@ -76,6 +76,17 @@ typedef enum{
 
 @implementation MyndsViewController
 
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
+
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
 - (id)init
 {
     self = [super init];
@@ -1047,11 +1058,14 @@ typedef enum{
     imagePickerController.f_id  = self.f_id;
     [imagePickerController requestFileDetail];
     NSLog(@"self.f_id:%@",self.f_id);
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
-    [navigationController setNavigationBarHidden:YES];
-    [self presentModalViewController:navigationController animated:YES];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
+//    [navigationController setNavigationBarHidden:YES];
+//    [self presentModalViewController:navigationController animated:YES];
+    [self.navigationController pushViewController:imagePickerController animated:YES];
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appleDate.myTabBarController setHidesTabBarWithAnimate:YES];
     [imagePickerController release];
-    [navigationController release];
+//    [navigationController release];
     NSLog(@"点击上传");
 }
 
@@ -1081,6 +1095,7 @@ typedef enum{
     MessagePushController *messagePush = [[MessagePushController alloc] init];
     [self.navigationController pushViewController:messagePush animated:YES];
     [messagePush release];
+    [self.ctrlView setHidden:YES];
     NSLog(@"点击消息");
 }
 -(void)newFinder:(id)sender

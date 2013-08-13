@@ -29,6 +29,13 @@
 @synthesize show_style,need_to_custom,normal_image,select_image,tab_bar_bg,delegate_custom,tab_delegate;
 @synthesize font_color,font,hidesBottomBarWhenPushed,hilighted_color,current_selected_tab_index;
 
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
+
+//>ios 6.0
 - (BOOL)shouldAutorotate{
     return NO;
 }

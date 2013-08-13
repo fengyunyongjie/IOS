@@ -14,6 +14,7 @@
 @synthesize deviceName,state;
 @synthesize space_id;
 @synthesize p_id;
+@synthesize is_automic_upload;
 
 -(id)init
 {
@@ -35,6 +36,7 @@
             bl = FALSE;
         }
         NSString *sapce_ = [NSString stringWithFormat:@"%@",space_id];
+        NSString *p_id_ = [NSString stringWithFormat:@"%@",p_id];
         
         sqlite3_bind_int(statement, 1, f_id);
         sqlite3_bind_int(statement, 2, f_state);
@@ -43,7 +45,8 @@
         sqlite3_bind_blob(statement, 5, [f_data bytes], [f_data length], NULL);
         sqlite3_bind_text(statement, 6, [deviceName UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(statement, 7, [sapce_ UTF8String], -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(statement, 8, [p_id UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 8, [p_id_ UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(statement, 9, is_automic_upload);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
@@ -146,12 +149,17 @@
         if (success != SQLITE_OK) {
             NSLog(@"Error: failed to insert:TASKTable");
         }
+//        NSString *sapce_ = [NSString stringWithFormat:@"%@",space_id];
+        NSString *p_id_ = [NSString stringWithFormat:@"%@",p_id];
+        
         sqlite3_bind_int(statement, 1, f_id);
         sqlite3_bind_int(statement, 2, f_state);
         sqlite3_bind_text(statement, 3, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, f_lenght);
         sqlite3_bind_blob(statement, 5, [f_data bytes], f_lenght, NULL);
-        sqlite3_bind_text(statement, 6, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 6, [p_id_ UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(statement, 7, is_automic_upload);
+        sqlite3_bind_text(statement, 8, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
         
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
@@ -193,6 +201,7 @@
             demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
             demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
             demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
+            demo.is_automic_upload = sqlite3_column_int(statement, 9);
             demo.index_id = i;
             [upload_file setSpace_id:demo.space_id];
             [upload_file setF_id:demo.p_id];
@@ -235,6 +244,7 @@
             demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
             demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
             demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
+            demo.is_automic_upload = sqlite3_column_int(statement, 9);
             demo.index_id = i;
             [tableArray addObject:demo];
             [demo release];
@@ -274,6 +284,7 @@
             demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
             demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
             demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
+            demo.is_automic_upload = sqlite3_column_int(statement, 9);
             [tableArray addObject:demo];
             [demo release];
         }

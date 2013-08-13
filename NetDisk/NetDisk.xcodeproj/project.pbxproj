@@ -616,8 +616,6 @@
 		29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Operator.png; sourceTree = "<group>"; };
 		29AF11BB17A5F17300F32F1F /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
 		29AF11BC17A5F17300F32F1F /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
-		29AF11BD17A5F17300F32F1F /* UploadViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewCell.h; sourceTree = "<group>"; };
-		29AF11BE17A5F17300F32F1F /* UploadViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewCell.m; sourceTree = "<group>"; };
 		29AFC2C41778369E0074FBAC /* QLBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLBrowserViewController.h; sourceTree = "<group>"; };
 		29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QLBrowserViewController.m; sourceTree = "<group>"; };
 		29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
@@ -1434,10 +1432,7 @@
 				29B2B639174B1F6800E78183 /* UploadViewController.m */,
 				29AF11BB17A5F17300F32F1F /* UploadFile.h */,
 				29AF11BC17A5F17300F32F1F /* UploadFile.m */,
-				29AF11BD17A5F17300F32F1F /* UploadViewCell.h */,
-				29AF11BE17A5F17300F32F1F /* UploadViewCell.m */,
 				29B2B63A174B1F6800E78183 /* UploadViewController.xib */,
-				29DF5BD31755A760005D85E4 /* OpenViewController.h */,
 				29DF5BD41755A760005D85E4 /* OpenViewController.m */,
 				29DF5BD51755A760005D85E4 /* OpenViewController.xib */,
 				29CED36C17812B7000899FAE /* BoderView.h */,
@@ -1446,6 +1441,7 @@
 				29BE13DE17A3A61B0029E2C6 /* PhotoCell.m */,
 				29BE13D417A3A6020029E2C6 /* UploadFile.h */,
 				29BE13D517A3A6020029E2C6 /* UploadFile.m */,
+				29DF5BD31755A760005D85E4 /* OpenViewController.h */,
 				29BE13D617A3A6020029E2C6 /* UploadViewCell.h */,
 				29BE13D717A3A6020029E2C6 /* UploadViewCell.m */,
 				29C2D51917A7A491004FD7D6 /* CustomJinDu.h */,
@@ -3145,8 +3141,8 @@
 				HEADER_SEARCH_PATHS = ./NetDisk/lib/include;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
-				PROVISIONING_PROFILE = "7152C2F7-1252-446F-9129-05ECD05948B1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7152C2F7-1252-446F-9129-05ECD05948B1";
+				PROVISIONING_PROFILE = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = armv7;
 			};
@@ -3174,8 +3170,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ./NetDisk/lib/i386;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "7152C2F7-1252-446F-9129-05ECD05948B1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7152C2F7-1252-446F-9129-05ECD05948B1";
+				PROVISIONING_PROFILE = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = armv7;

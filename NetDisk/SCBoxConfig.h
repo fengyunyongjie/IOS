@@ -110,6 +110,12 @@
 //踢除共享成员/share/member/rm
 //退出共享/share/member/exit
 
+//接受好友的共享邀请share/invitation/add
+#define SHARE_INVITATION_ADD @"share/invitation/add"
+
+//拒绝好友的共享邀请/share/invitation/remove
+#define SHARE_INVITATION_REMOVE @"/share/invitation/remove"
+
 #pragma mark - 6.意见管理
 //意见反馈/advice
 #define REPORT_ADVICE_URI @"/advice"

@@ -253,13 +253,13 @@
             [delegate getFriendshipsGroupsDeep:diction];
         }
     }
-    else if([type_string isEqualToString:[[FRIENDSHOPS_GROUP_CREATE componentsSeparatedByString:@"/"] lastObject]])
-    {
-        if([delegate respondsToSelector:@selector(getFriendshipsGroupsCreate:)])
-        {
-            [delegate getFriendshipsGroupsCreate:diction];
-        }
-    }
+//    else if([type_string isEqualToString:[[FRIENDSHOPS_GROUP_CREATE componentsSeparatedByString:@"/"] lastObject]])
+//    {
+//        if([delegate respondsToSelector:@selector(getFriendshipsGroupsCreate:)])
+//        {
+//            [delegate getFriendshipsGroupsCreate:diction];
+//        }
+//    }
     else if([type_string isEqualToString:[[FRIENDSHIPS_GROUP_UPDATE componentsSeparatedByString:@"/"] lastObject]])
     {
         if([delegate respondsToSelector:@selector(getFriendshipsGroupsUpdate:)])

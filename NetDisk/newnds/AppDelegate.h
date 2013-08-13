@@ -10,6 +10,8 @@
 #import "WXApi.h"
 #import "MYTabBarController.h"
 #import "FirstLoadViewController.h"
+#import "AutomaticUpload.h"
+#import "UploadAll.h"
 
 //新浪微博微博
 #define kAppKey         @"706445160"
@@ -17,12 +19,13 @@
 #define TabBarHeight 60
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 
-@class UploadAll;
 @interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate,WXApiDelegate,FirstLoadDelegate>
 {
     NSString *user_name;
     UploadAll *upload_all;
     FirstLoadViewController *firstLoadView;
+    AutomaticUpload *maticUpload;
+    BOOL isAutomicUpload;
 }
 
 @property (strong, nonatomic) UIWindow *window;
@@ -30,6 +33,8 @@
 @property (retain, nonatomic) NSString *user_name;
 @property (assign, nonatomic) BOOL isUnUpload;
 @property (nonatomic,retain) UploadAll *upload_all;
+@property (nonatomic,retain) AutomaticUpload *maticUpload;
+@property (nonatomic,assign) BOOL isAutomicUpload;
 
 -(void)setLogin;
 //分享图片
@@ -39,4 +44,5 @@
 //微博授权
 - (void)ssoButtonPressed;
 + (NSString*)deviceString;
+
 @end

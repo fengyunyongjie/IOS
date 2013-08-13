@@ -68,17 +68,6 @@
         {
             return;
         }
-        if(self.demo.f_data==nil)
-        {
-            //获取照片名称
-            ALAsset *asset = self.demo.result;
-            demo.f_base_name = [[asset defaultRepresentation] filename];
-            NSError *error = nil;
-            Byte *data = malloc(asset.defaultRepresentation.size);
-            //获得照片图像数据
-            [asset.defaultRepresentation getBytes:data fromOffset:0 length:asset.defaultRepresentation.size error:&error];
-            demo.f_data = [NSData dataWithBytesNoCopy:data length:asset.defaultRepresentation.size];
-        }
         UIImage *imageV = [UIImage imageWithData:self.demo.f_data];
         if(imageV.size.width>=imageV.size.height)
         {
@@ -130,6 +119,10 @@
 	return newImage;
 }
 
+-(void)showStartButton
+{
+    
+}
 
 -(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
 {

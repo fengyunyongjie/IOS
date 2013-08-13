@@ -140,6 +140,7 @@
     MessagePushController *messagePush = [[MessagePushController alloc] init];
     [self.navigationController pushViewController:messagePush animated:YES];
     [messagePush release];
+    [self.ctrlView setHidden:YES];
     NSLog(@"点击消息");
 }
 -(void)touchView:(id)sender

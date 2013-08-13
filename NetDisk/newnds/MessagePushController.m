@@ -8,8 +8,9 @@
 
 #import "MessagePushController.h"
 #import "MessagePushCell.h"
+#import "MBProgressHUD.h"
 
-#define TableViewHeight self.view.frame.size.height
+#define TableViewHeight self.view.frame.size.height-60-44
 #define ChangeTabWidth 90
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 #define RightButtonBoderWidth 0
@@ -26,6 +27,7 @@
 @synthesize table_array;
 @synthesize messageManager;
 @synthesize friendManager;
+@synthesize group_id;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -94,6 +96,12 @@
     
     //好友管理
     friendManager = [[SCBFriendManager alloc] init];
+    [friendManager setDelegate:self];
+    
+    //共享管理
+    shareManager = [[SCBShareManager alloc] init];
+    [shareManager setDelegate:self];
+    
 }
 
 -(void)back_clicked:(id)sender
@@ -124,7 +132,7 @@
     MessagePushCell *cell = [self.table_view dequeueReusableCellWithIdentifier:cellString];
     if(cell==nil)
     {
-        cell = [[MessagePushCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
+        cell = [[[MessagePushCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [cell firstLoad:70];
     }
@@ -150,22 +158,29 @@
     UIButton *button = sender;
     int row = button.tag-AcceptTag;
     NSDictionary *diction = [table_array objectAtIndex:row];
-    int type = [[diction objectForKey:@"msg_type"] intValue];
-    if(type == 1)
+    int msg_type = [[diction objectForKey:@"msg_type"] intValue];
+    int sort_type = [[diction objectForKey:@"msg_sort"] intValue];
+    if(msg_type == 1)
     {
+        if(sort_type == 1) //添加共享用户
+        {
+            NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
+            NSString *file_id = [diction objectForKey:@"file_id"];
+            [shareManager shareInvitationAdd:file_id friend_id:msg_sender_id];
+        }
         
-    }
-    else if(type == 2)
-    {
-        
-    }
-    else if(type == 3)
-    {
-        
-    }
-    else if(type == 4)
-    {
-        
+        if(sort_type == 6) //添加好友
+        {
+            //添加好友请求
+            NSString *friendId = [diction objectForKey:@"account"];
+            NSString *mark = [diction objectForKey:@"msg_sender_remark"];
+            NSLog(@"groupId:%@",self.group_id);
+            if(self.group_id != nil)
+            {
+                [friendManager getFriendshipsFriendsCreate:friendId group_id:[self.group_id intValue] friend_remark:mark];
+            }
+            
+        }
     }
 }
 
@@ -184,22 +199,17 @@
     UIButton *button = sender;
     int row = button.tag-RefusedTag;
     NSDictionary *diction = [table_array objectAtIndex:row];
-    int type = [[diction objectForKey:@"msg_type"] intValue];
-    if(type == 1)
+    int msg_type = [[diction objectForKey:@"msg_type"] intValue];
+    int sort_type = [[diction objectForKey:@"msg_sort"] intValue];
+    
+    if(msg_type == 1)
     {
-        
-    }
-    else if(type == 2)
-    {
-        
-    }
-    else if(type == 3)
-    {
-        
-    }
-    else if(type == 4)
-    {
-        
+        if(sort_type == 1) //拒绝共享用户
+        {
+            NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
+            NSString *file_id = [diction objectForKey:@"file_id"];
+            [shareManager shareInvitationRemove:file_id friend_id:msg_sender_id];
+        }
     }
 }
 
@@ -218,6 +228,18 @@
         NSArray *array = [dictioinary objectForKey:@"msgs"];
         [table_array addObjectsFromArray:array];
         [self.table_view reloadData];
+        if([array count] == 0)
+        {
+            if(!isSelect)
+            {
+                isSelect = TRUE;
+                [messageManager selectMessages:1 cursor:0 offset:-1 unread:1];
+            }
+        }
+        else
+        {
+            [friendManager getFriendshipsGroups:0 offset:-1];
+        }
     }
     NSLog(@"dictioinary:%@",table_array);
 }
@@ -237,7 +259,17 @@
 //获取群组列表
 -(void)getFriendshipsGroups:(NSDictionary *)dictionary
 {
-
+    BOOL bl = [[dictionary objectForKey:@"code"] boolValue];
+    if(!bl)
+    {
+        NSArray *array = [dictionary objectForKey:@"groups"];
+        if([array count]>0)
+        {
+            NSDictionary *dict = [array lastObject];
+            self.group_id = [dict objectForKey:@"group_id"];
+        }
+    }
+    NSLog(@"dictionary:%@",dictionary);
 }
 
 //获取所有群组及好友列表/friendships/groups/deep
@@ -273,7 +305,42 @@
 //添加好友/friendships/friend/create
 -(void)getFriendshipsFriendsCreate:(NSDictionary *)dictionary
 {
-
+    NSLog(@"dationary:%@",dictionary);
+    int code = [[dictionary objectForKey:@"code"] intValue];
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    if(code==0)
+    {
+        hud.labelText=@"操作成功";
+    }
+    else if(code==1)
+    {
+        hud.labelText=@"服务端异常";
+    }
+    else if(code==2)
+    {
+        hud.labelText=@"无效的好友账号";
+    }
+    else if(code==3)
+    {
+        hud.labelText=@"好友已存在";
+    }
+    else if(code==4)
+    {
+        hud.labelText=@"用户与组不匹配";
+    }
+    else if(code==5)
+    {
+        hud.labelText=@"不能添加自己";
+    }
+    else if(code==6)
+    {
+        hud.labelText=@"好友名不能为空";
+    }
+    hud.mode=MBProgressHUDModeText;
+    [hud show:YES];
+    [hud hide:YES afterDelay:0.8f];
+    [hud release];
 }
 
 //移动好友/friendships/friend/move
@@ -290,6 +357,42 @@
 
 //删除好友/friendships/friend/del
 -(void)getFriendshipsFriendDel:(NSDictionary *)dictionary
+{
+
+}
+
+#pragma mark ---------- shareManager
+
+-(void)InvitationAdd:(NSDictionary *)dationary
+{
+    NSLog(@"dationary:%@",dationary);
+    int code = [[dationary objectForKey:@"code"] intValue];
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    if(code==0)
+    {
+        hud.labelText=@"操作成功";
+    }
+    else if(code==1)
+    {
+        hud.labelText=@"服务端异常";
+    }
+    else if(code==2)
+    {
+        hud.labelText=@"不是文件拥有者";
+    }
+    hud.mode=MBProgressHUDModeText;
+    [hud show:YES];
+    [hud hide:YES afterDelay:0.8f];
+    [hud release];
+}
+
+-(void)searchSucess:(NSDictionary *)datadic
+{
+
+}
+
+-(void)openFinderSucess:(NSDictionary *)datadic
 {
 
 }

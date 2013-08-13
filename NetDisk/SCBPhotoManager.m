@@ -529,6 +529,7 @@
 #pragma mark 新建文件夹
 -(void)requestNewFold:(NSString *)name FID:(int)f_id space_id:(NSString *)space_id
 {
+    NSLog(@"快要来了");
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URL]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
@@ -546,6 +547,7 @@
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    NSLog(@"来了");
 }
 
 #pragma mark 打开文件目录

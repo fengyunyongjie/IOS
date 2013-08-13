@@ -15,12 +15,16 @@ typedef enum{
     kSMTypeOperateUpdate,
     kSMTypeNewFinder,
     kSMTypeSearch,
+    kSMTypeAcceptAdd,
+    kSMTypeRefusedAdd
 }kSMType;
 @protocol SCBShareManagerDelegate;
 @interface SCBShareManager : NSObject
 @property (nonatomic,assign)id<SCBShareManagerDelegate> delegate;
 @property (strong,nonatomic) NSMutableData *activeData;
 @property (assign,nonatomic) kSMType sm_type;
+@property (nonatomic,retain) NSString *url_type;
+
 -(void)cancelAllTask;
 
 //打开共享/share
@@ -46,11 +50,19 @@ typedef enum{
 //打开共享回收站/share/trash
 //彻底删除/share/trash/del
 //清空回收站/share/trash/delall
+
+//接受好友的共享邀请share/invitation/add
+-(void)shareInvitationAdd:(NSString *)f_id friend_id:(NSString *)friend_id;
+
+//拒绝好友的共享邀请/share/invitation/remove
+-(void)shareInvitationRemove:(NSString *)f_id friend_id:(NSString *)friend_id;
+
 @end
 @protocol SCBShareManagerDelegate
 -(void)searchSucess:(NSDictionary *)datadic;
 -(void)operateSucess:(NSDictionary *)datadic;
 -(void)openFinderSucess:(NSDictionary *)datadic;
+-(void)InvitationAdd:(NSDictionary *)dationary;
 -(void)openFinderUnsucess;
 -(void)removeSucess;
 -(void)removeUnsucess;

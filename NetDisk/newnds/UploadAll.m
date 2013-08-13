@@ -61,17 +61,18 @@
         demo.deviceName = deviceName;
         demo.space_id = self.space_id;
         demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
+        
         NSLog(@"demo.f_id:%@",demo.p_id);
         NSLog(@"demo.spcae_id:%@",demo.space_id);
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            ALAsset *result = demo.result;
-            NSError *error = nil;
-            Byte *data = malloc(result.defaultRepresentation.size);
-            //获得照片图像数据
-            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-            [demo insertTaskTable];
-//        });
+        
+        ALAsset *result = demo.result;
+        NSError *error = nil;
+        Byte *data = malloc(result.defaultRepresentation.size);
+        //获得照片图像数据
+        [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+        demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+        [demo insertTaskTable];
+        
         UploadFile *upload_file = [[UploadFile alloc] init];
         [upload_file setDemo:demo];
         [upload_file setDeviceName:deviceName];
@@ -135,7 +136,6 @@
 {
     if([self.uploadAllList count]>0)
     {
-        
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
         ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];

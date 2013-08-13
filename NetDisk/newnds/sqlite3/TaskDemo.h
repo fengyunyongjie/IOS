@@ -10,14 +10,14 @@
 #import "DBSqlite3.h"
 #import "ALAsset+AGIPC.h"
 
-#define InsertTaskTable @"INSERT INTO TASKTABLE(F_ID,F_STATE,F_BASE_NAME,F_LENGHT,F_DATA,DEVICE_NAME,SPACE_ID,P_ID) VALUES (?,?,?,?,?,?,?,?)"
+#define InsertTaskTable @"INSERT INTO TASKTABLE(F_ID,F_STATE,F_BASE_NAME,F_LENGHT,F_DATA,DEVICE_NAME,SPACE_ID,P_ID,IS_AUTOMIC_UPLOAD) VALUES (?,?,?,?,?,?,?,?,?)"
 #define DeleteTskTable @"DELETE FROM TASKTABLE WHERE F_BASE_NAME=?"
 #define DeleteALLTskTable @"DELETE FROM TASKTABLE"
 #define UpdateTaskTable @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=? WHERE T_ID=?"
-#define UpdateTaskTableForName @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=?,F_DATA=? WHERE F_BASE_NAME=?"
-#define SelectAllTaskTable @"SELECT * FROM TASKTABLE where F_STATE=0"
+#define UpdateTaskTableForName @"UPDATE TASKTABLE SET F_ID=?,F_STATE=?,F_BASE_NAME=?,F_LENGHT=?,F_DATA=?,P_ID=?,IS_AUTOMIC_UPLOAD=? WHERE F_BASE_NAME=?"
+#define SelectAllTaskTable @"SELECT * FROM TASKTABLE where F_STATE=0 and IS_AUTOMIC_UPLOAD=0"
 #define SelectMoreTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=0"
-#define SelectFinishTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=1"
+#define SelectFinishTaskTable @"SELECT * FROM TASKTABLE WHERE F_STATE=1 AND IS_AUTOMIC_UPLOAD=0"
 #define SelectOneTaskTableForTID @"SELECT * FROM TASKTABLE WHERE T_ID=?"
 #define SelectOneTaskTableForFID @"SELECT * FROM TASKTABLE WHERE F_ID=?"
 #define SelectOneTaskTableOneceForFNAME @"SELECT * FROM TASKTABLE WHERE F_BASE_NAME=?"
@@ -39,6 +39,7 @@
     NSString *deviceName;
     NSString *space_id;
     NSString *p_id;
+    NSInteger is_automic_upload;
 }
 
 @property(nonatomic,assign) NSInteger t_id;
@@ -54,6 +55,7 @@
 @property(nonatomic,retain) NSString *deviceName;
 @property(nonatomic,retain) NSString *space_id;
 @property(nonatomic,retain) NSString *p_id;
+@property(nonatomic,assign) NSInteger is_automic_upload;
 
 -(id)init;
 

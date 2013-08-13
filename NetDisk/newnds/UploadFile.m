@@ -28,6 +28,7 @@
     if(self)
     {
         photoManger = [[SCBPhotoManager alloc] init];
+        [photoManger setPhotoDelegate:self];
         [photoManger setNewFoldDelegate:self];
         uploderDemo = [[SCBUploader alloc] init];
         [uploderDemo setUpLoadDelegate:self];
@@ -59,12 +60,28 @@
 //上传开始
 -(void)upload
 {
-//    [photoManger openFinderWithID:self.f_id space_id:self.space_id];
-    [photoManger setPhotoDelegate:self];
-    [photoManger getDetail:[self.f_id intValue]];
+    if([self.f_id isKindOfClass:[NSString class]])
+    {
+        if([self.f_id isEqualToString:@"A"])
+        {
+            [photoManger openFinderWithID:@"1" space_id:self.space_id];
+        }
+        else
+        {
+            [photoManger setPhotoDelegate:self];
+            [photoManger getDetail:[self.f_id intValue]];
+        }
+    }
+    else
+    {
+        [photoManger setPhotoDelegate:self];
+        [photoManger getDetail:[self.f_id intValue]];
+    }
+    
+    
     currTag = demo.index_id;
-    deviceName = demo.deviceName;
-    NSLog(@"1:打开文件目录:%@",deviceName);
+    self.deviceName = demo.deviceName;
+    NSLog(@"1:打开文件目录:%@",self.deviceName);
 }
 
 //请求认证
@@ -97,23 +114,15 @@
         return;
     }
     NSLog(@"打开成功 dictionary:%@ ",dictionary);
-    BOOL bl = FALSE;
-    if(f_pid>0)
+    int index = [[dictionary objectForKey:@"code"] intValue];
+    if(index == 0)
     {
-        bl = TRUE;
-    }
-    NSArray *array = [dictionary objectForKey:@"files"];
-    if([array count]>0)
-    {
-        NSString *fid = [[array objectAtIndex:0] objectForKey:@"f_id"];
-        if([fid intValue]  == [self.f_id intValue])
-        {
-            [self requestVerify];
-        }
+        [self requestVerify];
     }
     else
     {
-        [photoManger requestNewFold:self.deviceName FID:[self.space_id intValue] space_id:self.space_id];
+        self.f_id = @"A";
+        [photoManger openFinderWithID:@"1" space_id:self.space_id];
     }
 }
 
@@ -124,40 +133,87 @@
         return;
     }
     NSLog(@"newFold dictionary:%@",dictionary);
-    BOOL bl = FALSE;
-    if(f_pid > 0)
+    if([[dictionary objectForKey:@"code"] intValue] != 0)
     {
-        bl = TRUE;
+        return;
     }
-    if([[dictionary objectForKey:@"code"] intValue] == 0)
+    if(self.f_pid==nil)
     {
-        if(f_pid > 0)
+        BOOL bl = TRUE;
+        NSString *name = [dictionary objectForKey:@"f_name"];
+        NSLog(@"name:%@",name);
+        if([name isEqualToString:@"手机照片"])
         {
-            f_id = [dictionary objectForKey:@"f_id"];
-            [self requestVerify];
-        }
-        else
-        {
-            f_pid = [dictionary objectForKey:@"f_id"];
-            [photoManger requestNewFold:deviceName FID:[f_pid intValue] space_id:self.space_id];
+            bl = FALSE;
+            self.f_pid = [[dictionary objectForKey:@"f_id"] retain];
+            NSLog(@"创建%@目录------------------------------",self.deviceName);
+            //创建文件夹
+            [photoManger requestNewFold:self.deviceName FID:[self.f_pid intValue] space_id:self.space_id];
         }
     }
     else
     {
-        if(bl && f_pid > 0)
+        NSString *name = [dictionary objectForKey:@"f_name"];
+        if([name isEqualToString:self.deviceName])
         {
-            [photoManger requestNewFold:deviceName FID:[f_pid intValue] space_id:self.space_id];
-        }
-        if(f_pid==0)
-        {
-            [photoManger requestNewFold:@"手机照片"  FID:1 space_id:self.space_id];
+            self.f_id = [[dictionary objectForKey:@"f_id"] retain];
+            demo.p_id = self.f_id;
+            [self requestVerify];
         }
     }
 }
 
 -(void)openFile:(NSDictionary *)dictionary
 {
-    
+    NSLog(@"deviceNAME:%@",self.deviceName);
+    NSLog(@"dictionary:%@",dictionary);
+    if(self.f_pid == nil)
+    {
+        BOOL bl = TRUE;
+        NSArray *array = [dictionary objectForKey:@"files"];
+        for(NSDictionary *dic in array)
+        {
+            NSString *name = [dic objectForKey:@"f_name"];
+            if([name isEqualToString:@"手机照片"])
+            {
+                bl = FALSE;
+                self.f_pid = [[dic objectForKey:@"f_id"] retain];
+                NSLog(@"打开手机照片目录------------------------------");
+                [photoManger openFinderWithID:self.f_pid space_id:self.space_id];
+                break;
+            }
+        }
+        if([array count]==0 || bl)
+        {
+            NSLog(@"创建手机照片目录------------------------------");
+            //创建文件夹
+            [photoManger requestNewFold:@"手机照片" FID:1 space_id:self.space_id];
+        }
+    }
+    else if([self.f_id isEqualToString:@"A"])
+    {
+        BOOL bl = TRUE;
+        NSArray *array = [dictionary objectForKey:@"files"];
+        for(NSDictionary *dic in array)
+        {
+            NSString *name = [dic objectForKey:@"f_name"];
+            if([name isEqualToString:self.deviceName])
+            {
+                bl = FALSE;
+                self.f_id = [[dic objectForKey:@"f_id"] retain];
+                demo.p_id = self.f_id;
+                [self requestVerify];
+                break;
+            }
+        }
+        
+        if([array count]==0 || bl)
+        {
+            NSLog(@"创建%@目录------------------------------",self.deviceName);
+            //创建文件夹
+            [photoManger requestNewFold:self.deviceName FID:[self.f_pid intValue] space_id:self.space_id];
+        }
+    }
 }
 
 -(void)didFailWithError
@@ -182,7 +238,14 @@
     {
         [uploadData release];
         demo.f_lenght = [demo.f_data length];
-        [demo updateTaskTableFName];
+        [demo insertTaskTable];
+        
+        WebData *web = [[WebData alloc] init];
+        web.photo_name = demo.f_base_name;
+        web.photo_id = [NSString stringWithFormat:@"%i",demo.f_id];
+        [web insertWebData];
+        [web release];
+        
         [delegate upFinish:currTag];
     }
     else
@@ -204,26 +267,16 @@
     if([[dictionary objectForKey:@"code"] intValue] == 0)
     {
         finishName = [dictionary objectForKey:@"sname"];
-        if(demo.f_data == nil)
-        {
-            ALAsset *result = demo.result;
-            NSError *error = nil;
-            Byte *data = malloc(result.defaultRepresentation.size);
-            //获得照片图像数据
-            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-        }
         NSLog(@"demo.f_data:%i",[demo.f_data length]);
         if([demo.f_data length]==0)
         {
             NSLog(@"验证失败");
             [delegate upFinish:currTag];
-//            [delegate upError:currTag];
         }
         else
         {
             NSLog(@"3:开始上传：%@",finishName);
-            connection = [uploderDemo requestUploadFile:f_pid f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+            connection = [uploderDemo requestUploadFile:self.f_id f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
         }
     }
 }
@@ -290,7 +343,15 @@
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
         NSLog(@"Url-------:%@",demo.databasePath);
-        [demo updateTaskTableFName];
+        if(demo.is_automic_upload)
+        {
+            [demo insertTaskTable];
+        }
+        else
+        {
+            [demo updateTaskTableFName];
+        }
+        
         
         WebData *web = [[WebData alloc] init];
         web.photo_name = demo.f_base_name;

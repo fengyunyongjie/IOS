@@ -31,8 +31,10 @@
 @synthesize user_name;
 @synthesize isUnUpload;
 @synthesize upload_all;
+@synthesize maticUpload;
+@synthesize isAutomicUpload;
 
-//@class UploadAll;
+@class UploadAll;
 - (void)dealloc
 {
     [_window release];
@@ -45,6 +47,7 @@
 {
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |    UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
     upload_all = [[UploadAll alloc] init];
+    maticUpload = [[AutomaticUpload alloc] init];
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
@@ -242,8 +245,6 @@
 -(void)setLogin
 {
     self.window.rootViewController=self.myTabBarController;
-    self.myTabBarController.selectedIndex = 2;
-    self.myTabBarController.selectedIndex = 1;
     self.myTabBarController.selectedIndex = 0;
 }
 

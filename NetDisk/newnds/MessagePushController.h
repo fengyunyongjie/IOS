@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SCBMessageManager.h"
 #import "SCBFriendManager.h"
+#import "SCBShareManager.h"
 
-@interface MessagePushController : UIViewController<UITableViewDataSource,UITableViewDelegate,SCBMessageManagerDelegate,SCBFriendManagerDelegate>
+@interface MessagePushController : UIViewController<UITableViewDataSource,UITableViewDelegate,SCBMessageManagerDelegate,SCBFriendManagerDelegate,SCBShareManagerDelegate>
 {
     UITableView *table_view;
     /*
@@ -20,6 +21,9 @@
     NSMutableArray *table_array;
     SCBMessageManager *messageManager;
     SCBFriendManager *friendManager;
+    SCBShareManager *shareManager;
+    NSString *group_id;
+    BOOL isSelect;
 }
 
 @property(nonatomic,retain) UITableView *table_view;
@@ -27,6 +31,8 @@
 @property(nonatomic,retain) NSMutableArray *table_array;
 @property(nonatomic,retain) SCBMessageManager *messageManager;
 @property(nonatomic,retain) SCBFriendManager *friendManager;
+@property(nonatomic,retain) SCBShareManager *shareManager;
+@property(nonatomic,retain) NSString *group_id;
 
 
 @end

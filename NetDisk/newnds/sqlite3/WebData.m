@@ -11,14 +11,40 @@
 @implementation WebData
 @synthesize photo_id,photo_name,web_id;
 
+#pragma mark 清空数据库
+-(BOOL)clearTable
+{
+    sqlite3_stmt *statement;
+    __block BOOL bl = TRUE;
+    const char *dbpath = [self.databasePath UTF8String];
+    
+//    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+//        const char *insert_stmt = [DeleteALLTskTable UTF8String];
+//        int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+//        if (success != SQLITE_OK) {
+//            bl = FALSE;
+//        }
+//        sqlite3_bind_int(statement, 1, f_id);
+//        success = sqlite3_step(statement);
+//        if (success == SQLITE_ERROR) {
+//            bl = FALSE;
+//        }
+//        NSLog(@"insertTaskTable:%i",success);
+//        sqlite3_finalize(statement);
+//        sqlite3_close(contactDB);
+//    }
+    return bl;}
+
 #pragma mark ------- 添加数据
+
 -(BOOL)insertWebData
 {
+    __block BOOL bl = TRUE;
     BOOL isHave = [self selectIsTrueForPhotoName];
     if(!isHave)
     {
         sqlite3_stmt *statement;
-        __block BOOL bl = TRUE;
+        
         const char *dbpath = [self.databasePath UTF8String];
         
         if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
@@ -37,12 +63,8 @@
             sqlite3_finalize(statement);
             sqlite3_close(contactDB);
         }
-        return bl;
     }
-    else
-    {
-        return [self updateWebData];
-    }
+    return bl;
 }
 
 #pragma mark ------- 修改数据
@@ -83,7 +105,7 @@
         sqlite3_bind_text(statement, 1, [photo_name UTF8String], -1, SQLITE_TRANSIENT);
         while (sqlite3_step(statement)==SQLITE_ROW) {
             int i = sqlite3_column_int(statement, 0);
-            if(i==1)
+            if(i>=1)
             {
                 bl = TRUE;
                 break;

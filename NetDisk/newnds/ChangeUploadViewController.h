@@ -41,6 +41,9 @@
     
     //是否全部上传
     BOOL isUploadAll;
+    //是否自动上传
+    BOOL isAutomaticUpload;
+    UploadViewCell *headerView;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -50,6 +53,8 @@
 @property(nonatomic,assign) BOOL isHistoryShow;
 @property(nonatomic,retain) UIControl *more_control;
 @property(nonatomic,assign) BOOL isUploadAll;
+@property(nonatomic,assign) BOOL isAutomaticUpload;
+@property(nonatomic,retain) UploadViewCell *headerView;
 
 //上传成功
 -(void)upFinish:(NSInteger)fileTag;
@@ -61,5 +66,10 @@
 -(void)deleteFinishIndexRow:(int)row_;
 //更新上传记录列表
 -(void)updateReloadData;
+
+//自动备份上传
+-(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo;
+//关闭自动备份上传
+-(void)stopAutomatic;
 
 @end

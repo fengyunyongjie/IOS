@@ -10,7 +10,7 @@
 #define InsertWebDataTable @"INSERT INTO WebData(PHOTO_NAME,PHOTO_ID) VALUES (?,?)"
 #define UpdateWebDataForName @"UPDATE WebData SET PHOTO_ID=? WHERE PHOTO_NAME=?"
 #define SelectForKey @"SELECT * FROM WebData WHERE PHOTO_NAME=?"
-
+#define ClearWebData @"DELETE FROM TASKTABLE"
 
 @interface WebData : DBSqlite3
 {
