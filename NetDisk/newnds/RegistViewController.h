@@ -17,5 +17,6 @@
 - (IBAction) comeBack:(id)sender;
 - (BOOL)registAssert;
 - (IBAction)endEdit:(id)sender;
+- (IBAction)showPasswd:(id)sender;
 
 @end

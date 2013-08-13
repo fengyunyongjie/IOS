@@ -49,6 +49,10 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (IBAction)showPasswd:(id)sender
+{
+    [self.m_passwordTextField setSecureTextEntry:!self.m_passwordTextField.secureTextEntry];
+}
 -(void)registSucceed
 {
      [self.m_hud removeFromSuperview];
