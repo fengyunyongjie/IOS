@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 typedef enum{
     kSMTypeOpenFinder,
+    kSMTypeRemove,
+    kSMTypeRename,
+    kSMTypeMove,
+    kSMTypeOperateUpdate,
+    kSMTypeNewFinder,
     kSMTypeSearch,
 }kSMType;
 @protocol SCBShareManagerDelegate;
@@ -20,12 +25,17 @@ typedef enum{
 
 //打开共享/share
 -(void)openFinderWithID:(NSString *)f_id shareType:(NSString *)share_type;
+-(void)operateUpdateWithID:(NSString *)f_id shareType:(NSString *)share_type;
 //设置共享/share/create
 //新建/share/mkdir
+-(void)newFinderWithName:(NSString *)f_name pID:(NSString*)f_pid sID:(NSString *)s_id;
 //重命名/share/rename
+-(void)renameWithID:(NSString *)f_id newName:(NSString *)f_name;
 //复制粘贴/share/copypaste
 //剪切粘贴/share/cutpaste
+-(void)moveFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid;
 //删除/share/rm
+-(void)removeFileWithIDs:(NSArray*)f_ids;
 //搜索/share/search
 -(void)searchWithQueryparam:(NSString *)f_queryparam shareType:(NSString *)share_type;
 //取消共享/share/cancel
@@ -39,6 +49,15 @@ typedef enum{
 @end
 @protocol SCBShareManagerDelegate
 -(void)searchSucess:(NSDictionary *)datadic;
+-(void)operateSucess:(NSDictionary *)datadic;
 -(void)openFinderSucess:(NSDictionary *)datadic;
 -(void)openFinderUnsucess;
+-(void)removeSucess;
+-(void)removeUnsucess;
+-(void)renameSucess;
+-(void)renameUnsucess;
+-(void)moveSucess;
+-(void)moveUnsucess;
+-(void)newFinderSucess;
+-(void)newFinderUnsucess;
 @end

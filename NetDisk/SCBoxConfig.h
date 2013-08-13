@@ -57,8 +57,6 @@
 //发送短消息/msg/send
 //删除短消息/msg/del
 //删除所有短消息/msg/delall
-
-#pragma mark - 4.文件管理
 //获取消息列表
 #define MSGS @"/msgs"
 //发送短消息
@@ -68,7 +66,7 @@
 //删除所有短消息
 #define MSG_DELALL @"/msg/delall"
 
-#pragma mark - 文件管理
+#pragma mark - 4.文件管理
 //打开网盘
 //#define FM_URI @"/fm"
 #define FM_URI @"/fm/open"
@@ -98,9 +96,13 @@
 //打开共享文件夹
 #define SHARE_OPEN_URI @"/share/open"
 //新建/share/mkdir
+#define SHARE_MKDIR_URI @"/share/mkdir"
 //重命名/share/rename
+#define SHARE_RENAME_URI @"/share/rename"
 //剪切粘贴/share/cutpaste
+#define SHARE_MOVE_URI @"/share/cutpaste"
 //删除/share/rm
+#define SHARE_RM_URI @"/share/rm"
 //搜索/share/search
 #define SHARE_SEARCH_URI @"/share/search"
 //取消共享/share/cancel
@@ -109,8 +111,8 @@
 //退出共享/share/member/exit
 
 #pragma mark - 6.意见管理
-
-#pragma mark - 意见管理
+//意见反馈/advice
+#define REPORT_ADVICE_URI @"/advice"
 
 #pragma mark - 照片管理
 #pragma mark - 获取用户的所有的拍摄信息

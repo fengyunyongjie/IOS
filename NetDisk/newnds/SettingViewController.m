@@ -81,8 +81,8 @@ typedef enum{
     [exitButton setTitle:@"退出登录" forState:UIControlStateNormal];
     [exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     //[exitButton setBackgroundColor:[UIColor redColor]];
-    [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit.png"] forState:UIControlStateNormal];
-    [exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit_on.png"] forState:UIControlStateHighlighted];
+    [exitButton setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateNormal];
+    //[exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit_on.png"] forState:UIControlStateHighlighted];
     int y=self.tableView.frame.size.height-30;
     y=608;
     [exitButton setFrame:CGRectMake(10, y, 301, 50)];
@@ -445,7 +445,8 @@ typedef enum{
             break;
         case 1:
         {
-            UISwitch *m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(210, 10, 40, 29)];
+            UISwitch *m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 40, 29)];
+            [m_switch setOnTintColor:[UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]];
             [m_switch addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
             m_switch.on = YES;
             switchTag = row;
@@ -460,6 +461,7 @@ typedef enum{
                 {
                     //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
                     //titleLabel.hidden=YES;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.text=@"照片自动备份";
                     [cell.textLabel setFont:titleLabel.font];
                     cell.detailTextLabel.text=@"仅Wi-Fi下进行,节省流量";
@@ -690,6 +692,13 @@ typedef enum{
                 case 2:
                     //清除缓存
                     [self clearCache];
+                    break;
+                case 3:
+                {
+                    //点击照片自动备份
+                    ReportViewController *viewController=[[ReportViewController alloc] initWithNibName:@"ReportViewController" bundle:nil];
+                    [self.navigationController pushViewController:viewController animated:YES];
+                }
                     break;
                 default:
                     break;

@@ -63,6 +63,7 @@ typedef enum{
 @property (strong,nonatomic) SCBFileManager *fm;
 @property (strong,nonatomic) SCBShareManager *sm;
 @property (strong,nonatomic) SCBFileManager *fm_move;
+@property (strong,nonatomic) SCBShareManager *sm_move;
 @property (strong,nonatomic) NSIndexPath *selectedIndexPath;
 @property (strong,nonatomic) UITableViewCell *optionCell;
 @property (strong,nonatomic) UIBarButtonItem *editBtn;
@@ -623,9 +624,39 @@ typedef enum{
         }
             break;
         case kMyndsTypeSelect:
+        case kMyndsTypeMyShareSelect:
+        case kMyndsTypeShareSelect:
         {
             self.tableView.frame=self.view.frame;
             [self.searchView setHidden:YES];
+            //Initialize the toolbar
+            UIToolbar *toolbar = [[UIToolbar alloc] init];
+            toolbar.barStyle = UIBarStyleDefault;
+            
+            //Set the toolbar to fit the width of the app.
+            [toolbar sizeToFit];
+            
+            //Caclulate the height of the toolbar
+            CGFloat toolbarHeight = [toolbar frame].size.height;
+            
+            //Get the bounds of the parent view
+            CGRect rootViewBounds = self.parentViewController.view.bounds;
+            
+            //Get the height of the parent view.
+            CGFloat rootViewHeight = CGRectGetHeight(rootViewBounds);
+            
+            //Get the width of the parent view,
+            CGFloat rootViewWidth = CGRectGetWidth(rootViewBounds);
+            
+            //Create a rectangle for the toolbar
+            CGRect rectArea = CGRectMake(0, rootViewHeight - toolbarHeight, rootViewWidth, toolbarHeight);
+            
+            //Reposition and resize the receiver
+            [toolbar setFrame:rectArea];
+            
+            //Add the toolbar as a subview to the navigation controller.
+            [self.navigationController.view addSubview:toolbar];
+            self.toolBar=toolbar;
         }
             break;
         default:
@@ -646,38 +677,6 @@ typedef enum{
     [self updateFileList];
     NSLog(@"viewWillAppear::");
     [super viewWillAppear:animated];
-    //Initialize the toolbar
-    if (self.myndsType!=kMyndsTypeSelect)
-    {
-        return;
-    }
-    UIToolbar *toolbar = [[UIToolbar alloc] init];
-    toolbar.barStyle = UIBarStyleDefault;
-    
-    //Set the toolbar to fit the width of the app.
-    [toolbar sizeToFit];
-    
-    //Caclulate the height of the toolbar
-    CGFloat toolbarHeight = [toolbar frame].size.height;
-    
-    //Get the bounds of the parent view
-    CGRect rootViewBounds = self.parentViewController.view.bounds;
-    
-    //Get the height of the parent view.
-    CGFloat rootViewHeight = CGRectGetHeight(rootViewBounds);
-    
-    //Get the width of the parent view,
-    CGFloat rootViewWidth = CGRectGetWidth(rootViewBounds);
-    
-    //Create a rectangle for the toolbar
-    CGRect rectArea = CGRectMake(0, rootViewHeight - toolbarHeight, rootViewWidth, toolbarHeight);
-    
-    //Reposition and resize the receiver
-    [toolbar setFrame:rectArea];
-    
-    //Add the toolbar as a subview to the navigation controller.
-    [self.navigationController.view addSubview:toolbar];
-    self.toolBar=toolbar;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -695,7 +694,7 @@ typedef enum{
         {
             [self editAction:self.editBtn];
         }
-    }else if (self.myndsType==kMyndsTypeSelect)
+    }else if (self.myndsType==kMyndsTypeSelect||self.myndsType==kMyndsTypeMyShareSelect||self.myndsType==kMyndsTypeShareSelect)
     {
         UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitle:@"    确 定    " style:UIBarButtonItemStyleDone target:self action:@selector(moveFileToHere:)];
         UIBarButtonItem *cancel_btn=[[UIBarButtonItem alloc] initWithTitle:@"    取 消    " style:UIBarButtonItemStyleBordered target:self action:@selector(moveCancel:)];
@@ -715,6 +714,8 @@ typedef enum{
     self.fm=nil;
     [self.fm_move cancelAllTask];
     self.fm_move=nil;
+    [self.sm_move cancelAllTask];
+    self.sm_move=nil;
 }
 -(void)viewDidDisappear:(BOOL)animated
 {
@@ -941,11 +942,41 @@ typedef enum{
 }
 - (void)operateUpdate
 {
-    [self.fm cancelAllTask];
-    self.fm=nil;
-    self.fm=[[[SCBFileManager alloc] init] autorelease];
-    [self.fm setDelegate:self];
-    [self.fm operateUpdateWithID:self.f_id ];
+    switch (self.myndsType) {
+        case kMyndsTypeDefault:
+        case kMyndsTypeDefaultSearch:
+        {
+            [self.fm cancelAllTask];
+            self.fm=nil;
+            self.fm=[[[SCBFileManager alloc] init] autorelease];
+            [self.fm setDelegate:self];
+            [self.fm operateUpdateWithID:self.f_id ];
+        }
+            break;
+        
+        case kMyndsTypeShare:
+        case kMyndsTypeShareSearch:
+        {
+            [self.sm cancelAllTask];
+            self.sm=nil;
+            self.sm=[[[SCBShareManager alloc] init] autorelease];
+            [self.sm setDelegate:self];
+            [self.sm operateUpdateWithID:self.f_id shareType:@"M"];
+        }
+            break;
+        case kMyndsTypeMyShare:
+        case kMyndsTypeMyShareSearch:
+        {
+            [self.sm cancelAllTask];
+            self.sm=nil;
+            self.sm=[[[SCBShareManager alloc] init] autorelease];
+            [self.sm setDelegate:self];
+            [self.sm operateUpdateWithID:self.f_id  shareType:@"O"];
+        }
+            break;
+        default:
+            break;
+    }
 }
 - (void)updateFileList
 {
@@ -982,13 +1013,13 @@ typedef enum{
     //    if (self.fm) {
     //        return;
     //    }
-    if (self.myndsType==kMyndsTypeMyShare) {
+    if (self.myndsType==kMyndsTypeMyShare||self.myndsType==kMyndsTypeMyShareSelect) {
         [self.sm cancelAllTask];
         self.sm=nil;
         self.sm=[[[SCBShareManager alloc] init] autorelease];
         [self.sm setDelegate:self];
         [self.sm openFinderWithID:self.f_id shareType:@"O"];
-    }else if (self.myndsType==kMyndsTypeShare) {
+    }else if (self.myndsType==kMyndsTypeShare||self.myndsType==kMyndsTypeShareSelect) {
         [self.sm cancelAllTask];
         self.sm=nil;
         self.sm=[[[SCBShareManager alloc] init] autorelease];
@@ -1161,14 +1192,39 @@ typedef enum{
         }
         willMoveObjects=@[m_fid];
     }
-    if (self.fm_move) {
-        [self.fm cancelAllTask];
-    }else
-    {
-        self.fm_move=[[[SCBFileManager alloc] init] autorelease];
+    switch (self.myndsType) {
+        case kMyndsTypeDefault:
+        case kMyndsTypeDefaultSearch:
+        {
+            if (self.fm_move) {
+                [self.fm_move cancelAllTask];
+            }else
+            {
+                self.fm_move=[[[SCBFileManager alloc] init] autorelease];
+            }
+            self.fm_move.delegate=self;
+            [self.fm_move moveFileIDs:willMoveObjects toPID:f_id];
+        }
+            break;
+        case kMyndsTypeMyShareSearch:
+        case kMyndsTypeShare:
+        case kMyndsTypeMyShare:
+        case kMyndsTypeShareSearch:
+        {
+            if (self.sm_move) {
+                [self.sm_move cancelAllTask];
+            }else
+            {
+                self.sm_move=[[[SCBShareManager alloc] init] autorelease];
+            }
+            self.sm_move.delegate=self;
+            [self.sm_move moveFileIDs:willMoveObjects toPID:f_id];
+        }
+            break;
+        default:
+            break;
     }
-    self.fm_move.delegate=self;
-    [self.fm_move moveFileIDs:willMoveObjects toPID:f_id];
+    
     [self hideOptionCell];
 }
 -(void)sharedAction:(id)sender
@@ -1218,8 +1274,31 @@ typedef enum{
     
     MyndsViewController *moveViewController=[[[MyndsViewController alloc] init] autorelease];
     moveViewController.f_id=@"1";
-    moveViewController.myndsType=kMyndsTypeSelect;
-    moveViewController.title=@"我的空间";
+    switch (self.myndsType) {
+        case kMyndsTypeDefault:
+        case kMyndsTypeDefaultSearch:
+        {
+            moveViewController.myndsType=kMyndsTypeSelect;
+            moveViewController.title=@"我的空间";
+        }
+            break;
+        case kMyndsTypeShare:
+        case kMyndsTypeShareSearch:
+        {
+            moveViewController.myndsType=kMyndsTypeShareSelect;
+            moveViewController.title=@"我的共享";
+        }
+            break;
+        case kMyndsTypeMyShare:
+        case kMyndsTypeMyShareSearch:
+        {
+            moveViewController.myndsType=kMyndsTypeMyShareSelect;
+            moveViewController.title=@"参与共享";
+        }
+            break;
+        default:
+            break;
+    }
     moveViewController.delegate=self;
     UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:moveViewController];
     [self presentViewController:nav animated:YES completion:nil];
@@ -1527,11 +1606,23 @@ typedef enum{
         NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
         NSDictionary *this=(NSDictionary *)[a objectAtIndex:row];
         NSString *t_fl = [[this objectForKey:@"f_mime"] lowercaseString];
-        if (self.myndsType==kMyndsTypeDefault) {
-            cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
-        }else
-        {
-            cell.accessoryType=UITableViewCellAccessoryNone;
+        switch (self.myndsType) {
+            case kMyndsTypeDefault:
+            case kMyndsTypeMyShare:
+            case kMyndsTypeShare:
+            case kMyndsTypeDefaultSearch:
+            case kMyndsTypeMyShareSearch:
+            case kMyndsTypeShareSearch:
+            {
+                cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
+            }
+                break;
+                
+            default:
+            {
+                cell.accessoryType=UITableViewCellAccessoryNone;
+            }
+                break;
         }
         
 //        UIButton *btn=(UIButton *)cell.accessoryView;
@@ -2191,10 +2282,30 @@ typedef enum{
                 //[self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
                 self.willDeleteObjects=@[dic];
                 NSString *f_id=[dic objectForKey:@"f_id"];
-                [self.fm cancelAllTask];
-                self.fm=[[[SCBFileManager alloc] init] autorelease];
-                self.fm.delegate=self;
-                [self.fm removeFileWithIDs:@[f_id]];
+                switch (self.myndsType) {
+                    case kMyndsTypeDefault:
+                    case kMyndsTypeDefaultSearch:
+                    {
+                        [self.fm cancelAllTask];
+                        self.fm=[[[SCBFileManager alloc] init] autorelease];
+                        self.fm.delegate=self;
+                        [self.fm removeFileWithIDs:@[f_id]];
+                    }
+                        break;
+                    case kMyndsTypeMyShareSearch:
+                    case kMyndsTypeShare:
+                    case kMyndsTypeMyShare:
+                    case kMyndsTypeShareSearch:
+                    {
+                        [self.sm cancelAllTask];
+                        self.sm=[[[SCBShareManager alloc] init] autorelease];
+                        self.sm.delegate=self;
+                        [self.sm removeFileWithIDs:@[f_id]];
+                    }
+                        break;
+                    default:
+                        break;
+                }
             }
             [self hideOptionCell];
             break;
@@ -2208,10 +2319,30 @@ typedef enum{
                 NSString *fildtext=[[alertView textFieldAtIndex:0] text];
                 if (![fildtext isEqualToString:name]) {
                     NSLog(@"重命名");
-                    [self.fm cancelAllTask];
-                    self.fm=[[[SCBFileManager alloc] init] autorelease];
-                    [self.fm renameWithID:f_id newName:fildtext];
-                    [self.fm setDelegate:self];
+                    switch (self.myndsType) {
+                        case kMyndsTypeDefault:
+                        case kMyndsTypeDefaultSearch:
+                        {
+                            [self.fm cancelAllTask];
+                            self.fm=[[[SCBFileManager alloc] init] autorelease];
+                            [self.fm renameWithID:f_id newName:fildtext];
+                            [self.fm setDelegate:self];
+                        }
+                            break;
+                        case kMyndsTypeMyShareSearch:
+                        case kMyndsTypeShare:
+                        case kMyndsTypeMyShare:
+                        case kMyndsTypeShareSearch:
+                        {
+                            [self.sm cancelAllTask];
+                            self.sm=[[[SCBShareManager alloc] init] autorelease];
+                            [self.sm renameWithID:f_id newName:fildtext];
+                            [self.sm setDelegate:self];
+                        }
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 NSLog(@"点击确定");
             }else
@@ -2239,10 +2370,31 @@ typedef enum{
                 //[self removeFromDicWithObjects:deleteObjects];
                 //[self.tableView reloadData];
                 if (f_ids.count>0) {
-                    [self.fm cancelAllTask];
-                    self.fm=[[[SCBFileManager alloc] init] autorelease];
-                    self.fm.delegate=self;
-                    [self.fm removeFileWithIDs:f_ids];
+                    
+                    switch (self.myndsType) {
+                        case kMyndsTypeDefault:
+                        case kMyndsTypeDefaultSearch:
+                        {
+                            [self.fm cancelAllTask];
+                            self.fm=[[[SCBFileManager alloc] init] autorelease];
+                            self.fm.delegate=self;
+                            [self.fm removeFileWithIDs:f_ids];
+                        }
+                            break;
+                        case kMyndsTypeMyShareSearch:
+                        case kMyndsTypeShare:
+                        case kMyndsTypeMyShare:
+                        case kMyndsTypeShareSearch:
+                        {
+                            [self.sm cancelAllTask];
+                            self.sm=[[[SCBShareManager alloc] init] autorelease];
+                            self.sm.delegate=self;
+                            [self.sm removeFileWithIDs:f_ids];
+                        }
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
             }
@@ -2259,10 +2411,30 @@ typedef enum{
 //                    [self.fm renameWithID:f_id newName:fildtext];
 //                    [self.fm setDelegate:self];
 //                }
-                [self.fm cancelAllTask];
-                self.fm=[[[SCBFileManager alloc] init] autorelease];
-                [self.fm newFinderWithName:fildtext pID:self.f_id];
-                [self.fm setDelegate:self];
+                switch (self.myndsType) {
+                    case kMyndsTypeDefault:
+                    case kMyndsTypeDefaultSearch:
+                    {
+                        [self.fm cancelAllTask];
+                        self.fm=[[[SCBFileManager alloc] init] autorelease];
+                        [self.fm newFinderWithName:fildtext pID:self.f_id];
+                        [self.fm setDelegate:self];
+                    }
+                        break;
+                    case kMyndsTypeMyShareSearch:
+                    case kMyndsTypeShare:
+                    case kMyndsTypeMyShare:
+                    case kMyndsTypeShareSearch:
+                    {
+                        [self.sm cancelAllTask];
+                        self.sm=[[[SCBShareManager alloc] init] autorelease];
+                        [self.sm newFinderWithName:fildtext pID:self.f_id];
+                        [self.sm setDelegate:self];
+                    }
+                        break;
+                    default:
+                        break;
+                }
                 NSLog(@"点击确定");
                 [self.ctrlView setHidden:YES];
             }else
@@ -2275,9 +2447,6 @@ typedef enum{
         default:
             break;
     }
-    
-    
-    
 }
 #pragma mark -
 #pragma mark Deferred image loading (UIScrollViewDelegate)

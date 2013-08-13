@@ -12,6 +12,8 @@
 typedef enum {
     kMyndsTypeDefault,
     kMyndsTypeSelect,
+    kMyndsTypeMyShareSelect,
+    kMyndsTypeShareSelect,
     kMyndsTypeMyShare,
     kMyndsTypeShare,
     kMyndsTypeDefaultSearch,

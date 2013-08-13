@@ -42,4 +42,8 @@
 {
     
 }
+- (IBAction)endEdit:(id)sender
+{
+    [self.reportView endEditing:YES];
+}
 @end

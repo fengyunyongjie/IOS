@@ -39,6 +39,48 @@
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     [body release];
 }
+-(void)newFinderWithName:(NSString *)f_name pID:(NSString*)f_pid sID:(NSString *)s_id;
+{
+    self.sm_type=kSMTypeNewFinder;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_MKDIR_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_name=%@&f_pid=%@&space_id=%@",f_name,f_pid,s_id];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+-(void)operateUpdateWithID:(NSString *)f_id shareType:(NSString *)share_type
+{
+    self.sm_type=kSMTypeOperateUpdate;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_OPEN_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [body release];
+}
 -(void)openFinderWithID:(NSString *)f_id shareType:(NSString *)share_type
 {
     self.sm_type=kSMTypeOpenFinder;
@@ -59,6 +101,72 @@
     [body release];
     
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+-(void)renameWithID:(NSString *)f_id newName:(NSString *)f_name
+{
+    self.sm_type=kSMTypeRename;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_RENAME_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_id=%@&f_name=%@",f_id,f_name];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+-(void)moveFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid
+{
+    self.sm_type=kSMTypeMove;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_MOVE_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
+    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    [body appendFormat:@"f_pid=%@&f_ids[]=%@&space_id=%@",f_pid,fids,s_id];
+    NSLog(@"move: %@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+-(void)removeFileWithIDs:(NSArray*)f_ids
+{
+    self.sm_type=kSMTypeRemove;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_RM_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
+    [body appendFormat:@"f_ids[]=%@",fids];
+    NSLog(@"\"remove: %@\"",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [body release];
 }
 #pragma mark - NSURLConnectionDelegate Methods
 
@@ -94,12 +202,26 @@
 	// Clear the activeDownload property to allow later attempts
     // Release the connection now that it's finished
     NSLog(@"connection:didFailWithError");
-//    if (self.delegate) {
-//        switch (self.sm_type) {
-//            case kSMTypeOpenFinder:
-//                break;    
-//        }
-//    }
+    if (self.delegate) {
+        switch (self.sm_type) {
+            case kSMTypeOpenFinder:
+                break;
+            case kSMTypeRemove:
+                [self.delegate removeUnsucess];
+                break;
+            case kSMTypeRename:
+                [self.delegate renameUnsucess];
+                break;
+            case kSMTypeMove:
+                [self.delegate moveUnsucess];
+                break;
+            case kSMTypeNewFinder:
+                [self.delegate newFinderUnsucess];
+                break;
+                
+        }
+    }
+
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -118,32 +240,51 @@
                 case kSMTypeOpenFinder:
                     [self.delegate openFinderSucess:dic];
                     break;
+                case kSMTypeRemove:
+                    [self.delegate removeSucess];
+                    break;
+                case kSMTypeRename:
+                    [self.delegate renameSucess];
+                    break;
+                case kSMTypeMove:
+                    [self.delegate moveSucess];
+                    NSLog(@"移动成功");
+                    break;
+                case kSMTypeOperateUpdate:
+                    [self.delegate operateSucess:dic];
+                    break;
+                case kSMTypeNewFinder:
+                    [self.delegate newFinderSucess];
+                    break;
                 case kSMTypeSearch:
                     [self.delegate searchSucess:dic];
                     break;
-
             }
         }
+
     }else
     {
         NSLog(@"操作失败 数据大小：%d",[self.activeData length]);
         if (self.delegate) {
-//            switch (self.fm_type) {
-//                case kFMTypeOpenFinder:
-//                    break;
-//                case kFMTypeRemove:
-//                    [self.delegate removeUnsucess];
-//                    break;
-//                case kFMTypeRename:
-//                    [self.delegate renameUnsucess];
-//                    break;
-//                case kFMTypeMove:
-//                    [self.delegate moveUnsucess];
-//                    break;
-//                case kFMTypeNewFinder:
-//                    [self.delegate newFinderUnsucess];
-//                    break;
-//            }
+            switch (self.sm_type) {
+                case kSMTypeOpenFinder:
+                    break;
+                case kSMTypeRemove:
+                    [self.delegate removeUnsucess];
+                    break;
+                case kSMTypeRename:
+                    [self.delegate renameUnsucess];
+                    break;
+                case kSMTypeMove:
+                    [self.delegate moveUnsucess];
+                    break;
+                case kSMTypeNewFinder:
+                    [self.delegate newFinderUnsucess];
+                    break;
+                case kSMTypeSearch:
+                    [self.delegate newFinderUnsucess];
+                    break;
+            }
         }
     }
     self.activeData=nil;

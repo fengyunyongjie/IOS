@@ -13,5 +13,6 @@
 @property(strong,nonatomic) IBOutlet UITextView *reportView;
 -(IBAction)back:(id)sender;
 -(IBAction)send:(id)sender;
+- (IBAction)endEdit:(id)sender;
 
 @end
