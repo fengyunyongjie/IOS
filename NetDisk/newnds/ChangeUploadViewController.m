@@ -351,6 +351,8 @@
 {
     if(!isHistoryShow)
     {
+        self.uploadListTableView.tableHeaderView = nil;
+        
         UIButton *button = sender;
         //把色值转换成图片
         CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
@@ -375,11 +377,8 @@
         {
             historyList = nil;
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.uploadListTableView.tableHeaderView = nil;
-            historyList = [demo selectFinishTaskTable];
-            [self.uploadListTableView reloadData];
-        });
+        historyList = [demo selectFinishTaskTable];
+        [self.uploadListTableView reloadData];
         [demo release];
     }
 }

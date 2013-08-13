@@ -359,6 +359,11 @@
 		29CED36E17812B7000899FAE /* BoderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CED36D17812B7000899FAE /* BoderView.m */; };
 		29CFD47D173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
 		29D0CD571757342D00B20294 /* FavoritesDBController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D0CD561757342D00B20294 /* FavoritesDBController.m */; };
+		29D1BEC717BA1362001CF197 /* AutomicUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D1BEC617BA1362001CF197 /* AutomicUploadViewController.m */; };
+		29D1BECA17BA1ED3001CF197 /* OFF.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D1BEC817BA1ED3001CF197 /* OFF.png */; };
+		29D1BECB17BA1ED3001CF197 /* ON.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D1BEC917BA1ED3001CF197 /* ON.png */; };
+		29D1BECE17BA2FA8001CF197 /* SelectFileUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D1BECD17BA2FA8001CF197 /* SelectFileUrlViewController.m */; };
+		29D1BED117BA3A26001CF197 /* SelectDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D1BED017BA3A25001CF197 /* SelectDetailViewController.m */; };
 		29D72E031771753A008D830A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D72E021771753A008D830A /* QuickLook.framework */; };
 		29D72E0617718780008D830A /* favorite_tag_n@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D72E041771877E008D830A /* favorite_tag_n@2x.png */; };
 		29D72E0717718780008D830A /* favorite_tag_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D72E051771877F008D830A /* favorite_tag_n.png */; };
@@ -835,6 +840,14 @@
 		29CFD47B173733FF001B6721 /* DownImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownImage.m; sourceTree = "<group>"; };
 		29D0CD551757342D00B20294 /* FavoritesDBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesDBController.h; sourceTree = "<group>"; };
 		29D0CD561757342D00B20294 /* FavoritesDBController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesDBController.m; sourceTree = "<group>"; };
+		29D1BEC517BA1362001CF197 /* AutomicUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutomicUploadViewController.h; sourceTree = "<group>"; };
+		29D1BEC617BA1362001CF197 /* AutomicUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutomicUploadViewController.m; sourceTree = "<group>"; };
+		29D1BEC817BA1ED3001CF197 /* OFF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OFF.png; sourceTree = "<group>"; };
+		29D1BEC917BA1ED3001CF197 /* ON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ON.png; sourceTree = "<group>"; };
+		29D1BECC17BA2FA8001CF197 /* SelectFileUrlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFileUrlViewController.h; sourceTree = "<group>"; };
+		29D1BECD17BA2FA8001CF197 /* SelectFileUrlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFileUrlViewController.m; sourceTree = "<group>"; };
+		29D1BECF17BA3A25001CF197 /* SelectDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectDetailViewController.h; sourceTree = "<group>"; };
+		29D1BED017BA3A25001CF197 /* SelectDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectDetailViewController.m; sourceTree = "<group>"; };
 		29D72E021771753A008D830A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		29D72E041771877E008D830A /* favorite_tag_n@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "favorite_tag_n@2x.png"; sourceTree = "<group>"; };
 		29D72E051771877F008D830A /* favorite_tag_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorite_tag_n.png; sourceTree = "<group>"; };
@@ -1464,6 +1477,12 @@
 				296E39C817B8D80200A43F29 /* ReportViewController.xib */,
 				29B996C2174DF3A500204068 /* SettingData.h */,
 				29B996C3174DF3A500204068 /* SettingData.m */,
+				29D1BEC517BA1362001CF197 /* AutomicUploadViewController.h */,
+				29D1BEC617BA1362001CF197 /* AutomicUploadViewController.m */,
+				29D1BECC17BA2FA8001CF197 /* SelectFileUrlViewController.h */,
+				29D1BECD17BA2FA8001CF197 /* SelectFileUrlViewController.m */,
+				29D1BECF17BA3A25001CF197 /* SelectDetailViewController.h */,
+				29D1BED017BA3A25001CF197 /* SelectDetailViewController.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -1794,6 +1813,8 @@
 				29CB861417B0A21700C7629B /* Bt_UploadCancleCh.png */,
 				29CB861517B0A21700C7629B /* Bt_UploadOk.png */,
 				29CB861617B0A21700C7629B /* Bt_UploadOkCh.png */,
+				29D1BEC817BA1ED3001CF197 /* OFF.png */,
+				29D1BEC917BA1ED3001CF197 /* ON.png */,
 			);
 			path = Translfer;
 			sourceTree = "<group>";
@@ -2905,6 +2926,8 @@
 				29BAD63317B4C6CD00F258F4 /* PushConfig.plist in Resources */,
 				296E39CA17B8D80200A43F29 /* ReportViewController.xib in Resources */,
 				29B6D5E617B9C39600763D56 /* Bk_Input.png in Resources */,
+				29D1BECA17BA1ED3001CF197 /* OFF.png in Resources */,
+				29D1BECB17BA1ED3001CF197 /* ON.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3015,6 +3038,9 @@
 				29A3D84917B1DF0900A13C0B /* AutomaticUpload.m in Sources */,
 				29A3D84C17B1F97C00A13C0B /* WebData.m in Sources */,
 				296E39C917B8D80200A43F29 /* ReportViewController.m in Sources */,
+				29D1BEC717BA1362001CF197 /* AutomicUploadViewController.m in Sources */,
+				29D1BECE17BA2FA8001CF197 /* SelectFileUrlViewController.m in Sources */,
+				29D1BED117BA3A26001CF197 /* SelectDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

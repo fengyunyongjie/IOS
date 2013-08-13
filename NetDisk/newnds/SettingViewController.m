@@ -14,6 +14,7 @@
 #import "FavoritesData.h"
 #import "DBSqlite3.h"
 #import "ReportViewController.h"
+#import "AutomicUploadViewController.h"
 
 typedef enum{
     kAlertTypeExit,
@@ -686,8 +687,9 @@ typedef enum{
                 case 3:
                 {
                     //点击照片自动备份
-                    ReportViewController *viewController=[[ReportViewController alloc] initWithNibName:@"ReportViewController" bundle:nil];
-                    [self.navigationController pushViewController:viewController animated:YES];
+                    AutomicUploadViewController *uploadview = [[AutomicUploadViewController alloc] init];
+//                    ReportViewController *viewController=[[ReportViewController alloc] initWithNibName:@"ReportViewController" bundle:nil];
+                    [self.navigationController pushViewController:uploadview animated:YES];
                 }
                     break;
                 default:

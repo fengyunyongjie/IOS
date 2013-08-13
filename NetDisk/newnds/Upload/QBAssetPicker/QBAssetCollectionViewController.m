@@ -143,6 +143,7 @@
     CGRect change_rect = CGRectMake(2, 5, 316, 35);
     change_myFile_button = [[UIButton alloc] initWithFrame:change_rect];
     [change_myFile_button setBackgroundImage:[UIImage imageNamed:@"Bt_SelectFolder.png"] forState:UIControlStateNormal];
+    [change_myFile_button.titleLabel setTextAlignment:NSTextAlignmentLeft];
     [change_myFile_button setTitle:@"选择文件" forState:UIControlStateNormal];
     [change_myFile_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [change_myFile_button addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];

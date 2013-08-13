@@ -36,7 +36,6 @@
     }
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有groups
         __block int total = 0;
-        dispatch_async(dispatch_get_main_queue(), ^{
         if([group numberOfAssets]>0)
         {
             [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
@@ -57,7 +56,6 @@
                 [self startAutomaticUpload];
             }
         }
-        });
     } failureBlock:^(NSError *error) {
         NSLog(@"[[UIDevice currentDevice] systemVersion]:%@",[[UIDevice currentDevice] systemVersion]);
         
@@ -82,7 +80,6 @@
     [self getUploadCotroller];
     if([self.assetArray count]>0)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
             ALAsset *result = [self.assetArray objectAtIndex:0];
             if(result)
             {
@@ -117,12 +114,13 @@
                 [upload_file upload];
                 if(uploadViewController)
                 {
+                    dispatch_async(dispatch_get_main_queue(), ^{
                     [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:0 taskDemo:upload_file.demo total:[self.assetArray count]];
+                    });
                 }
                 [demo release];
                 [upload_file release];
             }
-        });
     }
     else
     {

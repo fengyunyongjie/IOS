@@ -233,7 +233,7 @@
 -(void)clicked_back
 {
 //    [self dismissModalViewControllerAnimated:YES];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
     
@@ -248,7 +248,7 @@
 {
     //请求所有的数据文件
 //    [self dismissModalViewControllerAnimated:YES];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
@@ -256,7 +256,7 @@
 -(void)clicked_uploadStop:(id)sender
 {
 //    [self dismissModalViewControllerAnimated:YES];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
@@ -534,7 +534,7 @@
     NSLog(@"array_:%@",array_);
     [self.delegate changeUpload:array_];
 //    [self dismissModalViewControllerAnimated:YES];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }

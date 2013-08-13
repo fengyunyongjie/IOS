@@ -1072,14 +1072,10 @@ typedef enum{
     imagePickerController.f_id  = self.f_id;
     [imagePickerController requestFileDetail];
     NSLog(@"self.f_id:%@",self.f_id);
-//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
-//    [navigationController setNavigationBarHidden:YES];
-//    [self presentModalViewController:navigationController animated:YES];
     [self.navigationController pushViewController:imagePickerController animated:YES];
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appleDate.myTabBarController setHidesTabBarWithAnimate:YES];
     [imagePickerController release];
-//    [navigationController release];
     NSLog(@"点击上传");
 }
 

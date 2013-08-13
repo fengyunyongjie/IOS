@@ -106,7 +106,7 @@
 
 -(void)back_clicked:(id)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark tableviewdelegate
