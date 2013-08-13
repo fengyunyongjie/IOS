@@ -1864,9 +1864,9 @@ typedef enum{
         [self.navigationController pushViewController:viewController animated:YES];
     }else
     {
-        if (self.myndsType!=kMyndsTypeDefault) {
-            return;
-        }
+//        if (self.myndsType!=kMyndsTypeDefault) {
+//            return;
+//        }
         if ([f_mime isEqualToString:@"png"]||
             [f_mime isEqualToString:@"jpg"]||
             [f_mime isEqualToString:@"jpeg"]||
