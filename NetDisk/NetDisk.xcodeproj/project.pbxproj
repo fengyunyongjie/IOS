@@ -26,7 +26,6 @@
 		291E0B15174B61CF007A72FB /* interestSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 291E0B14174B61CF007A72FB /* interestSelected.png */; };
 		291F5D8F177A699F007EFE03 /* Back_Normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 291F5D8E177A699F007EFE03 /* Back_Normal.png */; };
 		291F866C17A8B84400DA7B7B /* ChangeUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F866B17A8B84400DA7B7B /* ChangeUploadViewController.m */; };
-		291F866E17A8FA9200DA7B7B /* Bt_naDelAll@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 291F866D17A8FA9200DA7B7B /* Bt_naDelAll@2x.png */; };
 		29228C8817A2218C00DD3E8D /* QBImageFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29228C8717A2218C00DD3E8D /* QBImageFileViewController.m */; };
 		292344A21754AF11002FE3D0 /* PKReachability.h in Sources */ = {isa = PBXBuildFile; fileRef = 2939A64A174DE2820036EFD6 /* PKReachability.h */; };
 		292344A61754AF5C002FE3D0 /* Reachability.h in Sources */ = {isa = PBXBuildFile; fileRef = 292344A31754AF47002FE3D0 /* Reachability.h */; };
@@ -444,7 +443,6 @@
 		291F5D8E177A699F007EFE03 /* Back_Normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back_Normal.png; sourceTree = "<group>"; };
 		291F866A17A8B84400DA7B7B /* ChangeUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeUploadViewController.h; sourceTree = "<group>"; };
 		291F866B17A8B84400DA7B7B /* ChangeUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeUploadViewController.m; sourceTree = "<group>"; };
-		291F866D17A8FA9200DA7B7B /* Bt_naDelAll@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_naDelAll@2x.png"; sourceTree = "<group>"; };
 		29228C8617A2218C00DD3E8D /* QBImageFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImageFileViewController.h; sourceTree = "<group>"; };
 		29228C8717A2218C00DD3E8D /* QBImageFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImageFileViewController.m; sourceTree = "<group>"; };
 		292344A31754AF47002FE3D0 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -1492,7 +1490,6 @@
 				298AB53217727FF200D067E1 /* Updata_ErrWifi.png */,
 				298AB53317727FF200D067E1 /* 按钮.png */,
 				298AB53417727FF200D067E1 /* 背景图.png */,
-				291F866D17A8FA9200DA7B7B /* Bt_naDelAll@2x.png */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -2833,7 +2830,6 @@
 				2918F41417A128FD0031ACB2 /* Ico_MusicF.png in Resources */,
 				2918F41517A128FD0031ACB2 /* Ico_OtherF.png in Resources */,
 				2918F41617A128FD0031ACB2 /* Ico_PicF.png in Resources */,
-				291F866E17A8FA9200DA7B7B /* Bt_naDelAll@2x.png in Resources */,
 				29390F5517AA444D00C9BE49 /* Bk_MySpace.png in Resources */,
 				29390F5617AA444D00C9BE49 /* Bk_na.png in Resources */,
 				29390F5717AA444D00C9BE49 /* Bk_na_1.png in Resources */,

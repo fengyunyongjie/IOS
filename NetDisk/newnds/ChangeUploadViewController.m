@@ -92,7 +92,7 @@
             {
                 count = [historyList count];
             }
-            title_leble.text =  [NSString stringWithFormat:@" 上传成功(%i)",count];
+            title_leble.text =  [NSString stringWithFormat:@" 上传完成(%i)",count];
             [self.uploadListTableView endUpdates];
         }
         [self updateReloadData];
@@ -338,11 +338,12 @@
         UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
         [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [file_button setBackgroundImage:nil forState:UIControlStateNormal];
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
         //显示上传进度
         AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         self.uploadingList = app_delegate.upload_all.uploadAllList;
         [self.uploadListTableView reloadData];
+        });
     }
 }
 
@@ -375,6 +376,7 @@
             historyList = nil;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
+            self.uploadListTableView.tableHeaderView = nil;
             historyList = [demo selectFinishTaskTable];
             [self.uploadListTableView reloadData];
         });
@@ -487,7 +489,7 @@
         {
             count = [historyList count];
         }
-        return [NSString stringWithFormat:@"上传成功(%i)",count];
+        return [NSString stringWithFormat:@"上传完成(%i)",count];
     }
 }
 
@@ -536,7 +538,7 @@
         {
             count = [historyList count];
         }
-        title_leble.text =  [NSString stringWithFormat:@" 上传成功(%i)",count];
+        title_leble.text =  [NSString stringWithFormat:@" 上传完成(%i)",count];
     }
     [title_leble setTextColor:[UIColor whiteColor]];
     [title_leble setBackgroundColor:[UIColor colorWithRed:71.0/255.0 green:85.0/255.0 blue:96.0/255.0 alpha:1]];
@@ -634,21 +636,35 @@
 }
 
 //自动备份上传
--(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo
+-(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo total:(int)total
 {
-    if(headerView==nil)
+    if(!isHistoryShow)
     {
-        static NSString *headerString = @"headerView";
-        headerView = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headerString];
-        CGRect rect = headerView.frame;
-        rect.size.height = 50;
-        [headerView setFrame:rect];
+        if(top_headerView==nil)
+        {
+            CGRect top_rect = CGRectMake(0, 0, 320, 70);
+            top_headerView = [[UIView alloc] initWithFrame:top_rect];
+            CGRect label_rect = CGRectMake(0, 0, 320, 20);
+            top_header_label = [[UILabel alloc] initWithFrame:label_rect];
+            [top_header_label setTextColor:[UIColor whiteColor]];
+            [top_header_label setBackgroundColor:[UIColor colorWithRed:71.0/255.0 green:85.0/255.0 blue:96.0/255.0 alpha:1]];
+            [top_header_label setFont:[UIFont systemFontOfSize:14]];
+            [top_headerView addSubview:top_header_label];
+            static NSString *headerString = @"headerView";
+            headerView = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:headerString];
+            CGRect rect = headerView.frame;
+            rect.origin.y = 20;
+            rect.size.height = 50;
+            [headerView setFrame:rect];
+            [top_headerView addSubview:headerView];
+            [headerView.button_dele_button setHidden:YES];
+        }
+        self.uploadListTableView.tableHeaderView = top_headerView;
+        [headerView setTag:-100];
+        [headerView setUploadDemo:taskdemo];
+        [headerView.jinDuView setCurrFloat:progess];
+        [top_header_label setText:[NSString stringWithFormat:@" 相册自动备份(%i)",total]];
     }
-    self.uploadListTableView.tableHeaderView = headerView;
-    [headerView setTag:-100];
-    [headerView setUploadDemo:taskdemo];
-    [headerView.button_dele_button setHidden:YES];
-    [headerView.jinDuView setCurrFloat:progess];
 }
 
 //关闭自动备份上传

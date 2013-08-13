@@ -117,7 +117,7 @@
                 [upload_file upload];
                 if(uploadViewController)
                 {
-                    [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:0 taskDemo:upload_file.demo];
+                    [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:0 taskDemo:upload_file.demo total:[self.assetArray count]];
                 }
                 [demo release];
                 [upload_file release];
@@ -190,7 +190,7 @@
     if(uploadViewController)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-        [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:proress taskDemo:upload_file.demo];
+        [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:proress taskDemo:upload_file.demo total:[self.assetArray count]];
         });
     }
 }

@@ -119,7 +119,7 @@
 	return newImage;
 }
 
--(void)showStartButton
+-(void)showTopBar
 {
     
 }

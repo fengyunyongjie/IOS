@@ -166,6 +166,7 @@
         {
             NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
             NSString *file_id = [diction objectForKey:@"file_id"];
+            NSLog(@"shareManager:%@",shareManager);
             [shareManager shareInvitationAdd:file_id friend_id:msg_sender_id];
         }
         

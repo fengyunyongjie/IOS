@@ -43,6 +43,8 @@
     BOOL isUploadAll;
     //是否自动上传
     BOOL isAutomaticUpload;
+    UIView *top_headerView;
+    UILabel *top_header_label;
     UploadViewCell *headerView;
 }
 
@@ -68,7 +70,7 @@
 -(void)updateReloadData;
 
 //自动备份上传
--(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo;
+-(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo total:(int)total;
 //关闭自动备份上传
 -(void)stopAutomatic;
 

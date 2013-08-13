@@ -38,6 +38,7 @@
 @property(nonatomic,retain) id<UploadViewCellDelegate> delegate;
 
 -(void)setUploadDemo:(TaskDemo *)demo_;
+-(void)showTopBar;
 
 @end
 

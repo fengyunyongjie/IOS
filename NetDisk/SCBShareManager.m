@@ -171,6 +171,53 @@
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     [body release];
 }
+
+//拒绝好友的共享邀请/share/invitation/remove
+-(void)shareInvitationAdd:(NSString *)f_id friend_id:(NSString *)friend_id
+{
+    self.sm_type=kSMTypeAcceptAdd;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_INVITATION_ADD]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_id=%@&friend_id=%@",f_id,friend_id];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
+//???Â•ΩÂ????‰∫??ËØ?share/invitation/remove
+-(void)shareInvitationRemove:(NSString *)f_id friend_id:(NSString *)friend_id
+{
+    self.sm_type=kSMTypeRefusedAdd;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_INVITATION_REMOVE]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"f_id=%@&friend_id=%@",f_id,friend_id];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
 #pragma mark - NSURLConnectionDelegate Methods
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response
@@ -261,6 +308,12 @@
                     break;
                 case kSMTypeSearch:
                     [self.delegate searchSucess:dic];
+                    break;
+                case kSMTypeAcceptAdd:
+                    [self.delegate InvitationAdd:dic];
+                    break;
+                case kSMTypeRefusedAdd:
+                    [self.delegate InvitationAdd:dic];
                     break;
             }
         }
