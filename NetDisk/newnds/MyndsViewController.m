@@ -379,6 +379,7 @@ typedef enum{
         
         //表格操作菜单
         self.cellMenu=[[UIView alloc] init];
+        //[self.cellMenu setBackgroundColor:[UIColor blackColor]];
         //self.cellMenu.backgroundColor=[UIColor blackColor];
         self.cellMenu.frame=CGRectMake(0, 70, 320, 65);
         UIImageView *imageView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_OptionBar.png" ]];
@@ -619,7 +620,7 @@ typedef enum{
 //        cell.accessoryType=UITableViewCellAccessoryNone;
     }
     MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
-    if (myTabbar.IsTabBarHiden) {
+    if (myTabbar.IsTabBarHiden&&!self.tableView.isEditing) {
         [myTabbar setHidesTabBarWithAnimate:NO];
     }
     self.titleLabel.text=self.navigationItem.title;
@@ -715,10 +716,10 @@ typedef enum{
         self.deleteBtn=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteAction:)];
         //[self.deleteBtn setEnabled:NO];
         [self.navigationItem setRightBarButtonItems:@[self.editBtn]];
-        if(self.isEditing)
-        {
-            [self editAction:self.editBtn];
-        }
+//        if(self.isEditing)
+//        {
+//            [self editAction:self.editBtn];
+//        }
     }else if (self.myndsType==kMyndsTypeSelect||self.myndsType==kMyndsTypeMyShareSelect||self.myndsType==kMyndsTypeShareSelect)
     {
         UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitle:@"    确 定    " style:UIBarButtonItemStyleDone target:self action:@selector(moveFileToHere:)];
@@ -793,6 +794,21 @@ typedef enum{
 -(void)searchAction:(id)sender
 {
     [self.tfdSearch endEditing:YES];
+    if ([self.tfdSearch.text isEqualToString:@""]||self.tfdSearch.text==nil) {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"查询条件不能为空";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
     switch (self.myndsType) {
         case kMyndsTypeDefaultSearch:
         {
@@ -1261,10 +1277,24 @@ typedef enum{
         if (fileItem.checked) {
             NSDictionary *dic=[self.listArray objectAtIndex:i];
             NSString *f_id=[dic objectForKey:@"f_id"];
-            [f_ids addObject:f_id];
+            NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
+            if (![f_mime isEqualToString:@"directory"]) {
+                [f_ids addObject:f_id];
+            }
         }
     }
     if ([f_ids count]<=0) {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];    [self.hud show:NO];
+        self.hud.labelText=@"未选中任何文件";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
         return;
     }
     SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
@@ -1312,14 +1342,14 @@ typedef enum{
         case kMyndsTypeShareSearch:
         {
             moveViewController.myndsType=kMyndsTypeShareSelect;
-            moveViewController.title=@"我的共享";
+            moveViewController.title=@"参与共享";
         }
             break;
         case kMyndsTypeMyShare:
         case kMyndsTypeMyShareSearch:
         {
             moveViewController.myndsType=kMyndsTypeMyShareSelect;
-            moveViewController.title=@"参与共享";
+            moveViewController.title=@"我的共享";
         }
             break;
         default:
@@ -1510,6 +1540,7 @@ typedef enum{
         CGRect r=imageView.frame;
         r.origin.y=0;
         imageView.frame=r;
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
     self.cellMenu.frame=r;
     [self.cellMenu setHidden:NO];
@@ -1622,6 +1653,7 @@ typedef enum{
                                        reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    cell.detailTextLabel.font=[UIFont systemFontOfSize:11];
     int row=indexPath.row;
 //    if (self.selectedIndexPath && self.selectedIndexPath.row<indexPath.row) {
 //        row=row-1;
@@ -1878,9 +1910,10 @@ typedef enum{
         MyndsViewController *viewController =[[[MyndsViewController alloc] init] autorelease];
         viewController.f_id=f_id;
         viewController.myndsType=self.myndsType;
-        if (self.myndsType==kMyndsTypeSelect){
-            viewController.delegate=self.delegate;
-        }
+//        if (self.myndsType==kMyndsTypeSelect){
+//            viewController.delegate=self.delegate;
+//        }
+        viewController.delegate=self.delegate;
         if (self.myndsType==kMyndsTypeDefaultSearch) {
             viewController.myndsType=kMyndsTypeDefault;
         }else if (self.myndsType==kMyndsTypeMyShareSearch)

@@ -29,6 +29,7 @@ typedef enum{
 @property (strong,nonatomic) NSString *space_used;
 @property (assign,nonatomic) int tempCount;
 @property (strong,nonatomic) UILabel *titleLabel;
+@property (strong,nonatomic) NSString *nickname;
 @end
 
 @implementation SettingViewController
@@ -113,11 +114,19 @@ typedef enum{
 {
     [[SCBAccountManager sharedManager] currentUserSpace];
     [[SCBAccountManager sharedManager] setDelegate:self];
+    SCBAccountManager *am=[[SCBAccountManager alloc] init];
+    [am setDelegate:self];
+    [am currentProfile];
 }
 -(void)spaceSucceedUsed:(NSString *)space_used total:(NSString *)space_total
 {
     self.space_total=[YNFunctions convertSize:space_total];
     self.space_used=[YNFunctions convertSize:space_used];
+    [self.tableView reloadData];
+}
+-(void)nicknameSucessed:(NSString *)nickname
+{
+    self.nickname=nickname;
     [self.tableView reloadData];
 }
 - (void)didReceiveMemoryWarning
@@ -411,7 +420,9 @@ typedef enum{
 //                        spaceInfo=[NSString stringWithFormat:@"%@/%@",self.space_used,self.space_total];
 //                    }
 //                    descLabel.text=spaceInfo;
-//                    descLabel.textColor = [UIColor grayColor];
+//                    
+                    descLabel.text=self.nickname;
+                    descLabel.textColor = [UIColor grayColor];
                 }
                     break;
                 case 2:

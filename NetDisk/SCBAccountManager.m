@@ -20,6 +20,18 @@ static SCBAccountManager *_sharedAccountManager;
     }
     return _sharedAccountManager;
 }
+-(void)currentProfile
+{
+    self.activeData=[NSMutableData data];
+    self.type=kUserGetProfile;
+    NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_PROFILE_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPMethod:@"POST"];
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
 -(void)currentUserSpace
 {
     self.activeData=[NSMutableData data];
@@ -204,6 +216,15 @@ static SCBAccountManager *_sharedAccountManager;
             if ([[dic objectForKey:@"code"] intValue]==0) {
                 NSLog(@"空间（已用大小/总大小） ： %@/%@",[dic objectForKey:@"space_used"],[dic objectForKey:@"space_total"]);
                 [self.delegate spaceSucceedUsed:[dic objectForKey:@"space_used"] total:[dic objectForKey:@"space_total"]];
+            }else
+            {
+                
+            }
+            break;
+        case kUserGetProfile:
+            if ([[dic objectForKey:@"code"] intValue]==0) {
+                NSLog(@"用户信获取成功 ： \n昵称：%@\n性别：%@\n生日：%@\n个人简介：%@",[dic objectForKey:@"nickname"],[dic objectForKey:@"gender"],[dic objectForKey:@"birthday"],[dic objectForKey:@"intro"]);
+                [self.delegate nicknameSucessed:[dic objectForKey:@"nickname"]];
             }else
             {
                 

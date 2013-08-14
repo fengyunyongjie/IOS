@@ -86,6 +86,7 @@
 		2939A654174DE2820036EFD6 /* README-GHUnit in Resources */ = {isa = PBXBuildFile; fileRef = 2939A648174DE2820036EFD6 /* README-GHUnit */; };
 		2939A655174DE2820036EFD6 /* PKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 2939A64B174DE2820036EFD6 /* PKReachability.m */; };
 		2939A656174DE5F80036EFD6 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83E8B12216D47F8C00A31255 /* AssetsLibrary.framework */; };
+		29412C1617BB2B4D004A9976 /* SCBReportManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29412C1517BB2B4D004A9976 /* SCBReportManager.m */; };
 		294CEE9C174467D000AF0D66 /* option_bar_edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 294CEE94174467CF00AF0D66 /* option_bar_edit@2x.png */; };
 		294CEE9D174467D000AF0D66 /* option_bar_move@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 294CEE95174467CF00AF0D66 /* option_bar_move@2x.png */; };
 		294CEE9E174467D000AF0D66 /* option_bar_remove@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 294CEE96174467CF00AF0D66 /* option_bar_remove@2x.png */; };
@@ -524,6 +525,8 @@
 		2939A648174DE2820036EFD6 /* README-GHUnit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "README-GHUnit"; sourceTree = "<group>"; };
 		2939A64A174DE2820036EFD6 /* PKReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKReachability.h; sourceTree = "<group>"; };
 		2939A64B174DE2820036EFD6 /* PKReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKReachability.m; sourceTree = "<group>"; };
+		29412C1417BB2B4D004A9976 /* SCBReportManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBReportManager.h; sourceTree = "<group>"; };
+		29412C1517BB2B4D004A9976 /* SCBReportManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBReportManager.m; sourceTree = "<group>"; };
 		294BA3EB1726656E00F6CEAE /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
 		294BA3EC1726656E00F6CEAE /* MF_Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base64Additions.m; sourceTree = "<group>"; };
 		294CEE94174467CF00AF0D66 /* option_bar_edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "option_bar_edit@2x.png"; sourceTree = "<group>"; };
@@ -1555,6 +1558,8 @@
 				29A6FAA4171B872B007E6C0A /* SCBShareManager.m */,
 				29A6FAA6171B8744007E6C0A /* SCBPhotoManager.h */,
 				29A6FAA7171B8744007E6C0A /* SCBPhotoManager.m */,
+				29412C1417BB2B4D004A9976 /* SCBReportManager.h */,
+				29412C1517BB2B4D004A9976 /* SCBReportManager.m */,
 				29A6FAA9171B8A54007E6C0A /* SCBDownloader.h */,
 				29A6FAAA171B8A54007E6C0A /* SCBDownloader.m */,
 				29A6FAAC171B8A81007E6C0A /* SCBUploader.h */,
@@ -3041,6 +3046,7 @@
 				29D1BEC717BA1362001CF197 /* AutomicUploadViewController.m in Sources */,
 				29D1BECE17BA2FA8001CF197 /* SelectFileUrlViewController.m in Sources */,
 				29D1BED117BA3A26001CF197 /* SelectDetailViewController.m in Sources */,
+				29412C1617BB2B4D004A9976 /* SCBReportManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

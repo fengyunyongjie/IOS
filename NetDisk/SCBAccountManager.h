@@ -30,6 +30,7 @@ typedef enum {
 //帐号校验 /usr/exit
 //修改个人信息 /usr/profile/update
 //获取个人信息 /usr/profile
+-(void)currentProfile;
 //获取空间信息 /usr/space
 -(void)currentUserSpace;
 @end
@@ -41,4 +42,5 @@ typedef enum {
 -(void)registUnsucceed:(id)manager;
 //[self.delegate spaceSucceedUsed:[dic objectForKey:@"space_used"] total:[dic objectForKey:@"space_total"]];
 -(void)spaceSucceedUsed:(NSString *)space_used total:(NSString *)space_total;
+-(void)nicknameSucessed:(NSString *)nickname;
 @end

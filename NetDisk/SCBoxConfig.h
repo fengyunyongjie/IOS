@@ -28,7 +28,8 @@
 #define USER_LOGOUT_URI @"/usr/logout"
 //获取用户当前存储空间信息；
 #define USER_SPACE_URI @"/usr/space"
-
+//获取个人信息/usr/profile
+#define USER_PROFILE_URI @"/usr/profile"
 
 #pragma mark - 2.好友管理
 //获取群组列表/friendships/groups

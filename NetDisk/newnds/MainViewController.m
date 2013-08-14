@@ -187,7 +187,7 @@
             //cell.imageView.frame=CGRectMake(15, 15, 27, 27);
             break;
         case 1:
-            cell.textLabel.text=@"我的共享";
+            cell.textLabel.text=@"我创建的共享";
             cell.textLabel.textColor=[UIColor colorWithRed:66/255.0 green:75/255.0 blue:83/255.0 alpha:1.0f];
             //cell.imageView.image=[UIImage imageNamed:@"Bt_MyShareDef.png"];
             cell.imageView.image=[UIImage imageNamed:@"space.png"];
@@ -198,7 +198,7 @@
             //cell.imageView.frame=CGRectMake(15, 15, 27, 27);
             break;
         case 2:
-            cell.textLabel.text=@"参与共享";
+            cell.textLabel.text=@"我参与的共享";
             cell.textLabel.textColor=[UIColor colorWithRed:66/255.0 green:75/255.0 blue:83/255.0 alpha:1.0f];
             //cell.imageView.image=[UIImage imageNamed:@"Bt_PartakeshareDef.png"];
             cell.imageView.image=[UIImage imageNamed:@"space.png"];
@@ -246,7 +246,7 @@
             MyndsViewController *viewController=[[[MyndsViewController alloc] init] autorelease];
             viewController.f_id=@"1";
             viewController.myndsType=kMyndsTypeMyShare;
-            viewController.title=@"我的共享";
+            viewController.title=@"我创建的共享";
             [self.navigationController pushViewController:viewController animated:YES];
         }
             break;
@@ -255,7 +255,7 @@
             MyndsViewController *viewController=[[[MyndsViewController alloc] init] autorelease];
             viewController.f_id=@"1";
             viewController.myndsType=kMyndsTypeShare;
-            viewController.title=@"参与共享";
+            viewController.title=@"我参与的共享";
             [self.navigationController pushViewController:viewController animated:YES];
         }
             break;
