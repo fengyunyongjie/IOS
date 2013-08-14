@@ -391,19 +391,19 @@ typedef enum{
         [self.tableView bringSubviewToFront:self.cellMenu];
         
         //移动按钮
-        UIButton *btnMove=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnMove.frame=CGRectMake(10, 8, 60, 60);
-        [btnMove setImage:[UIImage imageNamed:@"Bt_MoveF.png"] forState:UIControlStateNormal];
-        [btnMove addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
-        [self.cellMenu addSubview:btnMove];
-        UILabel *lblMove=[[[UILabel alloc] init] autorelease];
-        lblMove.text=@"移动";
-        lblMove.textAlignment=UITextAlignmentCenter;
-        lblMove.font=[UIFont systemFontOfSize:12];
-        lblMove.textColor=[UIColor whiteColor];
-        lblMove.backgroundColor=[UIColor clearColor];
-        lblMove.frame=CGRectMake(19, 45, 42, 21);
-        [self.cellMenu addSubview:lblMove];
+        self.btnMove=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnMove.frame=CGRectMake(10, 8, 60, 60);
+        [self.btnMove setImage:[UIImage imageNamed:@"Bt_MoveF.png"] forState:UIControlStateNormal];
+        [self.btnMove addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
+        [self.cellMenu addSubview:self.btnMove];
+        self.lblMove=[[[UILabel alloc] init] autorelease];
+        self.lblMove.text=@"移动";
+        self.lblMove.textAlignment=UITextAlignmentCenter;
+        self.lblMove.font=[UIFont systemFontOfSize:12];
+        self.lblMove.textColor=[UIColor whiteColor];
+        self.lblMove.backgroundColor=[UIColor clearColor];
+        self.lblMove.frame=CGRectMake(19, 45, 42, 21);
+        [self.cellMenu addSubview:self.lblMove];
         //重命名按钮
         self.btnRename=[UIButton buttonWithType:UIButtonTypeCustom];
         self.btnRename.frame=CGRectMake(90, 8, 60, 60);
@@ -418,6 +418,20 @@ typedef enum{
         self.lblRename.backgroundColor=[UIColor clearColor];
         self.lblRename.frame=CGRectMake(99, 45, 42, 21);
         [self.cellMenu addSubview:self.lblRename];
+        //分享按钮
+        self.btnShare=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnShare.frame=CGRectMake(90, 8, 60, 60);
+        [self.btnShare setImage:[UIImage imageNamed:@"Bt_ShareF.png"] forState:UIControlStateNormal];
+        [self.btnShare addTarget:self action:@selector(toShared:) forControlEvents:UIControlEventTouchUpInside];
+        [self.cellMenu addSubview:self.btnShare];
+        self.lblShare=[[[UILabel alloc] init] autorelease];
+        self.lblShare.text=@"分享";
+        self.lblShare.textAlignment=UITextAlignmentCenter;
+        self.lblShare.font=[UIFont systemFontOfSize:12];
+        self.lblShare.textColor=[UIColor whiteColor];
+        self.lblShare.backgroundColor=[UIColor clearColor];
+        self.lblShare.frame=CGRectMake(99, 45, 42, 21);
+        [self.cellMenu addSubview:self.lblShare];
         //下载按钮
         self.btnDownload=[UIButton buttonWithType:UIButtonTypeCustom];
         self.btnDownload.frame=CGRectMake(170, 8, 60, 60);
@@ -1158,7 +1172,7 @@ typedef enum{
 }
 -(void)toMore:(id)sender
 {
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:@"分享", nil];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名", nil];
     [actionSheet setTag:kActionSheetTagMore];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
@@ -1507,21 +1521,39 @@ typedef enum{
     if ([t_fl isEqualToString:@"directory"]) {
         self.btnRename.frame=CGRectMake(130, 8, 60, 60);
         self.lblRename.frame=CGRectMake(139, 45, 42, 21);
+        self.btnDel.frame=CGRectMake(250, 8, 60, 60);
+        self.lblDel.frame=CGRectMake(259, 45, 42, 21);
         self.btnDel.hidden=NO;
         self.lblDel.hidden=NO;
         self.btnDownload.hidden=YES;
         self.lblDownload.hidden=YES;
         self.btnMore.hidden=YES;
         self.lblMore.hidden=YES;
+        self.btnShare.hidden=YES;
+        self.lblShare.hidden=YES;
+        self.btnMove.hidden=NO;
+        self.lblMove.hidden=NO;
+        self.btnRename.hidden=NO;
+        self.lblRename.hidden=NO;
     }else{
-        self.btnRename.frame=CGRectMake(90, 8, 60, 60);
-        self.lblRename.frame=CGRectMake(99, 45, 42, 21);
-        self.btnDel.hidden=YES;
-        self.lblDel.hidden=YES;
+        //self.btnRename.frame=CGRectMake(90, 8, 60, 60);
+        //self.lblRename.frame=CGRectMake(99, 45, 42, 21);
+        self.btnDel.frame=CGRectMake(170, 8, 60, 60);
+        self.lblDel.frame=CGRectMake(179, 45, 42, 21);
+        self.btnDownload.frame=CGRectMake(10, 8, 60, 60);
+        self.lblDownload.frame=CGRectMake(19, 45, 42, 21);
+        self.btnDel.hidden=NO;
+        self.lblDel.hidden=NO;
         self.btnDownload.hidden=NO;
         self.lblDownload.hidden=NO;
         self.btnMore.hidden=NO;
         self.lblMore.hidden=NO;
+        self.btnShare.hidden=NO;
+        self.lblShare.hidden=NO;
+        self.btnRename.hidden=YES;
+        self.lblRename.hidden=YES;
+        self.btnMove.hidden=YES;
+        self.lblMove.hidden=YES;
 
     }
     CGRect r=self.cellMenu.frame;
@@ -2606,11 +2638,11 @@ typedef enum{
     switch ([actionSheet tag]) {
         case kActionSheetTagMore:
             if (buttonIndex == 0) {
-                NSLog(@"删除");
-                [self toDelete:nil];
+                NSLog(@"移动");
+                [self toMove:nil];
             }else if (buttonIndex == 1) {
-                NSLog(@"分享");
-                [self toShared:nil];
+                NSLog(@"重命名");
+                [self toRename:nil];
             }else if(buttonIndex == 2) {
                 NSLog(@"取消");
             }

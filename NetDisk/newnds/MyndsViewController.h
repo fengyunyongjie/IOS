@@ -58,6 +58,8 @@ typedef enum {
 @property (strong,nonatomic) UIButton *btnUpload;
 @property (strong,nonatomic) UIButton *btnEdit;
 @property (strong,nonatomic) UIButton *btnSearch;
+@property (strong,nonatomic) UIButton *btnMove;
+@property (strong,nonatomic) UILabel *lblMove;
 -(void)loadData;
 @end
 
