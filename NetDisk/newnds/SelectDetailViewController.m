@@ -159,18 +159,7 @@
 
 -(void)clicked_changeMyFile
 {
-    if([self.navigationController.viewControllers count]>1)
-    {
-        SelectDetailViewController *delailview = [self.navigationController.viewControllers objectAtIndex:1];
-        if(delailview)
-        {
-            [self.navigationController popToViewController:delailview animated:YES];
-        }
-    }
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    app_delegate.maticUpload.f_id = self.f_id;
-    [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
-    
     if([app_delegate.title_string count] > 0)
     {
         NSMutableString *table_str = [[[NSMutableString alloc] init] autorelease];
@@ -190,6 +179,19 @@
         [info updateUserinfo];
         [info release];
     }
+    
+    if([self.navigationController.viewControllers count]>1)
+    {
+        SelectDetailViewController *delailview = [self.navigationController.viewControllers objectAtIndex:1];
+        if(delailview)
+        {
+            [self.navigationController popToViewController:delailview animated:YES];
+        }
+    }
+    
+    [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
+    
+    
 }
 
 -(void)clicked_uploadStop
@@ -207,6 +209,7 @@
             [self.navigationController popToViewController:delailview animated:YES];
         }
     }
+    [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
 
 #pragma mark UITableVieDelegate

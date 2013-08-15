@@ -22,6 +22,8 @@
 #define SelectOneTaskTableForFID @"SELECT * FROM TASKTABLE WHERE F_ID=?"
 #define SelectOneTaskTableOneceForFNAME @"SELECT * FROM TASKTABLE WHERE F_BASE_NAME=?"
 #define SelectOneTaskTableForFNAME @"SELECT * FROM TASKTABLE WHERE F_BASE_NAME=? AND F_STATE=1"
+#define DeleteUploadTskTable @"DELETE FROM TASKTABLE WHERE F_STATE=0"
+#define DeleteFinishTskTable @"DELETE FROM TASKTABLE WHERE F_STATE=1"
 
 @interface TaskDemo : DBSqlite3
 {
@@ -83,5 +85,9 @@
 -(BOOL)isPhotoExist;
 #pragma mark 判断图片是否唯一
 -(BOOL)isExistOneImage;
+#pragma mark 删除上传记录
+-(BOOL)deleteUploadTaskTable;
+#pragma mark 删除历史记录
+-(BOOL)deleteFinishTaskTable;
 
 @end

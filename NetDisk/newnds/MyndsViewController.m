@@ -1095,6 +1095,11 @@ typedef enum{
 
 -(void)goUpload:(id)sender
 {
+    if(self.isEditing)
+    {
+        [self editAction:nil];
+    }
+    
     //打开照片库
     QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
     imagePickerController.delegate = self;

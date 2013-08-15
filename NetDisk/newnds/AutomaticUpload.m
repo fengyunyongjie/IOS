@@ -41,6 +41,10 @@
     {
         self.assetArray = [[NSMutableOrderedSet alloc] init];
     }
+    else
+    {
+        [self.assetArray removeAllObjects];
+    }
     [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有groups
         __block int total = 0;
         if([group numberOfAssets]>0)
@@ -85,13 +89,11 @@
 -(void)startAutomaticUpload
 {
     NSLog(@"开始下载-----------------------");
-    if(![self isConnection])
+    if([self isConnection])
     {
-        return;
-    }
-    [self getUploadCotroller];
-    if([self.assetArray count]>0)
-    {
+        [self getUploadCotroller];
+        if([self.assetArray count]>0)
+        {
             ALAsset *result = [self.assetArray objectAtIndex:0];
             if(result)
             {
@@ -105,9 +107,9 @@
                 demo.f_base_name = [[result defaultRepresentation] filename];
                 demo.deviceName = self.deviceName;
                 demo.space_id = space_id;
-                demo.p_id = @"A";
+                demo.p_id = f_id;
                 demo.is_automic_upload = 1;
-                    
+                
                 NSError *error = nil;
                 Byte *data = malloc(result.defaultRepresentation.size);
                 //获得照片图像数据
@@ -120,31 +122,32 @@
                 [upload_file setDemo:demo];
                 [upload_file setDeviceName:self.deviceName];
                 [upload_file setSpace_id:space_id];
-                [upload_file setF_id:@"A"];
+                [upload_file setF_id:self.f_id];
                 [upload_file setF_pid:nil];
                 [upload_file setDelegate:self];
                 [upload_file upload];
                 if(uploadViewController)
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                    [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:0 taskDemo:upload_file.demo total:[self.assetArray count]];
+                        [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:0 taskDemo:upload_file.demo total:[self.assetArray count]];
                     });
                 }
                 [demo release];
                 [upload_file release];
             }
-    }
-    else
-    {
-        NSLog(@"没有数据了");
-        if(uploadViewController)
-        {
-            [uploadViewController stopAutomatic];
         }
-        if(assetsLibrary)
+        else
         {
-            [assetsLibrary release];
-            assetsLibrary = nil;
+            NSLog(@"没有数据了");
+            if(uploadViewController)
+            {
+                [uploadViewController stopAutomatic];
+            }
+            if(assetsLibrary)
+            {
+                [assetsLibrary release];
+                assetsLibrary = nil;
+            }
         }
     }
 }
@@ -217,7 +220,7 @@
 -(BOOL) isConnection
 {
     __block BOOL bl;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
         switch ([hostReach currentReachabilityStatus]) {
             case NotReachable:
@@ -251,7 +254,7 @@
             default:
                 break;
         }
-    });
+//    });
     return bl;
 }
 

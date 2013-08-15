@@ -224,6 +224,15 @@
     [self.delegate changeFileId:self.f_id];
     [self.delegate changeUpload:self.selectedAssets];
     NSLog(@"device_name--------:%@",device_name);
+    
+    if([self.navigationController.viewControllers count]>3)
+    {
+        UIViewController *delailview = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
+        if(delailview)
+        {
+            [self.navigationController popToViewController:delailview animated:YES];
+        }
+    }
 }
 
 -(void)newFold:(NSDictionary *)dictionary
@@ -239,7 +248,14 @@
 
 -(void)clicked_uploadStop:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    if([self.navigationController.viewControllers count]>3)
+    {
+        UIViewController *delailview = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
+        if(delailview)
+        {
+            [self.navigationController popToViewController:delailview animated:YES];
+        }
+    }
 }
 
 -(void)uploadFileder:(NSString *)deviceName

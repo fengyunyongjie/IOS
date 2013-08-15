@@ -250,7 +250,11 @@
 -(void)setLogin
 {
     self.window.rootViewController=self.myTabBarController;
+    
     self.myTabBarController.selectedIndex = 0;
+    
+    [self.myTabBarController when_tabbar_is_selected:0];
+    
 }
 
 #pragma mark 判断设备号

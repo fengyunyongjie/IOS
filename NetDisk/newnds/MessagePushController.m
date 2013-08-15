@@ -10,7 +10,7 @@
 #import "MessagePushCell.h"
 #import "MBProgressHUD.h"
 
-#define TableViewHeight self.view.frame.size.height-60-44
+#define TableViewHeight self.view.frame.size.height-44
 #define ChangeTabWidth 90
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 #define RightButtonBoderWidth 0
@@ -79,7 +79,6 @@
     
     [self.view addSubview:topView];
     
-    //添加视图列表
     CGRect rect = CGRectMake(0, 44, 320, TableViewHeight);
     self.table_view = [[UITableView alloc] initWithFrame:rect];
     [self.table_view setDataSource:self];

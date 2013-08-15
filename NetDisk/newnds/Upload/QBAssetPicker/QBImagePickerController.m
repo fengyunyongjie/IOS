@@ -533,10 +533,6 @@
 {
     NSLog(@"array_:%@",array_);
     [self.delegate changeUpload:array_];
-//    [self dismissModalViewControllerAnimated:YES];
-    [self.navigationController popViewControllerAnimated:YES];
-    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
 
 @end

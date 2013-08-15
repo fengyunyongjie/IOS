@@ -311,7 +311,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-//    [self.uploadListTableView reloadData];
+    [self.uploadListTableView reloadData];
 }
 
 #pragma mark －－－－－头部视图的几个方法
@@ -438,11 +438,10 @@
 -(void)clicked_clearAll:(id)sender
 {
     TaskDemo *demo = [[TaskDemo alloc] init];
-    BOOL bl = [demo deleteAllTaskTable];
-    NSLog(@"删除：%i",bl);
-    [demo release];
     if(isHistoryShow)
     {
+        BOOL bl = [demo deleteFinishTaskTable];
+        NSLog(@"删除：%i",bl);
         if([historyList count]>0)
         {
             [historyList removeAllObjects];
@@ -451,6 +450,8 @@
     }
     else
     {
+        BOOL bl = [demo deleteUploadTaskTable];
+        NSLog(@"删除：%i",bl);
         if([self.uploadingList count]>0)
         {
             UploadFile *upload_file = (UploadFile *)[self.uploadingList objectAtIndex:0];
@@ -462,6 +463,7 @@
         }
     }
     [self.more_control setHidden:YES];
+    [demo release];
 }
 
 

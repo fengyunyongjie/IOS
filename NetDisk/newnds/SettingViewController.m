@@ -200,14 +200,7 @@ typedef enum{
                 }
                 else
                 {
-                    if([appleDate.maticUpload.assetArray count]==0)
-                    {
-                        [appleDate.maticUpload isHaveData];
-                    }
-                    else
-                    {
-                        [appleDate.maticUpload startAutomaticUpload];
-                    }
+                    [appleDate.maticUpload startAutomaticUpload];
                 }
             }
             NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
@@ -275,14 +268,7 @@ typedef enum{
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 if([YNFunctions isAutoUpload])
                 {
-                    if([appleDate.maticUpload.assetArray count]==0)
-                    {
-                        [appleDate.maticUpload isHaveData];
-                    }
-                    else
-                    {
-                        [appleDate.maticUpload startAutomaticUpload];
-                    }
+                    [appleDate.maticUpload isHaveData];
                 }
             }else
             {
@@ -296,14 +282,7 @@ typedef enum{
             if (buttonIndex==1) {
                 [YNFunctions setIsAutoUpload:YES];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                if([appleDate.maticUpload.assetArray count]==0)
-                {
-                    [appleDate.maticUpload isHaveData];
-                }
-                else
-                {
-                    [appleDate.maticUpload startAutomaticUpload];
-                }
+                [appleDate.maticUpload isHaveData];
             }else
             {
                 [YNFunctions setIsAutoUpload:NO];

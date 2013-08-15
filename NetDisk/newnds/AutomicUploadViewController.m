@@ -45,17 +45,22 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UserInfo *info = [[UserInfo alloc] init];
     info.keyString = @"自动备份目录";
     NSMutableArray *array = [info selectAllUserinfo];
     if([array count] == 0)
     {
+        info.f_id = -1;
         info.descript = [NSString stringWithFormat:@"我的空间/手机照片/%@",[AppDelegate deviceString]];
         [info insertUserinfo];
+        self.table_string = info.descript;
+        app_delegate.maticUpload.f_id = @"-1";
     }
     else
     {
         UserInfo *info = [array lastObject];
+        app_delegate.maticUpload.f_id = [NSString stringWithFormat:@"%i",info.f_id];
         self.table_string = [[[NSString alloc] initWithString:info.descript] autorelease];
     }
     if(table_view)
@@ -63,6 +68,7 @@
         UITableViewCell *cell = [table_view cellForRowAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:0]];
         cell.detailTextLabel.text = self.table_string;
     }
+    NSLog(@"app_delegate.maticUpload.f_id:%@",app_delegate.maticUpload.f_id);
     [info release];
 }
 
@@ -148,6 +154,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:celleString] autorelease];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.detailTextLabel setFont:[UIFont systemFontOfSize:12]];
         CGRect rect = cell.frame;
         rect.size.width = 280;
         cell.frame = rect;
@@ -156,7 +163,7 @@
     if(row == 0)
     {
         cell.textLabel.text = @"相册自动备份";
-        cell.detailTextLabel.text = @"自动备份相册下照片到云端";
+        cell.detailTextLabel.text = @"指定目录自动备份到云端";
         if(automicOff_button == nil)
         {
             automicOff_button = [[UIButton alloc] initWithFrame:OFFButtonRect];
@@ -229,14 +236,7 @@
             [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
             [YNFunctions setIsAutoUpload:YES];
             AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            if([app_delegate.maticUpload.assetArray count]==0)
-            {
-                [app_delegate.maticUpload isHaveData];
-            }
-            else
-            {
-                [app_delegate.maticUpload startAutomaticUpload];
-            }
+            [app_delegate.maticUpload isHaveData];
         }
     }
 }

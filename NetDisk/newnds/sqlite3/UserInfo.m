@@ -30,7 +30,7 @@
         sqlite3_bind_int(statement, 1, isTrue);
         sqlite3_bind_text(statement, 2, [keyString UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(statement, 3, [descript UTF8String], -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(statement, 3, f_id);
+        sqlite3_bind_int(statement, 4, f_id);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;

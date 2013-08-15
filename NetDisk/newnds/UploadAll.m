@@ -47,6 +47,7 @@
     {
         self.uploadAllList = [[NSMutableArray alloc] init];
     }
+    BOOL bl = TRUE;
     for(ALAsset *asset in array_)
     {
         TaskDemo *demo = [[TaskDemo alloc] init];
@@ -82,9 +83,10 @@
         [demo release];
         [upload_file release];
         i++;
-        if(i==1)
+        if(bl)
         {
             [self startUpload];
+            bl = FALSE;
         }
     }
     NSLog(@"回到上传管理页面");
