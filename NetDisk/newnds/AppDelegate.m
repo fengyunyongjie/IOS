@@ -33,6 +33,7 @@
 @synthesize upload_all;
 @synthesize maticUpload;
 @synthesize isAutomicUpload;
+@synthesize title_string;
 
 @class UploadAll;
 - (void)dealloc
@@ -134,6 +135,10 @@
 -(void)goMainViewController
 {
     self.window.rootViewController=self.myTabBarController;
+//    if([YNFunctions isAutoUpload])
+//    {
+//        [maticUpload isHaveData];
+//    }
 }
 - (void) onReq:(BaseReq*)req
 {

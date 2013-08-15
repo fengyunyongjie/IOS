@@ -11,6 +11,7 @@
 #import "YNFunctions.h"
 #import "SCBSession.h"
 #import "SelectFileUrlViewController.h"
+#import "UserInfo.h"
 
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define OFFButtonHeight 25
@@ -28,7 +29,7 @@
 @end
 
 @implementation AutomicUploadViewController
-@synthesize table_view,table_array;
+@synthesize table_view,table_array,table_string;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,6 +42,29 @@
 
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    UserInfo *info = [[UserInfo alloc] init];
+    info.keyString = @"自动备份目录";
+    NSMutableArray *array = [info selectAllUserinfo];
+    if([array count] == 0)
+    {
+        info.descript = [NSString stringWithFormat:@"我的空间/手机照片/%@",[AppDelegate deviceString]];
+        [info insertUserinfo];
+    }
+    else
+    {
+        UserInfo *info = [array lastObject];
+        self.table_string = [[[NSString alloc] initWithString:info.descript] autorelease];
+    }
+    if(table_view)
+    {
+        UITableViewCell *cell = [table_view cellForRowAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:0]];
+        cell.detailTextLabel.text = self.table_string;
+    }
+    [info release];
+}
 
 - (void)viewDidLoad
 {
@@ -124,6 +148,9 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:celleString] autorelease];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        CGRect rect = cell.frame;
+        rect.size.width = 280;
+        cell.frame = rect;
     }
     int row = [indexPath row];
     if(row == 0)
@@ -135,11 +162,11 @@
             automicOff_button = [[UIButton alloc] initWithFrame:OFFButtonRect];
             if([YNFunctions isAutoUpload])
             {
-                [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
+                [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
             }
             else
             {
-                [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
+                [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
             }
             [automicOff_button addTarget:self action:@selector(openOrClose:) forControlEvents:UIControlEventTouchUpInside];
         }
@@ -152,7 +179,13 @@
     }
     if(row == 2)
     {
-        cell.textLabel.text = @"照片备份至：";
+        cell.textLabel.text = @"照片备份至";
+        if(self.table_string)
+        {
+            NSLog(@"table_string:%@",self.table_string);
+            cell.detailTextLabel.text = self.table_string;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
     }
     return cell;
 }
@@ -165,6 +198,15 @@
     }
     else if(row == 1)
     {
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(app_delegate.title_string == nil)
+        {
+            app_delegate.title_string = [[NSMutableArray alloc] init];
+        }
+        else
+        {
+            [app_delegate.title_string removeAllObjects];
+        }
         SelectFileUrlViewController *selectFileView = [[SelectFileUrlViewController alloc] init];
         [self.navigationController pushViewController:selectFileView animated:YES];
         [selectFileView release];
@@ -177,16 +219,28 @@
     {
         if([YNFunctions isAutoUpload])
         {
-            [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
+            [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
             [YNFunctions setIsAutoUpload:NO];
+            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [app_delegate.maticUpload colseAutomaticUpload];
         }
         else
         {
-            [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
+            [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
             [YNFunctions setIsAutoUpload:YES];
+            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            if([app_delegate.maticUpload.assetArray count]==0)
+            {
+                [app_delegate.maticUpload isHaveData];
+            }
+            else
+            {
+                [app_delegate.maticUpload startAutomaticUpload];
+            }
         }
     }
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

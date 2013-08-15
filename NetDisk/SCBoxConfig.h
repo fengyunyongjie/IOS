@@ -92,6 +92,8 @@
 #define FM_DOWNLOAD_Look @"/fm/download/preview"
 //获取文件详细信息
 #define FM_GETFILEINFO @"/fm/getFileInfo"
+//搜索当前文件夹 fm/search/current
+#define FM_SEARCH_CURRENT @"/fm/getFileInfo"
 
 #pragma mark - 5.共享管理
 //打开共享文件夹

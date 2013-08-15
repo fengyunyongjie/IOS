@@ -16,6 +16,16 @@
 #import "ReportViewController.h"
 #import "AutomicUploadViewController.h"
 
+#define OFFButtonHeight 25
+#define OFFBorderWidth 20
+
+#define OFFImageWidth 70
+#define OFFImageHeight 33
+#define OFFCurrWidth OFFImageWidth*OFFButtonHeight/OFFImageHeight
+#define OFFCurrX 320-OFFCurrWidth-OFFBorderWidth
+#define OFFCurrY (40-OFFButtonHeight)/2
+#define OFFButtonRect CGRectMake(OFFCurrX, OFFCurrY, OFFCurrWidth, OFFButtonHeight)
+
 typedef enum{
     kAlertTypeExit,
     kAlertTypeClear,
@@ -156,9 +166,10 @@ typedef enum{
                 //[[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
                 [YNFunctions setIsOnlyWifi:YES];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-                [uploadView stopWiFi];
+                if(appleDate.maticUpload.netWorkState != 1)
+                {
+                    [appleDate.maticUpload colseAutomaticUpload];
+                }
                 if ([YNFunctions networkStatus]==ReachableViaWWAN) {
                     [[FavoritesData sharedFavoritesData] stopDownloading];
                 }
@@ -189,7 +200,14 @@ typedef enum{
                 }
                 else
                 {
-                    [appleDate.maticUpload isHaveData];
+                    if([appleDate.maticUpload.assetArray count]==0)
+                    {
+                        [appleDate.maticUpload isHaveData];
+                    }
+                    else
+                    {
+                        [appleDate.maticUpload startAutomaticUpload];
+                    }
                 }
             }
             NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
@@ -198,7 +216,6 @@ typedef enum{
         default:
             break;
     }
-    
 }
 - (void)exitAccount:(id)sender
 {
@@ -234,12 +251,9 @@ typedef enum{
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-//                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-//                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-//                [uploadView stopAllDo];
-//                
-//                [DBSqlite3 cleanSql];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [appleDate.maticUpload colseAutomaticUpload];
+                [DBSqlite3 cleanSql];
                 [[FavoritesData sharedFavoritesData] stopDownloading];
                 
                 [self.rootViewController presendLoginViewController];
@@ -261,7 +275,14 @@ typedef enum{
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 if([YNFunctions isAutoUpload])
                 {
-                    [appleDate.maticUpload isHaveData];
+                    if([appleDate.maticUpload.assetArray count]==0)
+                    {
+                        [appleDate.maticUpload isHaveData];
+                    }
+                    else
+                    {
+                        [appleDate.maticUpload startAutomaticUpload];
+                    }
                 }
             }else
             {
@@ -275,14 +296,19 @@ typedef enum{
             if (buttonIndex==1) {
                 [YNFunctions setIsAutoUpload:YES];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [appleDate.maticUpload isHaveData];
+                if([appleDate.maticUpload.assetArray count]==0)
+                {
+                    [appleDate.maticUpload isHaveData];
+                }
+                else
+                {
+                    [appleDate.maticUpload startAutomaticUpload];
+                }
             }else
             {
                 [YNFunctions setIsAutoUpload:NO];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:3];
-                UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-                [uploadView stopAllDo];
+                [appleDate.maticUpload colseAutomaticUpload];
             }
             [self.tableView reloadData];
             break;
@@ -447,7 +473,7 @@ typedef enum{
             break;
         case 1:
         {
-            UISwitch *m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(200, 10, 40, 29)];
+            UISwitch *m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 10, 40, 29)];
             [m_switch setOnTintColor:[UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]];
             [m_switch addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
             m_switch.on = YES;
@@ -455,6 +481,7 @@ typedef enum{
             m_switch.tag = row;
             [cell.contentView addSubview:m_switch];
             [m_switch release];
+            
             
             descLabel.hidden = YES;
             titleLabel.textAlignment = UITextAlignmentLeft;
@@ -468,6 +495,25 @@ typedef enum{
                     [cell.textLabel setFont:titleLabel.font];
                     cell.detailTextLabel.text=@"仅Wi-Fi下进行,节省流量";
                     [cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
+                    
+                    CGRect label_rect = CGRectMake(240, 12, 40, 20);
+                    UILabel *label = [[UILabel alloc] initWithFrame:label_rect];
+                    label.font = cell.textLabel.font;
+                    label.textColor = cell.textLabel.textColor;
+                    label.textAlignment = NSTextAlignmentCenter;
+                    label.backgroundColor = cell.textLabel.backgroundColor;
+                    if([YNFunctions isAutoUpload])
+                    {
+                        label.text = @"开启";
+                    }
+                    else
+                    {
+                        label.text = @"关闭";
+                    }
+                    [cell addSubview:label];
+                    [label release];
+                    
+                    m_switch.hidden = YES;
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"];
                     if (switchFlag==nil) {
                         m_switch.on = NO;
@@ -481,6 +527,7 @@ typedef enum{
                 {
                     titleLabel.text = @"仅在Wi-Fi下上传/下载";
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
+                    automicOff_button.hidden = NO;
                     if (switchFlag==nil) {
                         m_switch.on = YES;
                     }

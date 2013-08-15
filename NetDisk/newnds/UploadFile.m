@@ -102,7 +102,7 @@
     }
     NSLog(@"1:申请效验");
     uploadData = [[NSString alloc] initWithString:[self md5:demo.f_data]];
-    [uploderDemo requestUploadVerify:[self.f_id intValue] f_name:demo.f_base_name f_size:[NSString stringWithFormat:@"%i",[demo.f_data length]] f_md5:uploadData];
+    [uploderDemo requestUploadVerify:[self.f_id intValue] f_name:demo.f_base_name f_size:[NSString stringWithFormat:@"%i",[demo.f_data length]] f_md5:uploadData sapce_id:self.space_id];
 }
 
 #pragma mark ----文件管理类的代理

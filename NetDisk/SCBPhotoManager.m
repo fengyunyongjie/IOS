@@ -595,7 +595,6 @@
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
-
 -(void)dealloc
 {
     [photoDelegate release];

@@ -26,6 +26,7 @@
     FirstLoadViewController *firstLoadView;
     AutomaticUpload *maticUpload;
     BOOL isAutomicUpload;
+    NSMutableArray *title_string;
 }
 
 @property (strong, nonatomic) UIWindow *window;
@@ -35,6 +36,7 @@
 @property (nonatomic,retain) UploadAll *upload_all;
 @property (nonatomic,retain) AutomaticUpload *maticUpload;
 @property (nonatomic,assign) BOOL isAutomicUpload;
+@property (nonatomic,retain) NSMutableArray *title_string;
 
 -(void)setLogin;
 //分享图片

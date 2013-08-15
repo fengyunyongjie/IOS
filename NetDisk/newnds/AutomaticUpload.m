@@ -8,21 +8,28 @@
 
 #import "AutomaticUpload.h"
 #import "ALAsset+AGIPC.h"
+#import "Reachability.h"
 #import "WebData.h"
 #import "TaskDemo.h"
 #import "AppDelegate.h"
 #import "SCBSession.h"
 #import "UploadFile.h"
 #import "ChangeUploadViewController.h"
+#import "YNFunctions.h"
 
 @implementation AutomaticUpload
 @synthesize assetArray;
 @synthesize f_id;
 @synthesize deviceName;
+@synthesize netWorkState;
 
 //比对本地数据库
 -(void)isHaveData
 {
+    if(![self isConnection])
+    {
+        return;
+    }
     space_id = [[SCBSession sharedSession] spaceID];
     self.deviceName = [NSString stringWithFormat:@"来自于-%@",[AppDelegate deviceString]];
     NSLog(@"deviceName:%@",self.deviceName);
@@ -77,6 +84,11 @@
 //开启自动上传
 -(void)startAutomaticUpload
 {
+    NSLog(@"开始下载-----------------------");
+    if(![self isConnection])
+    {
+        return;
+    }
     [self getUploadCotroller];
     if([self.assetArray count]>0)
     {
@@ -124,6 +136,7 @@
     }
     else
     {
+        NSLog(@"没有数据了");
         if(uploadViewController)
         {
             [uploadViewController stopAutomatic];
@@ -173,6 +186,7 @@
 //上传成功
 -(void)upFinish:(NSInteger)fileTag
 {
+    NSLog(@"继续下载-----------------------");
     [self getUploadCotroller];
     if([self.assetArray count]>0)
     {
@@ -197,6 +211,48 @@
 -(void)upError:(NSInteger)fileTag
 {
     
+}
+
+//判断当前的网络是3g还是wifi
+-(BOOL) isConnection
+{
+    __block BOOL bl;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
+        switch ([hostReach currentReachabilityStatus]) {
+            case NotReachable:
+            {
+                netWorkState = 3;
+                //"没有网络链接"
+                bl = NO;
+            }
+                break;
+            case ReachableViaWiFi:
+            {
+                // "WIFI";
+                netWorkState = 1;
+                bl = YES;
+            }
+                break;
+            case ReachableViaWWAN:
+            {
+                // @"WLAN";
+                netWorkState = 2;
+                if([YNFunctions isOnlyWifi])
+                {
+                    bl = NO;
+                }
+                else
+                {
+                    bl = YES;
+                }
+            }
+                break;
+            default:
+                break;
+        }
+    });
+    return bl;
 }
 
 @end

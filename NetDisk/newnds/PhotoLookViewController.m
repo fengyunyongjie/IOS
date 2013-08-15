@@ -182,7 +182,7 @@
     self.leftButton = [[UIButton alloc] initWithFrame:leftRect];
     [self.leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [self.leftButton.titleLabel setTextColor:[UIColor blackColor]];
-    [self.leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+    [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
     [self.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.leftButton setBackgroundColor:[UIColor clearColor]];
@@ -783,7 +783,7 @@
     {
         float fWidth = (currWidth-36*3)/2;
         CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
-        [self.leftButton setTitle:@"取消收藏" forState:UIControlStateNormal];
+        [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
         [self.leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [self.leftButton setFrame:leftRect];
         CGRect centerRect = CGRectMake(36*2+fWidth, 5, fWidth, 33);
@@ -794,7 +794,7 @@
     {
         float fWidth = (currWidth-36*4)/3;
         CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
-        [self.leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+        [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
         [self.leftButton setFrame:leftRect];
         CGRect centerRect = CGRectMake(fWidth+36*2, 5, fWidth, 33);
         [self.centerButton setFrame:centerRect];
@@ -805,7 +805,7 @@
         {
             fWidth = (currWidth-36*3)/2;
             CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
-            [self.leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+            [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
             [self.leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
             [self.leftButton setFrame:leftRect];
             CGRect centerRect = CGRectMake(36*2+fWidth, 5, fWidth, 33);
@@ -847,21 +847,21 @@
             }
         }
         [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
-        hud = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:hud];
-        hud.labelText=@"取消收藏成功";
-        hud.mode=MBProgressHUDModeText;
-        [hud show:YES];
-        [hud hide:YES afterDelay:0.8f];
-        [hud release];
-        hud = nil;
+//        hud = [[MBProgressHUD alloc] initWithView:self.view];
+//        [self.view addSubview:hud];
+//        hud.labelText=@"取消收藏成功";
+//        hud.mode=MBProgressHUDModeText;
+//        [hud show:YES];
+//        [hud hide:YES afterDelay:0.8f];
+//        [hud release];
+//        hud = nil;
         if(!isCliped)
         {
             [self isHiddenDelete:NO];
         }
         else
         {
-            [self.leftButton setTitle:@"收藏" forState:UIControlStateNormal];
+            [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
         }
     }
     else
@@ -1111,7 +1111,7 @@
         NSLog(@"增加一个收藏，收藏总数: %d",[[FavoritesData sharedFavoritesData] count]);
         hud = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:hud];
-        hud.labelText=@"收藏成功";
+        hud.labelText=@"下载成功";
         hud.mode=MBProgressHUDModeText;
         [hud show:YES];
         [hud hide:YES afterDelay:0.8f];
@@ -1121,14 +1121,14 @@
     }
     else
     {
-        hud = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:hud];
-        hud.labelText=@"收藏失败";
-        hud.mode=MBProgressHUDModeText;
-        [hud show:YES];
-        [hud hide:YES afterDelay:0.8f];
-        [hud release];
-        hud = nil;
+//        hud = [[MBProgressHUD alloc] initWithView:self.view];
+//        [self.view addSubview:hud];
+//        hud.labelText=@"收藏失败";
+//        hud.mode=MBProgressHUDModeText;
+//        [hud show:YES];
+//        [hud hide:YES afterDelay:0.8f];
+//        [hud release];
+//        hud = nil;
     }
 }
 

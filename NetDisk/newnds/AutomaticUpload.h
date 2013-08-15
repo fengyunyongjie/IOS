@@ -30,11 +30,13 @@
     ALAssetsLibrary *assetsLibrary;
     NSMutableOrderedSet *assetArray;
     UploadFile *upload_file;
+    int netWorkState;
 }
 
 @property(nonatomic,retain) NSMutableOrderedSet *assetArray;
 @property(nonatomic,retain) NSString *f_id;
 @property(nonatomic,retain) NSString *deviceName;
+@property(nonatomic,assign) int netWorkState;
 
 //比对本地数据库
 -(void)isHaveData;

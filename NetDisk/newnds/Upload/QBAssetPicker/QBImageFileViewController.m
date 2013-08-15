@@ -40,6 +40,17 @@
     return self;
 }
 
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
+
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -250,7 +261,7 @@
         NSString *f_modify=[this objectForKey:@"f_modify"];
         cell.textLabel.text=name;
         cell.detailTextLabel.text=f_modify;
-        cell.imageView.image = [UIImage imageNamed:@"icon_Folder.png"];
+        cell.imageView.image = [UIImage imageNamed:@"Ico_FolderF.png"];
     }
     return cell;
 }

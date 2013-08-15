@@ -16,7 +16,7 @@
 @synthesize matableData;
 
 //上传效验
--(void)requestUploadVerify:(int)f_pid f_name:(NSString *)f_name f_size:(NSString *)f_size f_md5:(NSString *)f_md5
+-(void)requestUploadVerify:(int)f_pid f_name:(NSString *)f_name f_size:(NSString *)f_size f_md5:(NSString *)f_md5 sapce_id:(NSString *)sapce_id
 {
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_VERIFY]];
@@ -26,7 +26,7 @@
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_pid=%i&f_name=%@&f_size=%@&f_md5=%@",f_pid,f_name,f_size,f_md5];
+    [body appendFormat:@"f_pid=%i&f_name=%@&f_size=%@&f_md5=%@&space_id=%@",f_pid,f_name,f_size,f_md5,sapce_id];
     NSLog(@"body:%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];

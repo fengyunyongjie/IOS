@@ -9,6 +9,7 @@
 #import "SelectFileUrlViewController.h"
 #import "SCBSession.h"
 #import "AppDelegate.h"
+#import "SelectDetailViewController.h"
 
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -55,6 +56,15 @@
     UIImage * imge = [[UIImage alloc] init];
     imge = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
+    //标题
+    UILabel *titleLabel=[[UILabel alloc] init];
+    titleLabel.text=@"选择自动备份的相册";
+    titleLabel.font=[UIFont boldSystemFontOfSize:18];
+    titleLabel.textAlignment=UITextAlignmentCenter;
+    titleLabel.backgroundColor=[UIColor clearColor];
+    titleLabel.frame=CGRectMake(60, 0, 200, 44);
+    [nbar addSubview:titleLabel];
     
     //返回按钮
     UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
@@ -121,13 +131,13 @@
     }
     else if(row == 1)
     {
-        cell.textLabel.text = @"我的共享";
+        cell.textLabel.text = @"我创建的共享";
         cell.textLabel.textColor=[UIColor colorWithRed:66/255.0 green:75/255.0 blue:83/255.0 alpha:1.0f];
         [cell.imageView initWithImage:[UIImage imageNamed:@"Bt_MyShareDef.png"] highlightedImage:[UIImage imageNamed:@"Bt_MyShareCh.png"]];
     }
     else if(row == 2)
     {
-        cell.textLabel.text = @"参与共享";
+        cell.textLabel.text = @"我参与的共享";
         cell.textLabel.textColor=[UIColor colorWithRed:66/255.0 green:75/255.0 blue:83/255.0 alpha:1.0f];
         [cell.imageView initWithImage:[UIImage imageNamed:@"Bt_PartakeshareDef.png"] highlightedImage:[UIImage imageNamed:@"Bt_PartakeshareCh.png"]];
     }
@@ -136,18 +146,38 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     int row = [indexPath row];
     if(row == 0)
     {
-        
+        SelectDetailViewController *select_detailview = [[SelectDetailViewController alloc] init];
+        select_detailview.space_id = @"1";
+        select_detailview.title_string = @"我的空间";
+        [app_delegate.title_string addObject:@"我的空间"];
+        select_detailview.f_id = @"1";
+        [self.navigationController pushViewController:select_detailview animated:YES];
+        [select_detailview release];
     }
     else if(row == 1)
     {
-        
+        SelectDetailViewController *select_detailview = [[SelectDetailViewController alloc] init];
+        select_detailview.space_id = @"2";
+        select_detailview.title_string = @"我创建的共享";
+        [app_delegate.title_string addObject:@"我创建的共享"];
+        select_detailview.f_id = @"1";
+        [self.navigationController pushViewController:select_detailview animated:YES];
+        [select_detailview release];
     }
     else if(row == 2)
     {
-        
+        SelectDetailViewController *select_detailview = [[SelectDetailViewController alloc] init];
+        select_detailview.space_id = @"3";
+        select_detailview.title_string = @"我参与的共享";
+        [app_delegate.title_string addObject:@"我参与的共享"];
+        select_detailview.f_id = @"1";
+        [self.navigationController pushViewController:select_detailview animated:YES];
+        [select_detailview release];
     }
 }
 
