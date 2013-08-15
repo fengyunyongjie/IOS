@@ -167,6 +167,7 @@
 		29ACB0001783D51F00AC9E6A /* Bt_Operator.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */; };
 		29AE060417BC858A004FEA5E /* mode.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29AE060317BC858A004FEA5E /* mode.storyboard */; };
 		29AE060617BCACE6004FEA5E /* pop.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AE060517BCACE6004FEA5E /* pop.png */; };
+		29AE060817BCD6D0004FEA5E /* Ico_CoverF.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AE060717BCD6D0004FEA5E /* Ico_CoverF.png */; };
 		29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */; };
 		29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */; };
 		29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B18AC7173CC37C00DBF2CB /* OptionCell.xib */; };
@@ -624,6 +625,7 @@
 		29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Operator.png; sourceTree = "<group>"; };
 		29AE060317BC858A004FEA5E /* mode.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = mode.storyboard; sourceTree = "<group>"; };
 		29AE060517BCACE6004FEA5E /* pop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop.png; sourceTree = "<group>"; };
+		29AE060717BCD6D0004FEA5E /* Ico_CoverF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ico_CoverF.png; sourceTree = "<group>"; };
 		29AF11BB17A5F17300F32F1F /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
 		29AF11BC17A5F17300F32F1F /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
 		29AFC2C41778369E0074FBAC /* QLBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLBrowserViewController.h; sourceTree = "<group>"; };
@@ -1291,6 +1293,7 @@
 		29390F2E17AA444D00C9BE49 /* MySpace */ = {
 			isa = PBXGroup;
 			children = (
+				29AE060717BCD6D0004FEA5E /* Ico_CoverF.png */,
 				29AE060517BCACE6004FEA5E /* pop.png */,
 				29B6D5E517B9C39600763D56 /* Bk_Input.png */,
 				29C98B0D17ABA35900CF8FAF /* Bt_Title.png */,
@@ -2941,6 +2944,7 @@
 				29D1BECB17BA1ED3001CF197 /* ON.png in Resources */,
 				29AE060417BC858A004FEA5E /* mode.storyboard in Resources */,
 				29AE060617BCACE6004FEA5E /* pop.png in Resources */,
+				29AE060817BCD6D0004FEA5E /* Ico_CoverF.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

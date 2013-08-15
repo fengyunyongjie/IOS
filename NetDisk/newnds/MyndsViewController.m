@@ -1748,7 +1748,7 @@ typedef enum{
             tag=[[FavoritesData sharedFavoritesData] isExistsWithFID:f_id];
             if (tag!=nil) {
                 if (cell.imageView.subviews.count==0) {
-                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
+                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
                     CGRect r=[tagView frame];
                     r.origin.x=20;
                     r.origin.y=20;
@@ -1760,7 +1760,7 @@ typedef enum{
             }else
             {
                 if (cell.imageView.subviews.count==0) {
-                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"favorite_tag.png"]];
+                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
                     CGRect r=[tagView frame];
                     r.origin.x=20;
                     r.origin.y=20;
@@ -1776,7 +1776,7 @@ typedef enum{
 //            UIImageView *tagImageView=(UIImageView *)[cell.imageView.subviews objectAtIndex:0];
 //            [tagImageView setImage:[UIImage imageNamed:@"favorite_tag_n.png"]];
 //            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-//                [tagImageView setImage:[UIImage imageNamed:@"favorite_tag.png"]];
+//                [tagImageView setImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
 //            }
         }
         text=name;
