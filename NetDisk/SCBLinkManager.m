@@ -37,6 +37,34 @@
     NSURLConnection * conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     [body release];
 }
+-(void)releaseLinkEmail:(NSArray *)f_ids l_pwd:(NSString *)l_pwd receiver:(NSArray *)receiver
+{
+    self.lm_type=kLMTypeReleaseLinkEmail;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,LINK_RELEASE_EMAIL_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
+    NSString *receivers=[receiver componentsJoinedByString:@"&receiver[]="];
+    NSString *lpwd=@"a1b2";
+    arc4random();
+    rand();
+    random();
+    rand_r(1);
+    [body appendFormat:@"f_ids[]=%@&l_pwd=%@&receiver=%@",fids,lpwd,receivers];
+    NSLog(@"body: %@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    
+    NSURLConnection * conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [body release];
+}
 #pragma mark - NSURLConnectionDelegate Methods
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response
@@ -76,6 +104,9 @@
             case kLMTypeReleaseLink:
                 [self.delegate releaseLinkUnsuccess:@"网络有问题"];
                 break;
+            case kLMTypeReleaseLinkEmail:
+                [self.delegate releaseLinkUnsuccess:@"网络有问题"];
+                break;
         }
     }
 }
@@ -96,6 +127,9 @@
                 case kLMTypeReleaseLink:
                     [self.delegate releaseLinkSuccess:[dic objectForKey:@"l_url"]];
                     break;
+                case kLMTypeReleaseLinkEmail:
+                    [self.delegate releaseLinkSuccess:[dic objectForKey:@"l_url"]];
+                    break;
             }
         }
     }else
@@ -109,6 +143,13 @@
                     [self.delegate releaseLinkUnsuccess:info];
                 }
                     break;
+                case kLMTypeReleaseLinkEmail:
+                {
+                    NSString *info=(NSString *)[dic objectForKey:@"info"];
+                    [self.delegate releaseLinkUnsuccess:info];
+                }
+                    break;
+                    
             }
         }
     }

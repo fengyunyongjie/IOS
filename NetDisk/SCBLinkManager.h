@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 typedef enum {
     kLMTypeReleaseLink,
+    kLMTypeReleaseLinkEmail,
 }kLMType;
 @protocol SCBLinkManagerDelegate;
 @interface SCBLinkManager : NSObject
@@ -18,6 +19,8 @@ typedef enum {
 -(void)cancelAllTask;
 //发布公开外链
 -(void)linkWithIDs:(NSArray *)f_ids;
+//邮件分享私密外链
+-(void)releaseLinkEmail:(NSArray *)f_ids l_pwd:(NSString *)l_pwd receiver:(NSArray *)receiver;
 @end
 @protocol SCBLinkManagerDelegate
 -(void)releaseLinkSuccess:(NSString *)l_url;

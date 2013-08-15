@@ -331,7 +331,7 @@ typedef enum{
         editLbl1.font=[UIFont systemFontOfSize:12];
         editLbl1.textColor=[UIColor whiteColor];
         editLbl1.backgroundColor=[UIColor clearColor];
-        editLbl1.frame=CGRectMake(19, 45, 42, 21);
+        editLbl1.frame=CGRectMake(19, 45-5, 42, 21);
         [self.editView addSubview:editLbl1];
         //移动按钮
         UIButton *editBtn2=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -345,7 +345,7 @@ typedef enum{
         editLbl2.font=[UIFont systemFontOfSize:12];
         editLbl2.textColor=[UIColor whiteColor];
         editLbl2.backgroundColor=[UIColor clearColor];
-        editLbl2.frame=CGRectMake(19+80, 45, 42, 21);
+        editLbl2.frame=CGRectMake(19+80, 45-5, 42, 21);
         [self.editView addSubview:editLbl2];
         //移动按钮
         UIButton *editBtn3=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -359,7 +359,7 @@ typedef enum{
         editLbl3.font=[UIFont systemFontOfSize:12];
         editLbl3.textColor=[UIColor whiteColor];
         editLbl3.backgroundColor=[UIColor clearColor];
-        editLbl3.frame=CGRectMake(19+80+80, 45, 42, 21);
+        editLbl3.frame=CGRectMake(19+80+80, 45-5, 42, 21);
         [self.editView addSubview:editLbl3];
         //移动按钮
         UIButton *editBtn4=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -373,7 +373,7 @@ typedef enum{
         editLbl4.font=[UIFont systemFontOfSize:12];
         editLbl4.textColor=[UIColor whiteColor];
         editLbl4.backgroundColor=[UIColor clearColor];
-        editLbl4.frame=CGRectMake(19+80+80+80, 45, 42, 21);
+        editLbl4.frame=CGRectMake(19+80+80+80, 45-5, 42, 21);
         [self.editView addSubview:editLbl4];
         
         

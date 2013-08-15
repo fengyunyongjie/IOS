@@ -151,4 +151,6 @@
 #pragma mark - 7.分享链接
 //发布公开外链
 #define LINK_RELEASE_PUB_URI @"/link/release_pub"
+//邮件分享私密外链
+#define LINK_RELEASE_EMAIL_URI @"/link/release_email"
 #endif

@@ -165,6 +165,8 @@
 		29ABD277179E618C00EE7164 /* Bt_UsercentreCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ABD26C179E618C00EE7164 /* Bt_UsercentreCh.png */; };
 		29ABD278179E618C00EE7164 /* Bt_UsercentreDef.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ABD26D179E618C00EE7164 /* Bt_UsercentreDef.png */; };
 		29ACB0001783D51F00AC9E6A /* Bt_Operator.png in Resources */ = {isa = PBXBuildFile; fileRef = 29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */; };
+		29AE060417BC858A004FEA5E /* mode.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 29AE060317BC858A004FEA5E /* mode.storyboard */; };
+		29AE060617BCACE6004FEA5E /* pop.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AE060517BCACE6004FEA5E /* pop.png */; };
 		29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */; };
 		29B18AC3173C97C700DBF2CB /* ImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B18AC2173C97C700DBF2CB /* ImageBrowserViewController.m */; };
 		29B18AC8173CC37C00DBF2CB /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B18AC7173CC37C00DBF2CB /* OptionCell.xib */; };
@@ -620,6 +622,8 @@
 		29ABD26C179E618C00EE7164 /* Bt_UsercentreCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UsercentreCh.png; sourceTree = "<group>"; };
 		29ABD26D179E618C00EE7164 /* Bt_UsercentreDef.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UsercentreDef.png; sourceTree = "<group>"; };
 		29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Operator.png; sourceTree = "<group>"; };
+		29AE060317BC858A004FEA5E /* mode.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = mode.storyboard; sourceTree = "<group>"; };
+		29AE060517BCACE6004FEA5E /* pop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop.png; sourceTree = "<group>"; };
 		29AF11BB17A5F17300F32F1F /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
 		29AF11BC17A5F17300F32F1F /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
 		29AFC2C41778369E0074FBAC /* QLBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLBrowserViewController.h; sourceTree = "<group>"; };
@@ -1287,6 +1291,7 @@
 		29390F2E17AA444D00C9BE49 /* MySpace */ = {
 			isa = PBXGroup;
 			children = (
+				29AE060517BCACE6004FEA5E /* pop.png */,
 				29B6D5E517B9C39600763D56 /* Bk_Input.png */,
 				29C98B0D17ABA35900CF8FAF /* Bt_Title.png */,
 				29C98B0917ABA01800CF8FAF /* Bt_Filter.png */,
@@ -2306,6 +2311,7 @@
 				29A06C1416F9979300D4A62D /* Default@2x.png */,
 				83C260E416B9385100A1BE48 /* 114.png */,
 				83C260E216B937D900A1BE48 /* icon.png */,
+				29AE060317BC858A004FEA5E /* mode.storyboard */,
 				29A06C1216F98EFA00D4A62D /* mm.xib */,
 				83ADAC10168C75A800419952 /* entitlements.plist */,
 				29B3899117431A48007313B1 /* Pic */,
@@ -2933,6 +2939,8 @@
 				29B6D5E617B9C39600763D56 /* Bk_Input.png in Resources */,
 				29D1BECA17BA1ED3001CF197 /* OFF.png in Resources */,
 				29D1BECB17BA1ED3001CF197 /* ON.png in Resources */,
+				29AE060417BC858A004FEA5E /* mode.storyboard in Resources */,
+				29AE060617BCACE6004FEA5E /* pop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
