@@ -27,7 +27,8 @@
 //用户注销
 #define USER_LOGOUT_URI @"/usr/logout"
 //获取用户当前存储空间信息；
-#define USER_SPACE_URI @"/usr/space"
+//#define USER_SPACE_URI @"/usr/space"
+#define USER_SPACE_URI @"/account/spaceinfo"
 //获取个人信息/usr/profile
 #define USER_PROFILE_URI @"/usr/profile"
 

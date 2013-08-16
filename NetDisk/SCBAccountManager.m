@@ -38,6 +38,9 @@ static SCBAccountManager *_sharedAccountManager;
     self.type=kUserGetSpace;
     NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_SPACE_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"type=1"];
+    [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
@@ -214,8 +217,10 @@ static SCBAccountManager *_sharedAccountManager;
             break;
         case kUserGetSpace:
             if ([[dic objectForKey:@"code"] intValue]==0) {
-                NSLog(@"空间（已用大小/总大小） ： %@/%@",[dic objectForKey:@"space_used"],[dic objectForKey:@"space_total"]);
-                [self.delegate spaceSucceedUsed:[dic objectForKey:@"space_used"] total:[dic objectForKey:@"space_total"]];
+                NSLog(@"data=%@",dic);
+                //NSLog(@"空间（已用大小/总大小） ： %@/%@",[dic objectForKey:@"space_used"],[dic objectForKey:@"space_total"]);
+                //[self.delegate spaceSucceedUsed:[dic objectForKey:@"space_used"] total:[dic objectForKey:@"space_total"]];
+                [self.delegate spaceSucceedUsed:[dic objectForKey:@"space_inuse"] total:[dic objectForKey:@"space_size"]];
             }else
             {
                 

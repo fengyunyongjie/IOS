@@ -590,7 +590,7 @@ typedef enum{
                 case 0:
                     descLabel.hidden = NO;
                     titleLabel.text = @"版本";
-                    descLabel.text = @"V1.1.2";
+                    descLabel.text = @"V2.0";
                     break;
                 case 1:
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;

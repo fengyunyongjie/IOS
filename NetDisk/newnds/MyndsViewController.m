@@ -1346,7 +1346,29 @@ typedef enum{
 }
 -(void)toMove:(id)sender
 {
-    
+    NSMutableArray *f_ids=[NSMutableArray array];
+    for (int i=0;i<self.m_fileItems.count;i++) {
+        FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+        if (fileItem.checked) {
+            NSDictionary *dic=[self.listArray objectAtIndex:i];
+            NSString *f_id=[dic objectForKey:@"f_id"];
+            [f_ids addObject:f_id];
+        }
+    }
+    if ([f_ids count]==0) {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];    [self.hud show:NO];
+        self.hud.labelText=@"未选中任何文件(夹)";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
     MyndsViewController *moveViewController=[[[MyndsViewController alloc] init] autorelease];
     moveViewController.f_id=@"1";
     switch (self.myndsType) {
@@ -1750,8 +1772,8 @@ typedef enum{
                 if (cell.imageView.subviews.count==0) {
                     UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
                     CGRect r=[tagView frame];
-                    r.origin.x=20;
-                    r.origin.y=20;
+                    r.origin.x=15;
+                    r.origin.y=25;
                     [tagView setFrame:r];
                     [cell.imageView addSubview:tagView];
                 }
@@ -1762,8 +1784,8 @@ typedef enum{
                 if (cell.imageView.subviews.count==0) {
                     UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
                     CGRect r=[tagView frame];
-                    r.origin.x=20;
-                    r.origin.y=20;
+                    r.origin.x=15;
+                    r.origin.y=25;
                     [tagView setFrame:r];
                     [cell.imageView addSubview:tagView];
                 }
