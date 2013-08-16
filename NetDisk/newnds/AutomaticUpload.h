@@ -31,12 +31,14 @@
     NSMutableOrderedSet *assetArray;
     UploadFile *upload_file;
     int netWorkState;
+    NSTimer *upload_timer;
 }
 
 @property(nonatomic,retain) NSMutableOrderedSet *assetArray;
 @property(nonatomic,retain) NSString *f_id;
 @property(nonatomic,retain) NSString *deviceName;
 @property(nonatomic,assign) int netWorkState;
+@property(nonatomic,retain) NSTimer *upload_timer;
 
 //比对本地数据库
 -(void)isHaveData;

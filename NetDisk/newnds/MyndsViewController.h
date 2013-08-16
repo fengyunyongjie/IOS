@@ -61,6 +61,7 @@ typedef enum {
 @property (strong,nonatomic) UIButton *btnMove;
 @property (strong,nonatomic) UILabel *lblMove;
 -(void)loadData;
+- (void)viewWillAppear:(BOOL)animated;
 @end
 
 @interface FileItem : NSObject

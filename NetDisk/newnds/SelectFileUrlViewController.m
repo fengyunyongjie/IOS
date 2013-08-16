@@ -59,7 +59,7 @@
     
     //标题
     UILabel *titleLabel=[[UILabel alloc] init];
-    titleLabel.text=@"选择备份目录";
+    titleLabel.text=@"选择自动备份目录";
     titleLabel.font=[UIFont boldSystemFontOfSize:18];
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.backgroundColor=[UIColor clearColor];

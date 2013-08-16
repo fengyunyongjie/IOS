@@ -182,7 +182,7 @@
     }
     if(row == 1)
     {
-        cell.textLabel.text = @"选择自动备份的相册";
+        cell.textLabel.text = @"选择自动备份目录";
     }
     if(row == 2)
     {

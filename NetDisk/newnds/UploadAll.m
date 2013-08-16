@@ -11,6 +11,7 @@
 #import "TaskDemo.h"
 #import "AppDelegate.h"
 #import "ChangeUploadViewController.h"
+#import "MyndsViewController.h"
 
 @implementation UploadAll
 @synthesize uploadAllList;
@@ -136,6 +137,13 @@
 //上传成功
 -(void)upFinish:(NSInteger)fileTag
 {
+//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:0];
+//    MyndsViewController *myndsView = (MyndsViewController *)[NavigationController.viewControllers objectAtIndex:1];
+//    if([myndsView isKindOfClass:[MyndsViewController class]])
+//    {
+//        [myndsView loadData];
+//    }
     if([self.uploadAllList count]>0)
     {
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];

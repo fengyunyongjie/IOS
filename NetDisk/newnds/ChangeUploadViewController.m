@@ -65,7 +65,15 @@
         {
             count = [self.uploadingList count];
         }
-        title_leble.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
+        if(!isHistoryShow)
+        {
+            title_leble.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
+        }
+        else
+        {
+            isHistoryShow = FALSE;
+            [self clicked_uploadHistory:nil];
+        }
         [self updateReloadData];
         if([self.uploadingList count]>0 && row_ == 0 && self.isUploadAll)
         {
@@ -663,7 +671,14 @@
         self.uploadListTableView.tableHeaderView = top_headerView;
         [headerView setTag:-100];
         [headerView setUploadDemo:taskdemo];
-        [headerView.jinDuView setCurrFloat:progess];
+        if(taskdemo.state == 2)
+        {
+            [headerView.jinDuView showText:@"已暂停"];
+        }
+        else
+        {
+            [headerView.jinDuView setCurrFloat:progess];
+        }
         [top_header_label setText:[NSString stringWithFormat:@" 相册自动备份(%i)",total]];
     }
 }

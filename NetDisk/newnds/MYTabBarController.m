@@ -103,6 +103,13 @@
         lv.delegate=self;
         [self presentViewController:lv animated:NO completion:^(void){}];
     }
+    else
+    {
+        if([YNFunctions isAutoUpload])
+        {
+            [self.tab_delegate  automicUpload];
+        }
+    }
 }
 -(void)resetData
 {

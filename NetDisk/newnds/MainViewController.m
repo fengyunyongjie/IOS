@@ -10,6 +10,7 @@
 #import "MyndsViewController.h"
 #import "MessagePushController.h"
 #import "MYTabBarController.h"
+#import "AppDelegate.h"
 
 #define TabBarHeight 60
 #define ChangeTabWidth 90
@@ -26,7 +27,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        
     }
     [self.view setBackgroundColor:[UIColor whiteColor]];
     UIView *nbar=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
@@ -143,6 +144,11 @@
 -(void)goMessage:(id)sender
 {
     MessagePushController *messagePush = [[MessagePushController alloc] init];
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(![app_delegate.myTabBarController IsTabBarHiden])
+    {
+        messagePush.isHiddenTabbar = YES;
+    }
     [self.navigationController pushViewController:messagePush animated:YES];
     [messagePush release];
     [self.ctrlView setHidden:YES];

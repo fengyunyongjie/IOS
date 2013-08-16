@@ -24,6 +24,7 @@
     SCBShareManager *shareManager;
     NSString *group_id;
     BOOL isSelect;
+    BOOL isHiddenTabbar;
 }
 
 @property(nonatomic,retain) UITableView *table_view;
@@ -33,6 +34,7 @@
 @property(nonatomic,retain) SCBFriendManager *friendManager;
 @property(nonatomic,retain) SCBShareManager *shareManager;
 @property(nonatomic,retain) NSString *group_id;
+@property(nonatomic,assign) BOOL isHiddenTabbar;
 
 
 @end

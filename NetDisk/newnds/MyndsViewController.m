@@ -25,6 +25,7 @@
 #import "UploadAll.h"
 #import "MessagePushController.h"
 #import "QLBrowserViewController.h"
+#import "AppDelegate.h"
 
 #define TabBarHeight 60
 #define ChangeTabWidth 90
@@ -1137,7 +1138,16 @@ typedef enum{
 }
 -(void)goMessage:(id)sender
 {
+    if(self.isEditing)
+    {
+        [self editAction:nil];
+    }
     MessagePushController *messagePush = [[MessagePushController alloc] init];
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(![app_delegate.myTabBarController IsTabBarHiden])
+    {
+        messagePush.isHiddenTabbar = YES;
+    }
     [self.navigationController pushViewController:messagePush animated:YES];
     [messagePush release];
     [self.ctrlView setHidden:YES];
@@ -2220,7 +2230,7 @@ typedef enum{
         [self removeFromDicWithObjects:self.willDeleteObjects];
         [self.tableView reloadData];
     }
-    
+      
     //[self.tableView reloadData];
     [self updateFileList];
     if (self.hud) {

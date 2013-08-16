@@ -16,18 +16,28 @@
 #import "UploadFile.h"
 #import "ChangeUploadViewController.h"
 #import "YNFunctions.h"
+#import "MyndsViewController.h"
 
 @implementation AutomaticUpload
 @synthesize assetArray;
 @synthesize f_id;
 @synthesize deviceName;
 @synthesize netWorkState;
+@synthesize upload_timer;
 
 //比对本地数据库
 -(void)isHaveData
 {
     if(![self isConnection])
     {
+        [self getUploadCotroller];
+        if(uploadViewController)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                upload_file.demo.state = 2;
+                [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+            });
+        }
         return;
     }
     space_id = [[SCBSession sharedSession] spaceID];
@@ -94,6 +104,11 @@
         [self getUploadCotroller];
         if([self.assetArray count]>0)
         {
+            if(upload_timer)
+            {
+                [upload_timer invalidate];
+                upload_timer = nil;
+            }
             ALAsset *result = [self.assetArray objectAtIndex:0];
             if(result)
             {
@@ -148,7 +163,34 @@
                 [assetsLibrary release];
                 assetsLibrary = nil;
             }
+            if([YNFunctions isAutoUpload])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(upload_timer)
+                    {
+                        [upload_timer invalidate];
+                    }
+                    upload_timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(isHaveData) userInfo:nil repeats:YES];
+                });
+            }
         }
+    }
+    else if([YNFunctions isAutoUpload])
+    {
+        [self getUploadCotroller];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(uploadViewController)
+            {
+                upload_file.demo.state = 2;
+                [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+                
+            }
+            if(upload_timer)
+            {
+                [upload_timer invalidate];
+            }
+            upload_timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(isHaveData) userInfo:nil repeats:YES];
+        });
     }
 }
 
@@ -168,6 +210,11 @@
     {
         [assetsLibrary release];
         assetsLibrary = nil;
+    }
+    if(upload_timer)
+    {
+        [upload_timer invalidate];
+        upload_timer = nil;
     }
 }
 
@@ -190,12 +237,27 @@
 -(void)upFinish:(NSInteger)fileTag
 {
     NSLog(@"继续下载-----------------------");
+//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:0];
+//    MyndsViewController *myndsView = (MyndsViewController *)[NavigationController.viewControllers objectAtIndex:0];
+//    if([myndsView isKindOfClass:[MyndsViewController class]])
+//    {
+//        [myndsView loadData];
+//    }
+    
     [self getUploadCotroller];
+    if(uploadViewController)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+        });
+    }
+    
     if([self.assetArray count]>0)
     {
         [self.assetArray removeObjectAtIndex:0];
     }
-    [self startAutomaticUpload];
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutomaticUpload) userInfo:nil repeats:NO];
 }
 
 //上传进行时，发送上传进度数据
@@ -221,7 +283,7 @@
 {
     __block BOOL bl;
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.google.com"];
+        Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
         switch ([hostReach currentReachabilityStatus]) {
             case NotReachable:
             {

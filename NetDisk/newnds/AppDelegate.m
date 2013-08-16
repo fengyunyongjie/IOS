@@ -60,8 +60,8 @@
     [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, TabBarHeight)];
     [self.myTabBarController setFont:[UIFont boldSystemFontOfSize:12.0]];
     [self.myTabBarController setFont_color:[UIColor whiteColor]];
-    
     [self.myTabBarController setHilighted_color:hilighted_color];
+    self.myTabBarController.tab_delegate = self;
     DefaultViewController *viewController=[[[DefaultViewController alloc] init] autorelease];
     self.window.rootViewController=viewController;
     //程序启动时，在代码中向微信终端注册你的id
@@ -255,6 +255,16 @@
     
     [self.myTabBarController when_tabbar_is_selected:0];
     
+    //询问是否开始自动上传
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(openAutomic) userInfo:self repeats:NO];
+}
+
+-(void)openAutomic
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否现在就开启自动上传" delegate:self cancelButtonTitle:@"暂不开启" otherButtonTitles:@"开启", nil];
+    [alertView setDelegate:self];
+    [alertView show];
+    [alertView release];
 }
 
 #pragma mark 判断设备号
@@ -306,18 +316,6 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    if(self.myTabBarController.selectedIndex == 3)
-    {
-        if([YNFunctions isAutoUpload])
-        {
-            UINavigationController *NavigationController = [[self.myTabBarController viewControllers] objectAtIndex:3];
-            UploadViewController *uploadView = (UploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-            if(!uploadView.isStop)
-            {
-                [uploadView startSouStart];
-            }
-        }
-    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
@@ -406,6 +404,29 @@
     {
         //显示
     }
+}
+
+#pragma mark UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+        [YNFunctions setIsAutoUpload:YES];
+        [self automicUpload];
+    }
+}
+
+#pragma mark UICustomTabControllerDelegate ------------
+
+- (void)custom_tabbar_view_by_delegate:(UIView*)custom_view
+{
+
+}
+
+- (void)automicUpload
+{
+    [maticUpload isHaveData];
 }
 
 @end

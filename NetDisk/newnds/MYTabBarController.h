@@ -34,6 +34,7 @@ typedef enum
 @protocol UICustomTabControllerDelegate <NSObject>
 
 - (void)custom_tabbar_view_by_delegate:(UIView*)custom_view;
+- (void)automicUpload;
 
 @end
 

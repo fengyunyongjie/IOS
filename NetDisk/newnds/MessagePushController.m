@@ -28,6 +28,7 @@
 @synthesize messageManager;
 @synthesize friendManager;
 @synthesize group_id;
+@synthesize isHiddenTabbar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -79,7 +80,12 @@
     
     [self.view addSubview:topView];
     
-    CGRect rect = CGRectMake(0, 44, 320, TableViewHeight);
+    CGFloat height = TableViewHeight;
+    if(isHiddenTabbar)
+    {
+        height = TableViewHeight - 60;
+    }
+    CGRect rect = CGRectMake(0, 44, 320, height);
     self.table_view = [[UITableView alloc] initWithFrame:rect];
     [self.table_view setDataSource:self];
     [self.table_view setDelegate:self];
@@ -91,7 +97,7 @@
     //请求消息
     messageManager = [[SCBMessageManager alloc] init];
     [messageManager setDelegate:self];
-    [messageManager selectMessages:1 cursor:0 offset:-1 unread:0];
+    [messageManager selectMessages:1 cursor:0 offset:-1 unread:1];
     
     //好友管理
     friendManager = [[SCBFriendManager alloc] init];
@@ -228,13 +234,10 @@
         NSArray *array = [dictioinary objectForKey:@"msgs"];
         [table_array addObjectsFromArray:array];
         [self.table_view reloadData];
-        if([array count] == 0)
+        if(!isSelect)
         {
-            if(!isSelect)
-            {
-                isSelect = TRUE;
-                [messageManager selectMessages:1 cursor:0 offset:-1 unread:1];
-            }
+            [messageManager selectMessages:1 cursor:0 offset:-1 unread:0];
+            isSelect = TRUE;
         }
         else
         {

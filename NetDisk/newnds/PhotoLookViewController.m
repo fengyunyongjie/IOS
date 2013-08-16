@@ -727,7 +727,7 @@
             PhotoFile *demo = [tableArray objectAtIndex:page];
             NSString *f_id = [NSString stringWithFormat:@"%i",demo.f_id];
             if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
-                [self isHiddenDelete:YES];
+//                [self isHiddenDelete:YES];
             }
             else
             {
@@ -1117,7 +1117,7 @@
         [hud hide:YES afterDelay:0.8f];
         [hud release];
         hud = nil;
-        [self isHiddenDelete:YES];
+//        [self isHiddenDelete:YES];
     }
     else
     {

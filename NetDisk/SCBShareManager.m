@@ -181,7 +181,8 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
     [body appendFormat:@"f_id=%@&friend_id=%@",f_id,friend_id];
-    NSLog(@"%@",body);
+    NSLog(@"url:%@",SHARE_INVITATION_ADD);
+    NSLog(@"body:%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
