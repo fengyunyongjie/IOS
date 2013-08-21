@@ -25,6 +25,7 @@
     NSString *group_id;
     BOOL isSelect;
     BOOL isHiddenTabbar;
+    int unreadBL;
 }
 
 @property(nonatomic,retain) UITableView *table_view;

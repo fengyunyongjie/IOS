@@ -201,7 +201,7 @@
         }
 //        NSString *sapce_ = [NSString stringWithFormat:@"%@",space_id];
         NSString *p_id_ = [NSString stringWithFormat:@"%@",p_id];
-        
+        f_lenght = [f_data length];
         sqlite3_bind_int(statement, 1, f_id);
         sqlite3_bind_int(statement, 2, f_state);
         sqlite3_bind_text(statement, 3, [f_base_name UTF8String], -1, SQLITE_TRANSIENT);
