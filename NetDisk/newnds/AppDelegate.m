@@ -398,7 +398,6 @@
 {
     if (bl) {
         //隐藏
-        
     }
     else
     {
@@ -421,7 +420,7 @@
 
 - (void)custom_tabbar_view_by_delegate:(UIView*)custom_view
 {
-
+    
 }
 
 - (void)automicUpload

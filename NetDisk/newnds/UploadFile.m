@@ -342,6 +342,9 @@
         demo.f_id = fid;
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
+        UIImage *data_image = [UIImage imageWithData:demo.f_data];
+        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
+        demo.f_data = UIImageJPEGRepresentation(state_image, 1.0);
         NSLog(@"Url-------:%@",demo.databasePath);
         if(demo.is_automic_upload)
         {
@@ -380,6 +383,15 @@
         [hash appendFormat:@"%02x",result[i]];
     }
     return [hash lowercaseString];
+}
+
+-(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 -(void)dealloc

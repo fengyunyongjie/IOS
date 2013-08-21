@@ -277,6 +277,7 @@
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [SelectFinishTaskTable UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        sqlite3_bind_int(statement, 1, t_id);
         int i=0;
         while (sqlite3_step(statement)==SQLITE_ROW) {
             TaskDemo *demo = [[TaskDemo alloc] init];

@@ -11,7 +11,7 @@
 #import "UploadFile.h"
 #import "UploadViewCell.h"
 
-@interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,UploadViewCellDelegate>
+@interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,UploadViewCellDelegate,UIScrollViewDelegate>
 {
     //头部视图
     UIView *topView;
@@ -46,6 +46,11 @@
     UIView *top_headerView;
     UILabel *top_header_label;
     UploadViewCell *headerView;
+    
+    UIImage *automicImage;
+    CGFloat automicProgess;
+    TaskDemo *automicDemo;
+    int automicTotal;
 }
 
 @property(nonatomic,retain) UIView *topView;

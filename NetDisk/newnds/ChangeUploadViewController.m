@@ -346,11 +346,19 @@
         UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
         [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [file_button setBackgroundImage:nil forState:UIControlStateNormal];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
         //显示上传进度
         AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        self.uploadingList = app_delegate.upload_all.uploadAllList;
-        [self.uploadListTableView reloadData];
+            if([app_delegate.upload_all.uploadAllList count]>0)
+            {
+                self.uploadingList = app_delegate.upload_all.uploadAllList;
+            }
+            if([app_delegate.maticUpload.assetArray count]>0)
+            {
+                [self startAutomatic:automicImage progess:automicProgess taskDemo:automicDemo total:automicTotal];
+            }
+            [self.uploadListTableView reloadData];
         });
     }
 }
@@ -378,16 +386,24 @@
         UIButton *photo_button = (UIButton *)[self.view viewWithTag:23];
         [photo_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [photo_button setBackgroundImage:nil forState:UIControlStateNormal];
+        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         //显示上传历史
         isHistoryShow = YES;
         TaskDemo *demo = [[TaskDemo alloc] init];
-        if(historyList)
+        if([historyList count]>0)
         {
-            historyList = nil;
+            TaskDemo *task_demo = [historyList lastObject];
+            [historyList addObjectsFromArray:[task_demo selectFinishTaskTable]];
         }
-        historyList = [demo selectFinishTaskTable];
+        else
+        {
+            demo.t_id = 0;
+           historyList = [demo selectFinishTaskTable];
+        }
         [self.uploadListTableView reloadData];
         [demo release];
+//        });
     }
 }
 
@@ -647,6 +663,11 @@
 //自动备份上传
 -(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo total:(int)total
 {
+    automicImage = uploadImage;
+    automicProgess = progess;
+    automicDemo = taskdemo;
+    automicTotal = total;
+    
     if(!isHistoryShow)
     {
         if(top_headerView==nil)
@@ -689,6 +710,58 @@
     if(self.uploadListTableView.tableHeaderView)
     {
         self.uploadListTableView.tableHeaderView = nil;
+    }
+}
+
+#pragma mark UIScrollviewDelegate
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(isHistoryShow)
+    {
+        int y = self.uploadListTableView.contentOffset.y+self.uploadListTableView.frame.size.height;
+        NSLog(@"y:%i",y);
+        if(y>=self.uploadListTableView.contentSize.height)
+        {
+            NSLog(@"scrollViewDidEndDecelerating-----------0000000000");
+            if([historyList count]>0)
+            {
+//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    TaskDemo *task_demo = [historyList lastObject];
+                    NSArray *array = [task_demo selectFinishTaskTable];
+                    if([array count]>0)
+                    {
+                        [historyList addObjectsFromArray:array];
+                        [self.uploadListTableView reloadData];
+                    }
+//                });
+            }
+        }
+    }
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(isHistoryShow)
+    {
+        int y = self.uploadListTableView.contentOffset.y+self.uploadListTableView.frame.size.height;
+        NSLog(@"y:%i",y);
+        if(y>=self.uploadListTableView.contentSize.height)
+        {
+            NSLog(@"scrollViewDidEndDecelerating-----------1111111111");
+            if([historyList count]>0)
+            {
+//                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    TaskDemo *task_demo = [historyList lastObject];
+                    NSArray *array = [task_demo selectFinishTaskTable];
+                    if([array count]>0)
+                    {
+                        [historyList addObjectsFromArray:array];
+                        [self.uploadListTableView reloadData];
+                    }
+//                });
+            }
+        }
     }
 }
 
