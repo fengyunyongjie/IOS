@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 @protocol DownloaderDelegate <NSObject>  //使用代理派发的原因在于，不知道何时下载完成，indexTag：将要显示图片的tag，imageUrl：图片的地址
-- (void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index;
+- (void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(NSIndexPath *)indexPath;
 -(void)didFailWithError;
 @end
 
@@ -25,6 +25,7 @@
     UIImage *newDownImage;
     int index;
     int showType; //0缩略图，1预览图
+    NSIndexPath *indexPath;
 }
 
 @property (nonatomic) NSInteger imageViewIndex;
@@ -35,6 +36,7 @@
 @property (nonatomic, assign) NSInteger fileId;
 @property (nonatomic, assign) int index;
 @property (nonatomic, assign) int showType;
+@property (nonatomic, retain) NSIndexPath *indexPath;
 
 - (void)startDownload;
 - (void)cancelDownload;

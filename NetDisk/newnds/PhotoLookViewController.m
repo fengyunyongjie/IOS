@@ -1159,7 +1159,7 @@
 
 
 #pragma mark 下载回调
--(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(int)index
+-(void)appImageDidLoad:(NSInteger)indexTag urlImage:(UIImage *)image index:(NSIndexPath *)indexPath
 {
     dispatch_async(dispatch_get_main_queue(), ^{
     NSLog(@"下载完成后显示开始。。。");

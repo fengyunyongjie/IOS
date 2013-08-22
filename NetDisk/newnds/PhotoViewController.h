@@ -21,6 +21,7 @@
 #import "SCBPhotoManager.h"
 #import "DownImage.h"
 #import "MBProgressHUD.h"
+#import "FileTableView.h"
 
 /*
  1:公开版
@@ -42,7 +43,7 @@
     NSString *user_token;
     NSMutableArray *allKeys;
     
-    NSMutableArray *_arrVisibleCells; // 重用的cell
+    NSMutableArray *_arrVisibleCells; //重用的cell
 	NSMutableDictionary *_dicReuseCells; //选中的数据
     BOOL editBL;  //是否为编辑状态，默认为false
     UIView *bottonView;
@@ -84,6 +85,7 @@
      */
     UIView *topView;
     BOOL isNeedBackButton;
+    BOOL isPhoto;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;

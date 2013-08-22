@@ -22,6 +22,7 @@
 @synthesize fileId;
 @synthesize index;
 @synthesize showType;
+@synthesize indexPath;
 
 #pragma mark
 - (void)dealloc
@@ -41,7 +42,7 @@
     if(bl)
     {
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
-        [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
+        [delegate appImageDidLoad:imageViewIndex urlImage:image index:indexPath]; //将视图tag和地址派发给实现类
         [image release];
     }
     else
@@ -144,7 +145,7 @@
         if(delegate && [delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
         {
             NSLog(@"index-------------:%i",index);
-            [delegate appImageDidLoad:imageViewIndex urlImage:image index:index]; //将视图tag和地址派发给实现类
+            [delegate appImageDidLoad:imageViewIndex urlImage:image index:indexPath]; //将视图tag和地址派发给实现类
         }
         else
         {

@@ -368,6 +368,9 @@
 		29D1BECB17BA1ED3001CF197 /* ON.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D1BEC917BA1ED3001CF197 /* ON.png */; };
 		29D1BECE17BA2FA8001CF197 /* SelectFileUrlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D1BECD17BA2FA8001CF197 /* SelectFileUrlViewController.m */; };
 		29D1BED117BA3A26001CF197 /* SelectDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D1BED017BA3A25001CF197 /* SelectDetailViewController.m */; };
+		29D2FC9717C5B52B00D6A553 /* FileTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2FC9617C5B52B00D6A553 /* FileTableView.m */; };
+		29D2FC9A17C5B54800D6A553 /* PhotoTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2FC9917C5B54800D6A553 /* PhotoTableView.m */; };
+		29D2FC9D17C6118100D6A553 /* CustomControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D2FC9C17C6118100D6A553 /* CustomControl.m */; };
 		29D72E031771753A008D830A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D72E021771753A008D830A /* QuickLook.framework */; };
 		29D72E0617718780008D830A /* favorite_tag_n@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D72E041771877E008D830A /* favorite_tag_n@2x.png */; };
 		29D72E0717718780008D830A /* favorite_tag_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D72E051771877F008D830A /* favorite_tag_n.png */; };
@@ -857,6 +860,12 @@
 		29D1BECD17BA2FA8001CF197 /* SelectFileUrlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFileUrlViewController.m; sourceTree = "<group>"; };
 		29D1BECF17BA3A25001CF197 /* SelectDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectDetailViewController.h; sourceTree = "<group>"; };
 		29D1BED017BA3A25001CF197 /* SelectDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectDetailViewController.m; sourceTree = "<group>"; };
+		29D2FC9517C5B52B00D6A553 /* FileTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileTableView.h; sourceTree = "<group>"; };
+		29D2FC9617C5B52B00D6A553 /* FileTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTableView.m; sourceTree = "<group>"; };
+		29D2FC9817C5B54800D6A553 /* PhotoTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoTableView.h; sourceTree = "<group>"; };
+		29D2FC9917C5B54800D6A553 /* PhotoTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoTableView.m; sourceTree = "<group>"; };
+		29D2FC9B17C6118000D6A553 /* CustomControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomControl.h; sourceTree = "<group>"; };
+		29D2FC9C17C6118100D6A553 /* CustomControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomControl.m; sourceTree = "<group>"; };
 		29D72E021771753A008D830A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		29D72E041771877E008D830A /* favorite_tag_n@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "favorite_tag_n@2x.png"; sourceTree = "<group>"; };
 		29D72E051771877F008D830A /* favorite_tag_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorite_tag_n.png; sourceTree = "<group>"; };
@@ -1442,6 +1451,12 @@
 				29AAC4E2175F4FAD0050B2A7 /* PhotoLookViewController.m */,
 				292D984917644B3E00F57BFF /* operation.h */,
 				292D984A17644B3E00F57BFF /* operation.m */,
+				29D2FC9517C5B52B00D6A553 /* FileTableView.h */,
+				29D2FC9617C5B52B00D6A553 /* FileTableView.m */,
+				29D2FC9817C5B54800D6A553 /* PhotoTableView.h */,
+				29D2FC9917C5B54800D6A553 /* PhotoTableView.m */,
+				29D2FC9B17C6118000D6A553 /* CustomControl.h */,
+				29D2FC9C17C6118100D6A553 /* CustomControl.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -3059,6 +3074,9 @@
 				29D1BECE17BA2FA8001CF197 /* SelectFileUrlViewController.m in Sources */,
 				29D1BED117BA3A26001CF197 /* SelectDetailViewController.m in Sources */,
 				29412C1617BB2B4D004A9976 /* SCBReportManager.m in Sources */,
+				29D2FC9717C5B52B00D6A553 /* FileTableView.m in Sources */,
+				29D2FC9A17C5B54800D6A553 /* PhotoTableView.m in Sources */,
+				29D2FC9D17C6118100D6A553 /* CustomControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
