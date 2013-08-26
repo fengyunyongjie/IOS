@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 typedef enum {
     kFMTypeOpenFinder,
+    kFMTypeOpenCategoryFile,
+    kFMTypeOpenCategoryDir,
     kFMTypeRemove,
     kFMTypeRename,
     kFMTypeMove,
@@ -38,6 +40,10 @@ typedef enum {
 -(void)removeFileWithIDs:(NSArray*)f_ids;
 //搜索/fm/search
 -(void)searchWithQueryparam:(NSString *)f_queryparam;
+//根据类别查看文件夹/fm/category_dir
+-(void)openFinderWithID:(NSString *)f_id category:(NSString *)category;
+//查看类别文件/fm/category_file
+-(void)openFileWithID:(NSString *)f_id category:(NSString *)category;
 //打开网盘收站/fm/trash
 //彻底删除/fm/trash/del
 //清空回收站/fm/trash/delall

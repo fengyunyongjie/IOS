@@ -19,6 +19,52 @@
 {
     self.delegate=nil;
 }
+
+-(void)openFinderWithID:(NSString *)f_id category:(NSString *)category
+{
+    self.fm_type=kFMTypeOpenCategoryDir;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_CATEGORY_DIR_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    [body appendFormat:@"cursor=%d&offset=%d&space_id=%@&category=%@",0,-1,s_id,category];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
+-(void)openFileWithID:(NSString *)f_id category:(NSString *)category
+{
+    self.fm_type=kFMTypeOpenCategoryFile;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_CATEGORY_FILE_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&category=%@",f_id,0,-1,category];
+    NSLog(@"%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
 -(void)searchWithQueryparam:(NSString *)f_queryparam
 {
     self.fm_type=kFMTypeSearch;

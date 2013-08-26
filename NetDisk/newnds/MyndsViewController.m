@@ -30,6 +30,11 @@
 #define TabBarHeight 60
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
+
+#define CATEGORY_PICTURE @"P"
+#define CATEGORY_VIDEO @"V"
+#define CATEGORY_MUSIC @"M"
+#define CATEGORY_DOCUMENT @"F"
 typedef enum{
     kSelectFileTypeDefault,
     kSelectFileTypeImage,
@@ -1865,7 +1870,7 @@ typedef enum{
             cell.imageView.image = [UIImage imageNamed:@"Ico_MovF.png"];
         }else if ([t_fl isEqualToString:@"ppt"])
         {
-            cell.imageView.image = [UIImage imageNamed:@"icon_ppt.png"];
+            cell.imageView.image = [UIImage imageNamed:@"Ico_OtherF.png"];
         }else
         {
             cell.imageView.image = [UIImage imageNamed:@"Ico_OtherF.png"];

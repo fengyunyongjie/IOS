@@ -95,6 +95,10 @@
 #define FM_GETFILEINFO @"/fm/getFileInfo"
 //搜索当前文件夹 fm/search/current
 #define FM_SEARCH_CURRENT @"/fm/getFileInfo"
+//根据类别查看文件夹/fm/category_dir
+#define FM_CATEGORY_DIR_URI @"/fm/category_dir"
+//查看类别文件/fm/category_file
+#define FM_CATEGORY_FILE_URI @"/fm/category_file"
 
 #pragma mark - 5.共享管理
 //打开共享文件夹
