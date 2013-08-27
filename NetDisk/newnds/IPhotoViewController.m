@@ -197,6 +197,7 @@
 -(void)clicked_space:(id)sender
 {
     NSLog(@"-(void)clicked_space:(id)sender");
+    
 }
 
 -(void)clicked_more:(id)sender
@@ -507,7 +508,7 @@
 {
     move_fid = f_id_;
     //移动文件
-    
+    [file_tableView setMoveFile:move_fid];
 }
 
 #pragma mark clickMenu

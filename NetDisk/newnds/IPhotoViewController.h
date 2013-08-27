@@ -10,6 +10,7 @@
 #import "FileTableView.h"
 #import "PhotoTableView.h"
 #import "QBImageFileViewController.h"
+#import "SCBFileManager.h"
 
 @interface IPhotoViewController : UIViewController <FileTableViewDelegate,PhotoTableViewDelegate,QBImageFileViewDelegate>
 {

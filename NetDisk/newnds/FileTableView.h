@@ -66,7 +66,8 @@
 
 //请求文件
 -(void)requestFile:(NSString *)f_id space_id:(NSString *)space_id;
-
+//移动文件
+-(void)setMoveFile:(NSString *)pid;
 //编辑事件
 -(void)editAction;
 //取消事件

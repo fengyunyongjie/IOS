@@ -56,7 +56,7 @@
 {
     [super viewDidLoad];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(app_delegate.myTabBarController.selectedIndex==0)
+    if(app_delegate.myTabBarController.selectedIndex==0 || isChangeMove)
     {
         space_id = [[SCBSession sharedSession] spaceID];
     }
@@ -161,14 +161,7 @@
         photoManger = [[SCBPhotoManager alloc] init];
         [photoManger setNewFoldDelegate:self];
     }
-    if(isChangeMove)
-    {
-        [photoManger requestMoveFile:self.f_id space_id:[[SCBSession sharedSession] spaceID]];
-    }
-    else
-    {
-        [photoManger openFinderWithID:self.f_id space_id:space_id];
-    }
+    [photoManger openFinderWithID:self.f_id space_id:space_id];
     FileDeviceName *file_device = [[FileDeviceName alloc] init];
     [file_device setDeviceName:[AppDelegate deviceString]];
     [file_device setF_id:self.f_id];

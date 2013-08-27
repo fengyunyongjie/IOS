@@ -227,21 +227,26 @@
         if([YNFunctions isAutoUpload])
         {
             [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
-            [YNFunctions setIsAutoUpload:NO];
-            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [app_delegate.maticUpload colseAutomaticUpload];
+            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(closeUpload) userInfo:nil repeats:NO];
         }
         else
         {
             [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
-            [YNFunctions setIsAutoUpload:YES];
             [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutoUpload) userInfo:nil repeats:NO];
         }
     }
 }
 
+-(void)closeUpload
+{
+    [YNFunctions setIsAutoUpload:NO];
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.maticUpload colseAutomaticUpload];
+}
+
 -(void)startAutoUpload
 {
+    [YNFunctions setIsAutoUpload:YES];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate.maticUpload isHaveData];
 }

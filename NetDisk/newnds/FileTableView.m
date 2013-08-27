@@ -109,12 +109,12 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellString = @"cellstring";
+    static NSString *cellString = @"fileTableViewCell";
     FileTableViewCell *cell = [self dequeueReusableCellWithIdentifier:cellString];
     if(cell == nil)
     {
         cell = [[[FileTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellString] autorelease];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
@@ -214,9 +214,8 @@
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath\n\n\n----------------------------------------------------------------------------------------");
     NSDictionary *dictioinary = [tableArray objectAtIndex:[indexPath row]];
     upDictionary = dictioinary;
     NSString *f_mime = [dictioinary objectForKey:@"f_mime"];
@@ -483,6 +482,25 @@
     [file_delegate showController:p_id titleString:@"我的文件"];
 }
 
+#pragma mark 显示移动文件
+-(void)setMoveFile:(NSString *)pid
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    for(int i=0;i<[selected_dictionary.allKeys count];i++)
+    {
+        NSString *select = [selected_dictionary objectForKey:[selected_dictionary.allKeys objectAtIndex:i]];
+        [array addObject:select];
+    }
+    if([array count] == 0 && selectedIndexPath.row<[tableArray count])
+    {
+        NSDictionary *dictioinary = [tableArray objectAtIndex:selectedIndexPath.row];
+        NSString *f_id = [dictioinary objectForKey:@"f_id"];
+        [array addObject:f_id];
+    }
+    [fileManager moveFileIDs:array toPID:pid];
+    [array release];
+}
+
 #pragma mark 重命名文件
 -(void)toRename:(id)sender
 {
@@ -642,12 +660,15 @@
 
 -(void)moveSucess
 {
-
+    NSLog(@"moveSucess");
+    [self EscMenu];
+    [self requestFile:p_id space_id:[[SCBSession sharedSession] spaceID]];
 }
 
 -(void)moveUnsucess
 {
-
+    [self EscMenu];
+    [self requestFile:p_id space_id:[[SCBSession sharedSession] spaceID]];
 }
 
 -(void)newFinderSucess
@@ -693,8 +714,8 @@
         selected_dictionary = [[NSMutableDictionary alloc] init];
     }
     
-    BOOL bl = [[selected_dictionary objectForKey:[NSString stringWithFormat:@"%i",imageView.tag-FileTableViewCellCehckTag]] boolValue];
-    if(bl)
+    int bl = [[selected_dictionary objectForKey:[NSString stringWithFormat:@"%i",imageView.tag-FileTableViewCellCehckTag]] intValue];
+    if(bl > 0)
     {
         [imageView setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
         [selected_dictionary removeObjectForKey:[NSString stringWithFormat:@"%i",imageView.tag-FileTableViewCellCehckTag]];
@@ -703,8 +724,11 @@
     }
     else
     {
+        int row = imageView.tag - FileTableViewCellCehckTag;
+        NSDictionary *dictioinary = [tableArray objectAtIndex:row];
+        NSString *f_id = [dictioinary objectForKey:@"f_id"];
         [imageView setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
-        [selected_dictionary setObject:@"1" forKey:[NSString stringWithFormat:@"%i",imageView.tag-FileTableViewCellCehckTag]];
+        [selected_dictionary setObject:f_id forKey:[NSString stringWithFormat:@"%i",imageView.tag-FileTableViewCellCehckTag]];
         FileTableViewCell *cell = (FileTableViewCell *)[self viewWithTag:imageView.tag-FileTableViewCellCehckTag+FileTableViewCellTag];
         cell.image_view.hidden = NO;
     }
