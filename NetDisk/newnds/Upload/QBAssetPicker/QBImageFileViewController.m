@@ -119,7 +119,7 @@
     
     CGRect change_rect = CGRectMake(0, BottonViewHeight-26, 320, 24);
     change_myFile_button = [[UIButton alloc] initWithFrame:change_rect];
-    [change_myFile_button setTitle:@"我的空间" forState:UIControlStateNormal];
+    [change_myFile_button setTitle:@"我的文件" forState:UIControlStateNormal];
     [change_myFile_button.titleLabel setTextAlignment:NSTextAlignmentLeft];
     change_myFile_button.layer.borderColor = [[UIColor whiteColor] CGColor];
     

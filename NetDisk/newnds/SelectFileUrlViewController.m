@@ -125,7 +125,7 @@
     int row = [indexPath row];
     if(row == 0)
     {
-        cell.textLabel.text = @"我的空间";
+        cell.textLabel.text = @"我的文件";
         cell.textLabel.textColor=[UIColor colorWithRed:66/255.0 green:75/255.0 blue:83/255.0 alpha:1.0f];
         [cell.imageView initWithImage:[UIImage imageNamed:@"Bt_PersonspaceDef.png"] highlightedImage:[UIImage imageNamed:@"Bt_PersonspaceCh.png"]];
     }
@@ -153,8 +153,8 @@
     {
         SelectDetailViewController *select_detailview = [[SelectDetailViewController alloc] init];
         select_detailview.space_id = @"1";
-        select_detailview.title_string = @"我的空间";
-        [app_delegate.title_string addObject:@"我的空间"];
+        select_detailview.title_string = @"我的文件";
+        [app_delegate.title_string addObject:@"我的文件"];
         select_detailview.f_id = @"1";
         [self.navigationController pushViewController:select_detailview animated:YES];
         [select_detailview release];

@@ -480,7 +480,7 @@
 //    NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
 //    NSString *f_id=[dic objectForKey:@"f_id"];
 //    NSString *fileName=[dic objectForKey:@"f_name"];
-    [file_delegate showController:p_id titleString:@"我的空间"];
+    [file_delegate showController:p_id titleString:@"我的文件"];
 }
 
 #pragma mark 重命名文件

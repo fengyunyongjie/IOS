@@ -52,7 +52,7 @@
     if([array count] == 0)
     {
         info.f_id = -1;
-        info.descript = [NSString stringWithFormat:@"我的空间/手机照片/%@",[AppDelegate deviceString]];
+        info.descript = [NSString stringWithFormat:@"我的文件/手机照片/%@",[AppDelegate deviceString]];
         [info insertUserinfo];
         self.table_string = info.descript;
         app_delegate.maticUpload.f_id = @"-1";

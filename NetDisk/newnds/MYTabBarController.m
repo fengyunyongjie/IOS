@@ -121,7 +121,7 @@
 //    MainViewController *rootView1=[[[MainViewController alloc] init ]autorelease];
 //    //rootView1.f_id=@"1";
 //    //rootView1.myndsType=kMyndsTypeDefault;
-//    rootView1.title=@"我的空间";
+//    rootView1.title=@"我的文件";
 //    [rootView1.tabBarItem setImage:[UIImage imageNamed:@"tab_btn_myroom.png"]];
 //    [viewController1 pushViewController:rootView1 animated:YES];
 //    
