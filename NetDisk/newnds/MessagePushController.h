@@ -26,6 +26,7 @@
     BOOL isSelect;
     BOOL isHiddenTabbar;
     int unreadBL;
+    BOOL isPushMessage;
 }
 
 @property(nonatomic,retain) UITableView *table_view;
@@ -36,6 +37,7 @@
 @property(nonatomic,retain) SCBShareManager *shareManager;
 @property(nonatomic,retain) NSString *group_id;
 @property(nonatomic,assign) BOOL isHiddenTabbar;
+@property(nonatomic,assign) BOOL isPushMessage;
 
 
 @end

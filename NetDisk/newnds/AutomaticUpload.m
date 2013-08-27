@@ -28,6 +28,8 @@
 //比对本地数据库
 -(void)isHaveData
 {
+    isGoOn = FALSE;
+    dispatch_async(dispatch_get_main_queue(), ^{
     if(![self isConnection])
     {
         [self getUploadCotroller];
@@ -93,11 +95,17 @@
         [alertView show];
         [alertView release];
     }];
+    });
 }
 
 //开启自动上传
 -(void)startAutomaticUpload
 {
+    if(isGoOn)
+    {
+        return;
+    }
+    isGoOn = FALSE;
     NSLog(@"开始下载-----------------------");
     if([self isConnection])
     {
@@ -222,6 +230,7 @@
         [upload_timer invalidate];
         upload_timer = nil;
     }
+    isGoOn = YES;
 }
 
 -(void)getUploadCotroller
@@ -243,13 +252,10 @@
 -(void)upFinish:(NSInteger)fileTag
 {
     NSLog(@"继续下载-----------------------");
-//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:0];
-//    MyndsViewController *myndsView = (MyndsViewController *)[NavigationController.viewControllers objectAtIndex:0];
-//    if([myndsView isKindOfClass:[MyndsViewController class]])
-//    {
-//        [myndsView loadData];
-//    }
+    if(isGoOn)
+    {
+        return;
+    }
     
     [self getUploadCotroller];
     if(uploadViewController)

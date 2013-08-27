@@ -99,6 +99,8 @@
 #define FM_CATEGORY_DIR_URI @"/fm/category_dir"
 //查看类别文件/fm/category_file
 #define FM_CATEGORY_FILE_URI @"/fm/category_file"
+//查看移动文件目录
+#define FM_CUTTO @"/fm/cutTo"
 
 #pragma mark - 5.共享管理
 //打开共享文件夹

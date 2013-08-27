@@ -32,6 +32,7 @@
     UploadFile *upload_file;
     int netWorkState;
     NSTimer *upload_timer;
+    BOOL isGoOn;
 }
 
 @property(nonatomic,retain) NSMutableOrderedSet *assetArray;

@@ -235,10 +235,15 @@
         {
             [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
             [YNFunctions setIsAutoUpload:YES];
-            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [app_delegate.maticUpload isHaveData];
+            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutoUpload) userInfo:nil repeats:NO];
         }
     }
+}
+
+-(void)startAutoUpload
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.maticUpload isHaveData];
 }
 
 - (void)didReceiveMemoryWarning

@@ -29,6 +29,7 @@
 @synthesize friendManager;
 @synthesize group_id;
 @synthesize isHiddenTabbar;
+@synthesize isPushMessage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -112,7 +113,14 @@
 
 -(void)back_clicked:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if(isPushMessage)
+    {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark tableviewdelegate

@@ -113,6 +113,9 @@
 }
 -(void)resetData
 {
+    self.selectedIndex = 0;
+    
+    [self when_tabbar_is_selected:0];
 //    UINavigationController *viewController1,*viewController2,*viewController3,*viewController4,*viewController5,*viewController6,*viewController7,*viewController8;
 //    viewController1=[[[UINavigationController alloc] init] autorelease];
 //    MainViewController *rootView1=[[[MainViewController alloc] init ]autorelease];

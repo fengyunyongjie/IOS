@@ -32,6 +32,8 @@
 		292344A81754B1FD002FE3D0 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 292344A71754B1FD002FE3D0 /* Reachability.m */; };
 		29262229172BD70000A95E97 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29262227172BD70000A95E97 /* LoginViewController.m */; };
 		2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29262228172BD70000A95E97 /* LoginViewController.xib */; };
+		2929E30D17CC2EA9003CB75A /* FileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */; };
+		2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30F17CC2F50003CB75A /* IPhotoViewController.m */; };
 		292D984B17644B3E00F57BFF /* operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 292D984A17644B3E00F57BFF /* operation.m */; };
 		292FF984173A466D004CC609 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E416B9385100A1BE48 /* 114.png */; };
 		292FF985173A4670004CC609 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E216B937D900A1BE48 /* icon.png */; };
@@ -463,6 +465,10 @@
 		29262226172BD70000A95E97 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		29262227172BD70000A95E97 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		29262228172BD70000A95E97 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		2929E30B17CC2EA9003CB75A /* FileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileTableViewCell.h; sourceTree = "<group>"; };
+		2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTableViewCell.m; sourceTree = "<group>"; };
+		2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhotoViewController.h; sourceTree = "<group>"; };
+		2929E30F17CC2F50003CB75A /* IPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPhotoViewController.m; sourceTree = "<group>"; };
 		292D984917644B3E00F57BFF /* operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = operation.h; sourceTree = "<group>"; };
 		292D984A17644B3E00F57BFF /* operation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = operation.m; sourceTree = "<group>"; };
 		292FF987173A4930004CC609 /* YNFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNFunctions.h; sourceTree = "<group>"; };
@@ -1460,6 +1466,10 @@
 				29D2FC9917C5B54800D6A553 /* PhotoTableView.m */,
 				29D2FC9B17C6118000D6A553 /* CustomControl.h */,
 				29D2FC9C17C6118100D6A553 /* CustomControl.m */,
+				2929E30B17CC2EA9003CB75A /* FileTableViewCell.h */,
+				2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */,
+				2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */,
+				2929E30F17CC2F50003CB75A /* IPhotoViewController.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -3081,6 +3091,8 @@
 				29D2FC9717C5B52B00D6A553 /* FileTableView.m in Sources */,
 				29D2FC9A17C5B54800D6A553 /* PhotoTableView.m in Sources */,
 				29D2FC9D17C6118100D6A553 /* CustomControl.m in Sources */,
+				2929E30D17CC2EA9003CB75A /* FileTableViewCell.m in Sources */,
+				2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -121,6 +121,10 @@
 
 -(void)changeDeviceName:(NSString *)device_name
 {
+    if(device_name == nil)
+    {
+        device_name = @"手机照片";
+    }
     if([self.uploadAllList count]==0)
     {
         isUpload = FALSE;
