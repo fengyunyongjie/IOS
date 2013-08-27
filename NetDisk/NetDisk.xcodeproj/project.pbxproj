@@ -313,6 +313,8 @@
 		29B996CD174E1B4700204068 /* login_btn_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996C8174E1B4700204068 /* login_btn_login.png */; };
 		29B996CE174E1B4700204068 /* login_btn_login_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996C9174E1B4700204068 /* login_btn_login_h.png */; };
 		29B996D1174E1EE200204068 /* login_btn_regist_h.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B996D0174E1EE200204068 /* login_btn_regist_h.png */; };
+		29B9EECD17CC32160068FDF1 /* Bt_CancelF@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9EECB17CC32160068FDF1 /* Bt_CancelF@2x.png */; };
+		29B9EECE17CC32160068FDF1 /* Bt_CancelF.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9EECC17CC32160068FDF1 /* Bt_CancelF.png */; };
 		29BAD62D17B4C15300F258F4 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BAD62B17B4C15300F258F4 /* libPushSDK.a */; };
 		29BAD62F17B4C61300F258F4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BAD62E17B4C61300F258F4 /* CoreTelephony.framework */; };
 		29BAD63117B4C62A00F258F4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29BAD63017B4C62A00F258F4 /* CoreFoundation.framework */; };
@@ -792,6 +794,8 @@
 		29B996C8174E1B4700204068 /* login_btn_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_login.png; sourceTree = "<group>"; };
 		29B996C9174E1B4700204068 /* login_btn_login_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_login_h.png; sourceTree = "<group>"; };
 		29B996D0174E1EE200204068 /* login_btn_regist_h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_btn_regist_h.png; sourceTree = "<group>"; };
+		29B9EECB17CC32160068FDF1 /* Bt_CancelF@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_CancelF@2x.png"; sourceTree = "<group>"; };
+		29B9EECC17CC32160068FDF1 /* Bt_CancelF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_CancelF.png; sourceTree = "<group>"; };
 		29BAD62917B4C15300F258F4 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		29BAD62B17B4C15300F258F4 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		29BAD62E17B4C61300F258F4 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -1310,6 +1314,8 @@
 		29390F2E17AA444D00C9BE49 /* MySpace */ = {
 			isa = PBXGroup;
 			children = (
+				29B9EECB17CC32160068FDF1 /* Bt_CancelF@2x.png */,
+				29B9EECC17CC32160068FDF1 /* Bt_CancelF.png */,
 				2956299317CB47DE00F8FEDA /* Ico_CoverF@2x.png */,
 				29AE060717BCD6D0004FEA5E /* Ico_CoverF.png */,
 				29AE060517BCACE6004FEA5E /* pop.png */,
@@ -2974,6 +2980,8 @@
 				29AE060617BCACE6004FEA5E /* pop.png in Resources */,
 				29AE060817BCD6D0004FEA5E /* Ico_CoverF.png in Resources */,
 				2956299417CB47DE00F8FEDA /* Ico_CoverF@2x.png in Resources */,
+				29B9EECD17CC32160068FDF1 /* Bt_CancelF@2x.png in Resources */,
+				29B9EECE17CC32160068FDF1 /* Bt_CancelF.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

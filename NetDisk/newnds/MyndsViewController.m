@@ -353,20 +353,38 @@ typedef enum{
         editLbl2.backgroundColor=[UIColor clearColor];
         editLbl2.frame=CGRectMake(19+80, 45-5, 42, 21);
         [self.editView addSubview:editLbl2];
-        //移动按钮
-        UIButton *editBtn3=[UIButton buttonWithType:UIButtonTypeCustom];
-        editBtn3.frame=CGRectMake(10+80+80, 0, 60, 60);
-        [editBtn3 setImage:[UIImage imageNamed:@"Bt_AllF.png"] forState:UIControlStateNormal];
-        [editBtn3 addTarget:self action:@selector(allSelect:) forControlEvents:UIControlEventTouchUpInside];
-        [self.editView addSubview:editBtn3];
-        UILabel *editLbl3=[[[UILabel alloc] init] autorelease];
-        editLbl3.text=@"全选";
-        editLbl3.textAlignment=UITextAlignmentCenter;
-        editLbl3.font=[UIFont systemFontOfSize:12];
-        editLbl3.textColor=[UIColor whiteColor];
-        editLbl3.backgroundColor=[UIColor clearColor];
-        editLbl3.frame=CGRectMake(19+80+80, 45-5, 42, 21);
-        [self.editView addSubview:editLbl3];
+        //全选按钮
+        self.btnAllSelect=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnAllSelect.frame=CGRectMake(10+80+80, 0, 60, 60);
+        [self.btnAllSelect setImage:[UIImage imageNamed:@"Bt_AllF.png"] forState:UIControlStateNormal];
+        [self.btnAllSelect addTarget:self action:@selector(allSelect:) forControlEvents:UIControlEventTouchUpInside];
+        self.btnAllSelect.tag=1;
+        [self.editView addSubview:self.btnAllSelect];
+        self.lblAllSelect=[[[UILabel alloc] init] autorelease];
+        self.lblAllSelect.text=@"全选";
+        self.lblAllSelect.textAlignment=UITextAlignmentCenter;
+        self.lblAllSelect.font=[UIFont systemFontOfSize:12];
+        self.lblAllSelect.textColor=[UIColor whiteColor];
+        self.lblAllSelect.backgroundColor=[UIColor clearColor];
+        self.lblAllSelect.frame=CGRectMake(19+80+80, 45-5, 42, 21);
+        [self.editView addSubview:self.lblAllSelect];
+        //全不选按钮
+        self.btnNoSelect=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnNoSelect.frame=CGRectMake(10+80+80, 0, 60, 60);
+        [self.btnNoSelect setImage:[UIImage imageNamed:@"Bt_CancelF.png"] forState:UIControlStateNormal];
+        [self.btnNoSelect addTarget:self action:@selector(allSelect:) forControlEvents:UIControlEventTouchUpInside];
+        [self.editView addSubview:self.btnNoSelect];
+        self.btnNoSelect.hidden=YES;
+        self.btnNoSelect.tag=0;
+        self.lblNoSelect=[[[UILabel alloc] init] autorelease];
+        self.lblNoSelect.text=@"取消";
+        self.lblNoSelect.textAlignment=UITextAlignmentCenter;
+        self.lblNoSelect.font=[UIFont systemFontOfSize:12];
+        self.lblNoSelect.textColor=[UIColor whiteColor];
+        self.lblNoSelect.backgroundColor=[UIColor clearColor];
+        self.lblNoSelect.frame=CGRectMake(19+80+80, 45-5, 42, 21);
+        [self.editView addSubview:self.lblNoSelect];
+        self.lblNoSelect.hidden=YES;
         //移动按钮
         UIButton *editBtn4=[UIButton buttonWithType:UIButtonTypeCustom];
         editBtn4.frame=CGRectMake(10+80+80+80, 0, 60, 60);
@@ -917,6 +935,7 @@ typedef enum{
 }
 -(void)allSelect:(id)sender
 {
+    //UIButton *btn=(UIButton *)sender;
     BOOL isAllSelect=YES;
     for (int i=0;i<self.m_fileItems.count;i++) {
         FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
@@ -924,19 +943,27 @@ typedef enum{
         if (!fileItem.checked) {
             isAllSelect=NO;
         }
-
+        
     }
     if (isAllSelect) {
         for (int i=0;i<self.m_fileItems.count;i++) {
             FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
             [fileItem setChecked:NO];
         }
+        self.lblAllSelect.hidden=NO;
+        self.btnAllSelect.hidden=NO;
+        self.lblNoSelect.hidden=YES;
+        self.btnNoSelect.hidden=YES;
     }else
     {
         for (int i=0;i<self.m_fileItems.count;i++) {
             FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
             [fileItem setChecked:YES];
         }
+        self.lblAllSelect.hidden=YES;
+        self.btnAllSelect.hidden=YES;
+        self.lblNoSelect.hidden=NO;
+        self.btnNoSelect.hidden=NO;
     }
     [self.tableView reloadData];
 }
@@ -1361,29 +1388,32 @@ typedef enum{
 }
 -(void)toMove:(id)sender
 {
-    NSMutableArray *f_ids=[NSMutableArray array];
-    for (int i=0;i<self.m_fileItems.count;i++) {
-        FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
-        if (fileItem.checked) {
-            NSDictionary *dic=[self.listArray objectAtIndex:i];
-            NSString *f_id=[dic objectForKey:@"f_id"];
-            [f_ids addObject:f_id];
+    if (self.tableView.editing) {
+        NSMutableArray *f_ids=[NSMutableArray array];
+        for (int i=0;i<self.m_fileItems.count;i++) {
+            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+            if (fileItem.checked) {
+                NSDictionary *dic=[self.listArray objectAtIndex:i];
+                NSString *f_id=[dic objectForKey:@"f_id"];
+                [f_ids addObject:f_id];
+            }
+        }
+        if ([f_ids count]==0) {
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];    [self.hud show:NO];
+            self.hud.labelText=@"未选中任何文件(夹)";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return;
         }
     }
-    if ([f_ids count]==0) {
-        if (self.hud) {
-            [self.hud removeFromSuperview];
-        }
-        self.hud=nil;
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];    [self.hud show:NO];
-        self.hud.labelText=@"未选中任何文件(夹)";
-        self.hud.mode=MBProgressHUDModeText;
-        self.hud.margin=10.f;
-        [self.hud show:YES];
-        [self.hud hide:YES afterDelay:1.0f];
-        return;
-    }
+    
     MyndsViewController *moveViewController=[[[MyndsViewController alloc] init] autorelease];
     moveViewController.f_id=@"1";
     switch (self.myndsType) {
@@ -1502,6 +1532,12 @@ typedef enum{
     AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
     [appDelegate sendImageContentIsFiends:YES text:text];
 }
+-(void)EscMenu
+{
+    //self.cellMenu.hidden=YES;
+    [self hideOptionCell];
+    self.btnHide.hidden=YES;
+}
 #pragma mark - QBImagePickerControllerDelegate
 
 -(void)changeUpload:(NSMutableOrderedSet *)array_
@@ -1618,7 +1654,16 @@ typedef enum{
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
     self.cellMenu.frame=r;
+    [self.tableView bringSubviewToFront:self.cellMenu];
     [self.cellMenu setHidden:NO];
+    if (self.btnHide==nil) {
+        self.btnHide=[[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width,self.tableView.frame.size.height)];
+        [self.btnHide addTarget:self action:@selector(EscMenu) forControlEvents:(UIControlEventTouchUpInside)];
+        [self.tableView addSubview:self.btnHide];
+    }else
+    {
+        self.btnHide.hidden=NO;
+    }
     
     double delayInSeconds = 0.0;
     BOOL shouldAdjustInsertedRow = YES;
@@ -1850,6 +1895,14 @@ typedef enum{
                     theR.origin.y=-(theR.size.height/2)-itemSize.height;
                 }
                 CGRect imageRect = CGRectMake(35, 5, 90, 90);
+                CGSize size=icon.size;
+                if (size.width>size.height) {
+                    imageRect.size.height=size.height*(90.0f/imageRect.size.width);
+                    imageRect.origin.y+=(90-imageRect.size.height)/2;
+                }else{
+                    imageRect.size.width=size.width*(90.0f/imageRect.size.height);
+                    imageRect.origin.x+=(90-imageRect.size.width)/2;
+                }
                 [icon drawInRect:imageRect];
                 UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
@@ -2075,6 +2128,8 @@ typedef enum{
 //                    NSString *f_name=[dic objectForKey:@"f_name"];
 //                    otherBrowser.title=f_name;
 //                    [self.navigationController pushViewController:otherBrowser animated:YES];
+//                    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+//                    [myTabbar setHidesTabBarWithAnimate:YES];
                 }
 
             }

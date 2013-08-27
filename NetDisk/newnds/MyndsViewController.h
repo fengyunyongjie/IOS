@@ -60,6 +60,11 @@ typedef enum {
 @property (strong,nonatomic) UIButton *btnSearch;
 @property (strong,nonatomic) UIButton *btnMove;
 @property (strong,nonatomic) UILabel *lblMove;
+@property (strong,nonatomic) UIButton *btnHide;
+@property (strong,nonatomic) UIButton *btnAllSelect;
+@property (strong,nonatomic) UILabel *lblAllSelect;
+@property (strong,nonatomic) UIButton *btnNoSelect;
+@property (strong,nonatomic) UILabel *lblNoSelect;
 -(void)loadData;
 - (void)viewWillAppear:(BOOL)animated;
 @end

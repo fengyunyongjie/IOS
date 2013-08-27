@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "newnds/MyndsViewController.m"
-         timestampString = "399197805.1775"
+         timestampString = "399264097.583056"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "2044"
-         endingLineNumber = "2044"
+         startingLineNumber = "2097"
+         endingLineNumber = "2097"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
