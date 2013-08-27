@@ -51,6 +51,8 @@ typedef enum{
 typedef enum{
     kActionSheetTagShare,
     kActionSheetTagMore,
+    kActionSheetTagDeleteOne,
+    kActionSheetTagDeleteMore,
 }ActionSheetTag;
 @implementation FileItem
 
@@ -738,7 +740,9 @@ typedef enum{
     
     [self setHidesBottomBarWhenPushed:NO];
     
-    [self updateFileList];
+    if (!self.tableView.editing) {
+        [self updateFileList];
+    }
     NSLog(@"viewWillAppear::");
     [super viewWillAppear:animated];
 }
@@ -928,10 +932,15 @@ typedef enum{
     if ([deleteObjects count]<=0) {
         return;
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除所选文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alertView show];
-    [alertView setTag:kAlertTagDeleteMore];
-    [alertView release];
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除所选文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//    [alertView show];
+//    [alertView setTag:kAlertTagDeleteMore];
+//    [alertView release];
+    
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"是否要删除所选文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+    [actionSheet setTag:kActionSheetTagDeleteMore];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 -(void)allSelect:(id)sender
 {
@@ -981,7 +990,7 @@ typedef enum{
 //        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
         MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
         [myTabbar setHidesTabBarWithAnimate:YES];
-//        [self.editView setHidden:NO];
+        [self.editView setHidden:NO];
 //        CGRect r=self.view.frame;
 //        r.size.height=[[UIScreen mainScreen] bounds].size.height+TabBarHeight;
 //        self.view.frame=r;
@@ -1262,10 +1271,14 @@ typedef enum{
 }
 -(void)toDelete:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alertView show];
-    [alertView setTag:kAlertTagDeleteOne];
-    [alertView release];
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//    [alertView show];
+//    [alertView setTag:kAlertTagDeleteOne];
+//    [alertView release];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+    [actionSheet setTag:kActionSheetTagDeleteOne];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 -(void)moveFileToID:(NSString *)f_id
 {
@@ -1333,6 +1346,7 @@ typedef enum{
 -(void)sharedAction:(id)sender
 {
     NSMutableArray *f_ids=[NSMutableArray array];
+    BOOL hasDir=NO;
     for (int i=0;i<self.m_fileItems.count;i++) {
         FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
         if (fileItem.checked) {
@@ -1341,8 +1355,25 @@ typedef enum{
             NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
             if (![f_mime isEqualToString:@"directory"]) {
                 [f_ids addObject:f_id];
+            }else
+            {
+                hasDir=YES;
             }
         }
+    }
+    if (hasDir) {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];    [self.hud show:NO];
+        self.hud.labelText=@"文件夹无法进行分享";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
     }
     if ([f_ids count]<=0) {
         if (self.hud) {
@@ -1358,19 +1389,33 @@ typedef enum{
         [self.hud hide:YES afterDelay:1.0f];
         return;
     }
-    SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
-    [lm_temp setDelegate:self];
-    [lm_temp linkWithIDs:f_ids];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
+    NSString *l_url=@"分享";
+    [actionSheet setTitle:l_url];
+    [actionSheet setTag:kActionSheetTagShare];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+//    SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
+//    [lm_temp setDelegate:self];
+//    [lm_temp linkWithIDs:f_ids];
 }
 -(void)toShared:(id)sender
 {
-    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-    NSString *f_id=[dic objectForKey:@"f_id"];
+//    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+//    NSString *f_id=[dic objectForKey:@"f_id"];
+//    
+//    SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
+//    [lm_temp setDelegate:self];
+//    [lm_temp linkWithIDs:@[f_id]];
+//    [self hideOptionCell];
     
-    SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
-    [lm_temp setDelegate:self];
-    [lm_temp linkWithIDs:@[f_id]];
-    [self hideOptionCell];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
+    NSString *l_url=@"分享";
+    [actionSheet setTitle:l_url];
+    [actionSheet setTag:kActionSheetTagShare];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    
 //    NSArray *activityItems=[[NSArray alloc] initWithObjects:@"?想和您分享虹盘的文件，链接地址：?", nil];
 //    UIActivityViewController *activetyVC=[[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
 //    
@@ -2734,6 +2779,95 @@ typedef enum{
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch ([actionSheet tag]) {
+        case kActionSheetTagDeleteOne:
+        {
+            if (buttonIndex==0) {
+                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+                //[self removeFromDicWithObject:dic];
+                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row-1 inSection:self.selectedIndexPath.section];
+                NSLog(@"%d",self.selectedIndexPath.section);
+                NSArray *indexesToDelete = @[indexPath,self.selectedIndexPath];
+                self.selectedIndexPath = nil;
+                //[self.tableView deleteRowsAtIndexPaths:indexesToDelete withRowAnimation:UITableViewRowAnimationAutomatic];
+                self.willDeleteObjects=@[dic];
+                NSString *f_id=[dic objectForKey:@"f_id"];
+                switch (self.myndsType) {
+                    case kMyndsTypeDefault:
+                    case kMyndsTypeDefaultSearch:
+                    {
+                        [self.fm cancelAllTask];
+                        self.fm=[[[SCBFileManager alloc] init] autorelease];
+                        self.fm.delegate=self;
+                        [self.fm removeFileWithIDs:@[f_id]];
+                    }
+                        break;
+                    case kMyndsTypeMyShareSearch:
+                    case kMyndsTypeShare:
+                    case kMyndsTypeMyShare:
+                    case kMyndsTypeShareSearch:
+                    {
+                        [self.sm cancelAllTask];
+                        self.sm=[[[SCBShareManager alloc] init] autorelease];
+                        self.sm.delegate=self;
+                        [self.sm removeFileWithIDs:@[f_id]];
+                    }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            [self hideOptionCell];
+            break;
+        }
+        case kActionSheetTagDeleteMore:
+        {
+            if (buttonIndex==0) {
+                NSMutableArray *f_ids=[NSMutableArray array];
+                NSMutableArray *deleteObjects=[NSMutableArray array];
+                for (int i=0;i<self.m_fileItems.count;i++) {
+                    FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+                    if (fileItem.checked) {
+                        NSDictionary *dic=[self.listArray objectAtIndex:i];
+                        NSString *f_id=[dic objectForKey:@"f_id"];
+                        [f_ids addObject:f_id];
+                        [deleteObjects addObject:dic];
+                    }
+                }
+                self.willDeleteObjects=deleteObjects;
+                //[self removeFromDicWithObjects:deleteObjects];
+                //[self.tableView reloadData];
+                if (f_ids.count>0) {
+                    
+                    switch (self.myndsType) {
+                        case kMyndsTypeDefault:
+                        case kMyndsTypeDefaultSearch:
+                        {
+                            [self.fm cancelAllTask];
+                            self.fm=[[[SCBFileManager alloc] init] autorelease];
+                            self.fm.delegate=self;
+                            [self.fm removeFileWithIDs:f_ids];
+                        }
+                            break;
+                        case kMyndsTypeMyShareSearch:
+                        case kMyndsTypeShare:
+                        case kMyndsTypeMyShare:
+                        case kMyndsTypeShareSearch:
+                        {
+                            [self.sm cancelAllTask];
+                            self.sm=[[[SCBShareManager alloc] init] autorelease];
+                            self.sm.delegate=self;
+                            [self.sm removeFileWithIDs:f_ids];
+                        }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                
+            }
+            break;
+        }
+
         case kActionSheetTagMore:
             if (buttonIndex == 0) {
                 NSLog(@"移动");

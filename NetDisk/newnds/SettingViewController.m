@@ -33,7 +33,13 @@ typedef enum{
     kAlertTypeAuto,
     kAlertTypeHideFeature,
 }kAlertType;
-
+typedef enum{
+    kActionSheetTypeExit,
+    kActionSheetTypeClear,
+    kActionSheetTypeWiFi,
+    kActionSheetTypeAuto,
+    kActionSheetTypeHideFeature,
+}kActionSheetType;
 @interface SettingViewController ()
 @property (strong,nonatomic) NSString *space_total;
 @property (strong,nonatomic) NSString *space_used;
@@ -153,14 +159,18 @@ typedef enum{
             UISwitch *theSwith = (UISwitch *)sender;
             NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
             if ([YNFunctions isOnlyWifi]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                    message:@"这可能会产生流量费用，您是否要继续？"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"取消"
-                                                          otherButtonTitles:@"继续", nil];
-                alertView.tag=kAlertTypeWiFi;
-                [alertView show];
-                [alertView release];
+//                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+//                                                                    message:@"这可能会产生流量费用，您是否要继续？"
+//                                                                   delegate:self
+//                                                          cancelButtonTitle:@"取消"
+//                                                          otherButtonTitles:@"继续", nil];
+//                alertView.tag=kAlertTypeWiFi;
+//                [alertView show];
+//                [alertView release];
+                UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"这可能会产生流量费用，您是否要继续？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"继续" otherButtonTitles: nil];
+                [actionSheet setTag:kActionSheetTypeWiFi];
+                [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+                [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
             }else
             {
                 //[[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
@@ -182,14 +192,18 @@ typedef enum{
             UISwitch *theSwith = (UISwitch *)sender;
             NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
             if (![YNFunctions isOnlyWifi] && ![YNFunctions isAutoUpload]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                    message:@"这可能会产生流量费用，您是否要继续？"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"取消"
-                                                          otherButtonTitles:@"继续", nil];
-                alertView.tag=kAlertTypeAuto;
-                [alertView show];
-                [alertView release];
+//                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+//                                                                    message:@"这可能会产生流量费用，您是否要继续？"
+//                                                                   delegate:self
+//                                                          cancelButtonTitle:@"取消"
+//                                                          otherButtonTitles:@"继续", nil];
+//                alertView.tag=kAlertTypeAuto;
+//                [alertView show];
+//                [alertView release];
+                UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"这可能会产生流量费用，您是否要继续？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"继续" otherButtonTitles: nil];
+                [actionSheet setTag:kActionSheetTypeAuto];
+                [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+                [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
             }else
             {
                 [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
@@ -212,25 +226,33 @@ typedef enum{
 }
 - (void)exitAccount:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
-                                                        message:@"确定要退出登录"
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"退出", nil];
-    [alertView show];
-    [alertView setTag:kAlertTypeExit];
-    [alertView release];
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+//                                                        message:@"确定要退出登录"
+//                                                       delegate:self
+//                                              cancelButtonTitle:@"取消"
+//                                              otherButtonTitles:@"退出", nil];
+//    [alertView show];
+//    [alertView setTag:kAlertTypeExit];
+//    [alertView release];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"确定要退出登录" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出" otherButtonTitles: nil];
+    [actionSheet setTag:kActionSheetTypeExit];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 - (void)clearCache
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
-                                                        message:@"确定要清除缓存"
-                                                       delegate:self
-                                              cancelButtonTitle:@"取消"
-                                              otherButtonTitles:@"确定", nil];
-    [alertView show];
-    [alertView setTag:kAlertTypeClear];
-    [alertView release];
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+//                                                        message:@"确定要清除缓存"
+//                                                       delegate:self
+//                                              cancelButtonTitle:@"取消"
+//                                              otherButtonTitles:@"确定", nil];
+//    [alertView show];
+//    [alertView setTag:kAlertTypeClear];
+//    [alertView release];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"确定要清除缓存" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"清除" otherButtonTitles: nil];
+    [actionSheet setTag:kActionSheetTypeClear];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 #pragma mark - UIAlertViewDelegate Methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -303,7 +325,77 @@ typedef enum{
     }
     
 }
-
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch ([actionSheet tag]) {
+        case kActionSheetTypeExit:
+            if (buttonIndex == 0) {
+                //scBox.UserLogout(callBackLogoutFunc,self);
+                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
+                [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
+                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
+                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [appleDate.maticUpload colseAutomaticUpload];
+                [DBSqlite3 cleanSql];
+                [[FavoritesData sharedFavoritesData] stopDownloading];
+                
+                [self.rootViewController presendLoginViewController];
+            }
+            break;
+        case kActionSheetTypeClear:
+            if (buttonIndex==0) {
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getFMCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getIconCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
+                [self.tableView reloadData];
+            }
+            break;
+        case kActionSheetTypeWiFi:
+            if (buttonIndex==0) {
+                [YNFunctions setIsOnlyWifi:NO];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                if([YNFunctions isAutoUpload])
+                {
+                    [appleDate.maticUpload isHaveData];
+                }
+            }else
+            {
+                [YNFunctions setIsOnlyWifi:YES];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [appleDate.maticUpload colseAutomaticUpload];
+            }
+            [self.tableView reloadData];
+            break;
+        case kActionSheetTypeAuto:
+            if (buttonIndex==0) {
+                [YNFunctions setIsAutoUpload:YES];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [appleDate.maticUpload isHaveData];
+            }else
+            {
+                [YNFunctions setIsAutoUpload:NO];
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [appleDate.maticUpload colseAutomaticUpload];
+            }
+            [self.tableView reloadData];
+            break;
+        case kActionSheetTypeHideFeature:
+        {
+            if (buttonIndex==0) {
+                [YNFunctions setIsOpenHideFeature:![YNFunctions isOpenHideFeature]];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    
+}
 #pragma mark - Table view data source
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
