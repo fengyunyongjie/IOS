@@ -98,5 +98,7 @@
 -(void)requestNewFold:(NSString *)name FID:(int)f_id space_id:(NSString *)space_id;
 #pragma mark 打开文件目录
 -(void)openFinderWithID:(NSString *)f_id space_id:(NSString *)space_id;
+#pragma mark 打开移动目录
+-(void)requestMoveFile:(NSString *)f_pid space_id:(NSString *)space_id;
 
 @end

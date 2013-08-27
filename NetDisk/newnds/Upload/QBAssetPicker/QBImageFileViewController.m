@@ -30,6 +30,7 @@
 @synthesize qbDelegate;
 @synthesize f_name;
 @synthesize f_id;
+@synthesize isChangeMove;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -160,7 +161,14 @@
         photoManger = [[SCBPhotoManager alloc] init];
         [photoManger setNewFoldDelegate:self];
     }
-    [photoManger openFinderWithID:self.f_id space_id:space_id];
+    if(isChangeMove)
+    {
+        [photoManger requestMoveFile:self.f_id space_id:[[SCBSession sharedSession] spaceID]];
+    }
+    else
+    {
+        [photoManger openFinderWithID:self.f_id space_id:space_id];
+    }
     FileDeviceName *file_device = [[FileDeviceName alloc] init];
     [file_device setDeviceName:[AppDelegate deviceString]];
     [file_device setF_id:self.f_id];

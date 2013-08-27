@@ -33,12 +33,14 @@
     NSString *space_id;
     NSString *f_name;
     NSString *f_id;
+    BOOL isChangeMove;
 }
 @property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) NSMutableArray *fileArray;
 @property(nonatomic,retain) id<QBImageFileViewDelegate> qbDelegate;
 @property(nonatomic,retain) NSString *f_name;
 @property(nonatomic,retain) NSString *f_id;
+@property(nonatomic,assign) BOOL isChangeMove;
 
 @end
 

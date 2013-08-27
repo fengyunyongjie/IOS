@@ -954,7 +954,7 @@ typedef enum{
 //        AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
         MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
         [myTabbar setHidesTabBarWithAnimate:YES];
-        [self.editView setHidden:NO];
+//        [self.editView setHidden:NO];
 //        CGRect r=self.view.frame;
 //        r.size.height=[[UIScreen mainScreen] bounds].size.height+TabBarHeight;
 //        self.view.frame=r;
@@ -1415,6 +1415,7 @@ typedef enum{
     UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:moveViewController];
     [self presentViewController:nav animated:YES completion:nil];
 }
+
 -(void)hideOptionCell
 {
     if(self.selectedIndexPath) {

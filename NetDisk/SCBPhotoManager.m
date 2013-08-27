@@ -422,7 +422,13 @@
             [photoDelegate getFileDetail:diction];
         }
     }
-        
+    else if([type_string isEqualToString:[[FM_CUTTO componentsSeparatedByString:@"/"] lastObject]])
+    {
+        if([newFoldDelegate respondsToSelector:@selector(openFile:)])
+        {
+            [newFoldDelegate openFile:diction];
+        }
+    }
         
 }
 
@@ -585,6 +591,31 @@
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     NSMutableString *body=[[NSMutableString alloc] init];
     [body appendFormat:@"f_id=%i",f_id];
+    NSLog(@"body:%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    [body release];
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
+#pragma mark 打开移动目录
+-(void)requestMoveFile:(NSString *)f_pid space_id:(NSString *)space_id
+{
+    self.matableData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_CUTTO]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = FM_CUTTO;
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"pId=%@",f_pid];
+    [body appendFormat:@"&space_id=%@",space_id];
+    [body appendFormat:@"&fIds[]=%@",@[]];
+    
     NSLog(@"body:%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];

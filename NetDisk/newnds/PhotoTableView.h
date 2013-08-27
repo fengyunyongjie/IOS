@@ -8,40 +8,70 @@
 
 #import <UIKit/UIKit.h>
 #import "SCBPhotoManager.h"
+#import "DownImage.h"
 
-@interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate>
+@protocol PhotoTableViewDelegate <NSObject>
+
+-(void)showFile:(int)index array:(NSMutableArray *)tableArray;
+
+@end
+
+@interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate>
 {
     SCBPhotoManager *photoManager;
-    NSInteger show_height;
-    NSMutableDictionary *allDictionary;
-    NSInteger imageTa;
-    UITableView *table_view;
-    UIActivityIndicatorView *activity_indicator;
-    NSString *user_id;
-    NSString *user_token;
-    NSMutableArray *allKeys;
-    
-    NSMutableArray *_arrVisibleCells; //重用的cell
 	NSMutableDictionary *_dicReuseCells; //选中的数据
     BOOL editBL;  //是否为编辑状态，默认为false
-    UIView *bottonView;
-    NSMutableDictionary *photo_diction;
+    NSMutableDictionary *tablediction;
+    NSMutableArray *sectionarray;
+    NSMutableArray *downCellArray;
+    
+    BOOL isLoadImage;
+    BOOL isLoadData;
+    
+    float endFloat;
+    BOOL isSort;
+    
+    id<PhotoTableViewDelegate> photo_delegate;
 }
 
 @property(nonatomic,assign) SCBPhotoManager *photoManager;
-@property(nonatomic,assign) NSInteger show_height;
-@property(nonatomic,retain) NSMutableDictionary *allDictionary;
-@property(nonatomic,assign) NSInteger imageTa;
-@property(nonatomic,retain) UITableView *table_view;
-@property(nonatomic,retain) UIActivityIndicatorView *activity_indicator;
-@property(nonatomic,retain) NSString *user_id;
-@property(nonatomic,retain) NSString *user_token;
-@property(nonatomic,retain) NSMutableArray *allKeys;
-
-@property(nonatomic,retain) NSMutableArray *_arrVisibleCells; //重用的cell
 @property(nonatomic,retain) NSMutableDictionary *_dicReuseCells; //选中的数据
 @property(nonatomic,assign) BOOL editBL;  //是否为编辑状态，默认为false
-@property(nonatomic,retain) UIView *bottonView;
 @property(nonatomic,retain) NSMutableDictionary *photo_diction;
+@property(nonatomic,retain) NSMutableArray *sectionarray;
+@property(nonatomic,retain) NSMutableArray *downCellArray; // 重用的cell
+
+@property(nonatomic,assign) BOOL isLoadImage;
+@property(nonatomic,assign) BOOL isLoadData;
+
+@property(nonatomic,assign) float endFloat;
+@property(nonatomic,assign) BOOL isSort;
+
+@property(nonatomic,retain) id<PhotoTableViewDelegate> photo_delegate;
+
+@end
+
+
+@interface CellTag : NSObject
+{
+    NSInteger fileTag;
+    NSInteger imageTag;
+    NSInteger buttonTag;
+    NSInteger pageTag;
+    NSInteger sectionTag;
+}
+
+@property(nonatomic,assign) NSInteger fileTag;
+@property(nonatomic,assign) NSInteger imageTag;
+@property(nonatomic,assign) NSInteger buttonTag;
+@property(nonatomic,assign) NSInteger pageTag;
+@property(nonatomic,assign) NSInteger sectionTag;
+@end
+
+@interface SelectButton : UIButton
+{
+    CellTag *cell;
+}
+@property(nonatomic,retain) CellTag *cell;
 
 @end
