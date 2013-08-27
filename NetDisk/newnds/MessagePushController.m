@@ -43,7 +43,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    UIApplication *app = [UIApplication sharedApplication];
+    app.applicationIconBadgeNumber = 0;
     table_array = [[NSMutableArray alloc] init];
     //添加头部试图
     [self.navigationController setNavigationBarHidden:YES];
