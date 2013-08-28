@@ -46,12 +46,9 @@
     NSMutableString *body=[[NSMutableString alloc] init];
     NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
     NSString *receivers=[receiver componentsJoinedByString:@"&receiver[]="];
-    NSString *lpwd=@"a1b2";
-    arc4random();
-    rand();
-    random();
-    rand_r(1);
-    [body appendFormat:@"f_ids[]=%@&l_pwd=%@&receiver=%@",fids,lpwd,receivers];
+    //NSString *lpwd=@"a1b2";
+    NSString *lpwd=[NSString stringWithFormat:@"%c%d%c%d",(arc4random()%(122-96))+97,arc4random()%10,(arc4random()%(122-96))+97,arc4random()%10];
+    [body appendFormat:@"f_ids[]=%@&l_pwd=%@&receiver[]=%@",fids,lpwd,receivers];
     NSLog(@"body: %@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -128,7 +125,7 @@
                     [self.delegate releaseLinkSuccess:[dic objectForKey:@"l_url"]];
                     break;
                 case kLMTypeReleaseLinkEmail:
-                    [self.delegate releaseLinkSuccess:[dic objectForKey:@"l_url"]];
+                    [self.delegate releaseEmailSuccess:[dic objectForKey:@"l_url"]];
                     break;
             }
         }

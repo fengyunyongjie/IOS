@@ -31,10 +31,10 @@
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
 
-#define CATEGORY_PICTURE @"P"
-#define CATEGORY_VIDEO @"V"
-#define CATEGORY_MUSIC @"M"
-#define CATEGORY_DOCUMENT @"F"
+#define CATEGORY_PICTURE @"PIC"
+#define CATEGORY_VIDEO @"VIDEO"
+#define CATEGORY_MUSIC @"MUSIC"
+#define CATEGORY_DOCUMENT @"DOC"
 typedef enum{
     kSelectFileTypeDefault,
     kSelectFileTypeImage,
@@ -47,6 +47,7 @@ typedef enum{
     kAlertTagDeleteMore,
     kAlertTagRename,
     kAlertTagNewFinder,
+    kAlertTagMailAddr,
 }AlertTag;
 typedef enum{
     kActionSheetTagShare,
@@ -80,6 +81,8 @@ typedef enum{
 @property (strong,nonatomic) NSMutableArray *m_fileItems;
 @property(strong,nonatomic) MBProgressHUD *hud;
 @property (strong,nonatomic) NSArray *willDeleteObjects;
+@property (assign,nonatomic) SelectFileType selectFileType;
+@property (strong,nonatomic) UIButton *btnTitle;
 @end
 
 @implementation MyndsViewController
@@ -108,11 +111,12 @@ typedef enum{
         [nbar addSubview:niv];
         [self.view addSubview: nbar];
         //标题按钮
-        UIButton *btnTitle=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnTitle.frame=CGRectMake(60, 0, 200, 44);
-        [btnTitle setBackgroundImage:[UIImage imageNamed:@"Bt_Title.png"] forState:UIControlStateNormal];
-        [btnTitle addTarget:self action:@selector(showTitleMenu:) forControlEvents:UIControlEventTouchUpInside];
-        [nbar addSubview:btnTitle];
+        self.btnTitle=[UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnTitle.frame=CGRectMake(60, 0, 200, 44);
+        [self.btnTitle setBackgroundImage:[UIImage imageNamed:@"Bt_Title.png"] forState:UIControlStateNormal];
+        [self.btnTitle addTarget:self action:@selector(showTitleMenu:) forControlEvents:UIControlEventTouchUpInside];
+        [self.btnTitle setHidden:YES];
+        [nbar addSubview:self.btnTitle];
         //标题
         self.titleLabel=[[UILabel alloc] init];
         self.titleLabel.text=self.title;
@@ -565,13 +569,13 @@ typedef enum{
         [self.selectView addTarget:self action:@selector(hideSender:) forControlEvents:UIControlEventTouchUpInside];
         self.selectView.frame=self.view.frame;
         UIImageView *selectBgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Filter.png"]];
-        selectBgView.frame=CGRectMake(55, 0+44, 210, 169);
+        selectBgView.frame=CGRectMake(118, 0+44, 94, 169);
         [self.selectView addSubview:selectBgView];
         [self.view addSubview:self.selectView];
         [self.view bringSubviewToFront:self.selectView];
         UIButton *btnSelect1=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect1.frame=CGRectMake(60, 14+44, 199, 29);
-        [btnSelect1 setTitle:@"默认" forState:UIControlStateNormal];
+        btnSelect1.frame=CGRectMake(119, 14+44, 92, 29);
+        [btnSelect1 setTitle:@"全部" forState:UIControlStateNormal];
         [btnSelect1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnSelect1 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
         [btnSelect1 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateHighlighted];
@@ -579,7 +583,7 @@ typedef enum{
         [btnSelect1 setTag:kSelectFileTypeDefault];
         [self.selectView addSubview:btnSelect1];
         UIButton *btnSelect2=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect2.frame=CGRectMake(60, 43+44, 199, 29);
+        btnSelect2.frame=CGRectMake(119, 43+44, 92, 29);
         [btnSelect2 setTitle:@"图片" forState:UIControlStateNormal];
         [btnSelect2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnSelect2 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
@@ -588,7 +592,7 @@ typedef enum{
         [btnSelect2 setTag:kSelectFileTypeImage];
         [self.selectView addSubview:btnSelect2];
         UIButton *btnSelect3=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect3.frame=CGRectMake(60, 72+44, 199, 29);
+        btnSelect3.frame=CGRectMake(119, 72+44, 92, 29);
         [btnSelect3 setTitle:@"视频" forState:UIControlStateNormal];
         [btnSelect3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnSelect3 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
@@ -597,7 +601,7 @@ typedef enum{
         [btnSelect3 setTag:kSelectFileTypeVideo];
         [self.selectView addSubview:btnSelect3];
         UIButton *btnSelect4=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect4.frame=CGRectMake(60, 101+44, 199, 29);
+        btnSelect4.frame=CGRectMake(119, 101+44, 92, 29);
         [btnSelect4 setTitle:@"音乐" forState:UIControlStateNormal];
         [btnSelect4 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnSelect4 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
@@ -606,7 +610,7 @@ typedef enum{
         [btnSelect4 setTag:kSelectFileTypeAudio];
         [self.selectView addSubview:btnSelect4];
         UIButton *btnSelect5=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnSelect5.frame=CGRectMake(60, 130+44, 199, 29);
+        btnSelect5.frame=CGRectMake(119, 130+44, 92, 29);
         [btnSelect5 setTitle:@"文档" forState:UIControlStateNormal];
         [btnSelect5 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [btnSelect5 setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateSelected];
@@ -617,6 +621,30 @@ typedef enum{
         self.selectBtns=@[btnSelect1,btnSelect2,btnSelect3,btnSelect4,btnSelect5];
         [btnSelect1 setSelected:YES];
         [self.selectView setHidden:YES];
+        
+        //移动选择界面底部工具栏
+        self.selectToolView=[[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60)];
+        [self.view addSubview:self.selectToolView];
+        [self.selectToolView setHidden:NO];
+        [self.view bringSubviewToFront:self.selectToolView];
+        UIImageView *toolbarBg=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.selectToolView.frame.size.width, self.selectToolView.frame.size.height)];
+        [toolbarBg setImage:[UIImage imageNamed:@"Bk_nav.png"]];
+        [self.selectToolView addSubview:toolbarBg];
+        
+        UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
+        [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOk.png"] forState:UIControlStateNormal];
+        [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOkCh.png"] forState:UIControlStateHighlighted];
+        [upload_button addTarget:self action:@selector(moveFileToHere:) forControlEvents:UIControlEventTouchUpInside];
+        [self.selectToolView addSubview:upload_button];
+        [upload_button release];
+        
+        UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
+        [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
+        [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
+        [upload_back_button addTarget:self action:@selector(moveCancel:) forControlEvents:UIControlEventTouchUpInside];
+        [self.selectToolView addSubview:upload_back_button];
+        [upload_back_button release];
+
     }
     return self;
 }
@@ -643,15 +671,11 @@ typedef enum{
     self.optionCell=[[[UITableViewCell alloc] init] autorelease];
     [self.optionCell addSubview:[[[UIToolbar alloc] init] autorelease]];
     self.selectedIndexPath=nil;
-//    self.toolBar=[[UIToolbar alloc] init];
-//    CGSize wsize=[[UIScreen mainScreen] bounds].size;
-//    [self.toolBar setFrame:CGRectMake(0, wsize.height-50, wsize.width, 50)];
-//    [self.view.superview addSubview:self.toolBar];
-//    [self.view.superview layoutSubviews];
-
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setToolbarHidden:YES];
     NSString *fid=[NSString stringWithFormat:@"%@",self.f_id];
     if ((self.myndsType==kMyndsTypeShare&&[fid isEqualToString:@"1"])||(self.myndsType==kMyndsTypeMyShare&&[fid isEqualToString:@"1"])) {
         [self.btnNewFinder setEnabled:NO];
@@ -675,7 +699,12 @@ typedef enum{
     //CGRectMake(0, 44, 320, [[UIScreen mainScreen] bounds].size.height-20-44-60);
     [self.ctrlView setHidden:YES];
     self.selectView.frame=self.view.frame;
-
+    if (self.myndsType==kMyndsTypeDefault) {
+        [self.btnTitle setHidden:NO];
+    }else
+    {
+        [self.btnTitle setHidden:YES];
+    }
     switch (self.myndsType) {
         case kMyndsTypeDefaultSearch:
         case kMyndsTypeMyShareSearch:
@@ -694,35 +723,42 @@ typedef enum{
         case kMyndsTypeShareSelect:
         {
             self.tableView.frame=self.view.frame;
+            r=self.view.frame;
+            r.origin.y=44;
+            r.size.height=self.view.frame.size.height-44-60;
+            self.tableView.frame=r;
             [self.searchView setHidden:YES];
+            self.selectToolView.hidden=NO;
+            self.more_button.hidden=YES;
+            self.selectToolView.frame=CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60);
             //Initialize the toolbar
-            UIToolbar *toolbar = [[UIToolbar alloc] init];
-            toolbar.barStyle = UIBarStyleDefault;
-            
-            //Set the toolbar to fit the width of the app.
-            [toolbar sizeToFit];
-            
-            //Caclulate the height of the toolbar
-            CGFloat toolbarHeight = [toolbar frame].size.height;
-            
-            //Get the bounds of the parent view
-            CGRect rootViewBounds = self.parentViewController.view.bounds;
-            
-            //Get the height of the parent view.
-            CGFloat rootViewHeight = CGRectGetHeight(rootViewBounds);
-            
-            //Get the width of the parent view,
-            CGFloat rootViewWidth = CGRectGetWidth(rootViewBounds);
-            
-            //Create a rectangle for the toolbar
-            CGRect rectArea = CGRectMake(0, rootViewHeight - toolbarHeight, rootViewWidth, toolbarHeight);
-            
-            //Reposition and resize the receiver
-            [toolbar setFrame:rectArea];
-            
-            //Add the toolbar as a subview to the navigation controller.
-            [self.navigationController.view addSubview:toolbar];
-            self.toolBar=toolbar;
+//            UIToolbar *toolbar = [[UIToolbar alloc] init];
+//            toolbar.barStyle = UIBarStyleDefault;
+//            
+//            //Set the toolbar to fit the width of the app.
+//            [toolbar sizeToFit];
+//            
+//            //Caclulate the height of the toolbar
+//            CGFloat toolbarHeight = [toolbar frame].size.height;
+//            
+//            //Get the bounds of the parent view
+//            CGRect rootViewBounds = self.parentViewController.view.bounds;
+//            
+//            //Get the height of the parent view.
+//            CGFloat rootViewHeight = CGRectGetHeight(rootViewBounds);
+//            
+//            //Get the width of the parent view,
+//            CGFloat rootViewWidth = CGRectGetWidth(rootViewBounds);
+//            
+//            //Create a rectangle for the toolbar
+//            CGRect rectArea = CGRectMake(0, rootViewHeight - toolbarHeight, rootViewWidth, toolbarHeight);
+//            
+//            //Reposition and resize the receiver
+//            [toolbar setFrame:rectArea];
+//            
+//            //Add the toolbar as a subview to the navigation controller.
+//            [self.navigationController.view addSubview:toolbar];
+//            self.toolBar=toolbar;
         }
             break;
         default:
@@ -764,14 +800,24 @@ typedef enum{
 //        }
     }else if (self.myndsType==kMyndsTypeSelect||self.myndsType==kMyndsTypeMyShareSelect||self.myndsType==kMyndsTypeShareSelect)
     {
-        UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitle:@"    确 定    " style:UIBarButtonItemStyleDone target:self action:@selector(moveFileToHere:)];
-        UIBarButtonItem *cancel_btn=[[UIBarButtonItem alloc] initWithTitle:@"    取 消    " style:UIBarButtonItemStyleBordered target:self action:@selector(moveCancel:)];
-        UIBarButtonItem *fix=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        [self.navigationItem setRightBarButtonItems:nil];
-        [self.toolBar setItems:@[fix,cancel_btn,fix,ok_btn,fix]];
-        [ok_btn release];
-        [cancel_btn release];
-        [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.tableView.frame.size.width, self.tableView.frame.size.height-44)];
+//        UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitle:@"    确 定    " style:UIBarButtonItemStyleDone target:self action:@selector(moveFileToHere:)];
+//        UIBarButtonItem *cancel_btn=[[UIBarButtonItem alloc] initWithTitle:@"    取 消    " style:UIBarButtonItemStyleBordered target:self action:@selector(moveCancel:)];
+//        UIBarButtonItem *fix=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//        [self.navigationItem setRightBarButtonItems:nil];
+//        [self.toolBar setItems:@[fix,cancel_btn,fix,ok_btn,fix]];
+//        [ok_btn release];
+//        [cancel_btn release];
+//        [self.tableView setFrame:CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.x, self.tableView.frame.size.width, self.tableView.frame.size.height-44)];
+        
+        CGRect r=self.view.frame;
+        r.origin.y=44;
+        r.size.height=self.view.frame.size.height-44-60;
+        self.tableView.frame=r;
+        [self.view bringSubviewToFront:self.selectToolView];
+        [self.searchView setHidden:YES];
+        self.selectToolView.hidden=NO;
+        self.more_button.hidden=YES;
+        self.selectToolView.frame=CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60);
     }
 }
 -(void)viewWillDisappear:(BOOL)animated
@@ -813,19 +859,10 @@ typedef enum{
     for (UIButton *btn in self.selectBtns) {
         [btn setSelected:NO];
     }
-    UIButton *btn=nil;
-//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeDefault];
-//    [btn setSelected:NO];
-//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeImage];
-//    [btn setSelected:NO];
-//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeVideo];
-//    [btn setSelected:NO];
-//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeAudio];
-//    [btn setSelected:NO];
-//    btn=(UIButton *)[self.selectView viewWithTag:kSelectFileTypeDocument];
-//    [btn setSelected:NO];
-    
+    UIButton *btn=nil;    
     btn=(UIButton *)sender;
+    self.selectFileType=btn.tag;
+    [self updateFileList];
     [btn setSelected:YES];
     [self.selectView setHidden:YES];
 }
@@ -1080,36 +1117,38 @@ typedef enum{
     if (self.myndsType==kMyndsTypeDefaultSearch||self.myndsType==kMyndsTypeMyShareSearch||self.myndsType==kMyndsTypeShareSearch) {
         return;
     }
-    NSString *dataFilePath=[YNFunctions getDataCachePath];
-    dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:dataFilePath])
-    {
-        NSError *jsonParsingError=nil;
-        NSData *data=[NSData dataWithContentsOfFile:dataFilePath];
-        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
-        self.dataDic=dic;
-        if (self.dataDic) {
-            self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
-            NSMutableArray *a=[NSMutableArray array];
-            NSMutableArray *b=[NSMutableArray array];
-            for (int i=0; i<self.listArray.count; i++) {
-                FileItem *fileItem=[[[FileItem alloc]init]autorelease];
-                [a addObject:fileItem];
-                [fileItem setChecked:NO];
-                NSDictionary *dic=[self.listArray objectAtIndex:i];
-                NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
-                if ([f_mime isEqualToString:@"directory"]) {
-                    [b addObject:dic];
+    NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
+    if (![strFid isEqualToString:@"1"]) {
+        //加载本地缓存文件 根目录暂时不加载
+        NSString *dataFilePath=[YNFunctions getDataCachePath];
+        dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:dataFilePath])
+        {
+            NSError *jsonParsingError=nil;
+            NSData *data=[NSData dataWithContentsOfFile:dataFilePath];
+            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
+            self.dataDic=dic;
+            if (self.dataDic) {
+                self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
+                NSMutableArray *a=[NSMutableArray array];
+                NSMutableArray *b=[NSMutableArray array];
+                for (int i=0; i<self.listArray.count; i++) {
+                    FileItem *fileItem=[[[FileItem alloc]init]autorelease];
+                    [a addObject:fileItem];
+                    [fileItem setChecked:NO];
+                    NSDictionary *dic=[self.listArray objectAtIndex:i];
+                    NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
+                    if ([f_mime isEqualToString:@"directory"]) {
+                        [b addObject:dic];
+                    }
                 }
+                self.m_fileItems=a;
+                self.finderArray=b;
+                [self.tableView reloadData];
             }
-            self.m_fileItems=a;
-            self.finderArray=b;
-            [self.tableView reloadData];
         }
     }
-    //    if (self.fm) {
-    //        return;
-    //    }
+    
     if (self.myndsType==kMyndsTypeMyShare||self.myndsType==kMyndsTypeMyShareSelect) {
         [self.sm cancelAllTask];
         self.sm=nil;
@@ -1125,6 +1164,89 @@ typedef enum{
     }else if(self.myndsType==kMyndsTypeDefaultSearch){
     }else if(self.myndsType==kMyndsTypeMyShareSearch){
     }else if(self.myndsType==kMyndsTypeShareSearch){
+    }else if(self.myndsType==kMyndsTypeDefault){
+        switch (self.selectFileType) {
+            case kSelectFileTypeDefault:
+            {
+                [self.fm cancelAllTask];
+                self.fm=nil;
+                self.fm=[[[SCBFileManager alloc] init] autorelease];
+                [self.fm setDelegate:self];
+                [self.fm openFinderWithID:self.f_id sID:[[SCBSession sharedSession] spaceID]];
+            }
+                break;
+            case kSelectFileTypeAudio:
+            {
+                [self.fm cancelAllTask];
+                self.fm=nil;
+                self.fm=[[[SCBFileManager alloc] init] autorelease];
+                [self.fm setDelegate:self];
+                NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
+                if ([strFid isEqualToString:@"1"]) {
+                    [self.fm openFinderWithCategory:CATEGORY_MUSIC];
+                }else
+                {
+                    [self.fm openFileWithID:self.f_id category:CATEGORY_MUSIC];
+                }
+            }
+                break;
+            case kSelectFileTypeDocument:
+            {
+                [self.fm cancelAllTask];
+                self.fm=nil;
+                self.fm=[[[SCBFileManager alloc] init] autorelease];
+                [self.fm setDelegate:self];
+                NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
+                if ([strFid isEqualToString:@"1"]) {
+                    [self.fm openFinderWithCategory:CATEGORY_DOCUMENT];
+                }else
+                {
+                    [self.fm openFileWithID:self.f_id category:CATEGORY_DOCUMENT];
+                }
+            }
+                break;
+            case kSelectFileTypeImage:
+            {
+                [self.fm cancelAllTask];
+                self.fm=nil;
+                self.fm=[[[SCBFileManager alloc] init] autorelease];
+                [self.fm setDelegate:self];
+                NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
+                if ([strFid isEqualToString:@"1"]) {
+                    [self.fm openFinderWithCategory:CATEGORY_PICTURE];
+                }else
+                {
+                    [self.fm openFileWithID:self.f_id category:CATEGORY_PICTURE];
+                }
+
+            }
+                break;
+            case kSelectFileTypeVideo:
+            {
+                [self.fm cancelAllTask];
+                self.fm=nil;
+                self.fm=[[[SCBFileManager alloc] init] autorelease];
+                [self.fm setDelegate:self];
+                NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
+                if ([strFid isEqualToString:@"1"]) {
+                    [self.fm openFinderWithCategory:CATEGORY_VIDEO];
+                }else
+                {
+                    [self.fm openFileWithID:self.f_id category:CATEGORY_VIDEO];
+                }
+            }
+                break;
+                
+            default:
+            {
+                [self.fm cancelAllTask];
+                self.fm=nil;
+                self.fm=[[[SCBFileManager alloc] init] autorelease];
+                [self.fm setDelegate:self];
+                [self.fm openFinderWithID:self.f_id sID:[[SCBSession sharedSession] spaceID]];
+            }
+                break;
+        }
     }else
     {
         [self.fm cancelAllTask];
@@ -1502,80 +1624,127 @@ typedef enum{
 }
 -(void)pasteBoard:(NSString *)content
 {
-    [[UIPasteboard generalPasteboard] setString:content];
+    [self getPubSharedLink];
+    self.sharedType=kSharedTypeCopy;
+//    [[UIPasteboard generalPasteboard] setString:content];
+//    
+//    if (self.hud) {
+//        [self.hud removeFromSuperview];
+//    }
+//    self.hud=nil;
+//    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+//    [self.view addSubview:self.hud];
+//    [self.hud show:NO];
+//    self.hud.labelText=@"已经复制成功";
+//    self.hud.mode=MBProgressHUDModeText;
+//    self.hud.margin=10.f;
+//    [self.hud show:YES];
+//    [self.hud hide:YES afterDelay:1.0f];
+}
+-(BOOL)checkIsEmail:(NSString *)text
+{
+    NSString *Regex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
     
-    if (self.hud) {
-        [self.hud removeFromSuperview];
-    }
-    self.hud=nil;
-    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
-    [self.hud show:NO];
-    self.hud.labelText=@"已经复制成功";
-    self.hud.mode=MBProgressHUDModeText;
-    self.hud.margin=10.f;
-    [self.hud show:YES];
-    [self.hud hide:YES afterDelay:1.0f];
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
+    
+    return [emailTest evaluateWithObject:text];
+}
+-(void)praMailShare:(NSString *)content
+{
+    //NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    //NSString *name=[dic objectForKey:@"f_name"];
+    NSString *name=@"";
+    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"邮件分享" message:@"请您输入分享人的邮件地址：" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [[alert textFieldAtIndex:0] setText:name];
+    [alert setTag:kAlertTagMailAddr];
+    [alert show];
 }
 -(void)mailShare:(NSString *)content
 {
-        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-    
-    if ([MFMailComposeViewController canSendMail]) {
-        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
-        picker.mailComposeDelegate = self;
-        
-        [picker setSubject:text];
-        
-        
-        // Set up recipients
-        //NSArray *toRecipients = [NSArray arrayWithObject:@"first@example.com"];
-        //NSArray *ccRecipients = [NSArray arrayWithObjects:@"second@example.com", @"third@example.com", nil];
-        //NSArray *bccRecipients = [NSArray arrayWithObject:@"fourth@example.com"];
-        
-        //[picker setToRecipients:toRecipients];
-        //[picker setCcRecipients:ccRecipients];
-        //[picker setBccRecipients:bccRecipients];
-        
-        // Attach an image to the email
-        //NSString *path = [[NSBundle mainBundle] pathForResource:@"rainy" ofType:@"jpg"];
-        //NSData *myData = [NSData dataWithContentsOfFile:path];
-        //[picker addAttachmentData:myData mimeType:@"image/jpeg" fileName:@"rainy"];
-        
-        // Fill out the email body text
-        NSString *emailBody = text;
-        [picker setMessageBody:emailBody isHTML:NO];
-        
-        [self presentModalViewController:picker animated:YES];
-        [picker release];
+    [self getPubSharedLink];
+    self.sharedType=kSharedTypeMail;
+//    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+//    
+//    if ([MFMailComposeViewController canSendMail]) {
+//        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+//        picker.mailComposeDelegate = self;
+//        
+//        [picker setSubject:text];
+//        NSString *emailBody = text;
+//        [picker setMessageBody:emailBody isHTML:NO];
+//        
+//        [self presentModalViewController:picker animated:YES];
+//        [picker release];
+//    }
+}
+-(void)getPubSharedLink
+{
+    if (self.tableView.editing) {
+        NSMutableArray *f_ids=[NSMutableArray array];
+        BOOL hasDir=NO;
+        for (int i=0;i<self.m_fileItems.count;i++) {
+            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+            if (fileItem.checked) {
+                NSDictionary *dic=[self.listArray objectAtIndex:i];
+                NSString *f_id=[dic objectForKey:@"f_id"];
+                NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
+                if (![f_mime isEqualToString:@"directory"]) {
+                    [f_ids addObject:f_id];
+                }else
+                {
+                    hasDir=YES;
+                }
+            }
+        }
+        SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
+        [lm_temp setDelegate:self];
+        [lm_temp linkWithIDs:f_ids];
+    }else
+    {
+        if (self.selectedIndexPath) {
+            NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+            NSString *f_id=[dic objectForKey:@"f_id"];
+            
+            SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
+            [lm_temp setDelegate:self];
+            [lm_temp linkWithIDs:@[f_id]];
+            [self hideOptionCell];
+        }
     }
 }
 -(void)messageShare:(NSString *)content
 {
-        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-    
-    if ([MFMessageComposeViewController canSendText]) {
-        MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
-        picker.messageComposeDelegate = self;
-        
-        [picker setBody:text];
-        [self presentModalViewController:picker animated:YES];
-        [picker release];
-    }
+    [self getPubSharedLink];
+    self.sharedType=kSharedTypeMessage;
+//        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+//    
+//    if ([MFMessageComposeViewController canSendText]) {
+//        MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+//        picker.messageComposeDelegate = self;
+//        
+//        [picker setBody:text];
+//        [self presentModalViewController:picker animated:YES];
+//        [picker release];
+//    }
 }
 -(void)weixin:(NSString *)content
 {
-        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-    
-    AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-    [appDelegate sendImageContentIsFiends:NO text:text];
+    [self getPubSharedLink];
+    self.sharedType=kSharedTypeWeixin;
+//        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+//    
+//    AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+//    [appDelegate sendImageContentIsFiends:NO text:text];
 }
 -(void)frends:(NSString *)content
 {
-        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-    
-    AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-    [appDelegate sendImageContentIsFiends:YES text:text];
+    [self getPubSharedLink];
+    self.sharedType=kSharedTypeFrends;
+//        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+//    
+//    AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+//    [appDelegate sendImageContentIsFiends:YES text:text];
 }
 -(void)EscMenu
 {
@@ -2167,14 +2336,14 @@ typedef enum{
                     }else{
                     }
                 }else{
-//                    OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
-//                    [otherBrowser setHidesBottomBarWhenPushed:YES];
-//                    otherBrowser.dataDic=dic;
-//                    NSString *f_name=[dic objectForKey:@"f_name"];
-//                    otherBrowser.title=f_name;
-//                    [self.navigationController pushViewController:otherBrowser animated:YES];
-//                    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
-//                    [myTabbar setHidesTabBarWithAnimate:YES];
+                    OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+                    //[otherBrowser setHidesBottomBarWhenPushed:YES];
+                    otherBrowser.dataDic=dic;
+                    NSString *f_name=[dic objectForKey:@"f_name"];
+                    otherBrowser.title=f_name;
+                    [self.navigationController pushViewController:otherBrowser animated:YES];
+                    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+                    [myTabbar setHidesTabBarWithAnimate:YES];
                 }
 
             }
@@ -2184,6 +2353,74 @@ typedef enum{
 #pragma mark - SCBLinkManagerDelegate
 -(void)releaseLinkSuccess:(NSString *)l_url
 {
+    switch (self.sharedType) {
+        case kSharedTypeMessage:
+        {
+            NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+            if ([MFMessageComposeViewController canSendText]) {
+                MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+                picker.messageComposeDelegate = self;
+
+                [picker setBody:text];
+                [self presentModalViewController:picker animated:YES];
+                [picker release];
+            }
+        }
+            break;
+        case kSharedTypeFrends:
+        {
+            NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+            AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+            [appDelegate sendImageContentIsFiends:YES text:text];
+        }
+            break;
+        case kSharedTypeCopy:
+        {
+            [[UIPasteboard generalPasteboard] setString:l_url];
+
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"已经复制成功";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+        }
+            break;
+        case kSharedTypeWeixin:
+        {
+            NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+            AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
+            [appDelegate sendImageContentIsFiends:NO text:text];
+        }
+            break;
+        case kSharedTypeMail:
+        {
+            NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+
+            if ([MFMailComposeViewController canSendMail]) {
+                MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+                picker.mailComposeDelegate = self;
+
+                [picker setSubject:text];
+                NSString *emailBody = text;
+                [picker setMessageBody:emailBody isHTML:NO];
+
+                [self presentModalViewController:picker animated:YES];
+                [picker release];
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+
 //    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
 //    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=6.0) {
 //        NSArray *activityItems=[[NSArray alloc] initWithObjects:text, nil];
@@ -2201,13 +2438,29 @@ typedef enum{
 //        activetyVC.completionHandler=myBlock;
 //        [self presentViewController:activetyVC animated:YES completion:nil];
 //    }else
-    {
-        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
-        [actionSheet setTitle:l_url];
-        [actionSheet setTag:kActionSheetTagShare];
-        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+//    {
+//        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
+//        [actionSheet setTitle:l_url];
+//        [actionSheet setTag:kActionSheetTagShare];
+//        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+//        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+//    }
+}
+-(void)releaseEmailSuccess:(NSString *)l_url
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
     }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"邮件分享成功";
+    //self.hud.labelText=error_info;
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 -(void)releaseLinkUnsuccess:(NSString *)error_info
 {
@@ -2299,6 +2552,25 @@ typedef enum{
         if ([f_mime isEqualToString:@"directory"]) {
             [b addObject:dic];
         }
+    }
+    NSString *testFid=[NSString stringWithFormat:@"%@",self.f_id];
+    if ([testFid isEqualToString:@"1"]&&self.listArray.count==0) {
+        if (self.spaceImgView==nil) {
+            self.spaceImgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pop.png"]];
+            self.spaceImgView.frame=self.tableView.frame;
+            [self.view addSubview:self.spaceImgView];
+            [self.view sendSubviewToBack:self.spaceImgView];
+            self.spaceImgView.hidden=NO;
+            self.tableView.hidden=YES;
+        }else
+        {
+            self.spaceImgView.hidden=NO;
+            self.tableView.hidden=YES;
+        }
+    }else
+    {
+        self.tableView.hidden=NO;
+        self.spaceImgView.hidden=YES;
     }
     self.m_fileItems=a;
     self.finderArray=b;
@@ -2582,6 +2854,70 @@ typedef enum{
                             break;
                     }
                 }
+                NSLog(@"点击确定");
+            }else
+            {
+                NSLog(@"点击其它");
+            }
+            [self hideOptionCell];
+            break;
+        }
+        case kAlertTagMailAddr:
+        {
+            if (buttonIndex==1) {
+                NSString *fildtext=[[alertView textFieldAtIndex:0] text];
+                if (![self checkIsEmail:fildtext])
+                {
+                    if (self.hud) {
+                        [self.hud removeFromSuperview];
+                    }
+                    self.hud=nil;
+                    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+                    [self.view addSubview:self.hud];
+                    [self.hud show:NO];
+                    self.hud.labelText=@"输入的邮箱地址非法";
+                    //self.hud.labelText=error_info;
+                    self.hud.mode=MBProgressHUDModeText;
+                    self.hud.margin=10.f;
+                    [self.hud show:YES];
+                    [self.hud hide:YES afterDelay:1.0f];
+                    return;
+                }
+                if (self.tableView.editing) {
+                    NSMutableArray *f_ids=[NSMutableArray array];
+                    BOOL hasDir=NO;
+                    for (int i=0;i<self.m_fileItems.count;i++) {
+                        FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+                        if (fileItem.checked) {
+                            NSDictionary *dic=[self.listArray objectAtIndex:i];
+                            NSString *f_id=[dic objectForKey:@"f_id"];
+                            NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
+                            if (![f_mime isEqualToString:@"directory"]) {
+                                [f_ids addObject:f_id];
+                            }else
+                            {
+                                hasDir=YES;
+                            }
+                        }
+                    }
+                    SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
+                    [lm_temp setDelegate:self];
+                    [lm_temp releaseLinkEmail:f_ids l_pwd:@"a1b2" receiver:@[fildtext]];
+                    
+                }else
+                {
+                    if (self.selectedIndexPath) {
+                        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+                        NSString *f_id=[dic objectForKey:@"f_id"];
+                        
+                        SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
+                        [lm_temp setDelegate:self];
+//                        [lm_temp linkWithIDs:@[f_id]];
+                        [lm_temp releaseLinkEmail:@[f_id] l_pwd:@"a1b2" receiver:@[fildtext]];
+                        [self hideOptionCell];
+                    }
+                }
+
                 NSLog(@"点击确定");
             }else
             {
@@ -2887,7 +3223,8 @@ typedef enum{
             }else if (buttonIndex == 1) {
                 NSLog(@"邮件分享");
                 //[self toShared:nil];
-                [self mailShare:actionSheet.title];
+                //[self mailShare:actionSheet.title];
+                [self praMailShare:actionSheet.title];
             }else if(buttonIndex == 2) {
                 NSLog(@"复制");
                 [self pasteBoard:actionSheet.title];

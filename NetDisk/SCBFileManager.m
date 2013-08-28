@@ -20,7 +20,7 @@
     self.delegate=nil;
 }
 
--(void)openFinderWithID:(NSString *)f_id category:(NSString *)category
+-(void)openFinderWithCategory:(NSString *)category;
 {
     self.fm_type=kFMTypeOpenCategoryDir;
     self.activeData=[NSMutableData data];
@@ -283,6 +283,12 @@
         NSLog(@"操作成功 数据大小：%d",[self.activeData length]);
         if (self.delegate) {
             switch (self.fm_type) {
+                case kFMTypeOpenCategoryDir:
+                    [self.delegate openFinderSucess:dic];
+                    break;
+                case kFMTypeOpenCategoryFile:
+                    [self.delegate openFinderSucess:dic];
+                    break;
                 case kFMTypeOpenFinder:
                     [self.delegate openFinderSucess:dic];
                     break;

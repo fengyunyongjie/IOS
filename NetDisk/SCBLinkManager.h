@@ -23,6 +23,7 @@ typedef enum {
 -(void)releaseLinkEmail:(NSArray *)f_ids l_pwd:(NSString *)l_pwd receiver:(NSArray *)receiver;
 @end
 @protocol SCBLinkManagerDelegate
+-(void)releaseEmailSuccess:(NSString *)l_url;
 -(void)releaseLinkSuccess:(NSString *)l_url;
 -(void)releaseLinkUnsuccess:(NSString *)error_info;
 @end

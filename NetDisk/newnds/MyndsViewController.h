@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "QBImagePickerController.h"
+#import "QLBrowserViewController.h"
 
 typedef enum {
     kMyndsTypeDefault,
@@ -20,8 +21,14 @@ typedef enum {
     kMyndsTypeMyShareSearch,
     kMyndsTypeShareSearch,
 } MyndsType;
-
-@interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate,UIActionSheetDelegate>
+typedef enum {
+    kSharedTypeMessage,
+    kSharedTypeMail,
+    kSharedTypeCopy,
+    kSharedTypeWeixin,
+    kSharedTypeFrends,
+}SharedType;
+@interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate,UIActionSheetDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate>
 
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
@@ -32,6 +39,7 @@ typedef enum {
 @property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
 @property (strong,nonatomic) UIToolbar *toolBar;
 @property (strong,nonatomic) UITableView *tableView;
+@property (strong,nonatomic) UIImageView *spaceImgView;
 @property (strong,nonatomic) UIControl *ctrlView;
 @property (strong,nonatomic) UILabel *lblEdit;
 @property (strong,nonatomic) UILabel *titleLabel;
@@ -65,6 +73,8 @@ typedef enum {
 @property (strong,nonatomic) UILabel *lblAllSelect;
 @property (strong,nonatomic) UIButton *btnNoSelect;
 @property (strong,nonatomic) UILabel *lblNoSelect;
+@property (assign,nonatomic) SharedType sharedType;
+@property (strong,nonatomic) UIView *selectToolView;
 -(void)loadData;
 - (void)viewWillAppear:(BOOL)animated;
 @end
