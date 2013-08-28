@@ -42,8 +42,13 @@
     
     self.dataSource = self;
     self.delegate = self;
-    [NSThread detachNewThreadSelector:@selector(requestPhotoTimeLine) toTarget:self withObject:nil];
     return self;
+}
+
+//加载数据
+-(void)reloadPhotoData
+{
+    [NSThread detachNewThreadSelector:@selector(requestPhotoTimeLine) toTarget:self withObject:nil];
 }
 
 //请求时间轴

@@ -233,6 +233,10 @@
             [self.navigationController popToViewController:delailview animated:YES];
         }
     }
+    else
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 -(void)newFold:(NSDictionary *)dictionary
@@ -255,6 +259,10 @@
         {
             [self.navigationController popToViewController:delailview animated:YES];
         }
+    }
+    else
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

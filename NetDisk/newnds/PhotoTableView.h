@@ -49,6 +49,9 @@
 
 @property(nonatomic,retain) id<PhotoTableViewDelegate> photo_delegate;
 
+//加载数据
+-(void)reloadPhotoData;
+
 @end
 
 

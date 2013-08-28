@@ -215,6 +215,30 @@
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     [body release];
 }
+
+
+//打开空间成员
+-(void)requestOpenFamily:(NSString *)space_id
+{
+    self.fm_type = kFMTypeFamily;
+    self.activeData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_FAMILY_MEMBERS]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"space_id=%@",space_id];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    NSLog(@"--------------------------------------------------请求的参数：%@",body);
+    [body release];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
 #pragma mark - NSURLConnectionDelegate Methods
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response
@@ -310,6 +334,9 @@
                     break;
                 case kFMTypeSearch:
                     [self.delegate searchSucess:dic];
+                    break;
+                case kFMTypeFamily:
+                    [self.delegate getOpenFamily:dic];
                     break;
             }
         }

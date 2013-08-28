@@ -13,9 +13,12 @@
 #import "PhotoLookViewController.h"
 #import "FavoritesData.h"
 #import "FileTableViewCell.h"
+#import "AppDelegate.h"
 
 #define kAlertTagRename 1001
 #define kAlertTagDeleteOne 1002
+#define kActionSheetTagShare 70
+#define kActionSheetTagMore 71
 #define FileTableViewCellTag 30000
 #define FileTableViewCellCehckTag 30000
 #define CheckButtonColor [UIColor colorWithRed:223.0/255.0 green:230.0/255.0 blue:250.0/255.0 alpha:1.0]
@@ -35,6 +38,8 @@
 @synthesize linkManager;
 @synthesize p_id;
 @synthesize selected_dictionary;
+@synthesize hud;
+@synthesize isEdition;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -52,7 +57,7 @@
     tableDictionary = [[NSMutableDictionary alloc] init];
     self.dataSource = self;
     self.delegate = self;
-    
+    selected_dictionary = [[NSMutableDictionary alloc] init];
     return self;
 }
 
@@ -118,6 +123,7 @@
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
+        [cell.select_button addTarget:self action:@selector(checkSelected:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     NSDictionary *dictioinary = [tableArray objectAtIndex:[indexPath row]];
@@ -125,6 +131,29 @@
     NSString *f_id = [dictioinary objectForKey:@"f_id"];
     NSString *name= [dictioinary objectForKey:@"f_name"];
     NSString *f_modify=[dictioinary objectForKey:@"f_modify"];
+    
+    int selectId = [[selected_dictionary objectForKey:[NSString stringWithFormat:@"%i",indexPath.row]] intValue];
+    NSLog(@"selectId:%i",selectId);
+    if(selectId > 0)
+    {
+        [cell.select_button setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+        [cell.image_view setHidden:NO];
+    }
+    else
+    {
+        [cell.select_button setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
+        [cell.image_view setHidden:YES];
+    }
+    
+    if(isEdition)
+    {
+        [cell.select_button setHidden:NO];
+    }
+    else
+    {
+        [cell.select_button setHidden:YES];
+    }
+    
     cell.textLabel.text=name;
     cell.detailTextLabel.text=f_modify;
     
@@ -211,6 +240,7 @@
         [tagView setHidden:YES];
     }
     cell.tag = FileTableViewCellTag+indexPath.row;
+    cell.select_button.tag = FileTableViewCellCehckTag+indexPath.row;
     return cell;
 }
 
@@ -480,6 +510,7 @@
 //    NSString *f_id=[dic objectForKey:@"f_id"];
 //    NSString *fileName=[dic objectForKey:@"f_name"];
     [file_delegate showController:p_id titleString:@"我的文件"];
+    [self EscMenu];
 }
 
 #pragma mark 显示移动文件
@@ -517,10 +548,24 @@
 #pragma mark 删除文件
 -(void)toDelete:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alertView show];
-    [alertView setTag:kAlertTagDeleteOne];
-    [alertView release];
+    UIActionSheet *actioinSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil, nil];
+    [actioinSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [actioinSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actioinSheet setTag:kAlertTagDeleteOne];
+    [actioinSheet release];
+    [self EscMenu];
+}
+
+#pragma mark 新建文件夹
+-(void)toNewFinder:(NSString *)textName
+{
+    [fileManager newFinderWithName:textName pID:p_id sID:[[SCBSession sharedSession] homeID]];
+}
+
+#pragma mark 请求我的家庭空间
+-(void)requestSpace:(NSString *)spaceid
+{
+    [fileManager requestOpenFamily:spaceid];
 }
 
 #pragma mark 下载文件
@@ -537,29 +582,159 @@
             NSError *error=[[NSError alloc] init];
             if ([[NSFileManager defaultManager] removeItemAtPath:filePath error:&error]) {
                 NSLog(@"删除本地收藏文件成功：%@",filePath);
-            }else
+            }
+            else
             {
                 NSLog(@"删除本地收藏文件失败：%@",filePath);
             }
         }
-    }else
+    }
+    else
     {
         [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
     }
+    
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:selectedIndexPath.row inSection:selectedIndexPath.section];
+    [self reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    [self EscMenu];
 }
 
 #pragma mark 分享文件
 -(void)toShared:(id)sender
 {
-    NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
-    NSString *f_id=[dic objectForKey:@"f_id"];
-    [linkManager linkWithIDs:@[f_id]];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
+    NSString *l_url=@"分享";
+    [actionSheet setTitle:l_url];
+    [actionSheet setTag:kActionSheetTagShare];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [actionSheet release];
+    
+    [self EscMenu];
+}
+
+#pragma mark UIActionSheetDelegate 
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(actionSheet.tag == kActionSheetTagShare)
+    {
+        if (buttonIndex == 0) {
+            NSLog(@"短信分享");
+            //[self toDelete:nil];
+            [self messageShare:actionSheet.title];
+        }else if (buttonIndex == 1) {
+            NSLog(@"邮件分享");
+            //[self toShared:nil];
+            [self mailShare:actionSheet.title];
+        }else if(buttonIndex == 2) {
+            NSLog(@"复制");
+            [self pasteBoard:actionSheet.title];
+        }else if(buttonIndex == 3) {
+            NSLog(@"微信");
+            [self weixin:actionSheet.title];
+        }else if(buttonIndex == 4) {
+            NSLog(@"朋友圈");
+            [self frends:actionSheet.title];
+        }else if(buttonIndex == 5) {
+            NSLog(@"新浪");
+        }else if(buttonIndex == 6) {
+            NSLog(@"取消");
+        }
+    }
+    else if(actionSheet.tag == kAlertTagDeleteOne)
+    {
+        if(buttonIndex == 0)
+        {
+            NSMutableArray *array = [[NSMutableArray alloc] init];
+            if([selected_dictionary.allKeys count] == 0)
+            {
+                NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+                NSString *f_id=[dic objectForKey:@"f_id"];
+                [array addObject:f_id];
+            }
+            else
+            {
+                for(int i=0;i<[selected_dictionary.allKeys count];i++)
+                {
+                    NSString *f_id=[selected_dictionary objectForKey:[selected_dictionary.allKeys objectAtIndex:i]];
+                    [array addObject:f_id];
+                }
+            }
+            if([array count]>0)
+            {
+                [fileManager removeFileWithIDs:array];
+                [selected_dictionary removeAllObjects];
+            }
+            [array release];
+        }
+    }
+    else if(actionSheet.tag == kActionSheetTagMore)
+    {
+        if(buttonIndex == 0)
+        {
+            [self toMove:nil];
+        }
+        else if(buttonIndex == 1)
+        {
+            [self toRename:nil];
+        }
+    }
+}
+
+-(void)mailShare:(NSString *)content
+{
+    [file_delegate mailShare:content];
+}
+
+-(void)pasteBoard:(NSString *)content
+{
+    [[UIPasteboard generalPasteboard] setString:content];
+    
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"已经复制成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+
+-(void)messageShare:(NSString *)content
+{
+    [file_delegate messageShare:content];
+}
+
+-(void)weixin:(NSString *)content
+{
+    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
+    AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:NO text:text];
+}
+
+-(void)frends:(NSString *)content
+{
+    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
+    AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:YES text:text];
 }
 
 #pragma mark 更多文件
 -(void)toMore:(id)sender
 {
-    
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名", nil];
+    [actionSheet setTag:kActionSheetTagMore];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [actionSheet release];
+    [self EscMenu];
 }
 
 #pragma mark clickMenu
@@ -592,10 +767,6 @@
             if (![fildtext isEqualToString:name]) {
                 [fileManager renameWithID:f_id newName:fildtext];
             }
-        }
-        else if(alertView.tag == kAlertTagDeleteOne)
-        {
-            [fileManager removeFileWithIDs:@[f_id]];
         }
     }
 }
@@ -638,7 +809,7 @@
 {
     NSLog(@"removeSucess");
     [self EscMenu];
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] spaceID]];
+    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
 }
 
 -(void)removeUnsucess
@@ -650,7 +821,7 @@
 {
     NSLog(@"renameSucess");
     [self EscMenu];
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] spaceID]];
+    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
 }
 
 -(void)renameUnsucess
@@ -662,18 +833,19 @@
 {
     NSLog(@"moveSucess");
     [self EscMenu];
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] spaceID]];
+    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
 }
 
 -(void)moveUnsucess
 {
     [self EscMenu];
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] spaceID]];
+    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
 }
 
 -(void)newFinderSucess
 {
-
+    NSLog(@"newFinderSucess");
+    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
 }
 
 -(void)newFinderUnsucess
@@ -681,22 +853,72 @@
     
 }
 
+-(void)getOpenFamily:(NSDictionary *)dictionary
+{
+    NSLog(@"dictionary:%@",dictionary);
+    NSMutableArray *table_array = [[NSMutableArray alloc] init];
+    
+    NSArray *array = [dictionary objectForKey:@"members"];
+    if([array count] == 0)
+    {
+        [table_array addObject:[[SCBSession sharedSession] homeID]];
+    }
+    else
+    {
+        [table_array addObjectsFromArray:array];
+    }
+    [file_delegate setMemberArray:table_array];
+    [table_array release];
+}
+
 #pragma mark 外部调用事件
 
 //编辑事件
 -(void)editAction
 {
+    isEdition = YES;
+    [self EscMenu];
     for(FileTableViewCell *cell in self.visibleCells)
     {
-        cell.select_button.tag = cell.tag - FileTableViewCellTag + FileTableViewCellCehckTag;
         [cell.select_button addTarget:self action:@selector(checkSelected:) forControlEvents:UIControlEventTouchUpInside];
         cell.select_button.hidden = NO;
+    }
+}
+
+//全部选中事件
+-(void)allCehcked
+{
+    for(int i=0;i<[tableArray count];i++)
+    {
+        NSDictionary *dictioinary = [tableArray objectAtIndex:i];
+        NSString *f_id = [dictioinary objectForKey:@"f_id"];
+        [selected_dictionary setObject:f_id forKey:[NSString stringWithFormat:@"%i",i]];
+    }
+    NSLog(@"selected_dictionary:%@",selected_dictionary);
+    for(FileTableViewCell *cell in self.visibleCells)
+    {
+        cell.select_button.hidden = NO;
+        [cell.select_button setImage:[UIImage imageNamed:@"Selected.png"] forState:UIControlStateNormal];
+        [cell.image_view setHidden:NO];
+    }
+}
+
+//全部取消
+-(void)allEscCheckde
+{
+    [selected_dictionary removeAllObjects];
+    for(FileTableViewCell *cell in self.visibleCells)
+    {
+        [cell.select_button setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
+        [cell.image_view setHidden:YES];
     }
 }
 
 //取消事件
 -(void)escAction
 {
+    isEdition = NO;
+    [selected_dictionary removeAllObjects];
     for(FileTableViewCell *cell in self.visibleCells)
     {
         cell.image_view.hidden = YES;
@@ -708,11 +930,6 @@
 -(void)checkSelected:(id)sender
 {
     UIButton *imageView = sender;
-    
-    if(selected_dictionary == nil)
-    {
-        selected_dictionary = [[NSMutableDictionary alloc] init];
-    }
     
     int bl = [[selected_dictionary objectForKey:[NSString stringWithFormat:@"%i",imageView.tag-FileTableViewCellCehckTag]] intValue];
     if(bl > 0)

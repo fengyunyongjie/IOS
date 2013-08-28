@@ -101,6 +101,8 @@
 #define FM_CATEGORY_FILE_URI @"/fm/category_file"
 //查看移动文件目录
 #define FM_CUTTO @"/fm/cutTo"
+//家庭空间管理 /family/members
+#define FM_FAMILY_MEMBERS @"/family/members"
 
 #pragma mark - 5.共享管理
 //打开共享文件夹

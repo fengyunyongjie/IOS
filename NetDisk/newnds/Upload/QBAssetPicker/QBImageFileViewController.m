@@ -56,11 +56,11 @@
 {
     [super viewDidLoad];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(app_delegate.myTabBarController.selectedIndex==0 || isChangeMove)
+    if(app_delegate.myTabBarController.selectedIndex==0)
     {
         space_id = [[SCBSession sharedSession] spaceID];
     }
-    else if(app_delegate.myTabBarController.selectedIndex==1)
+    else if(app_delegate.myTabBarController.selectedIndex==1 || isChangeMove)
     {
         space_id = [[SCBSession sharedSession] homeID];
     }

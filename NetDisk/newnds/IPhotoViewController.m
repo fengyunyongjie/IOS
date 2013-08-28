@@ -10,10 +10,12 @@
 #import "AppDelegate.h"
 #import "SCBSession.h"
 #import "PhotoLookViewController.h"
+#import "MessagePushController.h"
 
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define ChangeTabWidth 70
 #define RightButtonBoderWidth 0
+#define KButtonTagSpqce 8000
 
 @interface IPhotoViewController ()
 
@@ -30,6 +32,13 @@
 @synthesize move_fid;
 @synthesize ctrlView;
 @synthesize edit_view;
+@synthesize edit_control;
+@synthesize newFinder_control;
+@synthesize finderName_textField;
+@synthesize Bt_All;
+@synthesize label_all;
+@synthesize space_control;
+@synthesize member_array;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -43,7 +52,7 @@
 //显示文件列表
 -(void)showFileList
 {
-    [file_tableView requestFile:f_id space_id:[[SCBSession sharedSession] spaceID]];
+    [file_tableView requestFile:f_id space_id:[[SCBSession sharedSession] homeID]];
 }
 
 //显示照片列表
@@ -56,6 +65,17 @@
 -(void)clickBack
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.myTabBarController.IsTabBarHiden)
+    {
+        [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
+    }
+    [self showFileList];
+    [self requestSpace];
 }
 
 - (void)viewDidLoad
@@ -165,9 +185,16 @@
     [super viewDidLoad];
 }
 
+//请求我的家庭空间
+-(void)requestSpace
+{
+    [file_tableView requestSpace:[[SCBSession sharedSession] homeID]];
+}
+
 //点击照片内容
 -(void)clicked_photo:(id)sender
 {
+    [photo_tableView reloadPhotoData];
     UIButton *button = sender;
     //把色值转换成图片
     CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
@@ -198,6 +225,48 @@
 {
     NSLog(@"-(void)clicked_space:(id)sender");
     
+    if(space_control)
+    {
+        [space_control removeFromSuperview];
+    }
+    //空间菜单
+    space_control = [[UIControl alloc] init];
+    space_control.frame=self.view.frame;
+    [space_control addTarget:self action:@selector(touchSpaceView:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:space_control];
+    
+    CGRect rect = CGRectMake(248, 44, 9, 5);
+    UIImageView *top_iamge = [[UIImageView alloc] initWithFrame:rect];
+    [top_iamge setImage:[UIImage imageNamed:@"Bk_Point.png"]];
+    [space_control addSubview:top_iamge];
+    [top_iamge release];
+    
+    UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Ns.png"]];
+    bg.frame=CGRectMake(35, 49, 250, [member_array count]*44);
+    [space_control addSubview:bg];
+    for(int i=0;i<[member_array count];i++)
+    {
+        CGRect button_rect = CGRectMake((320-250)/2, 49+44*i, 250, 44);
+        UIButton *button = [[UIButton alloc] initWithFrame:button_rect];
+        [button setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [button setTitle:@"我的家庭空间" forState:UIControlStateNormal];
+        button.tag = KButtonTagSpqce+i;
+        [button addTarget:self action:@selector(clickRowSpaceId:) forControlEvents:UIControlEventTouchUpInside];
+        [space_control addSubview:button];
+        [button release];
+    }
+}
+
+-(void)touchSpaceView:(id)sender
+{
+    [space_control setHidden:YES];
+}
+
+-(void)clickRowSpaceId:(id)sender
+{
+    [space_control setHidden:YES];
+    //重新请求空间
+//    file_tableView.p_id = ;
 }
 
 -(void)clicked_more:(id)sender
@@ -212,12 +281,12 @@
         [ctrlView addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:ctrlView];
         UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_na.png"]];
-        bg.frame=CGRectMake(25, 44, 270, 175);
+        bg.frame=CGRectMake(25, 44, 270, 181);
         [ctrlView addSubview:bg];
         
         //按钮－新建文件夹0,0
         UIButton *btnUpload= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnUpload.frame=CGRectMake(25, 44, 90, 87);
+        btnUpload.frame=CGRectMake(25, 49, 90, 88);
         [btnUpload setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
         [btnUpload setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [btnUpload addTarget:self action:@selector(goUpload:) forControlEvents:UIControlEventTouchUpInside];
@@ -228,12 +297,12 @@
         lblNewFinder.font=[UIFont systemFontOfSize:12];
         lblNewFinder.textColor=[UIColor whiteColor];
         lblNewFinder.backgroundColor=[UIColor clearColor];
-        lblNewFinder.frame=CGRectMake(25, 59+44, 90, 21);
+        lblNewFinder.frame=CGRectMake(25, 59+49, 90, 21);
         [ctrlView addSubview:lblNewFinder];
         
         //按钮－编辑0,1
         UIButton *btnSearch= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnSearch.frame=CGRectMake(25+90, 44, 90, 87);
+        btnSearch.frame=CGRectMake(25+90, 49, 90, 88);
         [btnSearch setImage:[UIImage imageNamed:@"Bt_naSeach.png"] forState:UIControlStateNormal];
         [btnSearch setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [btnSearch addTarget:self action:@selector(goSearch:) forControlEvents:UIControlEventTouchUpInside];
@@ -244,12 +313,12 @@
         lblNewFinder01.font=[UIFont systemFontOfSize:12];
         lblNewFinder01.textColor=[UIColor whiteColor];
         lblNewFinder01.backgroundColor=[UIColor clearColor];
-        lblNewFinder01.frame=CGRectMake(25+90, 59+44, 90, 21);
+        lblNewFinder01.frame=CGRectMake(25+90, 59+49, 90, 21);
         [ctrlView addSubview:lblNewFinder01];
         
         //按钮－新建文件夹 0，2
         UIButton *btnNewFinder02= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder02.frame=CGRectMake(25+(90*2), 44, 90, 87);
+        btnNewFinder02.frame=CGRectMake(25+(90*2), 49, 90, 88);
         [btnNewFinder02 setImage:[UIImage imageNamed:@"Bt_naNews.png"] forState:UIControlStateNormal];
         [btnNewFinder02 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [btnNewFinder02 addTarget:self action:@selector(goMessage:) forControlEvents:UIControlEventTouchUpInside];
@@ -260,12 +329,12 @@
         lblNewFinder02.font=[UIFont systemFontOfSize:12];
         lblNewFinder02.textColor=[UIColor whiteColor];
         lblNewFinder02.backgroundColor=[UIColor clearColor];
-        lblNewFinder02.frame=CGRectMake(25+(90*2), 59+44, 90, 21);
+        lblNewFinder02.frame=CGRectMake(25+(90*2), 59+49, 90, 21);
         [ctrlView addSubview:lblNewFinder02];
         
         //按钮－新建文件夹 1，0
         UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnEdit.frame=CGRectMake(25, 44+88, 90, 87);
+        btnEdit.frame=CGRectMake(25, 44+93, 90, 88);
         [btnEdit setImage:[UIImage imageNamed:@"Bt_naEdit.png"] forState:UIControlStateNormal];
         [btnEdit setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -277,12 +346,12 @@
         lblEdit.font=[UIFont systemFontOfSize:12];
         lblEdit.textColor=[UIColor whiteColor];
         lblEdit.backgroundColor=[UIColor clearColor];
-        lblEdit.frame=CGRectMake(25, 59+88+44, 90, 21);
+        lblEdit.frame=CGRectMake(25, 59+93+44, 90, 21);
         [ctrlView addSubview:lblEdit];
         
         //按钮－新建文件夹 1，1
         UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder.frame=CGRectMake(25+90, 44+88, 90, 87);
+        btnNewFinder.frame=CGRectMake(25+90, 44+93, 90, 88);
         [btnNewFinder setImage:[UIImage imageNamed:@"Bt_naCreateForlder.png"] forState:UIControlStateNormal];
         [btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
@@ -293,7 +362,7 @@
         lblNewFinder11.font=[UIFont systemFontOfSize:12];
         lblNewFinder11.textColor=[UIColor whiteColor];
         lblNewFinder11.backgroundColor=[UIColor clearColor];
-        lblNewFinder11.frame=CGRectMake(25+90, 59+88+44, 90, 21);
+        lblNewFinder11.frame=CGRectMake(25+90, 59+93+44, 90, 21);
         [ctrlView addSubview:lblNewFinder11];
     }
     else
@@ -310,7 +379,50 @@
 
 -(void)goUpload:(id)sender
 {
+    [self touchView:nil];
     
+    UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
+    if([lblEdit.text isEqualToString:@"取消"]){
+        [lblEdit setText:@"编辑"];
+        [file_tableView setEditing:NO animated:YES];
+        [file_tableView escAction];
+        MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+        [myTabbar setHidesTabBarWithAnimate:NO];
+        [edit_view setHidden:YES];
+    }
+    //打开照片库
+    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
+    imagePickerController.delegate = self;
+    imagePickerController.allowsMultipleSelection = YES;
+    imagePickerController.f_id  = file_tableView.p_id;
+    [imagePickerController requestFileDetail];
+    NSLog(@"self.f_id:%@",self.f_id);
+    [self.navigationController pushViewController:imagePickerController animated:YES];
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appleDate.myTabBarController setHidesTabBarWithAnimate:YES];
+    [imagePickerController release];
+}
+
+#pragma mark - QBImagePickerControllerDelegate
+
+-(void)changeUpload:(NSMutableOrderedSet *)array_
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all setSpace_id:[[SCBSession sharedSession] homeID]];
+    NSLog(@"[[[SCBSession sharedSession] spaceID] integerValue]:%@",[[SCBSession sharedSession] spaceID]);
+    [app_delegate.upload_all changeUpload:array_];
+}
+
+-(void)changeDeviceName:(NSString *)device_name
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all changeDeviceName:device_name];
+}
+
+-(void)changeFileId:(NSString *)f_id_
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all changeFileId:f_id_];
 }
 
 -(void)goSearch:(id)sender
@@ -320,11 +432,20 @@
 
 -(void)goMessage:(id)sender
 {
-    
+    [self touchView:nil];
+    MessagePushController *messagePush = [[MessagePushController alloc] init];
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(![app_delegate.myTabBarController IsTabBarHiden])
+    {
+        messagePush.isHiddenTabbar = YES;
+    }
+    [self.navigationController pushViewController:messagePush animated:YES];
+    [messagePush release];
 }
 
 -(void)editAction:(id)sender
 {
+    [self touchView:nil];
     UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
     if([lblEdit.text isEqualToString:@"编辑"])
     {
@@ -368,19 +489,19 @@
             editLbl2.frame=CGRectMake(19+80, 45-5, 42, 21);
             [edit_view addSubview:editLbl2];
             //移动按钮
-            UIButton *editBtn3=[UIButton buttonWithType:UIButtonTypeCustom];
-            editBtn3.frame=CGRectMake(10+80+80, 0, 60, 60);
-            [editBtn3 setImage:[UIImage imageNamed:@"Bt_AllF.png"] forState:UIControlStateNormal];
-            [editBtn3 addTarget:self action:@selector(allSelect:) forControlEvents:UIControlEventTouchUpInside];
-            [edit_view addSubview:editBtn3];
-            UILabel *editLbl3=[[[UILabel alloc] init] autorelease];
-            editLbl3.text=@"全选";
-            editLbl3.textAlignment=UITextAlignmentCenter;
-            editLbl3.font=[UIFont systemFontOfSize:12];
-            editLbl3.textColor=[UIColor whiteColor];
-            editLbl3.backgroundColor=[UIColor clearColor];
-            editLbl3.frame=CGRectMake(19+80+80, 45-5, 42, 21);
-            [edit_view addSubview:editLbl3];
+            Bt_All=[UIButton buttonWithType:UIButtonTypeCustom];
+            Bt_All.frame=CGRectMake(10+80+80, 0, 60, 60);
+            [Bt_All setImage:[UIImage imageNamed:@"Bt_AllF.png"] forState:UIControlStateNormal];
+            [Bt_All addTarget:self action:@selector(allSelect:) forControlEvents:UIControlEventTouchUpInside];
+            [edit_view addSubview:Bt_All];
+            label_all = [[UILabel alloc] init];
+            label_all.text=@"全选";
+            label_all.textAlignment=UITextAlignmentCenter;
+            label_all.font=[UIFont systemFontOfSize:12];
+            label_all.textColor=[UIColor whiteColor];
+            label_all.backgroundColor=[UIColor clearColor];
+            label_all.frame=CGRectMake(19+80+80, 45-5, 42, 21);
+            [edit_view addSubview:label_all];
             //移动按钮
             UIButton *editBtn4=[UIButton buttonWithType:UIButtonTypeCustom];
             editBtn4.frame=CGRectMake(10+80+80+80, 0, 60, 60);
@@ -412,9 +533,75 @@
     }
 }
 
+#pragma mark 新建文件夹
 -(void)newFinder:(id)sender
 {
-    
+    [self touchView:nil];
+    if(newFinder_control == nil)
+    {
+        //新建文件夹视图
+        newFinder_control = [[UIControl alloc] init];
+        newFinder_control.frame=self.view.frame;
+        [newFinder_control addTarget:self action:@selector(endEdit:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:newFinder_control];
+        
+        [newFinder_control setHidden:YES];
+        UIImageView *newFinderBg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_CreateFolder.png"]];
+        newFinderBg.frame=CGRectMake(25, 100, 270, 176);
+        [newFinder_control addSubview:newFinderBg];
+        
+        UILabel *lblTitle=[[[UILabel alloc] initWithFrame:CGRectMake(91, 110, 138, 21)] autorelease];
+        lblTitle.textColor=[UIColor whiteColor];
+        lblTitle.backgroundColor=[UIColor clearColor];
+        lblTitle.textAlignment=UITextAlignmentCenter;
+        lblTitle.text=@"新建文件夹";
+        [newFinder_control addSubview:lblTitle];
+        
+        UIButton *btnOk=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnOk.frame=CGRectMake(25, 221, 135, 55);
+        //btnOk.titleLabel.text=@"确定";
+        [btnOk setTitle:@"确定" forState:UIControlStateNormal];
+        [btnOk setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [btnOk setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btnOk addTarget:self action:@selector(okNewFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [newFinder_control addSubview:btnOk];
+        
+        UIButton *btnCancel=[UIButton buttonWithType:UIButtonTypeCustom];
+        btnCancel.frame=CGRectMake(160, 221, 135, 55);
+        [btnCancel setTitle:@"取消" forState:UIControlStateNormal];
+        [btnCancel setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        btnCancel.titleLabel.textColor=[UIColor whiteColor];
+        [btnCancel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [btnCancel addTarget:self action:@selector(cancelNewFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [newFinder_control addSubview:btnCancel];
+        
+        finderName_textField = [[[UITextField alloc] initWithFrame:CGRectMake(83, 159, 190, 30)] autorelease];
+        finderName_textField.placeholder=@"文件夹名称";
+        finderName_textField.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
+        finderName_textField.borderStyle=UITextBorderStyleNone;
+        finderName_textField.delegate=self;
+        [newFinder_control addSubview:finderName_textField];
+    }
+    [newFinder_control setHidden:NO];
+    finderName_textField.text=@"";
+}
+
+#pragma mark 新建文件夹操作过程的事件
+-(void)endEdit:(id)sender
+{
+    [newFinder_control setHidden:YES];
+}
+
+-(void)okNewFinder:(id)sender
+{
+    [newFinder_control setHidden:YES];
+    [finderName_textField endEditing:YES];
+    [file_tableView toNewFinder:[finderName_textField text]];
+}
+
+-(void)cancelNewFinder:(id)sender
+{
+    [newFinder_control setHidden:YES];
 }
 
 //点击文件内容
@@ -443,7 +630,6 @@
         isPhoto = FALSE;
     }
     file_tableView.hidden = NO;
-    [self showFileList];
     photo_tableView.hidden = YES;
 }
 
@@ -497,6 +683,43 @@
     escButton.hidden = YES;
 }
 
+-(void)messageShare:(NSString *)content
+{
+    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
+    if ([MFMessageComposeViewController canSendText]) {
+        MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+        picker.messageComposeDelegate = self;
+        
+        [picker setBody:text];
+        [self presentModalViewController:picker animated:YES];
+        [picker release];
+    }
+}
+
+-(void)mailShare:(NSString *)content
+{
+    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+        picker.mailComposeDelegate = self;
+        
+        [picker setSubject:text];
+        
+        NSString *emailBody = text;
+        [picker setMessageBody:emailBody isHTML:NO];
+        
+        [self presentModalViewController:picker animated:YES];
+        [picker release];
+    }
+}
+
+-(void)setMemberArray:(NSArray *)memberArray
+{
+    member_array = [memberArray retain];
+}
+
 #pragma mark QBImageFileViewDelegate ----------------
 
 -(void)uploadFileder:(NSString *)deviceName
@@ -522,22 +745,31 @@
 
 -(void)sharedAction:(id)sender
 {
-    
+    [file_tableView toShared:nil];
 }
 
 -(void)toMove:(id)sender
 {
-    
+    [file_tableView toMove:nil];
 }
 
 -(void)allSelect:(id)sender
 {
-    
+    if([label_all.text isEqualToString:@"全选"])
+    {
+        [file_tableView allCehcked];
+        label_all.text = @"取消";
+    }
+    else
+    {
+        [file_tableView allEscCheckde];
+        label_all.text = @"全选";
+    }
 }
 
 -(void)deleteAction:(id)sender
 {
-    
+    [file_tableView toDelete:nil];
 }
 
 
@@ -556,6 +788,11 @@
     [move_fid release];
     [ctrlView release];
     [edit_view release];
+    [edit_control release];
+    [newFinder_control release];
+    [label_all release];
+    [space_control release];
+    [member_array release];
     [super dealloc];
 }
 
