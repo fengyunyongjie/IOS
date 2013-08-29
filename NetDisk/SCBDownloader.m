@@ -68,6 +68,7 @@
 }
 -(void)cancelDownload
 {
+    self.delegate=nil;
     [fileConnection cancel];
 }
 #pragma mark -

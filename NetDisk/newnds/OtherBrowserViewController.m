@@ -170,6 +170,7 @@
 }
 -(void)back:(id)sender
 {
+    [self.downloader cancelDownload];
     [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark - SCBDownloaderDelegate Methods

@@ -505,6 +505,11 @@
         __block BOOL isAction = FALSE;
         [s addGestureRecognizer:onceTap];
         UIImage *oldImge = nil;
+//        NSString *filePath=[YNFunctions getFMCachePath];
+//        filePath=[filePath stringByAppendingPathComponent:demo.f_name];
+//        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//            oldImge = [UIImage imageWithContentsOfFile:filePath];
+//        }else
         if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
         {
             NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];
@@ -587,6 +592,11 @@
         [s addGestureRecognizer:onceTap];
         __block BOOL isAction = FALSE;
         UIImage *oldImge = nil;
+//        NSString *filePath=[YNFunctions getFMCachePath];
+//        filePath=[filePath stringByAppendingPathComponent:demo.f_name];
+//        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//            oldImge = [UIImage imageWithContentsOfFile:filePath];
+//        }else
         if([self image_exists_at_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]])
         {
             NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%iT",demo.f_id]];

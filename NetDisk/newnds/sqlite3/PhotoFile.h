@@ -29,6 +29,7 @@
 @property(nonatomic,assign) int f_id;
 @property(nonatomic,retain) NSString *f_date;
 @property(nonatomic,assign) double f_time;
+@property(strong,nonatomic) NSString *f_name;
 
 #pragma mark 添加任务表数据
 -(BOOL)insertPhotoFileTable;

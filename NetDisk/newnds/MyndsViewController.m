@@ -54,6 +54,7 @@ typedef enum{
     kActionSheetTagMore,
     kActionSheetTagDeleteOne,
     kActionSheetTagDeleteMore,
+    kActionSheetTagPhoto,
 }ActionSheetTag;
 @implementation FileItem
 
@@ -625,10 +626,10 @@ typedef enum{
         //移动选择界面底部工具栏
         self.selectToolView=[[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60)];
         [self.view addSubview:self.selectToolView];
-        [self.selectToolView setHidden:NO];
+        [self.selectToolView setHidden:YES];
         [self.view bringSubviewToFront:self.selectToolView];
         UIImageView *toolbarBg=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.selectToolView.frame.size.width, self.selectToolView.frame.size.height)];
-        [toolbarBg setImage:[UIImage imageNamed:@"Bk_nav.png"]];
+        [toolbarBg setImage:[UIImage imageNamed:@"Bk_Nav.png"]];
         [self.selectToolView addSubview:toolbarBg];
         
         UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
@@ -728,7 +729,7 @@ typedef enum{
             r.size.height=self.view.frame.size.height-44-60;
             self.tableView.frame=r;
             [self.searchView setHidden:YES];
-            self.selectToolView.hidden=NO;
+//            self.selectToolView.hidden=NO;
             self.more_button.hidden=YES;
             self.selectToolView.frame=CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60);
             //Initialize the toolbar
@@ -745,7 +746,7 @@ typedef enum{
 //            CGRect rootViewBounds = self.parentViewController.view.bounds;
 //            
 //            //Get the height of the parent view.
-//            CGFloat rootViewHeight = CGRectGetHeight(rootViewBounds);
+//            CGFloat rootViewHeight = CGRectGetHeight(rootViewBounds);97
 //            
 //            //Get the width of the parent view,
 //            CGFloat rootViewWidth = CGRectGetWidth(rootViewBounds);
@@ -2067,14 +2068,25 @@ typedef enum{
                 UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
                 [tagView setHidden:YES];
             }
-//            NSString *filePath=[YNFunctions getFMCachePath];
-//            filePath=[filePath stringByAppendingPathComponent:name];
-//            
-//            UIImageView *tagImageView=(UIImageView *)[cell.imageView.subviews objectAtIndex:0];
-//            [tagImageView setImage:[UIImage imageNamed:@"favorite_tag_n.png"]];
-//            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-//                [tagImageView setImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
-//            }
+            //文件是否下载完成图标
+            NSString *filePath=[YNFunctions getFMCachePath];
+            filePath=[filePath stringByAppendingPathComponent:name];
+            
+            UIImageView *tagImageView=(UIImageView *)[cell.imageView.subviews objectAtIndex:0];
+            [tagImageView setImage:[UIImage imageNamed:@"favorite_tag_n.png"]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                if (cell.imageView.subviews.count==0) {
+                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
+                    CGRect r=[tagView frame];
+                    r.origin.x=15;
+                    r.origin.y=25;
+                    [tagView setFrame:r];
+                    [cell.imageView addSubview:tagView];
+                }
+                UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
+                [tagImageView setImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
+                [tagView setHidden:NO];
+            }
         }
         text=name;
         
@@ -2277,34 +2289,76 @@ typedef enum{
             [f_mime isEqualToString:@"jpeg"]||
             [f_mime isEqualToString:@"bmp"]||
             [f_mime isEqualToString:@"gif"]) {
-            NSMutableArray *array=[NSMutableArray array];
-            int index=0;
-            for (int i=0;i<self.listArray.count;i++) {
-                NSDictionary *dict=[self.listArray objectAtIndex:i];
-                NSString *f_mime=[[dict objectForKey:@"f_mime"] lowercaseString];
-                if ([f_mime isEqualToString:@"png"]||
-                    [f_mime isEqualToString:@"jpg"]||
-                    [f_mime isEqualToString:@"jpeg"]||
-                    [f_mime isEqualToString:@"bmp"]||
-                    [f_mime isEqualToString:@"gif"]) {
-                    PhotoFile *demo = [[PhotoFile alloc] init];
-                    [demo setF_date:[dict objectForKey:@"f_create"]];
-                    [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
-                    [array addObject:demo];
-                    
-                    if (i==indexPath.row) {
-                        index=array.count-1;
+            NSString *filePath=[YNFunctions getFMCachePath];
+            filePath=[filePath stringByAppendingPathComponent:f_name];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                //查看原图 or 查看预览图
+                int row=indexPath.row;
+                NSString *title=[NSString stringWithFormat:@"%d",row];
+                UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"查看预览图",@"查看原图", nil];
+                [actionSheet setTag:kActionSheetTagPhoto];
+                [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+                [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+            }else
+            {
+                NSMutableArray *array=[NSMutableArray array];
+                int index=0;
+                for (int i=0;i<self.listArray.count;i++) {
+                    NSDictionary *dict=[self.listArray objectAtIndex:i];
+                    NSString *f_mime=[[dict objectForKey:@"f_mime"] lowercaseString];
+                    if ([f_mime isEqualToString:@"png"]||
+                        [f_mime isEqualToString:@"jpg"]||
+                        [f_mime isEqualToString:@"jpeg"]||
+                        [f_mime isEqualToString:@"bmp"]||
+                        [f_mime isEqualToString:@"gif"]) {
+                        PhotoFile *demo = [[PhotoFile alloc] init];
+                        [demo setF_date:[dict objectForKey:@"f_create"]];
+                        [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
+                        [demo setF_name:[dic objectForKey:@"f_name"]];
+                        [array addObject:demo];
+
+                        if (i==indexPath.row) {
+                            index=array.count-1;
+                        }
+                        [demo release];
                     }
-                    [demo release];
                 }
+                PhotoLookViewController *photoLookViewController = [[PhotoLookViewController alloc] init];
+                [photoLookViewController setHidesBottomBarWhenPushed:YES];
+                [photoLookViewController setCurrPage:index];
+                [photoLookViewController setTableArray:array];
+                [self presentModalViewController:photoLookViewController animated:YES];
+                [photoLookViewController release];
             }
-            PhotoLookViewController *photoLookViewController = [[PhotoLookViewController alloc] init];
-            [photoLookViewController setHidesBottomBarWhenPushed:YES];
-            [photoLookViewController setCurrPage:index];
-            [photoLookViewController setTableArray:array];
-//            [self.navigationController pushViewController:photoLookViewController animated:YES];
-            [self presentModalViewController:photoLookViewController animated:YES];
-            [photoLookViewController release];
+            
+//            NSMutableArray *array=[NSMutableArray array];
+//            int index=0;
+//            for (int i=0;i<self.listArray.count;i++) {
+//                NSDictionary *dict=[self.listArray objectAtIndex:i];
+//                NSString *f_mime=[[dict objectForKey:@"f_mime"] lowercaseString];
+//                if ([f_mime isEqualToString:@"png"]||
+//                    [f_mime isEqualToString:@"jpg"]||
+//                    [f_mime isEqualToString:@"jpeg"]||
+//                    [f_mime isEqualToString:@"bmp"]||
+//                    [f_mime isEqualToString:@"gif"]) {
+//                    PhotoFile *demo = [[PhotoFile alloc] init];
+//                    [demo setF_date:[dict objectForKey:@"f_create"]];
+//                    [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
+//                    [demo setF_name:[dic objectForKey:@"f_name"]];
+//                    [array addObject:demo];
+//                    
+//                    if (i==indexPath.row) {
+//                        index=array.count-1;
+//                    }
+//                    [demo release];
+//                }
+//            }
+//            PhotoLookViewController *photoLookViewController = [[PhotoLookViewController alloc] init];
+//            [photoLookViewController setHidesBottomBarWhenPushed:YES];
+//            [photoLookViewController setCurrPage:index];
+//            [photoLookViewController setTableArray:array];
+//            [self presentModalViewController:photoLookViewController animated:YES];
+//            [photoLookViewController release];
 
         }else
         {
@@ -3239,6 +3293,70 @@ typedef enum{
             }else if(buttonIndex == 6) {
                 NSLog(@"取消");
             }
+            break;
+        case kActionSheetTagPhoto:
+        {
+            NSDictionary *dic=[self.listArray objectAtIndex:[actionSheet.title intValue]];
+            if (buttonIndex==0) {
+                NSMutableArray *array=[NSMutableArray array];
+                int index=0;
+                for (int i=0;i<self.listArray.count;i++) {
+                    NSDictionary *dict=[self.listArray objectAtIndex:i];
+                    NSString *f_mime=[[dict objectForKey:@"f_mime"] lowercaseString];
+                    if ([f_mime isEqualToString:@"png"]||
+                        [f_mime isEqualToString:@"jpg"]||
+                        [f_mime isEqualToString:@"jpeg"]||
+                        [f_mime isEqualToString:@"bmp"]||
+                        [f_mime isEqualToString:@"gif"]) {
+                        PhotoFile *demo = [[PhotoFile alloc] init];
+                        [demo setF_date:[dict objectForKey:@"f_create"]];
+                        [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
+                        [demo setF_name:[dic objectForKey:@"f_name"]];
+                        [array addObject:demo];
+
+                        if (i==[actionSheet.title intValue]) {
+                            index=array.count-1;
+                        }
+                        [demo release];
+                    }
+                }
+                PhotoLookViewController *photoLookViewController = [[PhotoLookViewController alloc] init];
+                [photoLookViewController setHidesBottomBarWhenPushed:YES];
+                [photoLookViewController setCurrPage:index];
+                [photoLookViewController setTableArray:array];
+                [self presentModalViewController:photoLookViewController animated:YES];
+                [photoLookViewController release];
+            }else if(buttonIndex==1)
+            {
+                NSString *filePath=[YNFunctions getFMCachePath];
+                filePath=[filePath stringByAppendingPathComponent:[dic objectForKey:@"f_name"]];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                    QLBrowserViewController *previewController=[[QLBrowserViewController alloc] init];
+                    previewController.dataSource=self;
+                    previewController.delegate=self;
+                    
+                    previewController.currentPreviewItemIndex=0;
+                    [previewController setHidesBottomBarWhenPushed:YES];
+                    //            [self.navigationController pushViewController:previewController animated:YES];
+                    //[self presentModalViewController:previewController animated:YES];
+                    [self presentViewController:previewController animated:YES completion:^(void){
+                        NSLog(@"%@",previewController);
+                    }];
+                    //            [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+                }else{
+                    OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
+                    //[otherBrowser setHidesBottomBarWhenPushed:YES];
+                    otherBrowser.dataDic=dic;
+                    NSString *f_name=[dic objectForKey:@"f_name"];
+                    otherBrowser.title=f_name;
+                    [self.navigationController pushViewController:otherBrowser animated:YES];
+                    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+                    [myTabbar setHidesTabBarWithAnimate:YES];
+                }
+            }else
+            {
+            }
+        }
             break;
         default:
             break;
