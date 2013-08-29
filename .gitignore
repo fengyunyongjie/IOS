@@ -1,3 +1,4 @@
+#.gitignore
 # Exclude the build directory
 
 build/*
@@ -28,6 +29,7 @@ build/*
 
 *.xcworkspace
 
-*.xcuserdata
+*.xcuserdatad
 *.xcuserstate
 *.xcbkptlist
+xcuserdate
