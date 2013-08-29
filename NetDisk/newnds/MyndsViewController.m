@@ -1875,6 +1875,7 @@ typedef enum{
         self.btnHide=[[UIButton alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width,self.tableView.frame.size.height)];
         [self.btnHide addTarget:self action:@selector(EscMenu) forControlEvents:(UIControlEventTouchUpInside)];
         [self.tableView addSubview:self.btnHide];
+        [self.tableView bringSubviewToFront:self.cellMenu];
     }else
     {
         self.btnHide.hidden=NO;
@@ -2526,8 +2527,12 @@ typedef enum{
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.hud];
     [self.hud show:NO];
-    //self.hud.labelText=@"获取外链失败";
-    self.hud.labelText=error_info;
+    if (error_info==nil||[error_info isEqualToString:@""]) {
+        self.hud.labelText=@"获取外链失败";
+    }else
+    {
+        self.hud.labelText=error_info;
+    }
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
