@@ -102,7 +102,7 @@
 //查看移动文件目录
 #define FM_CUTTO @"/fm/cutTo"
 //家庭空间管理 /family/members
-#define FM_FAMILY_MEMBERS @"/family/members"
+#define FM_FAMILY_MEMBERS @"/family/lists"
 
 #pragma mark - 5.共享管理
 //打开共享文件夹
@@ -133,6 +133,11 @@
 #define REPORT_ADVICE_URI @"/advice"
 
 #pragma mark - 照片管理
+// 获取时间轴 /fm/timeline
+#define FM_TIMELINE @"/fm/timeline"
+// 根据表达式获取图片信息 /fm/timeImage
+#define FM_TIMEIMAGE @"/fm/timeImage"
+
 #pragma mark - 获取用户的所有的拍摄信息
 #define PHOTO_ALL  @"/photo/all"
 //获取时间分组

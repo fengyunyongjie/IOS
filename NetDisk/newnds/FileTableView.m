@@ -857,13 +857,13 @@
 {
     NSLog(@"dictionary:%@",dictionary);
     NSMutableArray *table_array = [[NSMutableArray alloc] init];
-    
-    NSArray *array = [dictionary objectForKey:@"members"];
-    if([array count] == 0)
-    {
-        [table_array addObject:[[SCBSession sharedSession] homeID]];
-    }
-    else
+    [tableArray removeAllObjects];
+    //添加我自己的信息
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"space_comment",@"我的",@"space_id",[[SCBSession sharedSession] homeID], nil];
+    [tableArray addObject:dic];
+    [dic release];
+    NSArray *array = [dictionary objectForKey:@"spaces"];
+    if([array count] > 0)
     {
         [table_array addObjectsFromArray:array];
     }

@@ -30,6 +30,10 @@
 
 -(void)didFailWithError;
 
+-(void)getPhotoArrayTimeline:(NSDictionary *)dictionary;
+
+-(void)getPhotoDetailTimeImage:(NSDictionary *)dictionary;
+
 @end
 
 @protocol NewFoldDelegate <NSObject>
@@ -76,6 +80,11 @@
 -(void)getPhotoGeneral;
 #pragma mark 请求收藏详细信息
 -(void)getDetail:(int)f_id;
+
+#pragma mark 获取时间轴组
+-(void)getPhotoArrayTimeline:(NSString *)spaceId;
+#pragma mark 根据表达式获取图片信息  /fm/timeImage
+-(void)getPhotoDetailTimeImage:(NSString *)spaceId express:(NSString *)express;
 //获取按日查询的照片/photo/detail
 //获取最新标签/photo/tag/recent
 //获取指定文件相关标签/photo/tag/file_tags

@@ -9,19 +9,33 @@
 #import <UIKit/UIKit.h>
 #import "SCBPhotoManager.h"
 #import "DownImage.h"
+#import "SCBFileManager.h"
+#import "SCBLinkManager.h"
 
 @protocol PhotoTableViewDelegate <NSObject>
 
 -(void)showFile:(int)index array:(NSMutableArray *)tableArray;
 
+-(void)showAllFile:(NSMutableArray *)tableArray;
+
+-(void)downController:(NSString *)fid;
+
+-(void)showController:(NSString *)f_id titleString:(NSString *)f_name;
+
+-(void)messageShare:(NSString *)content;
+
+-(void)mailShare:(NSString *)content;
+
+-(void)setMemberArray:(NSArray *)memberArray;
+
 @end
 
-@interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate>
+@interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIActionSheetDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate>
 {
     SCBPhotoManager *photoManager;
 	NSMutableDictionary *_dicReuseCells; //选中的数据
     BOOL editBL;  //是否为编辑状态，默认为false
-    NSMutableDictionary *tablediction;
+    NSMutableDictionary *photo_diction;
     NSMutableArray *sectionarray;
     NSMutableArray *downCellArray;
     
@@ -32,6 +46,10 @@
     BOOL isSort;
     
     id<PhotoTableViewDelegate> photo_delegate;
+    SCBFileManager *fileManager;
+    SCBLinkManager *linkManager;
+    
+    int photoType;
 }
 
 @property(nonatomic,assign) SCBPhotoManager *photoManager;
@@ -48,9 +66,26 @@
 @property(nonatomic,assign) BOOL isSort;
 
 @property(nonatomic,retain) id<PhotoTableViewDelegate> photo_delegate;
+@property(nonatomic,retain) SCBFileManager *fileManager;
+@property(nonatomic,retain) SCBLinkManager *linkManager;
 
 //加载数据
 -(void)reloadPhotoData;
+//编辑事件
+-(void)editAction;
+//全部选中事件
+-(void)allCehcked;
+//全部取消
+-(void)allEscCheckde;
+//取消事件
+-(void)escAction;
+
+#pragma mark 分享文件
+-(void)toShared:(id)sender;
+#pragma mark 移动文件
+-(void)toMove:(id)sender;
+#pragma mark 删除文件
+-(void)toDelete:(id)sender;
 
 @end
 

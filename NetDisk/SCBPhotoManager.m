@@ -39,6 +39,31 @@
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
+#pragma mark 获取时间轴组
+-(void)getPhotoArrayTimeline:(NSString *)spaceId
+{
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_TIMELINE]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = FM_TIMELINE;
+    self.matableData = [NSMutableData data];
+    
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"space_id=%@",spaceId];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    NSLog(@"--------------------------------------------------请求的参数：%@",body);
+    [body release];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+
 #pragma mark 获取所有时间轴上的照片信息
 -(void)getAllPhotoGeneral:(NSArray *)timeLineArray
 {
@@ -74,6 +99,28 @@
     
     
     timeLineNowNumber++;
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
+ 
+#pragma mark 根据表达式获取图片信息  /fm/timeImage
+-(void)getPhotoDetailTimeImage:(NSString *)spaceId express:(NSString *)express
+{
+    self.matableData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_TIMEIMAGE]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = FM_TIMEIMAGE;
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"space_id=%@&express=%@&cursor=%d&offset=%d",spaceId,express,0,-1];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    NSLog(@"--------------------------------------------------请求的参数：%@",body);
+    [body release];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
@@ -375,61 +422,74 @@
     NSLog(@"--------------------------------------------------太忙了");
     NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.matableData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"请求成功后，分发数据:%@",diction);
-    NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
-    if([type_string isEqualToString:[[PHOTO_TIMERLINE componentsSeparatedByString:@"/"] lastObject]])
+//    NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
+    if([url_string isEqualToString:PHOTO_TIMERLINE])
     {
         if([photoDelegate respondsToSelector:@selector(getPhotoTiimeLine:)])
         {
             [photoDelegate getPhotoTiimeLine:diction];
         }
     }
-    else if([type_string isEqualToString:[[PHOTO_ALL componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:PHOTO_ALL])
     {
         [self getMangerDiction:diction];
     }
-    else if([type_string isEqualToString:[[PHOTO_DETAIL componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:PHOTO_DETAIL])
     {
         if([photoDelegate respondsToSelector:@selector(getPhotoDetail:)])
         {
             [photoDelegate getPhotoDetail:diction];
         }
     }
-    else if([type_string isEqualToString:[[PHOTO_Delete componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:PHOTO_Delete])
     {
         if([photoDelegate respondsToSelector:@selector(requstDelete:)])
         {
             [photoDelegate requstDelete:diction];
         }
     }
-    else if([type_string isEqualToString:[[FM_MKDIR_URL componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:FM_MKDIR_URL])
     {
         if([newFoldDelegate respondsToSelector:@selector(newFold:)])
         {
             [newFoldDelegate newFold:diction];
         }
     }
-    else if([type_string isEqualToString:[[FM_URI componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:FM_URI])
     {
         if([newFoldDelegate respondsToSelector:@selector(openFile:)])
         {
             [newFoldDelegate openFile:diction];
         }
     }
-    else if([type_string isEqualToString:[[FM_GETFILEINFO componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:FM_GETFILEINFO])
     {
         if([photoDelegate respondsToSelector:@selector(getFileDetail:)])
         {
             [photoDelegate getFileDetail:diction];
         }
     }
-    else if([type_string isEqualToString:[[FM_CUTTO componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:FM_CUTTO])
     {
         if([newFoldDelegate respondsToSelector:@selector(openFile:)])
         {
             [newFoldDelegate openFile:diction];
         }
     }
-        
+    else if([url_string isEqualToString:FM_TIMELINE])
+    {
+        if([photoDelegate respondsToSelector:@selector(getPhotoArrayTimeline:)])
+        {
+            [photoDelegate getPhotoArrayTimeline:diction];
+        }
+    }
+    else if([url_string isEqualToString:FM_TIMEIMAGE])
+    {
+        if([photoDelegate respondsToSelector:@selector(getPhotoDetailTimeImage:)])
+        {
+            [photoDelegate getPhotoDetailTimeImage:diction];
+        }
+    }
 }
 
 #pragma mark 判断当前时间属于哪一类

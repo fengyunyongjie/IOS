@@ -37,6 +37,8 @@
     UILabel *label_all;
     UIControl *space_control;
     NSArray *member_array;
+    
+    NSString *spaceId;
 }
 
 @property(nonatomic,retain) UIView *topView;

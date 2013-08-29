@@ -52,7 +52,7 @@
 //显示文件列表
 -(void)showFileList
 {
-    [file_tableView requestFile:f_id space_id:[[SCBSession sharedSession] homeID]];
+    [file_tableView requestFile:f_id space_id:spaceId];
 }
 
 //显示照片列表
@@ -155,6 +155,7 @@
     //初始化文件列表
     CGRect rect = CGRectMake(0, 44, 320, TableViewHeight);
     file_tableView = [[FileTableView alloc] initWithFrame:rect];
+    [file_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [file_tableView setAllHeight:self.view.frame.size.height];
     [file_tableView setFile_delegate:self];
     [self.view addSubview:file_tableView];
@@ -162,6 +163,7 @@
     
     //初始化图片列表
     photo_tableView = [[PhotoTableView alloc] initWithFrame:rect];
+    [photo_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [photo_tableView setPhoto_delegate:self];
     [self.view addSubview:photo_tableView];
     
@@ -182,18 +184,21 @@
     [escButton setHidden:YES];
     [self.view addSubview:escButton];
     
+    spaceId = [[SCBSession sharedSession] homeID];
+    
     [super viewDidLoad];
 }
 
 //请求我的家庭空间
 -(void)requestSpace
 {
-    [file_tableView requestSpace:[[SCBSession sharedSession] homeID]];
+    [file_tableView requestSpace:spaceId];
 }
 
 //点击照片内容
 -(void)clicked_photo:(id)sender
 {
+    [file_tableView.selected_dictionary removeAllObjects];
     [photo_tableView reloadPhotoData];
     UIButton *button = sender;
     //把色值转换成图片
@@ -249,7 +254,9 @@
         CGRect button_rect = CGRectMake((320-250)/2, 49+44*i, 250, 44);
         UIButton *button = [[UIButton alloc] initWithFrame:button_rect];
         [button setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [button setTitle:@"我的家庭空间" forState:UIControlStateNormal];
+        NSDictionary *dictioinary = [member_array objectAtIndex:i];
+        NSString *space_comment = [dictioinary objectForKey:@"space_comment"];
+        [button setTitle:[NSString stringWithFormat:@"%@的家庭空间",space_comment] forState:UIControlStateNormal];
         button.tag = KButtonTagSpqce+i;
         [button addTarget:self action:@selector(clickRowSpaceId:) forControlEvents:UIControlEventTouchUpInside];
         [space_control addSubview:button];
@@ -266,6 +273,18 @@
 {
     [space_control setHidden:YES];
     //重新请求空间
+    UIButton *button = sender;
+    int row = button.tag - KButtonTagSpqce;
+    if(row < [member_array count])
+    {
+        NSDictionary *dctioinary = [member_array objectAtIndex:row];
+        NSString *space_id = [dctioinary objectForKey:@"space_id"];
+        if(space_id)
+        {
+            spaceId = space_id;
+        }
+    }
+    [self viewWillAppear:YES];
 //    file_tableView.p_id = ;
 }
 
@@ -452,6 +471,8 @@
         [lblEdit setText:@"取消"];
         [file_tableView setEditing:YES animated:YES];
         [file_tableView editAction];
+        [photo_tableView editAction];
+        
         MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
         [myTabbar setHidesTabBarWithAnimate:YES];
         if(edit_view == nil)
@@ -527,9 +548,11 @@
         [lblEdit setText:@"编辑"];
         [file_tableView setEditing:NO animated:YES];
         [file_tableView escAction];
+        [photo_tableView escAction];
         MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
         [myTabbar setHidesTabBarWithAnimate:NO];
         [edit_view setHidden:YES];
+        label_all.text = @"全选";
     }
 }
 
@@ -745,31 +768,66 @@
 
 -(void)sharedAction:(id)sender
 {
-    [file_tableView toShared:nil];
+    if(isPhoto)
+    {
+        
+    }
+    else
+    {
+        [file_tableView toShared:nil];
+    }
 }
 
 -(void)toMove:(id)sender
 {
-    [file_tableView toMove:nil];
+    if(isPhoto)
+    {
+        
+    }
+    else
+    {
+        [file_tableView toMove:nil];
+    }
 }
 
 -(void)allSelect:(id)sender
 {
     if([label_all.text isEqualToString:@"全选"])
     {
-        [file_tableView allCehcked];
+        if(!isPhoto)
+        {
+            [file_tableView allCehcked];
+        }
+        else
+        {
+            [photo_tableView allCehcked];
+        }
         label_all.text = @"取消";
     }
     else
     {
-        [file_tableView allEscCheckde];
+        if(!isPhoto)
+        {
+            [file_tableView allEscCheckde];
+        }
+        else
+        {
+            [photo_tableView allEscCheckde];
+        }
         label_all.text = @"全选";
     }
 }
 
 -(void)deleteAction:(id)sender
 {
-    [file_tableView toDelete:nil];
+    if(isPhoto)
+    {
+        
+    }
+    else
+    {
+        [file_tableView toDelete:nil];
+    }
 }
 
 

@@ -11,6 +11,8 @@
 #import "PhotoFileCell.h"
 #import "YNFunctions.h"
 #import "PhotoLookViewController.h"
+#import "SCBSession.h"
+#import "AppDelegate.h"
 
 #define timeLine1 @"今天"
 #define timeLine2 @"昨天"
@@ -24,8 +26,13 @@
 #define UIImageTag 1000000
 #define UIButtonTag 2000000
 
+#define kAlertTagRename 1001
+#define kAlertTagDeleteOne 1002
+#define kActionSheetTagShare 70
+#define kActionSheetTagMore 71
+
 @implementation PhotoTableView
-@synthesize photoManager,_dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate;
+@synthesize photoManager,_dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -33,15 +40,20 @@
     if (self) {
         
     }
-    tablediction = [[NSMutableDictionary alloc] init];
+    photo_diction = [[NSMutableDictionary alloc] init];
     sectionarray = [[NSMutableArray alloc] init];
     downCellArray = [[NSMutableArray alloc] init];
     //请求时间轴
     photoManager = [[SCBPhotoManager alloc] init];
     [photoManager setPhotoDelegate:self];
-    
+    _dicReuseCells = [[NSMutableDictionary alloc] init];
     self.dataSource = self;
     self.delegate = self;
+    
+    fileManager = [[SCBFileManager alloc] init];
+    fileManager.delegate = self;
+    linkManager = [[SCBLinkManager alloc] init];
+    linkManager.delegate = self;
     return self;
 }
 
@@ -55,163 +67,228 @@
 -(void)requestPhotoTimeLine
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [photoManager getPhotoTimeLine:TRUE];
+//        [photoManager getPhotoTimeLine:TRUE];
+        [photoManager getPhotoArrayTimeline:[[SCBSession sharedSession] homeID]];
     });
+    
 }
 
 #pragma mark SCBPhotoDelegate ------------------
 
 -(void)getPhotoTiimeLine:(NSDictionary *)dictionary
 {
-    [self clearsContextBeforeDrawing];
-    [tablediction removeAllObjects];
-    [sectionarray removeAllObjects];
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDate *todayDate = [NSDate date];
-    NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
-    
-    //今天的起止时间
-    NSString *eString  = [NSString stringWithFormat:@"%i-%i-%i %i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute];
-    NSString *sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day];
-    PhotoFile *photo_file = [[PhotoFile alloc] init];
-    NSArray *timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
-    if([timeArray count]>0)
-    {
-        [sectionarray addObject:timeLine1];
-        [tablediction setObject:timeArray forKey:timeLine1];
-    }
-    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
-    //昨天的起止时间
-    if([self startTimeMoreThanEndTime:sString eTime:eString])
-    {
-        eString = sString;
-    }
-    if(todayComponent.day-2 == -1)
-    {
-        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]];
-    }
-    else
-    {
-        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-1];
-    }
-    
-    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
-    if([timeArray count]>0)
-    {
-        [sectionarray addObject:timeLine2];
-        [tablediction setObject:timeArray forKey:timeLine2];
-    }
-    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
-    
-    //本周的起止时间
-    if([self startTimeMoreThanEndTime:sString eTime:eString])
-    {
-        eString = sString;
-    }
-    if(todayComponent.day-todayComponent.weekday < 0)
-    {
-        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]+(todayComponent.day-todayComponent.weekday)+1];
-    }
-    else
-    {
-        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-todayComponent.weekday+1];
-    }
-    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
-    if([timeArray count]>0)
-    {
-        [sectionarray addObject:timeLine3];
-        [tablediction setObject:timeArray forKey:timeLine3];
-    }
-    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
-    
-    //上一周的起止时间
-    if([self startTimeMoreThanEndTime:sString eTime:eString])
-    {
-        eString = sString;
-    }
-    if(todayComponent.day-(todayComponent.weekday+7)<0)
-    {
-        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]+(todayComponent.day-(todayComponent.weekday+7))+1];
-    }
-    else
-    {
-        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-(todayComponent.weekday+7)+1];
-    }
-    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
-    if([timeArray count]>0)
-    {
-        [sectionarray addObject:timeLine4];
-        [tablediction setObject:timeArray forKey:timeLine4];
-    }
-    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
-    
-    //本月的起止时间
-    if([self startTimeMoreThanEndTime:sString eTime:eString])
-    {
-        eString = sString;
-    }
-    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,1];
-    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
-    if([timeArray count]>0)
-    {
-        [sectionarray addObject:timeLine5];
-        [tablediction setObject:timeArray forKey:timeLine5];
-    }
-    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
-    
-    //上个月的起止时间
-    if([self startTimeMoreThanEndTime:sString eTime:eString])
-    {
-        eString = sString;
-    }
-    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,1];
-    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
-    if([timeArray count]>0)
-    {
-        [sectionarray addObject:timeLine6];
-        [tablediction setObject:timeArray forKey:timeLine6];
-    }
-    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
-    
-    //本年的起止时间
-    if([self startTimeMoreThanEndTime:sString eTime:eString])
-    {
-        eString = sString;
-    }
-    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,1,1];
-    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
-    if([timeArray count]>0)
-    {
-        [sectionarray addObject:timeLine7];
-        [tablediction setObject:timeArray forKey:timeLine7];
-    }
-    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
-    
-    //十年内的数据
-    for(int i=1;i<=10;i++)
-    {
-        if([self startTimeMoreThanEndTime:sString eTime:eString])
-        {
-            eString = sString;
-        }
-        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year-i,1,1];
-        timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
-        if([timeArray count]>0)
-        {
-            [sectionarray addObject:[NSString stringWithFormat:@"%i年",todayComponent.year-i]];
-            [tablediction setObject:timeArray forKey:[NSString stringWithFormat:@"%i年",todayComponent.year-i]];
-        }
-        NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
-    }
-    
-    [self reloadData];
-    
-    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
+//    [self clearsContextBeforeDrawing];
+//    [photo_array removeAllObjects];
+//    [sectionarray removeAllObjects];
+//    NSCalendar *calendar = [NSCalendar currentCalendar];
+//    NSDate *todayDate = [NSDate date];
+//    NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
+//    
+//    //今天的起止时间
+//    NSString *eString  = [NSString stringWithFormat:@"%i-%i-%i %i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute];
+//    NSString *sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day];
+//    PhotoFile *photo_file = [[PhotoFile alloc] init];
+//    NSArray *timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+//    if([timeArray count]>0)
+//    {
+//        [sectionarray addObject:timeLine1];
+//        [tablediction setObject:timeArray forKey:timeLine1];
+//    }
+//    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+//    //昨天的起止时间
+//    if([self startTimeMoreThanEndTime:sString eTime:eString])
+//    {
+//        eString = sString;
+//    }
+//    if(todayComponent.day-2 == -1)
+//    {
+//        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]];
+//    }
+//    else
+//    {
+//        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-1];
+//    }
+//    
+//    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+//    if([timeArray count]>0)
+//    {
+//        [sectionarray addObject:timeLine2];
+//        [tablediction setObject:timeArray forKey:timeLine2];
+//    }
+//    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+//    
+//    //本周的起止时间
+//    if([self startTimeMoreThanEndTime:sString eTime:eString])
+//    {
+//        eString = sString;
+//    }
+//    if(todayComponent.day-todayComponent.weekday < 0)
+//    {
+//        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]+(todayComponent.day-todayComponent.weekday)+1];
+//    }
+//    else
+//    {
+//        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-todayComponent.weekday+1];
+//    }
+//    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+//    if([timeArray count]>0)
+//    {
+//        [sectionarray addObject:timeLine3];
+//        [tablediction setObject:timeArray forKey:timeLine3];
+//    }
+//    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+//    
+//    //上一周的起止时间
+//    if([self startTimeMoreThanEndTime:sString eTime:eString])
+//    {
+//        eString = sString;
+//    }
+//    if(todayComponent.day-(todayComponent.weekday+7)<0)
+//    {
+//        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,[self theDaysInYear:todayComponent.year inMonth:todayComponent.month-1]+(todayComponent.day-(todayComponent.weekday+7))+1];
+//    }
+//    else
+//    {
+//        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,todayComponent.day-(todayComponent.weekday+7)+1];
+//    }
+//    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+//    if([timeArray count]>0)
+//    {
+//        [sectionarray addObject:timeLine4];
+//        [tablediction setObject:timeArray forKey:timeLine4];
+//    }
+//    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+//    
+//    //本月的起止时间
+//    if([self startTimeMoreThanEndTime:sString eTime:eString])
+//    {
+//        eString = sString;
+//    }
+//    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month,1];
+//    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+//    if([timeArray count]>0)
+//    {
+//        [sectionarray addObject:timeLine5];
+//        [tablediction setObject:timeArray forKey:timeLine5];
+//    }
+//    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+//    
+//    //上个月的起止时间
+//    if([self startTimeMoreThanEndTime:sString eTime:eString])
+//    {
+//        eString = sString;
+//    }
+//    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,todayComponent.month-1,1];
+//    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+//    if([timeArray count]>0)
+//    {
+//        [sectionarray addObject:timeLine6];
+//        [tablediction setObject:timeArray forKey:timeLine6];
+//    }
+//    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+//    
+//    //本年的起止时间
+//    if([self startTimeMoreThanEndTime:sString eTime:eString])
+//    {
+//        eString = sString;
+//    }
+//    sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year,1,1];
+//    timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+//    if([timeArray count]>0)
+//    {
+//        [sectionarray addObject:timeLine7];
+//        [tablediction setObject:timeArray forKey:timeLine7];
+//    }
+//    NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+//    
+//    //十年内的数据
+//    for(int i=1;i<=10;i++)
+//    {
+//        if([self startTimeMoreThanEndTime:sString eTime:eString])
+//        {
+//            eString = sString;
+//        }
+//        sString  = [NSString stringWithFormat:@"%i-%i-%i 00:00",todayComponent.year-i,1,1];
+//        timeArray = [photo_file selectMoreTaskTable:sString eDate:eString];
+//        if([timeArray count]>0)
+//        {
+//            [sectionarray addObject:[NSString stringWithFormat:@"%i年",todayComponent.year-i]];
+//            [tablediction setObject:timeArray forKey:[NSString stringWithFormat:@"%i年",todayComponent.year-i]];
+//        }
+//        NSLog(@"timeArray:%@ \n count:%i",timeArray,[timeArray count]);
+//    }
+//    
+//    [self reloadData];
+//    
+//    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
 }
 
 -(void)getPhotoGeneral:(NSDictionary *)dictionary photoDictioin:(NSMutableDictionary *)photoDic
 {
     
+}
+
+-(void)getPhotoArrayTimeline:(NSDictionary *)dictionary
+{
+    [sectionarray removeAllObjects];
+    [photo_diction removeAllObjects];
+    NSLog(@"getPhotoArrayTimeline:%@",dictionary);
+    NSArray *array = [dictionary objectForKey:@"data"];
+    
+    for(NSDictionary *diction in array)
+    {
+        int counts = [[diction objectForKey:@"counts"] intValue];
+        if(counts > 0)
+        {
+            [sectionarray addObject:diction];
+        }
+    }
+    if([sectionarray count]>0)
+    {
+        [self reloadData];
+        photoType = 0;
+        [self requestPhotoType];
+    }
+}
+
+-(void)requestPhotoType
+{
+    if(photoType < [sectionarray count])
+    {
+        NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
+        NSString *Express = [dictionary objectForKey:@"express"];
+        
+        [photoManager getPhotoDetailTimeImage:[[SCBSession sharedSession] homeID] express:Express];
+    }
+}
+
+-(void)getPhotoDetailTimeImage:(NSDictionary *)dictionary
+{
+    NSLog(@"getPhotoDetailTimeImage:%@",dictionary);
+    NSArray *array = [dictionary objectForKey:@"data"];
+    if([array count] > 0)
+    {
+        NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+        for(NSDictionary *dictionary in array)
+        {
+            PhotoFile *demo = [[PhotoFile alloc] init];
+            demo.f_id = [[dictionary objectForKey:@"f_id"] intValue];
+            [tableArray addObject:demo];
+            [demo release];
+        }
+        if([tableArray count] > 0)
+        {
+            NSLog(@"tableArray:%@",tableArray);
+        }
+        NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
+        NSString *tag = [dictionary objectForKey:@"tag"];
+        [photo_diction setObject:tableArray forKey:tag];
+        
+        [tableArray release];
+    }
+    photoType++;
+    [self requestPhotoType];
+    [self reloadData];
 }
 
 -(void)getPhotoDetail:(NSDictionary *)dictionary
@@ -357,7 +434,6 @@
     int fid = button.tag-UIButtonTag;
     if(editBL)
     {
-        
         if(button.selected)
         {
             [button setSelected:NO];
@@ -373,8 +449,9 @@
     }
     else
     {
-        NSString *sectionString = [sectionarray objectAtIndex:button.cell.sectionTag];
-        NSArray *array = [tablediction objectForKey:sectionString];
+        NSDictionary *dictionary = [sectionarray objectAtIndex:button.cell.sectionTag];
+        NSString *sectionString = [dictionary objectForKey:@"tag"];
+        NSArray *array = [photo_diction objectForKey:sectionString];
         [photo_delegate showFile:button.cell.pageTag array:[NSMutableArray arrayWithArray:array]];
     }
     NSLog(@"button:%i",button.tag);
@@ -440,13 +517,14 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [sectionarray objectAtIndex:section];
+    NSDictionary *dictionary = [sectionarray objectAtIndex:section];
+    return [dictionary objectForKey:@"tag"];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *array = [tablediction objectForKey:[sectionarray objectAtIndex:section]];
-    int number = [array count];
+    NSDictionary *dictionary = [sectionarray objectAtIndex:section];
+    int number = [[dictionary objectForKey:@"counts"] intValue];
     if(number%3==0)
     {
         return number/3;
@@ -464,8 +542,8 @@
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *array = [tablediction objectForKey:[sectionarray objectAtIndex:[indexPath section]]];
-    int number = [array count];
+    NSDictionary *dictionary = [sectionarray objectAtIndex:indexPath.section];
+    int number = [[dictionary objectForKey:@"counts"] intValue];
     if(([indexPath row]+1)*3 >= number)
     {
         return 110;
@@ -475,24 +553,72 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        int section = [indexPath section];
-        int row = [indexPath row];
-        static NSString *cellString = @"cellString";
-        PhotoFileCell *cell = [self dequeueReusableCellWithIdentifier:cellString];
-        if(cell == nil)
+    int section = [indexPath section];
+    int row = [indexPath row];
+    static NSString *cellString = @"cellString";
+    PhotoFileCell *cell = [self dequeueReusableCellWithIdentifier:cellString];
+    if(cell == nil)
+    {
+        cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
+    else
+    {
+        while ([cell.contentView.subviews lastObject] != nil) {
+            [(UIView*)[cell.contentView.subviews lastObject] removeFromSuperview];  //删除并进行重新分配
+        }
+    }
+    
+    if([photo_diction.allKeys count] == 0)
+    {
+        NSDictionary *dictionary = [sectionarray objectAtIndex:indexPath.section];
+        int total = [[dictionary objectForKey:@"counts"] intValue];
+        cell.tag = row+UICellTag*section;
+        if(total/3 == row)
         {
-            cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            int number = 3;
+            if(total%3>0)
+            {
+                number = total%3;
+            }
+            for(int i=0;i<number;i++)
+            {
+                if(row*3+i>=total)
+                {
+                    break;
+                }
+                CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
+                UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
+                UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                [cell.contentView addSubview:image];
+                SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
+                [button setTag:row+UIButtonTag*section];
+                [cell.contentView addSubview:button];
+                [button release];
+            }
         }
         else
         {
-            while ([cell.contentView.subviews lastObject] != nil) {
-                [(UIView*)[cell.contentView.subviews lastObject] removeFromSuperview];  //删除并进行重新分配
+            for(int i=0;i<3;i++)
+            {
+                CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
+                UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
+                UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                [cell.contentView addSubview:image];
+                SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
+                [button setTag:row+UIButtonTag*section];
+                [cell.contentView addSubview:button];
+                [button release];
             }
         }
-        
-        NSString *sectionNumber = [sectionarray objectAtIndex:section];
-        NSArray *array = [tablediction objectForKey:sectionNumber];
+    }
+    else
+    {
+        NSDictionary *dictionary = [sectionarray objectAtIndex:indexPath.section];
+        NSString *sectionNumber = [dictionary objectForKey:@"tag"];
+        NSArray *array = [photo_diction objectForKey:sectionNumber];
         if([array count]/3 == row)
         {
             cell.tag = row+UICellTag*section;
@@ -516,8 +642,6 @@
                 UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
                 image.tag = UIImageTag+demo.f_id;
                 [cellT setImageTag:image.tag];
-                
-                
                 
                 {
                     UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
@@ -592,6 +716,7 @@
                         int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
                         if(demo.f_id == fid)
                         {
+                            [button setSelected:YES];
                             [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
                         }
                     }
@@ -701,6 +826,7 @@
                         int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
                         if(demo.f_id == fid)
                         {
+                            [button setSelected:YES];
                             [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
                         }
                     }
@@ -723,8 +849,99 @@
             [cellArray release];
             [imageArray release];
         }
-        NSLog(@"countdd:%i",cell.retainCount);
-        return cell;
+    }
+    return cell;
+}
+
+#pragma mark UIActionSheetDelegate
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(actionSheet.tag == kActionSheetTagShare)
+    {
+        if (buttonIndex == 0) {
+            NSLog(@"短信分享");
+            //[self toDelete:nil];
+            [self messageShare:actionSheet.title];
+        }else if (buttonIndex == 1) {
+            NSLog(@"邮件分享");
+            //[self toShared:nil];
+            [self mailShare:actionSheet.title];
+        }else if(buttonIndex == 2) {
+            NSLog(@"复制");
+            [self pasteBoard:actionSheet.title];
+        }else if(buttonIndex == 3) {
+            NSLog(@"微信");
+            [self weixin:actionSheet.title];
+        }else if(buttonIndex == 4) {
+            NSLog(@"朋友圈");
+            [self frends:actionSheet.title];
+        }else if(buttonIndex == 5) {
+            NSLog(@"新浪");
+        }else if(buttonIndex == 6) {
+            NSLog(@"取消");
+        }
+    }
+    else if(actionSheet.tag == kAlertTagDeleteOne)
+    {
+        if(buttonIndex == 0)
+        {
+            NSMutableArray *array = [[NSMutableArray alloc] init];
+            
+            for(int i=0;i<[_dicReuseCells.allKeys count];i++)
+            {
+                NSString *f_id=[_dicReuseCells objectForKey:[_dicReuseCells.allKeys objectAtIndex:i]];
+                [array addObject:f_id];
+            }
+            if([array count]>0)
+            {
+                [fileManager removeFileWithIDs:array];
+                [_dicReuseCells removeAllObjects];
+            }
+            [array release];
+        }
+    }
+    else if(actionSheet.tag == kActionSheetTagMore)
+    {
+        if(buttonIndex == 0)
+        {
+            [self toMove:nil];
+        }
+//        else if(buttonIndex == 1)
+//        {
+//            [self toRename:nil];
+//        }
+    }
+}
+
+-(void)mailShare:(NSString *)content
+{
+    [photo_delegate mailShare:content];
+}
+
+-(void)pasteBoard:(NSString *)content
+{
+    [[UIPasteboard generalPasteboard] setString:content];
+}
+
+-(void)messageShare:(NSString *)content
+{
+    [photo_delegate messageShare:content];
+}
+
+-(void)weixin:(NSString *)content
+{
+    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
+    AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:NO text:text];
+}
+
+-(void)frends:(NSString *)content
+{
+    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
+    
+    AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:YES text:text];
 }
 
 //这个路径下是否存在此图片
@@ -762,6 +979,142 @@
     return NO;
 }
 
+#pragma mark 
+
+//编辑事件
+-(void)editAction
+{
+    if(!editBL)
+    {
+        [_dicReuseCells removeAllObjects];
+        editBL = YES;
+    }
+}
+
+//取消事件
+-(void)escAction
+{
+    if(editBL)
+    {
+        editBL = FALSE;
+        NSArray *cellArrays = [self indexPathsForVisibleRows];
+        for(int i=0;i<[cellArrays count];i++)
+        {
+            PhotoFileCell *cell = (PhotoFileCell *)[self cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+            NSArray *array = [cell cellArray];
+            for(int j=0;j<[array count];j++)
+            {
+                CellTag *cellTag = [array objectAtIndex:j];
+                for(int k=0;k<[[_dicReuseCells allKeys] count];k++)
+                {
+                    int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:k]] intValue];
+                    if(cellTag.fileTag == fid)
+                    {
+                        UIButton *button = (UIButton *)[self viewWithTag:cellTag.buttonTag];
+                        [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
+                        [button setSelected:NO];
+                    }
+                }
+            }
+        }
+    }
+}
+
+//全部选中事件
+-(void)allCehcked
+{
+    NSArray *cellArrays = [self indexPathsForVisibleRows];
+    for(int i=0;i<[cellArrays count];i++)
+    {
+        PhotoFileCell *cell = (PhotoFileCell *)[self cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+        NSArray *array = [cell cellArray];
+        for(int j=0;j<[array count];j++)
+        {
+            CellTag *cellTag = [array objectAtIndex:j];
+            UIButton *button = (UIButton *)[self viewWithTag:cellTag.buttonTag];
+            [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+            [button setSelected:YES];
+        }
+    }
+    
+    for(int i=0;i<[sectionarray count];i++)
+    {
+        NSDictionary *dictionary = [sectionarray objectAtIndex:i];
+        NSString *sectionNumber = [dictionary objectForKey:@"tag"];
+        NSArray *array = [photo_diction objectForKey:sectionNumber];
+        for(int j=0;j<[array count];j++)
+        {
+            PhotoFile *demo = [array objectAtIndex:j];
+            [_dicReuseCells setObject:[NSNumber numberWithInt:demo.f_id] forKey:[NSString stringWithFormat:@"%i",demo.f_id]];
+        }
+    }
+}
+
+//全部取消
+-(void)allEscCheckde
+{
+    NSArray *cellArrays = [self indexPathsForVisibleRows];
+    for(int i=0;i<[cellArrays count];i++)
+    {
+        PhotoFileCell *cell = (PhotoFileCell *)[self cellForRowAtIndexPath:[cellArrays objectAtIndex:i]];
+        NSArray *array = [cell cellArray];
+        for(int j=0;j<[array count];j++)
+        {
+            CellTag *cellTag = [array objectAtIndex:j];
+            UIButton *button = (UIButton *)[self viewWithTag:cellTag.buttonTag];
+            [button setBackgroundImage:[UIImage imageNamed:@"111.png"] forState:UIControlStateNormal];
+            [button setSelected:NO];
+        }
+    }
+    [_dicReuseCells removeAllObjects];
+}
+
+
+#pragma mark 分享文件
+-(void)toShared:(id)sender
+{
+    
+}
+
+#pragma mark 移动文件
+-(void)toMove:(id)sender
+{
+    
+}
+
+#pragma mark 删除文件
+-(void)toDelete:(id)sender
+{
+    UIActionSheet *actioinSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil, nil];
+    [actioinSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [actioinSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actioinSheet setTag:kAlertTagDeleteOne];
+    [actioinSheet release];
+}
+
+
+#pragma mark SCBFileManagerDelegate
+
+-(void)searchSucess:(NSDictionary *)datadic{}
+-(void)operateSucess:(NSDictionary *)datadic{}
+-(void)openFinderSucess:(NSDictionary *)datadic{}
+//打开家庭成员
+-(void)getOpenFamily:(NSDictionary *)dictionary{}
+-(void)openFinderUnsucess{}
+-(void)removeSucess{}
+-(void)removeUnsucess{}
+-(void)renameSucess{}
+-(void)renameUnsucess{}
+-(void)moveSucess{}
+-(void)moveUnsucess{}
+-(void)newFinderSucess{}
+-(void)newFinderUnsucess{}
+
+#pragma mark  SCBLinkManagerDelegate
+-(void)releaseEmailSuccess:(NSString *)l_url{}
+-(void)releaseLinkSuccess:(NSString *)l_url{}
+-(void)releaseLinkUnsuccess:(NSString *)error_info{}
+
 #pragma mark 得到月份天数
 -(int)theDaysInYear:(int)year inMonth:(int)month
 {
@@ -794,6 +1147,60 @@
     return newImage;
 }
 
+#pragma mark 判断当前时间属于哪一类
+-(NSString *)getNowTimeLineForType:(NSDate *)date
+{
+    //得到当前时间戳
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *component = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:date];
+    
+    NSDate *todayDate = [NSDate date];
+    NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
+    
+    if(todayComponent.year == component.year)
+    {
+        if(todayComponent.month == component.month)
+        {
+            if(todayComponent.week == component.week)
+            {
+                //今天
+                if(todayComponent.weekday == component.weekday)
+                {
+                    return @"今天";
+                }
+                else if(todayComponent.weekday-component.weekday == 1)
+                {
+                    return @"昨天";
+                }
+                else
+                {
+                    return @"本周";
+                }
+            }
+            else if(todayComponent.week - component.week ==1)
+            {
+                return @"上一周";
+            }
+            else
+            {
+                return @"本月";
+            }
+        }
+        else if(todayComponent.month-component.month == 1)
+        {
+            return @"上一月";
+        }
+        else
+        {
+            return @"本年";
+        }
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"%i年",component.year];
+    }
+}
+
 -(void)dealloc
 {
     [photoManager release];
@@ -801,6 +1208,8 @@
     [photo_diction release];
     [sectionarray release];
     [downCellArray release];
+    [fileManager release];
+    [linkManager release];
     [super dealloc];
 }
 
