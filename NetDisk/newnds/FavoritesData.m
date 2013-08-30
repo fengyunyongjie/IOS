@@ -11,6 +11,7 @@
 #import "FavoritesDBController.h"
 #import "SCBDownloader.h"
 #import "FavoritesViewController.h"
+#import "ALAsset+AGIPC.h"
 static FavoritesData *_sharedFavoritesData;
 @implementation FavoritesData
 +(FavoritesData *)sharedFavoritesData
@@ -151,9 +152,27 @@ static FavoritesData *_sharedFavoritesData;
 -(void)fileDidDownload:(int)index
 {
     NSLog(@"文件下载完成");
+    int theIndex=-1;
+    theIndex=[self getIndexWithCurrentFID];
+    NSDictionary *dic=[self.favoritesArray objectAtIndex:theIndex];
+    NSString *t_fl=[[dic objectForKey:@"f_mime"] lowercaseString];
+    if ([t_fl isEqualToString:@"png"]||
+        [t_fl isEqualToString:@"jpg"]||
+        [t_fl isEqualToString:@"jpeg"]||
+        [t_fl isEqualToString:@"bmp"]||
+        [t_fl isEqualToString:@"gif"]){
+        NSString *filePath=[YNFunctions getFMCachePath];
+        NSString *f_name=[dic objectForKey:@"f_name"];
+        filePath=[filePath stringByAppendingPathComponent:f_name];
+        UIImage *image=[UIImage imageWithContentsOfFile:filePath];
+        ALAssetsLibrary *library=[[ALAssetsLibrary alloc] init];
+        [library writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
+            NSLog(@"%@",assetURL);
+            NSLog(@"%@",error);
+        }];
+    }
     if (self.fviewController && [self.fviewController respondsToSelector:@selector(fileDidDownload:)]) {
-        int theIndex=-1;
-        theIndex=[self getIndexWithCurrentFID];
+
         if (theIndex>=[self count]||theIndex<0) {
             NSLog(@"数组下标越界：：：：%d",theIndex);
             return;

@@ -1491,7 +1491,7 @@ typedef enum{
         self.hud=nil;
         self.hud=[[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:self.hud];    [self.hud show:NO];
-        self.hud.labelText=@"文件夹无法进行分享";
+        self.hud.labelText=@"不能分享文件夹";
         self.hud.mode=MBProgressHUDModeText;
         self.hud.margin=10.f;
         [self.hud show:YES];
@@ -2613,7 +2613,8 @@ typedef enum{
         }
     }
     NSString *testFid=[NSString stringWithFormat:@"%@",self.f_id];
-    if ([testFid isEqualToString:@"1"]&&self.listArray.count==0) {
+//    if ([testFid isEqualToString:@"1"]&&self.listArray.count==0) {
+    if (self.listArray.count==0) {
         if (self.spaceImgView==nil) {
             self.spaceImgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pop.png"]];
             self.spaceImgView.frame=self.tableView.frame;
