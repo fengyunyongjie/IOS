@@ -156,7 +156,6 @@
     //初始化文件列表
     CGRect rect = CGRectMake(0, 44, 320, TableViewHeight);
     file_tableView = [[FileTableView alloc] initWithFrame:rect];
-    [file_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [file_tableView setAllHeight:self.view.frame.size.height];
     [file_tableView setFile_delegate:self];
     [self.view addSubview:file_tableView];
@@ -164,7 +163,6 @@
     
     //初始化图片列表
     photo_tableView = [[PhotoTableView alloc] initWithFrame:rect];
-    [photo_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [photo_tableView setPhoto_delegate:self];
     photo_tableView.requestId = [[SCBSession sharedSession] homeID];
     [self.view addSubview:photo_tableView];
@@ -201,7 +199,6 @@
 -(void)clicked_photo:(id)sender
 {
     [file_tableView.selected_dictionary removeAllObjects];
-    [photo_tableView reloadPhotoData];
     UIButton *button = sender;
     //把色值转换成图片
     CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
@@ -223,9 +220,40 @@
     if(!isPhoto)
     {
         isPhoto = TRUE;
+        [photo_tableView reloadPhotoData];
     }
     file_tableView.hidden = YES;
     photo_tableView.hidden = NO;
+}
+
+//点击文件内容
+-(void)clicked_file:(id)sender
+{
+    UIButton *button = sender;
+    //把色值转换成图片
+    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
+    UIGraphicsBeginImageContext(rect_image.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context,
+                                   [hilighted_color CGColor]);
+    CGContextFillRect(context, rect_image);
+    UIImage * imge = [[[UIImage alloc] init] autorelease];
+    imge = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [button setBackgroundImage:imge forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
+    [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [file_button setBackgroundImage:nil forState:UIControlStateNormal];
+    
+    if(isPhoto)
+    {
+        isPhoto = FALSE;
+        [self showFileList];
+    }
+    file_tableView.hidden = NO;
+    photo_tableView.hidden = YES;
 }
 
 -(void)clicked_space:(id)sender
@@ -704,35 +732,6 @@
 -(void)cancelNewFinder:(id)sender
 {
     [newFinder_control setHidden:YES];
-}
-
-//点击文件内容
--(void)clicked_file:(id)sender
-{
-    UIButton *button = sender;
-    //把色值转换成图片
-    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
-    UIGraphicsBeginImageContext(rect_image.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context,
-                                   [hilighted_color CGColor]);
-    CGContextFillRect(context, rect_image);
-    UIImage * imge = [[[UIImage alloc] init] autorelease];
-    imge = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    [button setBackgroundImage:imge forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
-    [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [file_button setBackgroundImage:nil forState:UIControlStateNormal];
-    
-    if(isPhoto)
-    {
-        isPhoto = FALSE;
-    }
-    file_tableView.hidden = NO;
-    photo_tableView.hidden = YES;
 }
 
 #pragma mark FileTableViewDelegate -------------------

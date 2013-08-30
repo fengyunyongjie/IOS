@@ -61,6 +61,11 @@
 //加载数据
 -(void)reloadPhotoData
 {
+    [sectionarray removeAllObjects];
+    [photo_diction removeAllObjects];
+    [self setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    [self reloadData];
+    
     [NSThread detachNewThreadSelector:@selector(requestPhotoTimeLine) toTarget:self withObject:nil];
 }
 
@@ -288,6 +293,7 @@
     }
     photoType++;
     [self requestPhotoType];
+    [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self reloadData];
 }
 
@@ -381,6 +387,10 @@
 
 -(void)getImageLoad
 {
+    
+    NSLog(@"photoManger:%@",photo_diction);
+
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
         if(!downCellArray)
@@ -512,17 +522,29 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if([sectionarray count] == 0)
+    {
+        return 1;
+    }
     return [sectionarray count];
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    if([sectionarray count] == 0)
+    {
+        return nil;
+    }
     NSDictionary *dictionary = [sectionarray objectAtIndex:section];
     return [dictionary objectForKey:@"tag"];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if([sectionarray count] == 0)
+    {
+        return 1;
+    }
     NSDictionary *dictionary = [sectionarray objectAtIndex:section];
     int number = [[dictionary objectForKey:@"counts"] intValue];
     if(number%3==0)
@@ -537,11 +559,19 @@
 
 -(float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if([sectionarray count] == 0)
+    {
+        return 0;
+    }
     return 20;
 }
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([sectionarray count] == 0)
+    {
+        return 50;
+    }
     NSDictionary *dictionary = [sectionarray objectAtIndex:indexPath.section];
     int number = [[dictionary objectForKey:@"counts"] intValue];
     if(([indexPath row]+1)*3 >= number)
@@ -553,6 +583,14 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([sectionarray count] == 0)
+    {
+        PhotoFileCell *cell = [[[PhotoFileCell alloc] init] autorelease];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell.textLabel.text = @"等待中...";
+        return cell;
+    }
+    
     int section = [indexPath section];
     int row = [indexPath row];
     static NSString *cellString = @"cellString";

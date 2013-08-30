@@ -104,6 +104,10 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if([tableArray count] == 0)
+    {
+        return 1;
+    }
     return [tableArray count];
 }
 
@@ -114,6 +118,16 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([tableArray count] == 0)
+    {
+        FileTableViewCell *cell = [[[FileTableViewCell alloc] init] autorelease];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.text = @"等待中...";
+        return cell;
+    }
+    
     static NSString *cellString = @"fileTableViewCell";
     FileTableViewCell *cell = [self dequeueReusableCellWithIdentifier:cellString];
     if(cell == nil)
@@ -246,6 +260,10 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([tableArray count] == 0)
+    {
+        return;
+    }
     NSDictionary *dictioinary = [tableArray objectAtIndex:[indexPath row]];
     upDictionary = dictioinary;
     NSString *f_mime = [dictioinary objectForKey:@"f_mime"];
@@ -1054,6 +1072,8 @@
 //请求文件
 -(void)requestFile:(NSString *)f_id space_id:(NSString *)space_id
 {
+    [tableArray removeAllObjects];
+    [self reloadData];
     p_id = f_id;
     [photoManager openFinderWithID:f_id space_id:space_id];
 }

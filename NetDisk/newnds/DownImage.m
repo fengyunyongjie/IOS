@@ -71,6 +71,7 @@
             {
                 s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?target=%@",SERVER_URL,FM_DOWNLOAD_Look,fielStirng]];
             }
+            NSLog(@"s_url:%@",s_url);
             NSMutableURLRequest *request=[[NSMutableURLRequest alloc] initWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
             [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
             [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
