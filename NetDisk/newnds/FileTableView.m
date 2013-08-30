@@ -19,6 +19,7 @@
 #define kAlertTagDeleteOne 1002
 #define kActionSheetTagShare 70
 #define kActionSheetTagMore 71
+#define kAlertTagMailAddr 72
 #define FileTableViewCellTag 30000
 #define FileTableViewCellCehckTag 30000
 #define CheckButtonColor [UIColor colorWithRed:223.0/255.0 green:230.0/255.0 blue:250.0/255.0 alpha:1.0]
@@ -53,7 +54,6 @@
     fileManager = [[SCBFileManager alloc] init];
     fileManager.delegate = self;
     linkManager = [[SCBLinkManager alloc] init];
-    linkManager.delegate = self;
     tableDictionary = [[NSMutableDictionary alloc] init];
     self.dataSource = self;
     self.delegate = self;
@@ -625,8 +625,12 @@
             [self messageShare:actionSheet.title];
         }else if (buttonIndex == 1) {
             NSLog(@"邮件分享");
-            //[self toShared:nil];
-            [self mailShare:actionSheet.title];
+            NSString *name=@"";
+            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"邮件分享" message:@"请您输入分享人的邮件地址：" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+            [[alert textFieldAtIndex:0] setText:name];
+            [alert setTag:kAlertTagMailAddr];
+            [alert show];
         }else if(buttonIndex == 2) {
             NSLog(@"复制");
             [self pasteBoard:actionSheet.title];
@@ -684,46 +688,33 @@
 
 -(void)mailShare:(NSString *)content
 {
-    [file_delegate mailShare:content];
+    sharedType = 2;
+    [self getPubSharedLink];
 }
 
 -(void)pasteBoard:(NSString *)content
 {
-    [[UIPasteboard generalPasteboard] setString:content];
-    
-    if (self.hud) {
-        [self.hud removeFromSuperview];
-    }
-    self.hud=nil;
-    self.hud=[[MBProgressHUD alloc] initWithView:self];
-    [self addSubview:self.hud];
-    [self.hud show:NO];
-    self.hud.labelText=@"已经复制成功";
-    self.hud.mode=MBProgressHUDModeText;
-    self.hud.margin=10.f;
-    [self.hud show:YES];
-    [self.hud hide:YES afterDelay:1.0f];
+    sharedType = 3;
+    [self getPubSharedLink];
+//    [[UIPasteboard generalPasteboard] setString:content];
 }
 
 -(void)messageShare:(NSString *)content
 {
-    [file_delegate messageShare:content];
+    sharedType = 1;
+    [self getPubSharedLink];
 }
 
 -(void)weixin:(NSString *)content
 {
-    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-    
-    AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate sendImageContentIsFiends:NO text:text];
+    sharedType = 4;
+    [self getPubSharedLink];
 }
 
 -(void)frends:(NSString *)content
 {
-    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-    
-    AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate sendImageContentIsFiends:YES text:text];
+    sharedType = 5;
+    [self getPubSharedLink];
 }
 
 #pragma mark 更多文件
@@ -735,6 +726,35 @@
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     [actionSheet release];
     [self EscMenu];
+}
+
+#pragma mark 请求外链
+-(void)getPubSharedLink
+{
+    linkManager.delegate = self;
+    NSMutableArray *array = [NSMutableArray array];
+    if([selected_dictionary.allKeys count] == 0)
+    {
+        NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+        NSString *f_id=[dic objectForKey:@"f_id"];
+        [array addObject:f_id];
+    }
+    else
+    {
+        for(int i=0;i<[selected_dictionary.allKeys count];i++)
+        {
+            NSString *f_id=[selected_dictionary objectForKey:[selected_dictionary.allKeys objectAtIndex:i]];
+            [array addObject:f_id];
+        }
+    }
+    if([array count]>0)
+    {
+        [linkManager linkWithIDs:array];
+    }
+    else
+    {
+        NSLog(@"没有选中文件");
+    }
 }
 
 #pragma mark clickMenu
@@ -756,31 +776,115 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 1)
+    if(alertView.tag == kAlertTagRename)
     {
-        NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
-        NSString *name=[dic objectForKey:@"f_name"];
-        NSString *f_id=[dic objectForKey:@"f_id"];
-        if(alertView.tag == kAlertTagRename)
+        if(buttonIndex == 1)
         {
-            NSString *fildtext=[[alertView textFieldAtIndex:0] text];
-            if (![fildtext isEqualToString:name]) {
-                [fileManager renameWithID:f_id newName:fildtext];
+            NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+            NSString *name=[dic objectForKey:@"f_name"];
+            NSString *f_id=[dic objectForKey:@"f_id"];
+            if(alertView.tag == kAlertTagRename)
+            {
+                NSString *fildtext=[[alertView textFieldAtIndex:0] text];
+                if (![fildtext isEqualToString:name]) {
+                    [fileManager renameWithID:f_id newName:fildtext];
+                }
             }
+        }
+    }
+    else if(alertView.tag == kAlertTagMailAddr)
+    {
+        if (buttonIndex==1) {
+            NSString *fildtext=[[alertView textFieldAtIndex:0] text];
+            if (![self checkIsEmail:fildtext])
+            {
+                if (self.hud) {
+                    [self.hud removeFromSuperview];
+                }
+                return;
+            }
+            
+            NSMutableArray *array = [NSMutableArray array];
+            if([selected_dictionary.allKeys count] == 0)
+            {
+                NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+                NSString *f_id=[dic objectForKey:@"f_id"];
+                [array addObject:f_id];
+            }
+            else
+            {
+                for(int i=0;i<[selected_dictionary.allKeys count];i++)
+                {
+                    NSString *f_id=[selected_dictionary objectForKey:[selected_dictionary.allKeys objectAtIndex:i]];
+                    [array addObject:f_id];
+                }
+            }
+            [linkManager releaseLinkEmail:array l_pwd:@"a1b2" receiver:@[fildtext]];
+            
+            NSLog(@"点击确定");
+        }else
+        {
+            NSLog(@"点击其它");
         }
     }
 }
 
 #pragma mark SCBLinkManagerDelegate -------------
+-(void)releaseEmailSuccess:(NSString *)l_url
+{
+    NSLog(@"l_url:%@",l_url);
+}
 
 -(void)releaseLinkSuccess:(NSString *)l_url
 {
     NSLog(@"releaseLinkSuccess:%@",l_url);
+    if(sharedType == 1)
+    {
+        //短信分享
+        [file_delegate messageShare:l_url];
+    }
+    else if(sharedType == 2)
+    {
+        //邮件分享
+        [file_delegate mailShare:l_url];
+    }
+    else if(sharedType == 3)
+    {
+        //复制
+        [[UIPasteboard generalPasteboard] setString:l_url];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self];
+        [self addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"已经复制成功";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+    }
+    else if(sharedType == 4)
+    {
+        //微信
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+
+        AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate sendImageContentIsFiends:NO text:text];
+    }
+    else if(sharedType == 5)
+    {
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+        
+        AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate sendImageContentIsFiends:YES text:text];
+    }
 }
 
 -(void)releaseLinkUnsuccess:(NSString *)error_info
 {
-    
+    NSLog(@"error_info:%@",error_info);
 }
 
 #pragma mark SCBFileManagerDelegate -------------
@@ -857,11 +961,6 @@
 {
     NSLog(@"dictionary:%@",dictionary);
     NSMutableArray *table_array = [[NSMutableArray alloc] init];
-    [tableArray removeAllObjects];
-    //添加我自己的信息
-    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:@"space_comment",@"我的",@"space_id",[[SCBSession sharedSession] homeID], nil];
-    [tableArray addObject:dic];
-    [dic release];
     NSArray *array = [dictionary objectForKey:@"spaces"];
     if([array count] > 0)
     {
@@ -924,6 +1023,7 @@
         cell.image_view.hidden = YES;
         cell.select_button.hidden = YES;
     }
+    [self allEscCheckde];
 }
 
 //选择事件
@@ -1006,6 +1106,14 @@
     }
 }
 
+-(BOOL)checkIsEmail:(NSString *)text
+{
+    NSString *Regex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
+    
+    return [emailTest evaluateWithObject:text];
+}
 
 //获取图片路径
 - (NSString*)get_image_save_file_path:(NSString*)image_path

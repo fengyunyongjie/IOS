@@ -39,6 +39,7 @@
     NSArray *member_array;
     
     NSString *spaceId;
+    int sharedType;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -62,6 +63,7 @@
 @property(nonatomic,retain) UILabel *label_all;
 @property(nonatomic,retain) UIControl *space_control;
 @property(nonatomic,retain) NSArray *member_array;
+@property(nonatomic,assign) int sharedType;
 
 //显示文件列表
 -(void)showFileList;

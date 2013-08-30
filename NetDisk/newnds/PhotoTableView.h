@@ -11,6 +11,8 @@
 #import "DownImage.h"
 #import "SCBFileManager.h"
 #import "SCBLinkManager.h"
+#import <MessageUI/MessageUI.h>
+#import "MBProgressHUD.h"
 
 @protocol PhotoTableViewDelegate <NSObject>
 
@@ -30,7 +32,7 @@
 
 @end
 
-@interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIActionSheetDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate>
+@interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIActionSheetDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate,UIAlertViewDelegate>
 {
     SCBPhotoManager *photoManager;
 	NSMutableDictionary *_dicReuseCells; //选中的数据
@@ -48,8 +50,11 @@
     id<PhotoTableViewDelegate> photo_delegate;
     SCBFileManager *fileManager;
     SCBLinkManager *linkManager;
-    
+    MBProgressHUD *hud;
     int photoType;
+    int sharedType;  //1 短信分享，2 邮件分享，3 复制，4 微信，5 朋友圈
+    
+    NSString *requestId;
 }
 
 @property(nonatomic,assign) SCBPhotoManager *photoManager;
@@ -68,6 +73,8 @@
 @property(nonatomic,retain) id<PhotoTableViewDelegate> photo_delegate;
 @property(nonatomic,retain) SCBFileManager *fileManager;
 @property(nonatomic,retain) SCBLinkManager *linkManager;
+@property(nonatomic,retain) MBProgressHUD *hud;
+@property(nonatomic,retain) NSString *requestId;
 
 //加载数据
 -(void)reloadPhotoData;

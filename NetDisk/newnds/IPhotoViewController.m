@@ -39,6 +39,7 @@
 @synthesize label_all;
 @synthesize space_control;
 @synthesize member_array;
+@synthesize sharedType;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -70,7 +71,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(appleDate.myTabBarController.IsTabBarHiden)
+    if(appleDate.myTabBarController.IsTabBarHiden && !isPhoto)
     {
         [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
     }
@@ -165,6 +166,7 @@
     photo_tableView = [[PhotoTableView alloc] initWithFrame:rect];
     [photo_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [photo_tableView setPhoto_delegate:self];
+    photo_tableView.requestId = [[SCBSession sharedSession] homeID];
     [self.view addSubview:photo_tableView];
     
     if(isPhoto)
@@ -192,7 +194,7 @@
 //请求我的家庭空间
 -(void)requestSpace
 {
-    [file_tableView requestSpace:spaceId];
+    [file_tableView requestSpace:@""];
 }
 
 //点击照片内容
@@ -247,21 +249,91 @@
     [top_iamge release];
     
     UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Ns.png"]];
-    bg.frame=CGRectMake(35, 49, 250, [member_array count]*44);
+    bg.frame=CGRectMake(35, 49, 250, [member_array count]*44+[member_array count]-1);
     [space_control addSubview:bg];
+    int count = 0;
     for(int i=0;i<[member_array count];i++)
     {
-        CGRect button_rect = CGRectMake((320-250)/2, 49+44*i, 250, 44);
+        CGRect button_rect = CGRectMake((320-250)/2, 49+45*i, 250, 44);
         UIButton *button = [[UIButton alloc] initWithFrame:button_rect];
         [button setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         NSDictionary *dictioinary = [member_array objectAtIndex:i];
         NSString *space_comment = [dictioinary objectForKey:@"space_comment"];
-        [button setTitle:[NSString stringWithFormat:@"%@的家庭空间",space_comment] forState:UIControlStateNormal];
+        NSString *space_id = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"space_id"]];
+        double space_inuse = [[dictioinary objectForKey:@"space_inuse"] doubleValue];
+        double space_size = [[dictioinary objectForKey:@"space_size"] doubleValue];
+//        [button setTitle:[NSString stringWithFormat:@"%@的家庭空间",space_comment] forState:UIControlStateNormal];
         button.tag = KButtonTagSpqce+i;
         [button addTarget:self action:@selector(clickRowSpaceId:) forControlEvents:UIControlEventTouchUpInside];
         [space_control addSubview:button];
+        
+        CGRect title_rect = CGRectMake(0, 0, 250, 22);
+        UILabel *title_label = [[UILabel alloc] initWithFrame:title_rect];
+        [title_label setFont:[UIFont systemFontOfSize:16]];
+        [title_label setTextColor:[UIColor whiteColor]];
+        
+        int homeId = [[[SCBSession sharedSession] homeID] intValue];
+        if([space_id intValue] == homeId)
+        {
+            [title_label setText:[NSString stringWithFormat:@"我的家庭空间"]];
+        }
+        else
+        {
+            count++;
+            [title_label setText:[NSString stringWithFormat:@"家庭空间%i:%@",count,space_comment]];
+        }
+        
+        [title_label setTextAlignment:NSTextAlignmentCenter];
+        [title_label setBackgroundColor:[UIColor clearColor]];
+        [button addSubview:title_label];
+        [title_label release];
+        
+        CGRect big_rect = CGRectMake(0, 22, 250, 22);
+        UILabel *big_label = [[UILabel alloc] initWithFrame:big_rect];
+        [big_label setTextColor:[UIColor whiteColor]];
+        [big_label setFont:[UIFont systemFontOfSize:12]];
+        [big_label setText:[NSString stringWithFormat:@"(%@,%@)",[self formatSpaceSize:space_inuse],[self formatSpaceSize:space_size]]];
+        [big_label setTextAlignment:NSTextAlignmentCenter];
+        [big_label setBackgroundColor:[UIColor clearColor]];
+        [button addSubview:big_label];
+        [big_label release];
         [button release];
+        
+        if(i<[member_array count])
+        {
+            CGRect label_rect = CGRectMake((320-250)/2, 49+45*i+44, 250, 1);
+            UILabel *label = [[UILabel alloc] initWithFrame:label_rect];
+            [label setBackgroundColor:[UIColor whiteColor]];
+            [space_control addSubview:label];
+            [label release];
+        }
     }
+}
+
+-(NSString *)formatSpaceSize:(double)spaceSize
+{
+    NSString *format = @"";
+    //KB
+    if(spaceSize<1024.0*1024.0)
+    {
+        format = [NSString stringWithFormat:@"%.2fKB",spaceSize/1024.0];
+    }
+    //MB
+    else if(spaceSize<1024.0*1024.0*1024.0)
+    {
+        format = [NSString stringWithFormat:@"%.2fMB",spaceSize/1024.0/1024.0];
+    }
+    //GB
+    else if(spaceSize < 1024.0*1024.0*1024.0*1024.0)
+    {
+        format = [NSString stringWithFormat:@"%.2fGB",spaceSize/1024.0/1024.0/1024.0];
+    }
+    //TB
+    else if(spaceSize < 1024.0*1024.0*1024.0*1024.0*1024.0)
+    {
+        format = [NSString stringWithFormat:@"%.2fTB",spaceSize/1024.0/1024.0/1024/1024.0];
+    }
+    return format;
 }
 
 -(void)touchSpaceView:(id)sender
@@ -282,10 +354,17 @@
         if(space_id)
         {
             spaceId = space_id;
+            photo_tableView.requestId = spaceId;
         }
     }
-    [self viewWillAppear:YES];
-//    file_tableView.p_id = ;
+    if(isPhoto)
+    {
+        [photo_tableView reloadPhotoData];
+    }
+    else
+    {
+        [self showFileList];
+    }
 }
 
 -(void)clicked_more:(id)sender
@@ -720,6 +799,30 @@
     }
 }
 
+#pragma mark messageComposeDelegate
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+	NSString *resultValue=@"";
+	switch (result)
+	{
+		case MessageComposeResultCancelled:
+			resultValue = @"Result: SMS sending canceled";
+			break;
+		case MessageComposeResultSent:
+			resultValue = @"Result: SMS sent";
+			break;
+		case MessageComposeResultFailed:
+			resultValue = @"Result: SMS sending failed";
+			break;
+		default:
+			resultValue = @"Result: SMS not sent";
+			break;
+	}
+    NSLog(@"%@",resultValue);
+	[self dismissModalViewControllerAnimated:YES];
+}
+
 -(void)mailShare:(NSString *)content
 {
     NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
@@ -770,7 +873,7 @@
 {
     if(isPhoto)
     {
-        
+        [photo_tableView toShared:nil];
     }
     else
     {

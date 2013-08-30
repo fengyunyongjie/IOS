@@ -30,9 +30,10 @@
 #define kAlertTagDeleteOne 1002
 #define kActionSheetTagShare 70
 #define kActionSheetTagMore 71
+#define kAlertTagMailAddr 72
 
 @implementation PhotoTableView
-@synthesize photoManager,_dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager;
+@synthesize photoManager,_dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager,hud,requestId;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -67,8 +68,7 @@
 -(void)requestPhotoTimeLine
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-//        [photoManager getPhotoTimeLine:TRUE];
-        [photoManager getPhotoArrayTimeline:[[SCBSession sharedSession] homeID]];
+        [photoManager getPhotoArrayTimeline:requestId];
     });
     
 }
@@ -258,7 +258,7 @@
         NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
         NSString *Express = [dictionary objectForKey:@"express"];
         
-        [photoManager getPhotoDetailTimeImage:[[SCBSession sharedSession] homeID] express:Express];
+        [photoManager getPhotoDetailTimeImage:requestId express:Express];
     }
 }
 
@@ -853,6 +853,48 @@
     return cell;
 }
 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == kAlertTagMailAddr)
+    {
+        if (buttonIndex==1) {
+            NSString *fildtext=[[alertView textFieldAtIndex:0] text];
+            if (![self checkIsEmail:fildtext])
+            {
+                if (self.hud) {
+                    [self.hud removeFromSuperview];
+                }
+                return;
+            }
+            
+            NSMutableArray *f_ids=[NSMutableArray array];
+            for (int i=0;i<_dicReuseCells.allKeys.count;i++) {
+                NSString *key = [_dicReuseCells.allKeys objectAtIndex:i];
+                NSString *fid = [NSString stringWithFormat:@"%@",[_dicReuseCells objectForKey:key]];
+                if (fid) {
+                    [f_ids addObject:fid];
+                }
+            }
+            
+            [linkManager releaseLinkEmail:f_ids l_pwd:@"a1b2" receiver:@[fildtext]];
+            
+            NSLog(@"点击确定");
+        }else
+        {
+            NSLog(@"点击其它");
+        }
+    }
+}
+
+-(BOOL)checkIsEmail:(NSString *)text
+{
+    NSString *Regex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    
+    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
+    
+    return [emailTest evaluateWithObject:text];
+}
+
 #pragma mark UIActionSheetDelegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -864,8 +906,12 @@
             [self messageShare:actionSheet.title];
         }else if (buttonIndex == 1) {
             NSLog(@"邮件分享");
-            //[self toShared:nil];
-            [self mailShare:actionSheet.title];
+            NSString *name=@"";
+            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"邮件分享" message:@"请您输入分享人的邮件地址：" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+            [[alert textFieldAtIndex:0] setText:name];
+            [alert setTag:kAlertTagMailAddr];
+            [alert show];
         }else if(buttonIndex == 2) {
             NSLog(@"复制");
             [self pasteBoard:actionSheet.title];
@@ -906,42 +952,55 @@
         {
             [self toMove:nil];
         }
-//        else if(buttonIndex == 1)
-//        {
-//            [self toRename:nil];
-//        }
     }
 }
 
 -(void)mailShare:(NSString *)content
 {
-    [photo_delegate mailShare:content];
+    sharedType = 2;
+    [self getPubSharedLink];
 }
 
 -(void)pasteBoard:(NSString *)content
 {
-    [[UIPasteboard generalPasteboard] setString:content];
+    sharedType = 3;
+    [self getPubSharedLink];
 }
 
 -(void)messageShare:(NSString *)content
 {
-    [photo_delegate messageShare:content];
+    sharedType = 1;
+    [self getPubSharedLink];
 }
 
 -(void)weixin:(NSString *)content
 {
-    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-    
-    AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate sendImageContentIsFiends:NO text:text];
+    sharedType = 4;
+    [self getPubSharedLink];
 }
 
 -(void)frends:(NSString *)content
 {
-    NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-    
-    AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate sendImageContentIsFiends:YES text:text];
+    sharedType = 5;
+    [self getPubSharedLink];
+}
+
+#pragma mark 分享方法
+-(void)getPubSharedLink
+{
+    linkManager.delegate = self;
+    if([_dicReuseCells.allKeys count]>0)
+    {
+        NSMutableArray *f_ids=[NSMutableArray array];
+        for (int i=0;i<_dicReuseCells.allKeys.count;i++) {
+            NSString *key = [_dicReuseCells.allKeys objectAtIndex:i];
+            NSString *fid = [NSString stringWithFormat:@"%@",[_dicReuseCells objectForKey:key]];
+            if (fid) {
+                [f_ids addObject:fid];
+            }
+        }
+        [linkManager linkWithIDs:f_ids];
+    }
 }
 
 //这个路径下是否存在此图片
@@ -1073,7 +1132,13 @@
 #pragma mark 分享文件
 -(void)toShared:(id)sender
 {
-    
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
+    NSString *l_url=@"分享";
+    [actionSheet setTitle:l_url];
+    [actionSheet setTag:kActionSheetTagShare];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [actionSheet release];
 }
 
 #pragma mark 移动文件
@@ -1099,7 +1164,18 @@
 -(void)operateSucess:(NSDictionary *)datadic{}
 -(void)openFinderSucess:(NSDictionary *)datadic{}
 //打开家庭成员
--(void)getOpenFamily:(NSDictionary *)dictionary{}
+-(void)getOpenFamily:(NSDictionary *)dictionary
+{
+    NSLog(@"dictionary:%@",dictionary);
+    NSMutableArray *table_array = [[NSMutableArray alloc] init];
+    NSArray *array = [dictionary objectForKey:@"spaces"];
+    if([array count] > 0)
+    {
+        [table_array addObjectsFromArray:array];
+    }
+    [photo_delegate setMemberArray:table_array];
+    [table_array release];
+}
 -(void)openFinderUnsucess{}
 -(void)removeSucess{}
 -(void)removeUnsucess{}
@@ -1111,8 +1187,56 @@
 -(void)newFinderUnsucess{}
 
 #pragma mark  SCBLinkManagerDelegate
--(void)releaseEmailSuccess:(NSString *)l_url{}
--(void)releaseLinkSuccess:(NSString *)l_url{}
+-(void)releaseEmailSuccess:(NSString *)l_url
+{
+    NSLog(@"邮件分享成功：%@",l_url);
+}
+-(void)releaseLinkSuccess:(NSString *)l_url
+{
+    NSLog(@"releaseLinkSuccess:%@",l_url);
+    if(sharedType == 1)
+    {
+        //短信分享
+        [photo_delegate messageShare:l_url];
+    }
+    else if(sharedType == 2)
+    {
+        //邮件分享
+        [photo_delegate mailShare:l_url];
+    }
+    else if(sharedType == 3)
+    {
+        //复制
+        [[UIPasteboard generalPasteboard] setString:l_url];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self];
+        [self addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"已经复制成功";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+    }
+    else if(sharedType == 4)
+    {
+        //微信
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+        
+        AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate sendImageContentIsFiends:NO text:text];
+    }
+    else if(sharedType == 5)
+    {
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+        
+        AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate sendImageContentIsFiends:YES text:text];
+    }
+}
 -(void)releaseLinkUnsuccess:(NSString *)error_info{}
 
 #pragma mark 得到月份天数
@@ -1210,6 +1334,7 @@
     [downCellArray release];
     [fileManager release];
     [linkManager release];
+    [requestId release];
     [super dealloc];
 }
 

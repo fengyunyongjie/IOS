@@ -53,6 +53,7 @@
     NSMutableDictionary *selected_dictionary;
     MBProgressHUD *hud;
     BOOL isEdition;
+    int sharedType; //1 短信分享，2 邮件分享，3 复制，4 微信，5 朋友圈
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
