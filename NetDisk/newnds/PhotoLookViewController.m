@@ -525,7 +525,7 @@
                 [downImage setFileId:demo.f_id];
                 [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
                 [downImage setImageViewIndex:ImageViewTag+i];
-                [downImage setIndex:ACTNUMBER+i];
+                [downImage setIndexPath:[NSIndexPath indexPathForRow:ACTNUMBER+i inSection:0]];
                 NSLog(@"downImage index-------------:%i",ACTNUMBER+i);
                 [downImage setShowType:1];
                 [downImage setDelegate:self];
@@ -612,7 +612,7 @@
                 [downImage setFileId:demo.f_id];
                 [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
                 [downImage setImageViewIndex:ImageViewTag+i];
-                [downImage setIndex:ACTNUMBER+i];
+                [downImage setIndexPath:[NSIndexPath indexPathForRow:ACTNUMBER+i inSection:0]];
                 NSLog(@"downImage index-------------:%i",ACTNUMBER+i);
                 [downImage setShowType:1];
                 [downImage setDelegate:self];
@@ -1210,10 +1210,10 @@
             [imageV performSelectorOnMainThread:@selector(setImage:) withObject:scaleImage waitUntilDone:YES];
             NSLog(@"image:%i",image.retainCount);
         }
-        NSLog(@"appImageDidLoad index-------------:%i",index);
-        if([[imageScrollView viewWithTag:index] isKindOfClass:[UIActivityIndicatorView class]])
+        NSLog(@"appImageDidLoad index-------------:%i",indexPath.row);
+        if([[imageScrollView viewWithTag:indexPath.row] isKindOfClass:[UIActivityIndicatorView class]])
         {
-            UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:index];
+            UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:indexPath.row];
             [activity_indicator stopAnimating];
             [activity_indicator removeFromSuperview];
         }
