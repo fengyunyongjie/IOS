@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-@interface OtherBrowserViewController : UIViewController<UIDocumentInteractionControllerDelegate>
+#import "QLBrowserViewController.h"
+@interface OtherBrowserViewController : UIViewController<UIDocumentInteractionControllerDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate>
 @property (strong,nonatomic) IBOutlet UIToolbar *toolbar;
 @property (strong,nonatomic) IBOutlet UIBarButtonItem *shareItem;
 @property (strong,nonatomic) IBOutlet UIBarButtonItem *openItem;

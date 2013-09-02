@@ -7,6 +7,7 @@
 //
 
 #import "OtherBrowserViewController.h"
+#import "QLBrowserViewController.h"
 #import "SCBDownloader.h"
 #import "YNFunctions.h"
 #define TabBarHeight 60
@@ -178,9 +179,18 @@
 {
     [self.downloadProgress setHidden:YES];
     [self.downloadLabel setText:@"下载完成"];
-    UIDocumentInteractionController *docIC=[[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:self.savePath]] autorelease];
-    docIC.delegate=self;
-    [docIC presentPreviewAnimated:YES];
+    QLBrowserViewController *previewController=[[QLBrowserViewController alloc] init];
+    previewController.dataSource=self;
+    previewController.delegate=self;
+    
+    previewController.currentPreviewItemIndex=0;
+    [previewController setHidesBottomBarWhenPushed:YES];
+    [self presentViewController:previewController animated:YES completion:^(void){
+        NSLog(@"%@",previewController);
+    }];
+//    UIDocumentInteractionController *docIC=[[UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:self.savePath]] autorelease];
+//    docIC.delegate=self;
+//    [docIC presentPreviewAnimated:YES];
     [self.openItem setEnabled:YES];
 }
 -(void)updateProgress:(long)size index:(int)index
@@ -197,4 +207,40 @@
 {
     return self;
 }
+#pragma mark - QLPreviewControllerDataSource
+// Returns the number of items that the preview controller should preview
+- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)previewController
+{
+    NSInteger numToPreview = 0;
+    //
+    //    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    //    if (selectedIndexPath.section == 0)
+    //        numToPreview = NUM_DOCS;
+    //    else
+    //        numToPreview = self.documentURLs.count;
+    //
+    //    return numToPreview;
+    //numToPreview=[self.tableView numberOfRowsInSection:0];
+    //return numToPreview;
+    return 1;
+}
+- (void)previewControllerDidDismiss:(QLPreviewController *)controller
+{
+    // if the preview dismissed (done button touched), use this method to post-process previews
+}
+// returns the item that the preview controller should preview
+- (id)previewController:(QLPreviewController *)previewController previewItemAtIndex:(NSInteger)idx
+{
+    NSURL *fileURL = nil;
+    
+//    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+//    NSDictionary *dic=[self.listArray objectAtIndex:selectedIndexPath.row];
+//    NSString *fileName=[dic objectForKey:@"f_name"];
+//    NSString *filePath=[YNFunctions getFMCachePath];
+//    filePath=[filePath stringByAppendingPathComponent:fileName];
+//    fileURL=[NSURL fileURLWithPath:filePath];
+    fileURL=[NSURL fileURLWithPath:self.savePath];
+    return fileURL;
+}
+
 @end
