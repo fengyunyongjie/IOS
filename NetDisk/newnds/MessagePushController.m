@@ -99,8 +99,8 @@
     //请求消息
     messageManager = [[SCBMessageManager alloc] init];
     [messageManager setDelegate:self];
-    unreadBL = 0;
-    [messageManager selectMessages:1 cursor:0 offset:-1 unread:1];
+    unreadBL = 1;
+    [messageManager selectMessages:1 cursor:0 offset:-1 unread:-1];
     
     //好友管理
     friendManager = [[SCBFriendManager alloc] init];
@@ -165,7 +165,7 @@
     NSString *msg_sort = [diction objectForKey:@"msg_sort"];
     NSString *msg_sender_remark = [diction objectForKey:@"msg_sender_remark"];
     [cell setUpdate:text timeString:time msg_type:msg_type msg_sender_remark:msg_sender_remark msg_sort:msg_sort];
-    BOOL isLook = [[diction objectForKey:@"isLook"] boolValue];
+    BOOL isLook = [[diction objectForKey:@"is_browse"] boolValue];
     if(isLook)
     {
         [cell.accept_button setHidden:YES];
@@ -178,7 +178,7 @@
 {
     UIButton *button = sender;
     int row = button.tag-AcceptTag;
-    NSDictionary *diction = [table_array objectAtIndex:row];
+    NSMutableDictionary *diction = [table_array objectAtIndex:row];
     int msg_type = [[diction objectForKey:@"msg_type"] intValue];
     int sort_type = [[diction objectForKey:@"msg_sort"] intValue];
     if(msg_type == 1)
@@ -187,7 +187,7 @@
         {
             NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
             NSString *file_id = [diction objectForKey:@"file_id"];
-            [diction setValue:@"1" forKey:@"isLook"];
+            [diction setValue:@"1" forKey:@"is_browse"];
             NSLog(@"shareManager:%@",shareManager);
             [shareManager shareInvitationAdd:file_id friend_id:msg_sender_id];
         }
@@ -197,7 +197,7 @@
             //添加好友请求
             NSString *friendId = [diction objectForKey:@"account"];
             NSString *mark = [diction objectForKey:@"msg_sender_remark"];
-            [diction setValue:@"1" forKey:@"isLook"];
+            [diction setValue:@"1" forKey:@"is_browse"];
             NSLog(@"groupId:%@",self.group_id);
             if(self.group_id != nil)
             {
@@ -250,33 +250,19 @@
     if(code == 0)
     {
         NSArray *array = [dictioinary objectForKey:@"msgs"];
-        for(NSDictionary *diction in array)
-        {
-            NSMutableDictionary *tionary = [[NSMutableDictionary alloc] initWithDictionary:diction];
-            if(unreadBL == 1)
-            {
-                [tionary setValue:@"1" forKey:@"isLook"];
-            }
-            else
-            {
-                [tionary setValue:@"0" forKey:@"isLook"];
-            }
-            
-            [table_array addObject:tionary];
-            [tionary release];
-        }
         NSLog(@"得到消息：%@",array);
-//        [table_array addObjectsFromArray:array];
-        [self.table_view reloadData];
-        if(!isSelect)
-        {
-            unreadBL = 1;
-            [messageManager selectMessages:1 cursor:0 offset:-1 unread:0];
-            isSelect = TRUE;
+        
+        for (NSDictionary *diction in array) {
+            NSMutableDictionary *tableD = [[NSMutableDictionary alloc] initWithDictionary:diction];
+            [table_array addObject:tableD];
+            [tableD release];
         }
-        else
+        
+        if([table_array count]>0)
         {
+            [self.table_view reloadData];
             [friendManager getFriendshipsGroups:0 offset:-1];
+            isSelect = FALSE;
         }
     }
     NSLog(@"dictioinary:%@",table_array);

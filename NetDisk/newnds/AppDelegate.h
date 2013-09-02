@@ -27,6 +27,7 @@
     AutomaticUpload *maticUpload;
     BOOL isAutomicUpload;
     NSMutableArray *title_string;
+    BOOL isBackGround;
 }
 
 @property (strong, nonatomic) UIWindow *window;
