@@ -1183,12 +1183,12 @@ typedef enum{
                 self.fm=[[[SCBFileManager alloc] init] autorelease];
                 [self.fm setDelegate:self];
                 NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
-                if ([strFid isEqualToString:@"1"]) {
-                    [self.fm openFinderWithCategory:CATEGORY_MUSIC];
-                }else
-                {
+//                if ([strFid isEqualToString:@"1"]) {
+//                    [self.fm openFinderWithCategory:CATEGORY_MUSIC];
+//                }else
+//                {
                     [self.fm openFileWithID:self.f_id category:CATEGORY_MUSIC];
-                }
+//                }
             }
                 break;
             case kSelectFileTypeDocument:
@@ -1198,12 +1198,12 @@ typedef enum{
                 self.fm=[[[SCBFileManager alloc] init] autorelease];
                 [self.fm setDelegate:self];
                 NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
-                if ([strFid isEqualToString:@"1"]) {
-                    [self.fm openFinderWithCategory:CATEGORY_DOCUMENT];
-                }else
-                {
+//                if ([strFid isEqualToString:@"1"]) {
+//                    [self.fm openFinderWithCategory:CATEGORY_DOCUMENT];
+//                }else
+//                {
                     [self.fm openFileWithID:self.f_id category:CATEGORY_DOCUMENT];
-                }
+//                }
             }
                 break;
             case kSelectFileTypeImage:
@@ -1213,12 +1213,12 @@ typedef enum{
                 self.fm=[[[SCBFileManager alloc] init] autorelease];
                 [self.fm setDelegate:self];
                 NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
-                if ([strFid isEqualToString:@"1"]) {
-                    [self.fm openFinderWithCategory:CATEGORY_PICTURE];
-                }else
-                {
+//                if ([strFid isEqualToString:@"1"]) {
+//                    [self.fm openFinderWithCategory:CATEGORY_PICTURE];
+//                }else
+//                {
                     [self.fm openFileWithID:self.f_id category:CATEGORY_PICTURE];
-                }
+//                }
 
             }
                 break;
@@ -1229,12 +1229,12 @@ typedef enum{
                 self.fm=[[[SCBFileManager alloc] init] autorelease];
                 [self.fm setDelegate:self];
                 NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
-                if ([strFid isEqualToString:@"1"]) {
-                    [self.fm openFinderWithCategory:CATEGORY_VIDEO];
-                }else
-                {
+//                if ([strFid isEqualToString:@"1"]) {
+//                    [self.fm openFinderWithCategory:CATEGORY_VIDEO];
+//                }else
+//                {
                     [self.fm openFileWithID:self.f_id category:CATEGORY_VIDEO];
-                }
+//                }
             }
                 break;
                 

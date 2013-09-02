@@ -103,6 +103,11 @@
                 break;
             case 1:
                 NSLog(@"1：失败-服务端异常");
+                if (self.delegate) {
+                    if ([(NSObject *)self.delegate respondsToSelector:@selector(downloadFail:)]) {
+                        [self.delegate downloadFail:1];
+                    }
+                }
                 break;
             case 2:
                 NSLog(@"2：无效的文件id（id不存在）");
