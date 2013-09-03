@@ -2055,7 +2055,7 @@ typedef enum{
                     [cell.imageView addSubview:tagView];
                 }
                 UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
-                [tagView setHidden:NO];
+                [tagView setHidden:YES];
             }else
             {
                 if (cell.imageView.subviews.count==0) {
