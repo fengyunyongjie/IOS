@@ -85,7 +85,15 @@
             [tableArray addObjectsFromArray:[dictionary objectForKey:@"files"]];
         }
     }
-    [self reloadData];
+    if([tableArray count]>0)
+    {
+        [file_delegate haveData];
+        [self reloadData];
+    }
+    else
+    {
+        [file_delegate nullData];
+    }
 }
 
 //上传失败
@@ -903,6 +911,24 @@
 -(void)releaseLinkUnsuccess:(NSString *)error_info
 {
     NSLog(@"error_info:%@",error_info);
+    NSLog(@"openFinderUnsucess: 网络连接失败!!");
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
+    [self.hud show:NO];
+    if (error_info==nil||[error_info isEqualToString:@""]) {
+        self.hud.labelText=@"获取外链失败";
+    }else
+    {
+        self.hud.labelText=error_info;
+    }
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 #pragma mark SCBFileManagerDelegate -------------
@@ -1089,7 +1115,7 @@
         [downImage setImageUrl:[NSString stringWithFormat:@"%i",[f_id intValue]]];
         [downImage setImageViewIndex:0];
         [downImage setIndexPath:indexPath];
-        [downImage setShowType:1];
+        [downImage setShowType:2];
         [tableDictionary setObject:downImage forKey:indexPath];
         [downImage setDelegate:self];
         [downImage startDownload];

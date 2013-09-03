@@ -12,11 +12,12 @@
 #define CLIENT_TAG @"3"
 #define CONNECT_TIMEOUT 15
 #define RESPONSE_TIMEOUT 10
-//#define SERVER_URL @"http://7cbox.cn/nds/api"
+//#define SERVER_URL @"http://www.7cbox.cn/nds/api"
 #define SERVER_URL @"http://192.168.1.5/nds/api"	//local host
 //#define SERVER_URL @"http://192.168.1.7/nds/api"	//local host
 //#define SERVER_URL @"http://192.168.1.27/nds/api"	//local host
-
+//#define SERVER_URL @"http://192.168.1.62/nds/api"	//local host
+//
 #pragma mark - 1.用户管理
 //用户注册
 //#define USER_REGISTER_URI @"/usr/register"
@@ -123,7 +124,7 @@
 //退出共享/share/member/exit
 
 //接受好友的共享邀请share/invitation/add
-#define SHARE_INVITATION_ADD @"share/invitation/add"
+#define SHARE_INVITATION_ADD @"/share/invitation/add"
 
 //拒绝好友的共享邀请/share/invitation/remove
 #define SHARE_INVITATION_REMOVE @"/share/invitation/remove"

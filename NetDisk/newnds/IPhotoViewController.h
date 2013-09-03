@@ -40,6 +40,8 @@
     
     NSString *spaceId;
     int sharedType;
+    
+    UIImageView *null_imageview; //pop.png
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -64,6 +66,7 @@
 @property(nonatomic,retain) UIControl *space_control;
 @property(nonatomic,retain) NSArray *member_array;
 @property(nonatomic,assign) int sharedType;
+@property(nonatomic,retain) UIImageView *null_imageview;
 
 //显示文件列表
 -(void)showFileList;

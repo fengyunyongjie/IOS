@@ -27,6 +27,8 @@
     BOOL isHiddenTabbar;
     int unreadBL;
     BOOL isPushMessage;
+    
+    UIImageView *null_imageview; //pop.png
 }
 
 @property(nonatomic,retain) UITableView *table_view;
@@ -38,6 +40,6 @@
 @property(nonatomic,retain) NSString *group_id;
 @property(nonatomic,assign) BOOL isHiddenTabbar;
 @property(nonatomic,assign) BOOL isPushMessage;
-
+@property(nonatomic,retain) UIImageView *null_imageview;
 
 @end

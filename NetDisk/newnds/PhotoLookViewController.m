@@ -15,6 +15,7 @@
 #define ACTNUMBER 400000
 #define ScrollViewTag 100000
 #define ImageViewTag 200000
+#define kAlertTagMailAddr 72
 #define ScollviewHeight self.view.frame.size.height //当前屏幕的高度
 #define ScollviewWidth self.view.frame.size.width //当前屏幕的宽度
 
@@ -41,6 +42,9 @@
 @synthesize scale_,tableArray;
 @synthesize currPage;
 @synthesize isCliped;
+@synthesize linkManager;
+@synthesize selected_id;
+@synthesize hud;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,7 +59,7 @@
 {
     [super viewDidLoad];
     downArray = [[NSMutableArray alloc] init];
-    
+    linkManager = [[SCBLinkManager alloc] init];
     activityDic = [[NSMutableDictionary alloc] init];
     currWidth = ScollviewWidth;
     currHeight = ScollviewHeight;
@@ -889,46 +893,102 @@
 #pragma mark 分享按钮事件
 -(void)shareClicked:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"分享到" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"微信朋友圈" otherButtonTitles:@"微信好友", nil];
-    [actionSheet showInView:self.view];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈",@"分享其他", nil];
+    NSString *l_url=@"分享";
+    [actionSheet setTitle:l_url];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     [actionSheet release];
 }
 
 #pragma mark UIActionSheetDelegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     int page = [[[self.topTitleLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
     PhotoFile *demo = nil;
     if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
     {
         demo = [tableArray objectAtIndex:page];
     }
-    if(buttonIndex == 0)
-    {
-        if([app_delegate respondsToSelector:@selector(sendImageContentIsFiends:path:)])
-        {
-            //微信朋友圈
-            [app_delegate sendImageContentIsFiends:YES path:[NSString stringWithFormat:@"%iT",demo.f_id]];
-        }
+    selected_id = [NSString stringWithFormat:@"%i",demo.f_id];
+    
+    if (buttonIndex == 0) {
+        NSLog(@"短信分享");
+        //[self toDelete:nil];
+        [self messageShare:actionSheet.title];
+    }else if (buttonIndex == 1) {
+        NSLog(@"邮件分享");
+        NSString *name=@"";
+        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"邮件分享" message:@"请您输入分享人的邮件地址：" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        [[alert textFieldAtIndex:0] setText:name];
+        [alert setTag:kAlertTagMailAddr];
+        [alert show];
+    }else if(buttonIndex == 2) {
+        NSLog(@"复制");
+        [self pasteBoard:actionSheet.title];
+    }else if(buttonIndex == 3) {
+        NSLog(@"微信");
+        [self weixin:actionSheet.title];
+    }else if(buttonIndex == 4) {
+        NSLog(@"朋友圈");
+        [self frends:actionSheet.title];
+    }else if(buttonIndex == 5) {
+        NSLog(@"新浪");
+    }else if(buttonIndex == 6) {
+        NSLog(@"取消");
     }
-    if(buttonIndex == 1)
+}
+
+
+-(void)mailShare:(NSString *)content
+{
+    sharedType = 2;
+    [self getPubSharedLink];
+}
+
+-(void)pasteBoard:(NSString *)content
+{
+    sharedType = 3;
+    [self getPubSharedLink];
+    //    [[UIPasteboard generalPasteboard] setString:content];
+}
+
+-(void)messageShare:(NSString *)content
+{
+    sharedType = 1;
+    [self getPubSharedLink];
+}
+
+-(void)weixin:(NSString *)content
+{
+    sharedType = 4;
+    [self getPubSharedLink];
+}
+
+-(void)frends:(NSString *)content
+{
+    sharedType = 5;
+    [self getPubSharedLink];
+}
+
+#pragma mark 请求外链
+-(void)getPubSharedLink
+{
+    linkManager.delegate = self;
+    NSMutableArray *array = [NSMutableArray array];
+    if(selected_id)
     {
-        if([app_delegate respondsToSelector:@selector(sendImageContentIsFiends:path:)])
-        {
-            //微信好友
-            [app_delegate sendImageContentIsFiends:NO path:[NSString stringWithFormat:@"%iT",demo.f_id]];
-        }
+        [array addObject:selected_id];
     }
-    if(buttonIndex == 2)
+    
+    if([array count]>0)
     {
-        //新浪微博
-        //        [app_delegate ssoButtonPressed];
+        [linkManager linkWithIDs:array];
     }
-    if(buttonIndex == 3)
+    else
     {
-        
-        
+        NSLog(@"没有选中文件");
     }
 }
 
@@ -1219,6 +1279,126 @@
         }
     NSLog(@"下载完成后显示结束。。。");
     });
+}
+
+#pragma mark SCBLinkManagerDelegate -------------
+-(void)releaseEmailSuccess:(NSString *)l_url
+{
+    NSLog(@"l_url:%@",l_url);
+}
+
+-(void)releaseLinkSuccess:(NSString *)l_url
+{
+    NSLog(@"releaseLinkSuccess:%@",l_url);
+    if(sharedType == 1)
+    {
+        //短信分享
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+        
+        if ([MFMessageComposeViewController canSendText]) {
+            MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+            picker.messageComposeDelegate = self;
+            
+            [picker setBody:text];
+            [self presentModalViewController:picker animated:YES];
+            [picker release];
+        }
+    }
+    else if(sharedType == 2)
+    {
+        //邮件分享
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+        
+        if ([MFMailComposeViewController canSendMail]) {
+            MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+            picker.mailComposeDelegate = self;
+            
+            [picker setSubject:text];
+            
+            NSString *emailBody = text;
+            [picker setMessageBody:emailBody isHTML:NO];
+            
+            [self presentModalViewController:picker animated:YES];
+            [picker release];
+        }
+    }
+    else if(sharedType == 3)
+    {
+        //复制
+        [[UIPasteboard generalPasteboard] setString:l_url];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"已经复制成功";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+    }
+    else if(sharedType == 4)
+    {
+        //微信
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+        
+        AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate sendImageContentIsFiends:NO text:text];
+    }
+    else if(sharedType == 5)
+    {
+        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
+        
+        AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate sendImageContentIsFiends:YES text:text];
+    }
+}
+
+-(void)releaseLinkUnsuccess:(NSString *)error_info
+{
+    NSLog(@"error_info:%@",error_info);
+    NSLog(@"openFinderUnsucess: 网络连接失败!!");
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    if (error_info==nil||[error_info isEqualToString:@""]) {
+        self.hud.labelText=@"获取外链失败";
+    }else
+    {
+        self.hud.labelText=error_info;
+    }
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result {
+	NSString *resultValue=@"";
+	switch (result)
+	{
+		case MessageComposeResultCancelled:
+			resultValue = @"Result: SMS sending canceled";
+			break;
+		case MessageComposeResultSent:
+			resultValue = @"Result: SMS sent";
+			break;
+		case MessageComposeResultFailed:
+			resultValue = @"Result: SMS sending failed";
+			break;
+		default:
+			resultValue = @"Result: SMS not sent";
+			break;
+	}
+    NSLog(@"%@",resultValue);
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 //<ios 6.0

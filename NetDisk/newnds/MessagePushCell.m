@@ -40,48 +40,34 @@
             rect.size.width = 50;
             accept_button.frame = rect;
             [accept_button setTitle:@"接受" forState:UIControlStateNormal];
-            accept_button.hidden = NO;
-            refused_button.hidden = NO;
         }
         if(sort_type == 2) //踢出共享用户
         {
             title = [NSString stringWithFormat:GetOutShared,msg_sender_remark,title];
-            accept_button.hidden = YES;
-            refused_button.hidden = YES;
         }
         if(sort_type == 3) //取消共享
         {
             title = [NSString stringWithFormat:EscShared,msg_sender_remark,title];
-            accept_button.hidden = YES;
-            refused_button.hidden = YES;
         }
         if(sort_type == 4) //用户退出共享
         {
             title = [NSString stringWithFormat:AccoutSelfEsc,msg_sender_remark,title];
-            accept_button.hidden = YES;
-            refused_button.hidden = YES;
         }
         if(sort_type == 5) //共享文件夹重命名
         {
             title = [NSString stringWithFormat:UpdateNameShared,msg_sender_remark,title,title];
-            accept_button.hidden = YES;
-            refused_button.hidden = YES;
         }
         if(sort_type == 6) //添加好友
         {
             title = [NSString stringWithFormat:AddFirendToMe,msg_sender_remark];
-            accept_button.hidden = NO;
             CGRect rect = accept_button.frame;
             rect.size.width = 50*2+5;
             accept_button.frame = rect;
             [accept_button setTitle:@"添加Ta为好友" forState:UIControlStateNormal];
-            refused_button.hidden = YES;
         }
         if(sort_type == 7) //自定义短消息
         {
             title = [NSString stringWithFormat:@"%@",title];
-            accept_button.hidden = YES;
-            refused_button.hidden = YES;
         }
     }
     
@@ -128,7 +114,7 @@
     [accept_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [accept_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [accept_button setTitle:@"接受" forState:UIControlStateNormal];
-//    [accept_button setHidden:YES];
+    [accept_button setHidden:YES];
     [self addSubview:accept_button];
     
     CGRect refused_rect = CGRectMake(320-boderWidth-50, (height-22)/2, 50, 22);
@@ -137,7 +123,7 @@
     [refused_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [refused_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [refused_button setTitle:@"拒绝" forState:UIControlStateNormal];
-//    [refused_button setHidden:YES];
+    [refused_button setHidden:YES];
     [self addSubview:refused_button];
 }
 

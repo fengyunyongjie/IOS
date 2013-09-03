@@ -40,6 +40,7 @@
 @synthesize space_control;
 @synthesize member_array;
 @synthesize sharedType;
+@synthesize null_imageview;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -186,7 +187,22 @@
     
     spaceId = [[SCBSession sharedSession] homeID];
     
+    null_imageview = [[UIImageView alloc] initWithFrame:rect];
+    [null_imageview setImage:[UIImage imageNamed:@"pop.png"]];
+    [self.view addSubview:null_imageview];
+    [null_imageview setHidden:YES];
+    
     [super viewDidLoad];
+}
+
+-(void)haveData
+{
+    [null_imageview setHidden:YES];
+}
+
+-(void)nullData
+{
+    [null_imageview setHidden:NO];
 }
 
 //请求我的家庭空间
@@ -953,6 +969,7 @@
     [label_all release];
     [space_control release];
     [member_array release];
+    [null_imageview release];
     [super dealloc];
 }
 

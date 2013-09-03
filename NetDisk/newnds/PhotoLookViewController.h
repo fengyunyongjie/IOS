@@ -10,8 +10,10 @@
 #import "MBProgressHUD.h"
 #import "SCBPhotoManager.h"
 #import "DownImage.h"
+#import "SCBLinkManager.h"
+#import <MessageUI/MessageUI.h>
 
-@interface PhotoLookViewController : UIViewController<UIScrollViewDelegate,UIActionSheetDelegate,SCBPhotoDelegate,DownloaderDelegate>{
+@interface PhotoLookViewController : UIViewController<UIScrollViewDelegate,UIActionSheetDelegate,SCBPhotoDelegate,DownloaderDelegate,SCBLinkManagerDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>{
     /*
      缩放代码
      */
@@ -48,6 +50,11 @@
     CGFloat enFloat;
     
     NSMutableArray *downArray;
+    
+    int sharedType; //1 短信分享，2 邮件分享，3 复制，4 微信，5 朋友圈
+    
+    SCBLinkManager *linkManager;
+    NSString *selected_id;
 }
 
 @property (atomic, retain) UIScrollView *imageScrollView;
@@ -72,7 +79,9 @@
 @property(assign,nonatomic) BOOL isScape;
 @property(assign,nonatomic) int page;
 @property(assign,nonatomic) int endFloat;
-
+@property(nonatomic,retain) SCBLinkManager *linkManager;
+@property(nonatomic,retain) NSString *selected_id;
+@property(nonatomic,retain) MBProgressHUD *hud;
 
 -(CGRect)zoomRectForScale:(float)scale inView:(UIScrollView*)scrollView withCenter:(CGPoint)center;
 

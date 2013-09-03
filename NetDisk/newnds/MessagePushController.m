@@ -30,6 +30,7 @@
 @synthesize group_id;
 @synthesize isHiddenTabbar;
 @synthesize isPushMessage;
+@synthesize null_imageview;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -100,7 +101,6 @@
     messageManager = [[SCBMessageManager alloc] init];
     [messageManager setDelegate:self];
     unreadBL = 1;
-    [messageManager selectMessages:1 cursor:0 offset:-1 unread:-1];
     
     //好友管理
     friendManager = [[SCBFriendManager alloc] init];
@@ -110,6 +110,19 @@
     shareManager = [[SCBShareManager alloc] init];
     [shareManager setDelegate:self];
     
+    null_imageview = [[UIImageView alloc] initWithFrame:rect];
+    [null_imageview setImage:[UIImage imageNamed:@"pop.png"]];
+    [self.view addSubview:null_imageview];
+    [null_imageview setHidden:YES];
+    //刷新数据
+    [self reloadMessageData];
+}
+
+-(void)reloadMessageData
+{
+    [table_array removeAllObjects];
+    [self.table_view reloadData];
+    [messageManager selectMessages:1 cursor:0 offset:-1 unread:-1];
 }
 
 -(void)back_clicked:(id)sender
@@ -133,16 +146,33 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if([table_array count] == 0)
+    {
+        return 1;
+    }
     return [table_array count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([table_array count] == 0)
+    {
+        return 50;
+    }
     return 70;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    if([table_array count] == 0)
+    {
+        MessagePushCell *cell = [[[MessagePushCell alloc] init] autorelease];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell.textLabel.text = @"等待中...";
+        return cell;
+    }
+    
     static NSString *cellString = @"cellString";
     MessagePushCell *cell = [self.table_view dequeueReusableCellWithIdentifier:cellString];
     if(cell==nil)
@@ -151,6 +181,8 @@
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [cell firstLoad:70];
     }
+    [cell.accept_button setHidden:YES];
+    [cell.refused_button setHidden:YES];
     
     NSDictionary *diction = [table_array objectAtIndex:[indexPath row]];
     NSString *text = [diction objectForKey:@"msg_content"];
@@ -165,12 +197,48 @@
     NSString *msg_sort = [diction objectForKey:@"msg_sort"];
     NSString *msg_sender_remark = [diction objectForKey:@"msg_sender_remark"];
     [cell setUpdate:text timeString:time msg_type:msg_type msg_sender_remark:msg_sender_remark msg_sort:msg_sort];
-    BOOL isLook = [[diction objectForKey:@"is_browse"] boolValue];
-    if(isLook)
+    
+    if([msg_type intValue] == 1)
     {
-        [cell.accept_button setHidden:YES];
-        [cell.refused_button setHidden:YES];
+        if([msg_sort intValue] == 1) //添加共享用户
+        {
+            if(![[diction objectForKey:@"is_accept"] boolValue])
+            {
+                [cell.accept_button setHidden:NO];
+                [cell.refused_button setHidden:NO];
+            }
+        }
+        if([msg_sort intValue] == 2) //踢出共享用户
+        {
+            
+        }
+        if([msg_sort intValue] == 3) //取消共享
+        {
+            
+        }
+        if([msg_sort intValue] == 4) //用户退出共享
+        {
+            
+        }
+        if([msg_sort intValue] == 5) //共享文件夹重命名
+        {
+            
+        }
+        if([msg_sort intValue] == 6) //添加好友
+        {
+            NSLog(@"isFri:%@",[diction objectForKey:@"isFri"]);
+            if([[diction objectForKey:@"isFri"] isEqualToString:@"Y"])
+            {
+                [cell.accept_button setHidden:YES];
+                [cell.refused_button setHidden:YES];
+            }
+        }
+        if([msg_sort intValue] == 7) //自定义短消息
+        {
+            
+        }
     }
+
     return cell;
 }
 
@@ -187,7 +255,6 @@
         {
             NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
             NSString *file_id = [diction objectForKey:@"file_id"];
-            [diction setValue:@"1" forKey:@"is_browse"];
             NSLog(@"shareManager:%@",shareManager);
             [shareManager shareInvitationAdd:file_id friend_id:msg_sender_id];
         }
@@ -195,9 +262,8 @@
         if(sort_type == 6) //添加好友
         {
             //添加好友请求
-            NSString *friendId = [diction objectForKey:@"account"];
+            NSString *friendId = [diction objectForKey:@"friendName"];
             NSString *mark = [diction objectForKey:@"msg_sender_remark"];
-            [diction setValue:@"1" forKey:@"is_browse"];
             NSLog(@"groupId:%@",self.group_id);
             if(self.group_id != nil)
             {
@@ -264,6 +330,10 @@
             [friendManager getFriendshipsGroups:0 offset:-1];
             isSelect = FALSE;
         }
+        else
+        {
+            [null_imageview setHidden:NO];
+        }
     }
     NSLog(@"dictioinary:%@",table_array);
 }
@@ -271,6 +341,8 @@
 -(void)finishMessage:(NSDictionary *)dictioinary
 {
     NSLog(@"dictioinary:%@",dictioinary);
+    //刷新数据
+    [self reloadMessageData];
 }
 
 -(void)error
@@ -365,7 +437,11 @@
     [hud show:YES];
     [hud hide:YES afterDelay:0.8f];
     [hud release];
-    [self.table_view reloadData];
+    
+    //刷新数据
+    [self reloadMessageData];
+    
+//    [self.table_view reloadData];
 }
 
 //移动好友/friendships/friend/move
@@ -410,7 +486,10 @@
     [hud show:YES];
     [hud hide:YES afterDelay:0.8f];
     [hud release];
-    [self.table_view reloadData];
+    
+    
+    //刷新数据
+    [self reloadMessageData];
 }
 
 -(void)searchSucess:(NSDictionary *)datadic
@@ -425,6 +504,7 @@
 
 -(void)dealloc
 {
+    [null_imageview release];
     [topView release];
     [super dealloc];
 }

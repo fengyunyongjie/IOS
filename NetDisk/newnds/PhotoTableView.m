@@ -273,6 +273,7 @@
     NSArray *array = [dictionary objectForKey:@"data"];
     if([array count] > 0)
     {
+        [photo_delegate haveData];
         NSMutableArray *tableArray = [[NSMutableArray alloc] init];
         for(NSDictionary *dictionary in array)
         {
@@ -295,6 +296,14 @@
     [self requestPhotoType];
     [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self reloadData];
+    
+    if([[photo_diction allKeys] count] == 0)
+    {
+        [photo_delegate nullData];
+    }
+    
+    //加载数据
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
 }
 
 -(void)getPhotoDetail:(NSDictionary *)dictionary
@@ -329,6 +338,7 @@
 -(void)FirstLoad
 {
     isLoadData = TRUE;
+    isLoadImage = TRUE;
     [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
 }
 
@@ -1275,7 +1285,26 @@
         [appDelegate sendImageContentIsFiends:YES text:text];
     }
 }
--(void)releaseLinkUnsuccess:(NSString *)error_info{}
+-(void)releaseLinkUnsuccess:(NSString *)error_info{
+    NSLog(@"openFinderUnsucess: 网络连接失败!!");
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
+    [self.hud show:NO];
+    if (error_info==nil||[error_info isEqualToString:@""]) {
+        self.hud.labelText=@"获取外链失败";
+    }else
+    {
+        self.hud.labelText=error_info;
+    }
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
 
 #pragma mark 得到月份天数
 -(int)theDaysInYear:(int)year inMonth:(int)month

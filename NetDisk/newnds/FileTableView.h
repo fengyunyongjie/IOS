@@ -30,6 +30,10 @@
 
 -(void)setMemberArray:(NSArray *)memberArray;
 
+-(void)haveData;
+
+-(void)nullData;
+
 @end
 
 @interface FileTableView : UITableView <NewFoldDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIAlertViewDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate,UIActionSheetDelegate>

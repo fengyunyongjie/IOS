@@ -24,7 +24,7 @@
     NSString *imageUrl;
     UIImage *newDownImage;
     int index;
-    int showType; //0缩略图，1预览图
+    int showType; //0缩略图，1预览图 2小图
     NSIndexPath *indexPath;
 }
 

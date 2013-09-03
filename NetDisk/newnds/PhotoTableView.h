@@ -30,6 +30,10 @@
 
 -(void)setMemberArray:(NSArray *)memberArray;
 
+-(void)haveData;
+
+-(void)nullData;
+
 @end
 
 @interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIActionSheetDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate,UIAlertViewDelegate>
