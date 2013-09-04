@@ -59,7 +59,7 @@
 }
 - (IBAction)forgetPswd:(id)sender
 {
-    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.7cbox.cn"]];
 }
 - (IBAction)userRegister:(id)sender
 {

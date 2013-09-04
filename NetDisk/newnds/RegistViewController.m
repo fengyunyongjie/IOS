@@ -51,6 +51,9 @@
 }
 - (IBAction)showPasswd:(id)sender
 {
+    if ([self.m_passwordTextField isEditing]){
+        [self.m_passwordTextField endEditing:YES];
+    }
     [self.m_passwordTextField setSecureTextEntry:!self.m_passwordTextField.secureTextEntry];
 }
 - (IBAction)lookXY:(id)sender

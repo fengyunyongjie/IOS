@@ -297,8 +297,6 @@
 		29B38AAF17431A48007313B1 /* u8_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B389F017431A48007313B1 /* u8_normal.png */; };
 		29B38AB117431A48007313B1 /* Unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B389F117431A48007313B1 /* Unselected.png */; };
 		29B6D5E617B9C39600763D56 /* Bk_Input.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B6D5E517B9C39600763D56 /* Bk_Input.png */; };
-		29B75B0417864A9F00A0AE34 /* NewFinderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B75B0217864A9F00A0AE34 /* NewFinderViewController.m */; };
-		29B75B0517864A9F00A0AE34 /* NewFinderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B75B0317864A9F00A0AE34 /* NewFinderViewController.xib */; };
 		29B84DE0174B4C2F009073C7 /* share60@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B84DDE174B4C2F009073C7 /* share60@2X.png */; };
 		29B9768C17AF2F8E00C14556 /* FirstLoadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B9768B17AF2F8E00C14556 /* FirstLoadViewController.m */; };
 		29B9769417AF2FDB00C14556 /* Page_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B9768E17AF2FDB00C14556 /* Page_1.png */; };
@@ -777,9 +775,6 @@
 		29B39963170C2CC10008D955 /* MWTapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingView.h; sourceTree = "<group>"; };
 		29B39964170C2CC10008D955 /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
 		29B6D5E517B9C39600763D56 /* Bk_Input.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Input.png; sourceTree = "<group>"; };
-		29B75B0117864A9F00A0AE34 /* NewFinderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewFinderViewController.h; sourceTree = "<group>"; };
-		29B75B0217864A9F00A0AE34 /* NewFinderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewFinderViewController.m; sourceTree = "<group>"; };
-		29B75B0317864A9F00A0AE34 /* NewFinderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewFinderViewController.xib; sourceTree = "<group>"; };
 		29B84DDE174B4C2F009073C7 /* share60@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share60@2X.png"; sourceTree = "<group>"; };
 		29B9768A17AF2F8E00C14556 /* FirstLoadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstLoadViewController.h; sourceTree = "<group>"; };
 		29B9768B17AF2F8E00C14556 /* FirstLoadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstLoadViewController.m; sourceTree = "<group>"; };
@@ -1439,9 +1434,6 @@
 			children = (
 				29852D16172CFDA6001AD87A /* MyndsViewController.h */,
 				29852D17172CFDA6001AD87A /* MyndsViewController.m */,
-				29B75B0117864A9F00A0AE34 /* NewFinderViewController.h */,
-				29B75B0217864A9F00A0AE34 /* NewFinderViewController.m */,
-				29B75B0317864A9F00A0AE34 /* NewFinderViewController.xib */,
 				29B18AC9173CC5D700DBF2CB /* OptionCell.h */,
 				29B18ACA173CC5D700DBF2CB /* OptionCell.m */,
 				29B18AC7173CC37C00DBF2CB /* OptionCell.xib */,
@@ -2876,7 +2868,6 @@
 				29FAE9FC178265DD00C432DD /* Bt_NewFolder.png in Resources */,
 				29FAE9FD178265DD00C432DD /* Bt_Operator@2x.png in Resources */,
 				29ACB0001783D51F00AC9E6A /* Bt_Operator.png in Resources */,
-				29B75B0517864A9F00A0AE34 /* NewFinderViewController.xib in Resources */,
 				29ABD26E179E618C00EE7164 /* Bk_Nav.png in Resources */,
 				29ABD26F179E618C00EE7164 /* Bk_Title.png in Resources */,
 				29ABD270179E618C00EE7164 /* Bt_FamilyCh.png in Resources */,
@@ -3076,7 +3067,6 @@
 				292D984B17644B3E00F57BFF /* operation.m in Sources */,
 				29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */,
 				29CED36E17812B7000899FAE /* BoderView.m in Sources */,
-				29B75B0417864A9F00A0AE34 /* NewFinderViewController.m in Sources */,
 				29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */,
 				29C53AC3179CC03C00078CBE /* MainViewController.m in Sources */,
 				29F00D04179FC251005162DE /* QBAssetCollectionViewController.m in Sources */,
@@ -3175,8 +3165,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: zhang danglun";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zhang danglun";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -3196,8 +3186,8 @@
 					"\"$(SRCROOT)/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "CC0EB52C-D266-402A-984C-C1C5B0527302";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CC0EB52C-D266-402A-984C-C1C5B0527302";
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
