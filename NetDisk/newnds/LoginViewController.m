@@ -161,6 +161,11 @@
     if (self.delegate&&[self.delegate respondsToSelector:@selector(resetData)]) {
         [self.delegate resetData];
     }
+//    AppDelegate *delegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    if ([delegate respondsToSelector:@selector(addTabBarView)])
+//    {
+//        [delegate addTabBarView];
+//    }
 }
 -(void)loginUnsucceed:(id)manager
 {

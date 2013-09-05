@@ -254,7 +254,7 @@
     self.window.rootViewController=self.myTabBarController;
     
     self.myTabBarController.selectedIndex = 0;
-    
+    //[self.myTabBarController.selectedViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.myTabBarController when_tabbar_is_selected:0];
     
     //询问是否开始自动上传

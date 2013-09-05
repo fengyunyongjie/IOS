@@ -55,7 +55,8 @@
         }
         if(sort_type == 5) //共享文件夹重命名
         {
-            title = [NSString stringWithFormat:UpdateNameShared,msg_sender_remark,title,title];
+            NSArray *fname=[title componentsSeparatedByString:@"|"];
+            title = [NSString stringWithFormat:UpdateNameShared,msg_sender_remark,fname[0],fname[1]];
         }
         if(sort_type == 6) //添加好友
         {
@@ -65,12 +66,31 @@
             accept_button.frame = rect;
             [accept_button setTitle:@"添加Ta为好友" forState:UIControlStateNormal];
         }
-        if(sort_type == 7) //自定义短消息
-        {
-            title = [NSString stringWithFormat:@"%@",title];
-        }
+                
     }
-    
+    if(sort_type == 7) //自定义短消息
+    {
+        title = [NSString stringWithFormat:@"%@向你说:%@",msg_sender_remark,title];
+    }else
+    if (sort_type==8) {
+        title=[NSString stringWithFormat:@"%@邀请添加%@为家庭空间成员",msg_sender_remark,title];
+    }else
+    if (sort_type==9) {
+        title=[NSString stringWithFormat:@"%@上传文件：%@",msg_sender_remark,title];
+    }else
+    if (sort_type==10) {
+        title=[NSString stringWithFormat:@"%@删除了文件:%@",msg_sender_remark,title];
+    }else
+    if (sort_type==11) {
+        NSArray *fname=[title componentsSeparatedByString:@"|"];
+        title=[NSString stringWithFormat:@"%@新建了文件夹:%@至%@",msg_sender_remark,fname[0],fname[1]];
+    }else
+    if (sort_type==12) {
+        title=[NSString stringWithFormat:@"%@在%@中加入了新内容",msg_sender_remark,title];
+    }
+    if (msg_type==2) {
+        title=[NSString stringWithFormat:@"%@(家庭空间)",title];
+    }
     [title_label setText:title];
     [time_label setText:timeString];
     //文字换行

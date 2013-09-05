@@ -122,7 +122,7 @@
 {
     [table_array removeAllObjects];
     [self.table_view reloadData];
-    [messageManager selectMessages:1 cursor:0 offset:-1 unread:-1];
+    [messageManager selectMessages:-1 cursor:0 offset:-1 unread:-1];
 }
 
 -(void)back_clicked:(id)sender
