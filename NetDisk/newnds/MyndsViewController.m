@@ -554,7 +554,7 @@ typedef enum{
         [self.searchView addSubview:searchBg];
         [self.view addSubview: self.searchView];
         self.tfdSearch=[[[UITextField alloc] initWithFrame:CGRectMake(10, 3, 265, 30)] autorelease];
-        self.tfdSearch.placeholder=@"搜索：我的虹盘";
+        self.tfdSearch.placeholder=@"搜索你的文件";
         self.tfdSearch.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
         self.tfdSearch.borderStyle=UITextBorderStyleNone;
         self.tfdSearch.delegate=self;
@@ -1149,14 +1149,24 @@ typedef enum{
             }
         }
     }
-    
-    if (self.myndsType==kMyndsTypeMyShare||self.myndsType==kMyndsTypeMyShareSelect) {
+    if (self.myndsType==kMyndsTypeSelect||self.myndsType==kMyndsTypeMyShareSelect||self.myndsType==kMyndsTypeShareSelect) {
+        [self.fm cancelAllTask];
+        self.fm=nil;
+        self.fm=[[[SCBFileManager alloc] init] autorelease];
+        [self.fm setDelegate:self];
+        if (self.movefIds) {
+            [self.fm requestMoveFile:self.f_id fIds:self.movefIds];
+        }else
+        {
+            [self.fm requestMoveFile:self.f_id fIds:@[]];
+        }
+    }else if (self.myndsType==kMyndsTypeMyShare) {
         [self.sm cancelAllTask];
         self.sm=nil;
         self.sm=[[[SCBShareManager alloc] init] autorelease];
         [self.sm setDelegate:self];
         [self.sm openFinderWithID:self.f_id shareType:@"O"];
-    }else if (self.myndsType==kMyndsTypeShare||self.myndsType==kMyndsTypeShareSelect) {
+    }else if (self.myndsType==kMyndsTypeShare) {
         [self.sm cancelAllTask];
         self.sm=nil;
         self.sm=[[[SCBShareManager alloc] init] autorelease];
@@ -1282,6 +1292,9 @@ typedef enum{
 -(void)goSearch:(id)sender
 {
     NSLog(@"点击搜索");
+    if (self.tableView.isEditing) {
+        [self editAction:nil];
+    }
     MyndsViewController *viewController =[[[MyndsViewController alloc] init] autorelease];
     viewController.f_id=self.f_id;
     switch (self.myndsType) {
@@ -1413,6 +1426,18 @@ typedef enum{
                 NSDictionary *dic=[self.listArray objectAtIndex:i];
                 NSString *m_fid=[dic objectForKey:@"f_id"];
                 if ([f_id intValue]==[m_fid intValue]) {
+                    if (self.hud) {
+                        [self.hud removeFromSuperview];
+                    }
+                    self.hud=nil;
+                    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+                    [self.view addSubview:self.hud];
+                    [self.hud show:NO];
+                    self.hud.labelText=@"您当前操作有误";
+                    self.hud.mode=MBProgressHUDModeText;
+                    self.hud.margin=10.f;
+                    [self.hud show:YES];
+                    [self.hud hide:YES afterDelay:1.0f];
                     return;
                 }
                 [willMoveObjects addObject:m_fid];
@@ -1425,8 +1450,19 @@ typedef enum{
     {
         NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
         NSString *m_fid=[dic objectForKey:@"f_id"];
-        
         if ([f_id intValue]==[m_fid intValue]) {
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"您当前操作有误";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
             return;
         }
         willMoveObjects=@[m_fid];
@@ -1581,9 +1617,28 @@ typedef enum{
             return;
         }
     }
-    
+    NSMutableArray *willMoveObjects=[[[NSMutableArray alloc] init] autorelease];
+    if ([self.tableView isEditing]) {
+        for (int i=0;i<self.m_fileItems.count;i++) {
+            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+            if (fileItem.checked) {
+                NSDictionary *dic=[self.listArray objectAtIndex:i];
+                NSString *m_fid=[dic objectForKey:@"f_id"];
+                [willMoveObjects addObject:m_fid];
+            }
+        }
+        if ([willMoveObjects count]<=0) {
+            return;
+        }
+    }else
+    {
+        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+        NSString *m_fid=[dic objectForKey:@"f_id"];
+        willMoveObjects=@[m_fid];
+    }
     MyndsViewController *moveViewController=[[[MyndsViewController alloc] init] autorelease];
     moveViewController.f_id=@"1";
+    moveViewController.movefIds=willMoveObjects;
     switch (self.myndsType) {
         case kMyndsTypeDefault:
         case kMyndsTypeDefaultSearch:
@@ -1779,8 +1834,9 @@ typedef enum{
 {
     // Return the number of rows in the section.
     if (self.dataDic) {
-        if (self.myndsType==kMyndsTypeSelect) {
-            return [self.finderArray count];
+        if (self.myndsType==kMyndsTypeSelect||self.myndsType==kMyndsTypeShareSelect||self.myndsType==kMyndsTypeMyShareSelect) {
+            //return [self.finderArray count];
+            return [self.listArray count];
         }else
         {
             NSArray *a= (NSArray *)[self.dataDic objectForKey:@"files"];
@@ -1912,7 +1968,7 @@ typedef enum{
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.myndsType==kMyndsTypeSelect) {
+    if (self.myndsType==kMyndsTypeSelect||self.myndsType==kMyndsTypeMyShareSelect||self.myndsType==kMyndsTypeShareSelect) {
         static NSString *CellIdentifier = @"Cell";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -2261,10 +2317,11 @@ typedef enum{
     NSString *f_name=[dic objectForKey:@"f_name"];
     NSString *f_id=[dic objectForKey:@"f_id"];
     NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
-    if ([f_mime isEqualToString:@"directory"]) {
+    if ( !f_mime||[f_mime isEqualToString:@"directory"]) {
         MyndsViewController *viewController =[[[MyndsViewController alloc] init] autorelease];
         viewController.f_id=f_id;
         viewController.myndsType=self.myndsType;
+        viewController.movefIds=self.movefIds;
 //        if (self.myndsType==kMyndsTypeSelect){
 //            viewController.delegate=self.delegate;
 //        }
@@ -2601,18 +2658,18 @@ typedef enum{
     self.dataDic=datadic;
     self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
     NSMutableArray *a=[NSMutableArray array];
-    NSMutableArray *b=[NSMutableArray array];
+//    NSMutableArray *b=[NSMutableArray array];
     for (int i=0; i<self.listArray.count; i++) {
         FileItem *fileItem=[[[FileItem alloc]init]autorelease];
         [a addObject:fileItem];
         [fileItem setChecked:NO];
-        NSDictionary *dic=[self.listArray objectAtIndex:i];
-        NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
-        if ([f_mime isEqualToString:@"directory"]) {
-            [b addObject:dic];
-        }
+//        NSDictionary *dic=[self.listArray objectAtIndex:i];
+//        NSString *f_mime=[[dic objectForKey:@"f_mime"] lowercaseString];
+//        if ([f_mime isEqualToString:@"directory"]) {
+//            [b addObject:dic];
+//        }
     }
-    NSString *testFid=[NSString stringWithFormat:@"%@",self.f_id];
+//    NSString *testFid=[NSString stringWithFormat:@"%@",self.f_id];
 //    if ([testFid isEqualToString:@"1"]&&self.listArray.count==0) {
     if (self.listArray.count==0) {
         if (self.spaceImgView==nil) {
@@ -2633,7 +2690,7 @@ typedef enum{
         self.spaceImgView.hidden=YES;
     }
     self.m_fileItems=a;
-    self.finderArray=b;
+//    self.finderArray=b;
     if (self.dataDic) {
         [self.tableView reloadData];
     }else
@@ -2702,7 +2759,24 @@ typedef enum{
 }
 -(void)renameSucess
 {
-    [self operateUpdate];
+    if (self.myndsType==kMyndsTypeDefaultSearch||self.myndsType==kMyndsTypeMyShareSearch||self.myndsType==kMyndsTypeShareSearch) {
+        [self searchAction:nil];
+    [self updateFileList];
+    [self updateFileList];
+    if (!self.hud) {
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+    }
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+    }else
+    {
+        [self operateUpdate];
+    }
 //    [self updateFileList];
 //    [self updateFileList];
 //    if (!self.hud) {

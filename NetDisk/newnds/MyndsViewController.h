@@ -75,6 +75,7 @@ typedef enum {
 @property (strong,nonatomic) UILabel *lblNoSelect;
 @property (assign,nonatomic) SharedType sharedType;
 @property (strong,nonatomic) UIView *selectToolView;
+@property (strong,nonatomic) NSArray *movefIds;
 -(void)loadData;
 - (void)viewWillAppear:(BOOL)animated;
 @end

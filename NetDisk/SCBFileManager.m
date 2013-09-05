@@ -19,6 +19,33 @@
 {
     self.delegate=nil;
 }
+#pragma mark 打开移动目录
+-(void)requestMoveFile:(NSString *)f_pid fIds:(NSArray *)f_ids
+{
+    self.fm_type=kFMTypeOpenFinder;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_CUTTO]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];;
+    NSMutableString *body=[[NSMutableString alloc] init];
+    
+    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
+    [body appendFormat:@"pId=%@",f_pid];
+    [body appendFormat:@"&space_id=%@",s_id];
+    [body appendFormat:@"&fIds[]=%@",fids];
+    
+    NSLog(@"body:%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [body release];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
 
 -(void)openFinderWithCategory:(NSString *)category;
 {

@@ -30,6 +30,8 @@ typedef enum {
 //打开网盘/fm
 -(void)openFinderWithID:(NSString *)f_id sID:(NSString *)s_id;      //无分页：所以cursor=0,offset=-1;
 -(void)operateUpdateWithID:(NSString *)f_id;
+//打开移动目录
+-(void)requestMoveFile:(NSString *)f_pid fIds:(NSArray *)f_ids;
 //新建/fm/mkdir
 -(void)newFinderWithName:(NSString *)f_name pID:(NSString*)f_pid sID:(NSString *)s_id;
 //重命名/fm/rename
