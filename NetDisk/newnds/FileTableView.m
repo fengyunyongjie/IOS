@@ -657,6 +657,67 @@
 #pragma mark 分享文件
 -(void)toShared:(id)sender
 {
+    if([selected_dictionary.allKeys count] == 0)
+    {
+        NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+        NSString *f_id1=[NSString stringWithFormat:@"%@",[dic objectForKey:@"f_id"]];
+        for(int i=0;i<[tableArray count];i++)
+        {
+            NSDictionary *dictioinary = [tableArray objectAtIndex:i];
+            NSString *f_id2 = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_id"]];
+            if([f_id1 isEqualToString:f_id2])
+            {
+                NSString *f_mime = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_mime"]];
+                if([f_mime isEqualToString:@"directory"])
+                {
+                    if (self.hud) {
+                        [self.hud removeFromSuperview];
+                    }
+                    self.hud=nil;
+                    self.hud=[[MBProgressHUD alloc] initWithView:self];
+                    [self addSubview:self.hud];    [self.hud show:NO];
+                    self.hud.labelText=@"不能分享文件夹";
+                    self.hud.mode=MBProgressHUDModeText;
+                    self.hud.margin=10.f;
+                    [self.hud show:YES];
+                    [self.hud hide:YES afterDelay:1.0f];
+                    return;
+                }
+            }
+        }
+    }
+    else
+    {
+        for(int i=0;i<[selected_dictionary.allKeys count];i++)
+        {
+            NSString *f_id1=[NSString stringWithFormat:@"%@",[selected_dictionary objectForKey:[selected_dictionary.allKeys objectAtIndex:i]]];
+            for(int j=0;j<[tableArray count];j++)
+            {
+                NSDictionary *dictioinary = [tableArray objectAtIndex:j];
+                NSString *f_id2 = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_id"]];
+                if([f_id1 isEqualToString:f_id2])
+                {
+                    NSString *f_mime = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_mime"]];
+                    if([f_mime isEqualToString:@"directory"])
+                    {
+                        if (self.hud) {
+                            [self.hud removeFromSuperview];
+                        }
+                        self.hud=nil;
+                        self.hud=[[MBProgressHUD alloc] initWithView:self];
+                        [self addSubview:self.hud];    [self.hud show:NO];
+                        self.hud.labelText=@"不能分享文件夹";
+                        self.hud.mode=MBProgressHUDModeText;
+                        self.hud.margin=10.f;
+                        [self.hud show:YES];
+                        [self.hud hide:YES afterDelay:1.0f];
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    
     UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
     NSString *l_url=@"分享";
     [actionSheet setTitle:l_url];

@@ -79,5 +79,7 @@
 -(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo total:(int)total;
 //关闭自动备份上传
 -(void)stopAutomatic;
+//退出登录清楚列表
+-(void)escLoginList;
 
 @end

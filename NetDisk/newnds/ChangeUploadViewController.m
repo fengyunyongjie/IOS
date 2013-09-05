@@ -730,7 +730,18 @@
     if(self.uploadListTableView.tableHeaderView)
     {
         self.uploadListTableView.tableHeaderView = nil;
+        [self.uploadListTableView reloadData];
     }
+}
+
+//退出登录清楚列表
+-(void)escLoginList
+{
+    if(historyList)
+    {
+        [historyList removeAllObjects];
+    }
+    [self.uploadListTableView reloadData];
 }
 
 #pragma mark UIScrollviewDelegate

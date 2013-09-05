@@ -77,5 +77,7 @@
 -(void)clicked_photo:(id)sender;
 //点击文件内容
 -(void)clicked_file:(id)sender;
+//重新加载所有的数据
+-(void)clearTableData;
 
 @end

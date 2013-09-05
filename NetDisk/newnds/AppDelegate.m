@@ -257,6 +257,13 @@
     //[self.myTabBarController.selectedViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.myTabBarController when_tabbar_is_selected:0];
     
+    UINavigationController *NavigationController = [[self.myTabBarController viewControllers] objectAtIndex:1];
+    IPhotoViewController *uploadView = (IPhotoViewController *)[NavigationController.viewControllers objectAtIndex:0];
+    if([uploadView isKindOfClass:[IPhotoViewController class]])
+    {
+        [uploadView clearTableData];
+    }
+    
     //询问是否开始自动上传
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(openAutomic) userInfo:self repeats:NO];
 }

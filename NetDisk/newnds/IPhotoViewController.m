@@ -277,6 +277,31 @@
     photo_tableView.hidden = YES;
 }
 
+//重新加载所有的数据
+-(void)clearTableData
+{
+    //清空数据
+    
+    if(file_tableView)
+    {
+        [file_tableView.tableArray removeAllObjects];
+    }
+    if(photo_tableView)
+    {
+        [photo_tableView.sectionarray removeAllObjects];
+        [photo_tableView.photo_diction removeAllObjects];
+    }
+    
+    spaceId = [[SCBSession sharedSession] homeID];
+    f_id = @"1";
+    photo_tableView.requestId = spaceId;
+    
+    isPhoto = TRUE;
+    UIButton *phoot_button  = (UIButton *)[self.view viewWithTag:23];
+    [self clicked_file:phoot_button];
+    [self requestSpace];
+}
+
 -(void)clicked_space:(id)sender
 {
     NSLog(@"-(void)clicked_space:(id)sender");

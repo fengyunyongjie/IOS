@@ -332,14 +332,26 @@ typedef enum{
         case kActionSheetTypeExit:
             if (buttonIndex == 0) {
                 //scBox.UserLogout(callBackLogoutFunc,self);
+                
+                [DBSqlite3 cleanSql];
+                [YNFunctions setIsAutoUpload:NO];
+                AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [app_delegate.maticUpload colseAutomaticUpload];
+                
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
+                
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [appleDate.maticUpload colseAutomaticUpload];
-                [DBSqlite3 cleanSql];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+                ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                if([uploadView isKindOfClass:[ChangeUploadViewController class]])
+                {
+                    [uploadView escLoginList];
+                }
+                
                 [[FavoritesData sharedFavoritesData] stopDownloading];
                 
                 [self.rootViewController presendLoginViewController];
