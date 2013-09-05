@@ -585,7 +585,7 @@
     QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
     imagePickerController.delegate = self;
     imagePickerController.allowsMultipleSelection = YES;
-    imagePickerController.f_id  = @"1";
+    imagePickerController.f_id  = self.f_id;
     [imagePickerController requestFileDetail];
     NSLog(@"self.f_id:%@",self.f_id);
     [self.navigationController pushViewController:imagePickerController animated:YES];

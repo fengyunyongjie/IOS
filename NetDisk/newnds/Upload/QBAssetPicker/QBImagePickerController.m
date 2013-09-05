@@ -92,7 +92,23 @@
 
 -(void)requestFileDetail
 {
-    [photoManager getDetail:[self.f_id intValue]];
+    NSString *change = [NSString stringWithFormat:@"%@",self.f_id];
+    if([change isEqualToString:@"1"])
+    {
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(app_delegate.myTabBarController.selectedIndex==0)
+        {
+            self.f_name = @"我的空间";
+        }
+        else if(app_delegate.myTabBarController.selectedIndex==1)
+        {
+            self.f_name = @"家庭空间";
+        }
+    }
+    else
+    {
+        [photoManager getDetail:[self.f_id intValue]];
+    }
 }
 
 - (void)viewDidLoad

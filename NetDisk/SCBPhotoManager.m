@@ -624,7 +624,7 @@
     url_string = FM_URI;
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&space_id=%@&iszone=%@&sort=%@&sort_direct=%@",f_id,0,-1,space_id,@"1",@"f_modify",@"asc"];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&space_id=%@&iszone=%@&sort=%@&sort_direct=%@",f_id,0,-1,space_id,@"1",@"f_modify",@"desc"];
     
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];

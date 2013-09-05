@@ -1294,7 +1294,6 @@
         [downImage setImageUrl:[NSString stringWithFormat:@"%i",[f_id intValue]]];
         [downImage setImageViewIndex:0];
         [downImage setIndexPath:indexPath];
-        [downImage setShowType:2];
         [tableDictionary setObject:downImage forKey:indexPath];
         [downImage setDelegate:self];
         [downImage startDownload];
