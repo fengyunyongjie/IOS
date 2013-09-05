@@ -41,6 +41,8 @@
 @synthesize selected_dictionary;
 @synthesize hud;
 @synthesize isEdition;
+@synthesize useType;
+@synthesize searchText;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -133,7 +135,10 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
-        cell.textLabel.text = @"等待中...";
+        if(useType != 1)
+        {
+            cell.textLabel.text = @"等待中...";
+        }
         return cell;
     }
     
@@ -781,7 +786,7 @@
 #pragma mark 请求外链
 -(void)getPubSharedLink
 {
-    linkManager.delegate = self;
+    
     NSMutableArray *array = [NSMutableArray array];
     if([selected_dictionary.allKeys count] == 0)
     {
@@ -799,6 +804,7 @@
     }
     if([array count]>0)
     {
+        linkManager.delegate = self;
         [linkManager linkWithIDs:array];
     }
     else
@@ -958,19 +964,32 @@
 
 #pragma mark SCBFileManagerDelegate -------------
 
--(void)searchSucess:(NSDictionary *)datadic
+-(void)searchSucess:(NSDictionary *)dictionary
 {
-    
+    int number = [[dictionary objectForKey:@"code"] intValue];
+    if(number == 0)
+    {
+        [tableArray removeAllObjects];
+        if(tableArray == nil)
+        {
+            tableArray = [[NSMutableArray alloc] initWithArray:[dictionary objectForKey:@"files"]];
+        }
+        else
+        {
+            [tableArray addObjectsFromArray:[dictionary objectForKey:@"files"]];
+        }
+    }
+    [self reloadData];
 }
 
 -(void)operateSucess:(NSDictionary *)datadic
 {
-
+    
 }
 
--(void)openFinderSucess:(NSDictionary *)datadic
+-(void)openFinderSucess:(NSDictionary *)dictionary
 {
-
+    
 }
 
 -(void)openFinderUnsucess
@@ -982,8 +1001,16 @@
 {
     NSLog(@"removeSucess");
     [self EscMenu];
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
-    
+
+    if(useType == 1)
+    {
+//        [self searchFameily];
+    }
+    else
+    {
+        [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    }
+
     [self escSelected];
     
     if (self.hud) {
@@ -998,8 +1025,6 @@
     self.hud.margin=10.f;
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
-    
-    
 }
 
 -(void)removeUnsucess
@@ -1023,7 +1048,15 @@
 {
     NSLog(@"renameSucess");
     [self EscMenu];
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    
+    if(useType == 1)
+    {
+//        [self searchFameily];
+    }
+    else
+    {
+        [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    }
     
     [self escSelected];
     if (self.hud) {
@@ -1061,7 +1094,14 @@
 {
     NSLog(@"moveSucess");
     [self EscMenu];
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    if(useType == 1)
+    {
+//        [self searchFameily];
+    }
+    else
+    {
+        [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    }
     
     [self escSelected];
     
@@ -1088,7 +1128,14 @@
 -(void)newFinderSucess
 {
     NSLog(@"newFinderSucess");
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    if(useType == 1)
+    {
+//        [self searchFameily];
+    }
+    else
+    {
+        [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    }
     [self escSelected];
 }
 
@@ -1186,10 +1233,14 @@
 {
     selectedIndexPath = nil;
     [selected_dictionary removeAllObjects];
-    for(FileTableViewCell *cell in self.visibleCells)
+    if(useType != 1)
     {
-        [cell.select_button setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
+        for(FileTableViewCell *cell in self.visibleCells)
+        {
+            [cell.select_button setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
+        }
     }
+    
 }
 
 //选择事件
@@ -1223,6 +1274,14 @@
     p_id = f_id;
     [photoManager openFinderWithID:f_id space_id:space_id];
 }
+
+//搜索家庭空间文件
+-(void)searchFameily
+{
+    fileManager.delegate = self;
+    [fileManager searchWithQueryparam:searchText];
+}
+
 
 #pragma mark 文件下载
 

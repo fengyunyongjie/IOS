@@ -342,7 +342,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [self.activeData appendData:data];
-    NSLog(@"connection:didReceiveData:");
+    NSLog(@"connection:didReceiveData:%@",data);
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -376,6 +376,8 @@
     // Release the connection now that it's finished
     // call our delegate and tell it that our icon is ready for display
     //[delegate fileDidDownload:self.index];
+    NSLog(@"数据失败了");
+    
     NSLog(@"%@",[[NSString alloc] initWithData:self.activeData encoding:NSUTF8StringEncoding]);
     NSError *jsonParsingError=nil;
     

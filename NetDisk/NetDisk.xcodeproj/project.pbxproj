@@ -339,6 +339,8 @@
 		29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C17DD816560B7D0066CB13 /* QuartzCore.framework */; };
 		29C714FF179E7345008D04EB /* Bt_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C714FE179E7345008D04EB /* Bt_Back.png */; };
 		29C9413617D833000088B392 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C9413517D833000088B392 /* PhotoViewController.m */; };
+		29C9413917D857B80088B392 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C9413817D857B80088B392 /* SearchViewController.m */; };
+		29C9413B17D881920088B392 /* Title_Users.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C9413A17D881920088B392 /* Title_Users.png */; };
 		29C98B0717AB943300CF8FAF /* Bk_Seach.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0517AB943300CF8FAF /* Bk_Seach.png */; };
 		29C98B0817AB943300CF8FAF /* Bt_Seach.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0617AB943300CF8FAF /* Bt_Seach.png */; };
 		29C98B0B17ABA01800CF8FAF /* Bt_Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0917ABA01800CF8FAF /* Bt_Filter.png */; };
@@ -825,6 +827,9 @@
 		29C714FE179E7345008D04EB /* Bt_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Back.png; sourceTree = "<group>"; };
 		29C9413417D832FF0088B392 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		29C9413517D833000088B392 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		29C9413717D857B70088B392 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		29C9413817D857B80088B392 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		29C9413A17D881920088B392 /* Title_Users.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Title_Users.png; sourceTree = "<group>"; };
 		29C98B0517AB943300CF8FAF /* Bk_Seach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Seach.png; sourceTree = "<group>"; };
 		29C98B0617AB943300CF8FAF /* Bt_Seach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Seach.png; sourceTree = "<group>"; };
 		29C98B0917ABA01800CF8FAF /* Bt_Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Filter.png; sourceTree = "<group>"; };
@@ -1467,6 +1472,8 @@
 				2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */,
 				2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */,
 				2929E30F17CC2F50003CB75A /* IPhotoViewController.m */,
+				29C9413717D857B70088B392 /* SearchViewController.h */,
+				29C9413817D857B80088B392 /* SearchViewController.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -1838,6 +1845,7 @@
 		29CB860917B0A21600C7629B /* Translfer */ = {
 			isa = PBXGroup;
 			children = (
+				29C9413A17D881920088B392 /* Title_Users.png */,
 				29CB860A17B0A21700C7629B /* Bk_naBottom.png */,
 				29CB860B17B0A21700C7629B /* Bt_Cancle.png */,
 				29CB860C17B0A21700C7629B /* Bt_naDelAll.png */,
@@ -2976,6 +2984,7 @@
 				29B9EECE17CC32160068FDF1 /* Bt_CancelF.png in Resources */,
 				29CFE30717CDEC620007A42A /* Bk_Point.png in Resources */,
 				29CFE30917CDF3BD0007A42A /* Bk_Ns.png in Resources */,
+				29C9413B17D881920088B392 /* Title_Users.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3093,6 +3102,7 @@
 				2929E30D17CC2EA9003CB75A /* FileTableViewCell.m in Sources */,
 				2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */,
 				29C9413617D833000088B392 /* PhotoViewController.m in Sources */,
+				29C9413917D857B80088B392 /* SearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

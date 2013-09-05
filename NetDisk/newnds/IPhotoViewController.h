@@ -29,6 +29,7 @@
     NSString *move_fid;
 
     UIControl *ctrlView;
+    UIControl *newsView;
     UIView *edit_view;
     UIControl *edit_control;
     UIControl *newFinder_control;
@@ -56,7 +57,7 @@
 @property(nonatomic,retain) NSString *move_fid;
 
 @property(nonatomic,retain) UIControl *ctrlView;
-
+@property(nonatomic,retain) UIControl *newsView;
 @property(nonatomic,retain) UIView *edit_view;
 @property(nonatomic,retain) UIControl *edit_control;
 @property(nonatomic,retain) UIControl *newFinder_control;

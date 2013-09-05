@@ -59,6 +59,8 @@
     MBProgressHUD *hud;
     BOOL isEdition;
     int sharedType; //1 短信分享，2 邮件分享，3 复制，4 微信，5 朋友圈
+    int useType;
+    NSString *searchText;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
@@ -80,6 +82,8 @@
 @property(nonatomic,retain) NSMutableDictionary *selected_dictionary;
 @property(nonatomic,retain) MBProgressHUD *hud;
 @property(nonatomic,assign) BOOL isEdition;
+@property(nonatomic,assign) int useType;
+@property(nonatomic,retain) NSString *searchText;
 
 //请求文件
 -(void)requestFile:(NSString *)f_id space_id:(NSString *)space_id;
@@ -103,5 +107,7 @@
 -(void)toNewFinder:(NSString *)textName;
 #pragma mark 请求我的家庭空间
 -(void)requestSpace:(NSString *)spaceid;
+//搜索家庭空间文件
+-(void)searchFameily;
 
 @end

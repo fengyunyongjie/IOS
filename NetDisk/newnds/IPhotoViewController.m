@@ -11,6 +11,7 @@
 #import "SCBSession.h"
 #import "PhotoLookViewController.h"
 #import "MessagePushController.h"
+#import "SearchViewController.h"
 
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define ChangeTabWidth 70
@@ -41,6 +42,7 @@
 @synthesize member_array;
 @synthesize sharedType;
 @synthesize null_imageview;
+@synthesize newsView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -418,101 +420,139 @@
 {
     NSLog(@"-(void)clicked_more:(id)sender");
     
-    if(ctrlView == nil)
+    if(!isPhoto)
     {
-        //操作菜单
-        ctrlView=[[UIControl alloc] init];
-        ctrlView.frame=self.view.frame;
-        [ctrlView addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:ctrlView];
-        UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_na.png"]];
-        bg.frame=CGRectMake(25, 44, 270, 181);
-        [ctrlView addSubview:bg];
-        
-        //按钮－新建文件夹0,0
-        UIButton *btnUpload= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnUpload.frame=CGRectMake(25, 49, 90, 88);
-        [btnUpload setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
-        [btnUpload setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnUpload addTarget:self action:@selector(goUpload:) forControlEvents:UIControlEventTouchUpInside];
-        [ctrlView addSubview:btnUpload];
-        UILabel *lblNewFinder=[[[UILabel alloc] init] autorelease];
-        lblNewFinder.text=@"上传";
-        lblNewFinder.textAlignment=UITextAlignmentCenter;
-        lblNewFinder.font=[UIFont systemFontOfSize:12];
-        lblNewFinder.textColor=[UIColor whiteColor];
-        lblNewFinder.backgroundColor=[UIColor clearColor];
-        lblNewFinder.frame=CGRectMake(25, 59+49, 90, 21);
-        [ctrlView addSubview:lblNewFinder];
-        
-        //按钮－编辑0,1
-        UIButton *btnSearch= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnSearch.frame=CGRectMake(25+90, 49, 90, 88);
-        [btnSearch setImage:[UIImage imageNamed:@"Bt_naSeach.png"] forState:UIControlStateNormal];
-        [btnSearch setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnSearch addTarget:self action:@selector(goSearch:) forControlEvents:UIControlEventTouchUpInside];
-        [ctrlView addSubview:btnSearch];
-        UILabel *lblNewFinder01=[[[UILabel alloc] init] autorelease];
-        lblNewFinder01.text=@"搜索";
-        lblNewFinder01.textAlignment=UITextAlignmentCenter;
-        lblNewFinder01.font=[UIFont systemFontOfSize:12];
-        lblNewFinder01.textColor=[UIColor whiteColor];
-        lblNewFinder01.backgroundColor=[UIColor clearColor];
-        lblNewFinder01.frame=CGRectMake(25+90, 59+49, 90, 21);
-        [ctrlView addSubview:lblNewFinder01];
-        
-        //按钮－新建文件夹 0，2
-        UIButton *btnNewFinder02= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder02.frame=CGRectMake(25+(90*2), 49, 90, 88);
-        [btnNewFinder02 setImage:[UIImage imageNamed:@"Bt_naNews.png"] forState:UIControlStateNormal];
-        [btnNewFinder02 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnNewFinder02 addTarget:self action:@selector(goMessage:) forControlEvents:UIControlEventTouchUpInside];
-        [ctrlView addSubview:btnNewFinder02];
-        UILabel *lblNewFinder02=[[[UILabel alloc] init] autorelease];
-        lblNewFinder02.text=@"消息";
-        lblNewFinder02.textAlignment=UITextAlignmentCenter;
-        lblNewFinder02.font=[UIFont systemFontOfSize:12];
-        lblNewFinder02.textColor=[UIColor whiteColor];
-        lblNewFinder02.backgroundColor=[UIColor clearColor];
-        lblNewFinder02.frame=CGRectMake(25+(90*2), 59+49, 90, 21);
-        [ctrlView addSubview:lblNewFinder02];
-        
-        //按钮－新建文件夹 1，0
-        UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnEdit.frame=CGRectMake(25, 44+93, 90, 88);
-        [btnEdit setImage:[UIImage imageNamed:@"Bt_naEdit.png"] forState:UIControlStateNormal];
-        [btnEdit setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
-        [ctrlView addSubview:btnEdit];
-        UILabel *lblEdit=[[[UILabel alloc] init] autorelease];
-        lblEdit.tag = 2013;
-        lblEdit.text=@"编辑";
-        lblEdit.textAlignment=UITextAlignmentCenter;
-        lblEdit.font=[UIFont systemFontOfSize:12];
-        lblEdit.textColor=[UIColor whiteColor];
-        lblEdit.backgroundColor=[UIColor clearColor];
-        lblEdit.frame=CGRectMake(25, 59+93+44, 90, 21);
-        [ctrlView addSubview:lblEdit];
-        
-        //按钮－新建文件夹 1，1
-        UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder.frame=CGRectMake(25+90, 44+93, 90, 88);
-        [btnNewFinder setImage:[UIImage imageNamed:@"Bt_naCreateForlder.png"] forState:UIControlStateNormal];
-        [btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
-        [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
-        [ctrlView addSubview:btnNewFinder];
-        UILabel *lblNewFinder11=[[[UILabel alloc] init] autorelease];
-        lblNewFinder11.text=@"新建文件夹";
-        lblNewFinder11.textAlignment=UITextAlignmentCenter;
-        lblNewFinder11.font=[UIFont systemFontOfSize:12];
-        lblNewFinder11.textColor=[UIColor whiteColor];
-        lblNewFinder11.backgroundColor=[UIColor clearColor];
-        lblNewFinder11.frame=CGRectMake(25+90, 59+93+44, 90, 21);
-        [ctrlView addSubview:lblNewFinder11];
+        if(ctrlView == nil)
+        {
+            //操作菜单
+            ctrlView=[[UIControl alloc] init];
+            ctrlView.frame=self.view.frame;
+            [ctrlView addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:ctrlView];
+            UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_na.png"]];
+            bg.frame=CGRectMake(25, 44, 270, 181);
+            [ctrlView addSubview:bg];
+            
+            //按钮－新建文件夹0,0
+            UIButton *btnUpload= [UIButton buttonWithType:UIButtonTypeCustom];
+            btnUpload.frame=CGRectMake(25, 49, 90, 88);
+            [btnUpload setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
+            [btnUpload setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+            [btnUpload addTarget:self action:@selector(goUpload:) forControlEvents:UIControlEventTouchUpInside];
+            [ctrlView addSubview:btnUpload];
+            UILabel *lblNewFinder=[[[UILabel alloc] init] autorelease];
+            lblNewFinder.text=@"上传";
+            lblNewFinder.textAlignment=UITextAlignmentCenter;
+            lblNewFinder.font=[UIFont systemFontOfSize:12];
+            lblNewFinder.textColor=[UIColor whiteColor];
+            lblNewFinder.backgroundColor=[UIColor clearColor];
+            lblNewFinder.frame=CGRectMake(25, 59+49, 90, 21);
+            [ctrlView addSubview:lblNewFinder];
+            
+            //按钮－编辑0,1
+            UIButton *btnSearch= [UIButton buttonWithType:UIButtonTypeCustom];
+            btnSearch.frame=CGRectMake(25+90, 49, 90, 88);
+            [btnSearch setImage:[UIImage imageNamed:@"Bt_naSeach.png"] forState:UIControlStateNormal];
+            [btnSearch setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+            [btnSearch addTarget:self action:@selector(goSearch:) forControlEvents:UIControlEventTouchUpInside];
+            [ctrlView addSubview:btnSearch];
+            UILabel *lblNewFinder01=[[[UILabel alloc] init] autorelease];
+            lblNewFinder01.text=@"搜索";
+            lblNewFinder01.textAlignment=UITextAlignmentCenter;
+            lblNewFinder01.font=[UIFont systemFontOfSize:12];
+            lblNewFinder01.textColor=[UIColor whiteColor];
+            lblNewFinder01.backgroundColor=[UIColor clearColor];
+            lblNewFinder01.frame=CGRectMake(25+90, 59+49, 90, 21);
+            [ctrlView addSubview:lblNewFinder01];
+            
+            //按钮－新建文件夹 0，2
+            UIButton *btnNewFinder02= [UIButton buttonWithType:UIButtonTypeCustom];
+            btnNewFinder02.frame=CGRectMake(25+(90*2), 49, 90, 88);
+            [btnNewFinder02 setImage:[UIImage imageNamed:@"Bt_naNews.png"] forState:UIControlStateNormal];
+            [btnNewFinder02 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+            [btnNewFinder02 addTarget:self action:@selector(goMessage:) forControlEvents:UIControlEventTouchUpInside];
+            [ctrlView addSubview:btnNewFinder02];
+            UILabel *lblNewFinder02=[[[UILabel alloc] init] autorelease];
+            lblNewFinder02.text=@"消息";
+            lblNewFinder02.textAlignment=UITextAlignmentCenter;
+            lblNewFinder02.font=[UIFont systemFontOfSize:12];
+            lblNewFinder02.textColor=[UIColor whiteColor];
+            lblNewFinder02.backgroundColor=[UIColor clearColor];
+            lblNewFinder02.frame=CGRectMake(25+(90*2), 59+49, 90, 21);
+            [ctrlView addSubview:lblNewFinder02];
+            
+            //按钮－新建文件夹 1，0
+            UIButton *btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
+            btnEdit.frame=CGRectMake(25, 44+93, 90, 88);
+            [btnEdit setImage:[UIImage imageNamed:@"Bt_naEdit.png"] forState:UIControlStateNormal];
+            [btnEdit setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+            [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+            [ctrlView addSubview:btnEdit];
+            UILabel *lblEdit=[[[UILabel alloc] init] autorelease];
+            lblEdit.tag = 2013;
+            lblEdit.text=@"编辑";
+            lblEdit.textAlignment=UITextAlignmentCenter;
+            lblEdit.font=[UIFont systemFontOfSize:12];
+            lblEdit.textColor=[UIColor whiteColor];
+            lblEdit.backgroundColor=[UIColor clearColor];
+            lblEdit.frame=CGRectMake(25, 59+93+44, 90, 21);
+            [ctrlView addSubview:lblEdit];
+            
+            //按钮－新建文件夹 1，1
+            UIButton *btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
+            btnNewFinder.frame=CGRectMake(25+90, 44+93, 90, 88);
+            [btnNewFinder setImage:[UIImage imageNamed:@"Bt_naCreateForlder.png"] forState:UIControlStateNormal];
+            [btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+            [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+            [ctrlView addSubview:btnNewFinder];
+            UILabel *lblNewFinder11=[[[UILabel alloc] init] autorelease];
+            lblNewFinder11.text=@"新建文件夹";
+            lblNewFinder11.textAlignment=UITextAlignmentCenter;
+            lblNewFinder11.font=[UIFont systemFontOfSize:12];
+            lblNewFinder11.textColor=[UIColor whiteColor];
+            lblNewFinder11.backgroundColor=[UIColor clearColor];
+            lblNewFinder11.frame=CGRectMake(25+90, 59+93+44, 90, 21);
+            [ctrlView addSubview:lblNewFinder11];
+        }
+        else
+        {
+            ctrlView.hidden = NO;
+        }
     }
     else
     {
-        ctrlView.hidden = NO;
+        if(newsView == nil)
+        {
+            //操作菜单
+            newsView = [[UIControl alloc] init];
+            newsView.frame=self.view.frame;
+            [newsView addTarget:self action:@selector(touchNewView:) forControlEvents:UIControlEventTouchUpInside];
+            [self.view addSubview:newsView];
+            
+            UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_na.png"]];
+            //bg.frame=CGRectMake(25, 44, 270, 175);
+            bg.frame=CGRectMake(25+(90*2), 44, 90, 87);
+            [newsView addSubview:bg];
+            //按钮－新建文件夹 0，2
+            UIButton *btnNewFinder02= [UIButton buttonWithType:UIButtonTypeCustom];
+            btnNewFinder02.frame=CGRectMake(25+(90*2), 44, 90, 87);
+            [btnNewFinder02 setImage:[UIImage imageNamed:@"Bt_naNews.png"] forState:UIControlStateNormal];
+            [btnNewFinder02 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+            [btnNewFinder02 addTarget:self action:@selector(goMessage:) forControlEvents:UIControlEventTouchUpInside];
+            [newsView addSubview:btnNewFinder02];
+            UILabel *lblNewFinder02=[[[UILabel alloc] init] autorelease];
+            lblNewFinder02.text=@"消息";
+            lblNewFinder02.textAlignment=UITextAlignmentCenter;
+            lblNewFinder02.font=[UIFont systemFontOfSize:12];
+            lblNewFinder02.textColor=[UIColor whiteColor];
+            lblNewFinder02.backgroundColor=[UIColor clearColor];
+            lblNewFinder02.frame=CGRectMake(25+(90*2), 59+44, 90, 21);
+            [newsView addSubview:lblNewFinder02];
+        }
+        else
+        {
+            newsView.hidden = NO;
+        }
     }
 }
 
@@ -520,6 +560,11 @@
 -(void)touchView:(id)sender
 {
     ctrlView.hidden = YES;
+}
+
+-(void)touchNewView:(id)sender
+{
+    newsView.hidden = YES;
 }
 
 -(void)goUpload:(id)sender
@@ -573,12 +618,17 @@
 
 -(void)goSearch:(id)sender
 {
-    
+    [self touchView:nil];
+    loadType = 2;
+    SearchViewController *searchView = [[SearchViewController alloc] init];
+    [self.navigationController pushViewController:searchView animated:YES];
+    [searchView release];
 }
 
 -(void)goMessage:(id)sender
 {
     [self touchView:nil];
+    [self touchNewView:nil];
     MessagePushController *messagePush = [[MessagePushController alloc] init];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(![app_delegate.myTabBarController IsTabBarHiden])
