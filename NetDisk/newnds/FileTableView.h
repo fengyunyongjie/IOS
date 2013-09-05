@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PhotoViewController.h"
 #import "SCBPhotoManager.h"
 #import "DownImage.h"
 #import "CustomControl.h"

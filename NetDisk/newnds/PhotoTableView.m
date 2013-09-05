@@ -13,6 +13,7 @@
 #import "PhotoLookViewController.h"
 #import "SCBSession.h"
 #import "AppDelegate.h"
+#import "FileTableView.h"
 
 #define timeLine1 @"今天"
 #define timeLine2 @"昨天"

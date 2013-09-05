@@ -19,7 +19,6 @@
 #import "PhotoFile.h"
 #import "PhotoFileCell.h"
 #import "PhotoLookViewController.h"
-#import "operation.h"
 #import "FileTableView.h"
 
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44

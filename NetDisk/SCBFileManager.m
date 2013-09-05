@@ -15,6 +15,8 @@
 }
 @end
 @implementation SCBFileManager
+@synthesize isFamily;
+
 -(void)cancelAllTask
 {
     self.delegate=nil;
@@ -28,7 +30,15 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];;
     NSMutableString *body=[[NSMutableString alloc] init];
     
-    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    NSString *s_id;
+    if(isFamily)
+    {
+        s_id = [[SCBSession sharedSession] homeID];
+    }
+    else
+    {
+        s_id=[[SCBSession sharedSession] spaceID];
+    }
     NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
     [body appendFormat:@"pId=%@",f_pid];
     [body appendFormat:@"&space_id=%@",s_id];
@@ -54,7 +64,15 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_CATEGORY_DIR_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    NSString *s_id;
+    if(isFamily)
+    {
+        s_id = [[SCBSession sharedSession] homeID];
+    }
+    else
+    {
+        s_id=[[SCBSession sharedSession] spaceID];
+    }
     [body appendFormat:@"cursor=%d&offset=%d&space_id=%@&category=%@",0,-1,s_id,category];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
@@ -77,7 +95,15 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_CATEGORY_FILE_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    NSString *s_id;
+    if(isFamily)
+    {
+        s_id = [[SCBSession sharedSession] homeID];
+    }
+    else
+    {
+        s_id=[[SCBSession sharedSession] spaceID];
+    }
     [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&category=%@",f_id,0,-1,category];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
@@ -99,7 +125,15 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_SEARCH_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    NSString *s_id;
+    if(isFamily)
+    {
+        s_id = [[SCBSession sharedSession] homeID];
+    }
+    else
+    {
+        s_id=[[SCBSession sharedSession] spaceID];
+    }
     [body appendFormat:@"f_pid=%@&f_queryparam=%@&cursor=%d&offset=%d&space_id=%@&type=%@",@"1",f_queryparam,0,-1,s_id,@"1"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
@@ -141,7 +175,15 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    NSString *s_id;
+    if(isFamily)
+    {
+        s_id = [[SCBSession sharedSession] homeID];
+    }
+    else
+    {
+        s_id=[[SCBSession sharedSession] spaceID];
+    }
     [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&space_id=%@&iszone=%@&sort=%@&sort_direct=%@",f_id,0,-1,s_id,@"1",@"f_modify",@"desc"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
@@ -205,7 +247,15 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
     NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
-    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    NSString *s_id;
+    if(isFamily)
+    {
+        s_id = [[SCBSession sharedSession] homeID];
+    }
+    else
+    {
+        s_id=[[SCBSession sharedSession] spaceID];
+    }
     [body appendFormat:@"f_pid=%@&f_ids[]=%@&space_id=%@",f_pid,fids,s_id];
     NSLog(@"move: %@",body);
     NSMutableData *myRequestData=[NSMutableData data];

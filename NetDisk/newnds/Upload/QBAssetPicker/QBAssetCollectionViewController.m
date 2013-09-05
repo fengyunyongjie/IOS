@@ -209,16 +209,19 @@
 {
     NSLog(@"clicked_changeMyFile count:%i",[self.selectedAssets count]);
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
-    qbImage_fileView.f_id = self.f_id;
-    qbImage_fileView.f_name = self.device_name;
+    qbImage_fileView.f_id = @"1";
+    qbImage_fileView.f_name = @"我的文件";
     [qbImage_fileView setQbDelegate:self];
-    [self presentModalViewController:qbImage_fileView animated:YES];
+    
+    UINavigationController *nagation = [[UINavigationController alloc] initWithRootViewController:qbImage_fileView];
+    [nagation setNavigationBarHidden:YES];
+    [self presentModalViewController:nagation animated:YES];
+    [nagation release];
     [qbImage_fileView release];
 }
 
 -(void)clicked_startUpload:(id)sender
 {
-    
     NSLog(@"self.f_id:%@",self.f_id);
     [self.delegate changeDeviceName:device_name];
     [self.delegate changeFileId:self.f_id];
@@ -273,7 +276,7 @@
 
 -(void)uploadFiledId:(NSString *)f_id_
 {
-    f_id = f_id_;
+    self.f_id = f_id_;
 }
 
 - (void)viewWillAppear:(BOOL)animated

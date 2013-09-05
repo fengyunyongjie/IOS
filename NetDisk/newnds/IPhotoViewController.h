@@ -40,7 +40,7 @@
     
     NSString *spaceId;
     int sharedType;
-    
+    int loadType;
     UIImageView *null_imageview; //pop.png
 }
 

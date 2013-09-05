@@ -20,10 +20,14 @@ typedef enum{
 }kSMType;
 @protocol SCBShareManagerDelegate;
 @interface SCBShareManager : NSObject
+{
+    BOOL isFamily;
+}
 @property (nonatomic,assign)id<SCBShareManagerDelegate> delegate;
 @property (strong,nonatomic) NSMutableData *activeData;
 @property (assign,nonatomic) kSMType sm_type;
 @property (nonatomic,retain) NSString *url_type;
+@property (nonatomic,assign) BOOL isFamily;
 
 -(void)cancelAllTask;
 

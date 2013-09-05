@@ -16,7 +16,6 @@
 #import "LoginViewController.h"
 #import "SettingViewController.h"
 #import "MyndsViewController.h"
-#import "PhotoViewController.h"
 #import "FavoritesViewController.h"
 #import "UploadViewController.h"
 #import "MainViewController.h"

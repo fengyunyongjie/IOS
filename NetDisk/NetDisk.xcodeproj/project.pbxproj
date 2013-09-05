@@ -34,7 +34,6 @@
 		2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29262228172BD70000A95E97 /* LoginViewController.xib */; };
 		2929E30D17CC2EA9003CB75A /* FileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */; };
 		2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30F17CC2F50003CB75A /* IPhotoViewController.m */; };
-		292D984B17644B3E00F57BFF /* operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 292D984A17644B3E00F57BFF /* operation.m */; };
 		292FF984173A466D004CC609 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E416B9385100A1BE48 /* 114.png */; };
 		292FF985173A4670004CC609 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E216B937D900A1BE48 /* icon.png */; };
 		292FF989173A4930004CC609 /* YNFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FF988173A4930004CC609 /* YNFunctions.m */; };
@@ -339,6 +338,7 @@
 		29C53AC3179CC03C00078CBE /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C53AC2179CC03C00078CBE /* MainViewController.m */; };
 		29C66B95174B0C3900ED6B2C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83C17DD816560B7D0066CB13 /* QuartzCore.framework */; };
 		29C714FF179E7345008D04EB /* Bt_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C714FE179E7345008D04EB /* Bt_Back.png */; };
+		29C9413617D833000088B392 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C9413517D833000088B392 /* PhotoViewController.m */; };
 		29C98B0717AB943300CF8FAF /* Bk_Seach.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0517AB943300CF8FAF /* Bk_Seach.png */; };
 		29C98B0817AB943300CF8FAF /* Bt_Seach.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0617AB943300CF8FAF /* Bt_Seach.png */; };
 		29C98B0B17ABA01800CF8FAF /* Bt_Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0917ABA01800CF8FAF /* Bt_Filter.png */; };
@@ -402,7 +402,6 @@
 		29E816741732388100866C34 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E316DB811100756966 /* CFNetwork.framework */; };
 		29E81679173238E900866C34 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E516DB822500756966 /* SystemConfiguration.framework */; };
 		29E8167A1732392D00866C34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298D2101171FA6A200CA00FA /* MobileCoreServices.framework */; };
-		29E8167D1732395A00866C34 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E8167C1732395A00866C34 /* PhotoViewController.m */; };
 		29EFE850172A55AD0099B5A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A0571650D0C700BEDB27 /* UIKit.framework */; };
 		29EFE851172A55AD0099B5A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A0591650D0C700BEDB27 /* Foundation.framework */; };
 		29EFE852172A55AD0099B5A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A05B1650D0C700BEDB27 /* CoreGraphics.framework */; };
@@ -471,8 +470,6 @@
 		2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTableViewCell.m; sourceTree = "<group>"; };
 		2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhotoViewController.h; sourceTree = "<group>"; };
 		2929E30F17CC2F50003CB75A /* IPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPhotoViewController.m; sourceTree = "<group>"; };
-		292D984917644B3E00F57BFF /* operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = operation.h; sourceTree = "<group>"; };
-		292D984A17644B3E00F57BFF /* operation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = operation.m; sourceTree = "<group>"; };
 		292FF987173A4930004CC609 /* YNFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNFunctions.h; sourceTree = "<group>"; };
 		292FF988173A4930004CC609 /* YNFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNFunctions.m; sourceTree = "<group>"; };
 		29361708173CFD9D00F8303B /* PhotoImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoImageButton.h; sourceTree = "<group>"; };
@@ -826,6 +823,8 @@
 		29C53AC1179CC03C00078CBE /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		29C53AC2179CC03C00078CBE /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		29C714FE179E7345008D04EB /* Bt_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Back.png; sourceTree = "<group>"; };
+		29C9413417D832FF0088B392 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
+		29C9413517D833000088B392 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		29C98B0517AB943300CF8FAF /* Bk_Seach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Seach.png; sourceTree = "<group>"; };
 		29C98B0617AB943300CF8FAF /* Bt_Seach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Seach.png; sourceTree = "<group>"; };
 		29C98B0917ABA01800CF8FAF /* Bt_Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Filter.png; sourceTree = "<group>"; };
@@ -902,8 +901,6 @@
 		29DF5BDC1755F9B1005D85E4 /* regist_bg_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = regist_bg_top.png; sourceTree = "<group>"; };
 		29E0C1351733846C005007BC /* PhohoDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhohoDemo.h; sourceTree = "<group>"; };
 		29E0C1361733846C005007BC /* PhohoDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhohoDemo.m; sourceTree = "<group>"; };
-		29E8167B1732395A00866C34 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
-		29E8167C1732395A00866C34 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		29EFE84F172A55AD0099B5A7 /* newnds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newnds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29EFE855172A55AD0099B5A7 /* newnds-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "newnds-Info.plist"; sourceTree = "<group>"; };
 		29EFE857172A55AD0099B5A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1448,20 +1445,18 @@
 		29852D1B172D17CE001AD87A /* Photo */ = {
 			isa = PBXGroup;
 			children = (
+				29C9413417D832FF0088B392 /* PhotoViewController.h */,
+				29C9413517D833000088B392 /* PhotoViewController.m */,
 				29361708173CFD9D00F8303B /* PhotoImageButton.h */,
 				29361709173CFD9D00F8303B /* PhotoImageButton.m */,
 				29E0C1351733846C005007BC /* PhohoDemo.h */,
 				29E0C1361733846C005007BC /* PhohoDemo.m */,
-				29E8167B1732395A00866C34 /* PhotoViewController.h */,
-				29E8167C1732395A00866C34 /* PhotoViewController.m */,
 				29CFD47A173733FF001B6721 /* DownImage.h */,
 				29CFD47B173733FF001B6721 /* DownImage.m */,
 				29C077551758B0BD005A5EFF /* PhotoFileCell.h */,
 				29C077561758B0BD005A5EFF /* PhotoFileCell.m */,
 				29AAC4E1175F4FAD0050B2A7 /* PhotoLookViewController.h */,
 				29AAC4E2175F4FAD0050B2A7 /* PhotoLookViewController.m */,
-				292D984917644B3E00F57BFF /* operation.h */,
-				292D984A17644B3E00F57BFF /* operation.m */,
 				29D2FC9517C5B52B00D6A553 /* FileTableView.h */,
 				29D2FC9617C5B52B00D6A553 /* FileTableView.m */,
 				29D2FC9817C5B54800D6A553 /* PhotoTableView.h */,
@@ -3028,7 +3023,6 @@
 				29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */,
 				29852CF8172CBCF5001AD87A /* SettingViewController.m in Sources */,
 				29852D18172CFDA6001AD87A /* MyndsViewController.m in Sources */,
-				29E8167D1732395A00866C34 /* PhotoViewController.m in Sources */,
 				29E0C1381733846C005007BC /* PhohoDemo.m in Sources */,
 				29CFD47D173733FF001B6721 /* DownImage.m in Sources */,
 				29639039173A3E98009C5530 /* FileItemTableCell.m in Sources */,
@@ -3064,7 +3058,6 @@
 				29C077571758B0BE005A5EFF /* PhotoFileCell.m in Sources */,
 				29AAC4E3175F4FAD0050B2A7 /* PhotoLookViewController.m in Sources */,
 				29FA3B30176083B700FBA1B6 /* DefaultViewController.m in Sources */,
-				292D984B17644B3E00F57BFF /* operation.m in Sources */,
 				29AFC2C61778369E0074FBAC /* QLBrowserViewController.m in Sources */,
 				29CED36E17812B7000899FAE /* BoderView.m in Sources */,
 				29CEC31C178AB15500EA002F /* SCBLinkManager.m in Sources */,
@@ -3099,6 +3092,7 @@
 				29D2FC9D17C6118100D6A553 /* CustomControl.m in Sources */,
 				2929E30D17CC2EA9003CB75A /* FileTableViewCell.m in Sources */,
 				2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */,
+				29C9413617D833000088B392 /* PhotoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

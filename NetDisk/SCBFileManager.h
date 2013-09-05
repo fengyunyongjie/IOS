@@ -22,10 +22,12 @@ typedef enum {
 @protocol SCBFileManagerDelegate;
 @interface SCBFileManager : NSObject
 {
+    BOOL isFamily;
 }
 @property (nonatomic,assign)id<SCBFileManagerDelegate> delegate;
 @property (strong,nonatomic) NSMutableData *activeData;
 @property (assign,nonatomic) kFMType fm_type;
+@property (nonatomic,assign) BOOL isFamily;
 -(void)cancelAllTask;
 //打开网盘/fm
 -(void)openFinderWithID:(NSString *)f_id sID:(NSString *)s_id;      //无分页：所以cursor=0,offset=-1;

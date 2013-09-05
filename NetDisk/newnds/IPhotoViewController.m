@@ -72,12 +72,15 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(appleDate.myTabBarController.IsTabBarHiden && !isPhoto)
+    if(appleDate.myTabBarController.IsTabBarHiden && !isPhoto && loadType != 2)
     {
         [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
     }
-    [self showFileList];
-    [self requestSpace];
+    if(loadType != 2)
+    {
+        [self showFileList];
+        [self requestSpace];
+    }
 }
 
 - (void)viewDidLoad
@@ -532,6 +535,7 @@
         [myTabbar setHidesTabBarWithAnimate:NO];
         [edit_view setHidden:YES];
     }
+    loadType = 1;
     //打开照片库
     QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
     imagePickerController.delegate = self;
@@ -779,12 +783,16 @@
 
 -(void)showController:(NSString *)fid titleString:(NSString *)fname
 {
+    
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
     qbImage_fileView.f_id = fid;
     qbImage_fileView.f_name = fname;
     qbImage_fileView.isChangeMove = YES;
     [qbImage_fileView setQbDelegate:self];
-    [self presentModalViewController:qbImage_fileView animated:YES];
+    UINavigationController *navgation = [[UINavigationController alloc] initWithRootViewController:qbImage_fileView];
+    [navgation setNavigationBarHidden:YES];
+    [self presentModalViewController:navgation animated:YES];
+    [navgation release];
     [qbImage_fileView release];
 }
 
@@ -905,6 +913,7 @@
     else
     {
         [file_tableView toMove:nil];
+        loadType = 2;
     }
 }
 

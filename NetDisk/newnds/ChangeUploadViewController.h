@@ -51,6 +51,7 @@
     CGFloat automicProgess;
     TaskDemo *automicDemo;
     int automicTotal;
+    int selectedIndex;
 }
 
 @property(nonatomic,retain) UIView *topView;

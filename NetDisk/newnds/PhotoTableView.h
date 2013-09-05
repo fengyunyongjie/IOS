@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PhotoViewController.h"
 #import "SCBPhotoManager.h"
 #import "DownImage.h"
 #import "SCBFileManager.h"
@@ -97,30 +98,5 @@
 -(void)toMove:(id)sender;
 #pragma mark 删除文件
 -(void)toDelete:(id)sender;
-
-@end
-
-
-@interface CellTag : NSObject
-{
-    NSInteger fileTag;
-    NSInteger imageTag;
-    NSInteger buttonTag;
-    NSInteger pageTag;
-    NSInteger sectionTag;
-}
-
-@property(nonatomic,assign) NSInteger fileTag;
-@property(nonatomic,assign) NSInteger imageTag;
-@property(nonatomic,assign) NSInteger buttonTag;
-@property(nonatomic,assign) NSInteger pageTag;
-@property(nonatomic,assign) NSInteger sectionTag;
-@end
-
-@interface SelectButton : UIButton
-{
-    CellTag *cell;
-}
-@property(nonatomic,retain) CellTag *cell;
 
 @end

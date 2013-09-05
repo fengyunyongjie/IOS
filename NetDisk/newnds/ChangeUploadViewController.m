@@ -89,6 +89,7 @@
     {
         TaskDemo *demo = [historyList objectAtIndex:row_];
         [demo deleteTaskTable];
+        selectedIndex = demo.index_id+1;
         [historyList removeObjectAtIndex:demo.index_id];
         if(isHistoryShow)
         {
@@ -110,6 +111,7 @@
 #pragma mark ----更新上传任务列表
 -(void)updateReloadData
 {
+//    BOOL isChange = FALSE;
     for(int i=0;i<[self.uploadListTableView.visibleCells count];i++)
     {
         UploadViewCell *cell = (UploadViewCell *)[self.uploadListTableView.visibleCells objectAtIndex:i];
@@ -128,11 +130,19 @@
         }
         else
         {
-            if(i<[historyList count])
+//            if(cell.demo.index_id == selectedIndex)
+//            {
+//                isChange = TRUE;
+//            }
+//            if(isChange)
+//            {
+//                cell.demo.index_id -= 1;
+//            }
+            
+            for(int j=0;j<[historyList count];j++)
             {
-                TaskDemo *demo = [historyList objectAtIndex:i];
-                demo.index_id = i;
-                NSLog(@"cellTag:%i",demo.f_data.length);
+                TaskDemo *demo = [historyList objectAtIndex:j];
+                demo.index_id = j;
             }
         }
     }
@@ -390,7 +400,7 @@
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         //显示上传历史
         isHistoryShow = YES;
-        TaskDemo *demo = [[TaskDemo alloc] init];
+        
         if([historyList count]>0)
         {
             TaskDemo *task_demo = [historyList lastObject];
@@ -398,11 +408,13 @@
         }
         else
         {
+            TaskDemo *demo = [[TaskDemo alloc] init];
             demo.t_id = 0;
-           historyList = [demo selectFinishTaskTable];
+            historyList = [demo selectFinishTaskTable];
+            [demo release];
         }
         [self.uploadListTableView reloadData];
-        [demo release];
+        
 //        });
     }
 }
@@ -587,16 +599,17 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellString = @"uploadHistoryCell";
-    UploadViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellString];
-    if(cell==nil)
-    {
-        cell = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
+    UploadViewCell *cell;
     
     if(!isHistoryShow)
     {
+        static NSString *cellString = @"uploadUploadingCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:cellString];
+        if(cell==nil)
+        {
+            cell = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        }
         if(self.uploadingList)
         {
             UploadFile *demo = [self.uploadingList objectAtIndex:indexPath.row];
@@ -608,6 +621,13 @@
     }
     else
     {
+        static NSString *cellString = @"uploadHistoryCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:cellString];
+        if(cell==nil)
+        {
+            cell = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        }
         if(historyList)
         {
             TaskDemo *demo = [historyList objectAtIndex:indexPath.row];

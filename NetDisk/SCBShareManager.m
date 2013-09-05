@@ -15,6 +15,8 @@
 }
 @end
 @implementation SCBShareManager
+@synthesize isFamily;
+
 -(void)cancelAllTask
 {
     self.delegate=nil;
@@ -67,7 +69,6 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,SHARE_OPEN_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-//    NSString *s_id=[[SCBSession sharedSession] spaceID];
 //    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
     [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
     NSLog(@"%@",body);
@@ -90,7 +91,6 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
 //    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
-//    NSString *s_id=[[SCBSession sharedSession] spaceID];
    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
@@ -134,7 +134,15 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
     NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
-    NSString *s_id=[[SCBSession sharedSession] spaceID];
+    NSString *s_id;
+    if(isFamily)
+    {
+        s_id = [[SCBSession sharedSession] homeID];
+    }
+    else
+    {
+        s_id=[[SCBSession sharedSession] spaceID];
+    }
     [body appendFormat:@"f_pid=%@&f_ids[]=%@&space_id=%@",f_pid,fids,s_id];
     NSLog(@"move: %@",body);
     NSMutableData *myRequestData=[NSMutableData data];

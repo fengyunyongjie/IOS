@@ -99,7 +99,7 @@
     UIButton *phoot_button = [[UIButton alloc] init];
     [phoot_button setTag:23];
     [phoot_button setFrame:CGRectMake((320-ChangeTabWidth)/2, 0, ChangeTabWidth, 44)];
-    [phoot_button setTitle:@"照片管理" forState:UIControlStateNormal];
+    [phoot_button setTitle:f_name forState:UIControlStateNormal];
     [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     //    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
     //    [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
@@ -153,8 +153,6 @@
     table_view.delegate = self;
     [self.view addSubview:table_view];
     
-    url_array = [[NSMutableArray alloc] init];
-    
     //请求所有的数据文件
     if(photoManger == nil)
     {
@@ -162,25 +160,11 @@
         [photoManger setNewFoldDelegate:self];
     }
     [photoManger openFinderWithID:self.f_id space_id:space_id];
-    FileDeviceName *file_device = [[FileDeviceName alloc] init];
-    [file_device setDeviceName:[AppDelegate deviceString]];
-    [file_device setF_id:self.f_id];
-    [url_array addObject:file_device];
-    [file_device release];
 }
 
 -(void)clicked_back
 {
-    if([url_array count]>1)
-    {
-        FileDeviceName *file_device = (FileDeviceName *)[url_array objectAtIndex:[url_array count]-2];
-        [photoManger openFinderWithID:file_device.f_id space_id:space_id];
-        [url_array removeObjectAtIndex:[url_array count]-1];
-    }
-    else
-    {
-        [self dismissModalViewControllerAnimated:YES];
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)clicked_uploadState:(id)sender
@@ -195,11 +179,9 @@
 
 -(void)clicked_changeMyFile:(id)sender
 {
-    FileDeviceName *deviceName = [url_array lastObject];
-    [self.qbDelegate uploadFileder:deviceName.deviceName];
-    [self.qbDelegate uploadFiledId:deviceName.f_id];
+    [self.qbDelegate uploadFileder:f_name];
+    [self.qbDelegate uploadFiledId:f_id];
     [self dismissModalViewControllerAnimated:YES];
-    NSLog(@"deviceName:%@",deviceName.deviceName);
 }
 
 -(void)newFold:(NSDictionary *)dictionary
@@ -275,13 +257,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        
+        QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
         NSDictionary *this=(NSDictionary *)[self.fileArray objectAtIndex:indexPath.row];
-        [photoManger openFinderWithID:[this objectForKey:@"f_id"] space_id:space_id];
-        FileDeviceName *file_device = [[FileDeviceName alloc] init];
-        [file_device setDeviceName:[this objectForKey:@"f_name"]];
-        [file_device setF_id:[this objectForKey:@"f_id"]];
-        [url_array addObject:file_device];
-        [file_device release];
+        qbImage_fileView.f_id = [this objectForKey:@"f_id"];
+        qbImage_fileView.f_name = [this objectForKey:@"f_name"];
+        [qbImage_fileView setQbDelegate:self];
+        [self.navigationController pushViewController:qbImage_fileView animated:YES];
+        [qbImage_fileView release];
     });
 }
 
@@ -295,6 +278,16 @@
 {
     [table_view release];
     [super dealloc];
+}
+
+-(void)uploadFileder:(NSString *)deviceName
+{
+    [self.qbDelegate uploadFileder:deviceName];
+}
+
+-(void)uploadFiledId:(NSString *)f_id_
+{
+    [self.qbDelegate uploadFiledId:f_id_];
 }
 
 @end

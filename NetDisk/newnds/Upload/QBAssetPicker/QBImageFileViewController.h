@@ -16,7 +16,7 @@
 
 @end
 
-@interface QBImageFileViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,NewFoldDelegate>
+@interface QBImageFileViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,NewFoldDelegate,QBImageFileViewDelegate>
 {
     UITableView *table_view;
     /*
@@ -28,7 +28,6 @@
     BOOL isNeedBackButton;
     SCBPhotoManager *photoManger;
     NSMutableArray *fileArray;
-    NSMutableArray *url_array;
     id<QBImageFileViewDelegate> qbDelegate;
     NSString *space_id;
     NSString *f_name;

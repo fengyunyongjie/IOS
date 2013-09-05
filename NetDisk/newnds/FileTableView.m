@@ -52,6 +52,7 @@
     photoManager = [[SCBPhotoManager alloc] init];
     [photoManager setNewFoldDelegate:self];
     fileManager = [[SCBFileManager alloc] init];
+    [fileManager setIsFamily:YES];
     fileManager.delegate = self;
     linkManager = [[SCBLinkManager alloc] init];
     tableDictionary = [[NSMutableDictionary alloc] init];
@@ -75,13 +76,13 @@
     int number = [[dictionary objectForKey:@"code"] intValue];
     if(number == 0)
     {
+        [tableArray removeAllObjects];
         if(tableArray == nil)
         {
             tableArray = [[NSMutableArray alloc] initWithArray:[dictionary objectForKey:@"files"]];
         }
         else
         {
-            [tableArray removeAllObjects];
             [tableArray addObjectsFromArray:[dictionary objectForKey:@"files"]];
         }
     }
@@ -535,8 +536,26 @@
 //    NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
 //    NSString *f_id=[dic objectForKey:@"f_id"];
 //    NSString *fileName=[dic objectForKey:@"f_name"];
-    [file_delegate showController:p_id titleString:@"我的文件"];
-    [self EscMenu];
+    if([[selected_dictionary allKeys] count] == 0 && !selectedIndexPath)
+    {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self];
+        [self addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"未选中任何文件(夹)";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+    }
+    else
+    {
+        [file_delegate showController:@"1" titleString:@"我的文件"];
+        [self EscMenu];
+    }
 }
 
 #pragma mark 显示移动文件
@@ -554,6 +573,7 @@
         NSString *f_id = [dictioinary objectForKey:@"f_id"];
         [array addObject:f_id];
     }
+    [fileManager setDelegate:self];
     [fileManager moveFileIDs:array toPID:pid];
     [array release];
 }
@@ -574,23 +594,26 @@
 #pragma mark 删除文件
 -(void)toDelete:(id)sender
 {
-    UIActionSheet *actioinSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil, nil];
-    [actioinSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    UIActionSheet *actioinSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil];
     [actioinSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actioinSheet setTag:kAlertTagDeleteOne];
+    [actioinSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     [actioinSheet release];
+    
     [self EscMenu];
 }
 
 #pragma mark 新建文件夹
 -(void)toNewFinder:(NSString *)textName
 {
+    [fileManager setDelegate:self];
     [fileManager newFinderWithName:textName pID:p_id sID:[[SCBSession sharedSession] homeID]];
 }
 
 #pragma mark 请求我的家庭空间
 -(void)requestSpace:(NSString *)spaceid
 {
+    [fileManager setDelegate:self];
     [fileManager requestOpenFamily:spaceid];
 }
 
@@ -693,6 +716,7 @@
             }
             if([array count]>0)
             {
+                [fileManager setDelegate:self];
                 [fileManager removeFileWithIDs:array];
                 [selected_dictionary removeAllObjects];
             }
@@ -813,6 +837,7 @@
             {
                 NSString *fildtext=[[alertView textFieldAtIndex:0] text];
                 if (![fildtext isEqualToString:name]) {
+                    [fileManager setDelegate:self];
                     [fileManager renameWithID:f_id newName:fildtext];
                 }
             }
@@ -958,11 +983,40 @@
     NSLog(@"removeSucess");
     [self EscMenu];
     [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    
+    [self escSelected];
+    
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+    
+    
 }
 
 -(void)removeUnsucess
 {
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
     
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 -(void)renameSucess
@@ -970,11 +1024,37 @@
     NSLog(@"renameSucess");
     [self EscMenu];
     [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    
+    [self escSelected];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 -(void)renameUnsucess
 {
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
     
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 -(void)moveSucess
@@ -982,23 +1062,51 @@
     NSLog(@"moveSucess");
     [self EscMenu];
     [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    
+    [self escSelected];
+    
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 -(void)moveUnsucess
 {
     [self EscMenu];
-    [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    [self escSelected];
 }
 
 -(void)newFinderSucess
 {
     NSLog(@"newFinderSucess");
     [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+    [self escSelected];
 }
 
 -(void)newFinderUnsucess
 {
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
     
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 -(void)getOpenFamily:(NSDictionary *)dictionary
@@ -1020,6 +1128,8 @@
 -(void)editAction
 {
     isEdition = YES;
+    selectedIndexPath = nil;
+    [selected_dictionary removeAllObjects];
     [self EscMenu];
     for(FileTableViewCell *cell in self.visibleCells)
     {
@@ -1061,6 +1171,7 @@
 -(void)escAction
 {
     isEdition = NO;
+    selectedIndexPath = nil;
     [selected_dictionary removeAllObjects];
     for(FileTableViewCell *cell in self.visibleCells)
     {
@@ -1068,6 +1179,17 @@
         cell.select_button.hidden = YES;
     }
     [self allEscCheckde];
+}
+
+//取消选中
+-(void)escSelected
+{
+    selectedIndexPath = nil;
+    [selected_dictionary removeAllObjects];
+    for(FileTableViewCell *cell in self.visibleCells)
+    {
+        [cell.select_button setImage:[UIImage imageNamed:@"Unselected.png"] forState:UIControlStateNormal];
+    }
 }
 
 //选择事件
@@ -1098,8 +1220,6 @@
 //请求文件
 -(void)requestFile:(NSString *)f_id space_id:(NSString *)space_id
 {
-    [tableArray removeAllObjects];
-    [self reloadData];
     p_id = f_id;
     [photoManager openFinderWithID:f_id space_id:space_id];
 }

@@ -526,7 +526,7 @@
 
 -(void)changeFileId:(NSString *)f_id_
 {
-    [self.delegate changeFileId:f_id];
+    [self.delegate changeFileId:f_id_];
 }
 
 - (void)changeUpload:(NSMutableOrderedSet *)array_
