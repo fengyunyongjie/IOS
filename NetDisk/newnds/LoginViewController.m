@@ -11,6 +11,8 @@
 #import "SCBAccountManager.h"
 #import "MBProgressHUD.h"
 #import "RegistViewController.h"
+#import "APService.h"
+#import "SCBSession.h"
 
 
 @interface LoginViewController ()
@@ -147,6 +149,9 @@
 #pragma mark - SCBAccountManagerDelegate Methods
 -(void)loginSucceed:(id)manager
 {
+    NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
+    [APService setTags:nil alias:alias];
+    NSLog(@"设置别名成功：%@",alias);
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate setLogin];
     [[NSUserDefaults standardUserDefaults] setObject:_userNameTextField.text forKey:@"usr_name"];

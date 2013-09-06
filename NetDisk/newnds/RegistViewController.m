@@ -10,6 +10,8 @@
 #import "MBProgressHUD.h"
 #import "SCBAccountManager.h"
 #import "AppDelegate.h"
+#import "SCBSession.h"
+#import "APService.h"
 //[[NSUserDefaults standardUserDefaults] valueForKey:@"SBFormattedPhoneNumber"];
 @interface RegistViewController ()
 @property (strong ,nonatomic) MBProgressHUD *m_hud;
@@ -66,6 +68,9 @@
 -(void)registSucceed
 {
      [self.m_hud removeFromSuperview];
+    NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
+    [APService setTags:nil alias:alias];
+    NSLog(@"设置别名成功：%@",alias);
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate setLogin];
     [self dismissViewControllerAnimated:NO completion:^(void){
