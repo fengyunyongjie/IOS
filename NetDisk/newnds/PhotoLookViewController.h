@@ -13,7 +13,7 @@
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
 
-@interface PhotoLookViewController : UIViewController<UIScrollViewDelegate,UIActionSheetDelegate,SCBPhotoDelegate,DownloaderDelegate,SCBLinkManagerDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>{
+@interface PhotoLookViewController : UIViewController<UIScrollViewDelegate,UIActionSheetDelegate,SCBPhotoDelegate,DownloaderDelegate,SCBLinkManagerDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,UIActionSheetDelegate>{
     /*
      缩放代码
      */

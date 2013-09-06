@@ -508,7 +508,12 @@ typedef enum{
         self.lblMore.frame=CGRectMake(259, 45, 42, 21);
         [self.cellMenu addSubview:self.lblMore];
         
-        
+        NSString *deviece = [AppDelegate deviceString];
+        float y = 0;
+        if([deviece rangeOfString:@"iPhone 5"].length == 0)
+        {
+            y = 60;
+        }
         //新建文件夹视图
         self.newFinderView=[[[UIControl alloc] init] autorelease];
         self.newFinderView.frame=self.view.frame;
@@ -516,16 +521,16 @@ typedef enum{
         [self.view addSubview:self.newFinderView];
         [self.newFinderView setHidden:YES];
         UIImageView *newFinderBg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_CreateFolder.png"]];
-        newFinderBg.frame=CGRectMake(25, 100, 270, 176);
+        newFinderBg.frame=CGRectMake(25, 100-y, 270, 176);
         [self.newFinderView addSubview:newFinderBg];
-        UILabel *lblTitle=[[[UILabel alloc] initWithFrame:CGRectMake(91, 110, 138, 21)] autorelease];
+        UILabel *lblTitle=[[[UILabel alloc] initWithFrame:CGRectMake(91, 110-y, 138, 21)] autorelease];
         lblTitle.textColor=[UIColor whiteColor];
         lblTitle.backgroundColor=[UIColor clearColor];
         lblTitle.textAlignment=UITextAlignmentCenter;
         lblTitle.text=@"新建文件夹";
         [self.newFinderView addSubview:lblTitle];
         UIButton *btnOk=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnOk.frame=CGRectMake(25, 221, 135, 55);
+        btnOk.frame=CGRectMake(25, 221-y, 135, 55);
         //btnOk.titleLabel.text=@"确定";
         [btnOk setTitle:@"确定" forState:UIControlStateNormal];
         [btnOk setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
@@ -533,14 +538,14 @@ typedef enum{
         [btnOk addTarget:self action:@selector(okNewFinder:) forControlEvents:UIControlEventTouchUpInside];
         [self.newFinderView addSubview:btnOk];
         UIButton *btnCancel=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnCancel.frame=CGRectMake(160, 221, 135, 55);
+        btnCancel.frame=CGRectMake(160, 221-y, 135, 55);
         [btnCancel setTitle:@"取消" forState:UIControlStateNormal];
         [btnCancel setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         btnCancel.titleLabel.textColor=[UIColor whiteColor];
         [btnCancel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [btnCancel addTarget:self action:@selector(cancelNewFinder:) forControlEvents:UIControlEventTouchUpInside];
         [self.newFinderView addSubview:btnCancel];
-        self.tfdFinderName=[[[UITextField alloc] initWithFrame:CGRectMake(83, 159, 190, 30)] autorelease];
+        self.tfdFinderName=[[[UITextField alloc] initWithFrame:CGRectMake(83, 159-y, 190, 30)] autorelease];
         self.tfdFinderName.placeholder=@"文件夹名称";
         self.tfdFinderName.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
         self.tfdFinderName.borderStyle=UITextBorderStyleNone;

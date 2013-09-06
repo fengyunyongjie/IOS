@@ -255,6 +255,10 @@
         photoType = 0;
         [self requestPhotoType];
     }
+    else
+    {
+        [photo_delegate nullData];
+    }
 }
 
 -(void)requestPhotoType
@@ -301,6 +305,10 @@
     if([[photo_diction allKeys] count] == 0)
     {
         [photo_delegate nullData];
+    }
+    else
+    {
+        [photo_delegate haveData];
     }
     
     //加载数据

@@ -348,16 +348,12 @@
         NSLog(@"Url-------:%@",demo.databasePath);
         if(demo.is_automic_upload)
         {
-            UIImage *data_image = [UIImage imageWithData:demo.f_data];
-            UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-            demo.f_data = UIImageJPEGRepresentation(state_image, 1.0);
             [demo insertTaskTable];
         }
         else
         {
             [demo updateTaskTableFName];
         }
-        
         
         WebData *web = [[WebData alloc] init];
         web.photo_name = demo.f_base_name;

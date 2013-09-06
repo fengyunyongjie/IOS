@@ -270,6 +270,7 @@
 //查询所有完成的纪录
 -(NSMutableArray *)selectFinishTaskTable
 {
+    NSLog(@"tid:%i",t_id);
     NSMutableArray *tableArray = [[NSMutableArray alloc] init];
     sqlite3_stmt *statement;
     const char *dbpath = [self.databasePath UTF8String];

@@ -245,6 +245,19 @@
     }
     file_tableView.hidden = YES;
     photo_tableView.hidden = NO;
+    
+    UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
+    [lblEdit setText:@"编辑"];
+    [file_tableView setEditing:NO animated:YES];
+    [file_tableView escAction];
+    [photo_tableView escAction];
+    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+    if(myTabbar.IsTabBarHiden)
+    {
+        [myTabbar setHidesTabBarWithAnimate:NO];
+    }
+    [edit_view setHidden:YES];
+    label_all.text = @"全选";
 }
 
 //点击文件内容
@@ -770,12 +783,19 @@
         [newFinder_control addTarget:self action:@selector(endEdit:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:newFinder_control];
         
+        NSString *deviece = [AppDelegate deviceString];
+        float y = 0;
+        if([deviece rangeOfString:@"iPhone 5"].length == 0)
+        {
+            y = 60;
+        }
+        
         [newFinder_control setHidden:YES];
         UIImageView *newFinderBg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_CreateFolder.png"]];
-        newFinderBg.frame=CGRectMake(25, 100, 270, 176);
+        newFinderBg.frame=CGRectMake(25, 100-y, 270, 176);
         [newFinder_control addSubview:newFinderBg];
         
-        UILabel *lblTitle=[[[UILabel alloc] initWithFrame:CGRectMake(91, 110, 138, 21)] autorelease];
+        UILabel *lblTitle=[[[UILabel alloc] initWithFrame:CGRectMake(91, 110-y, 138, 21)] autorelease];
         lblTitle.textColor=[UIColor whiteColor];
         lblTitle.backgroundColor=[UIColor clearColor];
         lblTitle.textAlignment=UITextAlignmentCenter;
@@ -783,7 +803,7 @@
         [newFinder_control addSubview:lblTitle];
         
         UIButton *btnOk=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnOk.frame=CGRectMake(25, 221, 135, 55);
+        btnOk.frame=CGRectMake(25, 221-y, 135, 55);
         //btnOk.titleLabel.text=@"确定";
         [btnOk setTitle:@"确定" forState:UIControlStateNormal];
         [btnOk setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
@@ -792,7 +812,7 @@
         [newFinder_control addSubview:btnOk];
         
         UIButton *btnCancel=[UIButton buttonWithType:UIButtonTypeCustom];
-        btnCancel.frame=CGRectMake(160, 221, 135, 55);
+        btnCancel.frame=CGRectMake(160, 221-y, 135, 55);
         [btnCancel setTitle:@"取消" forState:UIControlStateNormal];
         [btnCancel setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         btnCancel.titleLabel.textColor=[UIColor whiteColor];
@@ -800,7 +820,7 @@
         [btnCancel addTarget:self action:@selector(cancelNewFinder:) forControlEvents:UIControlEventTouchUpInside];
         [newFinder_control addSubview:btnCancel];
         
-        finderName_textField = [[[UITextField alloc] initWithFrame:CGRectMake(83, 159, 190, 30)] autorelease];
+        finderName_textField = [[[UITextField alloc] initWithFrame:CGRectMake(83, 159-y, 190, 30)] autorelease];
         finderName_textField.placeholder=@"文件夹名称";
         finderName_textField.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
         finderName_textField.borderStyle=UITextBorderStyleNone;
@@ -815,6 +835,10 @@
 -(void)endEdit:(id)sender
 {
     [newFinder_control setHidden:YES];
+    if(finderName_textField)
+    {
+        [finderName_textField endEditing:YES];
+    }
 }
 
 -(void)okNewFinder:(id)sender
@@ -827,6 +851,10 @@
 -(void)cancelNewFinder:(id)sender
 {
     [newFinder_control setHidden:YES];
+    if(finderName_textField)
+    {
+        [finderName_textField endEditing:YES];
+    }
 }
 
 #pragma mark FileTableViewDelegate -------------------

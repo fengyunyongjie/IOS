@@ -11,7 +11,7 @@
 #import "UploadFile.h"
 #import "UploadViewCell.h"
 
-@interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,UploadViewCellDelegate,UIScrollViewDelegate>
+@interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,UploadViewCellDelegate,UIScrollViewDelegate,UIActionSheetDelegate>
 {
     //头部视图
     UIView *topView;
@@ -52,6 +52,7 @@
     TaskDemo *automicDemo;
     int automicTotal;
     int selectedIndex;
+    TaskDemo *selectDemo;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -63,6 +64,7 @@
 @property(nonatomic,assign) BOOL isUploadAll;
 @property(nonatomic,assign) BOOL isAutomaticUpload;
 @property(nonatomic,retain) UploadViewCell *headerView;
+@property(nonatomic,retain) TaskDemo *selectDemo;
 
 //上传成功
 -(void)upFinish:(NSInteger)fileTag;

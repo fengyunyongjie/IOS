@@ -120,8 +120,6 @@
 
 -(void)reloadMessageData
 {
-    [table_array removeAllObjects];
-    [self.table_view reloadData];
     [messageManager selectMessages:-1 cursor:0 offset:-1 unread:-1];
 }
 
@@ -232,6 +230,10 @@
                 [cell.accept_button setHidden:YES];
                 [cell.refused_button setHidden:YES];
             }
+            if(![[diction objectForKey:@"is_accept"] boolValue])
+            {
+                [cell.accept_button setHidden:NO];
+            }
         }
         if([msg_sort intValue] == 7) //自定义短消息
         {
@@ -262,11 +264,12 @@
         if(sort_type == 6) //添加好友
         {
             //添加好友请求
-            NSString *friendId = [diction objectForKey:@"friendName"];
+            NSString *friendId = [diction objectForKey:@"account"];
             NSString *mark = [diction objectForKey:@"msg_sender_remark"];
             NSLog(@"groupId:%@",self.group_id);
             if(self.group_id != nil)
             {
+                [friendManager setDelegate:self];
                 [friendManager getFriendshipsFriendsCreate:friendId group_id:[self.group_id intValue] friend_remark:mark];
             }
             
@@ -317,7 +320,7 @@
     {
         NSArray *array = [dictioinary objectForKey:@"msgs"];
         NSLog(@"得到消息：%@",array);
-        
+        [table_array removeAllObjects];
         for (NSDictionary *diction in array) {
             NSMutableDictionary *tableD = [[NSMutableDictionary alloc] initWithDictionary:diction];
             [table_array addObject:tableD];

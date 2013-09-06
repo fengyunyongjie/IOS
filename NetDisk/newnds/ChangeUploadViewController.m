@@ -16,6 +16,7 @@
 #define RightButtonBoderWidth 0
 #define UploadProessTag 100000
 #define UploadFinishProessTag 200000
+#define kActionSheetTagDelete 77
 
 @interface ChangeUploadViewController ()
 
@@ -31,6 +32,7 @@
 @synthesize isUploadAll;
 @synthesize isAutomaticUpload;
 @synthesize headerView;
+@synthesize selectDemo;
 
 
 #pragma mark ----删除上传时列表
@@ -400,7 +402,7 @@
 //        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         //显示上传历史
         isHistoryShow = YES;
-        
+        [historyList removeAllObjects];
         if([historyList count]>0)
         {
             TaskDemo *task_demo = [historyList lastObject];
@@ -409,7 +411,7 @@
         else
         {
             TaskDemo *demo = [[TaskDemo alloc] init];
-            demo.t_id = 0;
+            demo.t_id = 1000000000;
             historyList = [demo selectFinishTaskTable];
             [demo release];
         }
@@ -645,38 +647,27 @@
 
 -(void)deletCell:(TaskDemo *)taskDemo
 {
-    if(isHistoryShow)
+    selectDemo = taskDemo;
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [actionSheet setTag:kActionSheetTagDelete];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [actionSheet release];
+}
+
+#pragma mark 
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(actionSheet.tag == kActionSheetTagDelete && buttonIndex == 0)
     {
-        [self deleteFinishIndexRow:taskDemo.index_id];
-    }
-    else
-    {
-        [self deleteUploadingIndexRow:taskDemo.index_id isDeleteRecory:YES];
-//        if(taskDemo.index_id<[self.uploadingList count])
-//        {
-//            UploadFile *demo = [self.uploadingList objectAtIndex:taskDemo.index_id];
-//            [demo upStop];
-//            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//            [taskDemo deleteTaskTable];
-//            [app_delegate.upload_all setIsUpload:NO];
-//            [self.uploadingList removeObjectAtIndex:taskDemo.index_id];
-//            NSIndexPath *index_path = [NSIndexPath indexPathForItem:taskDemo.index_id inSection:0];
-//            [self.uploadListTableView beginUpdates];
-//            [self.uploadListTableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:index_path, nil] withRowAnimation:UITableViewRowAnimationRight];
-//            [self.uploadListTableView endUpdates];
-//            
-//            //修改视图信息
-//            for(int i=0;i<[self.uploadingList count];i++)
-//            {
-//                UploadFile *demo = [self.uploadingList objectAtIndex:i];
-//                UploadViewCell *cell = (UploadViewCell *)[self.uploadListTableView.visibleCells objectAtIndex:i];
-//                [cell setTag:UploadProessTag+i];
-//                demo.demo.index_id = i;
-//                [cell setUploadDemo:demo.demo];
-//            }
-//            app_delegate.upload_all.uploadAllList = self.uploadingList;
-//            [app_delegate.upload_all startUpload];
-//        }
+        if(isHistoryShow)
+        {
+            [self deleteFinishIndexRow:selectDemo.index_id];
+        }
+        else
+        {
+            [self deleteUploadingIndexRow:selectDemo.index_id isDeleteRecory:YES];
+        }
     }
 }
 
@@ -740,6 +731,10 @@
     if(historyList)
     {
         [historyList removeAllObjects];
+    }
+    if(uploadingList)
+    {
+        [uploadingList removeAllObjects];
     }
     [self.uploadListTableView reloadData];
 }

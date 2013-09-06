@@ -155,11 +155,11 @@
     }
     
     NSDictionary *dictioinary = [tableArray objectAtIndex:[indexPath row]];
-    NSString *f_mime = [dictioinary objectForKey:@"f_mime"];
+    NSString *f_mime = [[dictioinary objectForKey:@"f_mime"] uppercaseString];
     NSString *f_id = [dictioinary objectForKey:@"f_id"];
     NSString *name= [dictioinary objectForKey:@"f_name"];
     NSString *f_modify=[dictioinary objectForKey:@"f_modify"];
-    
+    NSLog(@"f_mime:%@",f_mime);
     int selectId = [[selected_dictionary objectForKey:[NSString stringWithFormat:@"%i",indexPath.row]] intValue];
     NSLog(@"selectId:%i",selectId);
     if(selectId > 0)
@@ -185,7 +185,7 @@
     cell.textLabel.text=name;
     cell.detailTextLabel.text=f_modify;
     
-    if ([f_mime isEqualToString:@"directory"]) {
+    if ([f_mime isEqualToString:@"DIRECTORY"]) {
         cell.imageView.image = [UIImage imageNamed:@"Ico_FolderF.png"];
     }else if([f_mime isEqualToString:@"PNG"]||
              [f_mime isEqualToString:@"JPG"]||
@@ -222,17 +222,17 @@
             [self startDownLoad:f_id indexPath:indexPath];
             cell.imageView.image = [UIImage imageNamed:@"Ico_PicF.png"];
         }
-    }else if ([f_mime isEqualToString:@"doc"]||
-              [f_mime isEqualToString:@"docx"])
+    }else if ([f_mime isEqualToString:@"DOC"]||
+              [f_mime isEqualToString:@"DOCX"])
     {
         cell.imageView.image = [UIImage imageNamed:@"Ico_DocF.png"];
-    }else if ([f_mime isEqualToString:@"mp3"])
+    }else if ([f_mime isEqualToString:@"MP3"])
     {
         cell.imageView.image = [UIImage imageNamed:@"Ico_MusicF.png"];
-    }else if ([f_mime isEqualToString:@"mov"])
+    }else if ([f_mime isEqualToString:@"MOV"])
     {
         cell.imageView.image = [UIImage imageNamed:@"Ico_MovF.png"];
-    }else if ([f_mime isEqualToString:@"ppt"])
+    }else if ([f_mime isEqualToString:@"PPT"])
     {
         cell.imageView.image = [UIImage imageNamed:@"icon_ppt.png"];
     }else
@@ -280,9 +280,9 @@
     }
     NSDictionary *dictioinary = [tableArray objectAtIndex:[indexPath row]];
     upDictionary = dictioinary;
-    NSString *f_mime = [dictioinary objectForKey:@"f_mime"];
+    NSString *f_mime = [[dictioinary objectForKey:@"f_mime"] uppercaseString];
     NSString *f_id = [dictioinary objectForKey:@"f_id"];
-    if ([f_mime isEqualToString:@"directory"]) {
+    if ([f_mime isEqualToString:@"DIRECTORY"]) {
         [file_delegate downController:f_id];
     }
     else if([f_mime isEqualToString:@"PNG"]||
@@ -599,11 +599,29 @@
 #pragma mark 删除文件
 -(void)toDelete:(id)sender
 {
-    UIActionSheet *actioinSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil];
-    [actioinSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-    [actioinSheet setTag:kAlertTagDeleteOne];
-    [actioinSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-    [actioinSheet release];
+    if([[selected_dictionary allKeys] count] == 0 && !selectedIndexPath)
+    {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self];
+        [self addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"未选中任何文件(夹)";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+    }
+    else
+    {
+        UIActionSheet *actioinSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil];
+        [actioinSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+        [actioinSheet setTag:kAlertTagDeleteOne];
+        [actioinSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+        [actioinSheet release];
+    }
     
     [self EscMenu];
 }
@@ -657,61 +675,83 @@
 #pragma mark 分享文件
 -(void)toShared:(id)sender
 {
-    if([selected_dictionary.allKeys count] == 0)
+    if([[selected_dictionary allKeys] count] == 0 && !selectedIndexPath)
     {
-        NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
-        NSString *f_id1=[NSString stringWithFormat:@"%@",[dic objectForKey:@"f_id"]];
-        for(int i=0;i<[tableArray count];i++)
-        {
-            NSDictionary *dictioinary = [tableArray objectAtIndex:i];
-            NSString *f_id2 = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_id"]];
-            if([f_id1 isEqualToString:f_id2])
-            {
-                NSString *f_mime = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_mime"]];
-                if([f_mime isEqualToString:@"directory"])
-                {
-                    if (self.hud) {
-                        [self.hud removeFromSuperview];
-                    }
-                    self.hud=nil;
-                    self.hud=[[MBProgressHUD alloc] initWithView:self];
-                    [self addSubview:self.hud];    [self.hud show:NO];
-                    self.hud.labelText=@"不能分享文件夹";
-                    self.hud.mode=MBProgressHUDModeText;
-                    self.hud.margin=10.f;
-                    [self.hud show:YES];
-                    [self.hud hide:YES afterDelay:1.0f];
-                    return;
-                }
-            }
+        if (self.hud) {
+            [self.hud removeFromSuperview];
         }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self];
+        [self addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"未选中任何文件(夹)";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
     }
     else
     {
-        for(int i=0;i<[selected_dictionary.allKeys count];i++)
+        if([selected_dictionary.allKeys count] == 0)
         {
-            NSString *f_id1=[NSString stringWithFormat:@"%@",[selected_dictionary objectForKey:[selected_dictionary.allKeys objectAtIndex:i]]];
-            for(int j=0;j<[tableArray count];j++)
+            if(selectedIndexPath)
             {
-                NSDictionary *dictioinary = [tableArray objectAtIndex:j];
-                NSString *f_id2 = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_id"]];
-                if([f_id1 isEqualToString:f_id2])
+                NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+                NSString *f_id1=[NSString stringWithFormat:@"%@",[dic objectForKey:@"f_id"]];
+                for(int i=0;i<[tableArray count];i++)
                 {
-                    NSString *f_mime = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_mime"]];
-                    if([f_mime isEqualToString:@"directory"])
+                    NSDictionary *dictioinary = [tableArray objectAtIndex:i];
+                    NSString *f_id2 = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_id"]];
+                    if([f_id1 isEqualToString:f_id2])
                     {
-                        if (self.hud) {
-                            [self.hud removeFromSuperview];
+                        NSString *f_mime = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_mime"]];
+                        if([f_mime isEqualToString:@"directory"])
+                        {
+                            if (self.hud) {
+                                [self.hud removeFromSuperview];
+                            }
+                            self.hud=nil;
+                            self.hud=[[MBProgressHUD alloc] initWithView:self];
+                            [self addSubview:self.hud];    [self.hud show:NO];
+                            self.hud.labelText=@"不能分享文件夹";
+                            self.hud.mode=MBProgressHUDModeText;
+                            self.hud.margin=10.f;
+                            [self.hud show:YES];
+                            [self.hud hide:YES afterDelay:1.0f];
+                            return;
                         }
-                        self.hud=nil;
-                        self.hud=[[MBProgressHUD alloc] initWithView:self];
-                        [self addSubview:self.hud];    [self.hud show:NO];
-                        self.hud.labelText=@"不能分享文件夹";
-                        self.hud.mode=MBProgressHUDModeText;
-                        self.hud.margin=10.f;
-                        [self.hud show:YES];
-                        [self.hud hide:YES afterDelay:1.0f];
-                        return;
+                    }
+                }
+            }
+        }
+        else
+        {
+            for(int i=0;i<[selected_dictionary.allKeys count];i++)
+            {
+                NSString *f_id1=[NSString stringWithFormat:@"%@",[selected_dictionary objectForKey:[selected_dictionary.allKeys objectAtIndex:i]]];
+                for(int j=0;j<[tableArray count];j++)
+                {
+                    NSDictionary *dictioinary = [tableArray objectAtIndex:j];
+                    NSString *f_id2 = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_id"]];
+                    if([f_id1 isEqualToString:f_id2])
+                    {
+                        NSString *f_mime = [NSString stringWithFormat:@"%@",[dictioinary objectForKey:@"f_mime"]];
+                        if([f_mime isEqualToString:@"directory"])
+                        {
+                            if (self.hud) {
+                                [self.hud removeFromSuperview];
+                            }
+                            self.hud=nil;
+                            self.hud=[[MBProgressHUD alloc] initWithView:self];
+                            [self addSubview:self.hud];    [self.hud show:NO];
+                            self.hud.labelText=@"不能分享文件夹";
+                            self.hud.mode=MBProgressHUDModeText;
+                            self.hud.margin=10.f;
+                            [self.hud show:YES];
+                            [self.hud hide:YES afterDelay:1.0f];
+                            return;
+                        }
                     }
                 }
             }
@@ -768,9 +808,13 @@
             NSMutableArray *array = [[NSMutableArray alloc] init];
             if([selected_dictionary.allKeys count] == 0)
             {
-                NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
-                NSString *f_id=[dic objectForKey:@"f_id"];
-                [array addObject:f_id];
+                NSLog(@"selectedIndexPath:%@",selectedIndexPath);
+                if(selectedIndexPath)
+                {
+                    NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+                    NSString *f_id=[dic objectForKey:@"f_id"];
+                    [array addObject:f_id];
+                }
             }
             else
             {
@@ -851,9 +895,12 @@
     NSMutableArray *array = [NSMutableArray array];
     if([selected_dictionary.allKeys count] == 0)
     {
-        NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
-        NSString *f_id=[dic objectForKey:@"f_id"];
-        [array addObject:f_id];
+        if(selectedIndexPath)
+        {
+            NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+            NSString *f_id=[dic objectForKey:@"f_id"];
+            [array addObject:f_id];
+        }
     }
     else
     {
@@ -925,9 +972,12 @@
             NSMutableArray *array = [NSMutableArray array];
             if([selected_dictionary.allKeys count] == 0)
             {
-                NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
-                NSString *f_id=[dic objectForKey:@"f_id"];
-                [array addObject:f_id];
+                if(selectedIndexPath)
+                {
+                    NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+                    NSString *f_id=[dic objectForKey:@"f_id"];
+                    [array addObject:f_id];
+                }
             }
             else
             {

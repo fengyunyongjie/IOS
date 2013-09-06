@@ -16,6 +16,8 @@
 #define ScrollViewTag 100000
 #define ImageViewTag 200000
 #define kAlertTagMailAddr 72
+#define kActionSheetTagShare 74
+#define kActionSheetTagDelete 77
 #define ScollviewHeight self.view.frame.size.height //当前屏幕的高度
 #define ScollviewWidth self.view.frame.size.width //当前屏幕的宽度
 
@@ -883,7 +885,7 @@
         //收藏
         /*
          请求详细数据
-         */
+        */
         SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
         [photoManager setPhotoDelegate:self];
         [photoManager getDetail:demo.f_id];
@@ -893,9 +895,10 @@
 #pragma mark 分享按钮事件
 -(void)shareClicked:(id)sender
 {
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈",@"分享其他", nil];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"分享" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"短信分享",@"邮件分享",@"复制链接",@"分享到微信好友",@"分享到微信朋友圈", nil];
     NSString *l_url=@"分享";
     [actionSheet setTitle:l_url];
+    [actionSheet setTag:kActionSheetTagShare];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     [actionSheet release];
@@ -904,39 +907,65 @@
 #pragma mark UIActionSheetDelegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    int page = [[[self.topTitleLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
-    PhotoFile *demo = nil;
-    if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
+    if(actionSheet.tag == kActionSheetTagShare)
     {
-        demo = [tableArray objectAtIndex:page];
+        int page = [[[self.topTitleLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+        PhotoFile *demo = nil;
+        if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
+        {
+            demo = [tableArray objectAtIndex:page];
+        }
+        selected_id = [NSString stringWithFormat:@"%i",demo.f_id];
+        
+        if (buttonIndex == 0) {
+            NSLog(@"短信分享");
+            //[self toDelete:nil];
+            [self messageShare:actionSheet.title];
+        }else if (buttonIndex == 1) {
+            NSLog(@"邮件分享");
+            NSString *name=@"";
+            UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"邮件分享" message:@"请您输入分享人的邮件地址：" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+            [[alert textFieldAtIndex:0] setText:name];
+            [alert setTag:kAlertTagMailAddr];
+            [alert show];
+        }else if(buttonIndex == 2) {
+            NSLog(@"复制");
+            [self pasteBoard:actionSheet.title];
+        }else if(buttonIndex == 3) {
+            NSLog(@"微信");
+            [self weixin:actionSheet.title];
+        }else if(buttonIndex == 4) {
+            NSLog(@"朋友圈");
+            [self frends:actionSheet.title];
+        }else if(buttonIndex == 5) {
+            NSLog(@"新浪");
+        }else if(buttonIndex == 6) {
+            NSLog(@"取消");
+        }
     }
-    selected_id = [NSString stringWithFormat:@"%i",demo.f_id];
-    
-    if (buttonIndex == 0) {
-        NSLog(@"短信分享");
-        //[self toDelete:nil];
-        [self messageShare:actionSheet.title];
-    }else if (buttonIndex == 1) {
-        NSLog(@"邮件分享");
-        NSString *name=@"";
-        UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"邮件分享" message:@"请您输入分享人的邮件地址：" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-        [[alert textFieldAtIndex:0] setText:name];
-        [alert setTag:kAlertTagMailAddr];
-        [alert show];
-    }else if(buttonIndex == 2) {
-        NSLog(@"复制");
-        [self pasteBoard:actionSheet.title];
-    }else if(buttonIndex == 3) {
-        NSLog(@"微信");
-        [self weixin:actionSheet.title];
-    }else if(buttonIndex == 4) {
-        NSLog(@"朋友圈");
-        [self frends:actionSheet.title];
-    }else if(buttonIndex == 5) {
-        NSLog(@"新浪");
-    }else if(buttonIndex == 6) {
-        NSLog(@"取消");
+    else if (actionSheet.tag == kActionSheetTagDelete)
+    {
+        if(buttonIndex == 0)
+        {
+            int page = [[[self.topTitleLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
+            deletePage = page;
+            PhotoFile *demo = nil;
+            if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
+            {
+                demo = [tableArray objectAtIndex:page];
+            }
+            SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
+            [photoManager setPhotoDelegate:self];
+            NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
+            [photoManager requestDeletePhoto:array];
+            
+            hud = [[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:hud];
+            hud.mode=MBProgressHUDModeIndeterminate;
+            hud.labelText=@"正在删除";
+            [hud show:YES];
+        }
     }
 }
 
@@ -995,34 +1024,17 @@
 #pragma mark 删除按钮事件
 -(void)deleteClicked:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alertView show];
-    [alertView release];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [actionSheet setTag:kActionSheetTagDelete];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [actionSheet release];
 }
 
 #pragma mark UIAalertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 1)
-    {
-        int page = [[[self.topTitleLabel.text componentsSeparatedByString:@"/"] objectAtIndex:0] intValue]-1;
-        deletePage = page;
-        PhotoFile *demo = nil;
-        if([[tableArray objectAtIndex:page] isKindOfClass:[PhotoFile class]])
-        {
-            demo = [tableArray objectAtIndex:page];
-        }
-        SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
-        [photoManager setPhotoDelegate:self];
-        NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
-        [photoManager requestDeletePhoto:array];
-        
-        hud = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:hud];
-        hud.mode=MBProgressHUDModeIndeterminate;
-        hud.labelText=@"正在删除";
-        [hud show:YES];
-    }
+    
 }
 
 

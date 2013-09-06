@@ -192,8 +192,8 @@
                 upload_file.demo.state = 2;
                 UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
                 UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-                upload_file.demo.f_data = UIImageJPEGRepresentation(state_image, 1.0);
-                [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+                NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
+                [uploadViewController startAutomatic:[UIImage imageWithData:newData] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
                 
             }
             if(upload_timer)
@@ -264,8 +264,8 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
             UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-            upload_file.demo.f_data = UIImageJPEGRepresentation(state_image, 1.0);
-            [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+            NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
+            [uploadViewController startAutomatic:[UIImage imageWithData:newData] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
         });
     }
     
@@ -283,7 +283,10 @@
     if(uploadViewController)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-        [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:proress taskDemo:upload_file.demo total:[self.assetArray count]];
+        UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
+        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
+        NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
+        [uploadViewController startAutomatic:[UIImage imageWithData:newData] progess:proress taskDemo:upload_file.demo total:[self.assetArray count]];
         });
     }
 }
