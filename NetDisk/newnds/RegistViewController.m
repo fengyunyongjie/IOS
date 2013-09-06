@@ -191,7 +191,7 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 {
     if (textField==self.m_userNameTextField) {
-        NSLog(@"UserName");
+        //NSLog(@"UserName");
         NSMutableString *text = [[textField.text mutableCopy] autorelease];
         [text replaceCharactersInRange:range withString:string];
         return [text length] <= 32;
@@ -200,7 +200,7 @@
         //        }
     }else if(textField==self.m_passwordTextField)
     {
-        NSLog(@"passwd");
+        //NSLog(@"passwd");
         NSMutableString *text = [[textField.text mutableCopy] autorelease];
         [text replaceCharactersInRange:range withString:string];
         return [text length] <= 16;

@@ -70,7 +70,7 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
 //    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
-    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
+    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@&sort=%@&sort_direct=%@",f_id,0,-1,share_type,@"f_modify",@"desc"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -91,7 +91,7 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
 //    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
-   [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@",f_id,0,-1,share_type];
+   [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&shareType=%@&sort=%@&sort_direct=%@",f_id,0,-1,share_type,@"f_modify",@"desc"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
