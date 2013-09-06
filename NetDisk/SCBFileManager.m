@@ -256,7 +256,7 @@
     {
         s_id=[[SCBSession sharedSession] spaceID];
     }
-    [body appendFormat:@"f_pid=%@&f_ids[]=%@&space_id=%@",f_pid,fids,s_id];
+    [body appendFormat:@"f_pid=%@&f_ids[]=%@&space_id=%@&f_pid_space_id=%@",f_pid,fids,s_id,s_id];
     NSLog(@"move: %@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];

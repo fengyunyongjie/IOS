@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RegistViewController : UIViewController
+@interface RegistViewController : UIViewController<UITextFieldDelegate>
 @property (strong,nonatomic) IBOutlet UITextField *m_userNameTextField;
 @property (strong,nonatomic) IBOutlet UITextField *m_passwordTextField;
 @property (strong,nonatomic) IBOutlet UITextField *m_passwordAgainTextField;

@@ -38,6 +38,8 @@
     [super viewDidLoad];
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.hud];
+    self.userNameTextField.delegate=self;
+    self.passwordTextField.delegate=self;
     // Do any additional setup after loading the view from its nib.
     
     // observe keyboard hide and show notifications to resize the text view appropriately
@@ -209,5 +211,27 @@
     [self.view setFrame:r];
     [UIView commitAnimations];
 }
-
+#pragma mark - UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+{
+    if (textField==self.userNameTextField) {
+        NSLog(@"UserName");
+        NSMutableString *text = [[textField.text mutableCopy] autorelease];
+        [text replaceCharactersInRange:range withString:string];
+        return [text length] <= 32;
+//        if (range.length>=32) {
+//            return NO;
+//        }
+    }else if(textField==self.passwordTextField)
+    {
+        NSLog(@"passwd");
+        NSMutableString *text = [[textField.text mutableCopy] autorelease];
+        [text replaceCharactersInRange:range withString:string];
+        return [text length] <= 16;
+//        if (range.length>=16) {
+//            return NO;
+//        }
+    }
+    return YES;
+}
 @end

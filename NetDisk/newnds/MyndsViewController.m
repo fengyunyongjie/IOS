@@ -968,6 +968,17 @@ typedef enum{
         }
     }
     if ([deleteObjects count]<=0) {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];    [self.hud show:NO];
+        self.hud.labelText=@"未选中任何文件(夹)";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
         return;
     }
 //    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除所选文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
@@ -2349,15 +2360,15 @@ typedef enum{
             [f_mime isEqualToString:@"gif"]) {
             NSString *filePath=[YNFunctions getFMCachePath];
             filePath=[filePath stringByAppendingPathComponent:f_name];
-            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-                //查看原图 or 查看预览图
-                int row=indexPath.row;
-                NSString *title=[NSString stringWithFormat:@"%d",row];
-                UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"查看预览图",@"查看原图", nil];
-                [actionSheet setTag:kActionSheetTagPhoto];
-                [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-                [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-            }else
+//            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//                //查看原图 or 查看预览图
+//                int row=indexPath.row;
+//                NSString *title=[NSString stringWithFormat:@"%d",row];
+//                UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:title delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"查看预览图",@"查看原图", nil];
+//                [actionSheet setTag:kActionSheetTagPhoto];
+//                [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+//                [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+//            }else
             {
                 NSMutableArray *array=[NSMutableArray array];
                 int index=0;

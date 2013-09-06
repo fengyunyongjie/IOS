@@ -9,6 +9,7 @@
 #import "RegistViewController.h"
 #import "MBProgressHUD.h"
 #import "SCBAccountManager.h"
+#import "AppDelegate.h"
 //[[NSUserDefaults standardUserDefaults] valueForKey:@"SBFormattedPhoneNumber"];
 @interface RegistViewController ()
 @property (strong ,nonatomic) MBProgressHUD *m_hud;
@@ -34,6 +35,8 @@
     [super viewDidLoad];
     self.m_hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.m_hud];
+    self.m_userNameTextField.delegate=self;
+    self.m_passwordTextField.delegate=self;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
@@ -63,6 +66,8 @@
 -(void)registSucceed
 {
      [self.m_hud removeFromSuperview];
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate setLogin];
     [self dismissViewControllerAnimated:NO completion:^(void){
         if (self.delegate && [self.delegate respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
             [[NSUserDefaults standardUserDefaults] setObject:self.m_userNameTextField.text forKey:@"usr_name"];
@@ -177,5 +182,27 @@
     [self.view setFrame:r];
     [UIView commitAnimations];
 }
-
+#pragma mark - UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+{
+    if (textField==self.m_userNameTextField) {
+        NSLog(@"UserName");
+        NSMutableString *text = [[textField.text mutableCopy] autorelease];
+        [text replaceCharactersInRange:range withString:string];
+        return [text length] <= 32;
+        //        if (range.length>=32) {
+        //            return NO;
+        //        }
+    }else if(textField==self.m_passwordTextField)
+    {
+        NSLog(@"passwd");
+        NSMutableString *text = [[textField.text mutableCopy] autorelease];
+        [text replaceCharactersInRange:range withString:string];
+        return [text length] <= 16;
+        //        if (range.length>=16) {
+        //            return NO;
+        //        }
+    }
+    return YES;
+}
 @end

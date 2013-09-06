@@ -252,7 +252,7 @@
 -(void)setLogin
 {
     self.window.rootViewController=self.myTabBarController;
-    
+    [self addTabBarView];
     self.myTabBarController.selectedIndex = 0;
     //[self.myTabBarController.selectedViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.myTabBarController when_tabbar_is_selected:0];
