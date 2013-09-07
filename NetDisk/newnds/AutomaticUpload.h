@@ -20,8 +20,9 @@
 #import <Foundation/Foundation.h>
 #import "UploadFile.h"
 #import "ChangeUploadViewController.h"
+#import "SCBPhotoManager.h"
 
-@interface AutomaticUpload : NSObject <UploadFileDelegate>
+@interface AutomaticUpload : NSObject <UploadFileDelegate,SCBPhotoDelegate>
 {
     NSString *space_id;
     NSString *deviceName;
@@ -33,6 +34,10 @@
     int netWorkState;
     NSTimer *upload_timer;
     BOOL isGoOn;
+    
+    //服务器文件操作类
+    SCBPhotoManager *photoManger;
+    NSInteger currTag;
 }
 
 @property(nonatomic,retain) NSMutableOrderedSet *assetArray;
@@ -50,6 +55,7 @@
 //关闭自动上传
 -(void)colseAutomaticUpload;
 
-
+//打开上传
+-(void)newTheadMain;
 
 @end

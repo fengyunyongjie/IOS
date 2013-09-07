@@ -46,6 +46,8 @@
     NSInteger currTag;
     BOOL isStop;
     NSString *space_id;
+    
+    int macTimeOut;
 }
 
 @property(nonatomic,retain) TaskDemo *demo;

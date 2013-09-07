@@ -98,9 +98,105 @@
     });
 }
 
+//打开上传
+-(void)newTheadMain
+{
+    //网络判断
+    if([self isConnection])
+    {
+        //获取上传界面
+        [self getUploadCotroller];
+        
+        //解析上传数据
+        if([self.assetArray count]>0)
+        {
+            if(upload_timer)
+            {
+                [upload_timer invalidate];
+                upload_timer = nil;
+            }
+            ALAsset *result = [self.assetArray objectAtIndex:0];
+            if(result)
+            {
+                NSLog(@"[[result defaultRepresentation] filename]:%@",[[result defaultRepresentation] filename]);
+                TaskDemo *demo = [[TaskDemo alloc] init];
+                demo.f_state = 0;
+                demo.f_lenght = 0;
+                demo.index_id = 0;
+                demo.state = 1;
+                demo.proess = 0;
+                demo.f_base_name = [[result defaultRepresentation] filename];
+                demo.deviceName = self.deviceName;
+                demo.space_id = space_id;
+                demo.p_id = f_id;
+                demo.is_automic_upload = 1;
+                
+                NSError *error = nil;
+                Byte *data = malloc(result.defaultRepresentation.size);
+                //获得照片图像数据
+                [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+                demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+                
+                NSLog(@"demo.spcae_id:%@",demo.space_id);
+                
+                upload_file = [[UploadFile alloc] init];
+                [upload_file setDemo:demo];
+                [upload_file setDeviceName:self.deviceName];
+                [upload_file setSpace_id:space_id];
+                [upload_file setF_id:self.f_id];
+                [upload_file setF_pid:nil];
+                [upload_file setDelegate:self];
+                
+                if(uploadViewController)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [uploadViewController startAutomatic:[UIImage imageWithData:demo.f_data] progess:0 taskDemo:demo total:[self.assetArray count]];
+                    });
+                }
+                
+                [upload_file upload];
+                
+                [demo release];
+                [upload_file release];
+            }
+        }
+        else
+        {
+            NSLog(@"没有数据了");
+            if(uploadViewController)
+            {
+                [uploadViewController stopAutomatic];
+            }
+            if(assetsLibrary)
+            {
+                [assetsLibrary release];
+                assetsLibrary = nil;
+            }
+            if([YNFunctions isAutoUpload])
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if(upload_timer)
+                    {
+                        [upload_timer invalidate];
+                    }
+                    upload_timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(isHaveData) userInfo:nil repeats:YES];
+                });
+            }
+        }
+        NSLog(@"网络正常");
+    }
+    else
+    {
+        NSLog(@"网络不可用");
+    }
+}
+
 //开启自动上传
 -(void)startAutomaticUpload
 {
+    [NSThread detachNewThreadSelector:@selector(newTheadMain) toTarget:self withObject:nil];
+    return;
+    
     if(isGoOn)
     {
         return;
@@ -253,20 +349,18 @@
 -(void)upFinish:(NSInteger)fileTag
 {
     NSLog(@"继续下载-----------------------");
+    dispatch_async(dispatch_get_main_queue(), ^{
     if(isGoOn)
     {
         return;
     }
-    
     [self getUploadCotroller];
     if(uploadViewController)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
-            UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-            NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
-            [uploadViewController startAutomatic:[UIImage imageWithData:newData] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
-        });
+        UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
+        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
+        NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
+        [uploadViewController startAutomatic:[UIImage imageWithData:newData] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
     }
     
     if([self.assetArray count]>0)
@@ -274,6 +368,7 @@
         [self.assetArray removeObjectAtIndex:0];
     }
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutomaticUpload) userInfo:nil repeats:NO];
+    });
 }
 
 //上传进行时，发送上传进度数据

@@ -328,7 +328,6 @@
 		29BCC81C17B348E400108473 /* Edit_UserClk.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81317B348E400108473 /* Edit_UserClk.png */; };
 		29BCC81D17B348E400108473 /* Edit_UserNor.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81417B348E400108473 /* Edit_UserNor.png */; };
 		29BCC81F17B34A5600108473 /* Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BCC81E17B34A5600108473 /* Title.png */; };
-		29BE13D817A3A6020029E2C6 /* UploadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE13D517A3A6020029E2C6 /* UploadFile.m */; };
 		29BE13D917A3A6020029E2C6 /* UploadViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE13D717A3A6020029E2C6 /* UploadViewCell.m */; };
 		29BE13E317A3A61B0029E2C6 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29BE13DE17A3A61B0029E2C6 /* PhotoCell.m */; };
 		29BFAD4C174C6306000AFE7A /* 111.png in Resources */ = {isa = PBXBuildFile; fileRef = 29BFAD4B174C6306000AFE7A /* 111.png */; };
@@ -346,6 +345,7 @@
 		29C98B0B17ABA01800CF8FAF /* Bt_Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0917ABA01800CF8FAF /* Bt_Filter.png */; };
 		29C98B0C17ABA01800CF8FAF /* Bk_Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0A17ABA01800CF8FAF /* Bk_Filter.png */; };
 		29C98B0E17ABA35900CF8FAF /* Bt_Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0D17ABA35900CF8FAF /* Bt_Title.png */; };
+		29CAF21317DAFEBD00BBF465 /* UploadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CAF21217DAFEBD00BBF465 /* UploadFile.m */; };
 		29CB860217AFB13C00C7629B /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860117AFB13C00C7629B /* UserInfo.m */; };
 		29CB860717B0790E00C7629B /* MessagePushCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860417B0790E00C7629B /* MessagePushCell.m */; };
 		29CB860817B0790E00C7629B /* MessagePushController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CB860617B0790E00C7629B /* MessagePushController.m */; };
@@ -638,8 +638,6 @@
 		29AE060317BC858A004FEA5E /* mode.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = mode.storyboard; sourceTree = "<group>"; };
 		29AE060517BCACE6004FEA5E /* pop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pop.png; sourceTree = "<group>"; };
 		29AE060717BCD6D0004FEA5E /* Ico_CoverF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Ico_CoverF.png; sourceTree = "<group>"; };
-		29AF11BB17A5F17300F32F1F /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
-		29AF11BC17A5F17300F32F1F /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
 		29AFC2C41778369E0074FBAC /* QLBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLBrowserViewController.h; sourceTree = "<group>"; };
 		29AFC2C51778369E0074FBAC /* QLBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QLBrowserViewController.m; sourceTree = "<group>"; };
 		29B18AC1173C97C700DBF2CB /* ImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowserViewController.h; sourceTree = "<group>"; };
@@ -809,8 +807,6 @@
 		29BCC81317B348E400108473 /* Edit_UserClk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Edit_UserClk.png; sourceTree = "<group>"; };
 		29BCC81417B348E400108473 /* Edit_UserNor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Edit_UserNor.png; sourceTree = "<group>"; };
 		29BCC81E17B34A5600108473 /* Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Title.png; sourceTree = "<group>"; };
-		29BE13D417A3A6020029E2C6 /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
-		29BE13D517A3A6020029E2C6 /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
 		29BE13D617A3A6020029E2C6 /* UploadViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewCell.h; sourceTree = "<group>"; };
 		29BE13D717A3A6020029E2C6 /* UploadViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewCell.m; sourceTree = "<group>"; };
 		29BE13DD17A3A61B0029E2C6 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
@@ -835,6 +831,8 @@
 		29C98B0917ABA01800CF8FAF /* Bt_Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Filter.png; sourceTree = "<group>"; };
 		29C98B0A17ABA01800CF8FAF /* Bk_Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Filter.png; sourceTree = "<group>"; };
 		29C98B0D17ABA35900CF8FAF /* Bt_Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Title.png; sourceTree = "<group>"; };
+		29CAF21117DAFEBD00BBF465 /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
+		29CAF21217DAFEBD00BBF465 /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
 		29CB860017AFB13C00C7629B /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		29CB860117AFB13C00C7629B /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		29CB860317B0790E00C7629B /* MessagePushCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePushCell.h; sourceTree = "<group>"; };
@@ -1484,8 +1482,6 @@
 				298AB52E17727FF200D067E1 /* Upload */,
 				29B2B638174B1F6800E78183 /* UploadViewController.h */,
 				29B2B639174B1F6800E78183 /* UploadViewController.m */,
-				29AF11BB17A5F17300F32F1F /* UploadFile.h */,
-				29AF11BC17A5F17300F32F1F /* UploadFile.m */,
 				29B2B63A174B1F6800E78183 /* UploadViewController.xib */,
 				29DF5BD41755A760005D85E4 /* OpenViewController.m */,
 				29DF5BD51755A760005D85E4 /* OpenViewController.xib */,
@@ -1493,13 +1489,13 @@
 				29CED36D17812B7000899FAE /* BoderView.m */,
 				29BE13DD17A3A61B0029E2C6 /* PhotoCell.h */,
 				29BE13DE17A3A61B0029E2C6 /* PhotoCell.m */,
-				29BE13D417A3A6020029E2C6 /* UploadFile.h */,
-				29BE13D517A3A6020029E2C6 /* UploadFile.m */,
 				29DF5BD31755A760005D85E4 /* OpenViewController.h */,
 				29BE13D617A3A6020029E2C6 /* UploadViewCell.h */,
 				29BE13D717A3A6020029E2C6 /* UploadViewCell.m */,
 				29C2D51917A7A491004FD7D6 /* CustomJinDu.h */,
 				29C2D51A17A7A491004FD7D6 /* CustomJinDu.m */,
+				29CAF21117DAFEBD00BBF465 /* UploadFile.h */,
+				29CAF21217DAFEBD00BBF465 /* UploadFile.m */,
 				29CE187117A89425003D81AD /* UploadAll.h */,
 				29CE187217A89425003D81AD /* UploadAll.m */,
 				291F866A17A8B84400DA7B7B /* ChangeUploadViewController.h */,
@@ -3079,7 +3075,6 @@
 				29F00D09179FC251005162DE /* QBImagePickerGroupCell.m in Sources */,
 				29F00D0A179FC251005162DE /* QBImagePickerVideoInfoView.m in Sources */,
 				29228C8817A2218C00DD3E8D /* QBImageFileViewController.m in Sources */,
-				29BE13D817A3A6020029E2C6 /* UploadFile.m in Sources */,
 				29BE13D917A3A6020029E2C6 /* UploadViewCell.m in Sources */,
 				29BE13E317A3A61B0029E2C6 /* PhotoCell.m in Sources */,
 				29C2D51B17A7A491004FD7D6 /* CustomJinDu.m in Sources */,
@@ -3103,6 +3098,7 @@
 				2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */,
 				29C9413617D833000088B392 /* PhotoViewController.m in Sources */,
 				29C9413917D857B80088B392 /* SearchViewController.m in Sources */,
+				29CAF21317DAFEBD00BBF465 /* UploadFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
