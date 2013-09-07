@@ -684,7 +684,7 @@
         self.hud=[[MBProgressHUD alloc] initWithView:self];
         [self addSubview:self.hud];
         [self.hud show:NO];
-        self.hud.labelText=@"未选中任何文件(夹)";
+        self.hud.labelText=@"未选中任何文件";
         self.hud.mode=MBProgressHUDModeText;
         self.hud.margin=10.f;
         [self.hud show:YES];

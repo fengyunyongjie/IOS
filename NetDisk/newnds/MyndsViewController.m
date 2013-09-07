@@ -516,7 +516,9 @@ typedef enum{
         }
         //新建文件夹视图
         self.newFinderView=[[[UIControl alloc] init] autorelease];
-        self.newFinderView.frame=self.view.frame;
+        CGRect viewRect = self.view.frame;
+        viewRect.origin.y = 0;
+        self.newFinderView.frame=viewRect;
         [self.newFinderView addTarget:self action:@selector(endEdit:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.newFinderView];
         [self.newFinderView setHidden:YES];
@@ -1351,6 +1353,7 @@ typedef enum{
     [self.ctrlView setHidden:YES];
     NSLog(@"点击新建文件夹");
     [self.newFinderView setHidden:NO];
+    NSLog(@"frame:%@",NSStringFromCGRect(self.newFinderView.frame));
     self.tfdFinderName.text=@"";
 //    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
 //    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
@@ -2104,7 +2107,7 @@ typedef enum{
         NSString *f_modify=[this objectForKey:@"f_modify"];
         NSString *f_id=[this objectForKey:@"f_id"];
         //cell.detailTextLabel.text=f_modify;
-        if ([t_fl isEqualToString:@"directory"]) {
+        if (!t_fl||[t_fl isEqualToString:@"directory"]) {
             cell.detailTextLabel.text=f_modify;
             if (cell.imageView.subviews.count>0) {
                 UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
@@ -2163,7 +2166,7 @@ typedef enum{
         }
         text=name;
         
-        if ([t_fl isEqualToString:@"directory"]) {
+        if (!t_fl||[t_fl isEqualToString:@"directory"]) {
             cell.imageView.image = [UIImage imageNamed:@"Ico_FolderF.png"];
         }else if ([t_fl isEqualToString:@"png"]||
                   [t_fl isEqualToString:@"jpg"]||

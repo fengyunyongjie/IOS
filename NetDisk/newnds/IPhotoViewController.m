@@ -829,12 +829,12 @@
     }
     [newFinder_control setHidden:NO];
     finderName_textField.text=@"";
+    NSLog(@"frame:%@",NSStringFromCGRect(newFinder_control.frame));
 }
 
 #pragma mark 新建文件夹操作过程的事件
 -(void)endEdit:(id)sender
 {
-    [newFinder_control setHidden:YES];
     if(finderName_textField)
     {
         [finderName_textField endEditing:YES];
@@ -999,7 +999,7 @@
 {
     if(isPhoto)
     {
-        [photo_tableView toShared:nil];
+//        [photo_tableView toShared:nil];
     }
     else
     {
