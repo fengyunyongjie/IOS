@@ -52,7 +52,7 @@
             [app_delegate.upload_all setIsUpload:NO];
         }
         
-        [self.uploadingList removeObjectAtIndex:row_];
+        [self.uploadingList removeObjectAtIndex:demo.demo.index_id];
         
         if(!isHistoryShow && [self.uploadListTableView.indexPathsForVisibleRows count]>0)
         {
@@ -123,10 +123,10 @@
         }
         if(!isHistoryShow)
         {
-            if(i<[self.uploadingList count])
+            for(int j=0;j<[self.uploadingList count];j++)
             {
-                UploadFile *demo = [self.uploadingList objectAtIndex:i];
-                demo.demo.index_id = i;
+                UploadFile *demo = [self.uploadingList objectAtIndex:j];
+                demo.demo.index_id = j;
                 NSLog(@"demo.demo.index_id:%i",demo.demo.index_id);
             }
         }
@@ -647,15 +647,17 @@
 
 -(void)deletCell:(TaskDemo *)taskDemo
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
     selectDemo = taskDemo;
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [actionSheet setTag:kActionSheetTagDelete];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
     [actionSheet release];
+    });
 }
 
-#pragma mark 
+#pragma mark
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if(actionSheet.tag == kActionSheetTagDelete && buttonIndex == 0)

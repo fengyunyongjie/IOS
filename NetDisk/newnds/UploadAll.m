@@ -95,6 +95,13 @@
 
 -(void)startUpload
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSThread detachNewThreadSelector:@selector(newTheadMainUpload) toTarget:self withObject:nil];
+    });
+}
+
+-(void)newTheadMainUpload
+{
     if([self.uploadAllList count]>0 && !isUpload)
     {
         UploadFile *upload_file = [self.uploadAllList objectAtIndex:0];
@@ -141,13 +148,7 @@
 //上传成功
 -(void)upFinish:(NSInteger)fileTag
 {
-//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:0];
-//    MyndsViewController *myndsView = (MyndsViewController *)[NavigationController.viewControllers objectAtIndex:1];
-//    if([myndsView isKindOfClass:[MyndsViewController class]])
-//    {
-//        [myndsView loadData];
-//    }
+    dispatch_async(dispatch_get_main_queue(), ^{
     if([self.uploadAllList count]>0)
     {
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -167,11 +168,13 @@
             [self startUpload];
         }
     }
+    });
 }
 
 //上传进行时，发送上传进度数据
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
     ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
@@ -188,6 +191,7 @@
         }
         [uploadView upProess:proress fileTag:fileTag];
     }
+    });
 }
 
 //上传失败
