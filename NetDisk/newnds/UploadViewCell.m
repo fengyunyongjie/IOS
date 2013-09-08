@@ -68,7 +68,7 @@
         }
         if(![self.label_name.text isEqualToString:self.demo.f_base_name])
         {
-            UIImage *imageV = [UIImage imageWithData:self.demo.f_data];
+            UIImage *imageV = demo.topImage;
             if(imageV.size.width>=imageV.size.height)
             {
                 if(imageV.size.height<=88)

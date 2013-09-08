@@ -63,6 +63,7 @@
         demo.deviceName = deviceName;
         demo.space_id = self.space_id;
         demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
+        demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
         
         NSLog(@"demo.f_id:%@",demo.p_id);
         NSLog(@"demo.spcae_id:%@",demo.space_id);

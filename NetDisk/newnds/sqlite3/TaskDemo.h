@@ -42,6 +42,7 @@
     NSString *space_id;
     NSString *p_id;
     NSInteger is_automic_upload;
+    UIImage *topImage;
 }
 
 @property(nonatomic,assign) NSInteger t_id;
@@ -58,6 +59,7 @@
 @property(nonatomic,retain) NSString *space_id;
 @property(nonatomic,retain) NSString *p_id;
 @property(nonatomic,assign) NSInteger is_automic_upload;
+@property(nonatomic,retain) UIImage *topImage;
 
 -(id)init;
 

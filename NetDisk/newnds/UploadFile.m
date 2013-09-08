@@ -380,23 +380,25 @@
                                                returningResponse:nil error:nil];
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"%@",dictionary);
-    
-    if([[dictionary objectForKey:@"code"] intValue] == 0)
-    {
-        finishName = [dictionary objectForKey:@"sname"];
-        NSLog(@"demo.f_data:%i",[demo.f_data length]);
-        if([demo.f_data length]==0)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([[dictionary objectForKey:@"code"] intValue] == 0)
         {
-            NSLog(@"验证失败");
-            [delegate upFinish:currTag];
-        }
-        else
-        {
-            NSLog(@"3:开始上传：%@",finishName);
-//            connection = [uploderDemo requestUploadFile:self.f_id f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+            finishName = [dictionary objectForKey:@"sname"];
+            NSLog(@"demo.f_data:%i",[demo.f_data length]);
+            if([demo.f_data length]==0)
+            {
+                NSLog(@"验证失败");
+                [delegate upFinish:currTag];
+            }
+            else
+            {
+                NSLog(@"3:开始上传：%@",finishName);
+                
+//                connection = [uploderDemo requestUploadFile:self.f_id f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
             [self newRequestUploadFile:self.f_id f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+            }
         }
-    }
+    });
 }
 
 #pragma mark 新的上传 开始上传文件
@@ -418,7 +420,6 @@
     [request setValue:[NSString stringWithFormat:@"bytes=0-%@",skip] forHTTPHeaderField:@"Range"];
     [request setHTTPBody:image];
     [request setHTTPMethod:@"PUT"];
-    
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:nil];
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -436,6 +437,24 @@
         [delegate upFinish:currTag];
     }
 }
+
+//上传完成后回到原来同步线程上
+-(void)comeBackNewTheadMian:(NSDictionary *)dictionary
+{
+    if([[dictionary objectForKey:@"code"] intValue] == 0)
+    {
+        [delegate upProess:1 fileTag:currTag];
+        NSLog(@"4:提交上传表单:%@",finishName);
+        //        [uploderDemo requestUploadCommit:self.f_id f_name:demo.f_base_name s_name:finishName device:@"" skip:@"" f_md5:uploadData img_createtime:@"" space_id:space_id];
+        [self newRequestUploadCommit:self.f_id f_name:demo.f_base_name s_name:finishName device:@"" skip:@"" f_md5:uploadData img_createtime:@"" space_id:space_id];
+    }
+    else
+    {
+        NSLog(@"上传失败");
+        [delegate upFinish:currTag];
+    }
+}
+
 
 #pragma mark 新的上传 提交上传表单
 -(void)newRequestUploadCommit:(NSString *)fPid f_name:(NSString *)f_name s_name:(NSString *)s_name device:(NSString *)deviceName skip:(NSString *)skip f_md5:(NSString *)f_md5 img_createtime:(NSString *)dateString space_id:(NSString *)spaceId
@@ -479,9 +498,7 @@
         demo.f_id = fid;
         demo.f_state = 1;
         demo.f_lenght = [demo.f_data length];
-        UIImage *data_image = [UIImage imageWithData:demo.f_data];
-        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-        demo.f_data = UIImageJPEGRepresentation(state_image, 1.0);
+        demo.f_data = UIImageJPEGRepresentation(demo.topImage, 1.0);
         NSLog(@"Url-------:%@",demo.databasePath);
         if(demo.is_automic_upload)
         {
@@ -702,7 +719,13 @@
 //上传文件完成
 -(void)uploadFinish:(NSDictionary *)dictionary
 {
-    connection = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        connection = nil;
+        [NSThread detachNewThreadSelector:@selector(comeBackNewTheadMian:) toTarget:self withObject:dictionary];
+    });
+    return;
+    
+    
     if(isStop)
     {
         return;

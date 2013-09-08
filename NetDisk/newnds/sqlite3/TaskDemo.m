@@ -15,6 +15,7 @@
 @synthesize space_id;
 @synthesize p_id;
 @synthesize is_automic_upload;
+@synthesize topImage;
 
 -(id)init
 {
@@ -253,6 +254,18 @@
             demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
             demo.is_automic_upload = sqlite3_column_int(statement, 9);
             demo.index_id = i;
+            
+            if([demo.f_data length]>1024*1024)
+            {
+                UIImage *data_image = [UIImage imageWithData:demo.f_data];
+                UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
+                demo.topImage = state_image;
+            }
+            else
+            {
+                demo.topImage = [UIImage imageWithData:demo.f_data];
+            }
+            
             [upload_file setSpace_id:demo.space_id];
             [upload_file setF_id:demo.p_id];
             [upload_file setDemo:demo];
@@ -298,6 +311,16 @@
             demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
             demo.is_automic_upload = sqlite3_column_int(statement, 9);
             demo.index_id = i;
+            if([demo.f_data length]>1024*1024)
+            {
+                UIImage *data_image = [UIImage imageWithData:demo.f_data];
+                UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
+                demo.topImage = state_image;
+            }
+            else
+            {
+                demo.topImage = [UIImage imageWithData:demo.f_data];
+            }
             [tableArray addObject:demo];
             [demo release];
             i++;
@@ -306,6 +329,15 @@
         sqlite3_close(contactDB);
     }
     return tableArray;
+}
+
+-(UIImage *)scaleFromImage:(UIImage *)image toSize:(CGSize)size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 #pragma mark 查询任务表所有数据

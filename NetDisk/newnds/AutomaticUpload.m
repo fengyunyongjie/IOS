@@ -37,7 +37,7 @@
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 upload_file.demo.state = 2;
-                [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+                [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
             });
         }
         return;
@@ -130,12 +130,14 @@
                 demo.space_id = space_id;
                 demo.p_id = f_id;
                 demo.is_automic_upload = 1;
-                
+                demo.topImage = [UIImage imageWithCGImage:[[result defaultRepresentation] fullScreenImage]];
                 NSError *error = nil;
                 Byte *data = malloc(result.defaultRepresentation.size);
                 //获得照片图像数据
                 [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
                 demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+                
+                NSLog(@"视频有多大:%i",[demo.f_data length]);
                 
                 NSLog(@"demo.spcae_id:%@",demo.space_id);
                 
@@ -150,7 +152,7 @@
                 if(uploadViewController)
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [uploadViewController startAutomatic:[UIImage imageWithData:demo.f_data] progess:0 taskDemo:demo total:[self.assetArray count]];
+                        [uploadViewController startAutomatic:demo.topImage progess:0 taskDemo:demo total:[self.assetArray count]];
                     });
                 }
                 
@@ -286,10 +288,10 @@
             if(uploadViewController)
             {
                 upload_file.demo.state = 2;
-                UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
-                UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-                NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
-                [uploadViewController startAutomatic:[UIImage imageWithData:newData] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+//                UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
+//                UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
+//                NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
+                [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
                 
             }
             if(upload_timer)
@@ -304,6 +306,7 @@
 //关闭自动上传
 -(void)colseAutomaticUpload
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
     [self getUploadCotroller];
     if([self.assetArray count]>0)
     {
@@ -328,6 +331,7 @@
         [assetArray removeAllObjects];
     }
     isGoOn = YES;
+    });
 }
 
 -(void)getUploadCotroller
@@ -357,10 +361,10 @@
     [self getUploadCotroller];
     if(uploadViewController)
     {
-        UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
-        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-        NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
-        [uploadViewController startAutomatic:[UIImage imageWithData:newData] progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+//        UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
+//        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
+//        NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
+        [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
     }
     
     if([self.assetArray count]>0)
@@ -378,10 +382,10 @@
     if(uploadViewController)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-        UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
-        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-        NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
-        [uploadViewController startAutomatic:[UIImage imageWithData:newData] progess:proress taskDemo:upload_file.demo total:[self.assetArray count]];
+//            UIImage *data_image =  upload_file.demo.topImage;//[UIImage imageWithData:upload_file.demo.f_data];
+////        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
+//        NSData *newData = UIImageJPEGRepresentation(data_image, 1.0);
+        [uploadViewController startAutomatic:upload_file.demo.topImage progess:proress taskDemo:upload_file.demo total:[self.assetArray count]];
         });
     }
 }
