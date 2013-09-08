@@ -380,25 +380,25 @@
                                                returningResponse:nil error:nil];
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"%@",dictionary);
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if([[dictionary objectForKey:@"code"] intValue] == 0)
+//    dispatch_async(dispatch_get_main_queue(), ^{
+    if([[dictionary objectForKey:@"code"] intValue] == 0)
+    {
+        finishName = [dictionary objectForKey:@"sname"];
+        NSLog(@"demo.f_data:%i",[demo.f_data length]);
+        if([demo.f_data length]==0)
         {
-            finishName = [dictionary objectForKey:@"sname"];
-            NSLog(@"demo.f_data:%i",[demo.f_data length]);
-            if([demo.f_data length]==0)
-            {
-                NSLog(@"验证失败");
-                [delegate upFinish:currTag];
-            }
-            else
-            {
-                NSLog(@"3:开始上传：%@",finishName);
-                
-//                connection = [uploderDemo requestUploadFile:self.f_id f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
-            [self newRequestUploadFile:self.f_id f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
-            }
+            NSLog(@"验证失败");
+            [delegate upFinish:currTag];
         }
-    });
+        else
+        {
+            NSLog(@"3:开始上传：%@",finishName);
+            
+//                connection = [uploderDemo requestUploadFile:self.f_id f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+        [self newRequestUploadFile:self.f_id f_name:demo.f_base_name s_name:finishName skip:[NSString stringWithFormat:@"%i",[demo f_lenght]] f_md5:[self md5:demo.f_data] Image:demo.f_data];
+        }
+    }
+//    });
 }
 
 #pragma mark 新的上传 开始上传文件
