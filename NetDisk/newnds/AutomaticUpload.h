@@ -45,6 +45,7 @@
 @property(nonatomic,retain) NSString *deviceName;
 @property(nonatomic,assign) int netWorkState;
 @property(nonatomic,retain) NSTimer *upload_timer;
+@property(nonatomic,retain) NSString *space_id;
 
 //比对本地数据库
 -(void)isHaveData;

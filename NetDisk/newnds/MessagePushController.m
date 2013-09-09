@@ -157,7 +157,13 @@
     {
         return 50;
     }
-    return 70;
+    else
+    {
+        NSDictionary *diction = [table_array objectAtIndex:[indexPath row]];
+        NSString *text = [self getCellShowText:diction];
+        CGFloat height = [self getCellHight:diction withForText:text];
+        return height;
+    }
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -170,110 +176,44 @@
         cell.textLabel.text = @"等待中...";
         return cell;
     }
-    
-    static NSString *cellString = @"cellString";
-    MessagePushCell *cell = [self.table_view dequeueReusableCellWithIdentifier:cellString];
-    if(cell==nil)
+    if(indexPath.row<[table_array count])
     {
-        cell = [[[MessagePushCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        [cell firstLoad:70];
+        NSDictionary *diction = [table_array objectAtIndex:[indexPath row]];
+        return [self showMessageCellWithDictionary:diction withForIndexPath:indexPath];
     }
-    [cell.accept_button setHidden:YES];
-    [cell.refused_button setHidden:YES];
-    
-    NSDictionary *diction = [table_array objectAtIndex:[indexPath row]];
-    NSString *text = [diction objectForKey:@"msg_content"];
-    NSString *time = [diction objectForKey:@"msg_sendtime"];
-    
-    [cell.accept_button setTag:AcceptTag+[indexPath row]];
-    [cell.accept_button addTarget:self action:@selector(accept_button_cilicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [cell.refused_button setTag:RefusedTag+[indexPath row]];
-    [cell.refused_button addTarget:self action:@selector(refused_button_cilicked:) forControlEvents:UIControlEventTouchUpInside];
-    NSString *msg_type = [diction objectForKey:@"msg_type"];
-    NSString *msg_sort = [diction objectForKey:@"msg_sort"];
-    NSString *msg_sender_remark = [diction objectForKey:@"msg_sender_remark"];
-    [cell setUpdate:text timeString:time msg_type:msg_type msg_sender_remark:msg_sender_remark msg_sort:msg_sort];
-    
-    if([msg_type intValue] == 1)
+    else
     {
-        if([msg_sort intValue] == 1) //添加共享用户
-        {
-            if(![[diction objectForKey:@"is_accept"] boolValue])
-            {
-                [cell.accept_button setHidden:NO];
-                [cell.refused_button setHidden:NO];
-            }
-        }
-        if([msg_sort intValue] == 2) //踢出共享用户
-        {
-            
-        }
-        if([msg_sort intValue] == 3) //取消共享
-        {
-            
-        }
-        if([msg_sort intValue] == 4) //用户退出共享
-        {
-            
-        }
-        if([msg_sort intValue] == 5) //共享文件夹重命名
-        {
-            
-        }
-        if([msg_sort intValue] == 6) //添加好友
-        {
-            NSLog(@"isFri:%@",[diction objectForKey:@"isFri"]);
-            if([[diction objectForKey:@"isFri"] isEqualToString:@"Y"])
-            {
-                [cell.accept_button setHidden:YES];
-                [cell.refused_button setHidden:YES];
-            }
-            if(![[diction objectForKey:@"is_accept"] boolValue])
-            {
-                [cell.accept_button setHidden:NO];
-            }
-        }
-        if([msg_sort intValue] == 7) //自定义短消息
-        {
-            
-        }
+        return nil;
     }
-
-    return cell;
 }
 
 -(void)accept_button_cilicked:(id)sender
 {
     UIButton *button = sender;
+    NSLog(@"button.tag:%i",button.tag);
     int row = button.tag-AcceptTag;
     NSMutableDictionary *diction = [table_array objectAtIndex:row];
-    int msg_type = [[diction objectForKey:@"msg_type"] intValue];
     int sort_type = [[diction objectForKey:@"msg_sort"] intValue];
-    if(msg_type == 1)
+    if(sort_type == 1) //添加共享用户
     {
-        if(sort_type == 1) //添加共享用户
+        NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
+        NSString *file_id = [diction objectForKey:@"file_id"];
+        NSLog(@"shareManager:%@",shareManager);
+        [shareManager shareInvitationAdd:file_id friend_id:msg_sender_id];
+    }
+    
+    if(sort_type == 6) //添加好友
+    {
+        //添加好友请求
+        NSString *friendId = [diction objectForKey:@"account"];
+        NSString *mark = [diction objectForKey:@"msg_sender_remark"];
+        NSLog(@"groupId:%@",self.group_id);
+        if(self.group_id != nil)
         {
-            NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
-            NSString *file_id = [diction objectForKey:@"file_id"];
-            NSLog(@"shareManager:%@",shareManager);
-            [shareManager shareInvitationAdd:file_id friend_id:msg_sender_id];
+            [friendManager setDelegate:self];
+            [friendManager getFriendshipsFriendsCreate:friendId group_id:[self.group_id intValue] friend_remark:mark];
         }
         
-        if(sort_type == 6) //添加好友
-        {
-            //添加好友请求
-            NSString *friendId = [diction objectForKey:@"account"];
-            NSString *mark = [diction objectForKey:@"msg_sender_remark"];
-            NSLog(@"groupId:%@",self.group_id);
-            if(self.group_id != nil)
-            {
-                [friendManager setDelegate:self];
-                [friendManager getFriendshipsFriendsCreate:friendId group_id:[self.group_id intValue] friend_remark:mark];
-            }
-            
-        }
     }
 }
 
@@ -292,17 +232,12 @@
     UIButton *button = sender;
     int row = button.tag-RefusedTag;
     NSDictionary *diction = [table_array objectAtIndex:row];
-    int msg_type = [[diction objectForKey:@"msg_type"] intValue];
     int sort_type = [[diction objectForKey:@"msg_sort"] intValue];
-    
-    if(msg_type == 1)
+    if(sort_type == 1) //拒绝共享用户
     {
-        if(sort_type == 1) //拒绝共享用户
-        {
-            NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
-            NSString *file_id = [diction objectForKey:@"file_id"];
-            [shareManager shareInvitationRemove:file_id friend_id:msg_sender_id];
-        }
+        NSString *msg_sender_id = [diction objectForKey:@"msg_sender_id"];
+        NSString *file_id = [diction objectForKey:@"file_id"];
+        [shareManager shareInvitationRemove:file_id friend_id:msg_sender_id];
     }
 }
 
@@ -503,6 +438,239 @@
 -(void)openFinderSucess:(NSDictionary *)datadic
 {
 
+}
+
+#pragma mark 计算出应该显示的文字
+-(NSString *)getCellShowText:(NSDictionary *)dictionary
+{
+    NSString *title = nil;
+
+    int msg_sort = [[dictionary objectForKey:@"msg_sort"] intValue];
+    NSString *text = [dictionary objectForKey:@"msg_content"];
+    NSString *msg_sender_remark = [dictionary objectForKey:@"msg_sender_remark"];
+    
+    if(msg_sort == 1) //添加共享用户
+    {
+        title = [NSString stringWithFormat:AddShared,msg_sender_remark,text];
+    }
+    else if(msg_sort == 2) //踢出共享用户
+    {
+        title = [NSString stringWithFormat:GetOutShared,msg_sender_remark,text];
+    }
+    else if(msg_sort == 3) //取消共享
+    {
+        title = [NSString stringWithFormat:EscShared,msg_sender_remark,text];
+    }
+    else if(msg_sort == 4) //用户退出共享
+    {
+        title = [NSString stringWithFormat:AccoutSelfEsc,msg_sender_remark,text];
+    }
+    else if(msg_sort == 5) //共享文件夹重命名
+    {
+        NSArray *fname=[text componentsSeparatedByString:@"|"];
+        title = [NSString stringWithFormat:UpdateNameShared,msg_sender_remark,fname[0],fname[1]];
+    }
+    else if(msg_sort == 6) //添加好友
+    {
+        title = [NSString stringWithFormat:AddFirendToMe,msg_sender_remark];
+    }
+    else if(msg_sort == 7) //自定义短消息
+    {
+        title = [NSString stringWithFormat:@"%@向你说:%@",msg_sender_remark,text];
+    }
+    else if(msg_sort == 8) //添加家庭成员
+    {
+        title = [NSString stringWithFormat:AddFamilyToMe,msg_sender_remark];
+    }
+    else if(msg_sort == 9) //上传文件
+    {
+        title=[NSString stringWithFormat:@"%@上传文件：%@",msg_sender_remark,text];
+    }
+    else if(msg_sort == 10) //删除文件
+    {
+        title=[NSString stringWithFormat:@"%@删除了文件:%@",msg_sender_remark,text];
+    }
+    else if(msg_sort == 11) //新建文件夹
+    {
+        NSArray *fname=[text componentsSeparatedByString:@"|"];
+        title=[NSString stringWithFormat:@"%@新建了文件夹:%@至%@",msg_sender_remark,fname[0],fname[1]];
+    }
+    else if(msg_sort == 12) //新增图片和视频
+    {
+        title=[NSString stringWithFormat:@"%@在%@中加入了新内容",msg_sender_remark,title];
+    }
+    
+    return title;
+}
+
+#pragma mark 计算出应该显示的button
+-(void)setShowMesscellButton:(MessagePushCell *)cell withForDictionary:(NSDictionary *)dictionary
+{
+    int msg_sort = [[dictionary objectForKey:@"msg_sort"] intValue];
+    
+    if(msg_sort == 1) //添加共享用户
+    {
+        BOOL bl = [[dictionary objectForKey:@"is_accept"] boolValue];
+        if(bl)
+        {
+            cell.accept_button.hidden = YES;
+            cell.refused_button.hidden = YES;
+            
+            CGRect title_rect = cell.title_label.frame;
+            title_rect.size.width = 320-boderWidth*2;
+            cell.title_label.frame = title_rect;
+            CGRect time_rect = cell.time_label.frame;
+            time_rect.size.width = 320-boderWidth*2;
+            cell.time_label.frame = time_rect;
+        }
+        else
+        {
+            CGRect rect = cell.accept_button.frame;
+            rect.size.width = 50;
+            cell.accept_button.frame = rect;
+            [cell.accept_button setTitle:@"接受" forState:UIControlStateNormal];
+            
+            cell.accept_button.hidden = NO;
+            cell.refused_button.hidden = NO;
+            
+            CGRect title_rect = cell.title_label.frame;
+            title_rect.size.width = navbarWidth-boderWidth;
+            cell.title_label.frame = title_rect;
+            CGRect time_rect = cell.time_label.frame;
+            time_rect.size.width = navbarWidth-boderWidth;
+            cell.time_label.frame = time_rect;
+        }
+    }
+    else if(msg_sort == 6) //添加好友
+    {
+        BOOL bl = [[dictionary objectForKey:@"is_accept"] boolValue];
+        if(bl)
+        {
+            cell.accept_button.hidden = YES;
+            cell.refused_button.hidden = YES;
+            
+            CGRect title_rect = cell.title_label.frame;
+            title_rect.size.width = 320-boderWidth*2;
+            cell.title_label.frame = title_rect;
+            CGRect time_rect = cell.time_label.frame;
+            time_rect.size.width = 320-boderWidth*2;
+            cell.time_label.frame = time_rect;
+        }
+        else
+        {
+            CGRect rect = cell.accept_button.frame;
+            rect.size.width = 50*2+5;
+            cell.accept_button.frame = rect;
+            cell.accept_button.hidden = NO;
+            [cell.accept_button setTitle:@"添加Ta为好友" forState:UIControlStateNormal];
+            cell.refused_button.hidden = YES;
+            
+            CGRect title_rect = cell.title_label.frame;
+            title_rect.size.width = navbarWidth-boderWidth;
+            cell.title_label.frame = title_rect;
+            CGRect time_rect = cell.time_label.frame;
+            time_rect.size.width = navbarWidth-boderWidth;
+            cell.time_label.frame = time_rect;
+        }
+    }
+    else
+    {
+        cell.accept_button.hidden = YES;
+        cell.refused_button.hidden = YES;
+        
+        CGRect title_rect = cell.title_label.frame;
+        title_rect.size.width = 320-boderWidth*2;
+        cell.title_label.frame = title_rect;
+        CGRect time_rect = cell.time_label.frame;
+        time_rect.size.width = 320-boderWidth*2;
+        cell.time_label.frame = time_rect;
+    }
+}
+
+#pragma mark 计算cell的高度
+
+-(CGFloat)getCellHight:(NSDictionary *)dictionary withForText:(NSString *)text;
+{
+    CGFloat height = 0;
+    int msg_sort = [[dictionary objectForKey:@"msg_sort"] intValue];
+    if(msg_sort == 1) //添加共享用户
+    {
+        BOOL bl = [[dictionary objectForKey:@"is_accept"] boolValue];
+        if(bl)
+        {
+            height = [self withForText:text andWithWidth:320-boderWidth*2];
+        }
+        else
+        {
+            height = [self withForText:text andWithWidth:navbarWidth-boderWidth];
+        }
+    }
+    else if(msg_sort == 6) //添加好友
+    {
+        BOOL bl = [[dictionary objectForKey:@"is_accept"] boolValue];
+        if(bl)
+        {
+            height = [self withForText:text andWithWidth:320-boderWidth*2];
+        }
+        else
+        {
+            height = [self withForText:text andWithWidth:navbarWidth-boderWidth];
+        }
+    }
+    else
+    {
+        height = [self withForText:text andWithWidth:320-boderWidth*2];
+    }
+    return height;
+}
+
+-(CGFloat)withForText:(NSString *)text andWithWidth:(CGFloat)width
+{
+    //计算高度
+    UILabel *title_label = [[[UILabel alloc] init] autorelease];
+    [title_label setFont:[UIFont systemFontOfSize:16]];
+    title_label.numberOfLines=0;
+    [title_label setText:text];
+    CGSize size = [title_label sizeThatFits:CGSizeMake(width, 0)];//假定label_1设置的固定宽度为100，自适应高
+    [title_label.text sizeWithFont:title_label.font
+                 constrainedToSize:size
+                     lineBreakMode:UILineBreakModeWordWrap];  //这句加上才能自适应
+    NSLog(@"字符在宽度不变，自适应高：%f",size.height);
+    return size.height+37.0;
+}
+
+#pragma mark 判定cell的样式的方法
+
+-(MessagePushCell *)showMessageCellWithDictionary:(NSDictionary *)dictionary withForIndexPath:(NSIndexPath *)indexPath
+{
+    MessagePushCell *cell = [[[MessagePushCell alloc] init] autorelease];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    
+    //获取常用数据
+    NSDictionary *diction = [table_array objectAtIndex:[indexPath row]];
+    NSString *text = [self getCellShowText:diction];
+    NSString *time = [diction objectForKey:@"msg_sendtime"];
+    //cell的高度
+    CGFloat height = [self getCellHight:diction withForText:text];
+    //初始化数据
+    [cell firstLoad:height];
+    //添加tag
+    [cell.accept_button setTag:AcceptTag+[indexPath row]];
+    [cell.refused_button setTag:RefusedTag+[indexPath row]];
+    [cell.accept_button addTarget:self action:@selector(accept_button_cilicked:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.refused_button addTarget:self action:@selector(refused_button_cilicked:) forControlEvents:UIControlEventTouchUpInside];
+    //判定需要显示的视图
+    [self setShowMesscellButton:cell withForDictionary:diction];
+    //显示内容
+    [cell.title_label setText:text];
+    
+    cell.title_label.numberOfLines=0;
+    CGSize size = [cell.title_label sizeThatFits:CGSizeMake(cell.title_label.frame.size.width, 0)];
+    [cell.title_label.text sizeWithFont:cell.title_label.font
+                 constrainedToSize:size
+                     lineBreakMode:UILineBreakModeWordWrap];
+    [cell.time_label setText:time];
+    return cell;
 }
 
 -(void)dealloc

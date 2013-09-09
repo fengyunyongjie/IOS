@@ -104,16 +104,22 @@
     {
         //打开文件目录
         [photo_manager openFinderWithID:f_id space_id:[[SCBSession sharedSession] spaceID]];
+        self.space_id = [NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
     }
     else if([space_id isEqualToString:@"2"])
     {
         //打开文件共享目录
         [share_manager openFinderWithID:f_id shareType:@"O"];
     }
-    else
+    else if([space_id isEqualToString:@"3"])
     {
         //打开文件共享目录
         [share_manager openFinderWithID:f_id shareType:@"M"];
+    }
+    else
+    {
+        //打开家庭空间目录
+        [photo_manager openFinderWithID:f_id space_id:space_id];
     }
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(![app_delegate.myTabBarController IsTabBarHiden])
@@ -160,6 +166,7 @@
 -(void)clicked_changeMyFile
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    app_delegate.maticUpload.space_id = self.space_id;
     if([app_delegate.title_string count] > 0)
     {
         NSMutableString *table_str = [[[NSMutableString alloc] init] autorelease];

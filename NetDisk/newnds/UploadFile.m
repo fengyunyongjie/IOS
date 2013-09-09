@@ -132,11 +132,12 @@
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
     
+    NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
-                                               returningResponse:nil error:nil];
+                                               returningResponse:nil error:&error];
     if(!returnData)
     {
-        NSLog(@"网络请求失败");
+        NSLog(@"网络请求失败:%@",error);
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -216,11 +217,12 @@
     [request setHTTPBody:myRequestData];
     [body release];
     [request setHTTPMethod:@"POST"];
+    NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
-                                               returningResponse:nil error:nil];
+                                               returningResponse:nil error:&error];
     if(!returnData)
     {
-        NSLog(@"网络请求失败");
+        NSLog(@"网络请求失败:%@",error);
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -281,11 +283,12 @@
     [request setHTTPBody:myRequestData];
     [body release];
     [request setHTTPMethod:@"POST"];
+    NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
-                                               returningResponse:nil error:nil];
+                                               returningResponse:nil error:&error];
     if(!returnData)
     {
-        NSLog(@"网络请求失败");
+        NSLog(@"网络请求失败:%@",error);
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -337,12 +340,12 @@
     [request setHTTPBody:myRequestData];
     [body release];
     [request setHTTPMethod:@"POST"];
-    
+    NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
-                                               returningResponse:nil error:nil];
+                                               returningResponse:nil error:&error];
     if(!returnData)
     {
-        NSLog(@"网络请求失败");
+        NSLog(@"网络请求失败:%@",error);
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -397,11 +400,12 @@
     [body release];
     [request setHTTPMethod:@"POST"];
     
+    NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
-                                               returningResponse:nil error:nil];
+                                               returningResponse:nil error:&error];
     if(!returnData)
     {
-        NSLog(@"网络请求失败");
+        NSLog(@"网络请求失败:%@",error);
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -446,11 +450,12 @@
     [request setValue:[NSString stringWithFormat:@"bytes=0-%@",skip] forHTTPHeaderField:@"Range"];
     [request setHTTPBody:image];
     [request setHTTPMethod:@"PUT"];
+    NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
-                                               returningResponse:nil error:nil];
+                                               returningResponse:nil error:&error];
     if(!returnData)
     {
-        NSLog(@"网络请求失败");
+        NSLog(@"网络请求失败:%@",error);
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -521,6 +526,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败");
+        [delegate upFinish:currTag];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -536,14 +542,14 @@
         demo.f_lenght = [demo.f_data length];
         demo.f_data = UIImageJPEGRepresentation(demo.topImage, 1.0);
         NSLog(@"Url-------:%@",demo.databasePath);
-        if(demo.is_automic_upload)
-        {
+//        if(demo.is_automic_upload)
+//        {
             [demo insertTaskTable];
-        }
-        else
-        {
-            [demo updateTaskTableFName];
-        }
+//        }
+//        else
+//        {
+//            [demo updateTaskTableFName];
+//        }
         
         WebData *web = [[WebData alloc] init];
         web.photo_name = demo.f_base_name;
@@ -715,7 +721,6 @@
         WebData *web = [[WebData alloc] init];
         web.photo_name = demo.f_base_name;
         web.photo_id = [NSString stringWithFormat:@"%i",demo.f_id];
-        web.p_id = self.f_id;
         [web insertWebData];
         [web release];
         
@@ -837,7 +842,6 @@
         WebData *web = [[WebData alloc] init];
         web.photo_name = demo.f_base_name;
         web.photo_id = [NSString stringWithFormat:@"%i",demo.f_id];
-        web.p_id = self.f_id;
         [web insertWebData];
         [web release];
         [delegate upFinish:currTag];

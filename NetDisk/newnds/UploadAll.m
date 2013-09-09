@@ -18,6 +18,7 @@
 @synthesize isUpload;
 @synthesize space_id;
 @synthesize f_id;
+@synthesize asetArray;
 
 -(id)init
 {
@@ -35,68 +36,163 @@
 {
     NSLog(@"有多少:%@",self.space_id);
     NSLog(@"有多少:%@",space_id);
+    self.asetArray = array_;
     int i=0;
     if([self.uploadAllList count]==0)
     {
         isUpload = FALSE;
     }
-    else
-    {
-        i = self.uploadAllList.count-1;
-    }
+//    else
+//    {
+//        i = self.uploadAllList.count-1;
+//    }
     if(!self.uploadAllList)
     {
         self.uploadAllList = [[NSMutableArray alloc] init];
     }
-    BOOL bl = TRUE;
-    for(ALAsset *asset in array_)
+    else
     {
-        TaskDemo *demo = [[TaskDemo alloc] init];
-        demo.f_state = 0;
-        demo.f_data = nil;
-        demo.f_lenght = 0;
-        demo.index_id = i;
-        demo.state = 0;
-        demo.proess = 0;
-        demo.result = [asset retain];
-        demo.f_base_name = [[asset defaultRepresentation] filename];
-        demo.deviceName = deviceName;
-        demo.space_id = self.space_id;
-        demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
-        demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-        
-        NSLog(@"demo.f_id:%@",demo.p_id);
-        NSLog(@"demo.spcae_id:%@",demo.space_id);
-        
-        ALAsset *result = demo.result;
-        NSError *error = nil;
-        Byte *data = malloc(result.defaultRepresentation.size);
-        //获得照片图像数据
-        [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-        demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-        [demo insertTaskTable];
-        
-        UploadFile *upload_file = [[UploadFile alloc] init];
-        [upload_file setDemo:demo];
-        [upload_file setDeviceName:deviceName];
-        [upload_file setSpace_id:self.space_id];
-        [upload_file setF_id:self.f_id];
-        [self.uploadAllList addObject:upload_file];
-        [demo release];
-        [upload_file release];
-        i++;
-        if(bl)
+        [self.uploadAllList removeAllObjects];
+    }
+    
+    BOOL bl = TRUE;
+    
+    if([self.asetArray count]<10)
+    {
+        for(int j=0;j<[self.asetArray count];j++)
         {
-            [self startUpload];
-            bl = FALSE;
+            ALAsset *asset = [self.asetArray objectAtIndex:j];
+            TaskDemo *demo = [[TaskDemo alloc] init];
+            demo.f_state = 0;
+            demo.f_data = nil;
+            demo.f_lenght = 0;
+            demo.index_id = i;
+            demo.state = 0;
+            demo.proess = 0;
+            demo.result = [asset retain];
+            demo.f_base_name = [[asset defaultRepresentation] filename];
+            demo.deviceName = deviceName;
+            demo.space_id = self.space_id;
+            demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
+            demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+            
+            NSLog(@"demo.f_id:%@",demo.p_id);
+            NSLog(@"demo.spcae_id:%@",demo.space_id);
+            
+            ALAsset *result = demo.result;
+            NSError *error = nil;
+            Byte *data = malloc(result.defaultRepresentation.size);
+            //获得照片图像数据
+            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+//            [demo insertTaskTable];
+            
+            UploadFile *upload_file = [[UploadFile alloc] init];
+            [upload_file setDemo:demo];
+            [upload_file setDeviceName:deviceName];
+            [upload_file setSpace_id:self.space_id];
+            [upload_file setF_id:self.f_id];
+            [self.uploadAllList addObject:upload_file];
+            [demo release];
+            [upload_file release];
+            i++;
+            if(bl)
+            {
+                [self startUpload];
+                bl = FALSE;
+            }
         }
     }
+    else
+    {
+        for(int j=0;j<10;j++)
+        {
+            ALAsset *asset = [self.asetArray objectAtIndex:j];
+            TaskDemo *demo = [[TaskDemo alloc] init];
+            demo.f_state = 0;
+            demo.f_data = nil;
+            demo.f_lenght = 0;
+            demo.index_id = i;
+            demo.state = 0;
+            demo.proess = 0;
+            demo.result = [asset retain];
+            demo.f_base_name = [[asset defaultRepresentation] filename];
+            demo.deviceName = deviceName;
+            demo.space_id = self.space_id;
+            demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
+            demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+            
+            NSLog(@"demo.f_id:%@",demo.p_id);
+            NSLog(@"demo.spcae_id:%@",demo.space_id);
+            
+            ALAsset *result = demo.result;
+            NSError *error = nil;
+            Byte *data = malloc(result.defaultRepresentation.size);
+            //获得照片图像数据
+            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+//            [demo insertTaskTable];
+            
+            UploadFile *upload_file = [[UploadFile alloc] init];
+            [upload_file setDemo:demo];
+            [upload_file setDeviceName:deviceName];
+            [upload_file setSpace_id:self.space_id];
+            [upload_file setF_id:self.f_id];
+            [self.uploadAllList addObject:upload_file];
+            [demo release];
+            [upload_file release];
+            i++;
+            if(bl)
+            {
+                [self startUpload];
+                bl = FALSE;
+            }
+        }
+    }
+    
     NSLog(@"回到上传管理页面");
 }
 
 -(void)startUpload
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        if([self.uploadAllList count]<10 && [self.uploadAllList count]<[self.asetArray count])
+        {
+            ALAsset *asset = [self.asetArray objectAtIndex:[self.uploadAllList count]];
+            TaskDemo *demo = [[TaskDemo alloc] init];
+            demo.f_state = 0;
+            demo.f_data = nil;
+            demo.f_lenght = 0;
+            demo.index_id = [self.uploadAllList count];
+            demo.state = 0;
+            demo.proess = 0;
+            demo.result = [asset retain];
+            demo.f_base_name = [[asset defaultRepresentation] filename];
+            demo.deviceName = deviceName;
+            demo.space_id = self.space_id;
+            demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
+            demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+            
+            NSLog(@"demo.f_id:%@",demo.p_id);
+            NSLog(@"demo.spcae_id:%@",demo.space_id);
+            
+            ALAsset *result = demo.result;
+            NSError *error = nil;
+            Byte *data = malloc(result.defaultRepresentation.size);
+            //获得照片图像数据
+            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+//            [demo insertTaskTable];
+            
+            UploadFile *upload_file = [[UploadFile alloc] init];
+            [upload_file setDemo:demo];
+            [upload_file setDeviceName:deviceName];
+            [upload_file setSpace_id:self.space_id];
+            [upload_file setF_id:self.f_id];
+            [self.uploadAllList addObject:upload_file];
+            [demo release];
+            [upload_file release];
+        }
         [NSThread detachNewThreadSelector:@selector(newTheadMainUpload) toTarget:self withObject:nil];
     });
 }
@@ -115,14 +211,13 @@
         ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
         if([uploadView isKindOfClass:[ChangeUploadViewController class]])
         {
-            if([uploadView.uploadingList count]==0)
+            [uploadView setUploadingList:self.uploadAllList];
+            if(!uploadView.isUploadAll)
             {
-                [uploadView setUploadingList:self.uploadAllList];
-                if(!uploadView.isUploadAll)
-                {
-                    [uploadView setIsUploadAll:YES];
-                }
+                [uploadView setIsUploadAll:YES];
             }
+            [uploadView updateReloadData];
+            [uploadView.uploadListTableView reloadData];
         }
     }
 }
@@ -166,6 +261,7 @@
         else
         {
             [self.uploadAllList removeObjectAtIndex:0];
+            [self.asetArray removeObjectAtIndex:0];
             [self startUpload];
         }
     }

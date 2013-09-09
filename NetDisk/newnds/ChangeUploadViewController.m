@@ -42,10 +42,7 @@
     {
         UploadFile *demo = [self.uploadingList objectAtIndex:row_];
         AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        if(isDelete)
-        {
-            [demo.demo deleteTaskTable];
-        }
+        
         if(row_ == 0)
         {
             [demo upStop];
@@ -53,6 +50,7 @@
         }
         
         [self.uploadingList removeObjectAtIndex:demo.demo.index_id];
+        [app_delegate.upload_all.asetArray removeObjectAtIndex:demo.demo.index_id];
         
         if(!isHistoryShow && [self.uploadListTableView.indexPathsForVisibleRows count]>0)
         {
@@ -63,12 +61,12 @@
             [self.uploadListTableView reloadInputViews];
         }
         int count = 0;
-        if(self.uploadingList)
-        {
-            count = [self.uploadingList count];
-        }
         if(!isHistoryShow)
         {
+            if(app_delegate.upload_all.asetArray)
+            {
+                count = [app_delegate.upload_all.asetArray count];
+            }
             title_leble.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
         }
         else
@@ -76,7 +74,7 @@
             isHistoryShow = FALSE;
             [self clicked_uploadHistory:nil];
         }
-        [self updateReloadData];
+        
         if([self.uploadingList count]>0 && row_ == 0 && self.isUploadAll)
         {
             [app_delegate.upload_all startUpload];
@@ -516,9 +514,10 @@
     int count = 0;
     if(!isHistoryShow)
     {
-        if(self.uploadingList)
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(app_delegate.upload_all.asetArray)
         {
-            count = [self.uploadingList count];
+            count = [app_delegate.upload_all.asetArray count];
         }
         return [NSString stringWithFormat:@"正在上传(%i)",count];
     }
@@ -565,9 +564,10 @@
     int count = 0;
     if(!isHistoryShow)
     {
-        if(self.uploadingList)
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(app_delegate.upload_all.asetArray)
         {
-            count = [self.uploadingList count];
+            count = [app_delegate.upload_all.asetArray count];
         }
         title_leble.text = [NSString stringWithFormat:@" 正在上传(%i)",count];
     }

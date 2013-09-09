@@ -49,6 +49,12 @@
 -(void)setUploadDemo:(TaskDemo *)demo_
 {
     self.demo = demo_;
+//    [NSThread detachNewThreadSelector:@selector(newUploadMain) toTarget:self withObject:nil];
+    [self newUploadMain];
+}
+
+-(void)newUploadMain
+{
     if(self.demo.f_state == 1)
     {
         [self.jinDuView showText:@"完成"];
@@ -61,55 +67,49 @@
     {
         [self.jinDuView showText:@"等待中..."];
     }
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        if(self.demo.result==nil && self.demo.f_data==nil)
+    if(![self.label_name.text isEqualToString:self.demo.f_base_name])
+    {
+        UIImage *imageV = demo.topImage;
+        if(imageV.size.width>=imageV.size.height)
         {
-            return;
-        }
-        if(![self.label_name.text isEqualToString:self.demo.f_base_name])
-        {
-            UIImage *imageV = demo.topImage;
-            if(imageV.size.width>=imageV.size.height)
+            if(imageV.size.height<=88)
             {
-                if(imageV.size.height<=88)
-                {
-                    CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
-                    imageV = [self imageFromImage:imageV inRect:imageRect];
-                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                }
-                else
-                {
-                    CGSize newImageSize;
-                    newImageSize.height = 88;
-                    newImageSize.width = 88*imageV.size.width/imageV.size.height;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake((newImageSize.width-88)/2, 0, 88, 88);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-                }
+                CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
+                imageV = [self imageFromImage:imageV inRect:imageRect];
+                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
             }
-            else if(imageV.size.width<=imageV.size.height)
+            else
             {
-                if(imageV.size.width<=88)
-                {
-                    CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
-                    imageV = [self imageFromImage:imageV inRect:imageRect];
-                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                }
-                else
-                {
-                    CGSize newImageSize;
-                    newImageSize.width = 88;
-                    newImageSize.height = 88*imageV.size.height/imageV.size.width;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake(0, (newImageSize.height-88)/2, 88, 88);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-                }
+                CGSize newImageSize;
+                newImageSize.height = 88;
+                newImageSize.width = 88*imageV.size.width/imageV.size.height;
+                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                CGRect imageRect = CGRectMake((newImageSize.width-88)/2, 0, 88, 88);
+                imageS = [self imageFromImage:imageS inRect:imageRect];
+                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
             }
         }
-        [self.label_name setText:self.demo.f_base_name];
-//    });
+        else if(imageV.size.width<=imageV.size.height)
+        {
+            if(imageV.size.width<=88)
+            {
+                CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
+                imageV = [self imageFromImage:imageV inRect:imageRect];
+                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+            }
+            else
+            {
+                CGSize newImageSize;
+                newImageSize.width = 88;
+                newImageSize.height = 88*imageV.size.height/imageV.size.width;
+                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                CGRect imageRect = CGRectMake(0, (newImageSize.height-88)/2, 88, 88);
+                imageS = [self imageFromImage:imageS inRect:imageRect];
+                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+            }
+        }
+    }
+    [self.label_name setText:self.demo.f_base_name];
 }
 
 -(UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{

@@ -7,8 +7,8 @@
 //
 
 #import "MessagePushCell.h"
-#define navbarWidth 200
-#define boderWidth 10
+
+
 
 @implementation MessagePushCell
 @synthesize back_image;
@@ -114,7 +114,7 @@
     back_image = [[UIImageView alloc] initWithFrame:self.bounds];
     [self addSubview:back_image];
     
-    CGRect title_rect = CGRectMake(boderWidth, 5, navbarWidth-boderWidth, 22);
+    CGRect title_rect = CGRectMake(boderWidth, 5, navbarWidth-boderWidth, height-37);
     title_label = [[UILabel alloc] initWithFrame:title_rect];
     [title_label setTextColor:[UIColor blackColor]];
     [title_label setBackgroundColor:[UIColor clearColor]];

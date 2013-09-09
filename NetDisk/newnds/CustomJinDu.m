@@ -50,7 +50,7 @@
     CGRect backLabelRect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     [backLabel setFrame:backLabelRect];
     [backLabel setHidden:NO];
-    [backLabel setText:@""];
+    [backLabel setText:nil];
     backLabel.layer.borderWidth = 0.5;
     backLabel.layer.borderColor = [[UIColor blackColor] CGColor];
     [currLabel setHidden:NO];

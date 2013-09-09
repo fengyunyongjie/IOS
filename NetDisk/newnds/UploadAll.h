@@ -19,6 +19,7 @@
     BOOL isUpload;
     NSString *space_id;
     NSString *f_id;
+    NSMutableOrderedSet *asetArray;
 }
 
 -(id)init;
@@ -27,6 +28,7 @@
 @property(nonatomic,assign) BOOL isUpload;
 @property(nonatomic,retain) NSString *space_id;
 @property(nonatomic,retain) NSString *f_id;
+@property(nonatomic,retain) NSMutableOrderedSet *asetArray;
 
 -(void)startUpload;
 -(void)changeUpload:(NSMutableOrderedSet *)array_;
