@@ -65,6 +65,7 @@
                 if(result)
                 {
                     WebData *webData = [[WebData alloc] init];
+                    webData.p_id = f_id;
                     webData.photo_name = [[result defaultRepresentation] filename];
                     BOOL bl = [webData selectIsTrueForPhotoName];
                     if(!bl)
@@ -149,7 +150,7 @@
                 [upload_file setF_pid:nil];
                 [upload_file setDelegate:self];
                 
-                if(uploadViewController)
+                if([uploadViewController isKindOfClass:[ChangeUploadViewController class]])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [uploadViewController startAutomatic:demo.topImage progess:0 taskDemo:demo total:[self.assetArray count]];
@@ -247,7 +248,7 @@
                 [upload_file setF_pid:nil];
                 [upload_file setDelegate:self];
                 [upload_file upload];
-                if(uploadViewController)
+                if([uploadViewController isKindOfClass:[ChangeUploadViewController class]])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:0 taskDemo:upload_file.demo total:[self.assetArray count]];
@@ -285,7 +286,7 @@
     {
         [self getUploadCotroller];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if(uploadViewController)
+            if([uploadViewController isKindOfClass:[ChangeUploadViewController class]])
             {
                 upload_file.demo.state = 2;
 //                UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
@@ -359,7 +360,7 @@
         return;
     }
     [self getUploadCotroller];
-    if(uploadViewController)
+    if([uploadViewController isKindOfClass:[ChangeUploadViewController class]])
     {
 //        UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
 //        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
@@ -379,7 +380,7 @@
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag
 {
     [self getUploadCotroller];
-    if(uploadViewController)
+    if([uploadViewController isKindOfClass:[ChangeUploadViewController class]])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
 //            UIImage *data_image =  upload_file.demo.topImage;//[UIImage imageWithData:upload_file.demo.f_data];

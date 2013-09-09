@@ -376,7 +376,11 @@
     // Release the connection now that it's finished
     // call our delegate and tell it that our icon is ready for display
     //[delegate fileDidDownload:self.index];
-    NSLog(@"数据失败了");
+    if(!self.activeData)
+    {
+        NSLog(@"请求得到的数据为空");
+        return;
+    }
     
     NSLog(@"%@",[[NSString alloc] initWithData:self.activeData encoding:NSUTF8StringEncoding]);
     NSError *jsonParsingError=nil;

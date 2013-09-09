@@ -1284,7 +1284,6 @@
 {
     if(connection)
     {
-        [connection cancel];
         connection = nil;
     }
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];

@@ -55,6 +55,7 @@
             }
             sqlite3_bind_text(statement, 1, [photo_name UTF8String], -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(statement, 2, [photo_id UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement, 3, [p_id UTF8String], -1, SQLITE_TRANSIENT);
             success = sqlite3_step(statement);
             if (success == SQLITE_ERROR) {
                 bl = FALSE;
@@ -103,6 +104,7 @@
         const char *insert_stmt = [SelectForKey UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
         sqlite3_bind_text(statement, 1, [photo_name UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 2, [p_id UTF8String], -1, SQLITE_TRANSIENT);
         while (sqlite3_step(statement)==SQLITE_ROW) {
             int i = sqlite3_column_int(statement, 0);
             if(i>=1)
