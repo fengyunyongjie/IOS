@@ -47,7 +47,7 @@
 @end
 
 @implementation QBAssetCollectionViewController
-@synthesize isNeedBackButton,device_name,f_id;
+@synthesize isNeedBackButton,device_name,f_id,space_id;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -211,6 +211,7 @@
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
     qbImage_fileView.f_id = @"1";
     qbImage_fileView.f_name = @"我的文件";
+    qbImage_fileView.space_id = space_id;
     [qbImage_fileView setQbDelegate:self];
     
     UINavigationController *nagation = [[UINavigationController alloc] initWithRootViewController:qbImage_fileView];
@@ -225,7 +226,9 @@
     NSLog(@"self.f_id:%@",self.f_id);
     [self.delegate changeDeviceName:device_name];
     [self.delegate changeFileId:self.f_id];
+    [self.delegate changeSpace:space_id];
     [self.delegate changeUpload:self.selectedAssets];
+    
     NSLog(@"device_name--------:%@",device_name);
     
     if([self.navigationController.viewControllers count]>3)

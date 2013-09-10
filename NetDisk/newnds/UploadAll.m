@@ -32,6 +32,11 @@
     return self;
 }
 
+-(void)changeSpaceId:(NSString *)s_id
+{
+    space_id = s_id;
+}
+
 -(void)changeUpload:(NSMutableOrderedSet *)array_
 {
     NSLog(@"有多少:%@",self.space_id);

@@ -36,7 +36,7 @@
 @end
 
 @implementation QBImagePickerController
-@synthesize f_id,f_name;
+@synthesize f_id,f_name,space_id;
 
 //<ios 6.0
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -438,6 +438,7 @@
     assetCollectionViewController.maximumNumberOfSelection = self.maximumNumberOfSelection;
     assetCollectionViewController.f_id = self.f_id;
     assetCollectionViewController.device_name = self.f_name;
+    assetCollectionViewController.space_id = space_id;
     NSLog(@"f_name-----:%@",self.f_name);
     [self.navigationController pushViewController:assetCollectionViewController animated:YES];
 }
@@ -549,6 +550,11 @@
 {
     NSLog(@"array_:%@",array_);
     [self.delegate changeUpload:array_];
+}
+
+-(void)changeSpace:(NSString *)s_id
+{
+    [self.delegate changeSpaceId:s_id];
 }
 
 @end

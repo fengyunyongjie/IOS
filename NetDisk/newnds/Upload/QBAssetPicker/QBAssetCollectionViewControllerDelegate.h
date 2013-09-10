@@ -24,5 +24,6 @@
 -(void)changeUpload:(NSMutableOrderedSet *)array_;
 -(void)changeDeviceName:(NSString *)device_name;
 -(void)changeFileId:(NSString *)f_id;
+-(void)changeSpace:(NSString *)s_id;
 
 @end

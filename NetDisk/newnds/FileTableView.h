@@ -21,7 +21,7 @@
 
 -(void)showAllFile:(NSMutableArray *)tableArray;
 
--(void)downController:(NSString *)fid;
+-(void)downController:(NSString *)fid setUserName:(NSString *)user_name;
 
 -(void)showController:(NSString *)f_id titleString:(NSString *)f_name;
 
@@ -61,6 +61,7 @@
     int sharedType; //1 短信分享，2 邮件分享，3 复制，4 微信，5 朋友圈
     int useType;
     NSString *searchText;
+    NSString *space_id;
 }
 
 @property(nonatomic,retain) SCBPhotoManager *photoManager;
@@ -84,6 +85,7 @@
 @property(nonatomic,assign) BOOL isEdition;
 @property(nonatomic,assign) int useType;
 @property(nonatomic,retain) NSString *searchText;
+@property(nonatomic,retain) NSString *space_id;
 
 //请求文件
 -(void)requestFile:(NSString *)f_id space_id:(NSString *)space_id;

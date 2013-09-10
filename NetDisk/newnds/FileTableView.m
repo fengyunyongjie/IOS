@@ -43,6 +43,7 @@
 @synthesize isEdition;
 @synthesize useType;
 @synthesize searchText;
+@synthesize space_id;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -283,7 +284,8 @@
     NSString *f_mime = [[dictioinary objectForKey:@"f_mime"] uppercaseString];
     NSString *f_id = [dictioinary objectForKey:@"f_id"];
     if ([f_mime isEqualToString:@"DIRECTORY"]) {
-        [file_delegate downController:f_id];
+        NSString *userName = [dictioinary objectForKey:@"f_owner_name"];
+        [file_delegate downController:f_id setUserName:userName];
     }
     else if([f_mime isEqualToString:@"PNG"]||
             [f_mime isEqualToString:@"JPG"]||
@@ -630,7 +632,7 @@
 -(void)toNewFinder:(NSString *)textName
 {
     [fileManager setDelegate:self];
-    [fileManager newFinderWithName:textName pID:p_id sID:[[SCBSession sharedSession] homeID]];
+    [fileManager newFinderWithName:textName pID:p_id sID:space_id];
 }
 
 #pragma mark 请求我的家庭空间
@@ -1119,7 +1121,7 @@
     }
     else
     {
-        [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+        [self requestFile:p_id space_id:space_id];
     }
 
     [self escSelected];
@@ -1166,7 +1168,7 @@
     }
     else
     {
-        [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+        [self requestFile:p_id space_id:space_id];
     }
     
     [self escSelected];
@@ -1211,7 +1213,7 @@
     }
     else
     {
-        [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+        [self requestFile:p_id space_id:space_id];
     }
     
     [self escSelected];
@@ -1245,7 +1247,7 @@
     }
     else
     {
-        [self requestFile:p_id space_id:[[SCBSession sharedSession] homeID]];
+        [self requestFile:p_id space_id:space_id];
     }
     [self escSelected];
 }

@@ -43,6 +43,8 @@
     int sharedType;
     int loadType;
     UIImageView *null_imageview; //pop.png
+    MBProgressHUD *hud;
+    NSString *ower_name;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -68,6 +70,9 @@
 @property(nonatomic,retain) NSArray *member_array;
 @property(nonatomic,assign) int sharedType;
 @property(nonatomic,retain) UIImageView *null_imageview;
+@property(nonatomic,retain) MBProgressHUD *hud;
+@property(nonatomic,retain) NSString *spaceId;
+@property(nonatomic,retain) NSString *ower_name;
 
 //显示文件列表
 -(void)showFileList;

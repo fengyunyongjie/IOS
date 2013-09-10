@@ -43,6 +43,9 @@
 @synthesize sharedType;
 @synthesize null_imageview;
 @synthesize newsView;
+@synthesize hud;
+@synthesize spaceId;
+@synthesize ower_name;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,7 +59,7 @@
 //显示文件列表
 -(void)showFileList
 {
-    [file_tableView requestFile:f_id space_id:spaceId];
+    [file_tableView requestFile:self.f_id space_id:spaceId];
 }
 
 //显示照片列表
@@ -87,6 +90,16 @@
 
 - (void)viewDidLoad
 {
+    if(!spaceId)
+    {
+        spaceId = [NSString stringWithFormat:@"%@",[[SCBSession sharedSession] homeID]];
+    }
+    
+    if(!ower_name)
+    {
+        ower_name = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+    }
+    NSLog(@"UserName:%@",ower_name);
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor whiteColor];
     //添加头部试图
@@ -163,6 +176,7 @@
     CGRect rect = CGRectMake(0, 44, 320, TableViewHeight);
     file_tableView = [[FileTableView alloc] initWithFrame:rect];
     [file_tableView setAllHeight:self.view.frame.size.height];
+    [file_tableView setSpace_id:spaceId];
     [file_tableView setFile_delegate:self];
     [self.view addSubview:file_tableView];
     
@@ -170,7 +184,7 @@
     //初始化图片列表
     photo_tableView = [[PhotoTableView alloc] initWithFrame:rect];
     [photo_tableView setPhoto_delegate:self];
-    photo_tableView.requestId = [[SCBSession sharedSession] homeID];
+    photo_tableView.requestId = spaceId;
     [self.view addSubview:photo_tableView];
     
     if(isPhoto)
@@ -189,8 +203,6 @@
     [escButton addTarget:self action:@selector(EscMenu) forControlEvents:UIControlEventTouchDown];
     [escButton setHidden:YES];
     [self.view addSubview:escButton];
-    
-    spaceId = [[SCBSession sharedSession] homeID];
     
     null_imageview = [[UIImageView alloc] initWithFrame:rect];
     [null_imageview setImage:[UIImage imageNamed:@"pop.png"]];
@@ -306,7 +318,7 @@
     }
     
     spaceId = [[SCBSession sharedSession] homeID];
-    f_id = @"1";
+    self.f_id = @"1";
     photo_tableView.requestId = spaceId;
     
     isPhoto = TRUE;
@@ -318,6 +330,23 @@
 -(void)clicked_space:(id)sender
 {
     NSLog(@"-(void)clicked_space:(id)sender");
+    
+    if(!member_array || [member_array count] == 0)
+    {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"服务器异常";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
     
     if(space_control)
     {
@@ -442,6 +471,7 @@
         {
             spaceId = space_id;
             photo_tableView.requestId = spaceId;
+            file_tableView.space_id = space_id;
         }
     }
     if(isPhoto)
@@ -608,6 +638,23 @@
 -(void)goUpload:(id)sender
 {
     [self touchView:nil];
+    NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+    if(![ower_name isEqualToString:name] && ![self.f_id isEqualToString:@"1"])
+    {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"该文件夹无法操作";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
     
     UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
     if([lblEdit.text isEqualToString:@"取消"]){
@@ -624,6 +671,7 @@
     imagePickerController.delegate = self;
     imagePickerController.allowsMultipleSelection = YES;
     imagePickerController.f_id  = self.f_id;
+    imagePickerController.space_id = spaceId;
     [imagePickerController requestFileDetail];
     NSLog(@"self.f_id:%@",self.f_id);
     [self.navigationController pushViewController:imagePickerController animated:YES];
@@ -634,10 +682,15 @@
 
 #pragma mark - QBImagePickerControllerDelegate
 
+-(void)changeSpaceId:(NSString *)s_id
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.upload_all setSpace_id:s_id];
+}
+
 -(void)changeUpload:(NSMutableOrderedSet *)array_
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [app_delegate.upload_all setSpace_id:[[SCBSession sharedSession] homeID]];
     NSLog(@"[[[SCBSession sharedSession] spaceID] integerValue]:%@",[[SCBSession sharedSession] spaceID]);
     [app_delegate.upload_all changeUpload:array_];
 }
@@ -680,6 +733,25 @@
 -(void)editAction:(id)sender
 {
     [self touchView:nil];
+    
+    NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+    if(![ower_name isEqualToString:name] && ![self.f_id isEqualToString:@"1"])
+    {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"该文件夹无法操作";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
+    
     UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
     if([lblEdit.text isEqualToString:@"编辑"])
     {
@@ -775,6 +847,25 @@
 -(void)newFinder:(id)sender
 {
     [self touchView:nil];
+    
+    NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+    if(![ower_name isEqualToString:name] && ![self.f_id isEqualToString:@"1"])
+    {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"该文件夹无法操作";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
+    
     if(newFinder_control == nil)
     {
         //新建文件夹视图
@@ -859,11 +950,13 @@
 
 #pragma mark FileTableViewDelegate -------------------
 
--(void)downController:(NSString *)fid
+-(void)downController:(NSString *)fid setUserName:(NSString *)user_name
 {
     IPhotoViewController *iphotoView = [[IPhotoViewController alloc] init];
-    iphotoView.f_id = fid;
+    iphotoView.f_id = [NSString stringWithFormat:@"%@",fid];
+    iphotoView.spaceId = spaceId;
     iphotoView.isPhoto = isPhoto;
+    iphotoView.ower_name = [NSString stringWithFormat:@"%@",user_name];
     iphotoView.isNeedBackButton = YES;
     [self.navigationController pushViewController:iphotoView animated:YES];
     [iphotoView release];
@@ -888,7 +981,7 @@
 {
     
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
-    qbImage_fileView.f_id = fid;
+    qbImage_fileView.f_id = [NSString stringWithFormat:@"%@",fid];
     qbImage_fileView.f_name = fname;
     qbImage_fileView.isChangeMove = YES;
     [qbImage_fileView setQbDelegate:self];

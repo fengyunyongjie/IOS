@@ -296,7 +296,7 @@
     float y = bgIamge_rect.origin.y+4;
     uploadAll_button.frame=CGRectMake(x, y, 90, 88);
     [uploadAll_button setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
-    [uploadAll_button setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+    [uploadAll_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [uploadAll_button addTarget:self action:@selector(clicked_uploadAll:) forControlEvents:UIControlEventTouchUpInside];
     [self.more_control addSubview:uploadAll_button];
     uploadAll_label=[[[UILabel alloc] init] autorelease];
@@ -312,7 +312,7 @@
     deleteAll_button= [UIButton buttonWithType:UIButtonTypeCustom];
     deleteAll_button.frame=CGRectMake(x+90, y, 90, 88);
     [deleteAll_button setImage:[UIImage imageNamed:@"Bt_naDelAll@2x.png"] forState:UIControlStateNormal];
-    [deleteAll_button setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+    [deleteAll_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [deleteAll_button addTarget:self action:@selector(clicked_clearAll:) forControlEvents:UIControlEventTouchUpInside];
     [self.more_control addSubview:deleteAll_button];
     deleteAll_label=[[[UILabel alloc] init] autorelease];
@@ -431,7 +431,7 @@
 {
     if(isHistoryShow)
     {
-        CGRect bgIamge_rect = CGRectMake(320-180-20+90, 40, 90, 88);
+        CGRect bgIamge_rect = CGRectMake(320-180-20+90, 40, 90, 92);
         [bgIamgeView setImage:[UIImage imageNamed:@"Bk_na_2.png"]];
         [bgIamgeView setFrame:bgIamge_rect];
         [uploadAll_button setHidden:YES];
@@ -441,7 +441,7 @@
     }
     else
     {
-        CGRect bgIamge_rect = CGRectMake(320-180-20, 40, 180, 88);
+        CGRect bgIamge_rect = CGRectMake(320-180-20, 40, 180, 92);
         [bgIamgeView setImage:[UIImage imageNamed:@"Bk_na_3.png"]];
         [bgIamgeView setFrame:bgIamge_rect];
         

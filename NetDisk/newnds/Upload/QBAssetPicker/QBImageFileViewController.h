@@ -40,6 +40,7 @@
 @property(nonatomic,retain) NSString *f_name;
 @property(nonatomic,retain) NSString *f_id;
 @property(nonatomic,assign) BOOL isChangeMove;
+@property(nonatomic,assign) NSString *space_id;
 
 @end
 

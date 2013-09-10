@@ -31,6 +31,7 @@
 @synthesize f_name;
 @synthesize f_id;
 @synthesize isChangeMove;
+@synthesize space_id;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,7 +61,7 @@
     {
         space_id = [[SCBSession sharedSession] spaceID];
     }
-    else if(app_delegate.myTabBarController.selectedIndex==1 || isChangeMove)
+    else if(app_delegate.myTabBarController.selectedIndex==1 && !space_id)
     {
         space_id = [[SCBSession sharedSession] homeID];
     }

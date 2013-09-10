@@ -79,7 +79,7 @@
         tableArray = [[NSMutableArray alloc] init];
         fileManager = [[SCBFileManager alloc] init];
         [fileManager setDelegate:self];
-        [fileManager requestOpenFamily:[[SCBSession sharedSession] homeID]];
+        [fileManager requestOpenFamily:@""];
     }
     
     CGRect table_rect = CGRectMake(0, 44, 320, TableViewHeight);

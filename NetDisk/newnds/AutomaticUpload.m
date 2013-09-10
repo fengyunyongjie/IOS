@@ -34,7 +34,7 @@
     if(![self isConnection])
     {
         [self getUploadCotroller];
-        if(uploadViewController)
+        if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
         {
             dispatch_async(dispatch_get_main_queue(), ^{
                 upload_file.demo.state = 2;
@@ -170,7 +170,7 @@
         else
         {
             NSLog(@"没有数据了");
-            if(uploadViewController)
+            if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
             {
                 [uploadViewController stopAutomatic];
             }
@@ -265,7 +265,7 @@
         else
         {
             NSLog(@"没有数据了");
-            if(uploadViewController)
+            if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
             {
                 [uploadViewController stopAutomatic];
             }
@@ -317,7 +317,7 @@
     {
         [upload_file upStop];
     }
-    if(uploadViewController)
+    if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
     {
         [uploadViewController stopAutomatic];
     }

@@ -288,14 +288,15 @@
 {
     NSLog(@"openFinderSucess datadic:%@",dictionary);
     [table_array removeAllObjects];
-    
+    NSString *UserName = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"]];
     int index = [[dictionary objectForKey:@"code"] intValue];
     if(index == 0)
     {
         NSArray *array = [dictionary objectForKey:@"files"];
         for (NSDictionary *diction in array) {
             NSString *directory = [diction objectForKey:@"f_mime"];
-            if([directory isEqualToString:@"directory"])
+            NSString *f_owner_name = [NSString stringWithFormat:@"%@",[diction objectForKey:@"f_owner_name"]];
+            if([directory isEqualToString:@"directory"] && [f_owner_name isEqualToString:UserName])
             {
                 [table_array addObject:diction];
             }

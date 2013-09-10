@@ -36,6 +36,7 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
 -(void)changeUpload:(NSMutableOrderedSet *)array_;
 -(void)changeDeviceName:(NSString *)device_name;
 -(void)changeFileId:(NSString *)f_id;
+-(void)changeSpaceId:(NSString *)s_id;
 
 @end
 
@@ -53,6 +54,7 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
     NSString *f_id;
     SCBPhotoManager *photoManager;
     NSString *f_name;
+    NSString *space_id;
 }
 
 @property (nonatomic, retain) id<QBImagePickerControllerDelegate> delegate;
@@ -69,6 +71,7 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
 @property (nonatomic,retain) SCBPhotoManager *photoManager;
 @property (nonatomic,retain) NSString *f_id;
 @property (nonatomic,retain) NSString *f_name;
+@property (nonatomic,retain) NSString *space_id;
 
 -(void)requestFileDetail;
 

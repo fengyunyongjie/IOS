@@ -35,6 +35,7 @@
     BOOL isFirst;
     NSString *device_name;
     NSString *f_id;
+    NSString *space_id;
 }
 
 @property (nonatomic, retain) id<QBAssetCollectionViewControllerDelegate> delegate;
@@ -56,5 +57,6 @@
 @property (nonatomic, assign) BOOL isNeedBackButton;
 @property (nonatomic, assign) NSString *device_name;
 @property (nonatomic, retain) NSString *f_id;
+@property (nonatomic, retain) NSString *space_id;
 
 @end

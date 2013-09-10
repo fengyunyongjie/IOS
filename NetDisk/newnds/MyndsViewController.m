@@ -222,12 +222,14 @@ typedef enum{
         [self.view addSubview:self.ctrlView];
         [self.ctrlView setHidden:YES];
         UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_na.png"]];
-        bg.frame=CGRectMake(25, 44, 270, 175);
+        
+        int height = 5;
+        bg.frame=CGRectMake(25, 44, 270, 176+5);
         [self.ctrlView addSubview:bg];
         
         //按钮－新建文件夹0,0
         self.btnUpload= [UIButton buttonWithType:UIButtonTypeCustom];
-        self.btnUpload.frame=CGRectMake(25, 44, 90, 87);
+        self.btnUpload.frame=CGRectMake(25, 44+height, 90, 88);
         [self.btnUpload setImage:[UIImage imageNamed:@"Bt_naUpload.png"] forState:UIControlStateNormal];
         [self.btnUpload setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [self.btnUpload addTarget:self action:@selector(goUpload:) forControlEvents:UIControlEventTouchUpInside];
@@ -238,12 +240,12 @@ typedef enum{
         lblNewFinder.font=[UIFont systemFontOfSize:12];
         lblNewFinder.textColor=[UIColor whiteColor];
         lblNewFinder.backgroundColor=[UIColor clearColor];
-        lblNewFinder.frame=CGRectMake(25, 59+44, 90, 21);
+        lblNewFinder.frame=CGRectMake(25, 59+44+height, 90, 22);
         [self.ctrlView addSubview:lblNewFinder];
         
         //按钮－编辑0,1
         self.btnSearch= [UIButton buttonWithType:UIButtonTypeCustom];
-        self.btnSearch.frame=CGRectMake(25+90, 44, 90, 87);
+        self.btnSearch.frame=CGRectMake(25+90, 44+height, 90, 88);
         [self.btnSearch setImage:[UIImage imageNamed:@"Bt_naSeach.png"] forState:UIControlStateNormal];
         [self.btnSearch setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [self.btnSearch addTarget:self action:@selector(goSearch:) forControlEvents:UIControlEventTouchUpInside];
@@ -254,12 +256,12 @@ typedef enum{
         lblNewFinder01.font=[UIFont systemFontOfSize:12];
         lblNewFinder01.textColor=[UIColor whiteColor];
         lblNewFinder01.backgroundColor=[UIColor clearColor];
-        lblNewFinder01.frame=CGRectMake(25+90, 59+44, 90, 21);
+        lblNewFinder01.frame=CGRectMake(25+90, 59+44+height, 90, 22);
         [self.ctrlView addSubview:lblNewFinder01];
         
         //按钮－新建文件夹 0，2
         UIButton *btnNewFinder02= [UIButton buttonWithType:UIButtonTypeCustom];
-        btnNewFinder02.frame=CGRectMake(25+(90*2), 44, 90, 87);
+        btnNewFinder02.frame=CGRectMake(25+(90*2), 44+height, 90, 88);
         [btnNewFinder02 setImage:[UIImage imageNamed:@"Bt_naNews.png"] forState:UIControlStateNormal];
         [btnNewFinder02 setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [btnNewFinder02 addTarget:self action:@selector(goMessage:) forControlEvents:UIControlEventTouchUpInside];
@@ -270,12 +272,12 @@ typedef enum{
         lblNewFinder02.font=[UIFont systemFontOfSize:12];
         lblNewFinder02.textColor=[UIColor whiteColor];
         lblNewFinder02.backgroundColor=[UIColor clearColor];
-        lblNewFinder02.frame=CGRectMake(25+(90*2), 59+44, 90, 21);
+        lblNewFinder02.frame=CGRectMake(25+(90*2), 59+44+height, 90, 22);
         [self.ctrlView addSubview:lblNewFinder02];
         
         //按钮－新建文件夹 1，0
         self.btnEdit= [UIButton buttonWithType:UIButtonTypeCustom];
-        self.btnEdit.frame=CGRectMake(25, 44+88, 90, 87);
+        self.btnEdit.frame=CGRectMake(25, 44+88+height, 90, 88);
         [self.btnEdit setImage:[UIImage imageNamed:@"Bt_naEdit.png"] forState:UIControlStateNormal];
         [self.btnEdit setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [self.btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -286,12 +288,12 @@ typedef enum{
         self.lblEdit.font=[UIFont systemFontOfSize:12];
         self.lblEdit.textColor=[UIColor whiteColor];
         self.lblEdit.backgroundColor=[UIColor clearColor];
-        self.lblEdit.frame=CGRectMake(25, 59+88+44, 90, 21);
+        self.lblEdit.frame=CGRectMake(25, 59+88+44+height, 90, 22);
         [self.ctrlView addSubview:self.lblEdit];
         
         //按钮－新建文件夹 1，1
         self.btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
-        self.btnNewFinder.frame=CGRectMake(25+90, 44+88, 90, 87);
+        self.btnNewFinder.frame=CGRectMake(25+90, 44+88+height, 90, 88);
         [self.btnNewFinder setImage:[UIImage imageNamed:@"Bt_naCreateForlder.png"] forState:UIControlStateNormal];
         [self.btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
         [self.btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
@@ -302,7 +304,7 @@ typedef enum{
         lblNewFinder11.font=[UIFont systemFontOfSize:12];
         lblNewFinder11.textColor=[UIColor whiteColor];
         lblNewFinder11.backgroundColor=[UIColor clearColor];
-        lblNewFinder11.frame=CGRectMake(25+90, 59+88+44, 90, 21);
+        lblNewFinder11.frame=CGRectMake(25+90, 59+88+44+height, 90, 22);
         [self.ctrlView addSubview:lblNewFinder11];
         
 //        //按钮－新建文件夹 1，2
@@ -1828,6 +1830,11 @@ typedef enum{
     self.btnHide.hidden=YES;
 }
 #pragma mark - QBImagePickerControllerDelegate
+
+-(void)changeSpaceId:(NSString *)s_id
+{
+    
+}
 
 -(void)changeUpload:(NSMutableOrderedSet *)array_
 {
