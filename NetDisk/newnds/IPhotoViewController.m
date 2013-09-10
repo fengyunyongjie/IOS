@@ -80,7 +80,8 @@
     if(appleDate.myTabBarController.IsTabBarHiden && !isPhoto)
     {
         UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
-        if([lblEdit.text isEqualToString:@"编辑"])
+        
+        if([lblEdit.text isEqualToString:@"编辑"] || ![lblEdit isKindOfClass:[UILabel class]])
         {
             [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
         }

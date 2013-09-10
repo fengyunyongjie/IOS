@@ -136,6 +136,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+        cell.detailTextLabel.font=[UIFont systemFontOfSize:11];
         if(useType != 1)
         {
             cell.textLabel.text = @"等待中...";
@@ -153,6 +154,7 @@
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
         [cell.select_button addTarget:self action:@selector(checkSelected:) forControlEvents:UIControlEventTouchUpInside];
+        cell.detailTextLabel.font=[UIFont systemFontOfSize:11];
     }
     
     NSDictionary *dictioinary = [tableArray objectAtIndex:[indexPath row]];
@@ -883,7 +885,7 @@
 #pragma mark 更多文件
 -(void)toMore:(id)sender
 {
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名", nil];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"转存",@"重命名", nil];
     [actionSheet setTag:kActionSheetTagMore];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
