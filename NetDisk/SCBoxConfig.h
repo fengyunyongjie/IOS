@@ -12,8 +12,8 @@
 #define CLIENT_TAG @"3"
 #define CONNECT_TIMEOUT 15
 #define RESPONSE_TIMEOUT 10
-#define SERVER_URL @"http://www.7cbox.cn/nds/api"
-//#define SERVER_URL @"http://192.168.1.5/nds/api"	//local host
+//#define SERVER_URL @"http://www.7cbox.cn/nds/api"
+#define SERVER_URL @"http://192.168.1.5/nds/api"	//local host
 //#define SERVER_URL @"http://192.168.1.7/nds/api"	//local host
 //#define SERVER_URL @"http://192.168.1.27/nds/api"	//local host
 //#define SERVER_URL @"http://192.168.1.62:8080/nds/api"	//local host
@@ -81,6 +81,8 @@
 #define FM_RENAME_URI @"/fm/rename"
 //移动文件＝＝剪切粘贴 /fm/cutpaste
 #define FM_MOVE_URI @"/fm/cutpaste"
+//转存文件==复制粘贴 /fm/copypaste
+#define FM_COPYPASTE @"/fm/copypaste"
 //文件下载
 #define FM_DOWNLOAD_URI @"/fm/download"
 #define FM_DOWNLOAD_NEW_URI @"/fm/download/new"

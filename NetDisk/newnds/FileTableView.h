@@ -90,7 +90,7 @@
 //请求文件
 -(void)requestFile:(NSString *)f_id space_id:(NSString *)space_id;
 //移动文件
--(void)setMoveFile:(NSString *)pid;
+-(void)setMoveFile:(NSString *)pid toSpaceId:(NSString *)spaceId toPidSpaceId:(NSString *)sp_id;
 //编辑事件
 -(void)editAction;
 //全部选中事件

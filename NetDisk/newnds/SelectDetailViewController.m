@@ -14,7 +14,7 @@
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
 #define TabBarHeight 60
-#define TableViewHeight (self.view.frame.size.height-TabBarHeight)
+#define TableViewHeight self.view.frame.size.height-44-TabBarHeight
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
 #define BottonViewHeight self.view.frame.size.height-TabBarHeight
@@ -32,6 +32,9 @@
 @synthesize f_id;
 @synthesize share_manager;
 @synthesize title_string;
+@synthesize isAutomatic;
+@synthesize delegate;
+@synthesize isEdtion;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -157,46 +160,52 @@
     [self.navigationController popViewControllerAnimated:YES];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate.title_string removeLastObject];
-    if([self.f_id isEqualToString:@"1"])
-    {
-        [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
-    }
 }
 
 -(void)clicked_changeMyFile
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    app_delegate.maticUpload.space_id = self.space_id;
-    if([app_delegate.title_string count] > 0)
+    if(isAutomatic)
     {
-        NSMutableString *table_str = [[[NSMutableString alloc] init] autorelease];
-        for(NSString *name in app_delegate.title_string)
+        app_delegate.maticUpload.space_id = self.space_id;
+        if([app_delegate.title_string count] > 0)
         {
-            if([table_str length]>0)
+            NSMutableString *table_str = [[[NSMutableString alloc] init] autorelease];
+            for(NSString *name in app_delegate.title_string)
             {
-                [table_str appendString:@"/"];
+                if([table_str length]>0)
+                {
+                    [table_str appendString:@"/"];
+                }
+                [table_str appendFormat:@"%@",name];
             }
-            [table_str appendFormat:@"%@",name];
+            NSLog(@"app_delegate:%@",table_str);
+            UserInfo *info = [[UserInfo alloc] init];
+            info.keyString = @"自动备份目录";
+            info.f_id = [self.f_id intValue];
+            info.descript = [[[NSString alloc] initWithString:table_str] autorelease];
+            [info updateUserinfo];
+            [info release];
         }
-        NSLog(@"app_delegate:%@",table_str);
-        UserInfo *info = [[UserInfo alloc] init];
-        info.keyString = @"自动备份目录";
-        info.f_id = [self.f_id intValue];
-        info.descript = [[[NSString alloc] initWithString:table_str] autorelease];
-        [info updateUserinfo];
-        [info release];
-    }
-    
-    if([self.navigationController.viewControllers count]>1)
-    {
-        SelectDetailViewController *delailview = [self.navigationController.viewControllers objectAtIndex:1];
-        if(delailview)
+        
+        if([self.navigationController.viewControllers count]>1)
         {
-            [self.navigationController popToViewController:delailview animated:YES];
+            SelectDetailViewController *delailview = [self.navigationController.viewControllers objectAtIndex:1];
+            if(delailview)
+            {
+                [self.navigationController popToViewController:delailview animated:YES];
+            }
+        }
+        [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
+    }
+    else
+    {
+        if(self.delegate)
+        {
+            [self.delegate setFileSpace:space_id withFileFID:self.f_id];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
-    
-    [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
     
     
 }
@@ -271,8 +280,10 @@
         [app_delegate.title_string addObject:f_name];
         SelectDetailViewController *select_detailview = [[SelectDetailViewController alloc] init];
         select_detailview.space_id = self.space_id;
+        select_detailview.isAutomatic = isAutomatic;
         select_detailview.f_id = [NSString stringWithFormat:@"%@",fid];
         select_detailview.title_string = [NSString stringWithFormat:@"%@",f_name];
+        select_detailview.delegate = self;
         [self.navigationController pushViewController:select_detailview animated:YES];
         [select_detailview release];
     }
@@ -324,6 +335,14 @@
         }
     }
     [table_view reloadData];
+}
+
+-(void)setFileSpace:(NSString *)spaceID withFileFID:(NSString *)fID
+{
+    if(self.delegate)
+    {
+        [self.delegate setFileSpace:spaceID withFileFID:fID];
+    }
 }
 
 - (void)didReceiveMemoryWarning

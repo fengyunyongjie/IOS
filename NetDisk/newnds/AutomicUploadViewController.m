@@ -215,6 +215,9 @@
             [app_delegate.title_string removeAllObjects];
         }
         SelectFileUrlViewController *selectFileView = [[SelectFileUrlViewController alloc] init];
+        selectFileView.isAutomatic = YES;
+        [app_delegate.title_string removeLastObject];
+        [app_delegate.myTabBarController setHidesTabBarWithAnimate:YES];
         [self.navigationController pushViewController:selectFileView animated:YES];
         [selectFileView release];
     }

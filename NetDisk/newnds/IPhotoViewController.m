@@ -710,7 +710,18 @@
 -(void)goSearch:(id)sender
 {
     [self touchView:nil];
-    loadType = 2;
+    
+    UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
+    if([lblEdit.text isEqualToString:@"取消"]){
+        [lblEdit setText:@"编辑"];
+        [file_tableView setEditing:NO animated:YES];
+        [file_tableView escAction];
+        MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+        [myTabbar setHidesTabBarWithAnimate:NO];
+        [edit_view setHidden:YES];
+    }
+    loadType = 1;
+    
     SearchViewController *searchView = [[SearchViewController alloc] init];
     [self.navigationController pushViewController:searchView animated:YES];
     [searchView release];
@@ -720,6 +731,17 @@
 {
     [self touchView:nil];
     [self touchNewView:nil];
+    UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
+    if([lblEdit.text isEqualToString:@"取消"]){
+        [lblEdit setText:@"编辑"];
+        [file_tableView setEditing:NO animated:YES];
+        [file_tableView escAction];
+        MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+        [myTabbar setHidesTabBarWithAnimate:NO];
+        [edit_view setHidden:YES];
+    }
+    loadType = 1;
+    
     MessagePushController *messagePush = [[MessagePushController alloc] init];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(![app_delegate.myTabBarController IsTabBarHiden])
@@ -789,7 +811,7 @@
             [editBtn2 addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
             [edit_view addSubview:editBtn2];
             UILabel *editLbl2=[[[UILabel alloc] init] autorelease];
-            editLbl2.text=@"移动";
+            editLbl2.text=@"转存";
             editLbl2.textAlignment=UITextAlignmentCenter;
             editLbl2.font=[UIFont systemFontOfSize:12];
             editLbl2.textColor=[UIColor whiteColor];
@@ -847,6 +869,17 @@
 -(void)newFinder:(id)sender
 {
     [self touchView:nil];
+    
+    UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
+    if([lblEdit.text isEqualToString:@"取消"]){
+        [lblEdit setText:@"编辑"];
+        [file_tableView setEditing:NO animated:YES];
+        [file_tableView escAction];
+        MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+        [myTabbar setHidesTabBarWithAnimate:NO];
+        [edit_view setHidden:YES];
+    }
+    loadType = 1;
     
     NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
     if(![ower_name isEqualToString:name] && ![self.f_id isEqualToString:@"1"])
@@ -979,17 +1012,39 @@
 
 -(void)showController:(NSString *)fid titleString:(NSString *)fname
 {
-    
-    QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
-    qbImage_fileView.f_id = [NSString stringWithFormat:@"%@",fid];
-    qbImage_fileView.f_name = fname;
-    qbImage_fileView.isChangeMove = YES;
-    [qbImage_fileView setQbDelegate:self];
-    UINavigationController *navgation = [[UINavigationController alloc] initWithRootViewController:qbImage_fileView];
-    [navgation setNavigationBarHidden:YES];
-    [self presentModalViewController:navgation animated:YES];
-    [navgation release];
-    [qbImage_fileView release];
+    SelectFileUrlViewController *selectFile = [[SelectFileUrlViewController alloc] init];
+    selectFile.isAutomatic = NO;
+    UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
+    if([lblEdit.text isEqualToString:@"取消"])
+    {
+        selectFile.isEdtion = YES;
+    }
+    selectFile.delegate = self;
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(!app_delegate.myTabBarController.IsTabBarHiden)
+    {
+        [app_delegate.myTabBarController setHidesTabBarWithAnimate:YES];
+    }
+    [self.navigationController pushViewController:selectFile animated:YES];
+    [selectFile release];
+//    QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
+//    qbImage_fileView.f_id = [NSString stringWithFormat:@"%@",fid];
+//    qbImage_fileView.f_name = fname;
+//    qbImage_fileView.isChangeMove = YES;
+//    [qbImage_fileView setQbDelegate:self];
+//    UINavigationController *navgation = [[UINavigationController alloc] initWithRootViewController:qbImage_fileView];
+//    [navgation setNavigationBarHidden:YES];
+//    [self presentModalViewController:navgation animated:YES];
+//    [navgation release];
+//    [qbImage_fileView release];
+}
+
+#pragma mark SelectFileUrlDelegate ---------
+-(void)setFileSpace:(NSString *)spaceID withFileFID:(NSString *)fID
+{
+    move_fid = fID;
+    //移动文件
+    [file_tableView setMoveFile:move_fid toSpaceId:spaceId toPidSpaceId:spaceID];
 }
 
 -(void)showEscButton:(UIView *)view

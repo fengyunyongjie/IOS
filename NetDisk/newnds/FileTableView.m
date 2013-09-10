@@ -375,7 +375,7 @@
         [btnMove addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
         [folderMenu addSubview:btnMove];
         UILabel *lblMove=[[[UILabel alloc] init] autorelease];
-        lblMove.text=@"移动";
+        lblMove.text=@"转存";
         lblMove.textAlignment=UITextAlignmentCenter;
         lblMove.font=[UIFont systemFontOfSize:12];
         lblMove.textColor=[UIColor whiteColor];
@@ -566,7 +566,7 @@
 }
 
 #pragma mark 显示移动文件
--(void)setMoveFile:(NSString *)pid
+-(void)setMoveFile:(NSString *)pid toSpaceId:(NSString *)spaceId toPidSpaceId:(NSString *)sp_id
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for(int i=0;i<[selected_dictionary.allKeys count];i++)
@@ -581,7 +581,8 @@
         [array addObject:f_id];
     }
     [fileManager setDelegate:self];
-    [fileManager moveFileIDs:array toPID:pid];
+//    [fileManager moveFileIDs:array toPID:pid];
+    [fileManager copyFileIDs:array toPID:pid toSpaceId:spaceId toPidSpaceId:sp_id];
     [array release];
 }
 
@@ -1236,6 +1237,18 @@
 {
     [self EscMenu];
     [self escSelected];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self];
+    [self addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 -(void)newFinderSucess

@@ -13,14 +13,14 @@
 
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
-#define TableViewHeight self.view.frame.size.height-TabBarHeight-44
+#define TableViewHeight self.view.frame.size.height-44
 
 @interface SelectFileUrlViewController ()
 
 @end
 
 @implementation SelectFileUrlViewController
-@synthesize table_view,fileManager,tableArray,showType;
+@synthesize table_view,fileManager,tableArray,showType,isAutomatic,delegate,isEdtion;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,7 +59,14 @@
     
     //标题
     UILabel *titleLabel=[[UILabel alloc] init];
-    titleLabel.text=@"选择自动备份目录";
+    if(isAutomatic)
+    {
+        titleLabel.text=@"选择自动备份目录";
+    }
+    else
+    {
+        titleLabel.text=@"我的文件";
+    }
     titleLabel.font=[UIFont boldSystemFontOfSize:18];
     titleLabel.textAlignment=UITextAlignmentCenter;
     titleLabel.backgroundColor=[UIColor clearColor];
@@ -214,6 +221,9 @@
             select_detailview.title_string = @"我的文件";
             [app_delegate.title_string addObject:@"我的文件"];
             select_detailview.f_id = @"1";
+            select_detailview.isAutomatic = isAutomatic;
+            select_detailview.isEdtion = isEdtion;
+            select_detailview.delegate = self;
             [self.navigationController pushViewController:select_detailview animated:YES];
             [select_detailview release];
         }
@@ -224,6 +234,9 @@
             select_detailview.title_string = @"我创建的共享";
             [app_delegate.title_string addObject:@"我创建的共享"];
             select_detailview.f_id = @"1";
+            select_detailview.isAutomatic = isAutomatic;
+            select_detailview.isEdtion = isEdtion;
+            select_detailview.delegate = self;
             [self.navigationController pushViewController:select_detailview animated:YES];
             [select_detailview release];
         }
@@ -234,6 +247,9 @@
             select_detailview.title_string = @"我参与的共享";
             [app_delegate.title_string addObject:@"我参与的共享"];
             select_detailview.f_id = @"1";
+            select_detailview.isAutomatic = isAutomatic;
+            select_detailview.isEdtion = isEdtion;
+            select_detailview.delegate = self;
             [self.navigationController pushViewController:select_detailview animated:YES];
             [select_detailview release];
         }
@@ -241,6 +257,9 @@
         {
             SelectFileUrlViewController *selectFileView = [[SelectFileUrlViewController alloc] init];
             selectFileView.showType = 1;
+            selectFileView.isAutomatic = isAutomatic;
+            selectFileView.isEdtion = isEdtion;
+            selectFileView.delegate = self;
             [self.navigationController pushViewController:selectFileView animated:YES];
             [selectFileView release];
         }
@@ -253,8 +272,19 @@
         select_detailview.title_string = [NSString stringWithFormat:@"%@",[dictionary objectForKey:@"space_comment"]];
         [app_delegate.title_string addObject:[NSString stringWithFormat:@"%@",[dictionary objectForKey:@"space_comment"]]];
         select_detailview.f_id = @"1";
+        select_detailview.isAutomatic = isAutomatic;
+        select_detailview.isEdtion = isEdtion;
+        select_detailview.delegate = self;
         [self.navigationController pushViewController:select_detailview animated:YES];
         [select_detailview release];
+    }
+}
+
+-(void)setFileSpace:(NSString *)spaceID withFileFID:(NSString *)fID
+{
+    if(self.delegate)
+    {
+        [self.delegate setFileSpace:spaceID withFileFID:fID];
     }
 }
 

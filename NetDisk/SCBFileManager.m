@@ -270,6 +270,37 @@
     
     _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
+-(void)copyFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid toSpaceId:(NSString *)spaceId toPidSpaceId:(NSString *)sp_id
+{
+    self.fm_type=kFMTypeMove;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_COPYPASTE]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
+//    NSString *s_id;
+//    if(isFamily)
+//    {
+//        s_id = [[SCBSession sharedSession] homeID];
+//    }
+//    else
+//    {
+//        s_id=[[SCBSession sharedSession] spaceID];
+//    }
+    [body appendFormat:@"f_pid=%@&f_ids[]=%@&space_id=%@&f_pid_space_id=%@",f_pid,fids,spaceId,sp_id];
+    NSLog(@"move: %@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [body release];
+    
+    _conn=[[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
 -(void)removeFileWithIDs:(NSArray*)f_ids
 {
     self.fm_type=kFMTypeRemove;

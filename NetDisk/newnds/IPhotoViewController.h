@@ -13,8 +13,9 @@
 #import "SCBFileManager.h"
 #import <MessageUI/MessageUI.h>
 #import "QBImagePickerController.h"
+#import "SelectFileUrlViewController.h"
 
-@interface IPhotoViewController : UIViewController <FileTableViewDelegate,PhotoTableViewDelegate,QBImageFileViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,UITextFieldDelegate,QBImagePickerControllerDelegate>
+@interface IPhotoViewController : UIViewController <FileTableViewDelegate,PhotoTableViewDelegate,QBImageFileViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,UITextFieldDelegate,QBImagePickerControllerDelegate,SelectFileUrlDelegate>
 {
     UIView *topView;
     BOOL isNeedBackButton;
