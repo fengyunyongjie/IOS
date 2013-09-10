@@ -1115,7 +1115,6 @@
 {
     NSLog(@"removeSucess");
     [self EscMenu];
-
     if(useType == 1)
     {
 //        [self searchFameily];
@@ -1210,7 +1209,7 @@
     [self EscMenu];
     if(useType == 1)
     {
-//        [self searchFameily];
+        [self searchFameily];
     }
     else
     {
@@ -1395,10 +1394,10 @@
 }
 
 //请求文件
--(void)requestFile:(NSString *)f_id space_id:(NSString *)space_id
+-(void)requestFile:(NSString *)fId space_id:(NSString *)spaceId
 {
-    p_id = f_id;
-    [photoManager openFinderWithID:f_id space_id:space_id];
+    p_id = fId;
+    [photoManager openFinderWithID:fId space_id:spaceId];
 }
 
 //搜索家庭空间文件

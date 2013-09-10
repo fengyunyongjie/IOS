@@ -77,14 +77,22 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(appleDate.myTabBarController.IsTabBarHiden && !isPhoto && loadType != 2)
+    if(appleDate.myTabBarController.IsTabBarHiden && !isPhoto)
     {
-        [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
+        UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
+        if([lblEdit.text isEqualToString:@"编辑"])
+        {
+            [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
+        }
     }
     if(loadType != 2)
     {
         [self showFileList];
         [self requestSpace];
+    }
+    else
+    {
+        loadType = 1;
     }
 }
 
@@ -1012,6 +1020,8 @@
 
 -(void)showController:(NSString *)fid titleString:(NSString *)fname
 {
+    loadType = 2;
+    NSLog(@"loadType:%i",loadType);
     SelectFileUrlViewController *selectFile = [[SelectFileUrlViewController alloc] init];
     selectFile.isAutomatic = NO;
     UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
@@ -1164,7 +1174,6 @@
     else
     {
         [file_tableView toMove:nil];
-        loadType = 2;
     }
 }
 
