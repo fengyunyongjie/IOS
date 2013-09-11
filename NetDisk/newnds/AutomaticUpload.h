@@ -39,6 +39,7 @@
     SCBPhotoManager *photoManger;
     NSInteger currTag;
     BOOL isLoadingRead;
+    BOOL isUpload;
 }
 
 @property(nonatomic,retain) NSMutableOrderedSet *assetArray;
@@ -47,6 +48,7 @@
 @property(nonatomic,assign) int netWorkState;
 @property(nonatomic,retain) NSTimer *upload_timer;
 @property(nonatomic,retain) NSString *space_id;
+@property(nonatomic,assign) BOOL isUpload;
 
 //比对本地数据库
 -(void)isHaveData;

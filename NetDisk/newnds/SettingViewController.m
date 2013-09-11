@@ -371,7 +371,7 @@ typedef enum{
             if (buttonIndex==0) {
                 [YNFunctions setIsOnlyWifi:NO];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                if([YNFunctions isAutoUpload])
+                if([YNFunctions isAutoUpload] && !appleDate.maticUpload.isUpload)
                 {
                     [appleDate.maticUpload isHaveData];
                 }

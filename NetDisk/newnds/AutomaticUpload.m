@@ -25,10 +25,12 @@
 @synthesize netWorkState;
 @synthesize upload_timer;
 @synthesize space_id;
+@synthesize isUpload;
 
 //比对本地数据库
 -(void)isHaveData
 {
+    isUpload = TRUE;
     NSLog(@"调用读取了。。。。。");
     if(!isLoadingRead)
     {
@@ -37,6 +39,7 @@
         isGoOn = FALSE;
         if(![self isConnection])
         {
+            isUpload = FALSE;
             [self getUploadCotroller];
             if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
             {
@@ -46,6 +49,7 @@
                 });
             }
             isLoadingRead = FALSE;
+            [self selectLibray];
             return;
         }
         if(!space_id)
@@ -355,6 +359,7 @@
 -(void)colseAutomaticUpload
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+    isUpload = FALSE;
     isGoOn = YES;
     [self getUploadCotroller];
     if([self.assetArray count]>0)
