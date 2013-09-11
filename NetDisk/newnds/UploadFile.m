@@ -42,11 +42,6 @@
 -(void)upStop
 {
     isStop = TRUE;
-    if(connection)
-    {
-        [connection cancel];
-        connection = nil;
-    }
 }
 
 //上传销毁
@@ -201,6 +196,7 @@
 {
     if(isStop)
     {
+        [delegate cleanStop];
         return;
     }
     
@@ -256,7 +252,7 @@
         {
             self.f_id = [[dictionary objectForKey:@"f_id"] retain];
             demo.p_id = self.f_id;
-            [self requestVerify];
+            [self newRequestVerify];
         }
     }
 }
@@ -267,6 +263,7 @@
 {
     if(isStop)
     {
+        [delegate cleanStop];
         return;
     }
     
@@ -313,6 +310,7 @@
 {
     if(isStop)
     {
+        [delegate cleanStop];
         return;
     }
     if(demo.f_data == nil)
@@ -370,10 +368,20 @@
         [web release];
         
         [delegate upFinish:currTag];
+        if(isStop)
+        {
+            [delegate cleanStop];
+            return;
+        }
     }
     else
     {
         [delegate upFinish:currTag];
+        if(isStop)
+        {
+            [delegate cleanStop];
+            return;
+        }
     }
 }
 
@@ -383,6 +391,7 @@
 {
     if(isStop)
     {
+        [delegate cleanStop];
         return;
     }
     
@@ -419,6 +428,11 @@
         {
             NSLog(@"验证失败");
             [delegate upFinish:currTag];
+            if(isStop)
+            {
+                [delegate cleanStop];
+                return;
+            }
         }
         else
         {
@@ -437,6 +451,7 @@
 {
     if(isStop)
     {
+        [delegate cleanStop];
         return;
     }
     
@@ -486,6 +501,11 @@
     }
     else
     {
+        if(isStop)
+        {
+            [delegate cleanStop];
+            return;
+        }
         NSLog(@"上传失败");
         [delegate upFinish:currTag];
     }
@@ -497,6 +517,7 @@
 {
     if(isStop)
     {
+        [delegate cleanStop];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
@@ -567,6 +588,7 @@
 {
     if(isStop)
     {
+        [delegate cleanStop];
         return;
     }
     if(demo.f_data == nil)
@@ -771,6 +793,7 @@
     
     if(isStop)
     {
+        [delegate cleanStop];
         return;
     }
     NSLog(@"uploadFinishdictionary:%@",dictionary);
@@ -801,6 +824,12 @@
 {
     if(isStop)
     {
+        if(connection)
+        {
+            [connection cancel];
+            connection = nil;
+        }
+        [delegate cleanStop];
         return;
     }
     NSLog(@"得到上传流");

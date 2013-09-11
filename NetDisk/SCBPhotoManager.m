@@ -338,38 +338,105 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
-    if([type_string isEqualToString:[[FM_MKDIR_URL componentsSeparatedByString:@"/"] lastObject]])
+//    if([type_string isEqualToString:[[FM_MKDIR_URL componentsSeparatedByString:@"/"] lastObject]])
+//    {
+//        if([newFoldDelegate respondsToSelector:@selector(didFailWithError)])
+//        {
+//            [newFoldDelegate didFailWithError];
+//        }
+//    }
+//    else if([type_string isEqualToString:[[FM_URI componentsSeparatedByString:@"/"] lastObject]])
+//    {
+//        if([newFoldDelegate respondsToSelector:@selector(didFailWithError)])
+//        {
+//            [newFoldDelegate didFailWithError];
+//        }
+//    }
+//    
+//    else if([type_string isEqualToString:[[PHOTO_Delete componentsSeparatedByString:@"/"] lastObject]])
+//    {
+//        if([photoDelegate respondsToSelector:@selector(requstDelete:)])
+//        {
+//            [photoDelegate requstDelete:[NSDictionary dictionaryWithObject:@"3" forKey:@"code"]];
+//        }
+//    }
+//    else if([type_string isEqualToString:[[FM_GETFILEINFO componentsSeparatedByString:@"/"] lastObject]])
+//    {
+//        if([photoDelegate respondsToSelector:@selector(getFileDetail:)])
+//        {
+//            [photoDelegate getFileDetail:[NSDictionary dictionaryWithObject:@"3" forKey:@"code"]];
+//        }
+//    }
+//    else if([type_string isEqualToString:[[PHOTO_ALL componentsSeparatedByString:@"/"] lastObject]])
+//    {
+//        [photoDelegate didFailWithError];
+//    }
+    if([url_string isEqualToString:PHOTO_TIMERLINE])
     {
-        if([newFoldDelegate respondsToSelector:@selector(didFailWithError)])
+        if([photoDelegate respondsToSelector:@selector(getPhotoTiimeLine:)])
         {
-            [newFoldDelegate didFailWithError];
+            [photoDelegate getPhotoTiimeLine:nil];
         }
     }
-    else if([type_string isEqualToString:[[FM_URI componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:PHOTO_ALL])
     {
-        if([newFoldDelegate respondsToSelector:@selector(didFailWithError)])
+        [self getMangerDiction:nil];
+    }
+    else if([url_string isEqualToString:PHOTO_DETAIL])
+    {
+        if([photoDelegate respondsToSelector:@selector(getPhotoDetail:)])
         {
-            [newFoldDelegate didFailWithError];
+            [photoDelegate getPhotoDetail:nil];
         }
     }
-    
-    else if([type_string isEqualToString:[[PHOTO_Delete componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:PHOTO_Delete])
     {
         if([photoDelegate respondsToSelector:@selector(requstDelete:)])
         {
-            [photoDelegate requstDelete:[NSDictionary dictionaryWithObject:@"3" forKey:@"code"]];
+            [photoDelegate requstDelete:nil];
         }
     }
-    else if([type_string isEqualToString:[[FM_GETFILEINFO componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:FM_MKDIR_URL])
+    {
+        if([newFoldDelegate respondsToSelector:@selector(newFold:)])
+        {
+            [newFoldDelegate newFold:nil];
+        }
+    }
+    else if([url_string isEqualToString:FM_URI])
+    {
+        if([newFoldDelegate respondsToSelector:@selector(openFile:)])
+        {
+            [newFoldDelegate openFile:nil];
+        }
+    }
+    else if([url_string isEqualToString:FM_GETFILEINFO])
     {
         if([photoDelegate respondsToSelector:@selector(getFileDetail:)])
         {
-            [photoDelegate getFileDetail:[NSDictionary dictionaryWithObject:@"3" forKey:@"code"]];
+            [photoDelegate getFileDetail:nil];
         }
     }
-    else if([type_string isEqualToString:[[PHOTO_ALL componentsSeparatedByString:@"/"] lastObject]])
+    else if([url_string isEqualToString:FM_CUTTO])
     {
-        [photoDelegate didFailWithError];
+        if([newFoldDelegate respondsToSelector:@selector(openFile:)])
+        {
+            [newFoldDelegate openFile:nil];
+        }
+    }
+    else if([url_string isEqualToString:FM_TIMELINE])
+    {
+        if([photoDelegate respondsToSelector:@selector(getPhotoArrayTimeline:)])
+        {
+            [photoDelegate getPhotoArrayTimeline:nil];
+        }
+    }
+    else if([url_string isEqualToString:FM_TIMEIMAGE])
+    {
+        if([photoDelegate respondsToSelector:@selector(getPhotoDetailTimeImage:)])
+        {
+            [photoDelegate getPhotoDetailTimeImage:nil];
+        }
     }
 }
 

@@ -18,6 +18,7 @@
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag;
 //上传失败
 -(void)upError:(NSInteger)fileTag;
+-(void)cleanStop;
 @end
 
 @interface UploadFile : NSObject <NewFoldDelegate,UpLoadDelegate,SCBPhotoDelegate>

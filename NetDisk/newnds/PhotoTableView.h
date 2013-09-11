@@ -39,7 +39,6 @@
 
 @interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIActionSheetDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate,UIAlertViewDelegate>
 {
-    SCBPhotoManager *photoManager;
 	NSMutableDictionary *_dicReuseCells; //选中的数据
     BOOL editBL;  //是否为编辑状态，默认为false
     NSMutableDictionary *photo_diction;
@@ -62,7 +61,6 @@
     NSString *requestId;
 }
 
-@property(nonatomic,assign) SCBPhotoManager *photoManager;
 @property(nonatomic,retain) NSMutableDictionary *_dicReuseCells; //选中的数据
 @property(nonatomic,assign) BOOL editBL;  //是否为编辑状态，默认为false
 @property(nonatomic,retain) NSMutableDictionary *photo_diction;

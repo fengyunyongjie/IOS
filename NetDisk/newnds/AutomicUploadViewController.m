@@ -46,6 +46,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(app_delegate.myTabBarController.IsTabBarHiden)
+    {
+        [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
+    }
     UserInfo *info = [[UserInfo alloc] init];
     info.keyString = @"自动备份目录";
     NSMutableArray *array = [info selectAllUserinfo];
@@ -230,12 +234,14 @@
         if([YNFunctions isAutoUpload])
         {
             [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
-            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(closeUpload) userInfo:nil repeats:NO];
+//            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(closeUpload) userInfo:nil repeats:NO];
+            [NSThread detachNewThreadSelector:@selector(closeUpload) toTarget:self withObject:nil];
         }
         else
         {
             [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
-            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutoUpload) userInfo:nil repeats:NO];
+//            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutoUpload) userInfo:nil repeats:NO];
+            [NSThread detachNewThreadSelector:@selector(startAutoUpload) toTarget:self withObject:nil];
         }
     }
 }

@@ -28,6 +28,7 @@
 #import "UserInfo.h"
 #import "APService.h"
 #import "MessagePushController.h"
+#import "YNFunctions.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -327,6 +328,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    if([YNFunctions isAutoUpload])
+    {
+        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [app_delegate.maticUpload isHaveData];
+    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 

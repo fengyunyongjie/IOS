@@ -11,6 +11,7 @@
 //引用的类
 #import "AppDelegate.h"
 #import "UploadAll.h"
+#import "YNFunctions.h"
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -330,6 +331,10 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [self.uploadListTableView reloadData];
+    if(![YNFunctions isAutoUpload])
+    {
+        [self stopAutomatic];
+    }
 }
 
 #pragma mark －－－－－头部视图的几个方法

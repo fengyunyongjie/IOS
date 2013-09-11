@@ -34,7 +34,7 @@
 #define kAlertTagMailAddr 72
 
 @implementation PhotoTableView
-@synthesize photoManager,_dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager,hud,requestId;
+@synthesize _dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager,hud,requestId;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -45,9 +45,7 @@
     photo_diction = [[NSMutableDictionary alloc] init];
     sectionarray = [[NSMutableArray alloc] init];
     downCellArray = [[NSMutableArray alloc] init];
-    //请求时间轴
-    photoManager = [[SCBPhotoManager alloc] init];
-    [photoManager setPhotoDelegate:self];
+    
     _dicReuseCells = [[NSMutableDictionary alloc] init];
     self.dataSource = self;
     self.delegate = self;
@@ -67,13 +65,18 @@
     [self setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [self reloadData];
     
-    [NSThread detachNewThreadSelector:@selector(requestPhotoTimeLine) toTarget:self withObject:nil];
+//    [NSThread detachNewThreadSelector:@selector(requestPhotoTimeLine) toTarget:self withObject:nil];
+    [self requestPhotoTimeLine];
 }
 
 //请求时间轴
 -(void)requestPhotoTimeLine
 {
+    NSLog(@"requestPhotoTimeLine");
     dispatch_async(dispatch_get_main_queue(), ^{
+        //请求时间轴
+        SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
+        [photoManager setPhotoDelegate:self];
         [photoManager getPhotoArrayTimeline:requestId];
     });
     
@@ -267,7 +270,9 @@
     {
         NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
         NSString *Express = [dictionary objectForKey:@"express"];
-        
+        //请求时间轴
+        SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
+        [photoManager setPhotoDelegate:self];
         [photoManager getPhotoDetailTimeImage:requestId express:Express];
     }
 }
@@ -1403,7 +1408,6 @@
 
 -(void)dealloc
 {
-    [photoManager release];
     [_dicReuseCells release];
     [photo_diction release];
     [sectionarray release];

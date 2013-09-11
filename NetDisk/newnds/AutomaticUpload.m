@@ -29,83 +29,112 @@
 //比对本地数据库
 -(void)isHaveData
 {
-    isGoOn = FALSE;
-    dispatch_async(dispatch_get_main_queue(), ^{
-    if(![self isConnection])
+    NSLog(@"调用读取了。。。。。");
+    if(!isLoadingRead)
     {
-        [self getUploadCotroller];
-        if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+        NSLog(@"进来了。。。。。");
+        isLoadingRead = TRUE;
+        isGoOn = FALSE;
+        if(![self isConnection])
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                upload_file.demo.state = 2;
-                [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
-            });
-        }
-        return;
-    }
-    if(!space_id)
-    {
-        space_id = [[SCBSession sharedSession] spaceID];
-    }
-    self.deviceName = [NSString stringWithFormat:@"来自于-%@",[AppDelegate deviceString]];
-    NSLog(@"deviceName:%@",self.deviceName);
-    if(assetsLibrary == nil)
-    {
-        assetsLibrary = [[ALAssetsLibrary alloc] init];
-    }
-    if(self.assetArray == nil)
-    {
-        self.assetArray = [[NSMutableOrderedSet alloc] init];
-    }
-    else
-    {
-        [self.assetArray removeAllObjects];
-    }
-    [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有groups
-        __block int total = 0;
-        if([group numberOfAssets]>0)
-        {
-            [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                if(result)
-                {
-                    WebData *webData = [[WebData alloc] init];
-                    webData.p_id = f_id;
-                    webData.photo_name = [[result defaultRepresentation] filename];
-                    BOOL bl = [webData selectIsTrueForPhotoName];
-                    if(!bl)
-                    {
-                        [self.assetArray addObject:result];
-                    }
-                }
-                total++;
-            }];
-            if([group numberOfAssets]<=total-1)
+            [self getUploadCotroller];
+            if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
             {
-                [self startAutomaticUpload];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    upload_file.demo.state = 2;
+                    [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+                });
             }
+            isLoadingRead = FALSE;
+            return;
         }
-    } failureBlock:^(NSError *error) {
-        NSLog(@"[[UIDevice currentDevice] systemVersion]:%@",[[UIDevice currentDevice] systemVersion]);
-        
-        NSString *titleString;
-        if([[[UIDevice currentDevice] systemVersion] intValue]>=6.0)
+        if(!space_id)
         {
-            titleString = @"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t步骤：设置>隐私>照片>虹盘";
+            space_id = [[SCBSession sharedSession] spaceID];
+        }
+        self.deviceName = [NSString stringWithFormat:@"来自于-%@",[AppDelegate deviceString]];
+        NSLog(@"deviceName:%@",self.deviceName);
+        if(assetsLibrary == nil)
+        {
+            assetsLibrary = [[ALAssetsLibrary alloc] init];
+        }
+        if(self.assetArray == nil)
+        {
+            self.assetArray = [[NSMutableOrderedSet alloc] init];
         }
         else
         {
-            titleString = @"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t\t步骤：设置>定位服务>虹盘";
+            [self.assetArray removeAllObjects];
         }
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:titleString delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
-        [alertView show];
-        [alertView release];
-    }];
-    });
+        [assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {//获取所有groups
+            __block int total = 0;
+            if([group numberOfAssets]>0)
+            {
+                [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                    if(result)
+                    {
+                        WebData *webData = [[WebData alloc] init];
+                        webData.p_id = f_id;
+                        webData.photo_name = [[result defaultRepresentation] filename];
+                        BOOL bl = [webData selectIsTrueForPhotoName];
+                        if(!bl)
+                        {
+                            [self.assetArray addObject:result];
+                        }
+                    }
+                    total++;
+                }];
+                if([group numberOfAssets]<=total-1)
+                {
+                    if(isGoOn)
+                    {
+                        isLoadingRead = FALSE;
+                        NSLog(@"停止读取照片库1111");
+                        if([YNFunctions isAutoUpload])
+                        {
+                            [self isHaveData];
+                        }
+                        if(self.assetArray)
+                        {
+                            [self.assetArray removeAllObjects];
+                        }
+                        return ;
+                    }
+                    [self startAutomaticUpload];
+                }
+            }
+        } failureBlock:^(NSError *error) {
+            NSLog(@"[[UIDevice currentDevice] systemVersion]:%@",[[UIDevice currentDevice] systemVersion]);
+            
+            NSString *titleString;
+            if([[[UIDevice currentDevice] systemVersion] intValue]>=6.0)
+            {
+                titleString = @"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t步骤：设置>隐私>照片>虹盘";
+            }
+            else
+            {
+                titleString = @"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t\t步骤：设置>定位服务>虹盘";
+            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:titleString delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+            [alertView show];
+            [alertView release];
+        }];
+    }
 }
 
 //打开上传
 -(void)newTheadMain
 {
+    if(isGoOn)
+    {
+        isLoadingRead = FALSE;
+        NSLog(@"停止读取照片库");
+        if(self.assetArray)
+        {
+            [self.assetArray removeAllObjects];
+        }
+        return ;
+    }
     //网络判断
     if([self isConnection])
     {
@@ -115,6 +144,16 @@
         //解析上传数据
         if([self.assetArray count]>0)
         {
+            if(isGoOn)
+            {
+                isLoadingRead = FALSE;
+                NSLog(@"停止读取照片库");
+                if(self.assetArray)
+                {
+                    [self.assetArray removeAllObjects];
+                }
+                return ;
+            }
             if(upload_timer)
             {
                 [upload_timer invalidate];
@@ -160,9 +199,18 @@
                         [uploadViewController startAutomatic:demo.topImage progess:0 taskDemo:demo total:[self.assetArray count]];
                     });
                 }
-                
+                if(isGoOn)
+                {
+                    isLoadingRead = FALSE;
+                    NSLog(@"停止读取照片库");
+                    if(self.assetArray)
+                    {
+                        [self.assetArray removeAllObjects];
+                    }
+                    return ;
+                }
                 [upload_file upload];
-                
+                isLoadingRead = FALSE;
                 [demo release];
                 [upload_file release];
             }
@@ -179,16 +227,7 @@
                 [assetsLibrary release];
                 assetsLibrary = nil;
             }
-            if([YNFunctions isAutoUpload])
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(upload_timer)
-                    {
-                        [upload_timer invalidate];
-                    }
-                    upload_timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(isHaveData) userInfo:nil repeats:YES];
-                });
-            }
+            [self selectLibray];
         }
         NSLog(@"网络正常");
     }
@@ -198,10 +237,26 @@
     }
 }
 
+-(void)selectLibray
+{
+    if([YNFunctions isAutoUpload])
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(upload_timer)
+            {
+                [upload_timer invalidate];
+            }
+            upload_timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(isHaveData) userInfo:nil repeats:YES];
+        });
+    }
+}
+
 //开启自动上传
 -(void)startAutomaticUpload
 {
-    [NSThread detachNewThreadSelector:@selector(newTheadMain) toTarget:self withObject:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSThread detachNewThreadSelector:@selector(newTheadMain) toTarget:self withObject:nil];
+    });
     return;
     
     if(isGoOn)
@@ -274,16 +329,7 @@
                 [assetsLibrary release];
                 assetsLibrary = nil;
             }
-            if([YNFunctions isAutoUpload])
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if(upload_timer)
-                    {
-                        [upload_timer invalidate];
-                    }
-                    upload_timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(isHaveData) userInfo:nil repeats:YES];
-                });
-            }
+            [self selectLibray];
         }
     }
     else if([YNFunctions isAutoUpload])
@@ -293,9 +339,6 @@
             if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
             {
                 upload_file.demo.state = 2;
-//                UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
-//                UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-//                NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
                 [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
                 
             }
@@ -303,7 +346,7 @@
             {
                 [upload_timer invalidate];
             }
-            upload_timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(isHaveData) userInfo:nil repeats:YES];
+            [self selectLibray];
         });
     }
 }
@@ -312,6 +355,7 @@
 -(void)colseAutomaticUpload
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+    isGoOn = YES;
     [self getUploadCotroller];
     if([self.assetArray count]>0)
     {
@@ -331,11 +375,6 @@
         [upload_timer invalidate];
         upload_timer = nil;
     }
-    if(assetArray)
-    {
-        [assetArray removeAllObjects];
-    }
-    isGoOn = YES;
     });
 }
 
@@ -396,6 +435,15 @@
 -(void)upError:(NSInteger)fileTag
 {
     
+}
+
+-(void)cleanStop
+{
+    [self getUploadCotroller];
+    if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+    {
+        [uploadViewController stopAutomatic];
+    }
 }
 
 //判断当前的网络是3g还是wifi

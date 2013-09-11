@@ -38,6 +38,7 @@
     //服务器文件操作类
     SCBPhotoManager *photoManger;
     NSInteger currTag;
+    BOOL isLoadingRead;
 }
 
 @property(nonatomic,retain) NSMutableOrderedSet *assetArray;

@@ -46,6 +46,7 @@
     UIImageView *null_imageview; //pop.png
     MBProgressHUD *hud;
     NSString *ower_name;
+    BOOL isLoading;
 }
 
 @property(nonatomic,retain) UIView *topView;

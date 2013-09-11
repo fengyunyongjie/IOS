@@ -25,7 +25,6 @@
 #define CheckButtonColor [UIColor colorWithRed:223.0/255.0 green:230.0/255.0 blue:250.0/255.0 alpha:1.0]
 
 @implementation FileTableView
-@synthesize photoManager;
 @synthesize upDictionary;
 @synthesize tableArray;
 @synthesize tableDictionary;
@@ -51,9 +50,6 @@
     if (self) {
         
     }
-    
-    photoManager = [[SCBPhotoManager alloc] init];
-    [photoManager setNewFoldDelegate:self];
     fileManager = [[SCBFileManager alloc] init];
     [fileManager setIsFamily:YES];
     fileManager.delegate = self;
@@ -1399,6 +1395,8 @@
 -(void)requestFile:(NSString *)fId space_id:(NSString *)spaceId
 {
     p_id = fId;
+    SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
+    [photoManager setNewFoldDelegate:self];
     [photoManager openFinderWithID:fId space_id:spaceId];
 }
 
@@ -1477,7 +1475,6 @@
 
 -(void)dealloc
 {
-    [photoManager release];
     [upDictionary release];
     [tableArray release];
     [tableDictionary release];

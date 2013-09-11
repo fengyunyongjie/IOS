@@ -39,7 +39,6 @@
 
 @interface FileTableView : UITableView <NewFoldDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIAlertViewDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate,UIActionSheetDelegate>
 {
-    SCBPhotoManager *photoManager;
     NSDictionary *upDictionary;
     NSMutableArray *tableArray;
     NSMutableDictionary *tableDictionary; 
@@ -64,7 +63,6 @@
     NSString *space_id;
 }
 
-@property(nonatomic,retain) SCBPhotoManager *photoManager;
 @property(nonatomic,retain) NSDictionary *upDictionary;
 @property(nonatomic,retain) NSMutableArray *tableArray;
 @property(nonatomic,retain) NSMutableDictionary *tableDictionary;

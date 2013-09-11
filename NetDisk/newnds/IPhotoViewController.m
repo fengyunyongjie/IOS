@@ -86,14 +86,44 @@
             [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
         }
     }
-    if(loadType != 2)
+    if(isPhoto)
     {
-        [self showFileList];
-        [self requestSpace];
+        [photo_tableView reloadPhotoData];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"加载中...";
+        self.hud.mode=MBProgressHUDModeIndeterminate;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
     }
     else
     {
-        loadType = 1;
+        if(loadType != 2)
+        {
+            [self showFileList];
+            [self requestSpace];
+            
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"加载中...";
+            self.hud.mode=MBProgressHUDModeIndeterminate;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+        }
+        else
+        {
+            loadType = 1;
+        }
     }
 }
 
@@ -224,11 +254,18 @@
 -(void)haveData
 {
     [null_imageview setHidden:YES];
+    
+    if (self.hud) {
+        [self.hud hide:YES afterDelay:1.0f];
+    }
 }
 
 -(void)nullData
 {
     [null_imageview setHidden:NO];
+    if (self.hud) {
+        [self.hud hide:YES afterDelay:1.0f];
+    }
 }
 
 //请求我的家庭空间
@@ -263,6 +300,17 @@
     {
         isPhoto = TRUE;
         [photo_tableView reloadPhotoData];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"加载中...";
+        self.hud.mode=MBProgressHUDModeIndeterminate;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
     }
     file_tableView.hidden = YES;
     photo_tableView.hidden = NO;
@@ -306,6 +354,18 @@
     {
         isPhoto = FALSE;
         [self showFileList];
+        
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"加载中...";
+        self.hud.mode=MBProgressHUDModeIndeterminate;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
     }
     file_tableView.hidden = NO;
     photo_tableView.hidden = YES;
