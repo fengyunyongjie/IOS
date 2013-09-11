@@ -1,4 +1,3 @@
-#.gitignore
 # Exclude the build directory
 
 build/*
@@ -33,3 +32,4 @@ build/*
 *.xcuserstate
 *.xcbkptlist
 xcuserdate
+UserInterfaceState.xcuserstate
