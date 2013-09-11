@@ -472,6 +472,7 @@
 		2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTableViewCell.m; sourceTree = "<group>"; };
 		2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhotoViewController.h; sourceTree = "<group>"; };
 		2929E30F17CC2F50003CB75A /* IPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPhotoViewController.m; sourceTree = "<group>"; };
+		292ECFAD17E075EC00F5F8B6 /* PConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PConfig.h; sourceTree = "<group>"; };
 		292FF987173A4930004CC609 /* YNFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNFunctions.h; sourceTree = "<group>"; };
 		292FF988173A4930004CC609 /* YNFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNFunctions.m; sourceTree = "<group>"; };
 		29361708173CFD9D00F8303B /* PhotoImageButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoImageButton.h; sourceTree = "<group>"; };
@@ -1953,6 +1954,7 @@
 				29CB860417B0790E00C7629B /* MessagePushCell.m */,
 				29CB860517B0790E00C7629B /* MessagePushController.h */,
 				29CB860617B0790E00C7629B /* MessagePushController.m */,
+				292ECFAD17E075EC00F5F8B6 /* PConfig.h */,
 				29B9768D17AF2FDB00C14556 /* First */,
 				29ABD262179E618C00EE7164 /* MainImage */,
 				29EFE854172A55AD0099B5A7 /* Supporting Files */,

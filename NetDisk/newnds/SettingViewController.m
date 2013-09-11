@@ -15,6 +15,7 @@
 #import "DBSqlite3.h"
 #import "ReportViewController.h"
 #import "AutomicUploadViewController.h"
+#import "PConfig.h"
 
 #define OFFButtonHeight 25
 #define OFFBorderWidth 20
@@ -694,7 +695,7 @@ typedef enum{
                 case 0:
                     descLabel.hidden = NO;
                     titleLabel.text = @"版本";
-                    descLabel.text = @"V2.0";
+                    descLabel.text = @"VERSION";
                     break;
                 case 1:
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
