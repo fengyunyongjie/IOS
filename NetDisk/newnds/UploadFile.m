@@ -196,7 +196,13 @@
 {
     if(isStop)
     {
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
         return;
     }
     
@@ -263,7 +269,13 @@
 {
     if(isStop)
     {
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
         return;
     }
     
@@ -310,7 +322,14 @@
 {
     if(isStop)
     {
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
+        
         return;
     }
     if(demo.f_data == nil)
@@ -370,7 +389,13 @@
         [delegate upFinish:currTag];
         if(isStop)
         {
-            [delegate cleanStop];
+            @try {
+                [delegate cleanStop];
+            }
+            @catch (NSException *exception) {
+            }
+            @finally {
+            }
             return;
         }
     }
@@ -379,7 +404,13 @@
         [delegate upFinish:currTag];
         if(isStop)
         {
-            [delegate cleanStop];
+            @try {
+                [delegate cleanStop];
+            }
+            @catch (NSException *exception) {
+            }
+            @finally {
+            }
             return;
         }
     }
@@ -391,7 +422,13 @@
 {
     if(isStop)
     {
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
         return;
     }
     
@@ -430,7 +467,13 @@
             [delegate upFinish:currTag];
             if(isStop)
             {
-                [delegate cleanStop];
+                @try {
+                    [delegate cleanStop];
+                }
+                @catch (NSException *exception) {
+                }
+                @finally {
+                }
                 return;
             }
         }
@@ -451,7 +494,13 @@
 {
     if(isStop)
     {
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
         return;
     }
     
@@ -503,7 +552,13 @@
     {
         if(isStop)
         {
-            [delegate cleanStop];
+            @try {
+                [delegate cleanStop];
+            }
+            @catch (NSException *exception) {
+            }
+            @finally {
+            }
             return;
         }
         NSLog(@"上传失败");
@@ -517,7 +572,13 @@
 {
     if(isStop)
     {
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
@@ -588,7 +649,13 @@
 {
     if(isStop)
     {
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
         return;
     }
     if(demo.f_data == nil)
@@ -793,7 +860,13 @@
     
     if(isStop)
     {
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
         return;
     }
     NSLog(@"uploadFinishdictionary:%@",dictionary);
@@ -829,7 +902,14 @@
             [connection cancel];
             connection = nil;
         }
-        [delegate cleanStop];
+        @try {
+            [delegate cleanStop];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
+        
         return;
     }
     NSLog(@"得到上传流");

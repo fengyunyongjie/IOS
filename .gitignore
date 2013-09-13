@@ -33,3 +33,6 @@ build/*
 *.xcbkptlist
 xcuserdate
 UserInterfaceState.xcuserstate
+Breakpoints.xcbkptlist
+xcdebugger
+

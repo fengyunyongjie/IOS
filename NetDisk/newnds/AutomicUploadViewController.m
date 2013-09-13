@@ -69,7 +69,7 @@
     }
     if(table_view)
     {
-        UITableViewCell *cell = [table_view cellForRowAtIndexPath:[NSIndexPath indexPathForItem:2 inSection:0]];
+        UITableViewCell *cell = [table_view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
         cell.detailTextLabel.text = self.table_string;
     }
     NSLog(@"app_delegate.maticUpload.f_id:%@",app_delegate.maticUpload.f_id);

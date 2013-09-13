@@ -111,7 +111,7 @@
     UIButton *phoot_button = [[UIButton alloc] init];
     [phoot_button setTag:23];
     [phoot_button setFrame:CGRectMake((320-ChangeTabWidth)/2, 0, ChangeTabWidth, 44)];
-    [phoot_button setTitle:@"照片管理" forState:UIControlStateNormal];
+    [phoot_button setTitle:@"文件上传" forState:UIControlStateNormal];
     [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
 //    [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
@@ -210,7 +210,8 @@
     NSLog(@"clicked_changeMyFile count:%i",[self.selectedAssets count]);
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
     qbImage_fileView.f_id = @"1";
-    qbImage_fileView.f_name = @"我的文件";
+    //qbImage_fileView.f_name = @"我的文件";
+    qbImage_fileView.f_name=@"选择上传位置";
     qbImage_fileView.space_id = space_id;
     [qbImage_fileView setQbDelegate:self];
     

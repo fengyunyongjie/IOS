@@ -1665,21 +1665,24 @@ typedef enum{
         case kMyndsTypeDefaultSearch:
         {
             moveViewController.myndsType=kMyndsTypeSelect;
-            moveViewController.title=@"我的文件";
+            //moveViewController.title=@"我的文件";
+            moveViewController.title=@"选择移动位置";
         }
             break;
         case kMyndsTypeShare:
         case kMyndsTypeShareSearch:
         {
             moveViewController.myndsType=kMyndsTypeShareSelect;
-            moveViewController.title=@"参与共享";
+            //moveViewController.title=@"参与共享";
+            moveViewController.title=@"选择移动位置";
         }
             break;
         case kMyndsTypeMyShare:
         case kMyndsTypeMyShareSearch:
         {
             moveViewController.myndsType=kMyndsTypeMyShareSelect;
-            moveViewController.title=@"我的共享";
+            //moveViewController.title=@"我的共享";
+            moveViewController.title=@"选择移动位置";
         }
             break;
         default:

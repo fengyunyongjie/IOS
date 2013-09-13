@@ -9,7 +9,7 @@
 //#define TabBarHeight 60
 #define QBY 0
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
-#define ChangeTabWidth 90
+#define ChangeTabWidth 120
 #define RightButtonBoderWidth 0
 //#define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 #define BottonViewHeight self.view.frame.size.height-TabBarHeight+QBY

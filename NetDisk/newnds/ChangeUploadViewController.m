@@ -95,7 +95,7 @@
         if(isHistoryShow)
         {
             [self.uploadListTableView beginUpdates];
-            NSIndexPath *index_path = [NSIndexPath indexPathForItem:row_ inSection:0];
+            NSIndexPath *index_path = [NSIndexPath indexPathForRow:row_ inSection:0];
             [self.uploadListTableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:index_path, nil] withRowAnimation:UITableViewRowAnimationRight];
             int count = 0;
             if(historyList)
@@ -376,6 +376,10 @@
             [self.uploadListTableView reloadData];
         });
     }
+    if(![YNFunctions isAutoUpload])
+    {
+        [self stopAutomatic];
+    }
 }
 
 -(void)clicked_uploadHistory:(id)sender
@@ -500,8 +504,13 @@
             AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [app_delegate.upload_all setIsUpload:NO];
             [self.uploadingList removeAllObjects];
+            if(app_delegate.upload_all.asetArray)
+            {
+                [app_delegate.upload_all.asetArray removeAllObjects];
+            }
             [self.uploadListTableView reloadData];
         }
+        
     }
     [self.more_control setHidden:YES];
     [demo release];

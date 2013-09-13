@@ -558,7 +558,8 @@
     }
     else
     {
-        [file_delegate showController:@"1" titleString:@"我的文件"];
+        //[file_delegate showController:@"1" titleString:@"我的文件"];
+        [file_delegate showController:@"1" titleString:@"选择移动位置"];
         [self EscMenu];
     }
 }

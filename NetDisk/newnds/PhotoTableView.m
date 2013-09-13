@@ -296,9 +296,25 @@
         {
             NSLog(@"tableArray:%@",tableArray);
         }
-        NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
-        NSString *tag = [dictionary objectForKey:@"tag"];
-        [photo_diction setObject:tableArray forKey:tag];
+//        if (photoType>=dictionary.count) {
+//            NSLog(@"数据数量：：%d",dictionary.count);
+//            return;
+//        }
+        NSLog(@"数据数量：：%d,下标::%d",dictionary.count,photoType);
+        @try {
+            NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
+            NSString *tag = [dictionary objectForKey:@"tag"];
+            [photo_diction setObject:tableArray forKey:tag];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"我的天呐，出现异常了！");
+            CFShow(exception);
+            return;
+        }
+        @finally {
+            
+        }
+        
         
         [tableArray release];
     }

@@ -62,10 +62,16 @@
     if(isAutomatic)
     {
         titleLabel.text=@"选择自动备份目录";
+        if (self.showType==1) {
+            titleLabel.text=@"家庭空间";
+        }
     }
     else
     {
-        titleLabel.text=@"我的文件";
+        titleLabel.text=@"选择转存位置";
+        if (self.showType==1) {
+            titleLabel.text=@"家庭空间";
+        }
     }
     titleLabel.font=[UIFont boldSystemFontOfSize:18];
     titleLabel.textAlignment=UITextAlignmentCenter;
