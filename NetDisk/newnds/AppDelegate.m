@@ -325,18 +325,23 @@
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
+-(void)reUpload
 {
     if([YNFunctions isAutoUpload])
     {
         AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         [app_delegate.maticUpload isHaveData];
     }
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate.upload_all setIsUpload:NO];
     [app_delegate.upload_all startUpload];
+}
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+
+    [self performSelector:@selector(reUpload) withObject:self afterDelay:3.0f];
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -403,11 +408,13 @@
     
 //    UploadViewController * rootView3=[[[UploadViewController alloc] initWithNibName:@"UploadViewController" bundle:nil] autorelease];
     ChangeUploadViewController *rootView3 = [[[ChangeUploadViewController alloc] init] autorelease];
+    //UIViewController * rootView3=[[[UIViewController alloc] init] autorelease];
     rootView3.tabBarItem.title=@"传输管理";
     [rootView3.tabBarItem setImage:[UIImage imageNamed:@"Bt_TransferDef.png"]];
     viewController3=[[[UINavigationController alloc] initWithRootViewController:rootView3] autorelease];
     
     SettingViewController * rootView4=[[[SettingViewController alloc] init] autorelease];
+    //UIViewController * rootView4=[[[UIViewController alloc] init] autorelease];
     rootView4.title=@"个人中心";
     rootView4.tabBarItem.title=@"个人中心";
     [rootView4.tabBarItem setImage:[UIImage imageNamed:@"Bt_UsercentreDef.png"]];
