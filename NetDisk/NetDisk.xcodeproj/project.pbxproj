@@ -34,6 +34,12 @@
 		2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29262228172BD70000A95E97 /* LoginViewController.xib */; };
 		2929E30D17CC2EA9003CB75A /* FileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */; };
 		2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30F17CC2F50003CB75A /* IPhotoViewController.m */; };
+		292CC2D417E6E4CB00E3FE12 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CC2D317E6E4CB00E3FE12 /* HelpViewController.m */; };
+		292CC2DA17E6E59E00E3FE12 /* Bk_Tip.png in Resources */ = {isa = PBXBuildFile; fileRef = 292CC2D617E6E59D00E3FE12 /* Bk_Tip.png */; };
+		292CC2DC17E6E59E00E3FE12 /* Bk_Tip@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 292CC2D817E6E59E00E3FE12 /* Bk_Tip@iPhone5.png */; };
+		292CC2E017E70E7D00E3FE12 /* Box_Family.png in Resources */ = {isa = PBXBuildFile; fileRef = 292CC2DD17E70E7A00E3FE12 /* Box_Family.png */; };
+		292CC2E117E70E7D00E3FE12 /* Bt_Box_Family1.png in Resources */ = {isa = PBXBuildFile; fileRef = 292CC2DE17E70E7B00E3FE12 /* Bt_Box_Family1.png */; };
+		292CC2E217E70E7D00E3FE12 /* Bt_Box_Family2.png in Resources */ = {isa = PBXBuildFile; fileRef = 292CC2DF17E70E7C00E3FE12 /* Bt_Box_Family2.png */; };
 		292FF984173A466D004CC609 /* 114.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E416B9385100A1BE48 /* 114.png */; };
 		292FF985173A4670004CC609 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83C260E216B937D900A1BE48 /* icon.png */; };
 		292FF989173A4930004CC609 /* YNFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 292FF988173A4930004CC609 /* YNFunctions.m */; };
@@ -472,6 +478,13 @@
 		2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTableViewCell.m; sourceTree = "<group>"; };
 		2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhotoViewController.h; sourceTree = "<group>"; };
 		2929E30F17CC2F50003CB75A /* IPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPhotoViewController.m; sourceTree = "<group>"; };
+		292CC2D217E6E4CB00E3FE12 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
+		292CC2D317E6E4CB00E3FE12 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
+		292CC2D617E6E59D00E3FE12 /* Bk_Tip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Tip.png; sourceTree = "<group>"; };
+		292CC2D817E6E59E00E3FE12 /* Bk_Tip@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bk_Tip@iPhone5.png"; sourceTree = "<group>"; };
+		292CC2DD17E70E7A00E3FE12 /* Box_Family.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Box_Family.png; sourceTree = "<group>"; };
+		292CC2DE17E70E7B00E3FE12 /* Bt_Box_Family1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Box_Family1.png; sourceTree = "<group>"; };
+		292CC2DF17E70E7C00E3FE12 /* Bt_Box_Family2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Box_Family2.png; sourceTree = "<group>"; };
 		292ECFAD17E075EC00F5F8B6 /* PConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PConfig.h; sourceTree = "<group>"; };
 		292FF987173A4930004CC609 /* YNFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNFunctions.h; sourceTree = "<group>"; };
 		292FF988173A4930004CC609 /* YNFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNFunctions.m; sourceTree = "<group>"; };
@@ -1775,6 +1788,11 @@
 				29B9769117AF2FDB00C14556 /* Page_2@iPhone5.png */,
 				29B9769217AF2FDB00C14556 /* Page_3.png */,
 				29B9769317AF2FDB00C14556 /* Page_3@iPhone5.png */,
+				292CC2D617E6E59D00E3FE12 /* Bk_Tip.png */,
+				292CC2D817E6E59E00E3FE12 /* Bk_Tip@iPhone5.png */,
+				292CC2DD17E70E7A00E3FE12 /* Box_Family.png */,
+				292CC2DE17E70E7B00E3FE12 /* Bt_Box_Family1.png */,
+				292CC2DF17E70E7C00E3FE12 /* Bt_Box_Family2.png */,
 			);
 			path = First;
 			sourceTree = "<group>";
@@ -1950,6 +1968,8 @@
 				29FA3B2F176083B700FBA1B6 /* DefaultViewController.m */,
 				29B9768A17AF2F8E00C14556 /* FirstLoadViewController.h */,
 				29B9768B17AF2F8E00C14556 /* FirstLoadViewController.m */,
+				292CC2D217E6E4CB00E3FE12 /* HelpViewController.h */,
+				292CC2D317E6E4CB00E3FE12 /* HelpViewController.m */,
 				29CB860317B0790E00C7629B /* MessagePushCell.h */,
 				29CB860417B0790E00C7629B /* MessagePushCell.m */,
 				29CB860517B0790E00C7629B /* MessagePushController.h */,
@@ -2983,6 +3003,11 @@
 				29CFE30717CDEC620007A42A /* Bk_Point.png in Resources */,
 				29CFE30917CDF3BD0007A42A /* Bk_Ns.png in Resources */,
 				29C9413B17D881920088B392 /* Title_Users.png in Resources */,
+				292CC2DA17E6E59E00E3FE12 /* Bk_Tip.png in Resources */,
+				292CC2DC17E6E59E00E3FE12 /* Bk_Tip@iPhone5.png in Resources */,
+				292CC2E017E70E7D00E3FE12 /* Box_Family.png in Resources */,
+				292CC2E117E70E7D00E3FE12 /* Bt_Box_Family1.png in Resources */,
+				292CC2E217E70E7D00E3FE12 /* Bt_Box_Family2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3101,6 +3126,7 @@
 				29C9413617D833000088B392 /* PhotoViewController.m in Sources */,
 				29C9413917D857B80088B392 /* SearchViewController.m in Sources */,
 				29CAF21317DAFEBD00BBF465 /* UploadFile.m in Sources */,
+				292CC2D417E6E4CB00E3FE12 /* HelpViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

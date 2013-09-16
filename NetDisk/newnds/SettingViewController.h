@@ -12,6 +12,7 @@
 {
     int switchTag;
     UIButton *automicOff_button;
+    double locationCacheSize;
 }
 @property(nonatomic,assign)MYTabBarController * rootViewController;
 @property(strong,nonatomic)UITableView *tableView;

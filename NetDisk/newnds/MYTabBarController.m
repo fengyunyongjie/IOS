@@ -93,6 +93,8 @@
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
         [[NSUserDefaults standardUserDefaults] setObject:@"version" forKey:VERSION];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"showHelpInMSB"];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"showHelpInHS"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     

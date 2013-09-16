@@ -128,6 +128,11 @@
         [myTabbar setHidesTabBarWithAnimate:NO];
     }
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+//    AppDelegate *delegate=(AppDelegate*)[[UIApplication sharedApplication] delegate];
+//    [delegate showHelpView];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

@@ -126,6 +126,7 @@ typedef enum{
 {
     [super viewDidAppear:animated];
     [self updateData];
+    [self calcCacheSize];
 }
 -(void)updateData
 {
@@ -625,22 +626,6 @@ typedef enum{
                 {
                     titleLabel.text = @"缓存占用";
                     descLabel.hidden = NO;
-                    NSArray*paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-                    NSString *cachePath=[paths objectAtIndex:0];
-                    
-                    double locationCacheSize = 0.0f;// [Function getDirectorySizeForPath:cachePath];
-                    cachePath = [YNFunctions getFMCachePath];
-                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
-                    cachePath = [YNFunctions getIconCachePath];
-                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
-                    cachePath = [YNFunctions getKeepCachePath];
-                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
-                    cachePath = [YNFunctions getTempCachePath];
-                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
-                    cachePath = [YNFunctions getProviewCachePath];
-                    locationCacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
-                    
-                    
                     NSString *sizeStr = [NSString stringWithFormat:@"%f",locationCacheSize];
                     descLabel.text = [YNFunctions convertSize:sizeStr];
                     descLabel.textColor = [UIColor grayColor];
@@ -726,7 +711,24 @@ typedef enum{
     
     return cell;
 }
-
+-(void)calcCacheSize
+{
+    NSArray*paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    NSString *cachePath=[paths objectAtIndex:0];
+    
+    double cacheSize = 0.0f;// [Function getDirectorySizeForPath:cachePath];
+    cachePath = [YNFunctions getFMCachePath];
+    cacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+    cachePath = [YNFunctions getIconCachePath];
+    cacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+    cachePath = [YNFunctions getKeepCachePath];
+    cacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+    cachePath = [YNFunctions getTempCachePath];
+    cacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+    cachePath = [YNFunctions getProviewCachePath];
+    cacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
+    locationCacheSize=cacheSize;
+}
 -(void)closeSwitch
 {
     dispatch_async(dispatch_get_main_queue(), ^{

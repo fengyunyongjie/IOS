@@ -264,11 +264,38 @@
     {
         [uploadView clearTableData];
     }
-    
+    //判断是否显示帮助指南页面 ［我的虹盘］
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(showHelpView) userInfo:self repeats:NO];
     //询问是否开始自动上传
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(openAutomic) userInfo:self repeats:NO];
 }
-
+-(void)showHelpView
+{
+//    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"showHelpInMSB"];
+//    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"showHelpInHS"];
+    NSString *ttag=[[NSUserDefaults standardUserDefaults]objectForKey:@"showHelpInMSB"];
+    if (ttag) {
+        return;
+    }
+    self.helpController=[[[HelpViewController alloc] init] autorelease];
+    self.helpController.thisType=kTypeMySB;
+    [self.window addSubview:self.helpController.view];
+}
+-(void)showHomeSpaceView
+{
+    NSString *ttag=[[NSUserDefaults standardUserDefaults]objectForKey:@"showHelpInHS"];
+    if (ttag) {
+        return;
+    }
+    self.helpController=[[[HelpViewController alloc] init] autorelease];
+    self.helpController.thisType=kTypeHomeSpace;
+    [self.window addSubview:self.helpController.view];
+}
+-(void)finished
+{
+    [self.helpController.view removeFromSuperview];
+    self.helpController=nil;
+}
 -(void)openAutomic
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否现在就开启自动上传" delegate:self cancelButtonTitle:@"暂不开启" otherButtonTitles:@"开启", nil];
