@@ -366,6 +366,7 @@ typedef enum{
                 [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
                 [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
                 [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
+                [self calcCacheSize];
                 [self.tableView reloadData];
             }
             break;
