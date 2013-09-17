@@ -23,6 +23,7 @@
 @synthesize connection;
 @synthesize space_id;
 @synthesize f_id,f_pid;
+@synthesize asset;
 
 -(id)init
 {
@@ -34,8 +35,25 @@
         [photoManger setNewFoldDelegate:self];
         uploderDemo = [[SCBUploader alloc] init];
         [uploderDemo setUpLoadDelegate:self];
+        demo = [[TaskDemo alloc] init];
     }
     return self;
+}
+
+-(void)setAsset:(ALAsset *)asset_
+{
+    demo.f_state = 0;
+    demo.f_lenght = 0;
+    demo.index_id = 0;
+    demo.state = 1;
+    demo.proess = 0;
+    demo.result = asset_;
+    demo.f_base_name = [[asset_ defaultRepresentation] filename];
+    demo.deviceName = deviceName;
+    demo.space_id = space_id;
+    demo.p_id = f_id;
+    demo.is_automic_upload = 1;
+    demo.topImage = [UIImage imageWithCGImage:[[asset_ defaultRepresentation] fullScreenImage]];
 }
 
 //上传暂停
@@ -133,6 +151,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [delegate upFinish:currTag];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -225,6 +244,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [delegate upFinish:currTag];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -298,6 +318,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [delegate upFinish:currTag];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -326,6 +347,7 @@
             [delegate cleanStop];
         }
         @catch (NSException *exception) {
+            
         }
         @finally {
         }
@@ -336,12 +358,13 @@
     {
         ALAsset *result = demo.result;
         NSError *error = nil;
-        Byte *data = malloc(result.defaultRepresentation.size);
+        Byte *byte_data = malloc(result.defaultRepresentation.size);
         //获得照片图像数据
-        [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-        demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+        [result.defaultRepresentation getBytes:byte_data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+        demo.f_data = [NSData dataWithBytesNoCopy:byte_data length:result.defaultRepresentation.size];
     }
     NSLog(@"1:申请效验");
+    
     uploadData = [[NSString alloc] initWithString:[self md5:demo.f_data]];
     
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_VERIFY]];
@@ -363,6 +386,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [delegate upFinish:currTag];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -382,10 +406,9 @@
         WebData *web = [[WebData alloc] init];
         web.photo_name = demo.f_base_name;
         web.photo_id = [NSString stringWithFormat:@"%i",demo.f_id];
-        web.p_id = self.f_id;
+        web.p_id = [NSString stringWithFormat:@"%@",demo.p_id];
         [web insertWebData];
         [web release];
-        
         [delegate upFinish:currTag];
         if(isStop)
         {
@@ -452,6 +475,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [delegate upFinish:currTag];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -520,6 +544,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [delegate upFinish:currTag];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -582,32 +607,56 @@
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
-    NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendString:[NSString stringWithFormat:@"f_pid=%@",fPid]];
-    [body appendString:[NSString stringWithFormat:@"&f_name=%@",f_name]];
-    [body appendString:[NSString stringWithFormat:@"&s_name=%@",s_name]];
-    [body appendString:@"&img_device="];
-    NSLog(@"uploadData:%@",f_md5);
-    [body appendString:[NSString stringWithFormat:@"&f_md5=%@",f_md5]];
-    [body appendString:@"&img_size="];
-    [body appendString:@"&img_createtime="];
-    [body appendFormat:@"&space_id=%@",spaceId];
-    NSLog(@"body:%@",body);
-    NSMutableData *myRequestData=[NSMutableData data];
-    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
-    [request setHTTPBody:myRequestData];
-    [body release];
-    [request setHTTPMethod:@"POST"];
     
-    NSData *returnData = [NSURLConnection sendSynchronousRequest:request
-                                               returningResponse:nil error:nil];
-    if(!returnData)
+    NSData *returnData;
+    NSError *error;
+    @try {
+        NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+        NSLog(@"request1:%@",request);
+        [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+        [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+        [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+        NSMutableString *body=[[[NSMutableString alloc] init] autorelease];
+        [body appendString:[NSString stringWithFormat:@"f_pid=%@",fPid]];
+        [body appendString:[NSString stringWithFormat:@"&f_name=%@",f_name]];
+        [body appendString:[NSString stringWithFormat:@"&s_name=%@",s_name]];
+        [body appendString:@"&img_device="];
+        NSLog(@"uploadData:%@",f_md5);
+        [body appendString:[NSString stringWithFormat:@"&f_md5=%@",f_md5]];
+        [body appendString:@"&img_size="];
+        [body appendString:@"&img_createtime="];
+        [body appendFormat:@"&space_id=%@",spaceId];
+        NSLog(@"body:%@",body);
+        NSMutableData *myRequestData=[NSMutableData data];
+        [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+        [request setHTTPBody:myRequestData];
+        NSLog(@"request2:%@",request);
+        [request setHTTPMethod:@"POST"];
+        NSLog(@"request请求");
+        
+        NSLog(@"request请求2");
+        NSLog(@"request3:%@",request);
+        returnData = [NSURLConnection sendSynchronousRequest:request
+                                                   returningResponse:nil error:&error];
+        if(returnData == nil)
+        {
+            NSLog(@"网络请求失败:error:%@",error);
+            [delegate upFinish:currTag];
+            return;
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"exception:%@",exception);
+    }
+    @finally {
+        NSLog(@"准备上传提交");
+    }
+//    NSError *error;
+//    NSData *returnData = [NSURLConnection sendSynchronousRequest:request
+//                                               returningResponse:nil error:&error];
+    if(returnData == nil)
     {
-        NSLog(@"网络请求失败");
+        NSLog(@"网络请求失败:error:%@",error);
         [delegate upFinish:currTag];
         return;
     }
@@ -632,15 +681,15 @@
 //        {
 //            [demo updateTaskTableFName];
 //        }
-        
         WebData *web = [[WebData alloc] init];
         web.photo_name = demo.f_base_name;
         web.photo_id = [NSString stringWithFormat:@"%i",demo.f_id];
-        web.p_id = self.f_id;
+        web.p_id = [NSString stringWithFormat:@"%@",demo.p_id];
         [web insertWebData];
         [web release];
-        [delegate upFinish:currTag];
         [uploadData release];
+        
+        [delegate upFinish:currTag];
     }
 }
 
@@ -785,7 +834,7 @@
 
 -(void)didFailWithError
 {
-    
+    [delegate upError:1];
 }
 
 #pragma mark -----UpLoadDelegate
@@ -860,13 +909,7 @@
     
     if(isStop)
     {
-        @try {
-            [delegate cleanStop];
-        }
-        @catch (NSException *exception) {
-        }
-        @finally {
-        }
+        [delegate cleanStop];
         return;
     }
     NSLog(@"uploadFinishdictionary:%@",dictionary);
@@ -988,10 +1031,16 @@
 
 -(void)dealloc
 {
+    NSLog(@"上传基础类死亡:%i",demo.retainCount);
     [demo release];
     [photoManger release];
     [uploderDemo release];
     [finishName release];
+    [deviceName release];
+    [connection release];
+    [space_id release];
+    [f_pid release];
+    [f_id release];
     [super dealloc];
 }
 

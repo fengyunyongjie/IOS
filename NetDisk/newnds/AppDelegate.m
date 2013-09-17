@@ -352,21 +352,9 @@
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
--(void)reUpload
-{
-    if([YNFunctions isAutoUpload])
-    {
-        AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [app_delegate.maticUpload isHaveData];
-    }
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [app_delegate.upload_all setIsUpload:NO];
-    [app_delegate.upload_all startUpload];
-}
+
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-
-    [self performSelector:@selector(reUpload) withObject:self afterDelay:3.0f];
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
 }

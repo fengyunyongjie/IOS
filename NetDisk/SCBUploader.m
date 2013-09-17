@@ -123,6 +123,7 @@
 {
     if([url_string isEqualToString:FM_UPLOAD_NEW])
     {
+        NSLog(@"+30");
         macTimeOut += 30;
         NSMutableURLRequest *request = (NSMutableURLRequest *)[connection currentRequest];
         [request setTimeoutInterval:macTimeOut];
@@ -152,6 +153,7 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    NSLog(@"error:%@",error);
     NSString *type_string = [[[[[connection originalRequest] URL] path] componentsSeparatedByString:@"/"] lastObject];
     if([type_string isEqualToString:[[FM_UPLOAD_NEW_VERIFY componentsSeparatedByString:@"/"] lastObject]])
     {

@@ -49,6 +49,7 @@
     NSString *space_id;
     
     int macTimeOut;
+    ALAsset *asset;
 }
 
 @property(nonatomic,retain) TaskDemo *demo;
@@ -59,8 +60,9 @@
 @property(nonatomic,retain) NSURLConnection *connection;
 @property(nonatomic,retain) id<UploadFileDelegate> delegate;
 @property(nonatomic,retain) NSString *space_id;
-@property(nonatomic,assign) NSString *f_pid;
-@property(nonatomic,assign) NSString *f_id;
+@property(nonatomic,retain) NSString *f_pid;
+@property(nonatomic,retain) NSString *f_id;
+@property(nonatomic,retain) ALAsset *asset;
 
 //上传开始
 -(void)upload;

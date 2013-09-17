@@ -718,8 +718,8 @@
         }
         self.uploadListTableView.tableHeaderView = top_headerView;
         [headerView setTag:-100];
-        [headerView setUploadDemo:taskdemo];
-        if(taskdemo.state == 2)
+        [headerView setUploadDemo:automicDemo];
+        if(automicDemo.state == 2)
         {
             [headerView.jinDuView showText:@"已暂停"];
         }

@@ -17,6 +17,7 @@
 #import "ChangeUploadViewController.h"
 #import "YNFunctions.h"
 #import "MyndsViewController.h"
+#import "UserInfo.h"
 
 @implementation AutomaticUpload
 @synthesize assetArray;
@@ -26,6 +27,32 @@
 @synthesize upload_timer;
 @synthesize space_id;
 @synthesize isUpload;
+@synthesize operationQueue;
+
+-(id)init
+{
+    self = [super init];
+    uploadViewController = nil;
+    if(self)
+    {
+        UserInfo *info = [[UserInfo alloc] init];
+        info.keyString = @"自动备份目录";
+        NSMutableArray *array = [info selectAllUserinfo];
+        if([array count] == 0)
+        {
+            info.f_id = -1;
+            info.descript = [NSString stringWithFormat:@"我的文件/手机照片/%@",[AppDelegate deviceString]];
+            [info insertUserinfo];
+            self.f_id = @"-1";
+        }
+        else
+        {
+            UserInfo *info = [array lastObject];
+            self.f_id = [NSString stringWithFormat:@"%i",info.f_id];
+        }
+    }
+    return self;
+}
 
 //比对本地数据库
 -(void)isHaveData
@@ -75,15 +102,19 @@
             if([group numberOfAssets]>0)
             {
                 [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                    if(result)
-                    {
-                        WebData *webData = [[WebData alloc] init];
-                        webData.p_id = f_id;
-                        webData.photo_name = [[result defaultRepresentation] filename];
-                        BOOL bl = [webData selectIsTrueForPhotoName];
-                        if(!bl)
+                    NSString* assetType = [result valueForProperty:ALAssetPropertyType];
+                    if ([assetType isEqualToString:ALAssetTypePhoto]) {
+                        if(result)
                         {
-                            [self.assetArray addObject:result];
+                            WebData *webData = [[WebData alloc] init];
+                            webData.p_id = self.f_id;
+                            webData.photo_name = [[result defaultRepresentation] filename];
+                            BOOL bl = [webData selectIsTrueForPhotoName];
+                            if(!bl)
+                            {
+                                [self.assetArray addObject:result];
+                            }
+                            [webData release];
                         }
                     }
                     total++;
@@ -167,40 +198,17 @@
             if(result)
             {
                 NSLog(@"[[result defaultRepresentation] filename]:%@",[[result defaultRepresentation] filename]);
-                TaskDemo *demo = [[TaskDemo alloc] init];
-                demo.f_state = 0;
-                demo.f_lenght = 0;
-                demo.index_id = 0;
-                demo.state = 1;
-                demo.proess = 0;
-                demo.f_base_name = [[result defaultRepresentation] filename];
-                demo.deviceName = self.deviceName;
-                demo.space_id = space_id;
-                demo.p_id = f_id;
-                demo.is_automic_upload = 1;
-                demo.topImage = [UIImage imageWithCGImage:[[result defaultRepresentation] fullScreenImage]];
-                NSError *error = nil;
-                Byte *data = malloc(result.defaultRepresentation.size);
-                //获得照片图像数据
-                [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-                demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-                
-                NSLog(@"视频有多大:%i",[demo.f_data length]);
-                
-                NSLog(@"demo.spcae_id:%@",demo.space_id);
-                
                 upload_file = [[UploadFile alloc] init];
-                [upload_file setDemo:demo];
                 [upload_file setDeviceName:self.deviceName];
                 [upload_file setSpace_id:space_id];
                 [upload_file setF_id:self.f_id];
                 [upload_file setF_pid:nil];
+                [upload_file setAsset:result];
                 [upload_file setDelegate:self];
-                
                 if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [uploadViewController startAutomatic:demo.topImage progess:0 taskDemo:demo total:[self.assetArray count]];
+                        [uploadViewController startAutomatic:upload_file.demo.topImage progess:0 taskDemo:upload_file.demo total:[self.assetArray count]];
                     });
                 }
                 if(isGoOn)
@@ -215,8 +223,6 @@
                 }
                 [upload_file upload];
                 isLoadingRead = FALSE;
-                [demo release];
-                [upload_file release];
             }
         }
         else
@@ -232,12 +238,14 @@
                 assetsLibrary = nil;
             }
             [self selectLibray];
+            isLoadingRead = FALSE;
         }
         NSLog(@"网络正常");
     }
     else
     {
         NSLog(@"网络不可用");
+        isLoadingRead = FALSE;
     }
 }
 
@@ -261,98 +269,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [NSThread detachNewThreadSelector:@selector(newTheadMain) toTarget:self withObject:nil];
     });
-    return;
-    
-    if(isGoOn)
-    {
-        return;
-    }
-    isGoOn = FALSE;
-    NSLog(@"开始下载-----------------------");
-    if([self isConnection])
-    {
-        [self getUploadCotroller];
-        if([self.assetArray count]>0)
-        {
-            if(upload_timer)
-            {
-                [upload_timer invalidate];
-                upload_timer = nil;
-            }
-            ALAsset *result = [self.assetArray objectAtIndex:0];
-            if(result)
-            {
-                NSLog(@"[[result defaultRepresentation] filename]:%@",[[result defaultRepresentation] filename]);
-                TaskDemo *demo = [[TaskDemo alloc] init];
-                demo.f_state = 0;
-                demo.f_lenght = 0;
-                demo.index_id = 0;
-                demo.state = 1;
-                demo.proess = 0;
-                demo.f_base_name = [[result defaultRepresentation] filename];
-                demo.deviceName = self.deviceName;
-                demo.space_id = space_id;
-                demo.p_id = f_id;
-                demo.is_automic_upload = 1;
-                
-                NSError *error = nil;
-                Byte *data = malloc(result.defaultRepresentation.size);
-                //获得照片图像数据
-                [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-                demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-                
-                NSLog(@"demo.spcae_id:%@",demo.space_id);
-                
-                upload_file = [[UploadFile alloc] init];
-                [upload_file setDemo:demo];
-                [upload_file setDeviceName:self.deviceName];
-                [upload_file setSpace_id:space_id];
-                [upload_file setF_id:self.f_id];
-                [upload_file setF_pid:nil];
-                [upload_file setDelegate:self];
-                [upload_file upload];
-                if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [uploadViewController startAutomatic:[UIImage imageWithData:upload_file.demo.f_data] progess:0 taskDemo:upload_file.demo total:[self.assetArray count]];
-                    });
-                }
-                [demo release];
-                [upload_file release];
-            }
-        }
-        else
-        {
-            NSLog(@"没有数据了");
-            if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
-            {
-                [uploadViewController stopAutomatic];
-            }
-            if(assetsLibrary)
-            {
-                [assetsLibrary release];
-                assetsLibrary = nil;
-            }
-            [self selectLibray];
-        }
-    }
-    else if([YNFunctions isAutoUpload])
-    {
-        [self getUploadCotroller];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
-            {
-                upload_file.demo.state = 2;
-                [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
-                
-            }
-            if(upload_timer)
-            {
-                [upload_timer invalidate];
-            }
-            [self selectLibray];
-        });
-    }
 }
 
 //关闭自动上传
@@ -394,6 +310,10 @@
         {
             uploadViewController = uploadView;
         }
+        else
+        {
+            uploadViewController = nil;
+        }
     }
 }
 
@@ -410,9 +330,6 @@
     [self getUploadCotroller];
     if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
     {
-//        UIImage *data_image = [UIImage imageWithData:upload_file.demo.f_data];
-//        UIImage *state_image = [self scaleFromImage:data_image toSize:CGSizeMake(data_image.size.width/4, data_image.size.height/4)];
-//        NSData *newData = UIImageJPEGRepresentation(state_image, 1.0);
         [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
     }
     
@@ -420,7 +337,15 @@
     {
         [self.assetArray removeObjectAtIndex:0];
     }
-    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutomaticUpload) userInfo:nil repeats:NO];
+    if(upload_file.demo)
+    {
+        [upload_file.demo release];
+    }
+    if(upload_file)
+    {
+        [upload_file release];
+    }
+    [self startAutomaticUpload];
     });
 }
 
@@ -439,7 +364,8 @@
 //上传失败
 -(void)upError:(NSInteger)fileTag
 {
-    
+    NSLog(@"上传失败，过滤掉");
+    [self upFinish:fileTag];
 }
 
 -(void)cleanStop

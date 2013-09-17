@@ -41,7 +41,17 @@
 {
     NSLog(@"有多少:%@",self.space_id);
     NSLog(@"有多少:%@",space_id);
-    self.asetArray = array_;
+    if(self.asetArray == nil)
+    {
+        self.asetArray = array_;
+    }
+    else
+    {
+        for(ALAsset *result in array_)
+        {
+            [self.asetArray addObject:result];
+        }
+    }
     int i=0;
     if([self.uploadAllList count]==0)
     {
@@ -67,38 +77,37 @@
         for(int j=0;j<[self.asetArray count];j++)
         {
             ALAsset *asset = [self.asetArray objectAtIndex:j];
-            TaskDemo *demo = [[TaskDemo alloc] init];
-            demo.f_state = 0;
-            demo.f_data = nil;
-            demo.f_lenght = 0;
-            demo.index_id = i;
-            demo.state = 0;
-            demo.proess = 0;
-            demo.result = [asset retain];
-            demo.f_base_name = [[asset defaultRepresentation] filename];
-            demo.deviceName = deviceName;
-            demo.space_id = self.space_id;
-            demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
-            demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-            
-            NSLog(@"demo.f_id:%@",demo.p_id);
-            NSLog(@"demo.spcae_id:%@",demo.space_id);
-            
-            ALAsset *result = demo.result;
-            NSError *error = nil;
-            Byte *data = malloc(result.defaultRepresentation.size);
-            //获得照片图像数据
-            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
+//            TaskDemo *demo = [[TaskDemo alloc] init];
+//            demo.f_state = 0;
+//            demo.f_data = nil;
+//            demo.f_lenght = 0;
+//            demo.index_id = i;
+//            demo.state = 0;
+//            demo.proess = 0;
+//            demo.result = [asset retain];
+//            demo.f_base_name = [[asset defaultRepresentation] filename];
+//            demo.deviceName = deviceName;
+//            demo.space_id = self.space_id;
+//            demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
+//            demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+//            
+//            NSLog(@"demo.f_id:%@",demo.p_id);
+//            NSLog(@"demo.spcae_id:%@",demo.space_id);
+//            
+//            ALAsset *result = demo.result;
+//            NSError *error = nil;
+//            Byte *data = malloc(result.defaultRepresentation.size);
+//            //获得照片图像数据
+//            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+//            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
 //            [demo insertTaskTable];
             
             UploadFile *upload_file = [[UploadFile alloc] init];
-            [upload_file setDemo:demo];
+            [upload_file setAsset:asset];
             [upload_file setDeviceName:deviceName];
             [upload_file setSpace_id:self.space_id];
             [upload_file setF_id:self.f_id];
             [self.uploadAllList addObject:upload_file];
-            [demo release];
             [upload_file release];
             i++;
             if(bl)
@@ -113,38 +122,12 @@
         for(int j=0;j<10;j++)
         {
             ALAsset *asset = [self.asetArray objectAtIndex:j];
-            TaskDemo *demo = [[TaskDemo alloc] init];
-            demo.f_state = 0;
-            demo.f_data = nil;
-            demo.f_lenght = 0;
-            demo.index_id = i;
-            demo.state = 0;
-            demo.proess = 0;
-            demo.result = [asset retain];
-            demo.f_base_name = [[asset defaultRepresentation] filename];
-            demo.deviceName = deviceName;
-            demo.space_id = self.space_id;
-            demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
-            demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-            
-            NSLog(@"demo.f_id:%@",demo.p_id);
-            NSLog(@"demo.spcae_id:%@",demo.space_id);
-            
-            ALAsset *result = demo.result;
-            NSError *error = nil;
-            Byte *data = malloc(result.defaultRepresentation.size);
-            //获得照片图像数据
-            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-//            [demo insertTaskTable];
-            
             UploadFile *upload_file = [[UploadFile alloc] init];
-            [upload_file setDemo:demo];
+            [upload_file setAsset:asset];
             [upload_file setDeviceName:deviceName];
             [upload_file setSpace_id:self.space_id];
             [upload_file setF_id:self.f_id];
             [self.uploadAllList addObject:upload_file];
-            [demo release];
             [upload_file release];
             i++;
             if(bl)
@@ -164,38 +147,12 @@
         if([self.uploadAllList count]<10 && [self.uploadAllList count]<[self.asetArray count])
         {
             ALAsset *asset = [self.asetArray objectAtIndex:[self.uploadAllList count]];
-            TaskDemo *demo = [[TaskDemo alloc] init];
-            demo.f_state = 0;
-            demo.f_data = nil;
-            demo.f_lenght = 0;
-            demo.index_id = [self.uploadAllList count];
-            demo.state = 0;
-            demo.proess = 0;
-            demo.result = [asset retain];
-            demo.f_base_name = [[asset defaultRepresentation] filename];
-            demo.deviceName = deviceName;
-            demo.space_id = self.space_id;
-            demo.p_id = [NSString stringWithFormat:@"%@",self.f_id];
-            demo.topImage = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-            
-            NSLog(@"demo.f_id:%@",demo.p_id);
-            NSLog(@"demo.spcae_id:%@",demo.space_id);
-            
-            ALAsset *result = demo.result;
-            NSError *error = nil;
-            Byte *data = malloc(result.defaultRepresentation.size);
-            //获得照片图像数据
-            [result.defaultRepresentation getBytes:data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-            demo.f_data = [NSData dataWithBytesNoCopy:data length:result.defaultRepresentation.size];
-//            [demo insertTaskTable];
-            
             UploadFile *upload_file = [[UploadFile alloc] init];
-            [upload_file setDemo:demo];
+            [upload_file setAsset:asset];
             [upload_file setDeviceName:deviceName];
             [upload_file setSpace_id:self.space_id];
             [upload_file setF_id:self.f_id];
             [self.uploadAllList addObject:upload_file];
-            [demo release];
             [upload_file release];
         }
         [NSThread detachNewThreadSelector:@selector(newTheadMainUpload) toTarget:self withObject:nil];
@@ -299,7 +256,8 @@
 //上传失败
 -(void)upError:(NSInteger)fileTag
 {
-    
+    NSLog(@"上传失败，过滤");
+    [self upFinish:fileTag];
 }
 
 @end

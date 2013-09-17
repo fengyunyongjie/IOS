@@ -40,6 +40,7 @@
     NSInteger currTag;
     BOOL isLoadingRead;
     BOOL isUpload;
+    NSOperationQueue *operationQueue;
 }
 
 @property(nonatomic,retain) NSMutableOrderedSet *assetArray;
@@ -49,6 +50,9 @@
 @property(nonatomic,retain) NSTimer *upload_timer;
 @property(nonatomic,retain) NSString *space_id;
 @property(nonatomic,assign) BOOL isUpload;
+@property(nonatomic,retain) NSOperationQueue *operationQueue;
+
+-(id)init;
 
 //比对本地数据库
 -(void)isHaveData;

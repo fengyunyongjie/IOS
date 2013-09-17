@@ -9,14 +9,14 @@
 #import "WebData.h"
 
 @implementation WebData
-@synthesize photo_id,photo_name,web_id;
+@synthesize photo_id,photo_name,web_id,p_id;
 
 #pragma mark 清空数据库
 -(BOOL)clearTable
 {
-    sqlite3_stmt *statement;
+//    sqlite3_stmt *statement;
     __block BOOL bl = TRUE;
-    const char *dbpath = [self.databasePath UTF8String];
+//    const char *dbpath = [self.databasePath UTF8String];
     
 //    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
 //        const char *insert_stmt = [DeleteALLTskTable UTF8String];
@@ -33,7 +33,8 @@
 //        sqlite3_finalize(statement);
 //        sqlite3_close(contactDB);
 //    }
-    return bl;}
+    return bl;
+}
 
 #pragma mark ------- 添加数据
 
@@ -53,6 +54,9 @@
             if (success != SQLITE_OK) {
                 bl = FALSE;
             }
+            NSLog(@"photo_name:%@",photo_name);
+            NSLog(@"photo_id:%@",photo_id);
+            NSLog(@"p_id:%@",p_id);
             sqlite3_bind_text(statement, 1, [photo_name UTF8String], -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(statement, 2, [photo_id UTF8String], -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(statement, 3, [p_id UTF8String], -1, SQLITE_TRANSIENT);
