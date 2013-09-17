@@ -369,7 +369,7 @@
             {
                 self.uploadingList = app_delegate.upload_all.uploadAllList;
             }
-            if([app_delegate.maticUpload.assetArray count]>0)
+            if([app_delegate.maticUpload.assetArray count]>0 && [automicDemo.f_base_name length]>0)
             {
                 [self startAutomatic:automicImage progess:automicProgess taskDemo:automicDemo total:automicTotal];
             }

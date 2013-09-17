@@ -12,6 +12,8 @@
 #import "WebData.h"
 #import "SCBoxConfig.h"
 #import "SCBSession.h"
+#import "UserInfo.h"
+#import "AppDelegate.h"
 
 @implementation UploadFile
 @synthesize demo;
@@ -277,6 +279,20 @@
         if([name isEqualToString:self.deviceName])
         {
             self.f_id = [[dictionary objectForKey:@"f_id"] retain];
+            
+            UserInfo *info = [[UserInfo alloc] init];
+            info.keyString = [NSString stringWithFormat:@"%@",@"自动备份目录"];
+            NSMutableArray *array = [info selectAllUserinfo];
+            if([array count] > 0)
+            {
+                UserInfo *info = [array lastObject];
+                AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                app_delegate.maticUpload.f_id = [NSString stringWithFormat:@"%i",info.f_id];
+            }
+            info.f_id = [self.f_id intValue];
+            [info updateUserinfo];
+            [info release];
+            
             demo.p_id = self.f_id;
             [self newRequestVerify];
         }
@@ -356,12 +372,21 @@
     }
     if(demo.f_data == nil)
     {
-        ALAsset *result = demo.result;
-        NSError *error = nil;
-        Byte *byte_data = malloc(result.defaultRepresentation.size);
-        //获得照片图像数据
-        [result.defaultRepresentation getBytes:byte_data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-        demo.f_data = [NSData dataWithBytesNoCopy:byte_data length:result.defaultRepresentation.size];
+        @try {
+            ALAsset *result = demo.result;
+            NSError *error = nil;
+            Byte *byte_data = malloc(result.defaultRepresentation.size);
+            //获得照片图像数据
+            [result.defaultRepresentation getBytes:byte_data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+            demo.f_data = [NSData dataWithBytesNoCopy:byte_data length:result.defaultRepresentation.size];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"exception:%@",exception);
+        }
+        @finally {
+            
+        }
+        
     }
     NSLog(@"1:申请效验");
     

@@ -27,7 +27,6 @@
     NSString *space_id;
     NSString *deviceName;
     NSString *f_id;
-    ChangeUploadViewController *uploadViewController;
     ALAssetsLibrary *assetsLibrary;
     NSMutableOrderedSet *assetArray;
     UploadFile *upload_file;

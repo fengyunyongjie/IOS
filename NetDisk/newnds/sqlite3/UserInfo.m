@@ -48,7 +48,7 @@
     sqlite3_stmt *statement;
     __block BOOL bl = TRUE;
     const char *dbpath = [self.databasePath UTF8String];
-    
+    NSLog(@"isTrue:%i;descript:%@;f_id:%i;keyString:%@",isTrue,descript,f_id,keyString);
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [UpdateUserinfoForName UTF8String];
         int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
@@ -108,8 +108,28 @@
         while (sqlite3_step(statement)==SQLITE_ROW) {
             UserInfo *info = [[UserInfo alloc] init];
             info.isTrue = sqlite3_column_int(statement, 1);
+            
+            const char *keys = (const char *)sqlite3_column_text(statement, 2);
+            if(keys)
+            {
+                info.keyString = [NSString stringWithUTF8String:keys];
+            }
+            else
+            {
+                info.keyString = @"";
+            }
+            
             info.keyString = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
-            info.descript = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
+            const char *temp = (const char *)sqlite3_column_text(statement, 3);
+            if(temp)
+            {
+                info.descript = [NSString stringWithUTF8String:temp];
+            }
+            else
+            {
+                info.descript = @"";
+            }
+            
             NSLog(@"info.descript:%@",info.descript);
             info.f_id = sqlite3_column_int(statement, 4);
             [tableArray addObject:info];

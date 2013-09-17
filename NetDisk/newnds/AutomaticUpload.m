@@ -32,24 +32,9 @@
 -(id)init
 {
     self = [super init];
-    uploadViewController = nil;
     if(self)
     {
-        UserInfo *info = [[UserInfo alloc] init];
-        info.keyString = @"自动备份目录";
-        NSMutableArray *array = [info selectAllUserinfo];
-        if([array count] == 0)
-        {
-            info.f_id = -1;
-            info.descript = [NSString stringWithFormat:@"我的文件/手机照片/%@",[AppDelegate deviceString]];
-            [info insertUserinfo];
-            self.f_id = @"-1";
-        }
-        else
-        {
-            UserInfo *info = [array lastObject];
-            self.f_id = [NSString stringWithFormat:@"%i",info.f_id];
-        }
+        
     }
     return self;
 }
@@ -57,6 +42,21 @@
 //比对本地数据库
 -(void)isHaveData
 {
+    UserInfo *info = [[UserInfo alloc] init];
+    info.keyString = @"自动备份目录";
+    NSMutableArray *array = [info selectAllUserinfo];
+    if([array count] == 0)
+    {
+        info.f_id = -1;
+        info.descript = [NSString stringWithFormat:@"我的文件/手机照片/%@",[AppDelegate deviceString]];
+        [info insertUserinfo];
+        self.f_id = @"-1";
+    }
+    else
+    {
+        UserInfo *info = [array lastObject];
+        self.f_id = [NSString stringWithFormat:@"%i",info.f_id];
+    }
     isUpload = TRUE;
     NSLog(@"调用读取了。。。。。");
     if(!isLoadingRead)
@@ -67,8 +67,10 @@
         if(![self isConnection])
         {
             isUpload = FALSE;
-            [self getUploadCotroller];
-            if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+            AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+            ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+            if(uploadViewController)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     upload_file.demo.state = 2;
@@ -173,8 +175,6 @@
     //网络判断
     if([self isConnection])
     {
-        //获取上传界面
-        [self getUploadCotroller];
         
         //解析上传数据
         if([self.assetArray count]>0)
@@ -205,7 +205,11 @@
                 [upload_file setF_pid:nil];
                 [upload_file setAsset:result];
                 [upload_file setDelegate:self];
-                if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+                
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+                ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+                if(uploadViewController && [uploadViewController respondsToSelector:@selector(startAutomatic:progess:taskDemo:total:)])
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [uploadViewController startAutomatic:upload_file.demo.topImage progess:0 taskDemo:upload_file.demo total:[self.assetArray count]];
@@ -228,7 +232,10 @@
         else
         {
             NSLog(@"没有数据了");
-            if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+            AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+            ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+            if(uploadViewController)
             {
                 [uploadViewController stopAutomatic];
             }
@@ -277,12 +284,14 @@
     dispatch_async(dispatch_get_main_queue(), ^{
     isUpload = FALSE;
     isGoOn = YES;
-    [self getUploadCotroller];
     if([self.assetArray count]>0)
     {
         [upload_file upStop];
     }
-    if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+    ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+    if(uploadViewController && [uploadViewController respondsToSelector:@selector(stopAutomatic)])
     {
         [uploadViewController stopAutomatic];
     }
@@ -299,24 +308,6 @@
     });
 }
 
--(void)getUploadCotroller
-{
-    if(uploadViewController == nil)
-    {
-        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
-        ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-        if([uploadView isKindOfClass:[ChangeUploadViewController class]])
-        {
-            uploadViewController = uploadView;
-        }
-        else
-        {
-            uploadViewController = nil;
-        }
-    }
-}
-
 
 //上传成功
 -(void)upFinish:(NSInteger)fileTag
@@ -327,8 +318,11 @@
     {
         return;
     }
-    [self getUploadCotroller];
-    if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+    ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        
+    if(uploadViewController && [uploadViewController respondsToSelector:@selector(startAutomatic:progess:taskDemo:total:)])
     {
         [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
     }
@@ -352,8 +346,10 @@
 //上传进行时，发送上传进度数据
 -(void)upProess:(float)proress fileTag:(NSInteger)fileTag
 {
-    [self getUploadCotroller];
-    if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+    ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+    if(uploadViewController && [uploadViewController respondsToSelector:@selector(startAutomatic:progess:taskDemo:total:)])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             [uploadViewController startAutomatic:upload_file.demo.topImage progess:proress taskDemo:upload_file.demo total:[self.assetArray count]];
@@ -370,8 +366,10 @@
 
 -(void)cleanStop
 {
-    [self getUploadCotroller];
-    if(uploadViewController && [uploadViewController isKindOfClass:[ChangeUploadViewController class]])
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+    ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+    if(uploadViewController)
     {
         [uploadViewController stopAutomatic];
     }
