@@ -253,12 +253,12 @@
      NSString *ttag=[[NSUserDefaults standardUserDefaults]objectForKey:@"showHelpInHS"];
     if (!ttag) {
         self.helpView=[[UIControl alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        UIImageView *helpImageView=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width-219)/2, (self.view.frame.size.height-249)/2, 219, 249)];
+        UIImageView *helpImageView=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width-280)/2, (self.view.frame.size.height-318)/2, 280, 318)];
         [helpImageView setImage:[UIImage imageNamed:@"Box_Family.png"]];
         [self.helpView addSubview:helpImageView];
         [self.view addSubview:self.helpView];
         UIButton *iKnowBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-        iKnowBtn.frame=CGRectMake((self.view.frame.size.width-120)/2, helpImageView.frame.origin.y+220, 120, 23);
+        iKnowBtn.frame=CGRectMake((self.view.frame.size.width-156)/2, helpImageView.frame.origin.y+280, 156, 30);
         [iKnowBtn setBackgroundImage:[UIImage imageNamed:@"Bt_Box_Family1.png"] forState:UIControlStateNormal];
         [iKnowBtn setBackgroundImage:[UIImage imageNamed:@"Bt_Box_Family2.png"] forState:UIControlStateHighlighted];
         [iKnowBtn addTarget:self action:@selector(iKnow:) forControlEvents:UIControlEventTouchUpInside];
