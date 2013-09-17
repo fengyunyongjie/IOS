@@ -249,8 +249,34 @@
     [null_imageview setHidden:YES];
     
     [super viewDidLoad];
+    //增加帮助页面
+     NSString *ttag=[[NSUserDefaults standardUserDefaults]objectForKey:@"showHelpInHS"];
+    if (!ttag) {
+        self.helpView=[[UIControl alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        UIImageView *helpImageView=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width-219)/2, (self.view.frame.size.height-249)/2, 219, 249)];
+        [helpImageView setImage:[UIImage imageNamed:@"Box_Family.png"]];
+        [self.helpView addSubview:helpImageView];
+        [self.view addSubview:self.helpView];
+        UIButton *iKnowBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+        iKnowBtn.frame=CGRectMake((self.view.frame.size.width-120)/2, helpImageView.frame.origin.y+220, 120, 23);
+        [iKnowBtn setBackgroundImage:[UIImage imageNamed:@"Bt_Box_Family1.png"] forState:UIControlStateNormal];
+        [iKnowBtn setBackgroundImage:[UIImage imageNamed:@"Bt_Box_Family2.png"] forState:UIControlStateHighlighted];
+        [iKnowBtn addTarget:self action:@selector(iKnow:) forControlEvents:UIControlEventTouchUpInside];
+        [self.helpView addSubview:iKnowBtn];
+        [self.helpView addTarget:self action:@selector(hideHelpView:) forControlEvents:UIControlEventTouchUpInside];
+        [self.helpView setBackgroundColor:[UIColor colorWithWhite:0.4f alpha:0.5]];
+    }
+    
 }
-
+-(void)hideHelpView:(id)sender
+{
+    [self.helpView setHidden:YES];
+}
+-(void)iKnow:(id)sender
+{
+    [self.helpView setHidden:YES];
+    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"showHelpInHS"];
+}
 -(void)haveData
 {
     [null_imageview setHidden:YES];
