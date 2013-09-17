@@ -107,10 +107,14 @@
     }
     else
     {
-        if([YNFunctions isAutoUpload])
-        {
-            [self.tab_delegate  automicUpload];
-        }
+        [self performSelector:@selector(aabbcc) withObject:nil afterDelay:0.1f];
+    }
+}
+-(void)aabbcc
+{
+    if([YNFunctions isAutoUpload])
+    {
+        [self.tab_delegate  automicUpload];
     }
 }
 -(void)resetData
