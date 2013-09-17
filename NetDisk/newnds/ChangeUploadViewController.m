@@ -75,7 +75,7 @@
             isHistoryShow = FALSE;
             [self clicked_uploadHistory:nil];
         }
-        
+        [app_delegate.upload_all newStartUpload];
         if([self.uploadingList count]>0 && row_ == 0 && self.isUploadAll)
         {
             [app_delegate.upload_all startUpload];

@@ -31,6 +31,7 @@
 @property(nonatomic,retain) NSMutableOrderedSet *asetArray;
 
 -(void)startUpload;
+-(void)newStartUpload;
 -(void)changeUpload:(NSMutableOrderedSet *)array_;
 -(void)changeDeviceName:(NSString *)device_name;
 -(void)changeFileId:(NSString *)f_id;

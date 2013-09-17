@@ -144,6 +144,24 @@
 -(void)startUpload
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+//        if([self.uploadAllList count]<10 && [self.uploadAllList count]<[self.asetArray count])
+//        {
+//            ALAsset *asset = [self.asetArray objectAtIndex:[self.uploadAllList count]];
+//            UploadFile *upload_file = [[UploadFile alloc] init];
+//            [upload_file setAsset:asset];
+//            [upload_file setDeviceName:deviceName];
+//            [upload_file setSpace_id:self.space_id];
+//            [upload_file setF_id:self.f_id];
+//            [self.uploadAllList addObject:upload_file];
+//            [upload_file release];
+//        }
+        [NSThread detachNewThreadSelector:@selector(newTheadMainUpload) toTarget:self withObject:nil];
+    });
+}
+
+-(void)newStartUpload
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
         if([self.uploadAllList count]<10 && [self.uploadAllList count]<[self.asetArray count])
         {
             ALAsset *asset = [self.asetArray objectAtIndex:[self.uploadAllList count]];
@@ -155,7 +173,19 @@
             [self.uploadAllList addObject:upload_file];
             [upload_file release];
         }
-        [NSThread detachNewThreadSelector:@selector(newTheadMainUpload) toTarget:self withObject:nil];
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+        ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[ChangeUploadViewController class]])
+        {
+            [uploadView setUploadingList:self.uploadAllList];
+            if(!uploadView.isUploadAll)
+            {
+                [uploadView setIsUploadAll:YES];
+            }
+            [uploadView updateReloadData];
+            [uploadView.uploadListTableView reloadData];
+        }
     });
 }
 
