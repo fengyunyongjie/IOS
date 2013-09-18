@@ -110,7 +110,7 @@
             info.isTrue = sqlite3_column_int(statement, 1);
             
             const char *keys = (const char *)sqlite3_column_text(statement, 2);
-            if(keys==NULL)
+            if(keys!=NULL)
             {
                 info.keyString = [NSString stringWithUTF8String:keys];
             }
@@ -121,7 +121,7 @@
             
             info.keyString = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
             const char *temp = (const char *)sqlite3_column_text(statement, 3);
-            if(temp==NULL)
+            if(temp!=NULL)
             {
                 info.descript = [NSString stringWithUTF8String:temp];
             }
