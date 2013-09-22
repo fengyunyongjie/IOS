@@ -177,11 +177,15 @@ typedef enum{
             {
                 //[[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
                 [YNFunctions setIsOnlyWifi:YES];
-                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                if(appleDate.maticUpload.netWorkState != 1)
+                
+                if(![self isConnection])
                 {
+                    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                     [appleDate.maticUpload colseAutomaticUpload];
+                    [appleDate.maticUpload isHaveData];
+                    [appleDate.upload_all stopUpload];
                 }
+                
                 if ([YNFunctions networkStatus]==ReachableViaWWAN) {
                     [[FavoritesData sharedFavoritesData] stopDownloading];
                 }
@@ -373,16 +377,19 @@ typedef enum{
         case kActionSheetTypeWiFi:
             if (buttonIndex==0) {
                 [YNFunctions setIsOnlyWifi:NO];
-                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                if([YNFunctions isAutoUpload] && !appleDate.maticUpload.isUpload)
-                {
-                    [appleDate.maticUpload isHaveData];
-                }
-            }else
+            }
+            else
             {
                 [YNFunctions setIsOnlyWifi:YES];
+            }
+            
+            if(![self isConnection])
+            {
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 [appleDate.maticUpload colseAutomaticUpload];
+                [appleDate.maticUpload isHaveData];
+                
+                [appleDate.upload_all stopUpload];
             }
             [self.tableView reloadData];
             break;
@@ -816,7 +823,7 @@ typedef enum{
             switch (row) {
                 case 0:
                 {
-                    //仅在连接WIFI时上传
+                    
                 }
                     break;
                 case 1:
@@ -900,5 +907,50 @@ typedef enum{
             break;
     }
 }
+
+
+
+//判断当前的网络是3g还是wifi
+-(BOOL) isConnection
+{
+    __block BOOL bl;
+    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    switch ([hostReach currentReachabilityStatus]) {
+        case NotReachable:
+        {
+//            netWorkState = 3;
+            //"没有网络链接"
+            bl = NO;
+        }
+            break;
+        case ReachableViaWiFi:
+        {
+            // "WIFI";
+//            netWorkState = 1;
+            bl = YES;
+        }
+            break;
+        case ReachableViaWWAN:
+        {
+            // @"WLAN";
+//            netWorkState = 2;
+            if([YNFunctions isOnlyWifi])
+            {
+                bl = NO;
+            }
+            else
+            {
+                bl = YES;
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    //    });
+    return bl;
+}
+
 
 @end

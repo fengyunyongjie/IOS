@@ -145,6 +145,7 @@
 		29852D14172CD42C001AD87A /* MBProgressHUD.h in Sources */ = {isa = PBXBuildFile; fileRef = 83D6813B1675B48E0054AB1A /* MBProgressHUD.h */; };
 		29852D15172CD42C001AD87A /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 83D6813C1675B48E0054AB1A /* MBProgressHUD.m */; };
 		29852D18172CFDA6001AD87A /* MyndsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852D17172CFDA6001AD87A /* MyndsViewController.m */; };
+		298571D617EECCF900FBFAAC /* NSString+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 298571D517EECCF800FBFAAC /* NSString+Format.m */; };
 		298AB53517727FF200D067E1 /* Updata_Bt_Start.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB52F17727FF200D067E1 /* Updata_Bt_Start.png */; };
 		298AB53617727FF200D067E1 /* Updata_Complite.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB53017727FF200D067E1 /* Updata_Complite.png */; };
 		298AB53717727FF200D067E1 /* Updata_ErrInternet.png in Resources */ = {isa = PBXBuildFile; fileRef = 298AB53117727FF200D067E1 /* Updata_ErrInternet.png */; };
@@ -590,6 +591,8 @@
 		29852CF7172CBCF5001AD87A /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		29852D16172CFDA6001AD87A /* MyndsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyndsViewController.h; sourceTree = "<group>"; };
 		29852D17172CFDA6001AD87A /* MyndsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyndsViewController.m; sourceTree = "<group>"; };
+		298571D417EECCF800FBFAAC /* NSString+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Format.h"; path = "../NSString+Format.h"; sourceTree = "<group>"; };
+		298571D517EECCF800FBFAAC /* NSString+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Format.m"; path = "../NSString+Format.m"; sourceTree = "<group>"; };
 		298AB52F17727FF200D067E1 /* Updata_Bt_Start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Updata_Bt_Start.png; sourceTree = "<group>"; };
 		298AB53017727FF200D067E1 /* Updata_Complite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Updata_Complite.png; sourceTree = "<group>"; };
 		298AB53117727FF200D067E1 /* Updata_ErrInternet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Updata_ErrInternet.png; sourceTree = "<group>"; };
@@ -1581,6 +1584,8 @@
 				29C0775317584DC2005A5EFF /* PhotoFile.m */,
 				29A3D84A17B1F97C00A13C0B /* WebData.h */,
 				29A3D84B17B1F97C00A13C0B /* WebData.m */,
+				298571D417EECCF800FBFAAC /* NSString+Format.h */,
+				298571D517EECCF800FBFAAC /* NSString+Format.m */,
 			);
 			path = sqlite3;
 			sourceTree = "<group>";
@@ -3127,6 +3132,7 @@
 				29C9413917D857B80088B392 /* SearchViewController.m in Sources */,
 				29CAF21317DAFEBD00BBF465 /* UploadFile.m in Sources */,
 				292CC2D417E6E4CB00E3FE12 /* HelpViewController.m in Sources */,
+				298571D617EECCF900FBFAAC /* NSString+Format.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

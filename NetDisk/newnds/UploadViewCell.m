@@ -67,6 +67,10 @@
     {
         [self.jinDuView showText:@"等待中..."];
     }
+    else if(self.demo.state == 2)
+    {
+        [self.jinDuView showText:@"已暂停"];
+    }
     if(![self.label_name.text isEqualToString:self.demo.f_base_name])
     {
         UIImage *imageV = demo.topImage;

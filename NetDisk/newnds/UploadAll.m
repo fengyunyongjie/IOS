@@ -12,6 +12,8 @@
 #import "AppDelegate.h"
 #import "ChangeUploadViewController.h"
 #import "MyndsViewController.h"
+#import "Reachability.h"
+#import "YNFunctions.h"
 
 @implementation UploadAll
 @synthesize uploadAllList;
@@ -144,53 +146,73 @@
 -(void)startUpload
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-//        if([self.uploadAllList count]<10 && [self.uploadAllList count]<[self.asetArray count])
-//        {
-//            ALAsset *asset = [self.asetArray objectAtIndex:[self.uploadAllList count]];
-//            UploadFile *upload_file = [[UploadFile alloc] init];
-//            [upload_file setAsset:asset];
-//            [upload_file setDeviceName:deviceName];
-//            [upload_file setSpace_id:self.space_id];
-//            [upload_file setF_id:self.f_id];
-//            [self.uploadAllList addObject:upload_file];
-//            [upload_file release];
-//        }
-        [NSThread detachNewThreadSelector:@selector(newTheadMainUpload) toTarget:self withObject:nil];
+        if(upload_timer)
+        {
+            [upload_timer invalidate];
+            upload_timer = nil;
+        }
+        //网络判断
+        if([self isConnection])
+        {
+            [NSThread detachNewThreadSelector:@selector(newTheadMainUpload) toTarget:self withObject:nil];
+        }
+        else
+        {
+            isUpload = FALSE;
+            upload_timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(startUpload) userInfo:nil repeats:YES];
+        }
+        
     });
 }
 
 -(void)newStartUpload
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if([self.uploadAllList count]<10 && [self.uploadAllList count]<[self.asetArray count])
+        
+        if(upload_timer)
         {
-            ALAsset *asset = [self.asetArray objectAtIndex:[self.uploadAllList count]];
-            UploadFile *upload_file = [[UploadFile alloc] init];
-            [upload_file setAsset:asset];
-            [upload_file setDeviceName:deviceName];
-            [upload_file setSpace_id:self.space_id];
-            [upload_file setF_id:self.f_id];
-            [self.uploadAllList addObject:upload_file];
-            [upload_file release];
+            [upload_timer invalidate];
+            upload_timer = nil;
         }
-        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
-        ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-        if([uploadView isKindOfClass:[ChangeUploadViewController class]])
+        
+        //网络判断
+        if([self isConnection])
         {
-            [uploadView setUploadingList:self.uploadAllList];
-            if(!uploadView.isUploadAll)
+            if([self.uploadAllList count]<10 && [self.uploadAllList count]<[self.asetArray count])
             {
-                [uploadView setIsUploadAll:YES];
+                ALAsset *asset = [self.asetArray objectAtIndex:[self.uploadAllList count]];
+                UploadFile *upload_file = [[UploadFile alloc] init];
+                [upload_file setAsset:asset];
+                [upload_file setDeviceName:deviceName];
+                [upload_file setSpace_id:self.space_id];
+                [upload_file setF_id:self.f_id];
+                [self.uploadAllList addObject:upload_file];
+                [upload_file release];
             }
-            [uploadView updateReloadData];
-            [uploadView.uploadListTableView reloadData];
+            AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+            ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+            if([uploadView isKindOfClass:[ChangeUploadViewController class]])
+            {
+                [uploadView setUploadingList:self.uploadAllList];
+                if(!uploadView.isUploadAll)
+                {
+                    [uploadView setIsUploadAll:YES];
+                }
+                [uploadView updateReloadData];
+                [uploadView.uploadListTableView reloadData];
+            }
+        }
+        else
+        {
+            upload_timer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(newStartUpload) userInfo:nil repeats:YES];
         }
     });
 }
 
 -(void)newTheadMainUpload
 {
+    NSLog(@"开始手动上传");
     if([self.uploadAllList count]>0 && !isUpload)
     {
         UploadFile *upload_file = [self.uploadAllList objectAtIndex:0];
@@ -283,11 +305,93 @@
     });
 }
 
+//判断当前的网络是3g还是wifi
+-(BOOL) isConnection
+{
+    __block BOOL bl;
+    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    switch ([hostReach currentReachabilityStatus]) {
+        case NotReachable:
+        {
+//            netWorkState = 3;
+            //"没有网络链接"
+            bl = NO;
+        }
+            break;
+        case ReachableViaWiFi:
+        {
+            // "WIFI";
+//            netWorkState = 1;
+            bl = YES;
+        }
+            break;
+        case ReachableViaWWAN:
+        {
+            // @"WLAN";
+//            netWorkState = 2;
+            if([YNFunctions isOnlyWifi])
+            {
+                bl = NO;
+            }
+            else
+            {
+                bl = YES;
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    //    });
+    return bl;
+}
+
+
 //上传失败
 -(void)upError:(NSInteger)fileTag
 {
+    isUpload = FALSE;
     NSLog(@"上传失败，过滤");
-    [self upFinish:fileTag];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+        ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[ChangeUploadViewController class]] && [self.uploadAllList count]>0)
+        {
+            UploadFile *upload_file = [self.uploadAllList objectAtIndex:0];
+            upload_file.demo.state = 2;
+            [uploadView setUploadingList:self.uploadAllList];
+            [uploadView upProess:0 fileTag:0];
+            [uploadView.uploadListTableView reloadData];
+        }
+    });
+    [self startUpload];
+}
+
+-(void)stopUpload
+{
+    isUpload = FALSE;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([self.uploadAllList count]>0)
+        {
+            UploadFile *upload_file = [self.uploadAllList objectAtIndex:0];
+            [upload_file upStop];
+            
+            AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+            ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+            if([uploadView isKindOfClass:[ChangeUploadViewController class]])
+            {
+                upload_file.demo.state = 2;
+                [uploadView setUploadingList:self.uploadAllList];
+                [uploadView upProess:0 fileTag:0];
+                [uploadView.uploadListTableView reloadData];
+            }
+        }
+    });
+    
+    [self startUpload];
 }
 
 @end

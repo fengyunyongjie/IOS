@@ -42,6 +42,10 @@
 //比对本地数据库
 -(void)isHaveData
 {
+    if(![YNFunctions isAutoUpload])
+    {
+        return;
+    }
     UserInfo *info = [[UserInfo alloc] init];
     info.keyString = @"自动备份目录";
     NSMutableArray *array = [info selectAllUserinfo];
@@ -70,7 +74,7 @@
             AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
             ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-            if(uploadViewController)
+            if(uploadViewController && [self.assetArray count]>0)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     upload_file.demo.state = 2;
@@ -253,6 +257,17 @@
     {
         NSLog(@"网络不可用");
         isLoadingRead = FALSE;
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+        ChangeUploadViewController *uploadViewController = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if(uploadViewController)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                upload_file.demo.state = 2;
+                [uploadViewController startAutomatic:upload_file.demo.topImage progess:1 taskDemo:upload_file.demo total:[self.assetArray count]];
+            });
+        }
+        [self selectLibray];
     }
 }
 
@@ -264,6 +279,7 @@
             if(upload_timer)
             {
                 [upload_timer invalidate];
+                upload_timer = nil;
             }
             upload_timer = [NSTimer scheduledTimerWithTimeInterval:15 target:self selector:@selector(isHaveData) userInfo:nil repeats:YES];
         });
@@ -361,7 +377,7 @@
 -(void)upError:(NSInteger)fileTag
 {
     NSLog(@"上传失败，过滤掉");
-    [self upFinish:fileTag];
+    [self startAutomaticUpload];
 }
 
 -(void)cleanStop

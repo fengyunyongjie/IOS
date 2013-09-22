@@ -8,6 +8,7 @@
 
 #import "TaskDemo.h"
 #import "UploadFile.h"
+#import "NSString+Format.h"
 
 @implementation TaskDemo
 @synthesize f_id,f_base_name,f_data,f_state,t_id,f_lenght,result,proess,index_id;
@@ -247,11 +248,11 @@
                 demo.f_data = data;
             }
             demo.f_state = sqlite3_column_int(statement, 3);
-            demo.f_base_name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
+            demo.f_base_name = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 4)];
             demo.f_lenght = sqlite3_column_int(statement, 5);
-            demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
-            demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
-            demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
+            demo.deviceName = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 6)];
+            demo.space_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 7)];
+            demo.p_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 8)];
             demo.is_automic_upload = sqlite3_column_int(statement, 9);
             demo.index_id = i;
             
@@ -304,11 +305,11 @@
                 demo.f_data = data;
             }
             demo.f_state = sqlite3_column_int(statement, 3);
-            demo.f_base_name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
+            demo.f_base_name = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 4)];
             demo.f_lenght = sqlite3_column_int(statement, 5);
-            demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
-            demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
-            demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
+            demo.deviceName = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 6)];
+            demo.space_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 7)];
+            demo.p_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 8)];
             demo.is_automic_upload = sqlite3_column_int(statement, 9);
             demo.index_id = i;
             if([demo.f_data length]>1024*1024)
@@ -363,11 +364,11 @@
 //                demo.f_data = data;
 //            }
             demo.f_state = sqlite3_column_int(statement, 3);
-            demo.f_base_name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
+            demo.f_base_name = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 4)];
             demo.f_lenght = sqlite3_column_int(statement, 5);
-            demo.deviceName = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 6)];
-            demo.space_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 7)];
-            demo.p_id = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 8)];
+            demo.deviceName = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 6)];
+            demo.space_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 7)];
+            demo.p_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 8)];
             demo.is_automic_upload = sqlite3_column_int(statement, 9);
             [tableArray addObject:demo];
             [demo release];

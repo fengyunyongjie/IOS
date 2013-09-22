@@ -196,6 +196,19 @@
             {
                 bl = FALSE;
                 self.f_id = [[dic objectForKey:@"f_id"] retain];
+                UserInfo *info = [[UserInfo alloc] init];
+                info.keyString = [NSString stringWithFormat:@"%@",@"自动备份目录"];
+                NSMutableArray *array = [info selectAllUserinfo];
+                if([array count]>0)
+                {
+                    UserInfo *userInfo = [array lastObject];
+                    info.descript = userInfo.descript;
+                }
+                info.f_id = [self.f_id intValue];
+                AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                app_delegate.maticUpload.f_id = [NSString stringWithFormat:@"%i",info.f_id];
+                [info insertUserinfo];
+                [info release];
                 demo.p_id = self.f_id;
                 [self newRequestVerify];
                 break;
@@ -283,14 +296,15 @@
             UserInfo *info = [[UserInfo alloc] init];
             info.keyString = [NSString stringWithFormat:@"%@",@"自动备份目录"];
             NSMutableArray *array = [info selectAllUserinfo];
-            if([array count] > 0)
+            if([array count]>0)
             {
-                UserInfo *info = [array lastObject];
-                AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                app_delegate.maticUpload.f_id = [NSString stringWithFormat:@"%i",info.f_id];
+                UserInfo *userInfo = [array lastObject];
+                info.descript = userInfo.descript;
             }
             info.f_id = [self.f_id intValue];
-            [info updateUserinfo];
+            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            app_delegate.maticUpload.f_id = [NSString stringWithFormat:@"%i",info.f_id];
+            [info insertUserinfo];
             [info release];
             
             demo.p_id = self.f_id;

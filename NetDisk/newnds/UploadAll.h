@@ -20,6 +20,7 @@
     NSString *space_id;
     NSString *f_id;
     NSMutableOrderedSet *asetArray;
+    NSTimer *upload_timer;
 }
 
 -(id)init;
@@ -30,6 +31,7 @@
 @property(nonatomic,retain) NSString *f_id;
 @property(nonatomic,retain) NSMutableOrderedSet *asetArray;
 
+-(void)stopUpload;
 -(void)startUpload;
 -(void)newStartUpload;
 -(void)changeUpload:(NSMutableOrderedSet *)array_;
