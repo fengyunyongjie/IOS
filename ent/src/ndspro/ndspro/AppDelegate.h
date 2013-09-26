@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class LoginViewController,MyTabBarViewController;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) LoginViewController *loginVC;
+@property (strong, nonatomic) MyTabBarViewController *myTabBarVC;
+-(void)finishLogin;
+-(void)finishLogout;
 @end

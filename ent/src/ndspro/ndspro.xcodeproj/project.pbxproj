@@ -14,13 +14,33 @@
 		291CCB4217F27F99005C029C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB4117F27F99005C029C /* main.m */; };
 		291CCB4617F27F99005C029C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB4517F27F99005C029C /* AppDelegate.m */; };
 		291CCB4917F27F99005C029C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 291CCB4717F27F99005C029C /* Main.storyboard */; };
-		291CCB4C17F27F99005C029C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB4B17F27F99005C029C /* ViewController.m */; };
 		291CCB4E17F27F99005C029C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 291CCB4D17F27F99005C029C /* Images.xcassets */; };
 		291CCB5517F27F99005C029C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB5417F27F99005C029C /* XCTest.framework */; };
 		291CCB5617F27F99005C029C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3517F27F99005C029C /* Foundation.framework */; };
 		291CCB5717F27F99005C029C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3917F27F99005C029C /* UIKit.framework */; };
 		291CCB5F17F27F99005C029C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 291CCB5D17F27F99005C029C /* InfoPlist.strings */; };
 		291CCB6117F27F99005C029C /* ndsproTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB6017F27F99005C029C /* ndsproTests.m */; };
+		291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB9C17F3C40A005C029C /* MF_Base64Additions.m */; };
+		291CCBBB17F3C40A005C029C /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB9E17F3C40A005C029C /* SCBAccountManager.m */; };
+		291CCBBC17F3C40A005C029C /* SCBDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCBA017F3C40A005C029C /* SCBDownloader.m */; };
+		291CCBBD17F3C40A005C029C /* SCBFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCBA217F3C40A005C029C /* SCBFileManager.m */; };
+		291CCBC017F3C40A005C029C /* SCBLinkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCBA817F3C40A005C029C /* SCBLinkManager.m */; };
+		291CCBC617F3C40A005C029C /* SCBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCBB517F3C40A005C029C /* SCBSession.m */; };
+		291CCBCC17F3CD17005C029C /* YNFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCBCB17F3CD17005C029C /* YNFunctions.m */; };
+		291CCC1117F4041D005C029C /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC0F17F4041D005C029C /* LoginViewController.m */; };
+		291CCC1217F4041D005C029C /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1017F4041D005C029C /* LoginViewController.xib */; };
+		291CCC1617F4082B005C029C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC1417F4082B005C029C /* MainViewController.m */; };
+		291CCC1717F4082B005C029C /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1517F4082B005C029C /* MainViewController.xib */; };
+		291CCC1B17F4086D005C029C /* FileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC1917F4086D005C029C /* FileListViewController.m */; };
+		291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1A17F4086D005C029C /* FileListViewController.xib */; };
+		291CCC2117F408EF005C029C /* Bk_Login.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1E17F408EF005C029C /* Bk_Login.png */; };
+		291CCC2217F408EF005C029C /* Bt_LoginClick.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1F17F408EF005C029C /* Bt_LoginClick.png */; };
+		291CCC2317F408EF005C029C /* Bt_LoginNor.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC2017F408EF005C029C /* Bt_LoginNor.png */; };
+		291CCC2717F40D05005C029C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC2617F40D05005C029C /* MBProgressHUD.m */; };
+		291CCC2B17F410E2005C029C /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC2917F410E2005C029C /* SettingViewController.m */; };
+		291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC2A17F410E2005C029C /* SettingViewController.xib */; };
+		291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC2E17F411F5005C029C /* MyTabBarViewController.m */; };
+		291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,14 +65,48 @@
 		291CCB4417F27F99005C029C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		291CCB4517F27F99005C029C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		291CCB4817F27F99005C029C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		291CCB4A17F27F99005C029C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		291CCB4B17F27F99005C029C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		291CCB4D17F27F99005C029C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		291CCB5317F27F99005C029C /* ndsproTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ndsproTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		291CCB5417F27F99005C029C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		291CCB5C17F27F99005C029C /* ndsproTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ndsproTests-Info.plist"; sourceTree = "<group>"; };
 		291CCB5E17F27F99005C029C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		291CCB6017F27F99005C029C /* ndsproTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ndsproTests.m; sourceTree = "<group>"; };
+		291CCB9B17F3C40A005C029C /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
+		291CCB9C17F3C40A005C029C /* MF_Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base64Additions.m; sourceTree = "<group>"; };
+		291CCB9D17F3C40A005C029C /* SCBAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBAccountManager.h; sourceTree = "<group>"; };
+		291CCB9E17F3C40A005C029C /* SCBAccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBAccountManager.m; sourceTree = "<group>"; };
+		291CCB9F17F3C40A005C029C /* SCBDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBDownloader.h; sourceTree = "<group>"; };
+		291CCBA017F3C40A005C029C /* SCBDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBDownloader.m; sourceTree = "<group>"; };
+		291CCBA117F3C40A005C029C /* SCBFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBFileManager.h; sourceTree = "<group>"; };
+		291CCBA217F3C40A005C029C /* SCBFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBFileManager.m; sourceTree = "<group>"; };
+		291CCBA717F3C40A005C029C /* SCBLinkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBLinkManager.h; sourceTree = "<group>"; };
+		291CCBA817F3C40A005C029C /* SCBLinkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBLinkManager.m; sourceTree = "<group>"; };
+		291CCBAB17F3C40A005C029C /* SCBoxConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBoxConfig.h; sourceTree = "<group>"; };
+		291CCBB417F3C40A005C029C /* SCBSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBSession.h; sourceTree = "<group>"; };
+		291CCBB517F3C40A005C029C /* SCBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBSession.m; sourceTree = "<group>"; };
+		291CCBCA17F3CD17005C029C /* YNFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNFunctions.h; sourceTree = "<group>"; };
+		291CCBCB17F3CD17005C029C /* YNFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNFunctions.m; sourceTree = "<group>"; };
+		291CCBCD17F3CD34005C029C /* PConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PConfig.h; sourceTree = "<group>"; };
+		291CCC0E17F4041D005C029C /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		291CCC0F17F4041D005C029C /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		291CCC1017F4041D005C029C /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		291CCC1317F4082B005C029C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		291CCC1417F4082B005C029C /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		291CCC1517F4082B005C029C /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		291CCC1817F4086D005C029C /* FileListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileListViewController.h; sourceTree = "<group>"; };
+		291CCC1917F4086D005C029C /* FileListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileListViewController.m; sourceTree = "<group>"; };
+		291CCC1A17F4086D005C029C /* FileListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileListViewController.xib; sourceTree = "<group>"; };
+		291CCC1E17F408EF005C029C /* Bk_Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Login.png; sourceTree = "<group>"; };
+		291CCC1F17F408EF005C029C /* Bt_LoginClick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_LoginClick.png; sourceTree = "<group>"; };
+		291CCC2017F408EF005C029C /* Bt_LoginNor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_LoginNor.png; sourceTree = "<group>"; };
+		291CCC2517F40D05005C029C /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		291CCC2617F40D05005C029C /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		291CCC2817F410E2005C029C /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		291CCC2917F410E2005C029C /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		291CCC2A17F410E2005C029C /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
+		291CCC2D17F411F5005C029C /* MyTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTabBarViewController.h; sourceTree = "<group>"; };
+		291CCC2E17F411F5005C029C /* MyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTabBarViewController.m; sourceTree = "<group>"; };
+		291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyTabBarViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +137,8 @@
 			isa = PBXGroup;
 			children = (
 				291CCB3B17F27F99005C029C /* ndspro */,
+				291CCB6C17F3BDF5005C029C /* ndsAPI */,
+				291CCB6B17F3B9A7005C029C /* Utilities */,
 				291CCB5A17F27F99005C029C /* ndsproTests */,
 				291CCB3417F27F99005C029C /* Frameworks */,
 				291CCB3317F27F99005C029C /* Products */,
@@ -112,12 +168,17 @@
 		291CCB3B17F27F99005C029C /* ndspro */ = {
 			isa = PBXGroup;
 			children = (
+				291CCC3417F42B78005C029C /* File */,
+				291CCC3317F42B57005C029C /* Setting */,
+				291CCC3217F42B4C005C029C /* Login */,
 				291CCB4417F27F99005C029C /* AppDelegate.h */,
 				291CCB4517F27F99005C029C /* AppDelegate.m */,
 				291CCB4717F27F99005C029C /* Main.storyboard */,
-				291CCB4A17F27F99005C029C /* ViewController.h */,
-				291CCB4B17F27F99005C029C /* ViewController.m */,
+				291CCC2D17F411F5005C029C /* MyTabBarViewController.h */,
+				291CCC2E17F411F5005C029C /* MyTabBarViewController.m */,
+				291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */,
 				291CCB4D17F27F99005C029C /* Images.xcassets */,
+				291CCC1D17F408EF005C029C /* imgRes */,
 				291CCB3C17F27F99005C029C /* Supporting Files */,
 			);
 			path = ndspro;
@@ -126,6 +187,7 @@
 		291CCB3C17F27F99005C029C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				291CCBCD17F3CD34005C029C /* PConfig.h */,
 				291CCB3D17F27F99005C029C /* ndspro-Info.plist */,
 				291CCB3E17F27F99005C029C /* InfoPlist.strings */,
 				291CCB4117F27F99005C029C /* main.m */,
@@ -150,6 +212,112 @@
 				291CCB5D17F27F99005C029C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		291CCB6B17F3B9A7005C029C /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				291CCC2417F40D05005C029C /* MBProgressHUD */,
+				291CCBD217F3CDB4005C029C /* Reachability */,
+				291CCBCE17F3CD53005C029C /* YNFunctions */,
+				291CCBC917F3C423005C029C /* MF_Base64Additions */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		291CCB6C17F3BDF5005C029C /* ndsAPI */ = {
+			isa = PBXGroup;
+			children = (
+				291CCB9D17F3C40A005C029C /* SCBAccountManager.h */,
+				291CCB9E17F3C40A005C029C /* SCBAccountManager.m */,
+				291CCB9F17F3C40A005C029C /* SCBDownloader.h */,
+				291CCBA017F3C40A005C029C /* SCBDownloader.m */,
+				291CCBA117F3C40A005C029C /* SCBFileManager.h */,
+				291CCBA217F3C40A005C029C /* SCBFileManager.m */,
+				291CCBA717F3C40A005C029C /* SCBLinkManager.h */,
+				291CCBA817F3C40A005C029C /* SCBLinkManager.m */,
+				291CCBAB17F3C40A005C029C /* SCBoxConfig.h */,
+				291CCBB417F3C40A005C029C /* SCBSession.h */,
+				291CCBB517F3C40A005C029C /* SCBSession.m */,
+			);
+			name = ndsAPI;
+			sourceTree = "<group>";
+		};
+		291CCBC917F3C423005C029C /* MF_Base64Additions */ = {
+			isa = PBXGroup;
+			children = (
+				291CCB9B17F3C40A005C029C /* MF_Base64Additions.h */,
+				291CCB9C17F3C40A005C029C /* MF_Base64Additions.m */,
+			);
+			name = MF_Base64Additions;
+			sourceTree = "<group>";
+		};
+		291CCBCE17F3CD53005C029C /* YNFunctions */ = {
+			isa = PBXGroup;
+			children = (
+				291CCBCA17F3CD17005C029C /* YNFunctions.h */,
+				291CCBCB17F3CD17005C029C /* YNFunctions.m */,
+			);
+			name = YNFunctions;
+			sourceTree = "<group>";
+		};
+		291CCBD217F3CDB4005C029C /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
+		291CCC1D17F408EF005C029C /* imgRes */ = {
+			isa = PBXGroup;
+			children = (
+				291CCC1E17F408EF005C029C /* Bk_Login.png */,
+				291CCC1F17F408EF005C029C /* Bt_LoginClick.png */,
+				291CCC2017F408EF005C029C /* Bt_LoginNor.png */,
+			);
+			path = imgRes;
+			sourceTree = "<group>";
+		};
+		291CCC2417F40D05005C029C /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				291CCC2517F40D05005C029C /* MBProgressHUD.h */,
+				291CCC2617F40D05005C029C /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		291CCC3217F42B4C005C029C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				291CCC0E17F4041D005C029C /* LoginViewController.h */,
+				291CCC0F17F4041D005C029C /* LoginViewController.m */,
+				291CCC1017F4041D005C029C /* LoginViewController.xib */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		291CCC3317F42B57005C029C /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				291CCC2817F410E2005C029C /* SettingViewController.h */,
+				291CCC2917F410E2005C029C /* SettingViewController.m */,
+				291CCC2A17F410E2005C029C /* SettingViewController.xib */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
+		291CCC3417F42B78005C029C /* File */ = {
+			isa = PBXGroup;
+			children = (
+				291CCC1317F4082B005C029C /* MainViewController.h */,
+				291CCC1417F4082B005C029C /* MainViewController.m */,
+				291CCC1517F4082B005C029C /* MainViewController.xib */,
+				291CCC1817F4086D005C029C /* FileListViewController.h */,
+				291CCC1917F4086D005C029C /* FileListViewController.m */,
+				291CCC1A17F4086D005C029C /* FileListViewController.xib */,
+			);
+			name = File;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,7 +403,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				291CCC2217F408EF005C029C /* Bt_LoginClick.png in Resources */,
+				291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */,
+				291CCC1217F4041D005C029C /* LoginViewController.xib in Resources */,
+				291CCC2317F408EF005C029C /* Bt_LoginNor.png in Resources */,
+				291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */,
 				291CCB4E17F27F99005C029C /* Images.xcassets in Resources */,
+				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
+				291CCC2117F408EF005C029C /* Bk_Login.png in Resources */,
+				291CCC1717F4082B005C029C /* MainViewController.xib in Resources */,
 				291CCB4017F27F99005C029C /* InfoPlist.strings in Resources */,
 				291CCB4917F27F99005C029C /* Main.storyboard in Resources */,
 			);
@@ -256,9 +432,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				291CCB4C17F27F99005C029C /* ViewController.m in Sources */,
+				291CCBC617F3C40A005C029C /* SCBSession.m in Sources */,
+				291CCBC017F3C40A005C029C /* SCBLinkManager.m in Sources */,
+				291CCBCC17F3CD17005C029C /* YNFunctions.m in Sources */,
+				291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */,
+				291CCBBD17F3C40A005C029C /* SCBFileManager.m in Sources */,
+				291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */,
+				291CCBBB17F3C40A005C029C /* SCBAccountManager.m in Sources */,
+				291CCC1617F4082B005C029C /* MainViewController.m in Sources */,
 				291CCB4617F27F99005C029C /* AppDelegate.m in Sources */,
+				291CCC1B17F4086D005C029C /* FileListViewController.m in Sources */,
 				291CCB4217F27F99005C029C /* main.m in Sources */,
+				291CCC1117F4041D005C029C /* LoginViewController.m in Sources */,
+				291CCBBC17F3C40A005C029C /* SCBDownloader.m in Sources */,
+				291CCC2717F40D05005C029C /* MBProgressHUD.m in Sources */,
+				291CCC2B17F410E2005C029C /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +573,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ndspro/ndspro-Prefix.pch";
 				INFOPLIST_FILE = "ndspro/ndspro-Info.plist";
@@ -398,6 +587,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ndspro/ndspro-Prefix.pch";
 				INFOPLIST_FILE = "ndspro/ndspro-Info.plist";

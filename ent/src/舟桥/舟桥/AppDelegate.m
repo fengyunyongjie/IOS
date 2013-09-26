@@ -1,14 +1,12 @@
 //
 //  AppDelegate.m
-//  ndspro
+//  舟桥
 //
-//  Created by fengyongning on 13-9-25.
+//  Created by fengyongning on 13-9-26.
 //  Copyright (c) 2013年 fengyongning. All rights reserved.
 //
 
 #import "AppDelegate.h"
-#import "LoginViewController.h"
-#import "MyTabBarViewController.h"
 
 @implementation AppDelegate
 
@@ -18,33 +16,9 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    if ([self isLogin]) {
-        [self finishLogin];
-    }else
-    {
-        [self finishLogout];
-    }
     return YES;
 }
--(BOOL)isLogin
-{
-    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
-    NSString *userPwd  = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_pwd"];
-    if (userName==nil&&userPwd==nil) {
-        return NO;
-    }
-    return YES;
-}
--(void)finishLogin
-{
-    self.myTabBarVC=[[MyTabBarViewController alloc] initWithNibName:@"MyTabBarViewController" bundle:nil];
-    self.window.rootViewController=self.myTabBarVC;
-}
--(void)finishLogout
-{
-    self.loginVC=[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
-    self.window.rootViewController=self.loginVC;
-}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
