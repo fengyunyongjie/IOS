@@ -41,6 +41,9 @@
 		291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC2A17F410E2005C029C /* SettingViewController.xib */; };
 		291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC2E17F411F5005C029C /* MyTabBarViewController.m */; };
 		291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */; };
+		291CCC3717F53075005C029C /* FileItemTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC3617F53075005C029C /* FileItemTableCell.m */; };
+		291CCC3B17F5834C005C029C /* Bt_UsercentreCh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */; };
+		291CCC3D17F583D6005C029C /* Bt_UsercentreNo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +110,10 @@
 		291CCC2D17F411F5005C029C /* MyTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTabBarViewController.h; sourceTree = "<group>"; };
 		291CCC2E17F411F5005C029C /* MyTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTabBarViewController.m; sourceTree = "<group>"; };
 		291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyTabBarViewController.xib; sourceTree = "<group>"; };
+		291CCC3517F53074005C029C /* FileItemTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileItemTableCell.h; sourceTree = "<group>"; };
+		291CCC3617F53075005C029C /* FileItemTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileItemTableCell.m; sourceTree = "<group>"; };
+		291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_UsercentreCh@2x.png"; sourceTree = "<group>"; };
+		291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_UsercentreNo@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +278,8 @@
 		291CCC1D17F408EF005C029C /* imgRes */ = {
 			isa = PBXGroup;
 			children = (
+				291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */,
+				291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */,
 				291CCC1E17F408EF005C029C /* Bk_Login.png */,
 				291CCC1F17F408EF005C029C /* Bt_LoginClick.png */,
 				291CCC2017F408EF005C029C /* Bt_LoginNor.png */,
@@ -316,6 +325,8 @@
 				291CCC1817F4086D005C029C /* FileListViewController.h */,
 				291CCC1917F4086D005C029C /* FileListViewController.m */,
 				291CCC1A17F4086D005C029C /* FileListViewController.xib */,
+				291CCC3517F53074005C029C /* FileItemTableCell.h */,
+				291CCC3617F53075005C029C /* FileItemTableCell.m */,
 			);
 			name = File;
 			sourceTree = "<group>";
@@ -406,6 +417,8 @@
 				291CCC2217F408EF005C029C /* Bt_LoginClick.png in Resources */,
 				291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */,
 				291CCC1217F4041D005C029C /* LoginViewController.xib in Resources */,
+				291CCC3D17F583D6005C029C /* Bt_UsercentreNo@2x.png in Resources */,
+				291CCC3B17F5834C005C029C /* Bt_UsercentreCh@2x.png in Resources */,
 				291CCC2317F408EF005C029C /* Bt_LoginNor.png in Resources */,
 				291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */,
 				291CCB4E17F27F99005C029C /* Images.xcassets in Resources */,
@@ -437,6 +450,7 @@
 				291CCBCC17F3CD17005C029C /* YNFunctions.m in Sources */,
 				291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */,
 				291CCBBD17F3C40A005C029C /* SCBFileManager.m in Sources */,
+				291CCC3717F53075005C029C /* FileItemTableCell.m in Sources */,
 				291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */,
 				291CCBBB17F3C40A005C029C /* SCBAccountManager.m in Sources */,
 				291CCC1617F4082B005C029C /* MainViewController.m in Sources */,

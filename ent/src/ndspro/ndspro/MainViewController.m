@@ -7,6 +7,7 @@
 //
 
 #import "MainViewController.h"
+#import "FileListViewController.h"
 #import "SCBFileManager.h"
 #import "YNFunctions.h"
 
@@ -56,10 +57,8 @@
     {
         NSError *jsonParsingError=nil;
         NSData *data=[NSData dataWithContentsOfFile:dataFilePath];
-        NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
-        self.dataDic=dic;
-        if (self.dataDic) {
-            self.listArray=(NSArray *)[self.dataDic objectForKey:AUTHOR_MENU];
+        self.listArray=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
+        if (self.listArray) {
             [self.tableView reloadData];
         }
     }
@@ -72,6 +71,9 @@
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (self.listArray) {
+        return self.listArray.count;
+    }
     return 1;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -83,6 +85,12 @@
                                       reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    if (self.listArray) {
+        NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
+        if (dic) {
+            cell.textLabel.text=[dic objectForKey:@"spname"];
+        }
+    }
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -93,11 +101,37 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.listArray) {
+        NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
+        if (dic) {
+            FileListViewController *flVC=[[FileListViewController alloc] init];
+            flVC.spid=[dic objectForKey:@"spid"];
+            flVC.f_id=@"0";
+            flVC.title=[dic objectForKey:@"spname"];
+            [self.navigationController pushViewController:flVC animated:YES];
+        }
+    }
 }
 
 #pragma mark - SCBFileManagerDelegate
--(void)authorMenusSuccess:(NSDictionary *)datadic
+-(void)authorMenusSuccess:(NSData*)data
 {
-    
+    NSError *jsonParsingError=nil;
+    self.listArray=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
+    if (self.listArray) {
+        [self.tableView reloadData];
+        NSString *dataFilePath=[YNFunctions getDataCachePath];
+        dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:AUTHOR_MENU]];
+        BOOL isWrite=[data writeToFile:dataFilePath atomically:YES];
+        if (isWrite) {
+            NSLog(@"写入文件成功：%@",dataFilePath);
+        }else
+        {
+            NSLog(@"写入文件失败：%@",dataFilePath);
+        }
+    }else
+    {
+        [self updateFileList];
+    }
 }
 @end

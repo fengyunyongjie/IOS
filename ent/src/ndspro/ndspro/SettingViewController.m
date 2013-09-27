@@ -16,6 +16,10 @@ typedef enum{
     kActionSheetTypeHideFeature,
 }kActionSheetType;
 @interface SettingViewController ()
+{
+    BOOL isHideTabBar;
+    float oldTabBarHeight;
+}
 
 @end
 
@@ -39,6 +43,32 @@ typedef enum{
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)hideTabBar:(id)sender
+{
+    isHideTabBar=!isHideTabBar;
+    for(UIView *view in self.tabBarController.view.subviews)
+    {
+        if([view isKindOfClass:[UITabBar class]])
+        {
+            if (isHideTabBar) { //if hidden tabBar
+                [view setFrame:CGRectMake(view.frame.origin.x,[[UIScreen mainScreen]bounds].size.height, view.frame.size.width, view.frame.size.height)];
+            }else {
+                NSLog(@"isHideTabBar %@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, [[UIScreen mainScreen]bounds].size.height-49, view.frame.size.width, view.frame.size.height)];
+            }
+        }else
+        {
+            if (isHideTabBar) {
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, [[UIScreen mainScreen]bounds].size.height)];
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+            }else {
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width,[[UIScreen mainScreen]bounds].size.height-49)];
+            } 
+        }
+    }
 }
 - (IBAction)exitAccount:(id)sender
 {

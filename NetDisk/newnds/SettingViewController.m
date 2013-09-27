@@ -856,31 +856,31 @@ typedef enum{
             switch (row) {
                 case 0:
                     //版本
-                    self.tempCount++;
-                    if (self.tempCount>=6) {
-                        self.tempCount=0;
-                        if ([YNFunctions isOpenHideFeature]) {
-                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                                message:@"是否关闭隐藏功能？"
-                                                                               delegate:self
-                                                                      cancelButtonTitle:@"取消"
-                                                                      otherButtonTitles:@"确定", nil];
-                            alertView.tag=kAlertTypeHideFeature;
-                            [alertView show];
-                            [alertView release];
-                        }else
-                        {
-                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                                message:@"是否打开隐藏功能？"
-                                                                               delegate:self
-                                                                      cancelButtonTitle:@"取消"
-                                                                      otherButtonTitles:@"确定", nil];
-                            alertView.tag=kAlertTypeHideFeature;
-                            [alertView show];
-                            [alertView release];
-                        }
-                        
-                    }
+//                    self.tempCount++;
+//                    if (self.tempCount>=6) {
+//                        self.tempCount=0;
+//                        if ([YNFunctions isOpenHideFeature]) {
+//                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+//                                                                                message:@"是否关闭隐藏功能？"
+//                                                                               delegate:self
+//                                                                      cancelButtonTitle:@"取消"
+//                                                                      otherButtonTitles:@"确定", nil];
+//                            alertView.tag=kAlertTypeHideFeature;
+//                            [alertView show];
+//                            [alertView release];
+//                        }else
+//                        {
+//                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+//                                                                                message:@"是否打开隐藏功能？"
+//                                                                               delegate:self
+//                                                                      cancelButtonTitle:@"取消"
+//                                                                      otherButtonTitles:@"确定", nil];
+//                            alertView.tag=kAlertTypeHideFeature;
+//                            [alertView show];
+//                            [alertView release];
+//                        }
+//                        
+//                    }
                     break;
                 case 1:
                     //评分

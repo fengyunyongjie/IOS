@@ -76,7 +76,7 @@ typedef enum {
 @end
 @protocol SCBFileManagerDelegate
 @optional
--(void)authorMenusSuccess:(NSDictionary*)datadic;
+-(void)authorMenusSuccess:(NSData*)data;
 -(void)searchSucess:(NSDictionary *)datadic;
 -(void)operateSucess:(NSDictionary *)datadic;
 -(void)openFinderSucess:(NSDictionary *)datadic;

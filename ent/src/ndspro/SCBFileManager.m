@@ -30,15 +30,14 @@
     NSLog(@"%@",s_url);
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     
-    NSMutableString *body=[[NSMutableString alloc] init];
-    NSMutableData *myRequestData=[NSMutableData data];
-    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:myRequestData];
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
     [request setValue:@"1" forHTTPHeaderField:@"ent_uclient"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
     [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] userId]);
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] userToken]);
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] ent_utype]);
     _conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 #pragma mark 打开移动目录
@@ -218,21 +217,26 @@
     self.fm_type=kFMTypeOpenFinder;
     self.activeData=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
+    NSLog(@"%@",s_url);
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&space_id=%@&iszone=%@&sort=%@&sort_direct=%@",f_id,0,-1,s_id,@"1",@"f_modify",@"desc"];
+    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,@"time",@"desc"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
-    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
-    
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] userId]);
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] userToken]);
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] ent_utype]);
     _conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
+
 -(void)renameWithID:(NSString *)f_id newName:(NSString *)f_name
 {
     self.fm_type=kFMTypeRename;
@@ -427,12 +431,29 @@
     NSError *jsonParsingError=nil;
     
     NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:self.activeData options:0 error:&jsonParsingError];
+    if (self.fm_type==kFMTypeAuthorMenus) {
+        @try {
+            if ([[dic objectForKey:@"code"] intValue]!=0) {
+                NSLog(@"获取空间列表返回错误");
+            }
+        }
+        @catch (NSException *exception) {
+            NSLog(@"有异常～,说明成功？？");
+            if (self.delegate) {
+                [self.delegate authorMenusSuccess:self.activeData];
+            }
+        }
+        @finally {
+            NSLog(@"@finally");
+        }
+    }else
     if ([[dic objectForKey:@"code"] intValue]==0) {
         NSLog(@"操作成功 数据大小：%d",[self.activeData length]);
         if (self.delegate) {
             switch (self.fm_type) {
                 case kFMTypeAuthorMenus:
-                    [self.delegate authorMenusSuccess:dic];
+//                    [self.delegate authorMenusSuccess:dic];
+                    NSLog(@"这里错误！%s,%d",__PRETTY_FUNCTION__,__LINE__);
                     break;
                 case kFMTypeOpenCategoryDir:
                     [self.delegate openFinderSucess:dic];

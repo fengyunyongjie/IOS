@@ -7,7 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface FileListViewController : UIViewController
-
+typedef enum {
+    kMyndsTypeDefault,
+    kMyndsTypeSelect,
+    kMyndsTypeMyShareSelect,
+    kMyndsTypeShareSelect,
+    kMyndsTypeMyShare,
+    kMyndsTypeShare,
+    kMyndsTypeDefaultSearch,
+    kMyndsTypeMyShareSearch,
+    kMyndsTypeShareSearch,
+} FileListType;
+@interface FileListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@property (strong,nonatomic) NSDictionary *dataDic;
+@property (strong,nonatomic) NSArray *listArray;
+@property (strong,nonatomic) NSArray *finderArray;
+@property (strong,nonatomic) NSString *f_id;
+@property (strong,nonatomic) NSString *spid;
+@property (assign,nonatomic) FileListType flType;
+@property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
+@property (strong,nonatomic) UITableView *tableView;
 @end

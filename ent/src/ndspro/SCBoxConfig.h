@@ -13,8 +13,9 @@
 #define CONNECT_TIMEOUT 15
 #define RESPONSE_TIMEOUT 10
 //商业版URL
-#define SERVER_URL @"http://b.7cbox.cn/biz/ent"
-
+//#define SERVER_URL @"http://b.7cbox.cn/biz/ent"
+//#define SERVER_URL @"http://192.168.1.55:8080/biz/ent"
+#define SERVER_URL @"http://192.168.1.9/biz/ent"
 #pragma mark - 1.子帐号
 //子账号登录/ent/user/login
 #define USER_LOGIN_URI @"/user/login"
@@ -75,9 +76,9 @@
 #define MSG_DELALL @"/msg/delall"
 
 #pragma mark - 4.文件管理
-//打开网盘
+//打开网盘  文件列表/ent/file/list
 //#define FM_URI @"/fm"
-#define FM_URI @"/fm/open"
+#define FM_URI @"/file/list"
 //新建
 #define FM_MKDIR_URI @"/fm/mkdir"
 //移除/fm/rm

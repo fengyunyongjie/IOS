@@ -172,8 +172,8 @@ static SCBAccountManager *_sharedAccountManager;
                 [[SCBSession sharedSession] setUserToken:(NSString *)[dic objectForKey:@"ent_utoken"]];
                 [[SCBSession sharedSession] setEnt_utype:(NSString *)[dic objectForKey:@"ent_utype"]];
                 
-                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_id"] forKey:@"usr_id"];
-                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_token"]  forKey:@"usr_token"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"ent_uid"] forKey:@"usr_id"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"ent_utoken"]  forKey:@"usr_token"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"home_id"]  forKey:@"home_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"space_id"]  forKey:@"space_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_tag"]  forKey:@"usr_tag"];
