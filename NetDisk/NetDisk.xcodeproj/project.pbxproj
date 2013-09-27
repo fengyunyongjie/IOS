@@ -24,7 +24,6 @@
 		291F866C17A8B84400DA7B7B /* ChangeUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F866B17A8B84400DA7B7B /* ChangeUploadViewController.m */; };
 		29228C8817A2218C00DD3E8D /* QBImageFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29228C8717A2218C00DD3E8D /* QBImageFileViewController.m */; };
 		29262229172BD70000A95E97 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29262227172BD70000A95E97 /* LoginViewController.m */; };
-		2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29262228172BD70000A95E97 /* LoginViewController.xib */; };
 		2929E30D17CC2EA9003CB75A /* FileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */; };
 		2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30F17CC2F50003CB75A /* IPhotoViewController.m */; };
 		292CC2D417E6E4CB00E3FE12 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CC2D317E6E4CB00E3FE12 /* HelpViewController.m */; };
@@ -94,7 +93,6 @@
 		296E39C917B8D80200A43F29 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E39C717B8D80200A43F29 /* ReportViewController.m */; };
 		296E39CA17B8D80200A43F29 /* ReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 296E39C817B8D80200A43F29 /* ReportViewController.xib */; };
 		298075DD174A141F00B138FE /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298075DB174A141F00B138FE /* RegistViewController.m */; };
-		298075DE174A141F00B138FE /* RegistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 298075DC174A141F00B138FE /* RegistViewController.xib */; };
 		298075DF174A1CAF00B138FE /* input3_createbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A66086169982B90065C73C /* input3_createbg.png */; };
 		29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF4172CB2B5001AD87A /* MYTabBarController.m */; };
 		29852CF8172CBCF5001AD87A /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF7172CBCF5001AD87A /* SettingViewController.m */; };
@@ -333,6 +331,8 @@
 		29C942C917F538C30042CD8E /* icon_checked_grid.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C942C817F538C30042CD8E /* icon_checked_grid.png */; };
 		29C942CC17F552FC0042CD8E /* AutoUploadList.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C942CB17F552FB0042CD8E /* AutoUploadList.m */; };
 		29C942CF17F557F10042CD8E /* NewAutoUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C942CE17F557F10042CD8E /* NewAutoUpload.m */; };
+		29C942D517F5D2510042CD8E /* RegistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C942D417F5D2510042CD8E /* RegistViewController.xib */; };
+		29C942D717F5D2590042CD8E /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C942D617F5D2590042CD8E /* LoginViewController.xib */; };
 		29C98B0717AB943300CF8FAF /* Bk_Seach.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0517AB943300CF8FAF /* Bk_Seach.png */; };
 		29C98B0817AB943300CF8FAF /* Bt_Seach.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0617AB943300CF8FAF /* Bt_Seach.png */; };
 		29C98B0B17ABA01800CF8FAF /* Bt_Filter.png in Resources */ = {isa = PBXBuildFile; fileRef = 29C98B0917ABA01800CF8FAF /* Bt_Filter.png */; };
@@ -464,7 +464,6 @@
 		29228C8717A2218C00DD3E8D /* QBImageFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImageFileViewController.m; sourceTree = "<group>"; };
 		29262226172BD70000A95E97 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		29262227172BD70000A95E97 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		29262228172BD70000A95E97 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		2929E30B17CC2EA9003CB75A /* FileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileTableViewCell.h; sourceTree = "<group>"; };
 		2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTableViewCell.m; sourceTree = "<group>"; };
 		2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhotoViewController.h; sourceTree = "<group>"; };
@@ -551,7 +550,6 @@
 		296E39C817B8D80200A43F29 /* ReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportViewController.xib; sourceTree = "<group>"; };
 		298075DA174A141F00B138FE /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
 		298075DB174A141F00B138FE /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
-		298075DC174A141F00B138FE /* RegistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistViewController.xib; sourceTree = "<group>"; };
 		29852CF3172CB2B5001AD87A /* MYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTabBarController.h; sourceTree = "<group>"; };
 		29852CF4172CB2B5001AD87A /* MYTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MYTabBarController.m; sourceTree = "<group>"; };
 		29852CF6172CBCF5001AD87A /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -815,6 +813,8 @@
 		29C942CB17F552FB0042CD8E /* AutoUploadList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoUploadList.m; sourceTree = "<group>"; };
 		29C942CD17F557F00042CD8E /* NewAutoUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAutoUpload.h; sourceTree = "<group>"; };
 		29C942CE17F557F10042CD8E /* NewAutoUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAutoUpload.m; sourceTree = "<group>"; };
+		29C942D417F5D2510042CD8E /* RegistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegistViewController.xib; sourceTree = "<group>"; };
+		29C942D617F5D2590042CD8E /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		29C98B0517AB943300CF8FAF /* Bk_Seach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Seach.png; sourceTree = "<group>"; };
 		29C98B0617AB943300CF8FAF /* Bt_Seach.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Seach.png; sourceTree = "<group>"; };
 		29C98B0917ABA01800CF8FAF /* Bt_Filter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Filter.png; sourceTree = "<group>"; };
@@ -1269,10 +1269,10 @@
 			children = (
 				29262226172BD70000A95E97 /* LoginViewController.h */,
 				29262227172BD70000A95E97 /* LoginViewController.m */,
-				29262228172BD70000A95E97 /* LoginViewController.xib */,
+				29C942D617F5D2590042CD8E /* LoginViewController.xib */,
 				298075DA174A141F00B138FE /* RegistViewController.h */,
 				298075DB174A141F00B138FE /* RegistViewController.m */,
-				298075DC174A141F00B138FE /* RegistViewController.xib */,
+				29C942D417F5D2510042CD8E /* RegistViewController.xib */,
 			);
 			name = "Login&Regist";
 			sourceTree = "<group>";
@@ -2617,7 +2617,6 @@
 				29EFE860172A55AD0099B5A7 /* Default.png in Resources */,
 				29EFE862172A55AD0099B5A7 /* Default@2x.png in Resources */,
 				29EFE864172A55AD0099B5A7 /* Default-568h@2x.png in Resources */,
-				2926222A172BD70000A95E97 /* LoginViewController.xib in Resources */,
 				2963903D173A3EC1009C5530 /* Placeholder.png in Resources */,
 				2963903E173A3EC1009C5530 /* Selected.png in Resources */,
 				292FF984173A466D004CC609 /* 114.png in Resources */,
@@ -2742,7 +2741,6 @@
 				294CEEA1174467D000AF0D66 /* tab_btn_photo@2x.png in Resources */,
 				294CEEA2174467D000AF0D66 /* tab_btn_setting@2x.png in Resources */,
 				294CEEA3174467D000AF0D66 /* tab_btn_upload@2x.png in Resources */,
-				298075DE174A141F00B138FE /* RegistViewController.xib in Resources */,
 				29B2B62A174B11BA00E78183 /* favorite_tag.png in Resources */,
 				29B2B62B174B11BA00E78183 /* favorite_tag@2x.png in Resources */,
 				29B2B632174B1F2600E78183 /* upload_bg.png in Resources */,
@@ -2918,6 +2916,8 @@
 				292CC2E117E70E7D00E3FE12 /* Bt_Box_Family1.png in Resources */,
 				292CC2E217E70E7D00E3FE12 /* Bt_Box_Family2.png in Resources */,
 				29C942C917F538C30042CD8E /* icon_checked_grid.png in Resources */,
+				29C942D517F5D2510042CD8E /* RegistViewController.xib in Resources */,
+				29C942D717F5D2590042CD8E /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
