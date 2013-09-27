@@ -66,7 +66,19 @@
 -(void)showText:(NSString *)text
 {
     [currLabel setHidden:YES];
+    [backLabel setFont:[UIFont systemFontOfSize:12]];
     [backLabel setText:text];
+    [backLabel setBackgroundColor:[UIColor clearColor]];
+    CGRect backLabelRect = CGRectMake(0, -5, self.frame.size.width, 20);
+    [backLabel setFrame:backLabelRect];
+    [backLabel.layer setBorderWidth:0];
+}
+
+-(void)showDate:(NSString *)date
+{
+    [currLabel setHidden:YES];
+    [backLabel setFont:[UIFont systemFontOfSize:11]];
+    [backLabel setText:date];
     [backLabel setBackgroundColor:[UIColor clearColor]];
     CGRect backLabelRect = CGRectMake(0, -5, self.frame.size.width, 20);
     [backLabel setFrame:backLabelRect];

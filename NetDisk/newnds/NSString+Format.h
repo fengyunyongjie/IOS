@@ -11,5 +11,6 @@
 @interface NSString (Format)
 
 +(NSString *)formatNSStringForChar:(const char *)temp;
++(NSString *)formatNSStringForOjbect:(NSObject *)object;
 
 @end

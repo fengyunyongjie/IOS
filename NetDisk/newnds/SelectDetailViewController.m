@@ -171,19 +171,25 @@
         if([app_delegate.title_string count] > 0)
         {
             NSMutableString *table_str = [[[NSMutableString alloc] init] autorelease];
+            int i=0;
             for(NSString *name in app_delegate.title_string)
             {
                 if([table_str length]>0)
                 {
                     [table_str appendString:@"/"];
                 }
-                [table_str appendFormat:@"%@",name];
+                if(i > 0)
+                {
+                    [table_str appendFormat:@"%@",name];
+                }
+                i++;
             }
             NSLog(@"app_delegate:%@",table_str);
             UserInfo *info = [[UserInfo alloc] init];
             info.keyString = @"自动备份目录";
             info.f_id = [self.f_id intValue];
             info.descript = [[[NSString alloc] initWithString:table_str] autorelease];
+            info.space_id = space_id;
             [info updateUserinfo];
             [info release];
         }

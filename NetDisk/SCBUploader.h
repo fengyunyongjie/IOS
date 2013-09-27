@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ASIHTTPRequest.h"
-#import "ASIFormDataRequest.h"
 
-@protocol UpLoadDelegate <NSObject,ASIHTTPRequestDelegate>
+@protocol UpLoadDelegate <NSObject>
 
 //上传效验
 -(void)uploadVerify:(NSDictionary *)dictionary;
@@ -36,7 +34,7 @@
 @end
 
 
-@interface SCBUploader : NSObject <ASIHTTPRequestDelegate>
+@interface SCBUploader : NSObject 
 {
     id<UpLoadDelegate> upLoadDelegate;
     NSMutableData *matableData;
@@ -53,7 +51,7 @@
 -(void)requestUploadVerify:(int)f_pid f_name:(NSString *)f_name f_size:(NSString *)f_size f_md5:(NSString *)f_md5 sapce_id:(NSString *)sapce_id;
 
 //上传
--(NSURLConnection *)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image;
+-(NSURLConnection *)requestUploadFile:(NSString *)s_name skip:(NSString *)skip Image:(NSData *)image;
 
 //上传
 -(void)requestUploadState:(NSString *)s_name;

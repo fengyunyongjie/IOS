@@ -36,6 +36,13 @@
         if (sqlite3_exec(contactDB, (const char *)[CreateWebDataTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
             NSLog(@"errMsg:%s",errMsg);
         }
+        //新代码
+        if (sqlite3_exec(contactDB, (const char *)[CreateUploadList UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+            NSLog(@"errMsg:%s",errMsg);
+        }
+        if (sqlite3_exec(contactDB, (const char *)[CreateAutoUploadList UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+            NSLog(@"errMsg:%s",errMsg);
+        }
         sqlite3_close(contactDB);
     }
     else

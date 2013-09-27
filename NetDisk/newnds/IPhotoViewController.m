@@ -777,6 +777,12 @@
 
 #pragma mark - QBImagePickerControllerDelegate
 
+-(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)fId changeSpaceId:(NSString *)s_id
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.moveUpload changeUpload:array_ changeDeviceName:device_name changeFileId:fId changeSpaceId:s_id];
+}
+
 -(void)changeSpaceId:(NSString *)s_id
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];

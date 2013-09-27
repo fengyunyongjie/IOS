@@ -69,7 +69,7 @@
 }
 
 //上传
--(NSURLConnection *)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image
+-(NSURLConnection *)requestUploadFile:(NSString *)s_name skip:(NSString *)skip Image:(NSData *)image
 {
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
@@ -123,7 +123,6 @@
 {
     if([url_string isEqualToString:FM_UPLOAD_NEW])
     {
-        NSLog(@"+30");
         macTimeOut += 30;
         NSMutableURLRequest *request = (NSMutableURLRequest *)[connection currentRequest];
         [request setTimeoutInterval:macTimeOut];
@@ -134,21 +133,9 @@
         }
         else
         {
-            NSLog(@"该暂停了");
             [connection cancel];
         }
     }
-}
-
--(void)request:(ASIHTTPRequest *)request didReceiveData:(NSData *)data
-{
-    [self.matableData appendData:data];
-}
--(void)requestFinished:(ASIHTTPRequest *)request
-{
-    NSLog(@"--------------------------------------------------太忙了");
-    NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.matableData options:NSJSONReadingMutableLeaves error:nil];
-    NSLog(@"请求成功后，分发数据:%@",diction);
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error

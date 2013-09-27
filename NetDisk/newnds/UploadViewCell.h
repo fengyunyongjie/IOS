@@ -11,10 +11,11 @@
 //引用类
 #import "TaskDemo.h"
 #import "CustomJinDu.h"
+#import "UpLoadList.h"
 
 @protocol UploadViewCellDelegate <NSObject>
 
--(void)deletCell:(TaskDemo *)taskDemo;
+-(void)deletCell:(int)index;
 
 @end
 
@@ -37,7 +38,7 @@
 @property(nonatomic,retain) CustomJinDu *jinDuView;
 @property(nonatomic,retain) id<UploadViewCellDelegate> delegate;
 
--(void)setUploadDemo:(TaskDemo *)demo_;
+-(void)setUploadDemo:(UpLoadList *)list;
 -(void)showTopBar;
 
 @end

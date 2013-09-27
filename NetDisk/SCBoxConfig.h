@@ -17,6 +17,8 @@
 //#define SERVER_URL @"http://192.168.1.7/nds/api"	//local host
 //#define SERVER_URL @"http://192.168.1.27/nds/api"	//local host
 //#define SERVER_URL @"http://192.168.1.62:8080/nds/api"	//local host
+//#define SERVER_URL @"http://xianzhouhe.eicp.net"
+
 //
 #pragma mark - 1.用户管理
 //用户注册

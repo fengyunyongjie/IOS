@@ -7,8 +7,8 @@
 //
 
 #import "DBSqlite3.h"
-#define InsertUserinfoTable @"INSERT INTO Userinfo(ISTRUE,KEY,DESCRIPT,F_ID) VALUES (?,?,?,?)"
-#define UpdateUserinfoForName @"UPDATE Userinfo SET ISTRUE=?,DESCRIPT=?,F_ID=? WHERE KEY=?"
+#define InsertUserinfoTable @"INSERT INTO Userinfo(ISTRUE,KEY,DESCRIPT,F_ID,Space_id) VALUES (?,?,?,?,?)"
+#define UpdateUserinfoForName @"UPDATE Userinfo SET ISTRUE=?,DESCRIPT=?,F_ID=?,Space_id=? WHERE KEY=?"
 #define SelectForKey @"SELECT ISTRUE FROM Userinfo WHERE KEY=?"
 #define SelectAllKey @"SELECT * FROM Userinfo WHERE KEY=?"
 
@@ -17,12 +17,14 @@
     BOOL isTrue;
     NSString *keyString;
     NSString *descript;
+    NSString *space_id;
     int f_id;
 }
 
 @property(nonatomic,assign) BOOL isTrue;
 @property(nonatomic,retain) NSString *keyString;
 @property(nonatomic,retain) NSString *descript;
+@property(nonatomic,retain) NSString *space_id;
 @property(nonatomic,assign) int f_id;
 
 //添加数据

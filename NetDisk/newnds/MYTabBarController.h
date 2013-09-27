@@ -76,6 +76,9 @@ typedef enum
     UIView *custom_view;
     
     float allHeight;
+    
+    UIImageView *imageView;
+    UILabel *label;
 }
 
 
@@ -108,6 +111,8 @@ typedef enum
 - (void) add_custom_view_layer;
 
 - (void) when_tabbar_is_selected:(int)tabID;
+
+-(void)addUploadNumber:(NSInteger)count;
 
 @property(nonatomic) BOOL hidesBottomBarWhenPushed;
 - (void)setHidesBottomBarWhenPushed:(BOOL)flag;

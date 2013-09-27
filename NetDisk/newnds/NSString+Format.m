@@ -24,4 +24,10 @@
     return string;
 }
 
++(NSString *)formatNSStringForOjbect:(NSObject *)object
+{
+    NSString *string = [NSString stringWithFormat:@"%@",object];
+    return string;
+}
+
 @end

@@ -7,8 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ASIHTTPRequest.h"
-#import "ASIFormDataRequest.h"
 #import "SCBPhotoManager.h"
 #import "SCBUploader.h"
 #import <CommonCrypto/CommonDigest.h>

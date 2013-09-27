@@ -225,10 +225,7 @@
 -(void)clicked_startUpload:(id)sender
 {
     NSLog(@"self.f_id:%@",self.f_id);
-    [self.delegate changeDeviceName:device_name];
-    [self.delegate changeFileId:self.f_id];
-    [self.delegate changeSpace:space_id];
-    [self.delegate changeUpload:self.selectedAssets];
+    [self.delegate changeUpload:self.selectedAssets changeDeviceName:device_name changeFileId:self.f_id changeSpaceId:space_id];
     
     NSLog(@"device_name--------:%@",device_name);
     

@@ -16,10 +16,12 @@
     UIButton *automicOff_button;
     NSString *space_id;
     NSString *table_string;
+    UISwitch *m_switch;
 }
 
 @property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) NSMutableArray *table_array;
 @property(nonatomic,retain) NSString *table_string;
+@property(nonatomic,retain) UISwitch *m_switch;
 
 @end

@@ -29,6 +29,7 @@
 #import "APService.h"
 #import "MessagePushController.h"
 #import "YNFunctions.h"
+#import "BackgroundRunner.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -37,6 +38,8 @@
 @synthesize maticUpload;
 @synthesize isAutomicUpload;
 @synthesize title_string;
+@synthesize moveUpload;
+@synthesize autoUpload;
 
 @class UploadAll;
 - (void)dealloc
@@ -52,6 +55,14 @@
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |    UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
     upload_all = [[UploadAll alloc] init];
     maticUpload = [[AutomaticUpload alloc] init];
+    moveUpload = [[MoveUpload alloc] init];
+    autoUpload = [[NewAutoUpload alloc] init];
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    
+    [defaultCenter addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    //网络监听
+    hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    [hostReach startNotifier]; 
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
@@ -106,9 +117,57 @@
     // Required
     [APService setupWithOption:launchOptions];
     
-    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    
     [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kAPNetworkDidReceiveMessageNotification object:nil];
     return YES;
+}
+
+
+//网络链接改变时会调用的方法
+-(void)reachabilityChanged:(NSNotification *)note
+{
+    Reachability *currReach = [note object];
+    NSParameterAssert([currReach isKindOfClass:[Reachability class]]);
+    
+    //对连接改变做出响应处理动作
+    NetworkStatus status = [currReach currentReachabilityStatus];
+    NSLog(@"status:%i",status);
+    switch (status) {
+        case 0://无网络
+        {
+            
+        }
+            break;
+        case 1://WLAN
+        {
+            if(![YNFunctions isOnlyWifi])
+            {
+                if(self.moveUpload.isOpenedUpload)
+                {
+                    [self.moveUpload start];
+                }
+                if(self.autoUpload.isOpenedUpload)
+                {
+                    [self.autoUpload start];
+                }
+            }
+        }
+            break;
+        case 2://WiFi
+        {
+            if(self.moveUpload.isOpenedUpload)
+            {
+                [self.moveUpload start];
+            }
+            if(self.autoUpload.isOpenedUpload)
+            {
+                [self.autoUpload start];
+            }
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 //进入主界面
@@ -123,9 +182,9 @@
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
     NSDictionary * userInfo = [notification userInfo];
     NSLog(@"%@",userInfo);
-    NSString *content = [userInfo valueForKey:@"content"];
-    NSString *extras = [userInfo valueForKey:@"extras"];
-    NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //自定义参数，key是自己定义的
+//    NSString *content = [userInfo valueForKey:@"content"];
+//    NSString *extras = [userInfo valueForKey:@"extras"];
+//    NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //自定义参数，key是自己定义的
     
 }
 -(BOOL)isFirstLoad
@@ -344,12 +403,35 @@
 {
     isBackGround = TRUE;
     [self.window.rootViewController dismissModalViewControllerAnimated:YES];
+    //后代运行
+    _backgroundRunningTimeInterval = 0;
+    isJiLu = TRUE;
+    [self performSelectorInBackground:@selector(runningInBackground) withObject:nil];
+    if ([[UIDevice currentDevice] isMultitaskingSupported]) {
+        [[BackgroundRunner shared] run];
+    }
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
+- (void)runningInBackground
+{
+    while (isJiLu) {
+        [NSThread sleepForTimeInterval:1];
+        _backgroundRunningTimeInterval++;
+        NSLog(@"%d",(int)_backgroundRunningTimeInterval);
+    }
+}
+
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    isJiLu = FALSE;
+    [[BackgroundRunner shared] stop];
+    
+    if([YNFunctions isAutoUpload])
+    {
+        [self.autoUpload start];
+    }
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
@@ -481,7 +563,7 @@
 
 - (void)automicUpload
 {
-    [maticUpload isHaveData];
+    [autoUpload start];
 }
 
 @end

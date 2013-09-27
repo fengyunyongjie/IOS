@@ -7,6 +7,7 @@
 //
 
 #import "UploadViewCell.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation UploadViewCell
 @synthesize demo,button_dele_button,imageView,contentView,label_name;
@@ -46,11 +47,72 @@
     [super setSelected:selected animated:animated];
 }
 
--(void)setUploadDemo:(TaskDemo *)demo_
+-(void)setUploadDemo:(UpLoadList *)list
 {
-    self.demo = demo_;
-//    [NSThread detachNewThreadSelector:@selector(newUploadMain) toTarget:self withObject:nil];
-    [self newUploadMain];
+    if(list.t_state == 1)
+    {
+        [self.jinDuView showDate:list.t_date];
+    }
+    else if(list.t_state == 0)
+    {
+        float f = (float)list.upload_size / (float)list.t_lenght;
+        [self.jinDuView setCurrFloat:f];
+    }
+    else if(list.t_state == 2)
+    {
+        [self.jinDuView showText:@"暂停"];
+    }
+    else if(list.t_state == 3)
+    {
+        [self.jinDuView showText:@"等待WiFi"];
+    }
+    if(![self.label_name.text isEqualToString:list.t_name])
+    {
+        ALAssetsLibrary *libary = [[[ALAssetsLibrary alloc] init] autorelease];
+        [libary assetForURL:[NSURL URLWithString:list.t_fileUrl] resultBlock:^(ALAsset *result){
+            UIImage *imageV = [UIImage imageWithCGImage:[result thumbnail]];
+            if(imageV.size.width>=imageV.size.height)
+            {
+                if(imageV.size.height<=88)
+                {
+                    CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
+                    imageV = [self imageFromImage:imageV inRect:imageRect];
+                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                }
+                else
+                {
+                    CGSize newImageSize;
+                    newImageSize.height = 88;
+                    newImageSize.width = 88*imageV.size.width/imageV.size.height;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake((newImageSize.width-88)/2, 0, 88, 88);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+            }
+            else if(imageV.size.width<=imageV.size.height)
+            {
+                if(imageV.size.width<=88)
+                {
+                    CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
+                    imageV = [self imageFromImage:imageV inRect:imageRect];
+                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                }
+                else
+                {
+                    CGSize newImageSize;
+                    newImageSize.width = 88;
+                    newImageSize.height = 88*imageV.size.height/imageV.size.width;
+                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                    CGRect imageRect = CGRectMake(0, (newImageSize.height-88)/2, 88, 88);
+                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                }
+            }
+        } failureBlock:^(NSError *error){}];
+        
+    }
+    [self.label_name setText:list.t_name];
 }
 
 -(void)newUploadMain
@@ -140,7 +202,7 @@
 
 -(void)deleteSelf
 {
-    [delegate deletCell:self.demo];
+    [delegate deletCell:self.tag];
 }
 
 @end

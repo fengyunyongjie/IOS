@@ -7,11 +7,12 @@
 //
 
 #import "UserInfo.h"
-
+#import "NSString+Format.h"
 
 @implementation UserInfo
 @synthesize isTrue,keyString;
 @synthesize descript;
+@synthesize space_id;
 @synthesize f_id;
 
 //添加数据
@@ -35,6 +36,7 @@
         sqlite3_bind_text(statement, 2, [keyString UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(statement, 3, [descript UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, f_id);
+        sqlite3_bind_text(statement, 5, [space_id UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
@@ -62,7 +64,8 @@
         sqlite3_bind_int(statement, 1, isTrue);
         sqlite3_bind_text(statement, 2, [descript UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 3, f_id);
-        sqlite3_bind_text(statement, 4, [keyString UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 4, [space_id UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 5, [keyString UTF8String], -1, SQLITE_TRANSIENT);
         
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
@@ -114,28 +117,16 @@
             info.isTrue = sqlite3_column_int(statement, 1);
             
             const char *keys = (const char *)sqlite3_column_text(statement, 2);
-            if(keys!=NULL)
-            {
-                info.keyString = [NSString stringWithUTF8String:keys];
-            }
-            else
-            {
-                info.keyString = @"";
-            }
+            info.keyString = [NSString formatNSStringForChar:keys];
             
             info.keyString = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 2)];
             const char *temp = (const char *)sqlite3_column_text(statement, 3);
-            if(temp!=NULL)
-            {
-                info.descript = [NSString stringWithUTF8String:temp];
-            }
-            else
-            {
-                info.descript = @"";
-            }
+            info.descript = [NSString formatNSStringForChar:temp];
             
             NSLog(@"info.descript:%@",info.descript);
             info.f_id = sqlite3_column_int(statement, 4);
+            const char *spaceId = (const char *)sqlite3_column_text(statement, 5);
+            info.space_id = [NSString formatNSStringForChar:spaceId];
             [tableArray addObject:info];
             [info release];
         }

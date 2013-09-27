@@ -536,25 +536,9 @@
     return description;
 }
 
-- (void)changeDeviceName:(NSString *)device_name
+-(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id_ changeSpaceId:(NSString *)s_id
 {
-    [self.delegate changeDeviceName:device_name];
-}
-
--(void)changeFileId:(NSString *)f_id_
-{
-    [self.delegate changeFileId:f_id_];
-}
-
-- (void)changeUpload:(NSMutableOrderedSet *)array_
-{
-    NSLog(@"array_:%@",array_);
-    [self.delegate changeUpload:array_];
-}
-
--(void)changeSpace:(NSString *)s_id
-{
-    [self.delegate changeSpaceId:s_id];
+    [self.delegate changeUpload:array_ changeDeviceName:device_name changeFileId:f_id_ changeSpaceId:s_id];
 }
 
 @end

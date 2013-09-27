@@ -1300,6 +1300,7 @@ typedef enum{
     imagePickerController.delegate = self;
     imagePickerController.allowsMultipleSelection = YES;
     imagePickerController.f_id  = self.f_id;
+    imagePickerController.space_id = [[SCBSession sharedSession] spaceID];
     [imagePickerController requestFileDetail];
     NSLog(@"self.f_id:%@",self.f_id);
     [self.navigationController pushViewController:imagePickerController animated:YES];
@@ -1833,6 +1834,12 @@ typedef enum{
     self.btnHide.hidden=YES;
 }
 #pragma mark - QBImagePickerControllerDelegate
+
+-(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
+{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.moveUpload changeUpload:array_ changeDeviceName:device_name changeFileId:f_id changeSpaceId:s_id];
+}
 
 -(void)changeSpaceId:(NSString *)s_id
 {

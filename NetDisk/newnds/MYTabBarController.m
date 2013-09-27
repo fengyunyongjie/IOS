@@ -349,6 +349,33 @@
     show_rect = Rect;
 }
 
+-(void)addUploadNumber:(NSInteger)count
+{
+    if(!imageView)
+    {
+        CGRect imageRect = CGRectMake(200, -2, 35, 35);
+        imageView = [[[UIImageView alloc] initWithFrame:imageRect] autorelease];
+        [imageView setImage:[UIImage imageNamed:@"icon_checked_grid.png"]];
+        CGRect labelRect = CGRectMake(2, 2, 30, 30);
+        label = [[[UILabel alloc] initWithFrame:labelRect] autorelease];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setTextColor:[UIColor whiteColor]];
+        [label setFont:[UIFont boldSystemFontOfSize:12]];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        [imageView addSubview:label];
+        [custom_view addSubview:imageView];
+    }
+    if(count>0)
+    {
+        [label setText:[NSString stringWithFormat:@"%i",count]];
+        [imageView setHidden:NO];
+    }
+    else
+    {
+        [imageView setHidden:YES];
+    }
+}
+
 -(void)add_custom_view_layer
 {
     float show_size = show_rect.size.height;

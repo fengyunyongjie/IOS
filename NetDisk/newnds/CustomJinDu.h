@@ -25,5 +25,6 @@
 @property(nonatomic,assign) CGSize customSize;
 
 -(void)showText:(NSString *)text;
+-(void)showDate:(NSString *)date;
 
 @end

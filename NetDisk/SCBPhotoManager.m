@@ -11,7 +11,6 @@
 #import "SCBoxConfig.h"
 #import "PhohoDemo.h"
 #import "AppDelegate.h"
-#import "JSON.h"
 #import "PhotoFile.h"
 
 @implementation SCBPhotoManager

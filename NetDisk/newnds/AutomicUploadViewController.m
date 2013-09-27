@@ -29,7 +29,7 @@
 @end
 
 @implementation AutomicUploadViewController
-@synthesize table_view,table_array,table_string;
+@synthesize table_view,table_array,table_string,m_switch;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,7 +56,8 @@
     if([array count] == 0)
     {
         info.f_id = -1;
-        info.descript = [NSString stringWithFormat:@"我的文件/手机照片/%@",[AppDelegate deviceString]];
+        info.descript = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
+        info.space_id = [NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
         [info insertUserinfo];
         self.table_string = info.descript;
         app_delegate.maticUpload.f_id = @"-1";
@@ -150,6 +151,15 @@
     return 0;
 }
 
+/*
+ 
+ UISwitch *m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 10, 40, 29)];
+ [m_switch setOnTintColor:[UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]];
+ [m_switch addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
+ m_switch.on = YES;
+ 
+ */
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *celleString = @"automicCell";
@@ -168,21 +178,38 @@
     {
         cell.textLabel.text = @"相册自动备份";
         cell.detailTextLabel.text = @"指定目录自动备份到云端";
-        if(automicOff_button == nil)
+        
+        if(m_switch == nil)
         {
-            automicOff_button = [[UIButton alloc] initWithFrame:OFFButtonRect];
+            m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 10, 40, 29)];
+            [m_switch setOnTintColor:[UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]];
+            [m_switch addTarget:self action:@selector(openOrClose:) forControlEvents:UIControlEventValueChanged];
             if([YNFunctions isAutoUpload])
             {
-                [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
+                m_switch.on = YES;
             }
             else
             {
-                [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
+                m_switch.on = NO;
             }
-            [automicOff_button addTarget:self action:@selector(openOrClose:) forControlEvents:UIControlEventTouchUpInside];
+            
         }
+        
+//        if(automicOff_button == nil)
+//        {
+//            automicOff_button = [[UIButton alloc] initWithFrame:OFFButtonRect];
+//            if([YNFunctions isAutoUpload])
+//            {
+//                [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
+//            }
+//            else
+//            {
+//                [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
+//            }
+//            [automicOff_button addTarget:self action:@selector(openOrClose:) forControlEvents:UIControlEventTouchUpInside];
+//        }
         cell.accessoryType = UITableViewCellAccessoryNone;
-        [cell addSubview:automicOff_button];
+        [cell addSubview:m_switch];
     }
     if(row == 1)
     {
@@ -229,18 +256,16 @@
 
 -(void)openOrClose:(id)sender
 {
-    if(automicOff_button)
+    if(m_switch)
     {
         if([YNFunctions isAutoUpload])
         {
             [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
-//            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(closeUpload) userInfo:nil repeats:NO];
             [NSThread detachNewThreadSelector:@selector(closeUpload) toTarget:self withObject:nil];
         }
         else
         {
             [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
-//            [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(startAutoUpload) userInfo:nil repeats:NO];
             [NSThread detachNewThreadSelector:@selector(startAutoUpload) toTarget:self withObject:nil];
         }
     }
@@ -250,14 +275,14 @@
 {
     [YNFunctions setIsAutoUpload:NO];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [app_delegate.maticUpload colseAutomaticUpload];
+    [app_delegate.autoUpload stopAllUpload];
 }
 
 -(void)startAutoUpload
 {
     [YNFunctions setIsAutoUpload:YES];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [app_delegate.maticUpload isHaveData];
+    [app_delegate.autoUpload start];
 }
 
 - (void)didReceiveMemoryWarning

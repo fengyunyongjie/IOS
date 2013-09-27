@@ -52,7 +52,7 @@
     TaskDemo *automicDemo;
     int automicTotal;
     int selectedIndex;
-    TaskDemo *selectDemo;
+    NSInteger selectIndex;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -64,7 +64,7 @@
 @property(nonatomic,assign) BOOL isUploadAll;
 @property(nonatomic,assign) BOOL isAutomaticUpload;
 @property(nonatomic,retain) UploadViewCell *headerView;
-@property(nonatomic,retain) TaskDemo *selectDemo;
+@property(nonatomic,assign) NSInteger selectIndex;
 
 //上传成功
 -(void)upFinish:(NSInteger)fileTag;
@@ -78,7 +78,7 @@
 -(void)updateReloadData;
 
 //自动备份上传
--(void)startAutomatic:(UIImage *)uploadImage progess:(CGFloat)progess taskDemo:(TaskDemo *)taskdemo total:(int)total;
+-(void)startAutomaticList:(UpLoadList *)list total:(int)total;
 //关闭自动备份上传
 -(void)stopAutomatic;
 //退出登录清楚列表
