@@ -54,6 +54,9 @@
     {
         info.f_id = -1;
         info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
+        info.space_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] spaceID]];
+        info.is_oneWiFi = YES;
+        info.is_autoUpload = NO;
         [info insertUserinfo];
         self.f_id = @"-1";
     }

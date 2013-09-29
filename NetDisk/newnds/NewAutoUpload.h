@@ -16,6 +16,7 @@
 @property(nonatomic,assign) BOOL isStart;
 @property(nonatomic,assign) BOOL isOpenedUpload;
 @property(nonatomic,assign) BOOL isStop;
+@property(nonatomic,assign) BOOL isGoOn;
 
 -(void)updateLoad;
 -(void)start;
@@ -26,5 +27,9 @@
 -(void)deleteOneUpload:(NSInteger)selectIndex;
 //删除所有上传
 -(void)deleteAllUpload;
+//暂停上传
+-(void)stopUpload;
+//开始上传
+-(void)goOnUpload;
 
 @end

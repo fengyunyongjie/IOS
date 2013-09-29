@@ -13,7 +13,8 @@
 #import "RegistViewController.h"
 #import "APService.h"
 #import "SCBSession.h"
-
+#import "UserInfo.h"
+#import "NSString+Format.h"
 
 @interface LoginViewController ()
 @property(strong,nonatomic) UIAlertView *av;
@@ -157,6 +158,29 @@
     [[NSUserDefaults standardUserDefaults] setObject:_userNameTextField.text forKey:@"usr_name"];
     [[NSUserDefaults standardUserDefaults] setObject:_passwordTextField.text forKey:@"usr_pwd"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    UserInfo *info = [[[UserInfo alloc] init] autorelease];
+    info.user_name = [NSString formatNSStringForOjbect:_userNameTextField.text];
+    NSMutableArray *tableArray = [info selectAllUserinfo];
+    if([tableArray count]>0)
+    {
+        UserInfo *userInfo = [tableArray objectAtIndex:0];
+        info.space_id = userInfo.space_id;
+        info.auto_url = userInfo.auto_url;
+        info.f_id = userInfo.f_id;
+        info.is_oneWiFi = userInfo.is_oneWiFi;
+        info.is_autoUpload = userInfo.is_autoUpload;
+    }
+    else
+    {
+        info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
+        info.space_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] spaceID]];
+        info.f_id = -1;
+        info.is_autoUpload = NO;
+        info.is_oneWiFi = YES;
+    }
+    [info insertUserinfo];
+    
     if (self.delegate&&[self.delegate respondsToSelector:@selector(resetData)]) {
         [self.delegate resetData];
     }

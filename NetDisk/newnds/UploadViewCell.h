@@ -23,20 +23,20 @@
 {
     UIImageView *imageView;
     UILabel *label_name;
-//    UIProgressView *progressView;
     UIButton *button_dele_button;
     TaskDemo *demo;
     CustomJinDu *jinDuView;
     id<UploadViewCellDelegate> delegate;
+    UIButton *button_start_button;
 }
 
 @property(nonatomic,retain) UIImageView *imageView;
 @property(nonatomic,retain) UILabel *label_name;
-//@property(nonatomic,retain) UIProgressView *progressView;
 @property(nonatomic,retain) UIButton *button_dele_button;
 @property(nonatomic,retain) TaskDemo *demo;
 @property(nonatomic,retain) CustomJinDu *jinDuView;
 @property(nonatomic,retain) id<UploadViewCellDelegate> delegate;
+@property(nonatomic,retain) UIButton *button_start_button;
 
 -(void)setUploadDemo:(UpLoadList *)list;
 -(void)showTopBar;

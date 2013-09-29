@@ -56,31 +56,42 @@
 
 -(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
 {
-    if([array_ count]>0)
-    {
-        for(int i=0;i<[array_ count];i++)
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        if([array_ count]>0)
         {
-            ALAsset *asset = [array_ objectAtIndex:i];
-            UpLoadList *list = [[UpLoadList alloc] init];
-            list.t_date = @"";
-            list.t_lenght = asset.defaultRepresentation.size;
-            list.t_name = [NSString formatNSStringForOjbect:asset.defaultRepresentation.filename];
-            list.t_state = 0;
-            list.t_fileUrl = [NSString formatNSStringForOjbect:asset.defaultRepresentation.url];
-            list.t_url_pid = [NSString formatNSStringForOjbect:f_id];
-            list.t_url_name = [NSString formatNSStringForOjbect:device_name];
-            list.t_file_type = 0;
-            list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
-            list.file_id = @"";
-            list.upload_size = 0;
-            list.is_autoUpload = NO;
-            list.is_share = NO;
-            list.spaceId = [NSString formatNSStringForOjbect:s_id];
-            [list insertUploadList];
-            [list release];
+            for(int i=0;i<[array_ count];i++)
+            {
+                if(i == 0)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                    [appleDate.myTabBarController addUploadNumber:[array_ count]];
+                    UIApplication *app = [UIApplication sharedApplication];
+                    app.applicationIconBadgeNumber = [array_ count];
+                    });
+                }
+                ALAsset *asset = [array_ objectAtIndex:i];
+                UpLoadList *list = [[UpLoadList alloc] init];
+                list.t_date = @"";
+                list.t_lenght = asset.defaultRepresentation.size;
+                list.t_name = [NSString formatNSStringForOjbect:asset.defaultRepresentation.filename];
+                list.t_state = 0;
+                list.t_fileUrl = [NSString formatNSStringForOjbect:asset.defaultRepresentation.url];
+                list.t_url_pid = [NSString formatNSStringForOjbect:f_id];
+                list.t_url_name = [NSString formatNSStringForOjbect:device_name];
+                list.t_file_type = 0;
+                list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
+                list.file_id = @"";
+                list.upload_size = 0;
+                list.is_autoUpload = NO;
+                list.is_share = NO;
+                list.spaceId = [NSString formatNSStringForOjbect:s_id];
+                [list insertUploadList];
+                [list release];
+            }
         }
-    }
-    [self updateUploadList];
+        [self updateUploadList];
+    });
 }
 
 //查询出所有数据
@@ -251,6 +262,7 @@
 //暂时所有上传
 -(void)stopAllUpload
 {
+    isOpenedUpload = FALSE;
     isStopCurrUpload = YES;
     isStart = NO;
 }

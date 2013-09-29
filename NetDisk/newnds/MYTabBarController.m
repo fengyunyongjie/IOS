@@ -356,12 +356,13 @@
         CGRect imageRect = CGRectMake(200, -2, 35, 35);
         imageView = [[[UIImageView alloc] initWithFrame:imageRect] autorelease];
         [imageView setImage:[UIImage imageNamed:@"icon_checked_grid.png"]];
-        CGRect labelRect = CGRectMake(2, 2, 30, 30);
+        CGRect labelRect = CGRectMake(5, 2, 25, 30);
         label = [[[UILabel alloc] initWithFrame:labelRect] autorelease];
         [label setBackgroundColor:[UIColor clearColor]];
         [label setTextColor:[UIColor whiteColor]];
-        [label setFont:[UIFont boldSystemFontOfSize:12]];
+        [label setFont:[UIFont boldSystemFontOfSize:11]];
         [label setTextAlignment:NSTextAlignmentCenter];
+        [label setLineBreakMode:NSLineBreakByTruncatingTail];
         [imageView addSubview:label];
         [custom_view addSubview:imageView];
     }

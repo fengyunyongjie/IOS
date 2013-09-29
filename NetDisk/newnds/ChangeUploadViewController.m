@@ -465,7 +465,6 @@
     [self.more_control setHidden:YES];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate.moveUpload start];
-    [app_delegate.autoUpload start];
 }
 
 -(void)clicked_clearAll:(id)sender
@@ -683,6 +682,7 @@
             [headerView setFrame:rect];
             [top_headerView addSubview:headerView];
             [headerView.button_dele_button setHidden:YES];
+//            [headerView.button_start_button setHidden:NO];
         }
         
         [top_header_label setText:[NSString stringWithFormat:@" 相册自动备份(%i)",total]];

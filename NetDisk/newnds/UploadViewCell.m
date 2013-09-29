@@ -8,10 +8,11 @@
 
 #import "UploadViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "AppDelegate.h"
 
 @implementation UploadViewCell
 @synthesize demo,button_dele_button,imageView,contentView,label_name;
-@synthesize delegate;
+@synthesize delegate,button_start_button,jinDuView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -30,16 +31,44 @@
         CGRect progress_rect = CGRectMake(60, 30, 200, 3);
         self.jinDuView = [[CustomJinDu alloc] initWithFrame:progress_rect];
         [self addSubview:self.jinDuView];
-//        self.progressView = [[UIProgressView alloc] initWithFrame:progress_rect];
-//        [self addSubview:self.progressView];
         
         CGRect button_rect = CGRectMake(270, 0, 50, 50);
         self.button_dele_button = [[UIButton alloc] initWithFrame:button_rect];
         [self.button_dele_button setBackgroundImage:[UIImage imageNamed:@"Bt_Cancle.png"] forState:UIControlStateNormal];
         [self.button_dele_button addTarget:self action:@selector(deleteSelf) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.button_dele_button];
+        
+        CGRect start_rect = CGRectMake(270, 15, 40, 30);
+        self.button_start_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [self.button_start_button setFrame:start_rect];
+        [self.button_start_button setBackgroundColor:[UIColor clearColor]];
+        [self.button_start_button setTitle:@"暂停" forState:UIControlStateNormal];
+        [self.button_start_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self.button_start_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.button_start_button addTarget:self action:@selector(start) forControlEvents:UIControlEventTouchDown];
+        [self addSubview:self.button_start_button];
+        [self.button_start_button setHidden:YES];
     }
     return self;
+}
+
+-(void)start
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if([self.button_start_button.titleLabel.text isEqualToString:@"暂停"])
+    {
+        NSLog(@"self.button_start_button.titleLabel.text 0");
+        [self.button_start_button setTitle:@"继续" forState:UIControlStateNormal];
+        [app_delegate.autoUpload stopUpload];
+    }
+    else
+    {
+        NSLog(@"self.button_start_button.titleLabel.text 1");
+        [self.button_start_button setTitle:@"暂停" forState:UIControlStateNormal];
+        [app_delegate.autoUpload goOnUpload];
+    }
+    });
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

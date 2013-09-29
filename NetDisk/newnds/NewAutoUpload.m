@@ -18,7 +18,7 @@
 #import "NSString+Format.h"
 
 @implementation NewAutoUpload
-@synthesize uploadArray,isStopCurrUpload,isStart,isOpenedUpload,isStop;
+@synthesize uploadArray,isStopCurrUpload,isStart,isGoOn,isOpenedUpload,isStop;
 
 /*
  
@@ -31,6 +31,7 @@
 
 -(void)selectPhotoLibary
 {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     isStop = YES;
     UserInfo *info = [[[UserInfo alloc] init] autorelease];
     info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
@@ -40,6 +41,8 @@
         info.f_id = -1;
         info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
         info.space_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] spaceID]];
+        info.is_oneWiFi = YES;
+        info.is_autoUpload = NO;
         [info insertUserinfo];
     }
     else
@@ -94,11 +97,13 @@
                             {
                                 if(uploadView.uploadListTableView.tableHeaderView == nil)
                                 {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
                                     NSInteger count = [ls SelectCountAutoUploadList];
                                     [uploadView startAutomaticList:list total:[group numberOfAssets]-count];
                                     [appleDate.myTabBarController addUploadNumber:[uploadArray count]+[appleDate.moveUpload.uploadArray count]-count];
                                     UIApplication *app = [UIApplication sharedApplication];
                                     app.applicationIconBadgeNumber = [uploadArray count]+[appleDate.moveUpload.uploadArray count]-count;
+                                    });
                                 }
                             }
                             
@@ -111,7 +116,7 @@
             if([group numberOfAssets]<=total-1)
             {
                 isStop = FALSE;
-                if(!isStart)
+                if(!isStart && isGoOn)
                 {
                     isStart = TRUE;
                     [NSThread detachNewThreadSelector:@selector(startUpload) toTarget:self withObject:nil];
@@ -136,6 +141,7 @@
         [alertView release];
         });
     }];
+    });
 }
 
 -(id)init
@@ -173,6 +179,7 @@
     isOpenedUpload = YES;
     if(!isStart)
     {
+        isGoOn = YES;
         isStopCurrUpload = NO;
         [self updateTableStateForWaiting];
     }
@@ -181,13 +188,14 @@
     {
         [self selectPhotoLibary];
     }
+
 }
 
 //开始上传
 -(void)startUpload
 {
     [self updateUploadList];
-    if([uploadArray count]>0 && isStart)
+    if([uploadArray count]>0 && isStart && isGoOn)
     {
         NewUpload *newUpload = [[NewUpload alloc] init];
         newUpload.list = [uploadArray objectAtIndex:0];
@@ -197,9 +205,11 @@
         [newUpload startUpload];
         [newUpload release];
     }
-    else
+    
+    if([uploadArray count] == 0)
     {
-        isStart = FALSE;
+        isStart = NO;
+        isGoOn = NO;
     }
 }
 
@@ -276,10 +286,28 @@
         [list deleteUploadList];
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];
-        
-        
     }
     [self startUpload];
+}
+
+//暂停上传
+-(void)stopUpload
+{
+    isStopCurrUpload = YES;
+    isGoOn = NO;
+    [self updateTableStateForStop];
+}
+
+//开始上传
+-(void)goOnUpload
+{
+    if(!isGoOn)
+    {
+        isStopCurrUpload = FALSE;
+        isGoOn = YES;
+        [self startUpload];
+        [self updateTableStateForWaiting];
+    }
 }
 
 //网络失败
@@ -293,6 +321,7 @@
 //更新ui
 -(void)updateTable
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
     ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
@@ -311,6 +340,7 @@
     [appleDate.myTabBarController addUploadNumber:[uploadArray count]+[appleDate.moveUpload.uploadArray count]];
     UIApplication *app = [UIApplication sharedApplication];
     app.applicationIconBadgeNumber = [uploadArray count]+[appleDate.moveUpload.uploadArray count];
+    });
 }
 
 //修改Ui状态为等待WiFi
@@ -349,9 +379,9 @@
 //销毁所有上传
 -(void)stopAllUpload
 {
+    isOpenedUpload = NO;
     isStopCurrUpload = YES;
     isStart = NO;
-    
     if(uploadArray)
     {
         [uploadArray removeAllObjects];

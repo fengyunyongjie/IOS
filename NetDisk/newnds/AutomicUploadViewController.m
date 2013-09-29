@@ -60,6 +60,8 @@
         info.f_id = -1;
         info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
         info.space_id = [NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
+        info.is_oneWiFi = YES;
+        info.is_autoUpload = NO;
         [info insertUserinfo];
         self.table_string = info.auto_url;
         app_delegate.maticUpload.f_id = @"-1";

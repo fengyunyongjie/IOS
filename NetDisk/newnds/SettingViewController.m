@@ -346,9 +346,18 @@ typedef enum{
                     info.space_id = userInfo.space_id;
                     info.auto_url = userInfo.auto_url;
                     info.f_id = userInfo.f_id;
+                    info.is_oneWiFi = userInfo.is_oneWiFi;
+                    info.is_autoUpload = userInfo.is_autoUpload;
                 }
-                info.is_autoUpload = [YNFunctions isAutoUpload];
-                info.is_oneWiFi = [YNFunctions isOnlyWifi];
+                else
+                {
+                    info.f_id = -1;
+                    info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
+                    info.space_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] spaceID]];
+                    info.is_autoUpload = [YNFunctions isAutoUpload];
+                    info.is_oneWiFi = [YNFunctions isOnlyWifi];
+                }
+                
                 [info insertUserinfo];
                 [info cleanSql];
                 [YNFunctions setIsAutoUpload:NO];
