@@ -60,6 +60,7 @@ static SCBAccountManager *_sharedAccountManager;
     //[request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 -(void)UserLogout

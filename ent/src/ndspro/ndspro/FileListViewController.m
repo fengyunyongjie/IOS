@@ -37,7 +37,7 @@
     self.tableView.delegate=self;
     self.tableView.dataSource=self;
     [self.view addSubview:self.tableView];
-    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.height, self.view.frame.size.height);
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,6 +85,17 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        NSString *osVersion = [[UIDevice currentDevice] systemVersion];
+        NSString *versionWithoutRotation = @"7.0";
+        BOOL noRotationNeeded = ([versionWithoutRotation compare:osVersion options:NSNumericSearch]
+                                 != NSOrderedDescending);
+        if (noRotationNeeded) {
+            cell.accessoryType=UITableViewCellAccessoryDetailButton;
+        }else
+        {
+            cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
+        }
     }
     if (self.listArray) {
         NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
@@ -93,8 +104,10 @@
             NSString *fisdir=[dic objectForKey:@"fisdir"];
             if ([fisdir isEqualToString:@"0"]) {
                 cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
+                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreNo.png"];
             }else
             {
+                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreCh.png"];
                 cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
             }
         }
@@ -107,6 +120,10 @@
 }
 
 #pragma mark - Table view delegate
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.listArray) {

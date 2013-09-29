@@ -32,7 +32,7 @@
 //#define USER_LOGIN_URI @"/usr/login"
 //#define USER_LOGIN_URI @"/account/login/"
 //用户注销
-#define USER_LOGOUT_URI @"/usr/logout"
+//#define USER_LOGOUT_URI @"/usr/logout"
 //获取用户当前存储空间信息；
 //#define USER_SPACE_URI @"/usr/space"
 #define USER_SPACE_URI @"/account/spaceinfo"

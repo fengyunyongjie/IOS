@@ -43,7 +43,7 @@
     int macTimeOut;
 }
 
-@property(nonatomic,retain) id<UpLoadDelegate> upLoadDelegate;
+@property(nonatomic,strong) id<UpLoadDelegate> upLoadDelegate;
 @property(nonatomic,strong) NSMutableData *matableData;
 
 

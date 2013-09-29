@@ -31,10 +31,9 @@
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
-    [body release];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
 //
@@ -53,10 +52,9 @@
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
-    [body release];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
 - (void)setDoubleValue:(double)newProgress
@@ -84,7 +82,7 @@
     [request setHTTPBody:image];
     [request setHTTPMethod:@"PUT"];
     NSLog(@"上传请求：%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-    NSURLConnection *con = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     return con;
 }
 
@@ -113,10 +111,9 @@
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
-    [body release];
     [request setHTTPMethod:@"POST"];
     NSLog(@"上传完成后提交 %@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
@@ -140,16 +137,6 @@
     }
 }
 
--(void)request:(ASIHTTPRequest *)request didReceiveData:(NSData *)data
-{
-    [self.matableData appendData:data];
-}
--(void)requestFinished:(ASIHTTPRequest *)request
-{
-    NSLog(@"--------------------------------------------------太忙了");
-    NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.matableData options:NSJSONReadingMutableLeaves error:nil];
-    NSLog(@"请求成功后，分发数据:%@",diction);
-}
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
@@ -228,12 +215,4 @@
         }
     }
 }
-
--(void)dealloc
-{
-    [matableData release];
-    [super dealloc];
-}
-
-
 @end

@@ -44,6 +44,9 @@
 		291CCC3717F53075005C029C /* FileItemTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC3617F53075005C029C /* FileItemTableCell.m */; };
 		291CCC3B17F5834C005C029C /* Bt_UsercentreCh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */; };
 		291CCC3D17F583D6005C029C /* Bt_UsercentreNo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */; };
+		291CCC4117F7C6EB005C029C /* SCBUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4017F7C6EB005C029C /* SCBUploader.m */; };
+		291CCC4B17F7D9D6005C029C /* UpDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */; };
+		291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +117,11 @@
 		291CCC3617F53075005C029C /* FileItemTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileItemTableCell.m; sourceTree = "<group>"; };
 		291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_UsercentreCh@2x.png"; sourceTree = "<group>"; };
 		291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_UsercentreNo@2x.png"; sourceTree = "<group>"; };
+		291CCC3F17F7C6EB005C029C /* SCBUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBUploader.h; sourceTree = "<group>"; };
+		291CCC4017F7C6EB005C029C /* SCBUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBUploader.m; sourceTree = "<group>"; };
+		291CCC4817F7D9D6005C029C /* UpDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpDownloadViewController.h; sourceTree = "<group>"; };
+		291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpDownloadViewController.m; sourceTree = "<group>"; };
+		291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpDownloadViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +183,7 @@
 		291CCB3B17F27F99005C029C /* ndspro */ = {
 			isa = PBXGroup;
 			children = (
+				291CCC4217F7D5B9005C029C /* Download&Upload */,
 				291CCC3417F42B78005C029C /* File */,
 				291CCC3317F42B57005C029C /* Setting */,
 				291CCC3217F42B4C005C029C /* Login */,
@@ -239,6 +248,8 @@
 				291CCB9E17F3C40A005C029C /* SCBAccountManager.m */,
 				291CCB9F17F3C40A005C029C /* SCBDownloader.h */,
 				291CCBA017F3C40A005C029C /* SCBDownloader.m */,
+				291CCC3F17F7C6EB005C029C /* SCBUploader.h */,
+				291CCC4017F7C6EB005C029C /* SCBUploader.m */,
 				291CCBA117F3C40A005C029C /* SCBFileManager.h */,
 				291CCBA217F3C40A005C029C /* SCBFileManager.m */,
 				291CCBA717F3C40A005C029C /* SCBLinkManager.h */,
@@ -331,6 +342,16 @@
 			name = File;
 			sourceTree = "<group>";
 		};
+		291CCC4217F7D5B9005C029C /* Download&Upload */ = {
+			isa = PBXGroup;
+			children = (
+				291CCC4817F7D9D6005C029C /* UpDownloadViewController.h */,
+				291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */,
+				291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */,
+			);
+			name = "Download&Upload";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -341,6 +362,7 @@
 				291CCB2E17F27F99005C029C /* Sources */,
 				291CCB2F17F27F99005C029C /* Frameworks */,
 				291CCB3017F27F99005C029C /* Resources */,
+				291CCC3E17F7ABAE005C029C /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -379,6 +401,7 @@
 				ORGANIZATIONNAME = fengyongning;
 				TargetAttributes = {
 					291CCB3117F27F99005C029C = {
+						DevelopmentTeam = BE6Q67S9Q6;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -425,6 +448,7 @@
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
 				291CCC2117F408EF005C029C /* Bk_Login.png in Resources */,
 				291CCC1717F4082B005C029C /* MainViewController.xib in Resources */,
+				291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */,
 				291CCB4017F27F99005C029C /* InfoPlist.strings in Resources */,
 				291CCB4917F27F99005C029C /* Main.storyboard in Resources */,
 			);
@@ -440,11 +464,30 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		291CCC3E17F7ABAE005C029C /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=`echo $buildNumber +1|bc`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		291CCB2E17F27F99005C029C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				291CCC4117F7C6EB005C029C /* SCBUploader.m in Sources */,
+				291CCC4B17F7D9D6005C029C /* UpDownloadViewController.m in Sources */,
 				291CCBC617F3C40A005C029C /* SCBSession.m in Sources */,
 				291CCBC017F3C40A005C029C /* SCBLinkManager.m in Sources */,
 				291CCBCC17F3CD17005C029C /* YNFunctions.m in Sources */,
@@ -588,6 +631,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ndspro/ndspro-Prefix.pch";
 				INFOPLIST_FILE = "ndspro/ndspro-Info.plist";
@@ -602,6 +646,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ndspro/ndspro-Prefix.pch";
 				INFOPLIST_FILE = "ndspro/ndspro-Info.plist";
@@ -671,6 +716,7 @@
 				291CCB6617F27F99005C029C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		291CCB6717F27F99005C029C /* Build configuration list for PBXNativeTarget "ndsproTests" */ = {
 			isa = XCConfigurationList;
@@ -679,6 +725,7 @@
 				291CCB6917F27F99005C029C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
