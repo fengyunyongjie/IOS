@@ -16,6 +16,9 @@
 #import "ReportViewController.h"
 #import "AutomicUploadViewController.h"
 #import "PConfig.h"
+#import "UserInfo.h"
+#import "NSString+Format.h"
+#import "SCBSession.h"
 
 #define OFFButtonHeight 25
 #define OFFBorderWidth 20
@@ -175,17 +178,13 @@ typedef enum{
                 [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
             }else
             {
-                //[[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"switch_flag"];
                 [YNFunctions setIsOnlyWifi:YES];
-                
                 if(![self isConnection])
                 {
                     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                    [appleDate.maticUpload colseAutomaticUpload];
-                    [appleDate.maticUpload isHaveData];
-                    [appleDate.upload_all stopUpload];
+                    [appleDate.autoUpload setIsStopCurrUpload:YES];
                 }
-                
+               
                 if ([YNFunctions networkStatus]==ReachableViaWWAN) {
                     [[FavoritesData sharedFavoritesData] stopDownloading];
                 }
@@ -274,7 +273,7 @@ typedef enum{
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 [appleDate.maticUpload colseAutomaticUpload];
-                [DBSqlite3 cleanSql];
+//                [DBSqlite3 cleanSql];
                 [[FavoritesData sharedFavoritesData] stopDownloading];
                 
                 [self.rootViewController presendLoginViewController];
@@ -338,11 +337,23 @@ typedef enum{
         case kActionSheetTypeExit:
             if (buttonIndex == 0) {
                 //scBox.UserLogout(callBackLogoutFunc,self);
-                
-                [DBSqlite3 cleanSql];
+                UserInfo *info = [[[UserInfo alloc] init] autorelease];
+                info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
+                NSMutableArray *tableArray = [info selectAllUserinfo];
+                if([tableArray count]>0)
+                {
+                    UserInfo *userInfo = [tableArray objectAtIndex:0];
+                    info.space_id = userInfo.space_id;
+                    info.auto_url = userInfo.auto_url;
+                    info.f_id = userInfo.f_id;
+                }
+                info.is_autoUpload = [YNFunctions isAutoUpload];
+                info.is_oneWiFi = [YNFunctions isOnlyWifi];
+                [info insertUserinfo];
+                [info cleanSql];
                 [YNFunctions setIsAutoUpload:NO];
                 AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [app_delegate.maticUpload colseAutomaticUpload];
+                [app_delegate.autoUpload stopAllUpload];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
@@ -383,13 +394,10 @@ typedef enum{
                 [YNFunctions setIsOnlyWifi:YES];
             }
             
-            if(![self isConnection])
+            if([self isConnection] && [YNFunctions isAutoUpload])
             {
                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [appleDate.maticUpload colseAutomaticUpload];
-                [appleDate.maticUpload isHaveData];
-                
-                [appleDate.upload_all stopUpload];
+                [appleDate.autoUpload start];
             }
             [self.tableView reloadData];
             break;
@@ -622,7 +630,18 @@ typedef enum{
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
                     automicOff_button.hidden = NO;
                     if (switchFlag==nil) {
-                        m_switch.on = YES;
+                        UserInfo *info = [[[UserInfo alloc] init] autorelease];
+                        info.user_name = [[SCBSession sharedSession] userName];
+                        NSMutableArray *array = [info selectAllUserinfo];
+                        if([array count]>0)
+                        {
+                            UserInfo *userInfo = [array objectAtIndex:0];
+                            m_switch.on = userInfo.is_oneWiFi;
+                        }
+                        else
+                        {
+                            m_switch.on = YES;
+                        }
                     }
                     else{
                         m_switch.on = [switchFlag boolValue];

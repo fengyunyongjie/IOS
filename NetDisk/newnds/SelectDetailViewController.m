@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "SCBSession.h"
 #import "UserInfo.h"
+#import "NSString+Format.h"
 
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -186,9 +187,9 @@
             }
             NSLog(@"app_delegate:%@",table_str);
             UserInfo *info = [[UserInfo alloc] init];
-            info.keyString = @"自动备份目录";
+            info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
             info.f_id = [self.f_id intValue];
-            info.descript = [[[NSString alloc] initWithString:table_str] autorelease];
+            info.auto_url = [[[NSString alloc] initWithString:table_str] autorelease];
             info.space_id = space_id;
             [info updateUserinfo];
             [info release];

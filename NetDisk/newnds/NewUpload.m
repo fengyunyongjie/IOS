@@ -45,7 +45,7 @@
         //WiFi 状态
         [self catchurl];
     }
-    else if([self isConnection] == ReachableViaWiFi)
+    else if([self isConnection] == ReachableViaWWAN)
     {
         if(![YNFunctions isOnlyWifi])
         {
@@ -64,18 +64,23 @@
     }
 }
 
+-(void)updateNetWork
+{
+    [delegate upError];
+}
+
 //2.生成目录
 -(void)catchurl
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_GETFILEINFO]];
@@ -97,6 +102,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [delegate upNetworkStop];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -124,12 +130,12 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
@@ -152,6 +158,7 @@
                                                returningResponse:nil error:&error];
     if(!returnData)
     {
+        [delegate upNetworkStop];
         NSLog(@"网络请求失败:%@",error);
         return;
     }
@@ -207,12 +214,16 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
         return;
     }
     if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URL]];
@@ -234,6 +245,7 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [delegate upNetworkStop];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -244,6 +256,7 @@
     if([[dictionary objectForKey:@"code"] intValue] != 0)
     {
         NSLog(@"文件创建失败");
+        [self updateNetWork];
         return;
     }
     
@@ -287,12 +300,12 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     @try {
@@ -304,8 +317,7 @@
             //获得照片图像数据
             [result.defaultRepresentation getBytes:byte_data fromOffset:0 length:result.defaultRepresentation.size error:&error];
             file_data = [[NSData alloc] initWithData:[NSData dataWithBytesNoCopy:byte_data length:result.defaultRepresentation.size]];
-            
-            NSLog(@"1:申请效验");
+            NSLog(@"1:申请效验:%i",[file_data length]);
             
             md5String = [[NSString alloc] initWithString:[self md5:file_data]];
             
@@ -326,6 +338,9 @@
                                                        returningResponse:nil error:&error];
             if(!returnData)
             {
+                [file_data release];
+                [md5String release];
+                [delegate upNetworkStop];
                 NSLog(@"网络请求失败:%@",error);
                 return;
             }
@@ -338,13 +353,17 @@
             }
             else if([[dictionary objectForKey:@"code"] intValue] == 5 )
             {
+                [file_data release];
+                [md5String release];
                 //重命名
                 [delegate upReName];
             }
             else
             {
+                [file_data release];
+                [md5String release];
                 //失败
-                [delegate upError];
+                [self updateNetWork];
             }
             
         } failureBlock:^(NSError *error)
@@ -365,12 +384,16 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
         return;
     }
     if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_STATE]];
@@ -393,6 +416,9 @@
     if(!returnData)
     {
         NSLog(@"网络请求失败:%@",error);
+        [file_data release];
+        [md5String release];
+        [delegate upNetworkStop];
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -403,11 +429,14 @@
             finishName = [dictionary objectForKey:@"sname"];
             
             NSLog(@"3:开始上传：%@",finishName);
+            NSLog(@"文件大小：%i",[file_data length]);
             connection = [uploderDemo requestUploadFile:finishName skip:[NSString stringWithFormat:@"%i",list.t_lenght] Image:file_data];
         }
         else
         {
-            [delegate upError];
+            [file_data release];
+            [md5String release];
+            [self updateNetWork];
         }
     });
 }
@@ -418,12 +447,16 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
         return;
     }
     if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
         return;
     }
     if([[dictionary objectForKey:@"code"] intValue] == 0)
@@ -434,7 +467,9 @@
     else
     {
         NSLog(@"上传失败");
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
     }
 }
 
@@ -445,12 +480,16 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
         return;
     }
     if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
@@ -482,6 +521,9 @@
         if(returnData == nil)
         {
             NSLog(@"网络请求失败:error:%@",error);
+            [file_data release];
+            [md5String release];
+            [delegate upNetworkStop];
             return;
         }
     }
@@ -499,11 +541,15 @@
     
     if([[dictionary objectForKey:@"code"] intValue] == 0)
     {
+        [file_data release];
+        [md5String release];
         [delegate upFinish:dictionary];
     }
     else
     {
-        [delegate upError];
+        [file_data release];
+        [md5String release];
+        [self updateNetWork];
     }
 }
 
@@ -543,12 +589,12 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
     {
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -571,14 +617,14 @@
     {
         [connection cancel];
         connection = nil;
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
     {
         [connection cancel];
         connection = nil;
-        [delegate upError];
+        [self updateNetWork];
         return;
     }
     [delegate upProess:proress fileTag:0];

@@ -170,16 +170,6 @@
 -(void)upError
 {
     isStopCurrUpload = FALSE;
-    if([uploadArray count]>0)
-    {
-        UpLoadList *list = [uploadArray objectAtIndex:0];
-        list.t_state = 0;
-        list.upload_size = 0;
-        list.t_date = [NSString formatNSStringForOjbect:[NSDate date]];
-        [list updateUploadList];
-        [uploadArray removeObjectAtIndex:0];
-        [self updateTable];
-    }
     [self startUpload];
 }
 
@@ -243,6 +233,7 @@
     for (int i=0; i<[uploadArray count]; i++) {
         UpLoadList *list = [uploadArray objectAtIndex:i];
         list.t_state = 0;
+        list.upload_size = 0;
     }
     [self updateTable];
 }

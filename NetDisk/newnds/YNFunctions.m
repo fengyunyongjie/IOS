@@ -7,6 +7,10 @@
 //
 
 #import "YNFunctions.h"
+#import "SCBSession.h"
+#import "UserInfo.h"
+#import "NSString+Format.h"
+
 static BOOL h_f=NO;
 @implementation YNFunctions
 +(double)getDirectorySizeForPath:(NSString*)path
@@ -260,6 +264,14 @@ static BOOL h_f=NO;
 {
     NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
     if (value==nil) {
+        UserInfo *info = [[[UserInfo alloc] init] autorelease];
+        info.user_name = [[SCBSession sharedSession] userName];
+        NSMutableArray *array = [info selectAllUserinfo];
+        if([array count]>0)
+        {
+            UserInfo *userInfo = [array objectAtIndex:0];
+            return userInfo.is_oneWiFi;
+        }
         return YES;
     }
     return [value boolValue];
@@ -274,6 +286,14 @@ static BOOL h_f=NO;
 {
     NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"];
     if (value==nil) {
+        UserInfo *info = [[[UserInfo alloc] init] autorelease];
+        info.user_name = [[SCBSession sharedSession] userName];
+        NSMutableArray *array = [info selectAllUserinfo];
+        if([array count]>0)
+        {
+            UserInfo *userInfo = [array objectAtIndex:0];
+            return userInfo.is_autoUpload;
+        }
         return NO;
     }
     return [value boolValue];

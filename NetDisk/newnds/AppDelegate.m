@@ -1,3 +1,4 @@
+
 //
 //  AppDelegate.m
 //  newnds
@@ -30,6 +31,8 @@
 #import "MessagePushController.h"
 #import "YNFunctions.h"
 #import "BackgroundRunner.h"
+#import "SCBSession.h"
+#import "NSString+Format.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -173,11 +176,7 @@
 //进入主界面
 -(void)uploadFinish
 {
-    //记录用户操作
-    UserInfo *info = [[[UserInfo alloc] init] autorelease];
-    info.isTrue = YES;
-    info.keyString = @"isFirstLoad";
-    [info insertUserinfo];
+    
 }
 - (void)networkDidReceiveMessage:(NSNotification *)notification {
     NSDictionary * userInfo = [notification userInfo];
@@ -190,8 +189,16 @@
 -(BOOL)isFirstLoad
 {
     UserInfo *info = [[[UserInfo alloc] init] autorelease];
-    info.keyString = @"isFirstLoad";
-    return [info selectIsTrueForKey];
+    info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
+    NSArray *array = [info selectAllUserinfo];
+    if([array count]>0)
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
 }
 
 -(void)goMainViewController
@@ -325,6 +332,7 @@
     }
     //判断是否显示帮助指南页面 ［我的虹盘］
     [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(showHelpView) userInfo:self repeats:NO];
+    
     //询问是否开始自动上传
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(openAutomic) userInfo:self repeats:NO];
 }
@@ -357,10 +365,13 @@
 }
 -(void)openAutomic
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否现在就开启自动上传" delegate:self cancelButtonTitle:@"暂不开启" otherButtonTitles:@"开启", nil];
-    [alertView setDelegate:self];
-    [alertView show];
-    [alertView release];
+    if(![self isFirstLoad])
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否现在就开启自动上传" delegate:self cancelButtonTitle:@"暂不开启" otherButtonTitles:@"开启", nil];
+        [alertView setDelegate:self];
+        [alertView show];
+        [alertView release];
+    }
 }
 
 #pragma mark 判断设备号

@@ -33,9 +33,6 @@
         if (sqlite3_exec(contactDB, (const char *)[CreateUserinfoTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
             NSLog(@"errMsg:%s",errMsg);
         }
-        if (sqlite3_exec(contactDB, (const char *)[CreateWebDataTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
-            NSLog(@"errMsg:%s",errMsg);
-        }
         //新代码
         if (sqlite3_exec(contactDB, (const char *)[CreateUploadList UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
             NSLog(@"errMsg:%s",errMsg);
@@ -54,13 +51,35 @@
     return self;
 }
 
-+(void)cleanSql
+-(void)cleanSql
 {
-    NSString *databasePaths=[YNFunctions getDBCachePath];
-    databasePaths=[databasePaths stringByAppendingPathComponent:@"hongPan.sqlite"];
-    NSFileManager *filemgr = [NSFileManager defaultManager];
-    BOOL bl = [filemgr removeItemAtPath:databasePaths error:nil];
-    NSLog(@"bl:%i",bl);
+    BOOL bl = [self deleteUploadList:@"DELETE FROM PhotoFile"];
+    NSLog(@"照片文件删除：%i",bl);
+    bl = [self deleteUploadList:@"DELETE FROM UploadList"];
+    NSLog(@"上传文件删除：%i",bl);
 }
+
+-(BOOL)deleteUploadList:(NSString *)sqlDelete
+{
+    sqlite3_stmt *statement;
+    __block BOOL bl = TRUE;
+    const char *dbpath = [databasePath UTF8String];
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [sqlDelete UTF8String];
+        int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        if (success != SQLITE_OK) {
+            bl = FALSE;
+        }
+        success = sqlite3_step(statement);
+        if (success == SQLITE_ERROR) {
+            bl = FALSE;
+        }
+        NSLog(@"insertUserinfo:%i",success);
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return bl;
+}
+
 
 @end

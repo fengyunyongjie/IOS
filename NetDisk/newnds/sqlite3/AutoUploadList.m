@@ -133,4 +133,22 @@
     return bl;
 }
 
+-(NSInteger *)SelectCountAutoUploadList
+{
+    sqlite3_stmt *statement;
+    const char *dbpath = [self.databasePath UTF8String];
+    __block NSInteger count = 0;
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [SelectCountAutoUploadListForUserId UTF8String];
+        sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        sqlite3_bind_text(statement, 1, [a_user_id UTF8String], -1, SQLITE_TRANSIENT);
+        if (sqlite3_step(statement)==SQLITE_ROW) {
+            count = sqlite3_column_int(statement, 0);
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return count;
+}
+
 @end

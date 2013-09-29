@@ -197,12 +197,10 @@
                 bl = FALSE;
                 self.f_id = [[dic objectForKey:@"f_id"] retain];
                 UserInfo *info = [[UserInfo alloc] init];
-                info.keyString = [NSString stringWithFormat:@"%@",@"自动备份目录"];
                 NSMutableArray *array = [info selectAllUserinfo];
                 if([array count]>0)
                 {
                     UserInfo *userInfo = [array lastObject];
-                    info.descript = userInfo.descript;
                 }
                 info.f_id = [self.f_id intValue];
                 AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -294,12 +292,10 @@
             self.f_id = [[dictionary objectForKey:@"f_id"] retain];
             
             UserInfo *info = [[UserInfo alloc] init];
-            info.keyString = [NSString stringWithFormat:@"%@",@"自动备份目录"];
             NSMutableArray *array = [info selectAllUserinfo];
             if([array count]>0)
             {
                 UserInfo *userInfo = [array lastObject];
-                info.descript = userInfo.descript;
             }
             info.f_id = [self.f_id intValue];
             AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];

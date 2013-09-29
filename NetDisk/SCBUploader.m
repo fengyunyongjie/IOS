@@ -83,7 +83,6 @@
     [request setValue:[NSString stringWithFormat:@"bytes=0-%@",skip] forHTTPHeaderField:@"Range"];
     [request setHTTPBody:image];
     [request setHTTPMethod:@"PUT"];
-    NSLog(@"上传请求：%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     NSURLConnection *con = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
     return con;
 }

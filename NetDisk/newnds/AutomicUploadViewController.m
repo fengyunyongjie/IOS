@@ -12,6 +12,7 @@
 #import "SCBSession.h"
 #import "SelectFileUrlViewController.h"
 #import "UserInfo.h"
+#import "NSString+Format.h"
 
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define OFFButtonHeight 25
@@ -51,22 +52,22 @@
         [app_delegate.myTabBarController setHidesTabBarWithAnimate:NO];
     }
     UserInfo *info = [[UserInfo alloc] init];
-    info.keyString = @"自动备份目录";
+    info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
+    NSLog(@"[[SCBSession sharedSession] userName]:%@",[[SCBSession sharedSession] userName] );
     NSMutableArray *array = [info selectAllUserinfo];
     if([array count] == 0)
     {
         info.f_id = -1;
-        info.descript = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
+        info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
         info.space_id = [NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
         [info insertUserinfo];
-        self.table_string = info.descript;
+        self.table_string = info.auto_url;
         app_delegate.maticUpload.f_id = @"-1";
     }
     else
     {
-        UserInfo *info = [array lastObject];
-        app_delegate.maticUpload.f_id = [NSString stringWithFormat:@"%i",info.f_id];
-        self.table_string = [[[NSString alloc] initWithString:info.descript] autorelease];
+        UserInfo *userInfo = [array lastObject];
+        self.table_string = [[[NSString alloc] initWithString:userInfo.auto_url] autorelease];
     }
     if(table_view)
     {
@@ -231,10 +232,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = [indexPath row];
-    if (row == 0) {
-        [self openOrClose:automicOff_button];
-    }
-    else if(row == 1)
+    if(row == 1)
     {
         AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         if(app_delegate.title_string == nil)
@@ -260,12 +258,10 @@
     {
         if([YNFunctions isAutoUpload])
         {
-            [automicOff_button setImage:[UIImage imageNamed:@"ON.png"] forState:UIControlStateNormal];
             [NSThread detachNewThreadSelector:@selector(closeUpload) toTarget:self withObject:nil];
         }
         else
         {
-            [automicOff_button setImage:[UIImage imageNamed:@"OFF.png"] forState:UIControlStateNormal];
             [NSThread detachNewThreadSelector:@selector(startAutoUpload) toTarget:self withObject:nil];
         }
     }

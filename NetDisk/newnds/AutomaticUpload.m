@@ -18,6 +18,7 @@
 #import "YNFunctions.h"
 #import "MyndsViewController.h"
 #import "UserInfo.h"
+#import "NSString+Format.h"
 
 @implementation AutomaticUpload
 @synthesize assetArray;
@@ -47,18 +48,18 @@
         return;
     }
     UserInfo *info = [[UserInfo alloc] init];
-    info.keyString = @"自动备份目录";
+    info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
     NSMutableArray *array = [info selectAllUserinfo];
     if([array count] == 0)
     {
         info.f_id = -1;
-        info.descript = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
+        info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
         [info insertUserinfo];
         self.f_id = @"-1";
     }
     else
     {
-        UserInfo *info = [array lastObject];
+        UserInfo *userInfo = [array lastObject];
         self.f_id = [NSString stringWithFormat:@"%i",info.f_id];
     }
     isUpload = TRUE;

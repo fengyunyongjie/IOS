@@ -14,6 +14,7 @@
 #define DeleteAllAutoUploadList @"DELETE FROM AutoUploadList WHERE a_state=0"
 #define UpdateAutoUploadListForName @"UPDATE AutoUploadList SET a_state=? WHERE a_name=?"
 #define SelectAutoUploadListForName @"SELECT * FROM AutoUploadList WHERE a_name=? and a_user_id=?"
+#define SelectCountAutoUploadListForUserId @"SELECT Count(*) FROM AutoUploadList WHERE a_user_id=?"
 
 @interface AutoUploadList : DBSqlite3
 
@@ -31,5 +32,7 @@
 -(BOOL)updateAutoUploadList;
 
 -(BOOL)selectAutoUploadList;
+
+-(NSInteger)SelectCountAutoUploadList;
 
 @end

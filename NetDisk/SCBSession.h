@@ -21,5 +21,5 @@
 @property(strong,nonatomic)NSString *homeID;
 @property(strong,nonatomic)NSString *spaceID;
 +(SCBSession *)sharedSession;
-//-(id)initWithUserID:(NSString *)usr_id Token:usr_token;
+-(NSString *)userName;
 @end

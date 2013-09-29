@@ -28,13 +28,10 @@ static SCBSession * _sharedSession;
     }
     return self;
 }
-//-(id)initWithUserID:(NSString *)usr_id Token:usr_token
-//{
-//    self=[super init];
-//    if (self) {
-//        _usr_id=usr_id;
-//        _usr_token=usr_token;
-//    }
-//    return self;
-//}
+
+-(NSString *)userName
+{
+    return (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+}
+
 @end

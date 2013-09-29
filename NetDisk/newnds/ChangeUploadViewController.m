@@ -365,6 +365,7 @@
         //显示上传进度
         AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         [app_delegate.moveUpload updateLoad];
+        [app_delegate.autoUpload updateLoad];
     }
     if(![YNFunctions isAutoUpload])
     {
@@ -464,6 +465,7 @@
     [self.more_control setHidden:YES];
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate.moveUpload start];
+    [app_delegate.autoUpload start];
 }
 
 -(void)clicked_clearAll:(id)sender
