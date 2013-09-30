@@ -73,12 +73,7 @@
 -(void)catchurl
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
-    {
-        [self updateNetWork];
-        return;
-    }
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
         [self updateNetWork];
         return;
@@ -99,10 +94,16 @@
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-    if(!returnData)
+    if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
-        NSLog(@"网络请求失败:%@",error);
-        [delegate upNetworkStop];
+        if(returnData == nil)
+        {
+            [delegate webServiceFail];
+        }
+        else
+        {
+            [self updateNetWork];
+        }
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -128,12 +129,7 @@
 -(void)newRequestIsHaveFileWithID:(NSString *)fId
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
-    {
-        [self updateNetWork];
-        return;
-    }
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
         [self updateNetWork];
         return;
@@ -156,10 +152,16 @@
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-    if(!returnData)
+    if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
-        [delegate upNetworkStop];
-        NSLog(@"网络请求失败:%@",error);
+        if(returnData == nil)
+        {
+            [delegate webServiceFail];
+        }
+        else
+        {
+            [self updateNetWork];
+        }
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -212,17 +214,8 @@
 -(void)newRequestNewFold:(NSString *)name FID:(NSString *)fId
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
-        [file_data release];
-        [md5String release];
-        [self updateNetWork];
-        return;
-    }
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
-    {
-        [file_data release];
-        [md5String release];
         [self updateNetWork];
         return;
     }
@@ -242,10 +235,16 @@
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-    if(!returnData)
+    if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
-        NSLog(@"网络请求失败:%@",error);
-        [delegate upNetworkStop];
+        if(returnData == nil)
+        {
+            [delegate webServiceFail];
+        }
+        else
+        {
+            [self updateNetWork];
+        }
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -298,12 +297,7 @@
 -(void)newRequestVerify
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
-    {
-        [self updateNetWork];
-        return;
-    }
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
         [self updateNetWork];
         return;
@@ -320,8 +314,15 @@
             NSLog(@"1:申请效验:%i",[file_data length]);
             
             md5String = [[NSString alloc] initWithString:[self md5:file_data]];
-            
-            NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_VERIFY]];
+            NSURL *s_url = nil;
+            if(list.is_share)
+            {
+                s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_SHARE_UPLOAD_NEW_VERIFY]];
+            }
+            else
+            {
+                s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_VERIFY]];
+            }
             NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
             [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
             [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
@@ -329,6 +330,7 @@
             NSMutableString *body=[[NSMutableString alloc] init];
             [body appendFormat:@"f_pid=%@&f_name=%@&f_size=%@&f_md5=%@&space_id=%@",list.t_url_pid,list.t_name,[NSString stringWithFormat:@"%i",list.t_lenght],md5String,list.spaceId];
             NSLog(@"body:%@",body);
+            NSLog(@"userid:%@",[[SCBSession sharedSession] userId]);
             NSMutableData *myRequestData=[NSMutableData data];
             [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
             [request setHTTPBody:myRequestData];
@@ -336,12 +338,18 @@
             [request setHTTPMethod:@"POST"];
             NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                        returningResponse:nil error:&error];
-            if(!returnData)
+            if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
             {
                 [file_data release];
                 [md5String release];
-                [delegate upNetworkStop];
-                NSLog(@"网络请求失败:%@",error);
+                if(returnData == nil)
+                {
+                    [delegate webServiceFail];
+                }
+                else
+                {
+                    [self updateNetWork];
+                }
                 return;
             }
             NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -357,6 +365,20 @@
                 [md5String release];
                 //重命名
                 [delegate upReName];
+            }
+            else if([[dictionary objectForKey:@"code"] intValue] == 7 )
+            {
+                [file_data release];
+                [md5String release];
+                //重命名
+                [delegate upNotUpload];
+            }
+            else if([[dictionary objectForKey:@"code"] intValue] == 4 )
+            {
+                [file_data release];
+                [md5String release];
+                //重命名
+                [delegate upUserSpaceLass];
             }
             else
             {
@@ -382,14 +404,7 @@
 -(void)newRequestUploadState:(NSString *)s_name
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
-    {
-        [file_data release];
-        [md5String release];
-        [self updateNetWork];
-        return;
-    }
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
         [file_data release];
         [md5String release];
@@ -413,12 +428,18 @@
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-    if(!returnData)
+    if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
-        NSLog(@"网络请求失败:%@",error);
         [file_data release];
         [md5String release];
-        [delegate upNetworkStop];
+        if(returnData == nil)
+        {
+            [delegate webServiceFail];
+        }
+        else
+        {
+            [self updateNetWork];
+        }
         return;
     }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
@@ -445,14 +466,7 @@
 -(void)comeBackNewTheadMian:(NSDictionary *)dictionary
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
-    {
-        [file_data release];
-        [md5String release];
-        [self updateNetWork];
-        return;
-    }
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
         [file_data release];
         [md5String release];
@@ -478,14 +492,7 @@
 -(void)newRequestUploadCommit:(NSString *)fPid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip space_id:(NSString *)spaceId
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
-    {
-        [file_data release];
-        [md5String release];
-        [self updateNetWork];
-        return;
-    }
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
         [file_data release];
         [md5String release];
@@ -518,12 +525,18 @@
         [request setHTTPMethod:@"POST"];
         returnData = [NSURLConnection sendSynchronousRequest:request
                                            returningResponse:nil error:&error];
-        if(returnData == nil)
+        if(returnData == nil || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
         {
-            NSLog(@"网络请求失败:error:%@",error);
             [file_data release];
             [md5String release];
-            [delegate upNetworkStop];
+            if(returnData == nil)
+            {
+                [delegate webServiceFail];
+            }
+            else
+            {
+                [self updateNetWork];
+            }
             return;
         }
     }
@@ -587,13 +600,10 @@
 -(void)uploadFinish:(NSDictionary *)dictionary
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
-        [self updateNetWork];
-        return;
-    }
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
-    {
+        [file_data release];
+        [md5String release];
         [self updateNetWork];
         return;
     }
@@ -613,14 +623,7 @@
 -(void)uploadFiles:(int)proress
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload)
-    {
-        [connection cancel];
-        connection = nil;
-        [self updateNetWork];
-        return;
-    }
-    if(list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload)
+    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
         [connection cancel];
         connection = nil;
@@ -638,7 +641,7 @@
 //上传失败
 -(void)didFailWithError
 {
-    [delegate upNetworkStop];
+    [self updateNetWork];
 }
 
 

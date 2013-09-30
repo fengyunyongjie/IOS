@@ -343,26 +343,25 @@ typedef enum{
                 if([tableArray count]>0)
                 {
                     UserInfo *userInfo = [tableArray objectAtIndex:0];
-                    info.space_id = userInfo.space_id;
-                    info.auto_url = userInfo.auto_url;
                     info.f_id = userInfo.f_id;
-                    info.is_oneWiFi = userInfo.is_oneWiFi;
-                    info.is_autoUpload = userInfo.is_autoUpload;
+                    info.auto_url = userInfo.auto_url;
+                    info.space_id = userInfo.space_id;
                 }
                 else
                 {
                     info.f_id = -1;
                     info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
                     info.space_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] spaceID]];
-                    info.is_autoUpload = [YNFunctions isAutoUpload];
-                    info.is_oneWiFi = [YNFunctions isOnlyWifi];
                 }
+                info.is_autoUpload = [YNFunctions isAutoUpload];
+                info.is_oneWiFi = [YNFunctions isOnlyWifi];
                 
                 [info insertUserinfo];
                 [info cleanSql];
                 [YNFunctions setIsAutoUpload:NO];
                 AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 [app_delegate.autoUpload stopAllUpload];
+                [app_delegate.moveUpload stopAllUpload];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];

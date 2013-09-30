@@ -163,6 +163,8 @@
 #define FM_UPLOAD_STATE @"/fm/upload/state"
 //新上传效验
 #define FM_UPLOAD_NEW_VERIFY @"/fm/upload/new/verify"
+//共享上传效验 /share/upload/new/verify
+#define FM_SHARE_UPLOAD_NEW_VERIFY @"/share/upload/new/verify"
 //新上传
 #define FM_UPLOAD_NEW @"/fm/upload/new"
 //新上传提交

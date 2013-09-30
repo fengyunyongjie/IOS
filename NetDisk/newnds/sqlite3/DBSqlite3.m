@@ -55,8 +55,8 @@
 {
     BOOL bl = [self deleteUploadList:@"DELETE FROM PhotoFile"];
     NSLog(@"照片文件删除：%i",bl);
-    bl = [self deleteUploadList:@"DELETE FROM UploadList"];
-    NSLog(@"上传文件删除：%i",bl);
+//    bl = [self deleteUploadList:@"DELETE FROM UploadList"];
+//    NSLog(@"上传文件删除：%i",bl);
 }
 
 -(BOOL)deleteUploadList:(NSString *)sqlDelete

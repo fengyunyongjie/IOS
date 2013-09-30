@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SCBPhotoManager.h"
 #import "SCBShareManager.h"
+#import "MBProgressHUD.h"
 
 @protocol SelectDetailViewDelegate <NSObject>
 
@@ -31,6 +32,8 @@
     BOOL isAutomatic; //0 是上传，1是其他
     BOOL isEdtion;
     id<SelectDetailViewDelegate> delegate;
+    NSString *ownr_name;
+    MBProgressHUD *hud;
 }
 
 @property(nonatomic,retain) UITableView *table_view;
@@ -44,5 +47,7 @@
 @property(nonatomic,assign) BOOL isAutomatic; //0 是上传，1是其他
 @property(nonatomic,assign) BOOL isEdtion;
 @property(nonatomic,retain) id<SelectDetailViewDelegate> delegate;
+@property(nonatomic,retain) NSString *ownr_name;
+@property(nonatomic,retain) MBProgressHUD *hud;
 
 @end

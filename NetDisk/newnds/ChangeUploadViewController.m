@@ -13,6 +13,9 @@
 #import "UploadAll.h"
 #import "YNFunctions.h"
 #import "UpLoadList.h"
+#import "NSString+Format.h"
+#import "SCBSession.h"
+
 #define TableViewHeight self.view.frame.size.height-TabBarHeight-44
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -35,6 +38,7 @@
 @synthesize isAutomaticUpload;
 @synthesize headerView;
 @synthesize selectIndex;
+@synthesize hud;
 
 
 #pragma mark ----删除上传时列表
@@ -402,12 +406,14 @@
         {
             [historyList removeAllObjects];
             UpLoadList *list = [[UpLoadList alloc] init];
+            list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
             [historyList addObjectsFromArray:[list selectUploadListAllAndUploaded]];
             [list release];
         }
         else
         {
             UpLoadList *list = [[UpLoadList alloc] init];
+            list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
             historyList = [[NSMutableArray alloc] initWithArray:[list selectUploadListAllAndUploaded]];
             [list release];
         }
@@ -472,6 +478,7 @@
     if(isHistoryShow)
     {
         UpLoadList *list = [[UpLoadList alloc] init];
+        list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
         [list deleteUploadListAllAndUploaded];
         [list release];
         if(historyList)
@@ -618,18 +625,52 @@
 
 #pragma mark cell代理方法
 
--(void)deletCell:(int)index
+-(void)deletCell:(UpLoadList *)upload_list
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        
-    selectIndex = index;
-        NSLog(@"selectIndex:%i",selectIndex);
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
-    [actionSheet setTag:kActionSheetTagDelete];
-    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-    [actionSheet release];
+        if(upload_list)
+        {
+            selectIndex = upload_list.t_id;
+            NSLog(@"selectIndex:%i",selectIndex);
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [actionSheet setTag:kActionSheetTagDelete];
+            [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+            [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+            [actionSheet release];
+        }
+        else
+        {
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"记录已删除";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+        }
     });
+}
+
+//记录上传失败
+-(void)uploadFail:(NSString *)text
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=text;
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 #pragma mark
@@ -640,20 +681,23 @@
     {
         if(isHistoryShow)
         {
-            int deleteRow = selectIndex-UploadFinishProessTag;
-            if(deleteRow<[historyList count])
+            for(int i=0;i<[historyList count];i++)
             {
-                UpLoadList *list = [historyList objectAtIndex:deleteRow];
-                [list deleteUploadList];
-                [historyList removeObjectAtIndex:deleteRow];
-                [self.uploadListTableView reloadData];
+                UpLoadList *list = [historyList objectAtIndex:i];
+                if(list.t_id == selectIndex)
+                {
+                    UpLoadList *list = [historyList objectAtIndex:i];
+                    [list deleteUploadList];
+                    [historyList removeObjectAtIndex:i];
+                    [self.uploadListTableView reloadData];
+                    break;
+                }
             }
         }
         else
         {
-            int deleteRow = selectIndex-UploadProessTag;
             AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            [app_delegate.moveUpload deleteOneUpload:deleteRow];
+            [app_delegate.moveUpload deleteOneUpload:selectIndex];
         }
     }
 }
@@ -682,15 +726,32 @@
             [headerView setFrame:rect];
             [top_headerView addSubview:headerView];
             [headerView.button_dele_button setHidden:YES];
-//            [headerView.button_start_button setHidden:NO];
+            [headerView.button_start_button setHidden:NO];
         }
-        
         [top_header_label setText:[NSString stringWithFormat:@" 相册自动备份(%i)",total]];
         self.uploadListTableView.tableHeaderView = top_headerView;
         [headerView setTag:-100];
         [headerView setUploadDemo:list];
     }
     });
+}
+
+//修改上传按钮
+-(void)updateStartButton:(NSString *)text
+{
+    if(headerView)
+    {
+        [headerView.button_start_button setTitle:text forState:UIControlStateNormal];
+    }
+}
+
+//修改上传按钮状态
+-(void)updateStartButtonState:(BOOL)bl
+{
+    if(headerView)
+    {
+        [headerView.button_start_button setEnabled:bl];
+    }
 }
 
 //关闭自动备份上传

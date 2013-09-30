@@ -31,7 +31,7 @@
 
 - (void)dealloc
 {
-
+    [super dealloc];
 }
 
 #pragma mark - public method
@@ -40,7 +40,6 @@
     _holding = YES;
     while (_holding) {
         [NSThread sleepForTimeInterval:1];
-        /** clean the runloop for other source */
         CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, TRUE);
     }
 }

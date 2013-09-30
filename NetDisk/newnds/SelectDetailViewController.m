@@ -36,6 +36,8 @@
 @synthesize isAutomatic;
 @synthesize delegate;
 @synthesize isEdtion;
+@synthesize ownr_name;
+@synthesize hud;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -166,9 +168,25 @@
 -(void)clicked_changeMyFile
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(![ownr_name isEqualToString:[NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]]])
+    {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"没有操作权限";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
+    
     if(isAutomatic)
     {
-        app_delegate.maticUpload.space_id = self.space_id;
         if([app_delegate.title_string count] > 0)
         {
             NSMutableString *table_str = [[[NSMutableString alloc] init] autorelease];
@@ -186,13 +204,24 @@
                 i++;
             }
             NSLog(@"app_delegate:%@",table_str);
-            UserInfo *info = [[UserInfo alloc] init];
+            UserInfo *info = [[[UserInfo alloc] init] autorelease];
             info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
-            info.f_id = [self.f_id intValue];
-            info.auto_url = [[[NSString alloc] initWithString:table_str] autorelease];
-            info.space_id = space_id;
-            [info updateUserinfo];
-            [info release];
+            NSMutableArray *tableArray = [info selectAllUserinfo];
+            if([tableArray count]>0)
+            {
+                UserInfo *userInfo = [tableArray objectAtIndex:0];
+                info.is_oneWiFi = userInfo.is_oneWiFi;
+                info.is_autoUpload = userInfo.is_autoUpload;
+            }
+            else
+            {
+                info.is_autoUpload = NO;
+                info.is_oneWiFi = YES;
+            }
+            info.f_id = [f_id integerValue];
+            info.space_id = [NSString formatNSStringForOjbect:space_id];
+            info.auto_url = [NSString formatNSStringForOjbect:table_str];
+            [info insertUserinfo];
         }
         
         if([self.navigationController.viewControllers count]>1)
@@ -290,6 +319,7 @@
         select_detailview.isAutomatic = isAutomatic;
         select_detailview.f_id = [NSString stringWithFormat:@"%@",fid];
         select_detailview.title_string = [NSString stringWithFormat:@"%@",f_name];
+        select_detailview.ownr_name = [NSString formatNSStringForOjbect:[this objectForKey:@"f_owner_name"]];
         select_detailview.delegate = self;
         [self.navigationController pushViewController:select_detailview animated:YES];
         [select_detailview release];
@@ -306,15 +336,13 @@
 {
     NSLog(@"openFinderSucess datadic:%@",dictionary);
     [table_array removeAllObjects];
-    NSString *UserName = [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"]];
     int index = [[dictionary objectForKey:@"code"] intValue];
     if(index == 0)
     {
         NSArray *array = [dictionary objectForKey:@"files"];
         for (NSDictionary *diction in array) {
             NSString *directory = [diction objectForKey:@"f_mime"];
-            NSString *f_owner_name = [NSString stringWithFormat:@"%@",[diction objectForKey:@"f_owner_name"]];
-            if([directory isEqualToString:@"directory"] && [f_owner_name isEqualToString:UserName])
+            if([directory isEqualToString:@"directory"])
             {
                 [table_array addObject:diction];
             }

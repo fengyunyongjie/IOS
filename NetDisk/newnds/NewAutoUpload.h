@@ -32,4 +32,9 @@
 //开始上传
 -(void)goOnUpload;
 
+//修改上传按钮
+-(void)updateUploadStartButton:(NSString *)text;
+//修改上传按钮为不可用
+-(void)updateUploadStartButtonState:(BOOL)isNot;
+
 @end

@@ -10,9 +10,9 @@
 #import "DBSqlite3.h"
 
 #define InsertAutoUploadList @"INSERT INTO AutoUploadList(a_name,a_user_id,a_state) VALUES (?,?,?)"
-#define DeleteAutoUploadList @"DELETE FROM AutoUploadList WHERE t_id=?"
+#define DeleteAutoUploadList @"DELETE FROM AutoUploadList WHERE a_name=? and a_user_id=?"
 #define DeleteAllAutoUploadList @"DELETE FROM AutoUploadList WHERE a_state=0"
-#define UpdateAutoUploadListForName @"UPDATE AutoUploadList SET a_state=? WHERE a_name=?"
+#define UpdateAutoUploadListForName @"UPDATE AutoUploadList SET a_state=? WHERE a_name=? and a_user_id=?"
 #define SelectAutoUploadListForName @"SELECT * FROM AutoUploadList WHERE a_name=? and a_user_id=?"
 #define SelectCountAutoUploadListForUserId @"SELECT Count(*) FROM AutoUploadList WHERE a_user_id=?"
 

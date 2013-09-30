@@ -10,6 +10,7 @@
 //引用代理类
 #import "UploadFile.h"
 #import "UploadViewCell.h"
+#import "MBProgressHUD.h"
 
 @interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,UploadViewCellDelegate,UIScrollViewDelegate,UIActionSheetDelegate>
 {
@@ -53,6 +54,7 @@
     int automicTotal;
     int selectedIndex;
     NSInteger selectIndex;
+    MBProgressHUD *hud;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -65,6 +67,7 @@
 @property(nonatomic,assign) BOOL isAutomaticUpload;
 @property(nonatomic,retain) UploadViewCell *headerView;
 @property(nonatomic,assign) NSInteger selectIndex;
+@property(nonatomic,retain) MBProgressHUD *hud;
 
 //上传成功
 -(void)upFinish:(NSInteger)fileTag;
@@ -76,6 +79,10 @@
 -(void)deleteFinishIndexRow:(int)row_;
 //更新上传记录列表
 -(void)updateReloadData;
+//修改上传按钮
+-(void)updateStartButton:(NSString *)text;
+//修改上传按钮状态
+-(void)updateStartButtonState:(BOOL)bl;
 
 //自动备份上传
 -(void)startAutomaticList:(UpLoadList *)list total:(int)total;
@@ -83,5 +90,7 @@
 -(void)stopAutomatic;
 //退出登录清楚列表
 -(void)escLoginList;
+//记录上传失败
+-(void)uploadFail:(NSString *)text;
 
 @end

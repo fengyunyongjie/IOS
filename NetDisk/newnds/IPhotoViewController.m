@@ -138,6 +138,7 @@
     {
         ower_name = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
     }
+    isPhoto = YES;
     NSLog(@"UserName:%@",ower_name);
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -172,9 +173,9 @@
     UIButton *phoot_button = [[UIButton alloc] init];
     [phoot_button setTag:23];
     [phoot_button setFrame:CGRectMake(320/2-ChangeTabWidth, 0, ChangeTabWidth, 44)];
-    [phoot_button setTitle:@"文件" forState:UIControlStateNormal];
+    [phoot_button setTitle:@"照片" forState:UIControlStateNormal];
     [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [phoot_button addTarget:self action:@selector(clicked_file:) forControlEvents:UIControlEventTouchDown];
+    [phoot_button addTarget:self action:@selector(clicked_photo:) forControlEvents:UIControlEventTouchDown];
     [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [topView addSubview:phoot_button];
     [phoot_button release];
@@ -182,9 +183,9 @@
     UIButton *file_button = [[UIButton alloc] init];
     [file_button setTag:24];
     [file_button setFrame:CGRectMake(320/2, 0, ChangeTabWidth, 44)];
-    [file_button setTitle:@"照片" forState:UIControlStateNormal];
+    [file_button setTitle:@"文件" forState:UIControlStateNormal];
     [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [file_button addTarget:self action:@selector(clicked_photo:) forControlEvents:UIControlEventTouchDown];
+    [file_button addTarget:self action:@selector(clicked_file:) forControlEvents:UIControlEventTouchDown];
     [file_button setBackgroundImage:imge forState:UIControlStateHighlighted];
     [topView addSubview:file_button];
     [file_button release];
@@ -228,12 +229,12 @@
     
     if(isPhoto)
     {
-        [self clicked_photo:file_button];
+        [self clicked_photo:phoot_button];
         [file_tableView setHidden:YES];
     }
     else
     {
-        [self clicked_file:phoot_button];
+        [self clicked_file:file_button];
         [photo_tableView setHidden:YES];
     }
     
@@ -318,7 +319,7 @@
     [button setBackgroundImage:imge forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    UIButton *photo_button = (UIButton *)[self.view viewWithTag:23];
+    UIButton *photo_button = (UIButton *)[self.view viewWithTag:24];
     [photo_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [photo_button setBackgroundImage:nil forState:UIControlStateNormal];
     
@@ -372,7 +373,7 @@
     [button setBackgroundImage:imge forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
-    UIButton *file_button = (UIButton *)[self.view viewWithTag:24];
+    UIButton *file_button = (UIButton *)[self.view viewWithTag:23];
     [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [file_button setBackgroundImage:nil forState:UIControlStateNormal];
     

@@ -31,9 +31,6 @@
     MoveUpload *moveUpload;
     BOOL isAutomicUpload;
     NSMutableArray *title_string;
-    BOOL isBackGround;
-    NSTimeInterval _backgroundRunningTimeInterval;
-    BOOL isJiLu;
     Reachability *hostReach;
     NewAutoUpload *autoUpload;
 }

@@ -10,6 +10,8 @@
 #define InsertUserinfoTable @"INSERT INTO Userinfo(Auto_url,User_name,F_ID,Space_id,Is_autoUpload,IS_OneWiFi) VALUES (?,?,?,?,?,?)"
 #define UpdateUserinfoForName @"UPDATE Userinfo SET Auto_url=?,F_ID=?,Space_id=?,Is_autoUpload=?,IS_OneWiFi=? WHERE User_name=?"
 #define SelectAllKey @"SELECT * FROM Userinfo WHERE User_name=?"
+#define SelectIsHave @"SELECT * FROM Userinfo"
+
 @interface UserInfo : DBSqlite3
 {
     NSInteger u_id;
@@ -37,5 +39,7 @@
 
 //查询数据列表
 -(NSMutableArray *)selectAllUserinfo;
+//查询数据是否存在
+-(NSMutableArray *)selectIsHaveUser;
 
 @end

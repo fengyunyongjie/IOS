@@ -99,7 +99,7 @@
     [self addTabBarView];
     [self goMainViewController];
     //判断是否开机启动
-    if(![self isFirstLoad])
+    if([self isFirstLoad])
     {
         //开机启动画面
         firstLoadView = [[FirstLoadViewController alloc] init];
@@ -186,18 +186,33 @@
 //    NSString *customizeField1 = [extras valueForKey:@"customizeField1"]; //自定义参数，key是自己定义的
     
 }
+
 -(BOOL)isFirstLoad
+{
+    UserInfo *info = [[[UserInfo alloc] init] autorelease];
+    NSArray *array = [info selectIsHaveUser];
+    if([array count]>0)
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+-(BOOL)isNewUser
 {
     UserInfo *info = [[[UserInfo alloc] init] autorelease];
     info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
     NSArray *array = [info selectAllUserinfo];
     if([array count]>0)
     {
-        return YES;
+        return NO;
     }
     else
     {
-        return NO;
+        return YES;
     }
 }
 
@@ -365,13 +380,34 @@
 }
 -(void)openAutomic
 {
-    if(![self isFirstLoad])
+    if([self isNewUser])
     {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否现在就开启自动上传" delegate:self cancelButtonTitle:@"暂不开启" otherButtonTitles:@"开启", nil];
         [alertView setDelegate:self];
         [alertView show];
         [alertView release];
     }
+    UserInfo *info = [[[UserInfo alloc] init] autorelease];
+    info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
+    NSMutableArray *tableArray = [info selectAllUserinfo];
+    if([tableArray count]>0)
+    {
+        UserInfo *userInfo = [tableArray objectAtIndex:0];
+        info.space_id = userInfo.space_id;
+        info.auto_url = userInfo.auto_url;
+        info.f_id = userInfo.f_id;
+        info.is_oneWiFi = userInfo.is_oneWiFi;
+        info.is_autoUpload = userInfo.is_autoUpload;
+    }
+    else
+    {
+        info.auto_url = [NSString stringWithFormat:@"手机照片/来自于-%@",[AppDelegate deviceString]];
+        info.space_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] spaceID]];
+        info.f_id = -1;
+        info.is_autoUpload = NO;
+        info.is_oneWiFi = YES;
+    }
+    [info insertUserinfo];
 }
 
 #pragma mark 判断设备号
@@ -412,31 +448,14 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    isBackGround = TRUE;
     [self.window.rootViewController dismissModalViewControllerAnimated:YES];
-    //后代运行
-    _backgroundRunningTimeInterval = 0;
-    isJiLu = TRUE;
-    [self performSelectorInBackground:@selector(runningInBackground) withObject:nil];
     if ([[UIDevice currentDevice] isMultitaskingSupported]) {
         [[BackgroundRunner shared] run];
-    }
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)runningInBackground
-{
-    while (isJiLu) {
-        [NSThread sleepForTimeInterval:1];
-        _backgroundRunningTimeInterval++;
-        NSLog(@"%d",(int)_backgroundRunningTimeInterval);
     }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    isJiLu = FALSE;
     [[BackgroundRunner shared] stop];
     
     if([YNFunctions isAutoUpload])

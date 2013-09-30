@@ -28,6 +28,7 @@
 -(void)selectUploadList
 {
     UpLoadList *list = [[UpLoadList alloc] init];
+    list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
     uploadArray = [[NSMutableArray alloc] initWithArray:[list selectMoveUploadListAllAndNotUpload]];
     [list release];
 }
@@ -45,9 +46,9 @@
         }
         [uploadView.uploadListTableView reloadData];
     }
-    [appleDate.myTabBarController addUploadNumber:[uploadArray count]];
+    [appleDate.myTabBarController addUploadNumber:[uploadArray count]+[appleDate.autoUpload.uploadArray count]];
     UIApplication *app = [UIApplication sharedApplication];
-    app.applicationIconBadgeNumber = [uploadArray count];
+    app.applicationIconBadgeNumber = [uploadArray count]+[appleDate.autoUpload.uploadArray count];
     if(!isStart)
     {
         [self upNetworkStop];
@@ -64,10 +65,10 @@
                 if(i == 0)
                 {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                    [appleDate.myTabBarController addUploadNumber:[array_ count]];
-                    UIApplication *app = [UIApplication sharedApplication];
-                    app.applicationIconBadgeNumber = [array_ count];
+                        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                        [appleDate.myTabBarController addUploadNumber:[array_ count]+[appleDate.autoUpload.uploadArray count]];
+                        UIApplication *app = [UIApplication sharedApplication];
+                        app.applicationIconBadgeNumber = [array_ count]+[appleDate.autoUpload.uploadArray count];
                     });
                 }
                 ALAsset *asset = [array_ objectAtIndex:i];
@@ -84,8 +85,14 @@
                 list.file_id = @"";
                 list.upload_size = 0;
                 list.is_autoUpload = NO;
+                
                 list.is_share = NO;
                 list.spaceId = [NSString formatNSStringForOjbect:s_id];
+                NSLog(@"[[SCBSession sharedSession] spaceID]:%@;[[SCBSession sharedSession] homeID]:%@",[[SCBSession sharedSession] spaceID],[[SCBSession sharedSession] homeID]);
+                if(![list.spaceId isEqualToString:[NSString formatNSStringForOjbect:[[SCBSession sharedSession] spaceID]]] && ![list.spaceId isEqualToString:[NSString formatNSStringForOjbect:[[SCBSession sharedSession] homeID]]])
+                {
+                    list.is_share = YES;
+                }
                 [list insertUploadList];
                 [list release];
             }
@@ -106,6 +113,7 @@
     {
         list.t_id =  ((UpLoadList *)[uploadArray lastObject]).t_id;
     }
+    list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
     
     [uploadArray addObjectsFromArray:[list selectMoveUploadListAllAndNotUpload]];
     [list release];
@@ -118,8 +126,11 @@
     isOpenedUpload = YES;
     if(!isStart)
     {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [app.autoUpload stopUpload];
+        [app.autoUpload updateUploadStartButton:@"继续"];
+        [app.autoUpload updateUploadStartButtonState:NO];
         isStart = YES;
-        isStopCurrUpload = NO;
         [self updateTableStateForWaiting];
         [self startUpload];
     }
@@ -130,15 +141,19 @@
 {
     if([uploadArray count]>0 && isStart)
     {
+        isStopCurrUpload = NO;
         NewUpload *newUpload = [[NewUpload alloc] init];
         newUpload.list = [uploadArray objectAtIndex:0];
         [newUpload setDelegate:self];
         [newUpload startUpload];
         [newUpload release];
     }
-    else
+    if([uploadArray count]==0)
     {
         isStart = FALSE;
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [app.autoUpload updateUploadStartButtonState:YES];
+        [self updateTable];
     }
 }
 
@@ -177,17 +192,68 @@
     }
 }
 
+//用户存储空间不足
+-(void)upUserSpaceLass
+{
+    //调用ui
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+        ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[ChangeUploadViewController class]])
+        {
+            [uploadView uploadFail:@"用户存储空间不足"];
+        }
+    });
+    [self upNetworkStop];
+}
+
+-(void)upNotUpload
+{
+    //调用ui
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+        ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[ChangeUploadViewController class]])
+        {
+            [uploadView uploadFail:@"无权限上传"];
+        }
+    });
+    if([uploadArray count]>0)
+    {
+        UpLoadList *list = [uploadArray objectAtIndex:0];
+        [list deleteUploadList];
+        [uploadArray removeObjectAtIndex:0];
+        [self updateTable];
+    }
+    [self startUpload];
+}
+
+//服务器异常
+-(void)webServiceFail
+{
+    [self upError];
+}
+
 //上传失败
 -(void)upError
 {
-    isStopCurrUpload = FALSE;
+    isStopCurrUpload = YES;
+    if([uploadArray count]>0)
+    {
+        UpLoadList *list = [uploadArray objectAtIndex:0];
+        [list deleteUploadList];
+        [uploadArray removeObjectAtIndex:0];
+        [self updateTable];
+    }
     [self startUpload];
 }
 
 //等待WiFi
 -(void)upWaitWiFi
 {
-    isStopCurrUpload = FALSE;
+    isStopCurrUpload = YES;
     isStart = FALSE;
     [self updateTableStateForWaitWiFi];
 }
@@ -208,24 +274,31 @@
 //网络失败
 -(void)upNetworkStop
 {
-    isStopCurrUpload = FALSE;
+    isStopCurrUpload = YES;
     isStart = FALSE;
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(!app.autoUpload.isGoOn)
+    {
+        [app.autoUpload updateUploadStartButton:@"继续"];
+    }
     [self updateTableStateForStop];
 }
 
 //更新ui
 -(void)updateTable
 {
-    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
-    ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-    if([uploadView isKindOfClass:[ChangeUploadViewController class]])
-    {
-        [uploadView.uploadListTableView reloadData];
-    }
-    [appleDate.myTabBarController addUploadNumber:[uploadArray count]+[appleDate.autoUpload.uploadArray count]];
-    UIApplication *app = [UIApplication sharedApplication];
-    app.applicationIconBadgeNumber = [uploadArray count]+[appleDate.autoUpload.uploadArray count];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
+        ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[ChangeUploadViewController class]])
+        {
+            [uploadView.uploadListTableView reloadData];
+        }
+        [appleDate.myTabBarController addUploadNumber:[uploadArray count]+[appleDate.autoUpload.uploadArray count]];
+        UIApplication *app = [UIApplication sharedApplication];
+        app.applicationIconBadgeNumber = [uploadArray count]+[appleDate.autoUpload.uploadArray count];
+    });
 }
 
 //修改Ui状态为等待WiFi
@@ -235,6 +308,8 @@
         UpLoadList *list = [uploadArray objectAtIndex:i];
         list.t_state = 3;
     }
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app.autoUpload updateUploadStartButton:@"继续"];
     [self updateTable];
 }
 
@@ -262,6 +337,8 @@
 //暂时所有上传
 -(void)stopAllUpload
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app.autoUpload updateUploadStartButton:@"继续"];
     isOpenedUpload = FALSE;
     isStopCurrUpload = YES;
     isStart = NO;
@@ -270,34 +347,20 @@
 //删除一条上传
 -(void)deleteOneUpload:(NSInteger)selectIndex
 {
-    if(selectIndex == 0)
+    for(int i=0;i<[uploadArray count];i++)
     {
-        [self deleteCurrUpload];
-    }
-    else
-    {
-        if([uploadArray count]>selectIndex)
+        UpLoadList *list = [uploadArray objectAtIndex:i];
+        NSLog(@"list.id:%i",list.t_id);
+        if(list.t_id == selectIndex)
         {
-            UpLoadList *list = [uploadArray objectAtIndex:selectIndex];
+            if(i == 0)
+            {
+                isStopCurrUpload = YES;
+            }
             [list deleteUploadList];
-            [uploadArray removeObjectAtIndex:selectIndex];
+            [uploadArray removeObjectAtIndex:i];
             [self updateTable];
-        }
-    }
-}
-
-//删除本次上传
--(void)deleteCurrUpload
-{
-    isStopCurrUpload = YES;
-    if(!isStart)
-    {
-        if([uploadArray count]>0)
-        {
-            UpLoadList *list = [uploadArray objectAtIndex:0];
-            [list deleteUploadList];
-            [uploadArray removeObjectAtIndex:0];
-            [self updateTable];
+            break;
         }
     }
 }
@@ -308,6 +371,7 @@
     isStopCurrUpload = YES;
     isStart = NO;
     UpLoadList *list = [[UpLoadList alloc] init];
+    list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
     BOOL bl = [list deleteMoveUploadListAllAndNotUpload];
     if(bl)
     {

@@ -61,7 +61,7 @@
             bl = FALSE;
         }
         sqlite3_bind_int(statement, 1, t_id);
-        
+        sqlite3_bind_text(statement, 2, [user_id UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
@@ -84,6 +84,7 @@
         if (success != SQLITE_OK) {
             bl = FALSE;
         }
+        sqlite3_bind_text(statement, 1, [user_id UTF8String], -1, SQLITE_TRANSIENT);
         
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
@@ -107,6 +108,7 @@
         if (success != SQLITE_OK) {
             bl = FALSE;
         }
+        sqlite3_bind_text(statement, 1, [user_id UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
@@ -125,8 +127,8 @@
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteUploadListAndUpload UTF8String];
-        
         int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        sqlite3_bind_text(statement, 1, [user_id UTF8String], -1, SQLITE_TRANSIENT);
         if (success != SQLITE_OK) {
             bl = FALSE;
         }
@@ -158,6 +160,7 @@
         sqlite3_bind_text(statement, 3, [t_date UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, t_state);
         sqlite3_bind_text(statement, 5, [t_name UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 6, [user_id UTF8String], -1, SQLITE_TRANSIENT);
         
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
@@ -180,6 +183,7 @@
         const char *insert_stmt = [SelectAutoUploadListAllAndNotUpload UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
         sqlite3_bind_int(statement, 1, t_id);
+        sqlite3_bind_text(statement, 2, [user_id UTF8String], -1, SQLITE_TRANSIENT);
         while (sqlite3_step(statement)==SQLITE_ROW) {
             UpLoadList *uploadList = [[UpLoadList alloc] init];
             uploadList.t_id = sqlite3_column_int(statement, 0);
@@ -216,6 +220,7 @@
         const char *insert_stmt = [SelectMoveUploadListAllAndNotUpload UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
         sqlite3_bind_int(statement, 1, t_id);
+        sqlite3_bind_text(statement, 2, [user_id UTF8String], -1, SQLITE_TRANSIENT);
         while (sqlite3_step(statement)==SQLITE_ROW) {
             UpLoadList *uploadList = [[UpLoadList alloc] init];
             uploadList.t_id = sqlite3_column_int(statement, 0);
@@ -251,6 +256,7 @@
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [SelectUploadListAllAndUploaded UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        sqlite3_bind_text(statement, 1, [user_id UTF8String], -1, SQLITE_TRANSIENT);
         while (sqlite3_step(statement)==SQLITE_ROW) {
             UpLoadList *uploadList = [[UpLoadList alloc] init];
             uploadList.t_id = sqlite3_column_int(statement, 0);

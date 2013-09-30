@@ -22,6 +22,12 @@
 -(void)upReName;
 //上传失败
 -(void)upError;
+//服务器异常
+-(void)webServiceFail;
+//上传无权限
+-(void)upNotUpload;
+//用户存储空间不足
+-(void)upUserSpaceLass;
 //等待WiFi
 -(void)upWaitWiFi;
 //网络失败

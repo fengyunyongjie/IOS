@@ -15,7 +15,7 @@
 
 @protocol UploadViewCellDelegate <NSObject>
 
--(void)deletCell:(int)index;
+-(void)deletCell:(UpLoadList *)upload_list;
 
 @end
 
@@ -28,6 +28,7 @@
     CustomJinDu *jinDuView;
     id<UploadViewCellDelegate> delegate;
     UIButton *button_start_button;
+    UpLoadList *upload_list;
 }
 
 @property(nonatomic,retain) UIImageView *imageView;

@@ -48,7 +48,8 @@
         if (success != SQLITE_OK) {
             bl = FALSE;
         }
-        sqlite3_bind_int(statement, 1, a_id);
+        sqlite3_bind_text(statement, 1, [a_name UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 2, [a_user_id UTF8String], -1, SQLITE_TRANSIENT);
         
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
@@ -97,7 +98,7 @@
         }
         sqlite3_bind_int(statement, 1, a_state);
         sqlite3_bind_text(statement, 2, [a_name UTF8String], -1, SQLITE_TRANSIENT);
-        
+        sqlite3_bind_text(statement, 3, [a_user_id UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
@@ -133,7 +134,7 @@
     return bl;
 }
 
--(NSInteger *)SelectCountAutoUploadList
+-(NSInteger)SelectCountAutoUploadList
 {
     sqlite3_stmt *statement;
     const char *dbpath = [self.databasePath UTF8String];

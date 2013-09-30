@@ -107,4 +107,36 @@
     return [tableArray autorelease];
 }
 
+//查询数据是否存在
+-(NSMutableArray *)selectIsHaveUser
+{
+    sqlite3_stmt *statement;
+    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+    const char *dbpath = [self.databasePath UTF8String];
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [SelectIsHave UTF8String];
+        sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        sqlite3_bind_text(statement, 1, [user_name UTF8String], -1, SQLITE_TRANSIENT);
+        while (sqlite3_step(statement)==SQLITE_ROW) {
+            UserInfo *info = [[UserInfo alloc] init];
+            info.u_id = sqlite3_column_int(statement, 0);
+            const char *url = (const char *)sqlite3_column_text(statement, 1);
+            info.auto_url = [NSString formatNSStringForChar:url];
+            const char *name = (const char *)sqlite3_column_text(statement, 2);
+            info.user_name = [NSString formatNSStringForChar:name];
+            info.f_id = sqlite3_column_int(statement, 3);
+            const char *space = (const char *)sqlite3_column_text(statement, 4);
+            info.space_id = [NSString formatNSStringForChar:space];
+            info.is_autoUpload = sqlite3_column_int(statement, 5);
+            info.is_oneWiFi = sqlite3_column_int(statement, 6);
+            [tableArray addObject:info];
+            [info release];
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return [tableArray autorelease];
+}
+
+
 @end
