@@ -10,15 +10,12 @@
 		291CCB3617F27F99005C029C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3517F27F99005C029C /* Foundation.framework */; };
 		291CCB3817F27F99005C029C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3717F27F99005C029C /* CoreGraphics.framework */; };
 		291CCB3A17F27F99005C029C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3917F27F99005C029C /* UIKit.framework */; };
-		291CCB4017F27F99005C029C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 291CCB3E17F27F99005C029C /* InfoPlist.strings */; };
 		291CCB4217F27F99005C029C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB4117F27F99005C029C /* main.m */; };
 		291CCB4617F27F99005C029C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB4517F27F99005C029C /* AppDelegate.m */; };
-		291CCB4917F27F99005C029C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 291CCB4717F27F99005C029C /* Main.storyboard */; };
 		291CCB4E17F27F99005C029C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 291CCB4D17F27F99005C029C /* Images.xcassets */; };
 		291CCB5517F27F99005C029C /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB5417F27F99005C029C /* XCTest.framework */; };
 		291CCB5617F27F99005C029C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3517F27F99005C029C /* Foundation.framework */; };
 		291CCB5717F27F99005C029C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3917F27F99005C029C /* UIKit.framework */; };
-		291CCB5F17F27F99005C029C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 291CCB5D17F27F99005C029C /* InfoPlist.strings */; };
 		291CCB6117F27F99005C029C /* ndsproTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB6017F27F99005C029C /* ndsproTests.m */; };
 		291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB9C17F3C40A005C029C /* MF_Base64Additions.m */; };
 		291CCBBB17F3C40A005C029C /* SCBAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCB9E17F3C40A005C029C /* SCBAccountManager.m */; };
@@ -47,6 +44,8 @@
 		291CCC4117F7C6EB005C029C /* SCBUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4017F7C6EB005C029C /* SCBUploader.m */; };
 		291CCC4B17F7D9D6005C029C /* UpDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */; };
 		291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */; };
+		292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 292B6B8917F91B3B0015669A /* IconDownloader.m */; };
+		292B6B8D17F9659E0015669A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 292B6B8B17F9659E0015669A /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,17 +64,14 @@
 		291CCB3717F27F99005C029C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		291CCB3917F27F99005C029C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		291CCB3D17F27F99005C029C /* ndspro-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ndspro-Info.plist"; sourceTree = "<group>"; };
-		291CCB3F17F27F99005C029C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		291CCB4117F27F99005C029C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		291CCB4317F27F99005C029C /* ndspro-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ndspro-Prefix.pch"; sourceTree = "<group>"; };
 		291CCB4417F27F99005C029C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		291CCB4517F27F99005C029C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		291CCB4817F27F99005C029C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		291CCB4D17F27F99005C029C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		291CCB5317F27F99005C029C /* ndsproTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ndsproTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		291CCB5417F27F99005C029C /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		291CCB5C17F27F99005C029C /* ndsproTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ndsproTests-Info.plist"; sourceTree = "<group>"; };
-		291CCB5E17F27F99005C029C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		291CCB6017F27F99005C029C /* ndsproTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ndsproTests.m; sourceTree = "<group>"; };
 		291CCB9B17F3C40A005C029C /* MF_Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MF_Base64Additions.h; sourceTree = "<group>"; };
 		291CCB9C17F3C40A005C029C /* MF_Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MF_Base64Additions.m; sourceTree = "<group>"; };
@@ -122,6 +118,10 @@
 		291CCC4817F7D9D6005C029C /* UpDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpDownloadViewController.h; sourceTree = "<group>"; };
 		291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpDownloadViewController.m; sourceTree = "<group>"; };
 		291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpDownloadViewController.xib; sourceTree = "<group>"; };
+		292B6B8817F91B3B0015669A /* IconDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconDownloader.h; sourceTree = "<group>"; };
+		292B6B8917F91B3B0015669A /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
+		292B6B8C17F9659E0015669A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		292B6B8E17F965F10015669A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,11 +189,11 @@
 				291CCC3217F42B4C005C029C /* Login */,
 				291CCB4417F27F99005C029C /* AppDelegate.h */,
 				291CCB4517F27F99005C029C /* AppDelegate.m */,
-				291CCB4717F27F99005C029C /* Main.storyboard */,
 				291CCC2D17F411F5005C029C /* MyTabBarViewController.h */,
 				291CCC2E17F411F5005C029C /* MyTabBarViewController.m */,
 				291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */,
 				291CCB4D17F27F99005C029C /* Images.xcassets */,
+				292B6B8B17F9659E0015669A /* Main.storyboard */,
 				291CCC1D17F408EF005C029C /* imgRes */,
 				291CCB3C17F27F99005C029C /* Supporting Files */,
 			);
@@ -205,7 +205,6 @@
 			children = (
 				291CCBCD17F3CD34005C029C /* PConfig.h */,
 				291CCB3D17F27F99005C029C /* ndspro-Info.plist */,
-				291CCB3E17F27F99005C029C /* InfoPlist.strings */,
 				291CCB4117F27F99005C029C /* main.m */,
 				291CCB4317F27F99005C029C /* ndspro-Prefix.pch */,
 			);
@@ -225,7 +224,6 @@
 			isa = PBXGroup;
 			children = (
 				291CCB5C17F27F99005C029C /* ndsproTests-Info.plist */,
-				291CCB5D17F27F99005C029C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -333,6 +331,8 @@
 				291CCC1317F4082B005C029C /* MainViewController.h */,
 				291CCC1417F4082B005C029C /* MainViewController.m */,
 				291CCC1517F4082B005C029C /* MainViewController.xib */,
+				292B6B8817F91B3B0015669A /* IconDownloader.h */,
+				292B6B8917F91B3B0015669A /* IconDownloader.m */,
 				291CCC1817F4086D005C029C /* FileListViewController.h */,
 				291CCC1917F4086D005C029C /* FileListViewController.m */,
 				291CCC1A17F4086D005C029C /* FileListViewController.xib */,
@@ -444,13 +444,12 @@
 				291CCC3B17F5834C005C029C /* Bt_UsercentreCh@2x.png in Resources */,
 				291CCC2317F408EF005C029C /* Bt_LoginNor.png in Resources */,
 				291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */,
+				292B6B8D17F9659E0015669A /* Main.storyboard in Resources */,
 				291CCB4E17F27F99005C029C /* Images.xcassets in Resources */,
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
 				291CCC2117F408EF005C029C /* Bk_Login.png in Resources */,
 				291CCC1717F4082B005C029C /* MainViewController.xib in Resources */,
 				291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */,
-				291CCB4017F27F99005C029C /* InfoPlist.strings in Resources */,
-				291CCB4917F27F99005C029C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +457,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				291CCB5F17F27F99005C029C /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +492,7 @@
 				291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */,
 				291CCBBD17F3C40A005C029C /* SCBFileManager.m in Sources */,
 				291CCC3717F53075005C029C /* FileItemTableCell.m in Sources */,
+				292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */,
 				291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */,
 				291CCBBB17F3C40A005C029C /* SCBAccountManager.m in Sources */,
 				291CCC1617F4082B005C029C /* MainViewController.m in Sources */,
@@ -526,28 +525,13 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		291CCB3E17F27F99005C029C /* InfoPlist.strings */ = {
+		292B6B8B17F9659E0015669A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				291CCB3F17F27F99005C029C /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		291CCB4717F27F99005C029C /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				291CCB4817F27F99005C029C /* Base */,
+				292B6B8C17F9659E0015669A /* Base */,
+				292B6B8E17F965F10015669A /* zh-Hans */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		291CCB5D17F27F99005C029C /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				291CCB5E17F27F99005C029C /* en */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -636,6 +620,7 @@
 				GCC_PREFIX_HEADER = "ndspro/ndspro-Prefix.pch";
 				INFOPLIST_FILE = "ndspro/ndspro-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -647,10 +632,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ndspro/ndspro-Prefix.pch";
 				INFOPLIST_FILE = "ndspro/ndspro-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

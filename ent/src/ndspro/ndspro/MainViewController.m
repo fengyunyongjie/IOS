@@ -108,6 +108,7 @@
             flVC.spid=[dic objectForKey:@"spid"];
             flVC.f_id=@"0";
             flVC.title=[dic objectForKey:@"spname"];
+            flVC.roletype=[dic objectForKey:@"roletype"];
             [self.navigationController pushViewController:flVC animated:YES];
         }
     }

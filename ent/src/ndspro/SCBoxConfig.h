@@ -16,6 +16,7 @@
 //#define SERVER_URL @"http://b.7cbox.cn/biz/ent"
 //#define SERVER_URL @"http://192.168.1.55:8080/biz/ent"
 #define SERVER_URL @"http://192.168.1.9/biz/ent"
+#define HOST_URL @"http://192.168.1.9/"
 #pragma mark - 1.子帐号
 //子账号登录/ent/user/login
 #define USER_LOGIN_URI @"/user/login"
@@ -80,11 +81,11 @@
 //#define FM_URI @"/fm"
 #define FM_URI @"/file/list"
 //新建
-#define FM_MKDIR_URI @"/fm/mkdir"
+#define FM_MKDIR_URI @"/file/mkdir"
 //移除/fm/rm
-#define FM_RM_URI @"/fm/rm"
+#define FM_RM_URI @"/file/rm"
 //重命名/fm/rename
-#define FM_RENAME_URI @"/fm/rename"
+#define FM_RENAME_URI @"/file/rename"
 //移动文件＝＝剪切粘贴 /fm/cutpaste
 #define FM_MOVE_URI @"/fm/cutpaste"
 //转存文件==复制粘贴 /fm/copypaste

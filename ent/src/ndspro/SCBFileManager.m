@@ -32,7 +32,7 @@
     
     [request setHTTPMethod:@"POST"];
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
-    [request setValue:@"1" forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
     [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
     NSLog(@"ent_uid:%@",[[SCBSession sharedSession] userId]);
@@ -170,46 +170,43 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_name=%@&f_pid=%@&space_id=%@",f_name,f_pid,s_id];
+    [body appendFormat:@"fname=%@&fpid=%@&spid=%@",f_name,f_pid,s_id];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
-    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
 
     
     _conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
--(void)operateUpdateWithID:(NSString *)f_id
+-(void)operateUpdateWithID:(NSString *)f_id sID:(NSString *)s_id
 {
     self.fm_type=kFMTypeOperateUpdate;
     self.activeData=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
+    NSLog(@"%@",s_url);
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    NSString *s_id;
-    if(isFamily)
-    {
-        s_id = [[SCBSession sharedSession] homeID];
-    }
-    else
-    {
-        s_id=[[SCBSession sharedSession] spaceID];
-    }
-    [body appendFormat:@"f_id=%@&cursor=%d&offset=%d&space_id=%@&iszone=%@&sort=%@&sort_direct=%@",f_id,0,-1,s_id,@"1",@"f_modify",@"desc"];
+    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,@"time",@"desc"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
-    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] userId]);
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] userToken]);
+    NSLog(@"ent_uid:%@",[[SCBSession sharedSession] ent_utype]);
     _conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 -(void)openFinderWithID:(NSString *)f_id sID:(NSString *)s_id
@@ -237,23 +234,24 @@
     _conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
--(void)renameWithID:(NSString *)f_id newName:(NSString *)f_name
+-(void)renameWithID:(NSString *)f_id newName:(NSString *)f_name sID:(NSString *)s_id
 {
     self.fm_type=kFMTypeRename;
     self.activeData=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_RENAME_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"f_id=%@&f_name=%@",f_id,f_name];
+    [body appendFormat:@"fid=%@&fname=%@&spid=%@",f_id,f_name,s_id];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
-    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
     
     _conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
@@ -324,17 +322,18 @@
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_RM_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    NSString *fids=[f_ids componentsJoinedByString:@"&f_ids[]="];
-    [body appendFormat:@"f_ids[]=%@",fids];
+    NSString *fids=[f_ids componentsJoinedByString:@"&fids[]="];
+    [body appendFormat:@"fids[]=%@",fids];
     NSLog(@"\"remove: %@\"",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
-    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
     
     _conn=[[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
@@ -444,6 +443,7 @@
             }
         }
         @finally {
+            NSLog(@"%@",dic);
             NSLog(@"@finally");
         }
     }else
