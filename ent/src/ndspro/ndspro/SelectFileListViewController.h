@@ -1,35 +1,31 @@
 //
-//  FileListViewController.h
+//  SelectFileListViewController.h
 //  ndspro
 //
-//  Created by fengyongning on 13-9-26.
+//  Created by fengyongning on 13-10-8.
 //  Copyright (c) 2013年 fengyongning. All rights reserved.
 //
-
+// 移动选择、转存选择、提交选择、上传选择
 #import <UIKit/UIKit.h>
+#import "FileListViewController.h"
+//@class FileListViewController;
 typedef enum {
-    kMyndsTypeDefault,
-    kMyndsTypeSelect,
-    kMyndsTypeMyShareSelect,
-    kMyndsTypeShareSelect,
-    kMyndsTypeMyShare,
-    kMyndsTypeShare,
-    kMyndsTypeDefaultSearch,
-    kMyndsTypeMyShareSearch,
-    kMyndsTypeShareSearch,
-} FileListType;
-@interface FileListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+    kSelectTypeDefault,
+    kSelectTypeMove,
+    kSelectTypeResave,
+    kSelectTypeCommit,
+} SelectType;
+@interface SelectFileListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSArray *finderArray;
 @property (strong,nonatomic) NSString *f_id;
 @property (strong,nonatomic) NSString *spid;
 @property (strong,nonatomic) NSString *roletype;
-@property (assign,nonatomic) FileListType flType;
 @property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
 @property (strong,nonatomic) UITableView *tableView;
 @property (strong,nonatomic) NSIndexPath *selectedIndexPath;
--(void)moveFileToID:(NSString *)f_id;
--(void)commitFileToID:(NSString *)f_id sID:(NSString *)s_pid;
--(void)resaveFileToID:(NSString *)f_id;
+@property (strong,nonatomic) UIToolbar *toolbar;
+@property (weak,nonatomic) FileListViewController *delegate;
+@property (assign,nonatomic) SelectType type;
 @end

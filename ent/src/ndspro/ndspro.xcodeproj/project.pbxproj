@@ -46,6 +46,11 @@
 		291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */; };
 		292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 292B6B8917F91B3B0015669A /* IconDownloader.m */; };
 		292B6B8D17F9659E0015669A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 292B6B8B17F9659E0015669A /* Main.storyboard */; };
+		29728C691803A211004B4724 /* Geren.png in Resources */ = {isa = PBXBuildFile; fileRef = 29728C671803A211004B4724 /* Geren.png */; };
+		29728C6A1803A211004B4724 /* Qiye.png in Resources */ = {isa = PBXBuildFile; fileRef = 29728C681803A211004B4724 /* Qiye.png */; };
+		29728C6C1803A80B004B4724 /* Bk_Login@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29728C6B1803A80B004B4724 /* Bk_Login@iPhone5.png */; };
+		29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29728C6E1803B226004B4724 /* SelectFileListViewController.m */; };
+		29728C711803B226004B4724 /* SelectFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29728C6F1803B226004B4724 /* SelectFileListViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +127,12 @@
 		292B6B8917F91B3B0015669A /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
 		292B6B8C17F9659E0015669A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		292B6B8E17F965F10015669A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		29728C671803A211004B4724 /* Geren.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Geren.png; sourceTree = "<group>"; };
+		29728C681803A211004B4724 /* Qiye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Qiye.png; sourceTree = "<group>"; };
+		29728C6B1803A80B004B4724 /* Bk_Login@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bk_Login@iPhone5.png"; sourceTree = "<group>"; };
+		29728C6D1803B226004B4724 /* SelectFileListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFileListViewController.h; sourceTree = "<group>"; };
+		29728C6E1803B226004B4724 /* SelectFileListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFileListViewController.m; sourceTree = "<group>"; };
+		29728C6F1803B226004B4724 /* SelectFileListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectFileListViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,8 +301,11 @@
 				291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */,
 				291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */,
 				291CCC1E17F408EF005C029C /* Bk_Login.png */,
+				29728C6B1803A80B004B4724 /* Bk_Login@iPhone5.png */,
 				291CCC1F17F408EF005C029C /* Bt_LoginClick.png */,
 				291CCC2017F408EF005C029C /* Bt_LoginNor.png */,
+				29728C671803A211004B4724 /* Geren.png */,
+				29728C681803A211004B4724 /* Qiye.png */,
 			);
 			path = imgRes;
 			sourceTree = "<group>";
@@ -336,6 +350,9 @@
 				291CCC1817F4086D005C029C /* FileListViewController.h */,
 				291CCC1917F4086D005C029C /* FileListViewController.m */,
 				291CCC1A17F4086D005C029C /* FileListViewController.xib */,
+				29728C6D1803B226004B4724 /* SelectFileListViewController.h */,
+				29728C6E1803B226004B4724 /* SelectFileListViewController.m */,
+				29728C6F1803B226004B4724 /* SelectFileListViewController.xib */,
 				291CCC3517F53074005C029C /* FileItemTableCell.h */,
 				291CCC3617F53075005C029C /* FileItemTableCell.m */,
 			);
@@ -441,13 +458,17 @@
 				291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */,
 				291CCC1217F4041D005C029C /* LoginViewController.xib in Resources */,
 				291CCC3D17F583D6005C029C /* Bt_UsercentreNo@2x.png in Resources */,
+				29728C6C1803A80B004B4724 /* Bk_Login@iPhone5.png in Resources */,
 				291CCC3B17F5834C005C029C /* Bt_UsercentreCh@2x.png in Resources */,
 				291CCC2317F408EF005C029C /* Bt_LoginNor.png in Resources */,
+				29728C711803B226004B4724 /* SelectFileListViewController.xib in Resources */,
 				291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */,
 				292B6B8D17F9659E0015669A /* Main.storyboard in Resources */,
 				291CCB4E17F27F99005C029C /* Images.xcassets in Resources */,
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
 				291CCC2117F408EF005C029C /* Bk_Login.png in Resources */,
+				29728C691803A211004B4724 /* Geren.png in Resources */,
+				29728C6A1803A211004B4724 /* Qiye.png in Resources */,
 				291CCC1717F4082B005C029C /* MainViewController.xib in Resources */,
 				291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */,
 			);
@@ -500,6 +521,7 @@
 				291CCC1B17F4086D005C029C /* FileListViewController.m in Sources */,
 				291CCB4217F27F99005C029C /* main.m in Sources */,
 				291CCC1117F4041D005C029C /* LoginViewController.m in Sources */,
+				29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */,
 				291CCBBC17F3C40A005C029C /* SCBDownloader.m in Sources */,
 				291CCC2717F40D05005C029C /* MBProgressHUD.m in Sources */,
 				291CCC2B17F410E2005C029C /* SettingViewController.m in Sources */,

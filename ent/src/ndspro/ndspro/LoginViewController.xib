@@ -17,24 +17,24 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bk_Login.png" id="q9X-0I-N5u">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bk_Login@iPhone5.png" id="q9X-0I-N5u">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入您的帐号" minimumFontSize="17" id="sfP-dA-qF2">
-                    <rect key="frame" x="34" y="95" width="266" height="30"/>
+                    <rect key="frame" x="61" y="98" width="236" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入您的密码" minimumFontSize="17" id="kam-ZC-xbU">
-                    <rect key="frame" x="34" y="139" width="266" height="30"/>
+                    <rect key="frame" x="61" y="142" width="236" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="C0p-oh-Evr">
-                    <rect key="frame" x="20" y="262" width="278" height="44"/>
+                    <rect key="frame" x="18" y="262" width="285" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" backgroundImage="Bt_LoginNor.png">
@@ -58,8 +58,8 @@
         </view>
     </objects>
     <resources>
-        <image name="Bk_Login.png" width="640" height="1136"/>
-        <image name="Bt_LoginClick.png" width="556" height="89"/>
-        <image name="Bt_LoginNor.png" width="556" height="89"/>
+        <image name="Bk_Login@iPhone5.png" width="640" height="1036"/>
+        <image name="Bt_LoginClick.png" width="570" height="62"/>
+        <image name="Bt_LoginNor.png" width="570" height="62"/>
     </resources>
 </document>

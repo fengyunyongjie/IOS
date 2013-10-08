@@ -87,7 +87,11 @@
 //重命名/fm/rename
 #define FM_RENAME_URI @"/file/rename"
 //移动文件＝＝剪切粘贴 /fm/cutpaste
-#define FM_MOVE_URI @"/fm/cutpaste"
+#define FM_MOVE_URI @"/file/cut"
+//文件提交/ent/file/commit
+#define FM_COMMIT_URI @"/file/commit"
+//文件转存/ent/file/resave
+#define FM_RESAVE_URI @"/file/resave"
 //转存文件==复制粘贴 /fm/copypaste
 #define FM_COPYPASTE @"/fm/copypaste"
 //文件下载

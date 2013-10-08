@@ -11,6 +11,8 @@
 #import "MBProgressHUD.h"
 #import "YNFunctions.h"
 #import "IconDownloader.h"
+#import "SelectFileListViewController.h"
+#import "MainViewController.h"
 
 typedef enum{
     kAlertTagDeleteOne,
@@ -29,6 +31,7 @@ typedef enum{
 
 @interface FileListViewController ()<SCBFileManagerDelegate,IconDownloaderDelegate,UIScrollViewDelegate,UIAlertViewDelegate,UITextFieldDelegate,UIActionSheetDelegate>
 @property (strong,nonatomic) SCBFileManager *fm;
+@property (strong,nonatomic) SCBFileManager *fm_move;
 @property(strong,nonatomic) MBProgressHUD *hud;
 @end
 
@@ -117,14 +120,14 @@ typedef enum{
 }
 -(void)toMore:(id)sender
 {
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名",@"删除", nil];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名",@"删除",@"下载",@"发送",@"提交/转存", nil];
     [actionSheet setTag:kActionSheetTagMore];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 -(void)toRename:(id)sender
 {
-    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
     NSString *name=[dic objectForKey:@"fname"];
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"重命名" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
@@ -142,6 +145,33 @@ typedef enum{
     [actionSheet setTag:kActionSheetTagDeleteOne];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+}
+-(void)toCommitOrResave:(id)sender
+{
+    NSLog(@"提交或转存！！！");
+    if ([self.roletype isEqualToString:@"9999"]) {
+        NSLog(@"提交");
+        MainViewController *flvc=[[MainViewController alloc] init];
+        flvc.title=@"选择提交的位置";
+        flvc.delegate=self;
+        flvc.type=kTypeCommit;
+        UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:flvc];
+        [self presentViewController:nav animated:YES completion:nil];
+
+    }else
+    {
+        NSLog(@"转存");
+        MainViewController *flvc=[[MainViewController alloc] init];
+        flvc.title=@"选择转存的位置";
+        flvc.delegate=self;
+        flvc.type=kTypeResave;
+        UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:flvc];
+        [self presentViewController:nav animated:YES completion:nil];
+    }
+}
+-(void)toSend:(id)sender
+{
+    NSLog(@"发送");
 }
 -(void)toMove:(id)sender
 {
@@ -223,6 +253,138 @@ typedef enum{
 //    moveViewController.delegate=self;
 //    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:moveViewController];
 //    [self presentViewController:nav animated:YES completion:nil];
+    SelectFileListViewController *flvc=[[SelectFileListViewController alloc] init];
+    flvc.f_id=@"0";
+    flvc.roletype=self.roletype;
+    flvc.spid=self.spid;
+    flvc.title=@"选择移动的位置";
+    flvc.delegate=self;
+    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:flvc];
+    [self presentViewController:nav animated:YES completion:nil];
+}
+-(void)toDownload:(id)sender
+{
+    NSLog(@"下载");
+}
+-(void)commitFileToID:(NSString *)f_id sID:(NSString *)s_pid
+{
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+    NSString *fid=[dic objectForKey:@"fid"];
+    if (self.fm_move) {
+        [self.fm_move cancelAllTask];
+    }else
+    {
+        self.fm_move=[[SCBFileManager alloc] init];
+    }
+    self.fm_move.delegate=self;
+    [self.fm_move commitFileIDs:@[fid] toPID:f_id sID:s_pid];
+}
+-(void)resaveFileToID:(NSString *)f_id
+{
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+    NSString *fid=[dic objectForKey:@"fid"];
+    if (self.fm_move) {
+        [self.fm_move cancelAllTask];
+    }else
+    {
+        self.fm_move=[[SCBFileManager alloc] init];
+    }
+    self.fm_move.delegate=self;
+    [self.fm_move resaveFileIDs:@[fid] toPID:f_id];
+}
+-(void)moveFileToID:(NSString *)f_id
+{
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+    NSString *fid=[dic objectForKey:@"fid"];
+    if (self.fm_move) {
+        [self.fm_move cancelAllTask];
+    }else
+    {
+        self.fm_move=[[SCBFileManager alloc] init];
+    }
+    self.fm_move.delegate=self;
+    [self.fm_move moveFileIDs:@[fid] toPID:f_id sID:self.spid];
+//    NSMutableArray *willMoveObjects=[[[NSMutableArray alloc] init] autorelease];
+//    if ([self.tableView isEditing]) {
+//        for (int i=0;i<self.m_fileItems.count;i++) {
+//            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
+//            if (fileItem.checked) {
+//                NSDictionary *dic=[self.listArray objectAtIndex:i];
+//                NSString *m_fid=[dic objectForKey:@"f_id"];
+//                if ([f_id intValue]==[m_fid intValue]) {
+//                    if (self.hud) {
+//                        [self.hud removeFromSuperview];
+//                    }
+//                    self.hud=nil;
+//                    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+//                    [self.view addSubview:self.hud];
+//                    [self.hud show:NO];
+//                    self.hud.labelText=@"您当前操作有误";
+//                    self.hud.mode=MBProgressHUDModeText;
+//                    self.hud.margin=10.f;
+//                    [self.hud show:YES];
+//                    [self.hud hide:YES afterDelay:1.0f];
+//                    return;
+//                }
+//                [willMoveObjects addObject:m_fid];
+//            }
+//        }
+//        if ([willMoveObjects count]<=0) {
+//            return;
+//        }
+//    }else
+//    {
+//        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+//        NSString *m_fid=[dic objectForKey:@"f_id"];
+//        if ([f_id intValue]==[m_fid intValue]) {
+//            if (self.hud) {
+//                [self.hud removeFromSuperview];
+//            }
+//            self.hud=nil;
+//            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+//            [self.view addSubview:self.hud];
+//            [self.hud show:NO];
+//            self.hud.labelText=@"您当前操作有误";
+//            self.hud.mode=MBProgressHUDModeText;
+//            self.hud.margin=10.f;
+//            [self.hud show:YES];
+//            [self.hud hide:YES afterDelay:1.0f];
+//            return;
+//        }
+//        willMoveObjects=@[m_fid];
+//    }
+//    switch (self.myndsType) {
+//        case kMyndsTypeDefault:
+//        case kMyndsTypeDefaultSearch:
+//        {
+//            if (self.fm_move) {
+//                [self.fm_move cancelAllTask];
+//            }else
+//            {
+//                self.fm_move=[[[SCBFileManager alloc] init] autorelease];
+//            }
+//            self.fm_move.delegate=self;
+//            [self.fm_move moveFileIDs:willMoveObjects toPID:f_id];
+//        }
+//            break;
+//        case kMyndsTypeMyShareSearch:
+//        case kMyndsTypeShare:
+//        case kMyndsTypeMyShare:
+//        case kMyndsTypeShareSearch:
+//        {
+//            if (self.sm_move) {
+//                [self.sm_move cancelAllTask];
+//            }else
+//            {
+//                self.sm_move=[[[SCBShareManager alloc] init] autorelease];
+//            }
+//            self.sm_move.delegate=self;
+//            [self.sm_move moveFileIDs:willMoveObjects toPID:f_id];
+//        }
+//            break;
+//        default:
+//            break;
+//    }
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -482,6 +644,25 @@ typedef enum{
     self.hud.margin=10.f;
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)moveUnsucess
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)moveSucess
+{
+    [self operateUpdate];
 }
 #pragma mark - Deferred image loading (UIScrollViewDelegate)
 
@@ -770,6 +951,14 @@ typedef enum{
                 NSLog(@"删除");
                 [self toDelete:nil];
             }else if(buttonIndex == 3) {
+                NSLog(@"下载");
+            }else if(buttonIndex == 4) {
+                NSLog(@"发送");
+            }else if(buttonIndex == 5) {
+                NSLog(@"提交/转存");
+                [self toCommitOrResave:nil];
+            }
+            else if(buttonIndex == 6) {
                 NSLog(@"取消");
             }
             break;

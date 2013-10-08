@@ -43,8 +43,12 @@ typedef enum {
 -(void)renameWithID:(NSString *)f_id newName:(NSString *)f_name sID:(NSString *)s_id;
 //复制粘贴/fm/copypaste
 -(void)copyFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid toSpaceId:(NSString *)spaceId toPidSpaceId:(NSString *)sp_id;
-//剪切粘贴/fm/cutpaste
--(void)moveFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid;
+//剪切粘贴/fm/cutpaste      （移动文件）
+-(void)moveFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid sID:(NSString *)s_id;
+//文件提交/ent/file/commit
+-(void)commitFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid sID:(NSString *)s_id;
+//文件转存/ent/file/resave
+-(void)resaveFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid;
 //移除/fm/rm
 -(void)removeFileWithIDs:(NSArray*)f_ids;
 //搜索/fm/search

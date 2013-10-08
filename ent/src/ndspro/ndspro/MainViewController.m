@@ -7,10 +7,9 @@
 //
 
 #import "MainViewController.h"
-#import "FileListViewController.h"
 #import "SCBFileManager.h"
 #import "YNFunctions.h"
-
+#import "SelectFileListViewController.h"
 #define AUTHOR_MENU @"AuthorMenus"
 @interface MainViewController()<SCBFileManagerDelegate>
 @property (strong,nonatomic) SCBFileManager *fm;
@@ -72,6 +71,12 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.listArray) {
+        if (self.type==kTypeCommit) {
+            return self.listArray.count-1;
+        }else if(self.type==kTypeResave)
+        {
+            return 1;
+        }
         return self.listArray.count;
     }
     return 1;
@@ -86,9 +91,24 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     if (self.listArray) {
-        NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
+        NSDictionary *dic;
+        if (self.type==kTypeCommit) {
+            dic=[self.listArray objectAtIndex:indexPath.row+1];
+        }else{
+            dic=[self.listArray objectAtIndex:indexPath.row];
+        }
         if (dic) {
             cell.textLabel.text=[dic objectForKey:@"spname"];
+            //加载工作区图标
+            NSString *roleType=[dic objectForKey:@"roletype"];;
+            if ([roleType isEqualToString:@"9999"]) {
+                cell.imageView.image=[UIImage imageNamed:@"Geren.png"];
+            }else
+            {
+                cell.imageView.image=[UIImage imageNamed:@"Qiye.png"];
+            }
+            //显示工作区大小
+            cell.detailTextLabel.text=@"1.23G/5G";
         }
     }
     return cell;
@@ -102,14 +122,42 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.listArray) {
-        NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
-        if (dic) {
-            FileListViewController *flVC=[[FileListViewController alloc] init];
-            flVC.spid=[dic objectForKey:@"spid"];
-            flVC.f_id=@"0";
-            flVC.title=[dic objectForKey:@"spname"];
-            flVC.roletype=[dic objectForKey:@"roletype"];
-            [self.navigationController pushViewController:flVC animated:YES];
+        NSDictionary *dic;
+        if (self.type==kTypeCommit) {
+            dic=[self.listArray objectAtIndex:indexPath.row+1];
+            if (dic) {
+                SelectFileListViewController *flVC=[[SelectFileListViewController alloc] init];
+                flVC.spid=[dic objectForKey:@"spid"];
+                flVC.f_id=@"0";
+                flVC.title=[dic objectForKey:@"spname"];
+                flVC.roletype=[dic objectForKey:@"roletype"];
+                flVC.delegate=self.delegate;
+                flVC.type=kSelectTypeCommit;
+                [self.navigationController pushViewController:flVC animated:YES];
+            }
+        }else if(self.type==kTypeResave)
+        {
+            dic=[self.listArray objectAtIndex:indexPath.row];
+            if (dic) {
+                SelectFileListViewController *flVC=[[SelectFileListViewController alloc] init];
+                flVC.spid=[dic objectForKey:@"spid"];
+                flVC.f_id=@"0";
+                flVC.title=[dic objectForKey:@"spname"];
+                flVC.roletype=[dic objectForKey:@"roletype"];
+                flVC.delegate=self.delegate;
+                flVC.type=kSelectTypeResave;
+                [self.navigationController pushViewController:flVC animated:YES];
+            }
+        }else{
+            dic=[self.listArray objectAtIndex:indexPath.row];
+            if (dic) {
+                FileListViewController *flVC=[[FileListViewController alloc] init];
+                flVC.spid=[dic objectForKey:@"spid"];
+                flVC.f_id=@"0";
+                flVC.title=[dic objectForKey:@"spname"];
+                flVC.roletype=[dic objectForKey:@"roletype"];
+                [self.navigationController pushViewController:flVC animated:YES];
+            }
         }
     }
 }
