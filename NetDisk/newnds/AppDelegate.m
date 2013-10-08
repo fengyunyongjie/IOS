@@ -351,15 +351,6 @@
     //[self.myTabBarController.selectedViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.myTabBarController when_tabbar_is_selected:0];
     
-    UINavigationController *NavigationController = [[self.myTabBarController viewControllers] objectAtIndex:1];
-    IPhotoViewController *uploadView = (IPhotoViewController *)[NavigationController.viewControllers objectAtIndex:0];
-    if([uploadView isKindOfClass:[IPhotoViewController class]])
-    {
-        [uploadView clearTableData];
-    }
-//    //判断是否显示帮助指南页面 ［我的虹盘］
-//    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(showHelpView) userInfo:self repeats:NO];
-    
     //询问是否开始自动上传
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(openAutomic) userInfo:self repeats:NO];
 }
@@ -394,9 +385,11 @@
 {
     if([self isNewUser])
     {
-        self.helpController=[[[HelpViewController alloc] init] autorelease];
-        self.helpController.thisType=kTypeMySB;
-        [self.window addSubview:self.helpController.view];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"showHelpInMSB"];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"showHelpInHS"];
+        //判断是否显示帮助指南页面 ［我的虹盘］
+        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(showHelpView) userInfo:self repeats:NO];
+        
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否现在就开启自动上传" delegate:self cancelButtonTitle:@"暂不开启" otherButtonTitles:@"开启", nil];
         [alertView setDelegate:self];
         [alertView show];
@@ -423,6 +416,13 @@
         info.is_oneWiFi = YES;
     }
     [info insertUserinfo];
+    
+    UINavigationController *NavigationController = [[self.myTabBarController viewControllers] objectAtIndex:1];
+    IPhotoViewController *uploadView = (IPhotoViewController *)[NavigationController.viewControllers objectAtIndex:0];
+    if([uploadView isKindOfClass:[IPhotoViewController class]])
+    {
+        [uploadView clearTableData];
+    }
 }
 
 #pragma mark 判断设备号
