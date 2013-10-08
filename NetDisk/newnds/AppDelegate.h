@@ -36,6 +36,7 @@
     NewAutoUpload *autoUpload;
     MusicPlayerViewController *musicPlayer;
     BOOL isShareUpload;
+    NSMutableArray *downImageArray;
 }
 
 @property (strong, nonatomic) UIWindow *window;
@@ -51,6 +52,7 @@
 @property (nonatomic,retain) NewAutoUpload *autoUpload;
 @property (nonatomic,retain) MusicPlayerViewController *musicPlayer;
 @property (nonatomic,assign) BOOL isShareUpload;
+@property (nonatomic,retain) NSMutableArray *downImageArray;
 
 -(void)setLogin;
 //分享图片
@@ -60,5 +62,7 @@
 //微博授权
 - (void)ssoButtonPressed;
 + (NSString*)deviceString;
+//删除下载进程
+- (void)clearDown;
 
 @end

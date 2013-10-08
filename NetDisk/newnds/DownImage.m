@@ -35,6 +35,8 @@
 }
 - (void)startDownload
 {
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate.downImageArray addObject:self];
     NSString *path = [self get_image_save_file_path:imageUrl];
     //查询本地是否已经有该图片
     BOOL bl = [self image_exists_at_file_path:path];
@@ -93,7 +95,11 @@
 
 - (void)cancelDownload
 {
-    [imageConnection cancel];
+    if(imageConnection)
+    {
+        NSLog(@"停止文件下载");
+        [imageConnection cancel];
+    }
 }
 #pragma mark -
 #pragma mark Download support (NSURLConnectionDelegate)

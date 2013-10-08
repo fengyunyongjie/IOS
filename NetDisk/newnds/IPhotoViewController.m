@@ -86,6 +86,7 @@
             [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
         }
     }
+    [self requestSpace];
     if(isPhoto)
     {
         [photo_tableView reloadPhotoData];
@@ -106,8 +107,6 @@
         if(loadType != 2)
         {
             [self showFileList];
-            [self requestSpace];
-            
             if (self.hud) {
                 [self.hud removeFromSuperview];
             }
@@ -564,6 +563,8 @@
 -(void)clickRowSpaceId:(id)sender
 {
     [space_control setHidden:YES];
+    
+    
     //重新请求空间
     UIButton *button = sender;
     int row = button.tag - KButtonTagSpqce;
@@ -1246,7 +1247,7 @@
 {
     move_fid = f_id_;
     //移动文件
-    [file_tableView setMoveFile:move_fid];
+//    [file_tableView setMoveFile:move_fid];
 }
 
 #pragma mark clickMenu

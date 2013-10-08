@@ -60,6 +60,8 @@
 //加载数据
 -(void)reloadPhotoData
 {
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [app_delegate clearDown];
     [sectionarray removeAllObjects];
     [photo_diction removeAllObjects];
     [self setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];

@@ -33,6 +33,7 @@
 #import "BackgroundRunner.h"
 #import "SCBSession.h"
 #import "NSString+Format.h"
+#import "DownImage.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -45,6 +46,7 @@
 @synthesize autoUpload;
 @synthesize musicPlayer;
 @synthesize isShareUpload;
+@synthesize downImageArray;
 
 @class UploadAll;
 - (void)dealloc
@@ -63,6 +65,7 @@
     maticUpload = [[AutomaticUpload alloc] init];
     moveUpload = [[MoveUpload alloc] init];
     autoUpload = [[NewAutoUpload alloc] init];
+    downImageArray = [[NSMutableArray alloc] init];
     NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
     
     [defaultCenter addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
@@ -617,6 +620,15 @@
 - (void)automicUpload
 {
     [autoUpload start];
+}
+
+//删除下载进程
+- (void)clearDown
+{
+    for (int i=0;i<downImageArray.count;i++){
+        DownImage *downImage = [downImageArray objectAtIndex:i];
+        [downImage cancelDownload];
+    }
 }
 
 @end
