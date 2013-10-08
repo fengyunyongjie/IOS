@@ -20,6 +20,7 @@
 -(void)cancelAllTask
 {
     self.delegate=nil;
+    _conn = nil;
 }
 -(void)searchWithQueryparam:(NSString *)f_queryparam shareType:(NSString *)share_type
 {
@@ -327,24 +328,130 @@
             }
         }
 
-    }else
+    }
+    else
     {
         NSLog(@"操作失败 数据大小：%d",[self.activeData length]);
         if (self.delegate) {
+            int code = [[dic objectForKey:@"code"] intValue];
             switch (self.sm_type) {
                 case kSMTypeOpenFinder:
+                {
+                    switch (code) {
+                        case 1:
+                            [self.delegate notingChange:@"服务端异常"];
+                            break;
+                        case 2:
+                            [self.delegate notingChange:@"不是文件拥有者"];
+                            break;
+                        default:
+                            break;
+                    }
+                }
                     break;
                 case kSMTypeRemove:
-                    [self.delegate removeUnsucess];
+                {
+                    switch (code) {
+                        case 1:
+                            [self.delegate notingChange:@"服务端异常"];
+                            break;
+                        case 2:
+                            [self.delegate notingChange:@"所选文件不存在"];
+                            break;
+                        case 4:
+                            [self.delegate notingChange:@"共享根目录不能移除"];
+                            break;
+                        case 5:
+                            [self.delegate notingChange:@"网盘根目录不能移除"];
+                            break;
+                        case 9:
+                            [self.delegate notingChange:@"文件没有操作权限"];
+                            break;
+                        default:
+                            break;
+                    }
+                }
                     break;
                 case kSMTypeRename:
-                    [self.delegate renameUnsucess];
+                {
+                    switch (code) {
+                        case 1:
+                            [self.delegate notingChange:@"服务端异常"];
+                            break;
+                        case 2:
+                            [self.delegate notingChange:@"文件重名"];
+                            break;
+                        case 3:
+                            [self.delegate notingChange:@"名字包含特殊字符"];
+                            break;
+                        case 4:
+                            [self.delegate notingChange:@"文件名过长"];
+                            break;
+                        case 5:
+                            [self.delegate notingChange:@"根目录不能重命名"];
+                            break;
+                        case 6:
+                            [self.delegate notingChange:@"文件没有操作权限"];
+                            break;
+                        default:
+                            break;
+                    }
+                }
                     break;
                 case kSMTypeMove:
-                    [self.delegate moveUnsucess];
+                {
+                    switch (code) {
+                        case 1:
+                            [self.delegate notingChange:@"服务端异常"];
+                            break;
+                        case 2:
+                            [self.delegate notingChange:@"所选文件不存在"];
+                            break;
+                        case 3:
+                            [self.delegate notingChange:@"目标文件夹不存在"];
+                            break;
+                        case 4:
+                            [self.delegate notingChange:@"目标不是文件夹"];
+                            break;
+                        case 5:
+                            [self.delegate notingChange:@"根目录不能剪切"];
+                            break;
+                        case 7:
+                            [self.delegate notingChange:@"不能剪切到当前目录"];
+                            break;
+                        case 8:
+                            [self.delegate notingChange:@"文件没有操作权限"];
+                            break;
+                        case 9:
+                            [self.delegate notingChange:@"所选文件夹或子文件夹不能包含目标文件夹"];
+                            break;
+                        case 10:
+                            [self.delegate notingChange:@"文件没有操作权限"];
+                            break;
+                        default:
+                            break;
+                    }
+                }
                     break;
                 case kSMTypeNewFinder:
-                    [self.delegate newFinderUnsucess];
+                {
+                    switch (code) {
+                        case 1:
+                            [self.delegate notingChange:@"服务端异常"];
+                            break;
+                        case 2:
+                            [self.delegate notingChange:@"文件重名"];
+                            break;
+                        case 3:
+                            [self.delegate notingChange:@"名字包含特殊字符"];
+                            break;
+                        case 4:
+                            [self.delegate notingChange:@"文件名过长"];
+                            break;
+                        default:
+                            break;
+                    }
+                }
                     break;
                 case kSMTypeSearch:
                     [self.delegate newFinderUnsucess];

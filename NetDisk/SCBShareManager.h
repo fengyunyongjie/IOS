@@ -76,4 +76,5 @@ typedef enum{
 -(void)moveUnsucess;
 -(void)newFinderSucess;
 -(void)newFinderUnsucess;
+-(void)notingChange:(NSString *)text;
 @end

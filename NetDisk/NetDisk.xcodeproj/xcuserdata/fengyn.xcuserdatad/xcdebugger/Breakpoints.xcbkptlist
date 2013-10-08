@@ -7,52 +7,13 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "SCBShareManager.m"
-         timestampString = "402910041.482744"
+         filePath = "newnds/MyndsViewController.m"
+         timestampString = "402922276.213169"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "110"
-         endingLineNumber = "110"
-         landmarkName = "-renameWithID:newName:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "SCBShareManager.m"
-         timestampString = "402910056.947748"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "131"
-         endingLineNumber = "131"
-         landmarkName = "-moveFileIDs:toPID:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "SCBShareManager.m"
-         timestampString = "402910068.770547"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "162"
-         endingLineNumber = "162"
-         landmarkName = "-removeFileWithIDs:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "newnds/HelpViewController.m"
-         timestampString = "402912256.999272"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "54"
-         endingLineNumber = "54"
-         landmarkName = "-finished:"
+         startingLineNumber = "1411"
+         endingLineNumber = "1411"
+         landmarkName = "-toMore:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
