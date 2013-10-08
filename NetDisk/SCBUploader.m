@@ -71,6 +71,8 @@
 //上传
 -(NSURLConnection *)requestUploadFile:(NSString *)s_name skip:(NSString *)skip Image:(NSData *)image
 {
+    currSize = 0;
+    macTimeOut = 10;
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
@@ -122,7 +124,7 @@
 {
     if([url_string isEqualToString:FM_UPLOAD_NEW])
     {
-        macTimeOut += 30;
+        macTimeOut += 10;
         NSMutableURLRequest *request = (NSMutableURLRequest *)[connection currentRequest];
         [request setTimeoutInterval:macTimeOut];
         currSize += bytesWritten;

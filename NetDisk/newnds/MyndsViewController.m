@@ -1294,7 +1294,15 @@ typedef enum{
     {
         [self editAction:nil];
     }
-    
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(self.myndsType == kMyndsTypeShare || self.myndsType == kMyndsTypeMyShare)
+    {
+        appleDate.isShareUpload = YES;
+    }
+    else
+    {
+        appleDate.isShareUpload = NO;
+    }
     //打开照片库
     QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
     imagePickerController.delegate = self;
@@ -1304,7 +1312,7 @@ typedef enum{
     [imagePickerController requestFileDetail];
     NSLog(@"self.f_id:%@",self.f_id);
     [self.navigationController pushViewController:imagePickerController animated:YES];
-    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
     [appleDate.myTabBarController setHidesTabBarWithAnimate:YES];
     [imagePickerController release];
     NSLog(@"点击上传");
@@ -2358,6 +2366,7 @@ typedef enum{
         viewController.f_id=f_id;
         viewController.myndsType=self.myndsType;
         viewController.movefIds=self.movefIds;
+        
 //        if (self.myndsType==kMyndsTypeSelect){
 //            viewController.delegate=self.delegate;
 //        }

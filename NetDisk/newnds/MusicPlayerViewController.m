@@ -48,16 +48,7 @@
     NSLog(@"url = %@",url);
     
     newPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL: url error:nil];
-    
-    //prepare and set delegate
-    [newPlayer prepareToPlay];
 
-    [newPlayer setDelegate:self];
-    
-    //play audio
-    [newPlayer play];
-    
-    
     }    
     
     
@@ -65,11 +56,7 @@
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
     NSLog(@"finished:继续播放------------------------------------------------");
-    //prepare and set delegate
-    [newPlayer prepareToPlay];
-    [newPlayer setDelegate:self];
-    //play audio
-    [newPlayer play];
+    [self startPlay];
 }
 
 - (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error{
@@ -78,6 +65,28 @@
 
 - (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player{
     NSLog(@"begin interruption");
+}
+
+- (void)startPlay
+{
+    [self viewDidLoad];
+    if(!newPlayer.playing)
+    {
+        //prepare and set delegate
+        [newPlayer prepareToPlay];
+        [newPlayer setDelegate:self];
+        //play audio
+        [newPlayer play];
+    }
+}
+
+
+- (void)stopPlay
+{
+    if(newPlayer && newPlayer.playing)
+    {
+        [newPlayer stop];
+    }
 }
 
 @end

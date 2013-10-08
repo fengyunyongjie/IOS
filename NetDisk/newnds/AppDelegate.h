@@ -35,6 +35,7 @@
     Reachability *hostReach;
     NewAutoUpload *autoUpload;
     MusicPlayerViewController *musicPlayer;
+    BOOL isShareUpload;
 }
 
 @property (strong, nonatomic) UIWindow *window;
@@ -49,6 +50,7 @@
 @property (strong,nonatomic) HelpViewController *helpController;
 @property (nonatomic,retain) NewAutoUpload *autoUpload;
 @property (nonatomic,retain) MusicPlayerViewController *musicPlayer;
+@property (nonatomic,assign) BOOL isShareUpload;
 
 -(void)setLogin;
 //分享图片

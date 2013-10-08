@@ -65,6 +65,8 @@
                 if ([assetType isEqualToString:ALAssetTypePhoto]) {
                     if(![YNFunctions isAutoUpload])
                     {
+                        isStop = FALSE;
+                        isStart = FALSE;
                         return ;
                     }
                     if(asset)
@@ -401,7 +403,13 @@
         [ls updateAutoUploadList];
         [ls release];
         
-        [list deleteUploadList];
+        list.t_state = 1;
+        list.upload_size = list.t_lenght;
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSDate *todayDate = [NSDate date];
+        NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
+        list.t_date = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute,todayComponent.second];
+        [list updateUploadList];
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];
     }
@@ -509,6 +517,8 @@
     isOpenedUpload = NO;
     isStopCurrUpload = YES;
     isStart = NO;
+    isGoOn = NO;
+    [self updateUploadStartButton:@"暂停"];
     if(uploadArray)
     {
         [uploadArray removeAllObjects];

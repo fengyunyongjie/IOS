@@ -89,7 +89,8 @@
                 list.is_share = NO;
                 list.spaceId = [NSString formatNSStringForOjbect:s_id];
                 NSLog(@"[[SCBSession sharedSession] spaceID]:%@;[[SCBSession sharedSession] homeID]:%@",[[SCBSession sharedSession] spaceID],[[SCBSession sharedSession] homeID]);
-                if(![list.spaceId isEqualToString:[NSString formatNSStringForOjbect:[[SCBSession sharedSession] spaceID]]] && ![list.spaceId isEqualToString:[NSString formatNSStringForOjbect:[[SCBSession sharedSession] homeID]]])
+                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                if(appleDate.isShareUpload)
                 {
                     list.is_share = YES;
                 }
@@ -264,7 +265,13 @@
     if([uploadArray count]>0)
     {
         UpLoadList *list = [uploadArray objectAtIndex:0];
-        [list deleteUploadList];
+        list.t_state = 1;
+        list.upload_size = list.t_lenght;
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSDate *todayDate = [NSDate date];
+        NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
+        list.t_date = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute,todayComponent.second];
+        [list updateUploadList];
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];
     }

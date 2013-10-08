@@ -44,6 +44,7 @@
 @synthesize moveUpload;
 @synthesize autoUpload;
 @synthesize musicPlayer;
+@synthesize isShareUpload;
 
 @class UploadAll;
 - (void)dealloc
@@ -116,9 +117,8 @@
     
     //设置背景音乐
     musicPlayer = [[MusicPlayerViewController alloc] init];
-    [musicPlayer viewDidLoad];
-    //设置屏幕常亮
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+//    //设置屏幕常亮
+//    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
     
     // Required
@@ -457,10 +457,16 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    //设置屏幕锁屏
-    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-    
-    
+//    //设置屏幕锁屏
+//    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    if(self.autoUpload.isGoOn || self.moveUpload.isStart)
+    {
+        [musicPlayer startPlay];
+    }
+    else
+    {
+        [musicPlayer stopPlay];
+    }
     
 //    [self.window.rootViewController dismissModalViewControllerAnimated:YES];
 //    if ([[UIDevice currentDevice] isMultitaskingSupported]) {
@@ -470,9 +476,9 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    //设置屏幕常亮
-    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-    
+//    //设置屏幕常亮
+//    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    [musicPlayer stopPlay];
 //    [[BackgroundRunner shared] stop];
     
     if([YNFunctions isAutoUpload])

@@ -176,7 +176,7 @@
     [phoot_button setTitle:@"照片" forState:UIControlStateNormal];
     [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [phoot_button addTarget:self action:@selector(clicked_photo:) forControlEvents:UIControlEventTouchDown];
-    [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    [phoot_button setBackgroundImage:imge forState:UIControlStateNormal];
     [topView addSubview:phoot_button];
     [phoot_button release];
     
@@ -227,16 +227,8 @@
     photo_tableView.requestId = spaceId;
     [self.view addSubview:photo_tableView];
     
-    if(isPhoto)
-    {
-        [self clicked_photo:phoot_button];
-        [file_tableView setHidden:YES];
-    }
-    else
-    {
-        [self clicked_file:file_button];
-        [photo_tableView setHidden:YES];
-    }
+    //延迟加载
+    [self showAllView];
     
     CGRect esc_rect = CGRectMake(0, 0, 320, self.view.frame.size.height);
     escButton = [[UIButton alloc] initWithFrame:esc_rect];
@@ -267,8 +259,24 @@
         [self.helpView addTarget:self action:@selector(hideHelpView:) forControlEvents:UIControlEventTouchUpInside];
         [self.helpView setBackgroundColor:[UIColor colorWithWhite:0.4f alpha:0.5]];
     }
-    
 }
+
+-(void)showAllView
+{
+    if(isPhoto)
+    {
+        UIButton *photo_button = (UIButton *)[self.view viewWithTag:24];
+        [self clicked_photo:photo_button];
+        [file_tableView setHidden:YES];
+    }
+    else
+    {
+        UIButton *file_button = (UIButton *)[self.view viewWithTag:23];
+        [self clicked_file:file_button];
+        [photo_tableView setHidden:YES];
+    }
+}
+
 -(void)hideHelpView:(id)sender
 {
     [self.helpView setHidden:YES];
@@ -418,8 +426,8 @@
     photo_tableView.requestId = spaceId;
     
     isPhoto = TRUE;
-    UIButton *phoot_button  = (UIButton *)[self.view viewWithTag:23];
-    [self clicked_file:phoot_button];
+    UIButton *phoot_button  = (UIButton *)[self.view viewWithTag:24];
+    [self clicked_photo:phoot_button];
     [self requestSpace];
 }
 
@@ -762,6 +770,10 @@
         [edit_view setHidden:YES];
     }
     loadType = 1;
+    
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appleDate.isShareUpload = NO;
+    
     //打开照片库
     QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
     imagePickerController.delegate = self;
@@ -771,7 +783,6 @@
     [imagePickerController requestFileDetail];
     NSLog(@"self.f_id:%@",self.f_id);
     [self.navigationController pushViewController:imagePickerController animated:YES];
-    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appleDate.myTabBarController setHidesTabBarWithAnimate:YES];
     [imagePickerController release];
 }

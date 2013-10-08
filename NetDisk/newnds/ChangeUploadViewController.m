@@ -670,7 +670,7 @@
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
-    [self.hud hide:YES afterDelay:1.0f];
+    [self.hud hide:YES afterDelay:1.5f];
 }
 
 #pragma mark

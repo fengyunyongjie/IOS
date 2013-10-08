@@ -13,8 +13,11 @@
 {
     AVAudioPlayer *newPlayer;
     AVAudioSession *session;
+    BOOL isGoOn;
 }
 
 - (void)viewDidLoad;
+- (void)startPlay;
+- (void)stopPlay;
 
 @end
