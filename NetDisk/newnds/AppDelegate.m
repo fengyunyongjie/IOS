@@ -43,6 +43,7 @@
 @synthesize title_string;
 @synthesize moveUpload;
 @synthesize autoUpload;
+@synthesize musicPlayer;
 
 @class UploadAll;
 - (void)dealloc
@@ -53,6 +54,7 @@
 //    [upload_all release];
     [super dealloc];
 }
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |    UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
@@ -111,6 +113,13 @@
         //进入主界面
         [firstLoadView.view setHidden:YES];
     }
+    
+    //设置背景音乐
+    musicPlayer = [[MusicPlayerViewController alloc] init];
+    [musicPlayer viewDidLoad];
+    //设置屏幕常亮
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    
     
     // Required
     [APService
@@ -448,15 +457,23 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [self.window.rootViewController dismissModalViewControllerAnimated:YES];
-    if ([[UIDevice currentDevice] isMultitaskingSupported]) {
-        [[BackgroundRunner shared] run];
-    }
+    //设置屏幕锁屏
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+    
+    
+    
+//    [self.window.rootViewController dismissModalViewControllerAnimated:YES];
+//    if ([[UIDevice currentDevice] isMultitaskingSupported]) {
+//        [[BackgroundRunner shared] run];
+//    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    [[BackgroundRunner shared] stop];
+    //设置屏幕常亮
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    
+//    [[BackgroundRunner shared] stop];
     
     if([YNFunctions isAutoUpload])
     {

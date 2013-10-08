@@ -362,6 +362,11 @@
 		29CFD47D173733FF001B6721 /* DownImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFD47B173733FF001B6721 /* DownImage.m */; };
 		29CFE30717CDEC620007A42A /* Bk_Point.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CFE30617CDEC620007A42A /* Bk_Point.png */; };
 		29CFE30917CDF3BD0007A42A /* Bk_Ns.png in Resources */ = {isa = PBXBuildFile; fileRef = 29CFE30817CDF3BD0007A42A /* Bk_Ns.png */; };
+		29CFEFDF180395D0009FFEBF /* MusicPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CFEFDE180395D0009FFEBF /* MusicPlayerViewController.m */; };
+		29CFEFE0180395FD009FFEBF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3D348169892120092C0A5 /* AudioToolbox.framework */; };
+		29CFEFE218039608009FFEBF /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CFEFE118039608009FFEBF /* CoreAudio.framework */; };
+		29CFEFE418039627009FFEBF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CFEFE318039627009FFEBF /* AVFoundation.framework */; };
+		29CFEFE7180396B4009FFEBF /* nothing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 29CFEFE6180396B4009FFEBF /* nothing.mp3 */; };
 		29D0CD571757342D00B20294 /* FavoritesDBController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D0CD561757342D00B20294 /* FavoritesDBController.m */; };
 		29D1BEC717BA1362001CF197 /* AutomicUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D1BEC617BA1362001CF197 /* AutomicUploadViewController.m */; };
 		29D1BECA17BA1ED3001CF197 /* OFF.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D1BEC817BA1ED3001CF197 /* OFF.png */; };
@@ -852,6 +857,11 @@
 		29CFD47B173733FF001B6721 /* DownImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownImage.m; sourceTree = "<group>"; };
 		29CFE30617CDEC620007A42A /* Bk_Point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Point.png; sourceTree = "<group>"; };
 		29CFE30817CDF3BD0007A42A /* Bk_Ns.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Ns.png; sourceTree = "<group>"; };
+		29CFEFDD180395D0009FFEBF /* MusicPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayerViewController.h; sourceTree = "<group>"; };
+		29CFEFDE180395D0009FFEBF /* MusicPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicPlayerViewController.m; sourceTree = "<group>"; };
+		29CFEFE118039608009FFEBF /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		29CFEFE318039627009FFEBF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		29CFEFE6180396B4009FFEBF /* nothing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = nothing.mp3; sourceTree = "<group>"; };
 		29D0CD551757342D00B20294 /* FavoritesDBController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesDBController.h; sourceTree = "<group>"; };
 		29D0CD561757342D00B20294 /* FavoritesDBController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesDBController.m; sourceTree = "<group>"; };
 		29D1BEC517BA1362001CF197 /* AutomicUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutomicUploadViewController.h; sourceTree = "<group>"; };
@@ -1219,6 +1229,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29CFEFE418039627009FFEBF /* AVFoundation.framework in Frameworks */,
+				29CFEFE218039608009FFEBF /* CoreAudio.framework in Frameworks */,
+				29CFEFE0180395FD009FFEBF /* AudioToolbox.framework in Frameworks */,
 				29D5BA2317F3BE21003BF16C /* Security.framework in Frameworks */,
 				29BAD63117B4C62A00F258F4 /* CoreFoundation.framework in Frameworks */,
 				29BAD62F17B4C61300F258F4 /* CoreTelephony.framework in Frameworks */,
@@ -1430,6 +1443,8 @@
 				29D5BA2917F3D089003BF16C /* NewUpload.m */,
 				29C942CD17F557F00042CD8E /* NewAutoUpload.h */,
 				29C942CE17F557F10042CD8E /* NewAutoUpload.m */,
+				29CFEFDD180395D0009FFEBF /* MusicPlayerViewController.h */,
+				29CFEFDE180395D0009FFEBF /* MusicPlayerViewController.m */,
 			);
 			name = Upload;
 			sourceTree = "<group>";
@@ -1803,6 +1818,14 @@
 			path = Translfer;
 			sourceTree = "<group>";
 		};
+		29CFEFE5180396B4009FFEBF /* Mp3 */ = {
+			isa = PBXGroup;
+			children = (
+				29CFEFE6180396B4009FFEBF /* nothing.mp3 */,
+			);
+			path = Mp3;
+			sourceTree = "<group>";
+		};
 		29D5BA0717F3BDD8003BF16C /* MKNetworkKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -1948,6 +1971,7 @@
 		29EFE854172A55AD0099B5A7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				29CFEFE5180396B4009FFEBF /* Mp3 */,
 				29EFE855172A55AD0099B5A7 /* newnds-Info.plist */,
 				29EFE856172A55AD0099B5A7 /* InfoPlist.strings */,
 				29EFE859172A55AD0099B5A7 /* main.m */,
@@ -2302,6 +2326,8 @@
 		83A3A0561650D0C700BEDB27 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29CFEFE318039627009FFEBF /* AVFoundation.framework */,
+				29CFEFE118039608009FFEBF /* CoreAudio.framework */,
 				29CED3671781203C00899FAE /* MessageUI.framework */,
 				29D72E021771753A008D830A /* QuickLook.framework */,
 				83C17DD816560B7D0066CB13 /* QuartzCore.framework */,
@@ -2918,6 +2944,7 @@
 				29C942C917F538C30042CD8E /* icon_checked_grid.png in Resources */,
 				29C942D517F5D2510042CD8E /* RegistViewController.xib in Resources */,
 				29C942D717F5D2590042CD8E /* LoginViewController.xib in Resources */,
+				29CFEFE7180396B4009FFEBF /* nothing.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3037,6 +3064,7 @@
 				29D5BA2D17F46C20003BF16C /* BackgroundRunner.m in Sources */,
 				29C942CC17F552FC0042CD8E /* AutoUploadList.m in Sources */,
 				29C942CF17F557F10042CD8E /* NewAutoUpload.m in Sources */,
+				29CFEFDF180395D0009FFEBF /* MusicPlayerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

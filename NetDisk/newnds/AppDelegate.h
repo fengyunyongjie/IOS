@@ -16,6 +16,7 @@
 #import "MoveUpload.h"
 #import "Reachability.h"
 #import "NewAutoUpload.h"
+#import "MusicPlayerViewController.h"
 
 //新浪微博微博
 #define kAppKey         @"706445160"
@@ -33,6 +34,7 @@
     NSMutableArray *title_string;
     Reachability *hostReach;
     NewAutoUpload *autoUpload;
+    MusicPlayerViewController *musicPlayer;
 }
 
 @property (strong, nonatomic) UIWindow *window;
@@ -46,6 +48,8 @@
 @property (nonatomic,retain) NSMutableArray *title_string;
 @property (strong,nonatomic) HelpViewController *helpController;
 @property (nonatomic,retain) NewAutoUpload *autoUpload;
+@property (nonatomic,retain) MusicPlayerViewController *musicPlayer;
+
 -(void)setLogin;
 //分享图片
 -(void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path;

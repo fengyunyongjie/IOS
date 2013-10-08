@@ -40,6 +40,15 @@
 
 -(void)isNetWork
 {
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(list.is_autoUpload)
+    {
+        if(appleDate.isAutomicUpload)
+        {
+            return;
+        }
+        appleDate.isAutomicUpload = YES;
+    }
     if([self isConnection] == ReachableViaWiFi)
     {
         //WiFi 状态
@@ -53,19 +62,28 @@
         }
         else
         {
+            [self updateAutoUploadState];
             //等待WiFi
             [delegate upWaitWiFi];
         }
     }
     else
     {
+        [self updateAutoUploadState];
         //网络连接断开
         [delegate upNetworkStop];
     }
 }
 
+-(void)updateAutoUploadState
+{
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appleDate.isAutomicUpload = FALSE;
+}
+
 -(void)updateNetWork
 {
+    [self updateAutoUploadState];
     [delegate upError];
 }
 
@@ -75,6 +93,7 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         [self updateNetWork];
         return;
     }
@@ -96,6 +115,7 @@
                                                returningResponse:nil error:&error];
     if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         if(returnData == nil)
         {
             [delegate webServiceFail];
@@ -122,6 +142,7 @@
     }
     else
     {
+        [self updateAutoUploadState];
         [delegate upNetworkStop];
     }
 }
@@ -131,6 +152,7 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         [self updateNetWork];
         return;
     }
@@ -154,6 +176,7 @@
                                                returningResponse:nil error:&error];
     if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         if(returnData == nil)
         {
             [delegate webServiceFail];
@@ -299,6 +322,7 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         [self updateNetWork];
         return;
     }
@@ -340,6 +364,7 @@
                                                        returningResponse:nil error:&error];
             if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
             {
+                [self updateAutoUploadState];
                 [file_data release];
                 [md5String release];
                 if(returnData == nil)
@@ -361,6 +386,7 @@
             }
             else if([[dictionary objectForKey:@"code"] intValue] == 5 )
             {
+                [self updateAutoUploadState];
                 [file_data release];
                 [md5String release];
                 //重命名
@@ -368,6 +394,7 @@
             }
             else if([[dictionary objectForKey:@"code"] intValue] == 7 )
             {
+                [self updateAutoUploadState];
                 [file_data release];
                 [md5String release];
                 //重命名
@@ -375,6 +402,7 @@
             }
             else if([[dictionary objectForKey:@"code"] intValue] == 4 )
             {
+                [self updateAutoUploadState];
                 [file_data release];
                 [md5String release];
                 //重命名
@@ -382,6 +410,7 @@
             }
             else
             {
+                [self updateAutoUploadState];
                 [file_data release];
                 [md5String release];
                 //失败
@@ -406,6 +435,7 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         [file_data release];
         [md5String release];
         [self updateNetWork];
@@ -430,6 +460,7 @@
                                                returningResponse:nil error:&error];
     if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         [file_data release];
         [md5String release];
         if(returnData == nil)
@@ -455,6 +486,7 @@
         }
         else
         {
+            [self updateAutoUploadState];
             [file_data release];
             [md5String release];
             [self updateNetWork];
@@ -468,6 +500,7 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         [file_data release];
         [md5String release];
         [self updateNetWork];
@@ -480,6 +513,7 @@
     }
     else
     {
+        [self updateAutoUploadState];
         NSLog(@"上传失败");
         [file_data release];
         [md5String release];
@@ -494,6 +528,7 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         [file_data release];
         [md5String release];
         [self updateNetWork];
@@ -527,6 +562,7 @@
                                            returningResponse:nil error:&error];
         if(returnData == nil || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
         {
+            [self updateAutoUploadState];
             [file_data release];
             [md5String release];
             if(returnData == nil)
@@ -551,7 +587,7 @@
     NSLog(@"%@",dictionary);
     
     NSLog(@"5:完成");
-    
+    [self updateAutoUploadState];
     if([[dictionary objectForKey:@"code"] intValue] == 0)
     {
         [file_data release];
@@ -602,6 +638,7 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
     {
+        [self updateAutoUploadState];
         [file_data release];
         [md5String release];
         [self updateNetWork];
@@ -641,6 +678,7 @@
 //上传失败
 -(void)didFailWithError
 {
+    [self updateAutoUploadState];
     [self updateNetWork];
 }
 
