@@ -37,6 +37,7 @@
     MusicPlayerViewController *musicPlayer;
     BOOL isShareUpload;
     NSMutableArray *downImageArray;
+    
 }
 
 @property (strong, nonatomic) UIWindow *window;

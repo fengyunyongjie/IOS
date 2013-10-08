@@ -76,7 +76,6 @@ typedef enum {
 @property (assign,nonatomic) SharedType sharedType;
 @property (strong,nonatomic) UIView *selectToolView;
 @property (strong,nonatomic) NSArray *movefIds;
-@property (strong,nonatomic) NSString *owen_name;
 -(void)loadData;
 - (void)viewWillAppear:(BOOL)animated;
 @end

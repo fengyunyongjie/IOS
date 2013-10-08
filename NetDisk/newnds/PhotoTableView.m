@@ -316,8 +316,6 @@
         @finally {
             
         }
-        
-        
         [tableArray release];
     }
     photoType++;

@@ -172,7 +172,7 @@
     UIButton *phoot_button = [[UIButton alloc] init];
     [phoot_button setTag:23];
     [phoot_button setFrame:CGRectMake(320/2-ChangeTabWidth, 0, ChangeTabWidth, 44)];
-    [phoot_button setTitle:@"照片" forState:UIControlStateNormal];
+    [phoot_button setTitle:@"相册" forState:UIControlStateNormal];
     [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [phoot_button addTarget:self action:@selector(clicked_photo:) forControlEvents:UIControlEventTouchDown];
     [phoot_button setBackgroundImage:imge forState:UIControlStateNormal];
