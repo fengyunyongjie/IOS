@@ -645,6 +645,7 @@
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self uploadFiles:list.t_lenght];
         connection = nil;
         [NSThread detachNewThreadSelector:@selector(comeBackNewTheadMian:) toTarget:self withObject:dictionary];
     });

@@ -122,12 +122,22 @@
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 {
+    currSize += bytesWritten;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate *todayDate = [NSDate date];
+    NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
+    if(endSecond==todayComponent.second)
+    {
+        return;
+    }
+    endSecond = todayComponent.second;
+    
     if([url_string isEqualToString:FM_UPLOAD_NEW])
     {
         macTimeOut += 10;
         NSMutableURLRequest *request = (NSMutableURLRequest *)[connection currentRequest];
         [request setTimeoutInterval:macTimeOut];
-        currSize += bytesWritten;
+        
         if(upLoadDelegate)
         {
             [upLoadDelegate uploadFiles:currSize];

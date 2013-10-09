@@ -376,9 +376,7 @@ typedef enum{
                 {
                     [uploadView escLoginList];
                 }
-                
                 [[FavoritesData sharedFavoritesData] stopDownloading];
-                [app_delegate clearDown];
                 [self.rootViewController presendLoginViewController];
             }
             break;

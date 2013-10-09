@@ -66,20 +66,27 @@
     [photo_diction removeAllObjects];
     [self setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     [self reloadData];
-    
-//    [NSThread detachNewThreadSelector:@selector(requestPhotoTimeLine) toTarget:self withObject:nil];
     [self requestPhotoTimeLine];
 }
 
 //请求时间轴
 -(void)requestPhotoTimeLine
 {
-    NSLog(@"requestPhotoTimeLine");
     dispatch_async(dispatch_get_main_queue(), ^{
-        //请求时间轴
-        SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
-        [photoManager setPhotoDelegate:self];
-        [photoManager getPhotoArrayTimeline:requestId];
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(appleDate.isHomeLoad)
+        {
+            NSLog(@"正在请求时间轴");
+            //请求时间轴
+            SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
+            [photoManager setPhotoDelegate:self];
+            [photoManager getPhotoArrayTimeline:requestId];
+        }
+        else
+        {
+            NSLog(@"停止请求时间轴");
+            [appleDate clearDown];
+        }
     });
     
 }
@@ -243,7 +250,6 @@
 {
     [sectionarray removeAllObjects];
     [photo_diction removeAllObjects];
-    NSLog(@"getPhotoArrayTimeline:%@",dictionary);
     NSArray *array = [dictionary objectForKey:@"data"];
     
     for(NSDictionary *diction in array)
@@ -258,7 +264,17 @@
     {
         [self reloadData];
         photoType = 0;
-        [self requestPhotoType];
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(appleDate.isHomeLoad)
+        {
+            NSLog(@"正在加载家庭空间数据");
+            [self requestPhotoType];
+        }
+        else
+        {
+            NSLog(@"停止加载家庭空间数据");
+            [appleDate clearDown];
+        }
     }
     else
     {
@@ -272,68 +288,88 @@
     {
         NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
         NSString *Express = [dictionary objectForKey:@"express"];
-        //请求时间轴
-        SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
-        [photoManager setPhotoDelegate:self];
-        [photoManager getPhotoDetailTimeImage:requestId express:Express];
+        
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(appleDate.isHomeLoad)
+        {
+            NSLog(@"正在加载家庭空间数据");
+            //请求时间轴
+            SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
+            [photoManager setPhotoDelegate:self];
+            [photoManager getPhotoDetailTimeImage:requestId express:Express];
+        }
+        else
+        {
+            NSLog(@"停止加载家庭空间数据");
+            [appleDate clearDown];
+        }
     }
 }
 
 -(void)getPhotoDetailTimeImage:(NSDictionary *)dictionary
 {
-    NSLog(@"getPhotoDetailTimeImage:%@",dictionary);
-    NSArray *array = [dictionary objectForKey:@"data"];
-    if([array count] > 0)
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.isHomeLoad)
     {
-        [photo_delegate haveData];
-        NSMutableArray *tableArray = [[NSMutableArray alloc] init];
-        for(NSDictionary *dictionary in array)
+        NSLog(@"正在加载家庭空间数据");
+        NSArray *array = [dictionary objectForKey:@"data"];
+        if([array count] > 0)
         {
-            PhotoFile *demo = [[PhotoFile alloc] init];
-            demo.f_id = [[dictionary objectForKey:@"f_id"] intValue];
-            [tableArray addObject:demo];
-            [demo release];
+            [photo_delegate haveData];
+            NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+            for(NSDictionary *dictionary in array)
+            {
+                PhotoFile *demo = [[PhotoFile alloc] init];
+                demo.f_id = [[dictionary objectForKey:@"f_id"] intValue];
+                [tableArray addObject:demo];
+                [demo release];
+            }
+            if([tableArray count] > 0)
+            {
+                NSLog(@"tableArray:%@",tableArray);
+            }
+            //        if (photoType>=dictionary.count) {
+            //            NSLog(@"数据数量：：%d",dictionary.count);
+            //            return;
+            //        }
+            NSLog(@"数据数量：：%d,下标::%d",dictionary.count,photoType);
+            @try {
+                NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
+                NSString *tag = [dictionary objectForKey:@"tag"];
+                [photo_diction setObject:tableArray forKey:tag];
+            }
+            @catch (NSException *exception) {
+                NSLog(@"我的天呐，出现异常了！");
+                CFShow(exception);
+                return;
+            }
+            @finally {
+                
+            }
+            [tableArray release];
         }
-        if([tableArray count] > 0)
+        photoType++;
+        [self requestPhotoType];
+        [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        [self reloadData];
+        
+        if([[photo_diction allKeys] count] == 0)
         {
-            NSLog(@"tableArray:%@",tableArray);
+            [photo_delegate nullData];
         }
-//        if (photoType>=dictionary.count) {
-//            NSLog(@"数据数量：：%d",dictionary.count);
-//            return;
-//        }
-        NSLog(@"数据数量：：%d,下标::%d",dictionary.count,photoType);
-        @try {
-            NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
-            NSString *tag = [dictionary objectForKey:@"tag"];
-            [photo_diction setObject:tableArray forKey:tag];
+        else
+        {
+            [photo_delegate haveData];
         }
-        @catch (NSException *exception) {
-            NSLog(@"我的天呐，出现异常了！");
-            CFShow(exception);
-            return;
-        }
-        @finally {
-            
-        }
-        [tableArray release];
-    }
-    photoType++;
-    [self requestPhotoType];
-    [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [self reloadData];
-    
-    if([[photo_diction allKeys] count] == 0)
-    {
-        [photo_delegate nullData];
+        
+        //加载数据
+        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
     }
     else
     {
-        [photo_delegate haveData];
+        NSLog(@"停止加载家庭空间数据");
+        [appleDate clearDown];
     }
-    
-    //加载数据
-    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(FirstLoad) userInfo:nil repeats:NO];
 }
 
 -(void)getPhotoDetail:(NSDictionary *)dictionary
@@ -427,53 +463,67 @@
 
 -(void)getImageLoad
 {
-    
-    NSLog(@"photoManger:%@",photo_diction);
-
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-        if(!downCellArray)
-        {
-            isLoadData = FALSE;
-            return;
-        }
-        for(int i=0;isLoadData && isLoadImage && i<[downCellArray count];i++)
-        {
-            PhotoFileCell *cell = (PhotoFileCell *)[downCellArray objectAtIndex:i];
-            NSArray *array = [cell cellArray];
-            if(!array)
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.isHomeLoad)
+    {
+        NSLog(@"正在加载图片");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+            if(!downCellArray)
             {
                 isLoadData = FALSE;
                 return;
             }
-            for(int j=0;isLoadData && isLoadImage && j<[array count];j++)
+            for(int i=0;isLoadData && isLoadImage && i<[downCellArray count];i++)
             {
-                CellTag *cellTag = [array objectAtIndex:j];
-                if(!cellTag)
+                PhotoFileCell *cell = (PhotoFileCell *)[downCellArray objectAtIndex:i];
+                NSArray *array = [cell cellArray];
+                if(!array)
                 {
                     isLoadData = FALSE;
                     return;
                 }
-                if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
+                for(int j=0;isLoadData && isLoadImage && j<[array count];j++)
                 {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        DownImage *downImage = [[[DownImage alloc] init] autorelease];
-                        [downImage setFileId:cellTag.fileTag];
-                        [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
-                        [downImage setImageViewIndex:cellTag.imageTag];
-                        [downImage setDelegate:self];
-                        [downImage startDownload];
-                    });
+                    CellTag *cellTag = [array objectAtIndex:j];
+                    if(!cellTag)
+                    {
+                        isLoadData = FALSE;
+                        return;
+                    }
+                    if(![self image_exists_at_file_path:[NSString stringWithFormat:@"%i",cellTag.fileTag]])
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if(appleDate.isHomeLoad)
+                            {
+                                NSLog(@"正在下载图片");
+                                DownImage *downImage = [[[DownImage alloc] init] autorelease];
+                                [downImage setFileId:cellTag.fileTag];
+                                [downImage setImageUrl:[NSString stringWithFormat:@"%i",cellTag.fileTag]];
+                                [downImage setImageViewIndex:cellTag.imageTag];
+                                [downImage setDelegate:self];
+                                [downImage startDownload];
+                            }
+                            else
+                            {
+                                NSLog(@"停止继续下载");
+                            }
+                        });
+                    }
                 }
             }
-        }
-        //    dispatch_async(dispatch_get_main_queue(), ^{
-        isLoadData = FALSE;
-        [downCellArray removeAllObjects];
-        //    });
-        [pool release];
-    });
+            //    dispatch_async(dispatch_get_main_queue(), ^{
+            isLoadData = FALSE;
+            [downCellArray removeAllObjects];
+            //    });
+            [pool release];
+        });
+    }
+    else
+    {
+        NSLog(@"停止加载图片");
+        [appleDate clearDown];
+    }
 }
 
 #pragma mark 按钮点击事件
@@ -504,7 +554,6 @@
         NSArray *array = [photo_diction objectForKey:sectionString];
         [photo_delegate showFile:button.cell.pageTag array:[NSMutableArray arrayWithArray:array]];
     }
-    NSLog(@"button:%i",button.tag);
 }
 
 #pragma mark UIScrollviewDelegate
@@ -517,7 +566,6 @@
             isSort = TRUE;
             endFloat = scrollView.contentOffset.y;
             isLoadData = TRUE;
-            NSLog(@"isLoadData11111:%i",isLoadData);
             [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
         }
         
@@ -526,7 +574,6 @@
             isSort = FALSE;
             endFloat = scrollView.contentOffset.y;
             isLoadData = TRUE;
-            NSLog(@"isLoadData11111:%i",isLoadData);
             [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
         }
 }
@@ -539,7 +586,6 @@
         isSort = TRUE;
         endFloat = scrollView.contentOffset.y;
         isLoadData = TRUE;
-        NSLog(@"isLoadData222222:%i",isLoadData);
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
     
@@ -548,7 +594,6 @@
         isSort = FALSE;
         endFloat = scrollView.contentOffset.y;
         isLoadData = TRUE;
-        NSLog(@"isLoadData222222:%i",isLoadData);
         [NSThread detachNewThreadSelector:@selector(getImageLoad) toTarget:self withObject:nil];
     }
 }

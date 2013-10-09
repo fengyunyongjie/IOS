@@ -60,7 +60,7 @@
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     
-    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    urlConnectioin = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
 #pragma mark 获取所有时间轴上的照片信息
@@ -120,14 +120,13 @@
     [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setHTTPMethod:@"POST"];
     NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
-    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+    urlConnectioin = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
 
 #pragma mark 处理返回的数据
 -(void)mangerGobackData:(NSDictionary *)dictionary
 {
     NSLog(@"处理返回的数据:%@",dictionary);
-    
     if([[dictionary objectForKey:@"photos"] isKindOfClass:[NSArray class]])
     {
         NSArray *photosArray = [dictionary objectForKey:@"photos"];
@@ -480,6 +479,13 @@
 #pragma mark -请求成功后，分发数据
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(!appleDate.isHomeLoad && urlConnectioin)
+    {
+        NSLog(@"断开请求时间轴的网络链接");
+        [urlConnectioin cancel];
+        return;
+    }
     [self.matableData appendData:data];
 }
 

@@ -448,6 +448,9 @@
                         case 4:
                             [self.delegate notingChange:@"文件名过长"];
                             break;
+                        case 5:
+                            [self.delegate notingChange:@"文件没有操作权限"];
+                            break;
                         default:
                             break;
                     }

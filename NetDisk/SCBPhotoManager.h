@@ -63,6 +63,7 @@
     NSMutableDictionary *tablediction;
     NSMutableArray *sectionarray;
     BOOL isFirst;
+    NSURLConnection *urlConnectioin;
 }
 
 @property(nonatomic,retain) id<SCBPhotoDelegate> photoDelegate;

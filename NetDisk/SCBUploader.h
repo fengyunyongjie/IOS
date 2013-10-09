@@ -41,6 +41,7 @@
     NSString *url_string;
     int currSize;
     int macTimeOut;
+    NSInteger endSecond;
 }
 
 @property(nonatomic,retain) id<UpLoadDelegate> upLoadDelegate;

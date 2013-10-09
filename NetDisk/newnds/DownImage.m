@@ -143,31 +143,39 @@
 //下载完成后将图片写入黑盒子，
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.activeDownload options:NSJSONReadingMutableLeaves error:nil];
-    NSLog(@"connectionDidFinishLoading:%@.length:%i,fileId:%i",diction,[activeDownload length],fileId);
-    if([[diction objectForKey:@"code"] intValue] == 1 || [[diction objectForKey:@"code"] intValue] == 3 )
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.isHomeLoad)
     {
-        [self connection:nil didFailWithError:nil];
-    }
-    else
-    {
-        NSString *documentDir = [YNFunctions getProviewCachePath];
-        NSArray *array=[imageUrl componentsSeparatedByString:@"/"];
-        NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
-        [activeDownload writeToFile:path atomically:YES];
-        UIImage  *image = [[UIImage alloc] initWithContentsOfFile:path];
-        
-        if(delegate && [delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
+        NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.activeDownload options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"connectionDidFinishLoading:%@.length:%i,fileId:%i",diction,[activeDownload length],fileId);
+        if([[diction objectForKey:@"code"] intValue] == 1 || [[diction objectForKey:@"code"] intValue] == 3 )
         {
-            NSLog(@"index-------------:%i",index);
-            [delegate appImageDidLoad:imageViewIndex urlImage:image index:indexPath]; //将视图tag和地址派发给实现类
+            [self connection:nil didFailWithError:nil];
         }
         else
         {
-            NSLog(@"不能添加图片了－－－－－－－－－－－－－－－－");
+            NSString *documentDir = [YNFunctions getProviewCachePath];
+            NSArray *array=[imageUrl componentsSeparatedByString:@"/"];
+            NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+            [activeDownload writeToFile:path atomically:YES];
+            UIImage  *image = [[UIImage alloc] initWithContentsOfFile:path];
+            
+            if(delegate && [delegate respondsToSelector:@selector(appImageDidLoad:urlImage:index:)])
+            {
+                NSLog(@"index-------------:%i",index);
+                [delegate appImageDidLoad:imageViewIndex urlImage:image index:indexPath]; //将视图tag和地址派发给实现类
+            }
+            else
+            {
+                NSLog(@"不能添加图片了－－－－－－－－－－－－－－－－");
+            }
+            NSLog(@"image:%i",image.retainCount);
+            [image release];
         }
-        NSLog(@"image:%i",image.retainCount);
-        [image release];
+    }
+    else
+    {
+        [appleDate clearDown];
     }
 }
 

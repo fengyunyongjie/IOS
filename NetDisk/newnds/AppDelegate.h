@@ -37,7 +37,7 @@
     MusicPlayerViewController *musicPlayer;
     BOOL isShareUpload;
     NSMutableArray *downImageArray;
-    
+    BOOL isHomeLoad;
 }
 
 @property (strong, nonatomic) UIWindow *window;
@@ -54,6 +54,7 @@
 @property (nonatomic,retain) MusicPlayerViewController *musicPlayer;
 @property (nonatomic,assign) BOOL isShareUpload;
 @property (nonatomic,retain) NSMutableArray *downImageArray;
+@property (nonatomic,assign) BOOL isHomeLoad;
 
 -(void)setLogin;
 //分享图片

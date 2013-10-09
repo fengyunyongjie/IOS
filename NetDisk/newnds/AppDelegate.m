@@ -47,6 +47,7 @@
 @synthesize musicPlayer;
 @synthesize isShareUpload;
 @synthesize downImageArray;
+@synthesize isHomeLoad;
 
 @class UploadAll;
 - (void)dealloc
@@ -628,6 +629,7 @@
 //删除下载进程
 - (void)clearDown
 {
+    NSLog(@"停止图片加载");
     for (int i=0;i<downImageArray.count;i++){
         DownImage *downImage = [downImageArray objectAtIndex:i];
         [downImage cancelDownload];

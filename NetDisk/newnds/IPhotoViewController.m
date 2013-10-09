@@ -74,9 +74,16 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appleDate.isHomeLoad = FALSE;
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appleDate.isHomeLoad = YES;
     if(appleDate.myTabBarController.IsTabBarHiden && !isPhoto)
     {
         UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
