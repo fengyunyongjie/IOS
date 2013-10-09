@@ -365,7 +365,7 @@
                             [self.delegate notingChange:@"网盘根目录不能移除"];
                             break;
                         case 9:
-                            [self.delegate notingChange:@"文件没有操作权限"];
+                            [self.delegate notingChange:@"没有操作权限"];
                             break;
                         default:
                             break;
@@ -391,7 +391,7 @@
                             [self.delegate notingChange:@"根目录不能重命名"];
                             break;
                         case 6:
-                            [self.delegate notingChange:@"文件没有操作权限"];
+                            [self.delegate notingChange:@"没有操作权限"];
                             break;
                         default:
                             break;
@@ -420,13 +420,13 @@
                             [self.delegate notingChange:@"不能剪切到当前目录"];
                             break;
                         case 8:
-                            [self.delegate notingChange:@"文件没有操作权限"];
+                            [self.delegate notingChange:@"没有操作权限"];
                             break;
                         case 9:
                             [self.delegate notingChange:@"所选文件夹或子文件夹不能包含目标文件夹"];
                             break;
                         case 10:
-                            [self.delegate notingChange:@"文件没有操作权限"];
+                            [self.delegate notingChange:@"没有操作权限"];
                             break;
                         default:
                             break;
@@ -449,7 +449,7 @@
                             [self.delegate notingChange:@"文件名过长"];
                             break;
                         case 5:
-                            [self.delegate notingChange:@"文件没有操作权限"];
+                            [self.delegate notingChange:@"没有操作权限"];
                             break;
                         default:
                             break;

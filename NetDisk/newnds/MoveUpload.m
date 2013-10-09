@@ -127,10 +127,6 @@
     isOpenedUpload = YES;
     if(!isStart)
     {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [app.autoUpload stopUpload];
-        [app.autoUpload updateUploadStartButton:@"继续"];
-        [app.autoUpload updateUploadStartButtonState:NO];
         isStart = YES;
         [self updateTableStateForWaiting];
         [self startUpload];
@@ -142,6 +138,10 @@
 {
     if([uploadArray count]>0 && isStart)
     {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [app.autoUpload stopUpload];
+        [app.autoUpload updateUploadStartButton:@"继续"];
+        [app.autoUpload updateUploadStartButtonState:NO];
         isStopCurrUpload = NO;
         NewUpload *newUpload = [[NewUpload alloc] init];
         newUpload.list = [uploadArray objectAtIndex:0];

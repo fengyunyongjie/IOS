@@ -1776,7 +1776,7 @@ typedef enum{
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.hud];
     [self.hud show:NO];
-    self.hud.labelText=@"选中的文件或文件夹没有权限";
+    self.hud.labelText=@"没有操作权限";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
