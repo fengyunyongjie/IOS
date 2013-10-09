@@ -20,6 +20,14 @@
     
     self.databasePath=[YNFunctions getDBCachePath];
     self.databasePath=[self.databasePath stringByAppendingPathComponent:@"hongPan.sqlite"];
+    //判断更新数据库文件
+    if(![self isHaveTable:@"UploadList"])
+    {
+        NSLog(@"--------------------------------------------------\n删除所有数据库文件\n--------------------------------------------------");
+        NSFileManager *filemgr = [NSFileManager defaultManager];
+        BOOL bl = [filemgr removeItemAtPath:self.databasePath error:nil];
+        NSLog(@"bl:%i",bl);
+    }
     
     if (sqlite3_open([self.databasePath fileSystemRepresentation], &contactDB)==SQLITE_OK)
     {
@@ -49,6 +57,29 @@
     
     
     return self;
+}
+
+-(BOOL)isHaveTable:(NSString *)name
+{
+    sqlite3_stmt *statement;
+    const char *dbpath = [self.databasePath UTF8String];
+    __block BOOL bl = FALSE;
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [SelectTableIsHave UTF8String];
+        sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        sqlite3_bind_text(statement, 1, [name UTF8String], -1, SQLITE_TRANSIENT);
+        while (sqlite3_step(statement)==SQLITE_ROW) {
+            int i = sqlite3_column_int(statement, 0);
+            if(i>=1)
+            {
+                bl = TRUE;
+                break;
+            }
+        }
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return bl;
 }
 
 -(void)cleanSql

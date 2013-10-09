@@ -92,6 +92,7 @@
 		2963903E173A3EC1009C5530 /* Selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2963903B173A3EC1009C5530 /* Selected.png */; };
 		296E39C917B8D80200A43F29 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E39C717B8D80200A43F29 /* ReportViewController.m */; };
 		296E39CA17B8D80200A43F29 /* ReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 296E39C817B8D80200A43F29 /* ReportViewController.xib */; };
+		297D4A6C18054A6E00703383 /* SqlliteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 297D4A6B18054A6E00703383 /* SqlliteManager.m */; };
 		298075DD174A141F00B138FE /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298075DB174A141F00B138FE /* RegistViewController.m */; };
 		298075DF174A1CAF00B138FE /* input3_createbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A66086169982B90065C73C /* input3_createbg.png */; };
 		29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF4172CB2B5001AD87A /* MYTabBarController.m */; };
@@ -553,6 +554,8 @@
 		296E39C617B8D80200A43F29 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
 		296E39C717B8D80200A43F29 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
 		296E39C817B8D80200A43F29 /* ReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportViewController.xib; sourceTree = "<group>"; };
+		297D4A6A18054A6E00703383 /* SqlliteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlliteManager.h; sourceTree = "<group>"; };
+		297D4A6B18054A6E00703383 /* SqlliteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SqlliteManager.m; sourceTree = "<group>"; };
 		298075DA174A141F00B138FE /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
 		298075DB174A141F00B138FE /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
 		29852CF3172CB2B5001AD87A /* MYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTabBarController.h; sourceTree = "<group>"; };
@@ -1517,6 +1520,8 @@
 				29D39BD417F2D35B00BEEB04 /* UpLoadList.m */,
 				29C942CA17F552FB0042CD8E /* AutoUploadList.h */,
 				29C942CB17F552FB0042CD8E /* AutoUploadList.m */,
+				297D4A6A18054A6E00703383 /* SqlliteManager.h */,
+				297D4A6B18054A6E00703383 /* SqlliteManager.m */,
 			);
 			path = sqlite3;
 			sourceTree = "<group>";
@@ -3065,6 +3070,7 @@
 				29C942CC17F552FC0042CD8E /* AutoUploadList.m in Sources */,
 				29C942CF17F557F10042CD8E /* NewAutoUpload.m in Sources */,
 				29CFEFDF180395D0009FFEBF /* MusicPlayerViewController.m in Sources */,
+				297D4A6C18054A6E00703383 /* SqlliteManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
