@@ -27,7 +27,7 @@
         sqlite3_bind_int(statement, 3, a_state);
         
         success = sqlite3_step(statement);
-        if (success == SQLITE_ERROR) {
+        if (success == SQLITE_ERROR || success == 5) {
             bl = FALSE;
         }
         NSLog(@"insertUserinfo:%i",success);

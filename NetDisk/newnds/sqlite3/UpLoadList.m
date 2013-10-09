@@ -14,6 +14,11 @@
 
 -(BOOL)insertUploadList
 {
+    BOOL isHave = [self selectUploadListIsHave];
+    if(isHave)
+    {
+        return YES;
+    }
     sqlite3_stmt *statement;
     __block BOOL bl = TRUE;
     const char *dbpath = [self.databasePath UTF8String];
@@ -39,7 +44,7 @@
         sqlite3_bind_text(statement, 14, [spaceId UTF8String], -1, SQLITE_TRANSIENT);
         
         success = sqlite3_step(statement);
-        if (success == SQLITE_ERROR) {
+        if (success == SQLITE_ERROR || success != 101) {
             bl = FALSE;
         }
         NSLog(@"insertUserinfo:%i",success);
@@ -167,6 +172,27 @@
             bl = FALSE;
         }
         NSLog(@"insertUserinfo:%i",success);
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return bl;
+}
+
+//查询文件是否存在
+-(BOOL)selectUploadListIsHave
+{
+    sqlite3_stmt *statement;
+    __block BOOL bl = FALSE;
+    const char *dbpath = [self.databasePath UTF8String];
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [SelectUploadListIsHaveName UTF8String];
+        sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        sqlite3_bind_text(statement, 1, [t_name UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 2, [user_id UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(statement, 3, is_autoUpload);
+        if (sqlite3_step(statement)==SQLITE_ROW) {
+            bl = TRUE;
+        }
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
     }

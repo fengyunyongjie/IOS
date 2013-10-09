@@ -92,10 +92,13 @@
                             list.is_autoUpload = YES;
                             list.is_share = NO;
                             list.spaceId = [NSString formatNSStringForOjbect:info.space_id];
-                            [list insertUploadList];
-                            ls.a_user_id = [NSString formatNSStringForOjbect:list.user_id];
-                            ls.a_state = 0;
-                            [ls insertAutoUploadList];
+                            BOOL inserBl = [list insertUploadList];
+                            if(inserBl)
+                            {
+                                ls.a_user_id = [NSString formatNSStringForOjbect:list.user_id];
+                                ls.a_state = 0;
+                                [ls insertAutoUploadList];
+                            }
                             
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -123,10 +126,10 @@
             if([group numberOfAssets]<=total-1)
             {
                 isStop = FALSE;
+                [self updateUploadList];
                 AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 if(app.moveUpload.isStart)
                 {
-                    [self updateUploadList];
                     [self upNetworkStop];
                 }
                 if(!isStart && isGoOn && !app.moveUpload.isStart)
@@ -207,9 +210,13 @@
     
     if(!isStop)
     {
+        NSLog(@"检索照片库");
         [self selectPhotoLibary];
     }
-
+    else
+    {
+        NSLog(@"没有检索照片库");
+    }
 }
 
 //修改上传按钮
