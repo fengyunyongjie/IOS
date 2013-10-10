@@ -27,6 +27,7 @@
 
 @property(strong,retain) NSString *databasePath;
 
+-(void)updateVersion;
 -(id)init;
 -(void)cleanSql;
 -(BOOL)isHaveTable:(NSString *)name;

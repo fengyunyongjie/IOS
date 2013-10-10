@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>虹盘</string>
 	<key>CFBundleDocumentTypes</key>
@@ -39,6 +37,7 @@
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
 	<array>
+		<string>zh</string>
 		<string>zh_CN</string>
 	</array>
 	<key>CFBundleName</key>
@@ -64,8 +63,14 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2.0.2</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.music</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -82,12 +87,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.music</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
 	</array>
 </dict>
 </plist>

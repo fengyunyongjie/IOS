@@ -34,6 +34,7 @@
 #import "SCBSession.h"
 #import "NSString+Format.h"
 #import "DownImage.h"
+#import "DBSqlite3.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -62,6 +63,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |    UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
+    [[DBSqlite3 alloc] updateVersion];
     upload_all = [[UploadAll alloc] init];
     maticUpload = [[AutomaticUpload alloc] init];
     moveUpload = [[MoveUpload alloc] init];

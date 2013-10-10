@@ -35,6 +35,10 @@
 
 -(void)updateLoad
 {
+    if([uploadArray count]==0)
+    {
+        [self selectUploadList];
+    }
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UINavigationController *NavigationController = [[appleDate.myTabBarController viewControllers] objectAtIndex:2];
     ChangeUploadViewController *uploadView = (ChangeUploadViewController *)[NavigationController.viewControllers objectAtIndex:0];
