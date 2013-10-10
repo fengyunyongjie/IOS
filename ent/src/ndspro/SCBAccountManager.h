@@ -14,6 +14,7 @@ typedef enum {
     kUserExist,
     kUserGetProfile,
     kUserGetSpace,
+    kUserGetList,
 }kUserType;
 @protocol SCBAccountManagerDelegate;
 @interface SCBAccountManager : NSObject<NSURLConnectionDelegate>
@@ -33,10 +34,14 @@ typedef enum {
 -(void)currentProfile;
 //获取空间信息 /usr/space
 -(void)currentUserSpace;
+//子账号列表/ent/user/list
+-(void)getUserList;
 @end
 
 @protocol SCBAccountManagerDelegate
 @optional
+-(void)getUserListSucceed:(NSDictionary *)datadic;
+-(void)getUserListFail;
 -(void)loginSucceed:(id)manager;
 -(void)loginUnsucceed:(id)manager;
 -(void)registSucceed;

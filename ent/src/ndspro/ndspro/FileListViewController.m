@@ -13,6 +13,7 @@
 #import "IconDownloader.h"
 #import "SelectFileListViewController.h"
 #import "MainViewController.h"
+#import "SendEmailViewController.h"
 
 typedef enum{
     kAlertTagDeleteOne,
@@ -27,6 +28,7 @@ typedef enum{
     kActionSheetTagDeleteOne,
     kActionSheetTagDeleteMore,
     kActionSheetTagPhoto,
+    kActionSheetTagSend,
 }ActionSheetTag;
 
 @interface FileListViewController ()<SCBFileManagerDelegate,IconDownloaderDelegate,UIScrollViewDelegate,UIAlertViewDelegate,UITextFieldDelegate,UIActionSheetDelegate>
@@ -172,6 +174,10 @@ typedef enum{
 -(void)toSend:(id)sender
 {
     NSLog(@"发送");
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"发送" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles: @"站内发送",@"站外发送",nil];
+    [actionSheet setTag:kActionSheetTagSend];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 -(void)toMove:(id)sender
 {
@@ -878,6 +884,25 @@ typedef enum{
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch ([actionSheet tag]) {
+        case kActionSheetTagSend:
+        {
+            NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+            NSString *fid=[dic objectForKey:@"fid"];
+            SendEmailViewController *sevc=[[SendEmailViewController alloc] init];
+            sevc.title=@"新邮件";
+            sevc.fids=@[fid];
+            if (buttonIndex==0) {
+                //站内发送
+                sevc.tyle=kTypeSentIn;
+            }else if(buttonIndex==1)
+            {
+                //站外发送
+                sevc.tyle=kTypeSendEx;
+            }
+            UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:sevc];
+            [self presentViewController:nav animated:YES completion:nil];
+        }
+            break;
         case kActionSheetTagDeleteOne:
         {
             if (buttonIndex==0) {
@@ -954,6 +979,7 @@ typedef enum{
                 NSLog(@"下载");
             }else if(buttonIndex == 4) {
                 NSLog(@"发送");
+                [self toSend:nil];
             }else if(buttonIndex == 5) {
                 NSLog(@"提交/转存");
                 [self toCommitOrResave:nil];

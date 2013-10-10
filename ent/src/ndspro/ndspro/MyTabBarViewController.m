@@ -10,6 +10,7 @@
 #import "MainViewController.h"
 #import "SettingViewController.h"
 #import "UpDownloadViewController.h"
+#import "EmailListViewController.h"
 
 @interface MyTabBarViewController ()
 
@@ -45,7 +46,9 @@
     vc2.title=@"文件传输";
     //vc2.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts tag:0];
     [vc2.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"Bt_UsercentreCh.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"Bt_UsercentreNo.png"]];
-    UIViewController *vc3=[[UIViewController alloc] init];
+    UINavigationController *vc3=[[UINavigationController alloc] init];
+    EmailListViewController * vc33=[[EmailListViewController alloc] init];
+    [vc3 pushViewController:vc33 animated:YES];
     vc3.title=@"文件收发";
     //vc3.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemDownloads tag:0];
     [vc3.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"Bt_UsercentreCh.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"Bt_UsercentreNo.png"]];

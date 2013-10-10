@@ -37,6 +37,8 @@
 //获取用户当前存储空间信息；
 //#define USER_SPACE_URI @"/usr/space"
 #define USER_SPACE_URI @"/account/spaceinfo"
+//子账号列表/ent/user/list
+#define USER_LIST_URI @"/user/lists"
 //获取个人信息/usr/profile
 #define USER_PROFILE_URI @"/usr/profile"
 
@@ -75,6 +77,20 @@
 #define MSG_DEL @"/msg/del"
 //删除所有短消息
 #define MSG_DELALL @"/msg/delall"
+
+#pragma mark - 文件收发管理（信件收发）
+//发送站内信/ent/email/send/interior
+#define EMAIL_SENDIN_URI @"/email/send/interior"
+//发送站外信/ent/email/send/external
+#define EMAIL_SENDOUT_URI @"/email/send/external"
+//收发邮件列表/ent/email/list
+#define EMAIL_LIST_URI @"/email/list"
+//收发邮件详情/ent/email/detail
+#define EMAIL_DETAIL_URI @"/email/detail"
+//站内外信删除/ent/email/del
+#define EMAIL_DEL_URI @"/email/del"
+//获取邮件内文件列表/ent/email/fids
+#define EMAIL_FILELIST_URI @"/email/fids"
 
 #pragma mark - 4.文件管理
 //打开网盘  文件列表/ent/file/list

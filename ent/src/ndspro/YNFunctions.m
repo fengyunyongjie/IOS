@@ -193,6 +193,7 @@ static BOOL h_f=NO;
         return nil;
     }
 	NSRange rang ;
+    assert(URL!=nil);
 	NSString *url = [NSString stringWithString:URL];
 	while (url!=nil) {
 		rang = [url rangeOfString:@"/"];

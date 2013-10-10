@@ -31,6 +31,19 @@ static SCBAccountManager *_sharedAccountManager;
     [request setHTTPMethod:@"POST"];
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
+-(void)getUserList
+{
+    self.activeData=[NSMutableData data];
+    self.type=kUserGetList;
+    NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_LIST_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
 -(void)currentUserSpace
 {
     self.activeData=[NSMutableData data];
@@ -161,6 +174,15 @@ static SCBAccountManager *_sharedAccountManager;
         NSLog(@"%@",dic);
     }
     switch (self.type) {
+        case kUserGetList:
+             if ([[dic objectForKey:@"code"] intValue]==0) {
+                 NSLog(@"登录成功:\n%@",dic);
+                 [self.delegate getUserListSucceed:dic];
+             }else
+             {
+                 [self.delegate getUserListFail];
+             }
+            break;
         case kUserLogin:
             if ([[dic objectForKey:@"code"] intValue]==0) {
                 NSLog(@"登录成功:\n%@",dic);
