@@ -1467,49 +1467,65 @@ typedef enum{
         for (int i=0;i<self.m_fileItems.count;i++) {
             FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
             if (fileItem.checked) {
-                NSDictionary *dic=[self.listArray objectAtIndex:i];
-                NSString *m_fid=[dic objectForKey:@"f_id"];
-                if ([f_id intValue]==[m_fid intValue]) {
-                    if (self.hud) {
-                        [self.hud removeFromSuperview];
+                if(i<[self.listArray count])
+                {
+                    NSDictionary *dic=[self.listArray objectAtIndex:i];
+                    NSString *m_fid=[dic objectForKey:@"f_id"];
+                    if ([f_id intValue]==[m_fid intValue]) {
+                        if (self.hud) {
+                            [self.hud removeFromSuperview];
+                        }
+                        self.hud=nil;
+                        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+                        [self.view addSubview:self.hud];
+                        [self.hud show:NO];
+                        self.hud.labelText=@"您当前操作有误";
+                        self.hud.mode=MBProgressHUDModeText;
+                        self.hud.margin=10.f;
+                        [self.hud show:YES];
+                        [self.hud hide:YES afterDelay:1.0f];
+                        return;
                     }
-                    self.hud=nil;
-                    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-                    [self.view addSubview:self.hud];
-                    [self.hud show:NO];
-                    self.hud.labelText=@"您当前操作有误";
-                    self.hud.mode=MBProgressHUDModeText;
-                    self.hud.margin=10.f;
-                    [self.hud show:YES];
-                    [self.hud hide:YES afterDelay:1.0f];
-                    return;
+                    [willMoveObjects addObject:m_fid];
                 }
-                [willMoveObjects addObject:m_fid];
+                else
+                {
+                    NSLog(@"移动文件越界");
+                }
             }
         }
         if ([willMoveObjects count]<=0) {
             return;
         }
-    }else
+    }
+    else
     {
-        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-        NSString *m_fid=[dic objectForKey:@"f_id"];
-        if ([f_id intValue]==[m_fid intValue]) {
-            if (self.hud) {
-                [self.hud removeFromSuperview];
+        if(self.selectedIndexPath.row-1<[self.listArray count])
+        {
+            NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+            NSString *m_fid=[dic objectForKey:@"f_id"];
+            if ([f_id intValue]==[m_fid intValue]) {
+                if (self.hud) {
+                    [self.hud removeFromSuperview];
+                }
+                self.hud=nil;
+                self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+                [self.view addSubview:self.hud];
+                [self.hud show:NO];
+                self.hud.labelText=@"您当前操作有误";
+                self.hud.mode=MBProgressHUDModeText;
+                self.hud.margin=10.f;
+                [self.hud show:YES];
+                [self.hud hide:YES afterDelay:1.0f];
+                return;
             }
-            self.hud=nil;
-            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
-            [self.hud show:NO];
-            self.hud.labelText=@"您当前操作有误";
-            self.hud.mode=MBProgressHUDModeText;
-            self.hud.margin=10.f;
-            [self.hud show:YES];
-            [self.hud hide:YES afterDelay:1.0f];
-            return;
+            willMoveObjects=@[m_fid];
         }
-        willMoveObjects=@[m_fid];
+        else
+        {
+            NSLog(@"移动文件越界");
+        }
+        
     }
     
     self.isMoveLoad = YES;

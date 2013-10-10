@@ -144,7 +144,11 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(appleDate.isHomeLoad)
+    if(!appleDate.isHomeLoad && appleDate.myTabBarController.selectedIndex==1)
+    {
+        [appleDate clearDown];
+    }
+    else
     {
         NSDictionary *diction = [NSJSONSerialization JSONObjectWithData:self.activeDownload options:NSJSONReadingMutableLeaves error:nil];
         NSLog(@"connectionDidFinishLoading:%@.length:%i,fileId:%i",diction,[activeDownload length],fileId);
@@ -172,10 +176,6 @@
             NSLog(@"image:%i",image.retainCount);
             [image release];
         }
-    }
-    else
-    {
-        [appleDate clearDown];
     }
 }
 

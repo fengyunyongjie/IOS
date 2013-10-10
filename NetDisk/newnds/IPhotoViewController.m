@@ -76,8 +76,12 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    appleDate.isHomeLoad = FALSE;
+    NSLog(@"self.tabBarController.selectedIndex:%i",self.tabBarController.selectedIndex);
+    if(self.tabBarController.selectedIndex != 1)
+    {
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        appleDate.isHomeLoad = FALSE;
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -144,7 +148,6 @@
     {
         ower_name = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
     }
-    isPhoto = YES;
     NSLog(@"UserName:%@",ower_name);
     [self.navigationController setNavigationBarHidden:YES];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -182,7 +185,14 @@
     [phoot_button setTitle:@"相册" forState:UIControlStateNormal];
     [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [phoot_button addTarget:self action:@selector(clicked_photo:) forControlEvents:UIControlEventTouchDown];
-    [phoot_button setBackgroundImage:imge forState:UIControlStateNormal];
+    if(isPhoto)
+    {
+        [phoot_button setBackgroundImage:imge forState:UIControlStateNormal];
+    }
+    else
+    {
+        [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    }
     [topView addSubview:phoot_button];
     [phoot_button release];
     
@@ -192,7 +202,14 @@
     [file_button setTitle:@"文件" forState:UIControlStateNormal];
     [file_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [file_button addTarget:self action:@selector(clicked_file:) forControlEvents:UIControlEventTouchDown];
-    [file_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    if(!isPhoto)
+    {
+        [file_button setBackgroundImage:imge forState:UIControlStateNormal];
+    }
+    else
+    {
+        [file_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+    }
     [topView addSubview:file_button];
     [file_button release];
     
@@ -431,7 +448,6 @@
     self.f_id = @"1";
     photo_tableView.requestId = spaceId;
     
-    isPhoto = TRUE;
     UIButton *phoot_button  = (UIButton *)[self.view viewWithTag:24];
     [self clicked_photo:phoot_button];
     [self requestSpace];

@@ -441,7 +441,7 @@
                     NSLog(@"移动成功");
                     break;
                 case kFMTypeOperateUpdate:
-//                    [self.delegate operateSucess:dic];
+                    [self.delegate operateSucess:dic];
                     break;
                 case kFMTypeNewFinder:
                     [self.delegate newFinderSucess];

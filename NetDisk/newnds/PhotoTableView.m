@@ -694,283 +694,303 @@
     
     if([photo_diction.allKeys count] == 0)
     {
-        NSDictionary *dictionary = [sectionarray objectAtIndex:indexPath.section];
-        int total = [[dictionary objectForKey:@"counts"] intValue];
-        cell.tag = row+UICellTag*section;
-        if(total/3 == row)
+        if(indexPath.section<[sectionarray count])
         {
-            int number = 3;
-            if(total%3>0)
+           NSDictionary *dictionary = [sectionarray objectAtIndex:indexPath.section];
+            int total = [[dictionary objectForKey:@"counts"] intValue];
+            cell.tag = row+UICellTag*section;
+            if(total/3 == row)
             {
-                number = total%3;
-            }
-            for(int i=0;i<number;i++)
-            {
-                if(row*3+i>=total)
+                int number = 3;
+                if(total%3>0)
                 {
-                    break;
+                    number = total%3;
                 }
-                CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
-                UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
-                UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                [cell.contentView addSubview:image];
-                SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
-                [button setTag:row+UIButtonTag*section];
-                [cell.contentView addSubview:button];
-                [button release];
+                for(int i=0;i<number;i++)
+                {
+                    if(row*3+i>=total)
+                    {
+                        break;
+                    }
+                    CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
+                    UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
+                    UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    [cell.contentView addSubview:image];
+                    SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
+                    [button setTag:row+UIButtonTag*section];
+                    [cell.contentView addSubview:button];
+                    [button release];
+                }
+            }
+            else
+            {
+                for(int i=0;i<3;i++)
+                {
+                    CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
+                    UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
+                    UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    [cell.contentView addSubview:image];
+                    SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
+                    [button setTag:row+UIButtonTag*section];
+                    [cell.contentView addSubview:button];
+                    [button release];
+                }
             }
         }
         else
         {
-            for(int i=0;i<3;i++)
-            {
-                CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
-                UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
-                UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                [cell.contentView addSubview:image];
-                SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
-                [button setTag:row+UIButtonTag*section];
-                [cell.contentView addSubview:button];
-                [button release];
-            }
+            NSLog(@"获取文件越界");
         }
     }
     else
     {
-        NSDictionary *dictionary = [sectionarray objectAtIndex:indexPath.section];
-        NSString *sectionNumber = [dictionary objectForKey:@"tag"];
-        NSArray *array = [photo_diction objectForKey:sectionNumber];
-        if([array count]/3 == row)
+        if(indexPath.section<[sectionarray count])
         {
-            cell.tag = row+UICellTag*section;
-            int number = 3;
-            if([array count]%3>0)
+            NSDictionary *dictionary = [sectionarray objectAtIndex:indexPath.section];
+            NSString *sectionNumber = [dictionary objectForKey:@"tag"];
+            NSArray *array = [photo_diction objectForKey:sectionNumber];
+            if([array count]/3 == row)
             {
-                number = [array count]%3;
-            }
-            NSMutableArray *cellArray = [[NSMutableArray alloc] init];
-            NSMutableArray *imageArray = [[NSMutableArray alloc] init];
-            for(int i=0;i<number;i++)
-            {
-                if(row*3+i>=[array count])
+                cell.tag = row+UICellTag*section;
+                int number = 3;
+                if([array count]%3>0)
                 {
-                    break;
+                    number = [array count]%3;
                 }
-                CellTag *cellT = [[CellTag alloc] init];
-                PhotoFile *demo = [array objectAtIndex:row*3+i];
-                [cellT setFileTag:demo.f_id];
-                CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
-                UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
-                image.tag = UIImageTag+demo.f_id;
-                [cellT setImageTag:image.tag];
-                
+                NSMutableArray *cellArray = [[NSMutableArray alloc] init];
+                NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+                for(int i=0;i<number;i++)
                 {
-                    UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                }
-                
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",demo.f_id]])
+                    if(row*3+i>=[array count])
                     {
-                        NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
-                        UIImage *imageV = [UIImage imageWithContentsOfFile:path];
-                        
-                        if(imageV.size.width>=imageV.size.height)
+                        NSLog(@"列表越界");
+                        break;
+                    }
+                    CellTag *cellT = [[CellTag alloc] init];
+                    PhotoFile *demo = [array objectAtIndex:row*3+i];
+                    [cellT setFileTag:demo.f_id];
+                    CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
+                    UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
+                    image.tag = UIImageTag+demo.f_id;
+                    [cellT setImageTag:image.tag];
+                    
+                    {
+                        UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    }
+                    
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",demo.f_id]])
                         {
-                            if(imageV.size.height<=200)
+                            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+                            UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+                            
+                            if(imageV.size.width>=imageV.size.height)
                             {
-                                CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
-                                imageV = [self imageFromImage:imageV inRect:imageRect];
-                                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                if(imageV.size.height<=200)
+                                {
+                                    CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
+                                    imageV = [self imageFromImage:imageV inRect:imageRect];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                }
+                                else
+                                {
+                                    CGSize newImageSize;
+                                    newImageSize.height = 200;
+                                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                }
                             }
-                            else
+                            else if(imageV.size.width<=imageV.size.height)
                             {
-                                CGSize newImageSize;
-                                newImageSize.height = 200;
-                                newImageSize.width = 200*imageV.size.width/imageV.size.height;
-                                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                                CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-                                imageS = [self imageFromImage:imageS inRect:imageRect];
-                                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                if(imageV.size.width<=200)
+                                {
+                                    CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
+                                    imageV = [self imageFromImage:imageV inRect:imageRect];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                }
+                                else
+                                {
+                                    CGSize newImageSize;
+                                    newImageSize.width = 200;
+                                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                }
                             }
                         }
-                        else if(imageV.size.width<=imageV.size.height)
+                    });
+                    
+                    [cell.contentView addSubview:image];
+                    [imageArray addObject:image];
+                    
+                    SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
+                    [button setTag:UIButtonTag+demo.f_id];
+                    [cellT setButtonTag:button.tag];
+                    [cellT setSectionTag:section];
+                    [cellT setPageTag:row*3+i];
+                    [cellArray addObject:cellT];
+                    [button setCell:cellT];
+                    
+                    [image release];
+                    [cellT release];
+                    [button addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
+                    if(editBL)
+                    {
+                        for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
                         {
-                            if(imageV.size.width<=200)
+                            int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
+                            if(demo.f_id == fid)
                             {
-                                CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
-                                imageV = [self imageFromImage:imageV inRect:imageRect];
-                                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                            }
-                            else
-                            {
-                                CGSize newImageSize;
-                                newImageSize.width = 200;
-                                newImageSize.height = 200*imageV.size.height/imageV.size.width;
-                                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                                CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-                                imageS = [self imageFromImage:imageS inRect:imageRect];
-                                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                [button setSelected:YES];
+                                [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
                             }
                         }
                     }
-                });
-                
-                [cell.contentView addSubview:image];
-                [imageArray addObject:image];
-                
-                SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
-                [button setTag:UIButtonTag+demo.f_id];
-                [cellT setButtonTag:button.tag];
-                [cellT setSectionTag:section];
-                [cellT setPageTag:row*3+i];
-                [cellArray addObject:cellT];
-                [button setCell:cellT];
-                
-                [image release];
-                [cellT release];
-                [button addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
-                if(editBL)
+                    [cell.contentView addSubview:button];
+                    [button release];
+                    
+                    NSLog(@"imageCount:%i",image.retainCount);
+                }
+                if([downCellArray count]>5)
                 {
-                    for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
+                    [downCellArray removeObjectAtIndex:0];
+                }
+                [downCellArray addObject:cell];
+                //        operation *queue = [[operation alloc] init];
+                //        [queue cellArray:cellArray imagev:imageArray];
+                //        [operationQueue addOperation:queue];
+                //        [queue release];
+                [cell setCellArray:cellArray];
+                [cellArray release];
+                [imageArray release];
+            }
+            else
+            {
+                cell.tag = row+UICellTag*section;
+                NSMutableArray *cellArray = [[NSMutableArray alloc] init];
+                NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+                for(int i=0;i<3;i++)
+                {
+                    if(row*3+i>=[array count])
                     {
-                        int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
-                        if(demo.f_id == fid)
+                        NSLog(@"列表越界");
+                        break;
+                    }
+                    CellTag *cellT = [[CellTag alloc] init];
+                    PhotoFile *demo = [array objectAtIndex:row*3+i];
+                    [cellT setFileTag:demo.f_id];
+                    CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
+                    UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
+                    image.tag = UIImageTag+demo.f_id;
+                    [cellT setImageTag:image.tag];
+                    
+                    {
+                        UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    }
+                    
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                        if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",demo.f_id]])
                         {
-                            [button setSelected:YES];
-                            [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+                            NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
+                            UIImage *imageV = [UIImage imageWithContentsOfFile:path];
+                            if(imageV.size.width>=imageV.size.height)
+                            {
+                                if(imageV.size.height<=200)
+                                {
+                                    CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
+                                    imageV = [self imageFromImage:imageV inRect:imageRect];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                }
+                                else
+                                {
+                                    CGSize newImageSize;
+                                    newImageSize.height = 200;
+                                    newImageSize.width = 200*imageV.size.width/imageV.size.height;
+                                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                                    CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
+                                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                }
+                            }
+                            else if(imageV.size.width<=imageV.size.height)
+                            {
+                                if(imageV.size.width<=200)
+                                {
+                                    CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
+                                    imageV = [self imageFromImage:imageV inRect:imageRect];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                }
+                                else
+                                {
+                                    CGSize newImageSize;
+                                    newImageSize.width = 200;
+                                    newImageSize.height = 200*imageV.size.height/imageV.size.width;
+                                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
+                                    CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
+                                    imageS = [self imageFromImage:imageS inRect:imageRect];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                }
+                            }
+                        }
+                    });
+                    
+                    [cell.contentView addSubview:image];
+                    [imageArray addObject:image];
+                    
+                    SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
+                    [button setTag:UIButtonTag+demo.f_id];
+                    [cellT setButtonTag:button.tag];
+                    [cellT setSectionTag:section];
+                    [cellT setPageTag:row*3+i];
+                    [cellArray addObject:cellT];
+                    [button setCell:cellT];
+                    
+                    [image release];
+                    [cellT release];
+                    [button addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
+                    if(editBL)
+                    {
+                        for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
+                        {
+                            int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
+                            if(demo.f_id == fid)
+                            {
+                                [button setSelected:YES];
+                                [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
+                            }
                         }
                     }
+                    [cell.contentView addSubview:button];
+                    [button release];
+                    
+                    NSLog(@"imageCount:%i",image.retainCount);
                 }
-                [cell.contentView addSubview:button];
-                [button release];
-                
-                NSLog(@"imageCount:%i",image.retainCount);
+                if([downCellArray count]>5)
+                {
+                    [downCellArray removeObjectAtIndex:0];
+                }
+                [downCellArray addObject:cell];
+                //        operation *queue = [[operation alloc] init];
+                //        [queue cellArray:cellArray imagev:imageArray];
+                //        [operationQueue addOperation:queue];
+                //        [queue release];
+                [cell setCellArray:cellArray];
+                [cellArray release];
+                [imageArray release];
             }
-            if([downCellArray count]>5)
-            {
-                [downCellArray removeObjectAtIndex:0];
-            }
-            [downCellArray addObject:cell];
-            //        operation *queue = [[operation alloc] init];
-            //        [queue cellArray:cellArray imagev:imageArray];
-            //        [operationQueue addOperation:queue];
-            //        [queue release];
-            [cell setCellArray:cellArray];
-            [cellArray release];
-            [imageArray release];
         }
         else
         {
-            cell.tag = row+UICellTag*section;
-            NSMutableArray *cellArray = [[NSMutableArray alloc] init];
-            NSMutableArray *imageArray = [[NSMutableArray alloc] init];
-            for(int i=0;i<3;i++)
-            {
-                CellTag *cellT = [[CellTag alloc] init];
-                PhotoFile *demo = [array objectAtIndex:row*3+i];
-                [cellT setFileTag:demo.f_id];
-                CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
-                UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
-                image.tag = UIImageTag+demo.f_id;
-                [cellT setImageTag:image.tag];
-                
-                {
-                    UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                }
-                
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    if([self image_exists_at_file_path:[NSString stringWithFormat:@"%i",demo.f_id]])
-                    {
-                        NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
-                        UIImage *imageV = [UIImage imageWithContentsOfFile:path];
-                        if(imageV.size.width>=imageV.size.height)
-                        {
-                            if(imageV.size.height<=200)
-                            {
-                                CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
-                                imageV = [self imageFromImage:imageV inRect:imageRect];
-                                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                            }
-                            else
-                            {
-                                CGSize newImageSize;
-                                newImageSize.height = 200;
-                                newImageSize.width = 200*imageV.size.width/imageV.size.height;
-                                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                                CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
-                                imageS = [self imageFromImage:imageS inRect:imageRect];
-                                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-                            }
-                        }
-                        else if(imageV.size.width<=imageV.size.height)
-                        {
-                            if(imageV.size.width<=200)
-                            {
-                                CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
-                                imageV = [self imageFromImage:imageV inRect:imageRect];
-                                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                            }
-                            else
-                            {
-                                CGSize newImageSize;
-                                newImageSize.width = 200;
-                                newImageSize.height = 200*imageV.size.height/imageV.size.width;
-                                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                                CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
-                                imageS = [self imageFromImage:imageS inRect:imageRect];
-                                [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-                            }
-                        }
-                    }
-                });
-                
-                [cell.contentView addSubview:image];
-                [imageArray addObject:image];
-                
-                SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
-                [button setTag:UIButtonTag+demo.f_id];
-                [cellT setButtonTag:button.tag];
-                [cellT setSectionTag:section];
-                [cellT setPageTag:row*3+i];
-                [cellArray addObject:cellT];
-                [button setCell:cellT];
-                
-                [image release];
-                [cellT release];
-                [button addTarget:self action:@selector(clicked:) forControlEvents:UIControlEventTouchUpInside];
-                if(editBL)
-                {
-                    for(int i=0;i<[[_dicReuseCells allKeys] count];i++)
-                    {
-                        int fid = [[_dicReuseCells objectForKey:[[_dicReuseCells allKeys] objectAtIndex:i]] intValue];
-                        if(demo.f_id == fid)
-                        {
-                            [button setSelected:YES];
-                            [button setBackgroundImage:[UIImage imageNamed:@"interestSelected.png"] forState:UIControlStateNormal];
-                        }
-                    }
-                }
-                [cell.contentView addSubview:button];
-                [button release];
-                
-                NSLog(@"imageCount:%i",image.retainCount);
-            }
-            if([downCellArray count]>5)
-            {
-                [downCellArray removeObjectAtIndex:0];
-            }
-            [downCellArray addObject:cell];
-            //        operation *queue = [[operation alloc] init];
-            //        [queue cellArray:cellArray imagev:imageArray];
-            //        [operationQueue addOperation:queue];
-            //        [queue release];
-            [cell setCellArray:cellArray];
-            [cellArray release];
-            [imageArray release];
+            NSLog(@"获取文件越界");
         }
     }
     return cell;

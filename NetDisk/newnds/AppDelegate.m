@@ -559,6 +559,7 @@
 //    PhotoViewController * rootView2=[[[PhotoViewController alloc] init] autorelease];
     IPhotoViewController *rootView2 = [[[IPhotoViewController alloc] init] autorelease];
     rootView2.tabBarItem.title=@"家庭空间";
+    rootView2.isPhoto = YES;
     [rootView2.tabBarItem setImage:[UIImage imageNamed:@"Bt_FamilyDef.png"]];
     [rootView2 setF_id:@"1"];
     viewController2=[[[UINavigationController alloc] initWithRootViewController:rootView2] autorelease];

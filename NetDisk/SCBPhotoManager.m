@@ -480,7 +480,7 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(!appleDate.isHomeLoad && urlConnectioin)
+    if(!appleDate.isHomeLoad && urlConnectioin && appleDate.myTabBarController.selectedIndex==1)
     {
         NSLog(@"断开请求时间轴的网络链接");
         [urlConnectioin cancel];
