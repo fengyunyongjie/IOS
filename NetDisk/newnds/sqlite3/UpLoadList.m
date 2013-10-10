@@ -233,6 +233,7 @@
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
     }
+    NSLog(@"自动上传的个数:%i",[tableArray count]);
     return [tableArray autorelease];
 }
 
@@ -270,6 +271,7 @@
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
     }
+    NSLog(@"手动上传的个数:%i",[tableArray count]);
     return [tableArray autorelease];
 }
 
@@ -306,6 +308,7 @@
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
     }
+    NSLog(@"完成上传的个数:%i",[tableArray count]);
     return [tableArray autorelease];
 }
 
