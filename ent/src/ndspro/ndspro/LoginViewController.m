@@ -10,6 +10,8 @@
 #import "MBProgressHUD.h"
 #import "SCBAccountManager.h"
 #import "AppDelegate.h"
+#import "APService.h"
+#import "SCBSession.h"
 
 @interface LoginViewController ()<SCBAccountManagerDelegate>
 @property(strong,nonatomic) MBProgressHUD *hud;
@@ -111,9 +113,10 @@
 #pragma mark - SCBAccountManagerDelegate Methods
 -(void)loginSucceed:(id)manager
 {
-    //NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
-    //[APService setTags:nil alias:alias];
-    //NSLog(@"设置别名成功：%@",alias);
+    NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] entjpush]];
+    [APService setTags:nil alias:alias];
+    NSLog(@"设置别名成功：%@",alias);
+    
     [[NSUserDefaults standardUserDefaults] setObject:_userNameTextField.text forKey:@"usr_name"];
     [[NSUserDefaults standardUserDefaults] setObject:_passwordTextField.text forKey:@"usr_pwd"];
     [[NSUserDefaults standardUserDefaults] synchronize];

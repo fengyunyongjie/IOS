@@ -8,6 +8,7 @@
 
 #import "SettingViewController.h"
 #import "AppDelegate.h"
+#import "APService.h"
 typedef enum{
     kActionSheetTypeExit,
     kActionSheetTypeClear,
@@ -99,6 +100,7 @@ typedef enum{
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
+                [APService setTags:nil alias:nil];
                 
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 [appDelegate finishLogout];

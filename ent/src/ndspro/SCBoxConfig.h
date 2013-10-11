@@ -14,8 +14,8 @@
 #define RESPONSE_TIMEOUT 10
 //商业版URL
 //#define SERVER_URL @"http://b.7cbox.cn/biz/ent"
-//#define SERVER_URL @"http://192.168.1.55:8080/biz/ent"
-#define SERVER_URL @"http://192.168.1.9/biz/ent"
+#define SERVER_URL @"http://192.168.1.55:8080/biz/ent"
+//#define SERVER_URL @"http://192.168.1.9/biz/ent"
 #define HOST_URL @"http://192.168.1.9/"
 #pragma mark - 1.子帐号
 //子账号登录/ent/user/login

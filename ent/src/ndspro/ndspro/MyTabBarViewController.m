@@ -32,7 +32,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     UINavigationController *vc1=[[UINavigationController alloc] init];
-    //[vc1.navigationBar setBackgroundImage:[UIImage imageNamed:@"Bt_UsercentreCh.png"] forBarMetrics:UIBarMetricsDefault];
+    //[vc1.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forBarMetrics:UIBarMetricsDefault];
+    [vc1.navigationBar setBarStyle:UIBarStyleBlackTranslucent];
+    [vc1.navigationBar setBackgroundColor:[UIColor blueColor]];
+//    [vc1.navigationBar setTintColor:[UIColor blueColor]];
     MainViewController * vc11=[[MainViewController alloc] init];
     [vc1 pushViewController:vc11 animated:YES];
     vc11.title=@"工作区";

@@ -102,10 +102,10 @@
             //加载工作区图标
             NSString *roleType=[dic objectForKey:@"roletype"];;
             if ([roleType isEqualToString:@"9999"]) {
-                cell.imageView.image=[UIImage imageNamed:@"Geren.png"];
+                cell.imageView.image=[UIImage imageNamed:@"ownerfiles.png"];
             }else
             {
-                cell.imageView.image=[UIImage imageNamed:@"Qiye.png"];
+                cell.imageView.image=[UIImage imageNamed:@"bizfiles.png"];
             }
             //显示工作区大小
             cell.detailTextLabel.text=@"1.23G/5G";

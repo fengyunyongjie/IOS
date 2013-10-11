@@ -21,6 +21,8 @@
 @property(strong,nonatomic)NSString *homeID;
 @property(strong,nonatomic)NSString *spaceID;
 @property(strong,nonatomic)NSString *ent_utype;  //账号类型:0代表企业账号，1代表子账号
+@property(strong,nonatomic)NSString *entjpush;
+
 +(SCBSession *)sharedSession;
 //-(id)initWithUserID:(NSString *)usr_id Token:usr_token;
 @end

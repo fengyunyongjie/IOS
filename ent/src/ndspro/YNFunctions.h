@@ -39,4 +39,6 @@
 #pragma mark --------获取是否打开自动上传照片
 +(BOOL)isAutoUpload;
 +(void)setIsAutoUpload:(BOOL)value;
++(NSString *)getDesc;   //获取排序方式
++(void)setDesc:(NSString *)desc;
 @end

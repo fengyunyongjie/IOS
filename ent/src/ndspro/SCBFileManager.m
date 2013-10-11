@@ -7,6 +7,7 @@
 //
 
 #import "SCBFileManager.h"
+#import "YNFunctions.h"
 #import "SCBoxConfig.h"
 #import "SCBSession.h"
 @interface SCBFileManager()
@@ -193,7 +194,8 @@
     NSLog(@"%@",s_url);
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,@"time",@"desc"];
+    NSString *desc=[YNFunctions getDesc];
+    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,desc,@"desc"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -217,7 +219,8 @@
     NSLog(@"%@",s_url);
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
-    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,@"time",@"desc"];
+    NSString *desc=[YNFunctions getDesc];
+    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,desc,@"desc"];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];

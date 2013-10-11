@@ -161,7 +161,7 @@
             NSString *fisdir=[dic objectForKey:@"fisdir"];
             if ([fisdir isEqualToString:@"0"]) {
                 cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
-                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreNo.png"];
+                cell.imageView.image=[UIImage imageNamed:@"file_folder.png"];
             }
         }
     }

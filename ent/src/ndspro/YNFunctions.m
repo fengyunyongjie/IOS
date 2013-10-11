@@ -283,4 +283,16 @@ static BOOL h_f=NO;
     NSString *strValue = [NSString stringWithFormat:@"%d",value];
     [[NSUserDefaults standardUserDefaults] setObject:strValue forKey:@"isAutoUpload"];
 }
++(NSString *)getDesc   //获取排序方式
+{
+    NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"desc"];
+    if (value==nil) {
+        return @"time";
+    }
+    return value;
+}
++(void)setDesc:(NSString *)desc
+{
+    [[NSUserDefaults standardUserDefaults] setObject:desc forKey:@"desc"];
+}
 @end
