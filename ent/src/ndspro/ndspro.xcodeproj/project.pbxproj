@@ -929,7 +929,7 @@
 				INFOPLIST_FILE = "ndspro/ndspro-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/fengyn/work/ngitsvn/IOS/ent/src/ndspro/lib,
+					"$(SRCROOT)/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "armv7 armv7s";
@@ -950,7 +950,7 @@
 				INFOPLIST_FILE = "ndspro/ndspro-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/fengyn/work/ngitsvn/IOS/ent/src/ndspro/lib,
+					"$(SRCROOT)/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = "armv7 armv7s";
