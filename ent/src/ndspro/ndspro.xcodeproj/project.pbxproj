@@ -123,6 +123,40 @@
 		29FE576E1808D3210068DE48 /* DispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57631808D3210068DE48 /* DispatchQueueLogFormatter.m */; };
 		29FE576F1808D3210068DE48 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57641808D3210068DE48 /* README.txt */; };
 		29FE57701808D3210068DE48 /* NSString+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57661808D3210068DE48 /* NSString+Format.m */; };
+		29FE579D1808D66E0068DE48 /* DownManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57731808D66E0068DE48 /* DownManager.m */; };
+		29FE579E1808D66E0068DE48 /* DwonFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57751808D66E0068DE48 /* DwonFile.m */; };
+		29FE579F1808D66E0068DE48 /* Bt_Cancle.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57781808D66E0068DE48 /* Bt_Cancle.png */; };
+		29FE57A01808D66E0068DE48 /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57791808D66E0068DE48 /* minus.png */; };
+		29FE57A11808D66E0068DE48 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE577A1808D66E0068DE48 /* minus@2x.png */; };
+		29FE57A21808D66E0068DE48 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE577B1808D66E0068DE48 /* overlay.png */; };
+		29FE57A31808D66E0068DE48 /* overlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE577C1808D66E0068DE48 /* overlay@2x.png */; };
+		29FE57A41808D66E0068DE48 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE577D1808D66E0068DE48 /* plus.png */; };
+		29FE57A51808D66E0068DE48 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE577E1808D66E0068DE48 /* plus@2x.png */; };
+		29FE57A61808D66E0068DE48 /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE577F1808D66E0068DE48 /* video.png */; };
+		29FE57A71808D66E0068DE48 /* video@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57801808D66E0068DE48 /* video@2x.png */; };
+		29FE57A81808D66E0068DE48 /* QBAssetCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57821808D66E0068DE48 /* QBAssetCollectionViewController.m */; };
+		29FE57A91808D66E0068DE48 /* QBImageFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57851808D66E0068DE48 /* QBImageFileViewController.m */; };
+		29FE57AA1808D66E0068DE48 /* QBImagePickerAssetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57871808D66E0068DE48 /* QBImagePickerAssetCell.m */; };
+		29FE57AB1808D66E0068DE48 /* QBImagePickerAssetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE578A1808D66E0068DE48 /* QBImagePickerAssetView.m */; };
+		29FE57AC1808D66E0068DE48 /* QBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE578D1808D66E0068DE48 /* QBImagePickerController.m */; };
+		29FE57AD1808D66E0068DE48 /* QBImagePickerFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE578F1808D66E0068DE48 /* QBImagePickerFooterView.m */; };
+		29FE57AE1808D66E0068DE48 /* QBImagePickerGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57911808D66E0068DE48 /* QBImagePickerGroupCell.m */; };
+		29FE57AF1808D66E0068DE48 /* QBImagePickerVideoInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57931808D66E0068DE48 /* QBImagePickerVideoInfoView.m */; };
+		29FE57B01808D66E0068DE48 /* Bt_UploadCancle.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57951808D66E0068DE48 /* Bt_UploadCancle.png */; };
+		29FE57B11808D66E0068DE48 /* Bt_UploadCancleCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57961808D66E0068DE48 /* Bt_UploadCancleCh.png */; };
+		29FE57B21808D66E0068DE48 /* Bt_UploadOk.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57971808D66E0068DE48 /* Bt_UploadOk.png */; };
+		29FE57B31808D66E0068DE48 /* Bt_UploadOkCh.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57981808D66E0068DE48 /* Bt_UploadOkCh.png */; };
+		29FE57B41808D66E0068DE48 /* UploadFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE579A1808D66E0068DE48 /* UploadFile.m */; };
+		29FE57B51808D66E0068DE48 /* UploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE579C1808D66E0068DE48 /* UploadManager.m */; };
+		29FE57C31808D7380068DE48 /* DBSqlite3.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57B81808D7380068DE48 /* DBSqlite3.m */; };
+		29FE57C41808D7380068DE48 /* DownList.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57BA1808D7380068DE48 /* DownList.m */; };
+		29FE57C51808D7380068DE48 /* PhotoFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57BC1808D7380068DE48 /* PhotoFile.m */; };
+		29FE57C61808D7380068DE48 /* SqlliteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57BE1808D7380068DE48 /* SqlliteManager.m */; };
+		29FE57C71808D7380068DE48 /* UpLoadList.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57C01808D7380068DE48 /* UpLoadList.m */; };
+		29FE57C81808D7380068DE48 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57C21808D7380068DE48 /* UserInfo.m */; };
+		29FE57CA1808D74D0068DE48 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE57C91808D74D0068DE48 /* libsqlite3.0.dylib */; };
+		29FE57CF1808D7850068DE48 /* CustomJinDu.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57CC1808D7850068DE48 /* CustomJinDu.m */; };
+		29FE57D01808D7850068DE48 /* UploadViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57CD1808D7850068DE48 /* UploadViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -292,6 +326,63 @@
 		29FE57641808D3210068DE48 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		29FE57651808D3210068DE48 /* NSString+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Format.h"; sourceTree = "<group>"; };
 		29FE57661808D3210068DE48 /* NSString+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Format.m"; sourceTree = "<group>"; };
+		29FE57721808D66E0068DE48 /* DownManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownManager.h; sourceTree = "<group>"; };
+		29FE57731808D66E0068DE48 /* DownManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownManager.m; sourceTree = "<group>"; };
+		29FE57741808D66E0068DE48 /* DwonFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwonFile.h; sourceTree = "<group>"; };
+		29FE57751808D66E0068DE48 /* DwonFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwonFile.m; sourceTree = "<group>"; };
+		29FE57781808D66E0068DE48 /* Bt_Cancle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Cancle.png; sourceTree = "<group>"; };
+		29FE57791808D66E0068DE48 /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
+		29FE577A1808D66E0068DE48 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus@2x.png"; sourceTree = "<group>"; };
+		29FE577B1808D66E0068DE48 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
+		29FE577C1808D66E0068DE48 /* overlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay@2x.png"; sourceTree = "<group>"; };
+		29FE577D1808D66E0068DE48 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		29FE577E1808D66E0068DE48 /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
+		29FE577F1808D66E0068DE48 /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video.png; sourceTree = "<group>"; };
+		29FE57801808D66E0068DE48 /* video@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "video@2x.png"; sourceTree = "<group>"; };
+		29FE57811808D66E0068DE48 /* QBAssetCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetCollectionViewController.h; sourceTree = "<group>"; };
+		29FE57821808D66E0068DE48 /* QBAssetCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBAssetCollectionViewController.m; sourceTree = "<group>"; };
+		29FE57831808D66E0068DE48 /* QBAssetCollectionViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBAssetCollectionViewControllerDelegate.h; sourceTree = "<group>"; };
+		29FE57841808D66E0068DE48 /* QBImageFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImageFileViewController.h; sourceTree = "<group>"; };
+		29FE57851808D66E0068DE48 /* QBImageFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImageFileViewController.m; sourceTree = "<group>"; };
+		29FE57861808D66E0068DE48 /* QBImagePickerAssetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerAssetCell.h; sourceTree = "<group>"; };
+		29FE57871808D66E0068DE48 /* QBImagePickerAssetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerAssetCell.m; sourceTree = "<group>"; };
+		29FE57881808D66E0068DE48 /* QBImagePickerAssetCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerAssetCellDelegate.h; sourceTree = "<group>"; };
+		29FE57891808D66E0068DE48 /* QBImagePickerAssetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerAssetView.h; sourceTree = "<group>"; };
+		29FE578A1808D66E0068DE48 /* QBImagePickerAssetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerAssetView.m; sourceTree = "<group>"; };
+		29FE578B1808D66E0068DE48 /* QBImagePickerAssetViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerAssetViewDelegate.h; sourceTree = "<group>"; };
+		29FE578C1808D66E0068DE48 /* QBImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerController.h; sourceTree = "<group>"; };
+		29FE578D1808D66E0068DE48 /* QBImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerController.m; sourceTree = "<group>"; };
+		29FE578E1808D66E0068DE48 /* QBImagePickerFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerFooterView.h; sourceTree = "<group>"; };
+		29FE578F1808D66E0068DE48 /* QBImagePickerFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerFooterView.m; sourceTree = "<group>"; };
+		29FE57901808D66E0068DE48 /* QBImagePickerGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerGroupCell.h; sourceTree = "<group>"; };
+		29FE57911808D66E0068DE48 /* QBImagePickerGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerGroupCell.m; sourceTree = "<group>"; };
+		29FE57921808D66E0068DE48 /* QBImagePickerVideoInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBImagePickerVideoInfoView.h; sourceTree = "<group>"; };
+		29FE57931808D66E0068DE48 /* QBImagePickerVideoInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerVideoInfoView.m; sourceTree = "<group>"; };
+		29FE57951808D66E0068DE48 /* Bt_UploadCancle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UploadCancle.png; sourceTree = "<group>"; };
+		29FE57961808D66E0068DE48 /* Bt_UploadCancleCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UploadCancleCh.png; sourceTree = "<group>"; };
+		29FE57971808D66E0068DE48 /* Bt_UploadOk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UploadOk.png; sourceTree = "<group>"; };
+		29FE57981808D66E0068DE48 /* Bt_UploadOkCh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_UploadOkCh.png; sourceTree = "<group>"; };
+		29FE57991808D66E0068DE48 /* UploadFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFile.h; sourceTree = "<group>"; };
+		29FE579A1808D66E0068DE48 /* UploadFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFile.m; sourceTree = "<group>"; };
+		29FE579B1808D66E0068DE48 /* UploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadManager.h; sourceTree = "<group>"; };
+		29FE579C1808D66E0068DE48 /* UploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadManager.m; sourceTree = "<group>"; };
+		29FE57B71808D7380068DE48 /* DBSqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSqlite3.h; sourceTree = "<group>"; };
+		29FE57B81808D7380068DE48 /* DBSqlite3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSqlite3.m; sourceTree = "<group>"; };
+		29FE57B91808D7380068DE48 /* DownList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownList.h; sourceTree = "<group>"; };
+		29FE57BA1808D7380068DE48 /* DownList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownList.m; sourceTree = "<group>"; };
+		29FE57BB1808D7380068DE48 /* PhotoFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFile.h; sourceTree = "<group>"; };
+		29FE57BC1808D7380068DE48 /* PhotoFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFile.m; sourceTree = "<group>"; };
+		29FE57BD1808D7380068DE48 /* SqlliteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlliteManager.h; sourceTree = "<group>"; };
+		29FE57BE1808D7380068DE48 /* SqlliteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SqlliteManager.m; sourceTree = "<group>"; };
+		29FE57BF1808D7380068DE48 /* UpLoadList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpLoadList.h; sourceTree = "<group>"; };
+		29FE57C01808D7380068DE48 /* UpLoadList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpLoadList.m; sourceTree = "<group>"; };
+		29FE57C11808D7380068DE48 /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
+		29FE57C21808D7380068DE48 /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
+		29FE57C91808D74D0068DE48 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		29FE57CB1808D7850068DE48 /* CustomJinDu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomJinDu.h; sourceTree = "<group>"; };
+		29FE57CC1808D7850068DE48 /* CustomJinDu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomJinDu.m; sourceTree = "<group>"; };
+		29FE57CD1808D7850068DE48 /* UploadViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadViewCell.m; sourceTree = "<group>"; };
+		29FE57CE1808D7850068DE48 /* UploadViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadViewCell.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -299,6 +390,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29FE57CA1808D74D0068DE48 /* libsqlite3.0.dylib in Frameworks */,
 				29B44B2B180797170025AB61 /* SystemConfiguration.framework in Frameworks */,
 				29B44B29180797070025AB61 /* CoreTelephony.framework in Frameworks */,
 				29B44B27180796F90025AB61 /* CoreFoundation.framework in Frameworks */,
@@ -348,6 +440,7 @@
 			children = (
 				291CCB3B17F27F99005C029C /* ndspro */,
 				29FE57511808D3210068DE48 /* BasicSdk */,
+				29FE57B61808D7380068DE48 /* DBSqliteManager */,
 				291CCB6C17F3BDF5005C029C /* ndsAPI */,
 				291CCB6B17F3B9A7005C029C /* Utilities */,
 				291CCB5A17F27F99005C029C /* ndsproTests */,
@@ -368,6 +461,7 @@
 		291CCB3417F27F99005C029C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29FE57C91808D74D0068DE48 /* libsqlite3.0.dylib */,
 				29B44B2A180797170025AB61 /* SystemConfiguration.framework */,
 				29B44B28180797070025AB61 /* CoreTelephony.framework */,
 				29B44B26180796F90025AB61 /* CoreFoundation.framework */,
@@ -559,9 +653,14 @@
 		291CCC4217F7D5B9005C029C /* Download&Upload */ = {
 			isa = PBXGroup;
 			children = (
+				29FE57711808D66E0068DE48 /* Upload */,
 				291CCC4817F7D9D6005C029C /* UpDownloadViewController.h */,
 				291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */,
 				291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */,
+				29FE57CB1808D7850068DE48 /* CustomJinDu.h */,
+				29FE57CC1808D7850068DE48 /* CustomJinDu.m */,
+				29FE57CD1808D7850068DE48 /* UploadViewCell.m */,
+				29FE57CE1808D7850068DE48 /* UploadViewCell.h */,
 			);
 			name = "Download&Upload";
 			sourceTree = "<group>";
@@ -670,6 +769,96 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		29FE57711808D66E0068DE48 /* Upload */ = {
+			isa = PBXGroup;
+			children = (
+				29FE57721808D66E0068DE48 /* DownManager.h */,
+				29FE57731808D66E0068DE48 /* DownManager.m */,
+				29FE57741808D66E0068DE48 /* DwonFile.h */,
+				29FE57751808D66E0068DE48 /* DwonFile.m */,
+				29FE57761808D66E0068DE48 /* QBAssetPicker */,
+				29FE57991808D66E0068DE48 /* UploadFile.h */,
+				29FE579A1808D66E0068DE48 /* UploadFile.m */,
+				29FE579B1808D66E0068DE48 /* UploadManager.h */,
+				29FE579C1808D66E0068DE48 /* UploadManager.m */,
+			);
+			path = Upload;
+			sourceTree = "<group>";
+		};
+		29FE57761808D66E0068DE48 /* QBAssetPicker */ = {
+			isa = PBXGroup;
+			children = (
+				29FE57771808D66E0068DE48 /* image */,
+				29FE57811808D66E0068DE48 /* QBAssetCollectionViewController.h */,
+				29FE57821808D66E0068DE48 /* QBAssetCollectionViewController.m */,
+				29FE57831808D66E0068DE48 /* QBAssetCollectionViewControllerDelegate.h */,
+				29FE57841808D66E0068DE48 /* QBImageFileViewController.h */,
+				29FE57851808D66E0068DE48 /* QBImageFileViewController.m */,
+				29FE57861808D66E0068DE48 /* QBImagePickerAssetCell.h */,
+				29FE57871808D66E0068DE48 /* QBImagePickerAssetCell.m */,
+				29FE57881808D66E0068DE48 /* QBImagePickerAssetCellDelegate.h */,
+				29FE57891808D66E0068DE48 /* QBImagePickerAssetView.h */,
+				29FE578A1808D66E0068DE48 /* QBImagePickerAssetView.m */,
+				29FE578B1808D66E0068DE48 /* QBImagePickerAssetViewDelegate.h */,
+				29FE578C1808D66E0068DE48 /* QBImagePickerController.h */,
+				29FE578D1808D66E0068DE48 /* QBImagePickerController.m */,
+				29FE578E1808D66E0068DE48 /* QBImagePickerFooterView.h */,
+				29FE578F1808D66E0068DE48 /* QBImagePickerFooterView.m */,
+				29FE57901808D66E0068DE48 /* QBImagePickerGroupCell.h */,
+				29FE57911808D66E0068DE48 /* QBImagePickerGroupCell.m */,
+				29FE57921808D66E0068DE48 /* QBImagePickerVideoInfoView.h */,
+				29FE57931808D66E0068DE48 /* QBImagePickerVideoInfoView.m */,
+				29FE57941808D66E0068DE48 /* UploadImage */,
+			);
+			path = QBAssetPicker;
+			sourceTree = "<group>";
+		};
+		29FE57771808D66E0068DE48 /* image */ = {
+			isa = PBXGroup;
+			children = (
+				29FE57781808D66E0068DE48 /* Bt_Cancle.png */,
+				29FE57791808D66E0068DE48 /* minus.png */,
+				29FE577A1808D66E0068DE48 /* minus@2x.png */,
+				29FE577B1808D66E0068DE48 /* overlay.png */,
+				29FE577C1808D66E0068DE48 /* overlay@2x.png */,
+				29FE577D1808D66E0068DE48 /* plus.png */,
+				29FE577E1808D66E0068DE48 /* plus@2x.png */,
+				29FE577F1808D66E0068DE48 /* video.png */,
+				29FE57801808D66E0068DE48 /* video@2x.png */,
+			);
+			path = image;
+			sourceTree = "<group>";
+		};
+		29FE57941808D66E0068DE48 /* UploadImage */ = {
+			isa = PBXGroup;
+			children = (
+				29FE57951808D66E0068DE48 /* Bt_UploadCancle.png */,
+				29FE57961808D66E0068DE48 /* Bt_UploadCancleCh.png */,
+				29FE57971808D66E0068DE48 /* Bt_UploadOk.png */,
+				29FE57981808D66E0068DE48 /* Bt_UploadOkCh.png */,
+			);
+			path = UploadImage;
+			sourceTree = "<group>";
+		};
+		29FE57B61808D7380068DE48 /* DBSqliteManager */ = {
+			isa = PBXGroup;
+			children = (
+				29FE57B71808D7380068DE48 /* DBSqlite3.h */,
+				29FE57B81808D7380068DE48 /* DBSqlite3.m */,
+				29FE57B91808D7380068DE48 /* DownList.h */,
+				29FE57BA1808D7380068DE48 /* DownList.m */,
+				29FE57BB1808D7380068DE48 /* PhotoFile.h */,
+				29FE57BC1808D7380068DE48 /* PhotoFile.m */,
+				29FE57BD1808D7380068DE48 /* SqlliteManager.h */,
+				29FE57BE1808D7380068DE48 /* SqlliteManager.m */,
+				29FE57BF1808D7380068DE48 /* UpLoadList.h */,
+				29FE57C01808D7380068DE48 /* UpLoadList.m */,
+				29FE57C11808D7380068DE48 /* UserInfo.h */,
+				29FE57C21808D7380068DE48 /* UserInfo.m */,
+			);
+			path = DBSqliteManager;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -757,12 +946,19 @@
 			files = (
 				29B44BDD180807340025AB61 /* tj_se@2x.png in Resources */,
 				29B44BC0180807340025AB61 /* file_doc@2x.png in Resources */,
+				29FE57A71808D66E0068DE48 /* video@2x.png in Resources */,
 				29B44B1C180688B00025AB61 /* Selected.png in Resources */,
 				291CCC2217F408EF005C029C /* Bt_LoginClick.png in Resources */,
 				29B44BC4180807340025AB61 /* file_other@2x.png in Resources */,
+				29FE579F1808D66E0068DE48 /* Bt_Cancle.png in Resources */,
+				29FE57A21808D66E0068DE48 /* overlay.png in Resources */,
 				29B44BDE180807340025AB61 /* zc_nor@2x.png in Resources */,
 				29B44BB8180807340025AB61 /* Bk_Start@iPhone5.png in Resources */,
+				29FE57B01808D66E0068DE48 /* Bt_UploadCancle.png in Resources */,
 				29B44BDB180807340025AB61 /* title_se@2x.png in Resources */,
+				29FE57A01808D66E0068DE48 /* minus.png in Resources */,
+				29FE57A41808D66E0068DE48 /* plus.png in Resources */,
+				29FE57A51808D66E0068DE48 /* plus@2x.png in Resources */,
 				29B44BC9180807340025AB61 /* move_se@2x.png in Resources */,
 				29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */,
 				29B44BCC180807340025AB61 /* rename_se@2x.png in Resources */,
@@ -774,6 +970,7 @@
 				29B44BBA180807340025AB61 /* Bt_LoginNor.png in Resources */,
 				29B44BD8180807340025AB61 /* title_menu.png in Resources */,
 				29B44BB4180807340025AB61 /* bizfiles@2x.png in Resources */,
+				29FE57A11808D66E0068DE48 /* minus@2x.png in Resources */,
 				29B44BC6180807340025AB61 /* more_nor@2x.png in Resources */,
 				29B44BD9180807340025AB61 /* title_menu4@2x.png in Resources */,
 				291CCC3D17F583D6005C029C /* Bt_UsercentreNo@2x.png in Resources */,
@@ -786,9 +983,11 @@
 				29728C711803B226004B4724 /* SelectFileListViewController.xib in Resources */,
 				291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */,
 				29B44BBB180807340025AB61 /* del.png in Resources */,
+				29FE57B31808D66E0068DE48 /* Bt_UploadOkCh.png in Resources */,
 				29B44BD0180807340025AB61 /* title_bt_edit_nor@2x.png in Resources */,
 				292B6B8D17F9659E0015669A /* Main.storyboard in Resources */,
 				29B44BD6180807340025AB61 /* title_bt_upload_nor@2x.png in Resources */,
+				29FE57A61808D66E0068DE48 /* video.png in Resources */,
 				291CCB4E17F27F99005C029C /* Images.xcassets in Resources */,
 				29B44B1D180688B00025AB61 /* Unselected.png in Resources */,
 				29B44BC3180807340025AB61 /* file_music@2x.png in Resources */,
@@ -796,7 +995,9 @@
 				29B44BC7180807340025AB61 /* more_se@2x.png in Resources */,
 				29B44BCA180807340025AB61 /* ownerfiles@2x.png in Resources */,
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
+				29FE57B21808D66E0068DE48 /* Bt_UploadOk.png in Resources */,
 				29B44BCE180807340025AB61 /* send_se@2x.png in Resources */,
+				29FE57B11808D66E0068DE48 /* Bt_UploadCancleCh.png in Resources */,
 				29B44B2D180797950025AB61 /* PushConfig.plist in Resources */,
 				29B44BBD180807340025AB61 /* del_se@2x.png in Resources */,
 				291CCC2117F408EF005C029C /* Bk_Login.png in Resources */,
@@ -808,6 +1009,7 @@
 				29B44BD3180807340025AB61 /* title_bt_new_se@2x.png in Resources */,
 				29B44BBF180807340025AB61 /* download_se@2x.png in Resources */,
 				29FE576F1808D3210068DE48 /* README.txt in Resources */,
+				29FE57A31808D66E0068DE48 /* overlay@2x.png in Resources */,
 				29B44BC8180807340025AB61 /* move_nor@2x.png in Resources */,
 				29B44BB5180807340025AB61 /* Bk_Login.png in Resources */,
 				29728C691803A211004B4724 /* Geren.png in Resources */,
@@ -858,21 +1060,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29FE57C81808D7380068DE48 /* UserInfo.m in Sources */,
 				29FE576B1808D3210068DE48 /* DDLog.m in Sources */,
 				291CCC4117F7C6EB005C029C /* SCBUploader.m in Sources */,
 				29B44B18180654320025AB61 /* UserListViewController.m in Sources */,
+				29FE57C31808D7380068DE48 /* DBSqlite3.m in Sources */,
 				291CCC4B17F7D9D6005C029C /* UpDownloadViewController.m in Sources */,
 				291CCBC617F3C40A005C029C /* SCBSession.m in Sources */,
 				291CCBC017F3C40A005C029C /* SCBLinkManager.m in Sources */,
 				29FE57681808D3210068DE48 /* DDAbstractDatabaseLogger.m in Sources */,
 				291CCBCC17F3CD17005C029C /* YNFunctions.m in Sources */,
+				29FE57C41808D7380068DE48 /* DownList.m in Sources */,
 				29FE57701808D3210068DE48 /* NSString+Format.m in Sources */,
+				29FE57C51808D7380068DE48 /* PhotoFile.m in Sources */,
+				29FE57AE1808D66E0068DE48 /* QBImagePickerGroupCell.m in Sources */,
 				29B44B13180638F40025AB61 /* SendEmailViewController.m in Sources */,
 				29FDF3031805281C001F545B /* EmailDetailViewController.m in Sources */,
+				29FE57CF1808D7850068DE48 /* CustomJinDu.m in Sources */,
+				29FE57B51808D66E0068DE48 /* UploadManager.m in Sources */,
 				290C7A041804F3FF00EF4A32 /* EmailListViewController.m in Sources */,
+				29FE57AF1808D66E0068DE48 /* QBImagePickerVideoInfoView.m in Sources */,
 				291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */,
+				29FE57A91808D66E0068DE48 /* QBImageFileViewController.m in Sources */,
+				29FE57A81808D66E0068DE48 /* QBAssetCollectionViewController.m in Sources */,
+				29FE579E1808D66E0068DE48 /* DwonFile.m in Sources */,
 				291CCBBD17F3C40A005C029C /* SCBFileManager.m in Sources */,
 				29FE57691808D3210068DE48 /* DDASLLogger.m in Sources */,
+				29FE57AB1808D66E0068DE48 /* QBImagePickerAssetView.m in Sources */,
+				29FE57AC1808D66E0068DE48 /* QBImagePickerController.m in Sources */,
 				291CCC3717F53075005C029C /* FileItemTableCell.m in Sources */,
 				292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */,
 				291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */,
@@ -884,11 +1099,18 @@
 				290C79FF1804E16900EF4A32 /* SCBEmailManager.m in Sources */,
 				291CCB4217F27F99005C029C /* main.m in Sources */,
 				29FE576D1808D3210068DE48 /* ContextFilterLogFormatter.m in Sources */,
+				29FE57D01808D7850068DE48 /* UploadViewCell.m in Sources */,
 				291CCC1117F4041D005C029C /* LoginViewController.m in Sources */,
 				29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */,
+				29FE57C71808D7380068DE48 /* UpLoadList.m in Sources */,
 				29FE57671808D3210068DE48 /* CustomSelectButton.m in Sources */,
 				29FE576A1808D3210068DE48 /* DDFileLogger.m in Sources */,
+				29FE579D1808D66E0068DE48 /* DownManager.m in Sources */,
+				29FE57AD1808D66E0068DE48 /* QBImagePickerFooterView.m in Sources */,
 				291CCBBC17F3C40A005C029C /* SCBDownloader.m in Sources */,
+				29FE57B41808D66E0068DE48 /* UploadFile.m in Sources */,
+				29FE57AA1808D66E0068DE48 /* QBImagePickerAssetCell.m in Sources */,
+				29FE57C61808D7380068DE48 /* SqlliteManager.m in Sources */,
 				29FE576C1808D3210068DE48 /* DDTTYLogger.m in Sources */,
 				291CCC2717F40D05005C029C /* MBProgressHUD.m in Sources */,
 				291CCC2B17F410E2005C029C /* SettingViewController.m in Sources */,

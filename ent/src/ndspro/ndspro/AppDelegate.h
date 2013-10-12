@@ -6,6 +6,9 @@
 //  Copyright (c) 2013年 fengyongning. All rights reserved.
 //
 
+#define TabBarHeight 60
+#define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
+
 #import <UIKit/UIKit.h>
 @class LoginViewController,MyTabBarViewController;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
