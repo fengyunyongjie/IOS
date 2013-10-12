@@ -10,6 +10,8 @@
 #import "LoginViewController.h"
 #import "MyTabBarViewController.h"
 #import "APService.h"
+#import "DDASLLogger.h"
+#import "DDTTYLogger.h"
 
 @implementation AppDelegate
 
@@ -32,7 +34,9 @@
                                                    UIRemoteNotificationTypeAlert)];
     // Required
     [APService setupWithOption:launchOptions];
-    
+    //给程序添加日志
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
     return YES;
 }
 -(BOOL)isLogin

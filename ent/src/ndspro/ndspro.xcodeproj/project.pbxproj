@@ -113,6 +113,16 @@
 		29B44BDF180807340025AB61 /* zc_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B44BB3180807340025AB61 /* zc_se@2x.png */; };
 		29FDF3031805281C001F545B /* EmailDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FDF3011805281C001F545B /* EmailDetailViewController.m */; };
 		29FDF3041805281C001F545B /* EmailDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29FDF3021805281C001F545B /* EmailDetailViewController.xib */; };
+		29FE57671808D3210068DE48 /* CustomSelectButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57531808D3210068DE48 /* CustomSelectButton.m */; };
+		29FE57681808D3210068DE48 /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57561808D3210068DE48 /* DDAbstractDatabaseLogger.m */; };
+		29FE57691808D3210068DE48 /* DDASLLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57581808D3210068DE48 /* DDASLLogger.m */; };
+		29FE576A1808D3210068DE48 /* DDFileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE575A1808D3210068DE48 /* DDFileLogger.m */; };
+		29FE576B1808D3210068DE48 /* DDLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE575C1808D3210068DE48 /* DDLog.m */; };
+		29FE576C1808D3210068DE48 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE575E1808D3210068DE48 /* DDTTYLogger.m */; };
+		29FE576D1808D3210068DE48 /* ContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57611808D3210068DE48 /* ContextFilterLogFormatter.m */; };
+		29FE576E1808D3210068DE48 /* DispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57631808D3210068DE48 /* DispatchQueueLogFormatter.m */; };
+		29FE576F1808D3210068DE48 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29FE57641808D3210068DE48 /* README.txt */; };
+		29FE57701808D3210068DE48 /* NSString+Format.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE57661808D3210068DE48 /* NSString+Format.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -263,6 +273,25 @@
 		29FDF3001805281C001F545B /* EmailDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailDetailViewController.h; sourceTree = "<group>"; };
 		29FDF3011805281C001F545B /* EmailDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailDetailViewController.m; sourceTree = "<group>"; };
 		29FDF3021805281C001F545B /* EmailDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailDetailViewController.xib; sourceTree = "<group>"; };
+		29FE57521808D3210068DE48 /* CustomSelectButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSelectButton.h; sourceTree = "<group>"; };
+		29FE57531808D3210068DE48 /* CustomSelectButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSelectButton.m; sourceTree = "<group>"; };
+		29FE57551808D3210068DE48 /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
+		29FE57561808D3210068DE48 /* DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
+		29FE57571808D3210068DE48 /* DDASLLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDASLLogger.h; sourceTree = "<group>"; };
+		29FE57581808D3210068DE48 /* DDASLLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDASLLogger.m; sourceTree = "<group>"; };
+		29FE57591808D3210068DE48 /* DDFileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDFileLogger.h; sourceTree = "<group>"; };
+		29FE575A1808D3210068DE48 /* DDFileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDFileLogger.m; sourceTree = "<group>"; };
+		29FE575B1808D3210068DE48 /* DDLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLog.h; sourceTree = "<group>"; };
+		29FE575C1808D3210068DE48 /* DDLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLog.m; sourceTree = "<group>"; };
+		29FE575D1808D3210068DE48 /* DDTTYLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDTTYLogger.h; sourceTree = "<group>"; };
+		29FE575E1808D3210068DE48 /* DDTTYLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDTTYLogger.m; sourceTree = "<group>"; };
+		29FE57601808D3210068DE48 /* ContextFilterLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextFilterLogFormatter.h; sourceTree = "<group>"; };
+		29FE57611808D3210068DE48 /* ContextFilterLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextFilterLogFormatter.m; sourceTree = "<group>"; };
+		29FE57621808D3210068DE48 /* DispatchQueueLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DispatchQueueLogFormatter.h; sourceTree = "<group>"; };
+		29FE57631808D3210068DE48 /* DispatchQueueLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DispatchQueueLogFormatter.m; sourceTree = "<group>"; };
+		29FE57641808D3210068DE48 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		29FE57651808D3210068DE48 /* NSString+Format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Format.h"; sourceTree = "<group>"; };
+		29FE57661808D3210068DE48 /* NSString+Format.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Format.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,6 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				291CCB3B17F27F99005C029C /* ndspro */,
+				29FE57511808D3210068DE48 /* BasicSdk */,
 				291CCB6C17F3BDF5005C029C /* ndsAPI */,
 				291CCB6B17F3B9A7005C029C /* Utilities */,
 				291CCB5A17F27F99005C029C /* ndsproTests */,
@@ -598,6 +628,48 @@
 			path = iPhone;
 			sourceTree = "<group>";
 		};
+		29FE57511808D3210068DE48 /* BasicSdk */ = {
+			isa = PBXGroup;
+			children = (
+				29FE57521808D3210068DE48 /* CustomSelectButton.h */,
+				29FE57531808D3210068DE48 /* CustomSelectButton.m */,
+				29FE57541808D3210068DE48 /* Lumberjack */,
+				29FE57651808D3210068DE48 /* NSString+Format.h */,
+				29FE57661808D3210068DE48 /* NSString+Format.m */,
+			);
+			path = BasicSdk;
+			sourceTree = "<group>";
+		};
+		29FE57541808D3210068DE48 /* Lumberjack */ = {
+			isa = PBXGroup;
+			children = (
+				29FE57551808D3210068DE48 /* DDAbstractDatabaseLogger.h */,
+				29FE57561808D3210068DE48 /* DDAbstractDatabaseLogger.m */,
+				29FE57571808D3210068DE48 /* DDASLLogger.h */,
+				29FE57581808D3210068DE48 /* DDASLLogger.m */,
+				29FE57591808D3210068DE48 /* DDFileLogger.h */,
+				29FE575A1808D3210068DE48 /* DDFileLogger.m */,
+				29FE575B1808D3210068DE48 /* DDLog.h */,
+				29FE575C1808D3210068DE48 /* DDLog.m */,
+				29FE575D1808D3210068DE48 /* DDTTYLogger.h */,
+				29FE575E1808D3210068DE48 /* DDTTYLogger.m */,
+				29FE575F1808D3210068DE48 /* Extensions */,
+			);
+			path = Lumberjack;
+			sourceTree = "<group>";
+		};
+		29FE575F1808D3210068DE48 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				29FE57601808D3210068DE48 /* ContextFilterLogFormatter.h */,
+				29FE57611808D3210068DE48 /* ContextFilterLogFormatter.m */,
+				29FE57621808D3210068DE48 /* DispatchQueueLogFormatter.h */,
+				29FE57631808D3210068DE48 /* DispatchQueueLogFormatter.m */,
+				29FE57641808D3210068DE48 /* README.txt */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -735,6 +807,7 @@
 				29B44BCB180807340025AB61 /* rename_nor@2x.png in Resources */,
 				29B44BD3180807340025AB61 /* title_bt_new_se@2x.png in Resources */,
 				29B44BBF180807340025AB61 /* download_se@2x.png in Resources */,
+				29FE576F1808D3210068DE48 /* README.txt in Resources */,
 				29B44BC8180807340025AB61 /* move_nor@2x.png in Resources */,
 				29B44BB5180807340025AB61 /* Bk_Login.png in Resources */,
 				29728C691803A211004B4724 /* Geren.png in Resources */,
@@ -785,29 +858,38 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29FE576B1808D3210068DE48 /* DDLog.m in Sources */,
 				291CCC4117F7C6EB005C029C /* SCBUploader.m in Sources */,
 				29B44B18180654320025AB61 /* UserListViewController.m in Sources */,
 				291CCC4B17F7D9D6005C029C /* UpDownloadViewController.m in Sources */,
 				291CCBC617F3C40A005C029C /* SCBSession.m in Sources */,
 				291CCBC017F3C40A005C029C /* SCBLinkManager.m in Sources */,
+				29FE57681808D3210068DE48 /* DDAbstractDatabaseLogger.m in Sources */,
 				291CCBCC17F3CD17005C029C /* YNFunctions.m in Sources */,
+				29FE57701808D3210068DE48 /* NSString+Format.m in Sources */,
 				29B44B13180638F40025AB61 /* SendEmailViewController.m in Sources */,
 				29FDF3031805281C001F545B /* EmailDetailViewController.m in Sources */,
 				290C7A041804F3FF00EF4A32 /* EmailListViewController.m in Sources */,
 				291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */,
 				291CCBBD17F3C40A005C029C /* SCBFileManager.m in Sources */,
+				29FE57691808D3210068DE48 /* DDASLLogger.m in Sources */,
 				291CCC3717F53075005C029C /* FileItemTableCell.m in Sources */,
 				292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */,
 				291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */,
 				291CCBBB17F3C40A005C029C /* SCBAccountManager.m in Sources */,
 				291CCC1617F4082B005C029C /* MainViewController.m in Sources */,
+				29FE576E1808D3210068DE48 /* DispatchQueueLogFormatter.m in Sources */,
 				291CCB4617F27F99005C029C /* AppDelegate.m in Sources */,
 				291CCC1B17F4086D005C029C /* FileListViewController.m in Sources */,
 				290C79FF1804E16900EF4A32 /* SCBEmailManager.m in Sources */,
 				291CCB4217F27F99005C029C /* main.m in Sources */,
+				29FE576D1808D3210068DE48 /* ContextFilterLogFormatter.m in Sources */,
 				291CCC1117F4041D005C029C /* LoginViewController.m in Sources */,
 				29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */,
+				29FE57671808D3210068DE48 /* CustomSelectButton.m in Sources */,
+				29FE576A1808D3210068DE48 /* DDFileLogger.m in Sources */,
 				291CCBBC17F3C40A005C029C /* SCBDownloader.m in Sources */,
+				29FE576C1808D3210068DE48 /* DDTTYLogger.m in Sources */,
 				291CCC2717F40D05005C029C /* MBProgressHUD.m in Sources */,
 				291CCC2B17F410E2005C029C /* SettingViewController.m in Sources */,
 			);
