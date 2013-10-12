@@ -55,7 +55,9 @@
     vc3.title=@"文件收发";
     //vc3.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemDownloads tag:0];
     [vc3.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"Bt_UsercentreCh.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"Bt_UsercentreNo.png"]];
-    SettingViewController *vc4=[[SettingViewController alloc] initWithNibName:@"SettingViewController" bundle:nil];
+    SettingViewController *vc44=[[SettingViewController alloc] init];
+    UINavigationController *vc4=[[UINavigationController alloc] initWithRootViewController:vc44];
+    vc44.title=@"设置中心";
     vc4.title=@"系统设置";
     //vc4.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFeatured tag:0];
     //[vc4.tabBarItem setImage:[UIImage imageNamed:@"Bt_UsercentreCh.png"]];

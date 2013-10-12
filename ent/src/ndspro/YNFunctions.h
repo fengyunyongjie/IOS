@@ -41,4 +41,6 @@
 +(void)setIsAutoUpload:(BOOL)value;
 +(NSString *)getDesc;   //获取排序方式
 +(void)setDesc:(NSString *)desc;
+//判断系统版本号是否大于等于version如果大于或等于返回YES，否则返回NO，
++(BOOL)systemIsLaterThanString:(NSString *)version;
 @end

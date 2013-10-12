@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingViewController : UIViewController<UIActionSheetDelegate>
-
+@interface SettingViewController : UIViewController<UIActionSheetDelegate,UITableViewDataSource,UITableViewDelegate>
+{
+    int switchTag;
+    UIButton *automicOff_button;
+    double locationCacheSize;
+}
+@property(strong,nonatomic)UITableView *tableView;
 @end

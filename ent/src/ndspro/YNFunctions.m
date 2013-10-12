@@ -295,4 +295,11 @@ static BOOL h_f=NO;
 {
     [[NSUserDefaults standardUserDefaults] setObject:desc forKey:@"desc"];
 }
++(BOOL)systemIsLaterThanString:(NSString *)version
+{
+    NSString *osVersion = [[UIDevice currentDevice] systemVersion];
+    BOOL noRotationNeeded = ([version compare:osVersion options:NSNumericSearch]
+                             != NSOrderedDescending);
+    return noRotationNeeded;
+}
 @end

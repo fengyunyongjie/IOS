@@ -218,7 +218,12 @@ typedef enum{
     
     if (!self.moreEditBar) {
         self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
-        [self.moreEditBar setBarTintColor:[UIColor blueColor]];
+        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+            [self.moreEditBar setBarTintColor:[UIColor blueColor]];
+        }else
+        {
+            [self.moreEditBar setTintColor:[UIColor blueColor]];
+        }
         [self.view addSubview:self.moreEditBar];
         //发送 删除 提交 移动 全选
         UIButton *btn_send, *btn_commit ,*btn_del ,*btn_more;
@@ -669,7 +674,12 @@ typedef enum{
     //显示单选操作菜单
     if (!self.singleEditBar) {
         self.singleEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
-        [self.singleEditBar setBarTintColor:[UIColor blueColor]];
+        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+            [self.singleEditBar setBarTintColor:[UIColor blueColor]];
+        }else
+        {
+            [self.singleEditBar setTintColor:[UIColor blueColor]];
+        }
         //[self.singleEditBar setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         [self.singleEditBar setBarStyle:UIBarStyleBlackOpaque];
         [self.tableView addSubview:self.singleEditBar];
