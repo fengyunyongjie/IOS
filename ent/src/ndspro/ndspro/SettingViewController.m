@@ -12,6 +12,12 @@
 #import "SCBAccountManager.h"
 #import "YNFunctions.h"
 #import "PConfig.h"
+#import "MBProgressHUD.h"
+typedef enum{
+    kAlertTypeNewVersion,
+    kAlertTypeNoNewVersion,
+    kAlertTypeHideFeature,
+}kAlertType;
 typedef enum{
     kActionSheetTypeExit,
     kActionSheetTypeClear,
@@ -27,6 +33,9 @@ typedef enum{
 @property (strong,nonatomic) NSString *nickname;
 @property (strong,nonatomic) NSString *space_total;
 @property (strong,nonatomic) NSString *space_used;
+@property (strong,nonatomic) SCBAccountManager *am;
+@property (strong,nonatomic) NSDictionary *datadic;
+@property (strong,nonatomic) MBProgressHUD *hud;
 @end
 
 @implementation SettingViewController
@@ -80,11 +89,9 @@ typedef enum{
 }
 -(void)updateData
 {
-//    [[SCBAccountManager sharedManager] currentUserSpace];
-//    [[SCBAccountManager sharedManager] setDelegate:self];
-//    SCBAccountManager *am=[[SCBAccountManager alloc] init];
-//    [am setDelegate:self];
-//    [am currentProfile];
+    self.am=[[SCBAccountManager alloc] init];
+    [self.am setDelegate:self];
+    [self.am getUserInfo];
 }
 -(void)calcCacheSize
 {
@@ -103,6 +110,7 @@ typedef enum{
     cachePath = [YNFunctions getProviewCachePath];
     cacheSize += [YNFunctions getDirectorySizeForPath:cachePath];
     locationCacheSize=cacheSize;
+    [self.tableView reloadData];
 }
 - (IBAction)hideTabBar:(id)sender
 {
@@ -233,6 +241,12 @@ typedef enum{
     [actionSheet setTag:kActionSheetTypeExit];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+}
+-(void)checkUpdate
+{
+    SCBAccountManager *am=[[SCBAccountManager alloc] init];
+    am.delegate=self;
+    [am checkNewVersion:VERSION];
 }
 #pragma mark - Table view data source
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -394,9 +408,9 @@ typedef enum{
                     //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
                     //titleLabel.hidden=YES;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.textLabel.text=@"照片自动备份";
+                    cell.textLabel.text=@"密码锁";
                     [cell.textLabel setFont:titleLabel.font];
-                    cell.detailTextLabel.text=@"仅Wi-Fi下进行,节省流量";
+                    //cell.detailTextLabel.text=@"仅Wi-Fi下进行,节省流量";
                     [cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
                     
                     CGRect label_rect = CGRectMake(240, 12, 40, 20);
@@ -520,7 +534,7 @@ typedef enum{
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     descLabel.hidden = YES;
-                    titleLabel.text = @"意见反馈";
+                    titleLabel.text = @"检查更新";
                     break;
                 default:
                     break;
@@ -539,6 +553,132 @@ typedef enum{
     
     return cell;
 }
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    switch (section) {
+            
+        case 0:     //账号信息
+        {
+            switch (row) {
+                case 0:
+                {
+                    //当前用户
+                }
+                    break;
+                case 1:
+                {
+                    //网盘用量
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+        case 1:     //设置
+        {
+            switch (row) {
+                case 0:
+                {
+                    
+                }
+                    break;
+                case 1:
+                {
+                    //缓存占用
+                }
+                    
+                    break;
+                case 2:
+                    //清除缓存
+                    [self clearCache];
+                    break;
+                case 3:
+                {
+//                    //点击照片自动备份
+//                    AutomicUploadViewController *uploadview = [[AutomicUploadViewController alloc] init];
+//                    //                    ReportViewController *viewController=[[ReportViewController alloc] initWithNibName:@"ReportViewController" bundle:nil];
+//                    [self.navigationController pushViewController:uploadview animated:YES];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        case 2:     //关于
+        {
+            
+            switch (row) {
+                case 0:
+                    //版本
+                    //                    self.tempCount++;
+                    //                    if (self.tempCount>=6) {
+                    //                        self.tempCount=0;
+                    //                        if ([YNFunctions isOpenHideFeature]) {
+                    //                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                    //                                                                                message:@"是否关闭隐藏功能？"
+                    //                                                                               delegate:self
+                    //                                                                      cancelButtonTitle:@"取消"
+                    //                                                                      otherButtonTitles:@"确定", nil];
+                    //                            alertView.tag=kAlertTypeHideFeature;
+                    //                            [alertView show];
+                    //                            [alertView release];
+                    //                        }else
+                    //                        {
+                    //                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                    //                                                                                message:@"是否打开隐藏功能？"
+                    //                                                                               delegate:self
+                    //                                                                      cancelButtonTitle:@"取消"
+                    //                                                                      otherButtonTitles:@"确定", nil];
+                    //                            alertView.tag=kAlertTypeHideFeature;
+                    //                            [alertView show];
+                    //                            [alertView release];
+                    //                        }
+                    //
+                    //                    }
+                    break;
+                case 1:
+                    //评分
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                    break;
+                case 2:
+                    //意见反馈
+                    [self checkUpdate];
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        case 3:
+            break;
+        default:
+            break;
+    }
+}
+#pragma mark - UIAlertViewDelegate Methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (alertView.tag) {
+        case kAlertTypeNewVersion:
+            if (buttonIndex == 1) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+            }
+            break;
+        default:
+            break;
+    }
+    
+}
+
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -560,8 +700,31 @@ typedef enum{
             }
             break;
         case kActionSheetTypeClear:
+            if (buttonIndex==0) {
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getFMCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getIconCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
+                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
+                [self calcCacheSize];
+                [self.tableView reloadData];
+            }
             break;
         case kActionSheetTypeWiFi:
+            if (buttonIndex==0) {
+                [YNFunctions setIsOnlyWifi:NO];
+            }
+            else
+            {
+                [YNFunctions setIsOnlyWifi:YES];
+            }
+            
+//            if([self isConnection] && [YNFunctions isAutoUpload])
+//            {
+//                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//                [appleDate.autoUpload start];
+//            }
+            [self.tableView reloadData];
             break;
         case kActionSheetTypeAuto:
             break;
@@ -572,5 +735,93 @@ typedef enum{
     }
     
 }
+#pragma mark - SCBAccountManagerDelegate
+-(void)getUserInfoSucceed:(NSDictionary *)datadic
+{
+    if (!datadic) {
+        return;
+    }
+    self.nickname=[datadic objectForKey:@"usrturename"];
+    self.space_total=[NSString stringWithFormat:@"%d",[[datadic objectForKey:@"usrtotalsize"] intValue]];
+    self.space_total=[YNFunctions convertSize:self.space_total];
+    self.space_used=[NSString stringWithFormat:@"%d",[[datadic objectForKey:@"usrusedsize"] intValue]];
+    self.space_used=[YNFunctions convertSize:self.space_used];
+    [self.tableView reloadData];
+//    self.dataDic=datadic;
+//    if (self.dataDic) {
+//        self.listArray=(NSArray *)[self.dataDic objectForKey:@"userList"];
+//        if (self.listArray) {
+//            NSMutableArray *a=[NSMutableArray array];
+//            for (int i=0; i<self.listArray.count; i++) {
+//                FileItem *fileItem=[[FileItem alloc]init];
+//                [a addObject:fileItem];
+//                [fileItem setChecked:NO];
+//            }
+//            self.userItems=a;
+//            [self.tableView reloadData];
+//        }
+//        NSString *dataFilePath=[YNFunctions getDataCachePath];
+//        dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:@"UserList"]];
+//        NSError *jsonParsingError=nil;
+//        NSData *data=[NSJSONSerialization dataWithJSONObject:self.dataDic options:0 error:&jsonParsingError];
+//        BOOL isWrite=[data writeToFile:dataFilePath atomically:YES];
+//        if (isWrite) {
+//            NSLog(@"写入文件成功：%@",dataFilePath);
+//        }else
+//        {
+//            NSLog(@"写入文件失败：%@",dataFilePath);
+//        }
+//    }else
+//    {
+//        [self updateList];
+//    }
+}
+-(void)getUserInfoFail
+{
+    
+}
+-(void)checkVersionSucceed:(NSDictionary *)datadic
+{
+    int code=-1;
+    code=[[datadic objectForKey:@"code"] intValue];
+    if (code==0) {
+        NSLog(@"有新版本");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                                message:@"检测到有新版本，是否更新？"
+                                                                               delegate:self
+                                                                      cancelButtonTitle:@"取消"
+                                                                      otherButtonTitles:@"更新", nil];
+                            alertView.tag=kAlertTypeNewVersion;
+                            [alertView show];
 
+    }else if(code==1)
+    {
+        NSLog(@"失败，服务端异常");
+        
+    }else if(code==2)
+    {
+        NSLog(@"无新版本");
+        [self.hud show:NO];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"当前版本为最新版本";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+
+    }else
+    {
+        NSLog(@"失败，服务端发生未知错误");
+    }
+}
+-(void)checkVersionFail
+{
+    
+}
 @end

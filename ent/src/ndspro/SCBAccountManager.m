@@ -19,6 +19,34 @@ static SCBAccountManager *_sharedAccountManager;
     }
     return _sharedAccountManager;
 }
+-(void)getUserInfo
+{
+    self.activeData=[NSMutableData data];
+    self.type=kUserGetInfo;
+    NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,USER_INFO_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
+-(void)checkNewVersion:(NSString *)version
+{
+    self.activeData=[NSMutableData data];
+    self.type=kUserCheckVersion;
+    NSURL *s_url= [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,VERSION_CHECK_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"version=%@&type=%@",version,CLIENT_TAG];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    //[request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
 -(void)currentProfile
 {
     self.activeData=[NSMutableData data];
@@ -174,9 +202,21 @@ static SCBAccountManager *_sharedAccountManager;
         NSLog(@"%@",dic);
     }
     switch (self.type) {
+        case kUserCheckVersion:
+                [self.delegate checkVersionSucceed:dic];
+            break;
+        case kUserGetInfo:
+            if ([[dic objectForKey:@"code"] intValue]==0) {
+                NSLog(@"获取用户信息成功:\n%@",dic);
+                [self.delegate getUserInfoSucceed:dic];
+            }else
+            {
+                [self.delegate getUserInfoFail];
+            }
+            break;
         case kUserGetList:
              if ([[dic objectForKey:@"code"] intValue]==0) {
-                 NSLog(@"登录成功:\n%@",dic);
+                 NSLog(@"用户列表获取成功:\n%@",dic);
                  [self.delegate getUserListSucceed:dic];
              }else
              {

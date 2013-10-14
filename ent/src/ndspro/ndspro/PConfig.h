@@ -8,7 +8,7 @@
 
 #ifndef NetDisk_PConfig_h
 #define NetDisk_PConfig_h
-#define VERSION @"V1.0"
+#define VERSION @"0.9"
 
 
 #endif
