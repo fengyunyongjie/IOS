@@ -623,7 +623,7 @@
 //        return;
 //    }
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self uploadFiles:list.t_lenght sudu:0];
+        [self uploadFiles:list.t_lenght sudu:list.sudu];
         connection = nil;
         [NSThread detachNewThreadSelector:@selector(comeBackNewTheadMian:) toTarget:self withObject:dictionary];
     });
@@ -646,10 +646,6 @@
 //        [self updateNetWork];
 //        return;
 //    }
-    if(sudu<0)
-    {
-        sudu = -sudu;
-    }
     [delegate upProess:proress fileTag:sudu];
 }
 

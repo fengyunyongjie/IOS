@@ -13,10 +13,12 @@
 #define CONNECT_TIMEOUT 15
 #define RESPONSE_TIMEOUT 10
 //商业版URL
-//#define SERVER_URL @"http://b.7cbox.cn/biz/ent"
-//#define SERVER_URL @"http://192.168.1.55:8080/biz/ent"
-#define SERVER_URL @"http://192.168.1.9/biz/ent"
 #define HOST_URL @"http://192.168.1.9/"
+//#define HOST_URL @"http://b.7cbox.cn/"
+//#define HOST_URL @"http://192.168.1.55:8080/"
+#define SERVER_URL [NSString stringWithFormat:@"%@%@",HOST_URL,@"biz/ent"]
+
+
 #pragma mark - 1.子帐号
 //子账号登录/ent/user/login
 #define USER_LOGIN_URI @"/user/login"
@@ -41,6 +43,8 @@
 #define USER_LIST_URI @"/user/lists"
 //获取个人信息/usr/profile
 #define USER_PROFILE_URI @"/usr/profile"
+//子账号详情/ent/user/info
+#define USER_INFO_URI @"/user/Info"
 
 #pragma mark - 2.好友管理
 //获取群组列表/friendships/groups
@@ -169,6 +173,8 @@
 #define FM_TIMELINE @"/fm/timeline"
 // 根据表达式获取图片信息 /fm/timeImage
 #define FM_TIMEIMAGE @"/fm/timeImage"
+//客户端版本校验/ent/version/check(检查更新)
+#define VERSION_CHECK_URI @"/version/check"
 
 #pragma mark - 获取用户的所有的拍摄信息
 #define PHOTO_ALL  @"/photo/all"

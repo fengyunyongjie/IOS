@@ -33,12 +33,12 @@
         self.jinDuView = [[CustomJinDu alloc] initWithFrame:progress_rect];
         [self addSubview:self.jinDuView];
         
-        CGRect sizeRect = CGRectMake(200, 6, 100, 15);
+        CGRect sizeRect = CGRectMake(220, 6, 70, 15);
         self.size_label = [[UILabel alloc] initWithFrame:sizeRect];
         [self.size_label setTextColor:[UIColor blackColor]];
         [self.size_label setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:self.size_label];
-        CGRect suduRect = CGRectMake(200, 22, 100, 15);
+        CGRect suduRect = CGRectMake(220, 22, 70, 15);
         self.sudu_label = [[UILabel alloc] initWithFrame:suduRect];
         [self.sudu_label setTextColor:[UIColor colorWithRed:0.0/255.0 green:160.0/255.0 blue:230.0/255.0 alpha:1]];
         [self.sudu_label setFont:[UIFont systemFontOfSize:14]];
@@ -89,7 +89,7 @@
 -(void)setUploadDemo:(UpLoadList *)list
 {
     upload_list = list;
-    [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.t_lenght]]];
+    [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",(int)list.t_lenght]]];
     [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
     if(list.sudu==-1)
     {
@@ -168,7 +168,7 @@
 
 -(void)setDownDemo:(DownList *)list
 {
-    [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.d_downSize]]];
+    [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",(int)list.d_downSize]]];
     [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
     if(list.sudu==-1)
     {

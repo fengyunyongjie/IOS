@@ -173,7 +173,11 @@
     {
         UpLoadList *list = [uploadArray objectAtIndex:0];
         list.upload_size = proress;
-        list.sudu = sudu;
+        if(sudu<0)
+        {
+            sudu = 0-sudu;
+        }
+        list.sudu = (int)sudu;
         float f = (float)list.upload_size / (float)list.t_lenght;
         NSLog(@"上传进度:%f",f);
         [self updateTable];

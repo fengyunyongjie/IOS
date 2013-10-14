@@ -29,6 +29,8 @@
 
 - (void)startDownload
 {
+    downsize = 0;
+    endSudu = 0;
     NSString *path = [self get_image_save_file_path:file_id];
     //查询本地是否已经有该图片
     BOOL bl = [self image_exists_at_file_path:path];
@@ -99,7 +101,8 @@
     {
         return;
     }
-    [delegate downFile:downsize totalSize:endSecond-[data length]];
+    [delegate downFile:downsize totalSize:downsize-endSudu];
+    endSudu = downsize;
     macTimeOut += 10;
     NSMutableURLRequest *request = (NSMutableURLRequest *)[connection currentRequest];
     [request setTimeoutInterval:macTimeOut];

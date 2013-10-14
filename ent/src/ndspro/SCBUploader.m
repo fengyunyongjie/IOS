@@ -68,6 +68,8 @@
 //上传
 -(NSURLConnection *)requestUploadFile:(NSString *)s_name skip:(NSString *)skip Image:(NSData *)image
 {
+    currSize = 0;
+    endSudu = 0;
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
@@ -117,6 +119,7 @@
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 {
+    currSize += bytesWritten;
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDate *todayDate = [NSDate date];
     NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
@@ -131,14 +134,13 @@
     if([url_string isEqualToString:FM_UPLOAD_NEW])
     {
         NSLog(@"+30");
-        macTimeOut += 30;
+        macTimeOut += 10;
         NSMutableURLRequest *request = (NSMutableURLRequest *)[connection currentRequest];
         [request setTimeoutInterval:macTimeOut];
-        currSize += bytesWritten;
         if(upLoadDelegate)
         {
-            [upLoadDelegate uploadFiles:currSize sudu:bytesWritten-endSudu];
-            endSudu = bytesWritten;
+            [upLoadDelegate uploadFiles:currSize sudu:currSize-endSudu];
+            endSudu = currSize;
         }
         else
         {

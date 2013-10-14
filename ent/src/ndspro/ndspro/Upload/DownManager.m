@@ -144,7 +144,11 @@
     {
         DownList *down = (DownList *)[downingArray objectAtIndex:0];
         down.curr_size = downSize;
-        down.sudu = sudu;
+        if(sudu<0)
+        {
+            sudu = 0-sudu;
+        }
+        down.sudu = (int)sudu;
     }
     [self updateTable];
 }
