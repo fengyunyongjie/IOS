@@ -10,7 +10,7 @@
 #import "NSString+Format.h"
 
 @implementation DownList
-@synthesize d_baseUrl,d_datetime,d_downSize,d_id,d_name,d_state,d_webUrl,d_ure_id;
+@synthesize d_thumbUrl,d_baseUrl,d_datetime,d_downSize,d_id,d_name,d_state,d_file_id,d_ure_id,curr_size,sudu;
 
 //添加数据
 -(BOOL)insertDownList
@@ -26,15 +26,17 @@
         }
         sqlite3_bind_text(statement, 1, [d_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 2, d_state);
-        sqlite3_bind_text(statement, 3, [d_baseUrl UTF8String], -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(statement, 4, [d_webUrl UTF8String], -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int(statement, 5, d_downSize);
-        sqlite3_bind_text(statement, 6, [d_datetime UTF8String], -1, SQLITE_TRANSIENT);
-        sqlite3_bind_text(statement, 7, [d_ure_id UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 3, [d_thumbUrl UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 4, [d_baseUrl UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 5, [d_file_id UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(statement, 6, d_downSize);
+        sqlite3_bind_text(statement, 7, [d_datetime UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 8, [d_ure_id UTF8String], -1, SQLITE_TRANSIENT);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR || success != 101) {
             bl = FALSE;
         }
+        
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
@@ -150,7 +152,7 @@
         
         sqlite3_bind_text(statement, 2, [d_baseUrl UTF8String], -1, SQLITE_TRANSIENT);
         
-        sqlite3_bind_text(statement, 3, [d_webUrl UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(statement, 3, [d_file_id UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 4, d_downSize);
         sqlite3_bind_text(statement, 5, [d_datetime UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 6, d_id);
@@ -182,11 +184,12 @@
             list.d_id = sqlite3_column_int(statement, 0);
             list.d_name = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 1)];
             list.d_state = sqlite3_column_int(statement, 2);
-            list.d_baseUrl = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 3)];
-            list.d_webUrl = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 4)];
-            list.d_downSize = sqlite3_column_int(statement, 5);;
-            list.d_datetime = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 6)];
-            list.d_ure_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 7)];
+            list.d_thumbUrl = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 3)];
+            list.d_baseUrl = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 4)];
+            list.d_file_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 5)];
+            list.d_downSize = sqlite3_column_int(statement, 6);;
+            list.d_datetime = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 7)];
+            list.d_ure_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 8)];
             [tableArray addObject:list];
         }
         sqlite3_finalize(statement);
@@ -211,11 +214,12 @@
             list.d_id = sqlite3_column_int(statement, 0);
             list.d_name = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 1)];
             list.d_state = sqlite3_column_int(statement, 2);
-            list.d_baseUrl = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 3)];
-            list.d_webUrl = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 4)];
-            list.d_downSize = sqlite3_column_int(statement, 5);;
-            list.d_datetime = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 6)];
-            list.d_ure_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 7)];
+            list.d_thumbUrl = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 3)];
+            list.d_baseUrl = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 4)];
+            list.d_file_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 5)];
+            list.d_downSize = sqlite3_column_int(statement, 6);;
+            list.d_datetime = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 7)];
+            list.d_ure_id = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 8)];
             [tableArray addObject:list];
         }
         sqlite3_finalize(statement);

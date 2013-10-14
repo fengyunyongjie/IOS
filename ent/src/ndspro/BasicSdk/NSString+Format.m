@@ -26,6 +26,10 @@
 
 +(NSString *)formatNSStringForOjbect:(NSObject *)object
 {
+    if([object isEqual:@"<null>"] || [object isEqual:@"<NULL>"] )
+    {
+        object = @"";
+    }
     NSString *string = [NSString stringWithFormat:@"%@",object];
     return string;
 }

@@ -13,12 +13,10 @@
 #define CONNECT_TIMEOUT 15
 #define RESPONSE_TIMEOUT 10
 //商业版URL
+//#define SERVER_URL @"http://b.7cbox.cn/biz/ent"
+//#define SERVER_URL @"http://192.168.1.55:8080/biz/ent"
+#define SERVER_URL @"http://192.168.1.9/biz/ent"
 #define HOST_URL @"http://192.168.1.9/"
-//#define HOST_URL @"http://b.7cbox.cn/"
-//#define HOST_URL @"http://192.168.1.55:8080/"
-#define SERVER_URL [NSString stringWithFormat:@"%@%@",HOST_URL,@"biz/ent"]
-
-
 #pragma mark - 1.子帐号
 //子账号登录/ent/user/login
 #define USER_LOGIN_URI @"/user/login"
@@ -43,8 +41,6 @@
 #define USER_LIST_URI @"/user/lists"
 //获取个人信息/usr/profile
 #define USER_PROFILE_URI @"/usr/profile"
-//子账号详情/ent/user/info
-#define USER_INFO_URI @"/user/Info"
 
 #pragma mark - 2.好友管理
 //获取群组列表/friendships/groups
@@ -100,6 +96,8 @@
 //打开网盘  文件列表/ent/file/list
 //#define FM_URI @"/fm"
 #define FM_URI @"/file/list"
+//单个文件请求 /ent/file/info
+#define FM_INFO @"/file/info"
 //新建
 #define FM_MKDIR_URI @"/file/mkdir"
 //移除/fm/rm
@@ -115,7 +113,7 @@
 //转存文件==复制粘贴 /fm/copypaste
 #define FM_COPYPASTE @"/fm/copypaste"
 //文件下载
-#define FM_DOWNLOAD_URI @"/fm/download"
+#define FM_DOWNLOAD_URI @"/file/download"
 #define FM_DOWNLOAD_NEW_URI @"/fm/download/new"
 //搜索/fm/search
 #define FM_SEARCH_URI @"/fm/search"
@@ -171,9 +169,6 @@
 #define FM_TIMELINE @"/fm/timeline"
 // 根据表达式获取图片信息 /fm/timeImage
 #define FM_TIMEIMAGE @"/fm/timeImage"
-//客户端版本校验/ent/version/check(检查更新)
-#define VERSION_CHECK_URI @"/version/check"
-
 
 #pragma mark - 获取用户的所有的拍摄信息
 #define PHOTO_ALL  @"/photo/all"
@@ -193,12 +188,12 @@
 #define FM_UPLOAD @"/fm/upload"
 //申请传输文件
 #define FM_UPLOAD_STATE @"/fm/upload/state"
-//新上传效验
-#define FM_UPLOAD_NEW_VERIFY @"/fm/upload/new/verify"
-//新上传
-#define FM_UPLOAD_NEW @"/fm/upload/new"
-//新上传提交
-#define FM_UPLOAD_NEW_COMMIT @"/fm/upload/new/commit"
+//新上传效验 /ent /file/upload/new/verify
+#define FM_UPLOAD_NEW_VERIFY @"/file/upload/new/verify"
+//新上传  /ent /file/upload/put
+#define FM_UPLOAD_NEW @"/file/upload/put"
+//新上传提交 /ent /file/upload/commit
+#define FM_UPLOAD_NEW_COMMIT @"/file/upload/commit"
 #pragma mark - 7.分享链接
 //发布公开外链
 #define LINK_RELEASE_PUB_URI @"/link/release_pub"

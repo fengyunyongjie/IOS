@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UploadFile.h"
 
-@interface UploadManager : NSObject
+@interface UploadManager : NSObject<NewUploadDelegate>
 
 @property(nonatomic,retain) NSMutableArray *uploadArray;
 @property(nonatomic,assign) BOOL isStopCurrUpload;

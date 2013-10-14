@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QBImagePickerController.h"
+
 typedef enum {
     kMyndsTypeDefault,
     kMyndsTypeSelect,
@@ -18,7 +20,7 @@ typedef enum {
     kMyndsTypeMyShareSearch,
     kMyndsTypeShareSearch,
 } FileListType;
-@interface FileListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface FileListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate>
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSArray *finderArray;

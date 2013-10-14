@@ -14,9 +14,14 @@
 #import "DDTTYLogger.h"
 
 @implementation AppDelegate
+@synthesize downmange,myTabBarVC,loginVC,uploadmanage;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //初始化数据
+    downmange = [[DownManager alloc] init];
+    uploadmanage = [[UploadManager alloc] init];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
@@ -37,6 +42,7 @@
     //给程序添加日志
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    
     return YES;
 }
 -(BOOL)isLogin

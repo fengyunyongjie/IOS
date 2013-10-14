@@ -18,7 +18,7 @@
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
-#define BottonViewHeight self.view.frame.size.height-TabBarHeight+QBY
+#define BottonViewHeight self.view.frame.size.height-TabBarHeight
 
 
 #import "QBAssetCollectionViewController.h"
@@ -206,8 +206,7 @@
 {
     NSLog(@"clicked_changeMyFile count:%i",[self.selectedAssets count]);
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
-    qbImage_fileView.f_id = @"1";
-    //qbImage_fileView.f_name = @"我的文件";
+    qbImage_fileView.f_id = @"0";
     qbImage_fileView.f_name=@"选择上传位置";
     qbImage_fileView.space_id = space_id;
     [qbImage_fileView setQbDelegate:self];
@@ -224,18 +223,7 @@
     
     NSLog(@"device_name--------:%@",device_name);
     
-    if([self.navigationController.viewControllers count]>3)
-    {
-        UIViewController *delailview = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
-        if(delailview)
-        {
-            [self.navigationController popToViewController:delailview animated:YES];
-        }
-    }
-    else
-    {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 -(void)newFold:(NSDictionary *)dictionary
@@ -277,6 +265,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationController setNavigationBarHidden:YES];
     if([device_name length]>0)
     {
         [change_myFile_button setTitle:device_name forState:UIControlStateNormal];
@@ -305,8 +294,6 @@
         NSInteger numberOfRows = [self.tableView numberOfRowsInSection:2];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:(numberOfRows - 1) inSection:2];
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        
-        [self.navigationController setNavigationBarHidden:YES];
     }
 }
 

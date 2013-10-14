@@ -32,7 +32,6 @@
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     [request setHTTPBody:myRequestData];
     [request setHTTPMethod:@"POST"];
-    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
@@ -67,16 +66,16 @@
 }
 
 //上传
--(NSURLConnection *)requestUploadFile:(NSString *)f_pid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip f_md5:(NSString *)f_md5 Image:(NSData *)image
+-(NSURLConnection *)requestUploadFile:(NSString *)s_name skip:(NSString *)skip Image:(NSData *)image
 {
     self.matableData = [NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     macTimeOut = CONNECT_TIMEOUT;
     url_string = FM_UPLOAD_NEW;
-    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+//    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+//    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+//    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setValue:s_name forHTTPHeaderField:@"s_name"];
     [request setValue:[NSString stringWithFormat:@"bytes=0-%@",skip] forHTTPHeaderField:@"Range"];
     [request setHTTPBody:image];
@@ -118,6 +117,17 @@
 
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 {
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDate *todayDate = [NSDate date];
+    NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
+    if(endSecond==todayComponent.second)
+    {
+        return;
+    }
+    endSecond = todayComponent.second;
+    
+    
+    
     if([url_string isEqualToString:FM_UPLOAD_NEW])
     {
         NSLog(@"+30");
@@ -127,7 +137,8 @@
         currSize += bytesWritten;
         if(upLoadDelegate)
         {
-            [upLoadDelegate uploadFiles:currSize];
+            [upLoadDelegate uploadFiles:currSize sudu:bytesWritten-endSudu];
+            endSudu = bytesWritten;
         }
         else
         {

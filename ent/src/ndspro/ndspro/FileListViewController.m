@@ -14,6 +14,8 @@
 #import "SelectFileListViewController.h"
 #import "MainViewController.h"
 #import "SendEmailViewController.h"
+#import "DownManager.h"
+#import "AppDelegate.h"
 
 typedef enum{
     kAlertTagDeleteOne,
@@ -165,7 +167,23 @@ typedef enum{
 -(void)uploadAction:(id)sender
 {
     [self hideMenu];
+    QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
+    imagePickerController.delegate = self;
+    imagePickerController.allowsMultipleSelection = YES;
+    imagePickerController.f_id  = @"1";
+    imagePickerController.space_id = self.spid;
+    [imagePickerController requestFileDetail];
+    UINavigationController *navigation=[[UINavigationController alloc] initWithRootViewController:imagePickerController];
+    [navigation setNavigationBarHidden:YES];
+    [self presentModalViewController:navigation animated:YES];
 }
+
+-(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
+{
+    AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    [delegate.uploadmanage changeUpload:array_ changeDeviceName:device_name changeFileId:f_id changeSpaceId:s_id];
+}
+
 -(void)newFinder:(id)sender
 {
     [self hideMenu];
@@ -424,6 +442,35 @@ typedef enum{
 -(void)toDownload:(id)sender
 {
     NSLog(@"下载");
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+    BOOL isDir = [[dic objectForKey:@"fisdir"] boolValue];
+    if(!isDir)
+    {
+        if (self.hud)
+        {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"不能下载文件夹";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
+    NSString *file_id = [NSString formatNSStringForOjbect:[dic objectForKey:@"fid"]];
+    NSString *thumb = [NSString formatNSStringForOjbect:[dic objectForKey:@"fthumb"]];
+    if([thumb length]==0)
+    {
+        thumb = @"0";
+    }
+    NSString *name = [NSString formatNSStringForOjbect:[dic objectForKey:@"fname"]];
+    NSInteger fsize = [[dic objectForKey:@"fsize"] integerValue];
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [delegate.downmange addDownList:name thumbName:thumb d_fileId:file_id d_downSize:fsize];
 }
 -(void)commitFileToID:(NSString *)f_id sID:(NSString *)s_pid
 {
@@ -1237,6 +1284,7 @@ typedef enum{
                 [self toDelete:nil];
             }else if(buttonIndex == 3) {
                 NSLog(@"下载");
+                [self toDownload:nil];
             }else if(buttonIndex == 4) {
                 NSLog(@"发送");
                 [self toSend:nil];

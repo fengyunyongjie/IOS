@@ -55,7 +55,7 @@
     [super layoutSubviews];
     
     CGFloat height = self.contentView.bounds.size.height;
-    CGFloat imageViewSize = height - 1;
+    CGFloat imageViewSize = height + 10;
     CGFloat width = self.contentView.bounds.size.width - 20;
     
     CGSize titleTextSize = [self.titleLabel.text sizeWithFont:self.titleLabel.font forWidth:width lineBreakMode:NSLineBreakByTruncatingTail];

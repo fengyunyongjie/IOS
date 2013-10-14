@@ -7,12 +7,12 @@
 //
 
 //#define TabBarHeight 60
-#define QBY 0
+#define QBY 20
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
 #define ChangeTabWidth 120
 #define RightButtonBoderWidth 0
 //#define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
-#define BottonViewHeight self.view.frame.size.height-TabBarHeight+QBY
+#define BottonViewHeight self.view.frame.size.height-TabBarHeight
 
 #import "QBImageFileViewController.h"
 #import "FileItemTableCell.h"
@@ -32,6 +32,7 @@
 @synthesize f_id;
 @synthesize isChangeMove;
 @synthesize space_id;
+@synthesize fileManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,7 +57,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 //    if(app_delegate.myTabBarController.selectedIndex==0)
 //    {
 //        space_id = [[SCBSession sharedSession] spaceID];
@@ -152,11 +153,14 @@
     [self.view addSubview:table_view];
     
     //请求所有的数据文件
+    fileManager = [[SCBFileManager alloc] init];
+    [fileManager openFinderWithID:self.f_id sID:self.space_id];
+    [fileManager setDelegate:self];
 }
 
 -(void)clicked_back
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 -(void)clicked_uploadState:(id)sender
@@ -232,8 +236,8 @@
     }
     if ([self.fileArray count]>0) {
         NSDictionary *this=(NSDictionary *)[self.fileArray objectAtIndex:indexPath.row];
-        NSString *name= [this objectForKey:@"f_name"];
-        NSString *f_modify=[this objectForKey:@"f_modify"];
+        NSString *name= [this objectForKey:@"fname"];
+        NSString *f_modify=[this objectForKey:@"fmodify"];
         cell.textLabel.text=name;
         cell.detailTextLabel.text=f_modify;
         cell.imageView.image = [UIImage imageNamed:@"Ico_FolderF.png"];
@@ -252,8 +256,9 @@
         
         QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
         NSDictionary *this=(NSDictionary *)[self.fileArray objectAtIndex:indexPath.row];
-        qbImage_fileView.f_id = [this objectForKey:@"f_id"];
-        qbImage_fileView.f_name = [this objectForKey:@"f_name"];
+        qbImage_fileView.f_id = [this objectForKey:@"fid"];
+        qbImage_fileView.f_name = [this objectForKey:@"fname"];
+        qbImage_fileView.space_id = self.space_id;
         [qbImage_fileView setQbDelegate:self];
         [self.navigationController pushViewController:qbImage_fileView animated:YES];
     });
@@ -274,6 +279,45 @@
 {
     [self.qbDelegate uploadFiledId:f_id_];
 }
+
+
+#pragma mark 打开文件
+
+-(void)authorMenusSuccess:(NSData*)data{}
+-(void)searchSucess:(NSDictionary *)datadic{}
+-(void)operateSucess:(NSDictionary *)datadic{}
+-(void)openFinderSucess:(NSDictionary *)datadic
+{
+    DDLogCInfo(@"打开文件：%@",datadic);
+    if(self.fileArray)
+    {
+        [self.fileArray removeAllObjects];
+    }
+    else
+    {
+        self.fileArray = [[NSMutableArray alloc] init];
+    }
+    for(NSDictionary *diction in [datadic objectForKey:@"files"])
+    {
+        BOOL isDir = [[diction objectForKey:@"fisdir"] boolValue];
+        if(!isDir)
+        {
+            [self.fileArray addObject:diction];
+        }
+    }
+    [table_view reloadData];
+}
+//打开家庭成员
+-(void)getOpenFamily:(NSDictionary *)dictionary{}
+-(void)openFinderUnsucess{}
+-(void)removeSucess{}
+-(void)removeUnsucess{}
+-(void)renameSucess{}
+-(void)renameUnsucess{}
+-(void)moveSucess{}
+-(void)moveUnsucess{}
+-(void)newFinderSucess{}
+-(void)newFinderUnsucess{}
 
 @end
 

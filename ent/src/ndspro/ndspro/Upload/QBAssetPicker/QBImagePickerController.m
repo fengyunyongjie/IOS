@@ -13,7 +13,7 @@
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
-#define BottonViewHeight self.view.frame.size.height-TabBarHeight+QBY
+#define BottonViewHeight self.view.frame.size.height-TabBarHeight
 
 #import "QBImagePickerController.h"
 #import "QBImagePickerGroupCell.h"
@@ -113,9 +113,6 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    [self.navigationController setNavigationBarHidden:YES];
-    
     void (^assetsGroupsEnumerationBlock)(ALAssetsGroup *, BOOL *) = ^(ALAssetsGroup *assetsGroup, BOOL *stop) {
         if (assetsGroup) {
             switch(self.filterType) {
@@ -206,7 +203,7 @@
     [self.view addSubview:topView];
     
     //添加底部视图
-    NSLog(@"BottonViewHeight:%f",BottonViewHeight);
+    DDLogCInfo(@"BottonViewHeight:%f",BottonViewHeight);
     bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, BottonViewHeight, 320, 60)];
     UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
     [botton_image setImage:[UIImage imageNamed:@"Bk_Nav.png"]];
@@ -223,7 +220,7 @@
     [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
     [upload_back_button addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
     [bottonView addSubview:upload_back_button];
-    
+
     [self.view addSubview:bottonView];
 }
 
@@ -243,10 +240,7 @@
 
 -(void)clicked_back
 {
-//    [self dismissModalViewControllerAnimated:YES];
-    [self.navigationController setNavigationBarHidden:YES];
-    [self.navigationController popViewControllerAnimated:YES];
-    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 -(void)clicked_more:(id)sender
@@ -265,8 +259,7 @@
 
 -(void)clicked_uploadStop:(id)sender
 {
-//    [self dismissModalViewControllerAnimated:YES];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 //    [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }

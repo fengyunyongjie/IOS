@@ -27,5 +27,6 @@
 - (id)initWithFrame:(CGRect)frame leftText:(NSString *)left_title rightText:(NSString *)right_title isShowLeft:(BOOL)bl;
 //是否显示左边视图
 -(void)showLeftWithIsSelected:(BOOL)bl;
+-(void)updateCount:(NSString *)upload_count downCount:(NSString *)down_count;
 
 @end

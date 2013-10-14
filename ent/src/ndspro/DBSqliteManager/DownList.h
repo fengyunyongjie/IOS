@@ -8,26 +8,29 @@
 
 #import "DBSqlite3.h"
 
-#define InsertDownList @"INSERT INTO DownList(d_name,d_state,d_baseUrl,d_webUrl,d_downSize,d_datetime,d_ure_id) VALUES (?,?,?,?,?,?,?)"
+#define InsertDownList @"INSERT INTO DownList(d_name,d_state,d_thumbUrl,d_baseUrl,d_file_id,d_downSize,d_datetime,d_ure_id) VALUES (?,?,?,?,?,?,?,?)"
 #define DeleteDownList @"DELETE FROM DownList WHERE d_id=? and d_ure_id=?"
 #define DeleteDowningAll @"DELETE FROM DownList WHERE d_state<>1 and d_ure_id=?"
 #define DeleteDownedAll @"DELETE FROM DownList WHERE d_state=1 and d_ure_id=?"
 #define SelectDownListIsHaveName @"SELECT * FROM DownList WHERE d_name=? and d_ure_id=? and d_state=?"
-#define UpdateDownListForUserId @"UPDATE DownList SET d_state=?,d_baseUrl=?,d_webUrl=?,d_downSize=?,d_datetime=? WHERE d_id=? and d_ure_id=?"
+#define UpdateDownListForUserId @"UPDATE DownList SET d_state=?,d_baseUrl=?,d_file_id=?,d_downSize=?,d_datetime=? WHERE d_id=? and d_ure_id=?"
 
-#define SelectDowningAll @"SELECT * FROM DownList WHERE d_state=0 and d_state=2 and d_id>? and User_id=?"
-#define SelectDownedAll @"SELECT * FROM DownList WHERE d_state=1 and d_id>? and User_id=?"
+#define SelectDowningAll @"SELECT * FROM DownList WHERE d_state<>1 and d_id>? and d_ure_id=?"
+#define SelectDownedAll @"SELECT * FROM DownList WHERE d_state=1 and d_id>? and d_ure_id=?"
 
 @interface DownList : DBSqlite3
 
 @property(assign,nonatomic) NSInteger d_id;
 @property(strong,nonatomic) NSString *d_name;
 @property(assign,nonatomic) NSInteger d_state;
+@property(strong,nonatomic) NSString *d_thumbUrl;
 @property(strong,nonatomic) NSString *d_baseUrl;
-@property(strong,nonatomic) NSString *d_webUrl;
+@property(strong,nonatomic) NSString *d_file_id;
 @property(assign,nonatomic) NSInteger d_downSize;
 @property(strong,nonatomic) NSString *d_datetime;
 @property(strong,nonatomic) NSString *d_ure_id;
+@property(assign,nonatomic) NSInteger curr_size;
+@property(nonatomic,assign) NSInteger sudu;
 
 //添加数据
 -(BOOL)insertDownList;

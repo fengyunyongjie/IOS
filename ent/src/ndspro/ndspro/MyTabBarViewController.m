@@ -49,6 +49,7 @@
     //[vc1.tabBarItem setImage:[UIImage imageNamed: @"nav_selected.png"]];
     UINavigationController *vc2=[[UINavigationController alloc] init];
     UpDownloadViewController *vc22=[[UpDownloadViewController alloc] init];
+    vc22.title=@"文件传输";
     [vc2 pushViewController:vc22 animated:YES];
     vc2.title=@"文件传输";
     //vc2.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts tag:0];

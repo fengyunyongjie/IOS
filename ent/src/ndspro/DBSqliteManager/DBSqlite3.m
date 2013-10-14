@@ -33,26 +33,26 @@
     /*根据路径创建数据库并创建一个表contact(id nametext addresstext phonetext)*/
     
     self.databasePath=[YNFunctions getDBCachePath];
-    self.databasePath=[self.databasePath stringByAppendingPathComponent:@"hongPan.sqlite"];
+    self.databasePath=[self.databasePath stringByAppendingPathComponent:@"hongPanShangYe.sqlite"];
     if (sqlite3_open([self.databasePath fileSystemRepresentation], &contactDB)==SQLITE_OK)
     {
         char *errMsg;
-//        if (sqlite3_exec(contactDB, [CreateTaskTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
-//            DDLogCError(@"errMsg:%s",errMsg);
-//        }
-//        if (sqlite3_exec(contactDB, (const char *)[CreatePhotoFileTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
-//            DDLogCError(@"errMsg:%s",errMsg);
-//        }
-//        if (sqlite3_exec(contactDB, (const char *)[CreateUserinfoTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
-//            DDLogCError(@"errMsg:%s",errMsg);
-//        }
-//        //新代码
-//        if (sqlite3_exec(contactDB, (const char *)[CreateUploadList UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
-//            DDLogCError(@"errMsg:%s",errMsg);
-//        }
-//        if (sqlite3_exec(contactDB, (const char *)[CreateAutoUploadList UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
-//            DDLogCError(@"errMsg:%s",errMsg);
-//        }
+        //        if (sqlite3_exec(contactDB, [CreateTaskTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+        //            DDLogCError(@"errMsg:%s",errMsg);
+        //        }
+        //        if (sqlite3_exec(contactDB, (const char *)[CreatePhotoFileTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+        //            DDLogCError(@"errMsg:%s",errMsg);
+        //        }
+        //        if (sqlite3_exec(contactDB, (const char *)[CreateUserinfoTable UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+        //            DDLogCError(@"errMsg:%s",errMsg);
+        //        }
+        //        //新代码
+        if (sqlite3_exec(contactDB, (const char *)[CreateUploadList UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+            DDLogCError(@"errMsg:%s",errMsg);
+        }
+        //        if (sqlite3_exec(contactDB, (const char *)[CreateAutoUploadList UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
+        //            DDLogCError(@"errMsg:%s",errMsg);
+        //        }
         //商业版新代码
         if (sqlite3_exec(contactDB, (const char *)[CreateDownList UTF8String], NULL, NULL, &errMsg)!=SQLITE_OK) {
             DDLogCError(@"errMsg:%s",errMsg);
@@ -95,8 +95,8 @@
 {
     BOOL bl = [self deleteUploadList:@"DELETE FROM PhotoFile"];
     NSLog(@"照片文件删除：%i",bl);
-//    bl = [self deleteUploadList:@"DELETE FROM UploadList"];
-//    NSLog(@"上传文件删除：%i",bl);
+    //    bl = [self deleteUploadList:@"DELETE FROM UploadList"];
+    //    NSLog(@"上传文件删除：%i",bl);
 }
 
 -(BOOL)deleteUploadList:(NSString *)sqlDelete

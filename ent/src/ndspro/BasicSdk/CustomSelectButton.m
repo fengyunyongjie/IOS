@@ -17,10 +17,9 @@
     if (self) {
         [self firstLoadAllView:frame];
         [self showLeftWithIsSelected:YES];
-        [self.left_button setTitle:@"上传" forState:UIControlStateNormal];
-        [self.right_button setTitle:@"下载" forState:UIControlStateNormal];
         [self.left_button addTarget:self action:@selector(left_click:) forControlEvents:UIControlEventTouchDown];
         [self.right_button addTarget:self action:@selector(right_click:) forControlEvents:UIControlEventTouchDown];
+        [self updateCount:left_title downCount:right_title];
     }
     return self;
 }
@@ -89,6 +88,11 @@
     [self showLeftWithIsSelected:YES];
 }
 
+-(void)updateCount:(NSString *)upload_count downCount:(NSString *)down_count
+{
+    [self.left_button setTitle:upload_count forState:UIControlStateNormal];
+    [self.right_button setTitle:down_count forState:UIControlStateNormal];
+}
 
 -(void)right_click:(id)sender
 {

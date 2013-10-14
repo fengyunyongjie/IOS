@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCBFileManager.h"
 
 @protocol QBImageFileViewDelegate <NSObject>
 
@@ -15,7 +16,7 @@
 
 @end
 
-@interface QBImageFileViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,QBImageFileViewDelegate>
+@interface QBImageFileViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,QBImageFileViewDelegate,SCBFileManagerDelegate>
 {
     UITableView *table_view;
     /*
@@ -30,6 +31,7 @@
     NSString *f_name;
     NSString *f_id;
     BOOL isChangeMove;
+    SCBFileManager *fileManager;
 }
 @property(nonatomic,retain) UITableView *table_view;
 @property(nonatomic,retain) NSMutableArray *fileArray;
@@ -38,6 +40,7 @@
 @property(nonatomic,retain) NSString *f_id;
 @property(nonatomic,assign) BOOL isChangeMove;
 @property(nonatomic,assign) NSString *space_id;
+@property(nonatomic,retain) SCBFileManager *fileManager;
 
 @end
 

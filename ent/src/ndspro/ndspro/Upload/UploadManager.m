@@ -13,6 +13,7 @@
 #import "SCBSession.h"
 #import "AppDelegate.h"
 #import "UpDownloadViewController.h"
+#import "MyTabBarViewController.h"
 
 @implementation UploadManager
 @synthesize uploadArray,isStopCurrUpload,isStart,isOpenedUpload;
@@ -34,9 +35,27 @@
 
 -(void)updateLoad
 {
-    if([uploadArray count]==0)
+    UpLoadList *list = [[UpLoadList alloc] init];
+    if([uploadArray count] == 0)
     {
-        [self selectUploadList];
+        list.t_id = 0;
+    }
+    else
+    {
+        list.t_id =  ((UpLoadList *)[uploadArray lastObject]).t_id;
+    }
+    list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
+    
+    [uploadArray addObjectsFromArray:[list selectMoveUploadListAllAndNotUpload]];
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+    UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+    if([uploadView isKindOfClass:[UpDownloadViewController class]])
+    {
+        if([uploadView.upLoading_array count] == 0)
+        {
+            [uploadView setUpLoading_array:uploadArray];
+        }
     }
 }
 
@@ -114,6 +133,10 @@
     if([uploadArray count]>0 && isStart)
     {
         isStopCurrUpload = NO;
+        UploadFile *newUpload = [[UploadFile alloc] init];
+        newUpload.list = [uploadArray objectAtIndex:0];
+        [newUpload setDelegate:self];
+        [newUpload startUpload];
     }
     if([uploadArray count]==0)
     {
@@ -144,12 +167,13 @@
 }
 
 //上传进行时，发送上传进度数据
--(void)upProess:(float)proress fileTag:(NSInteger)fileTag
+-(void)upProess:(float)proress fileTag:(NSInteger)sudu
 {
     if([uploadArray count]>0)
     {
         UpLoadList *list = [uploadArray objectAtIndex:0];
         list.upload_size = proress;
+        list.sudu = sudu;
         float f = (float)list.upload_size / (float)list.t_lenght;
         NSLog(@"上传进度:%f",f);
         [self updateTable];
@@ -235,7 +259,18 @@
 -(void)updateTable
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            if([uploadView.upLoading_array count] == 0)
+            {
+                [uploadView setUpLoading_array:uploadArray];
+            }
+            //更新UI
+            [uploadView isSelectedLeft:uploadView.isShowUpload];
+        }
     });
 }
 

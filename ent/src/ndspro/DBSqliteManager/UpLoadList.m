@@ -10,7 +10,7 @@
 #import "NSString+Format.h"
 
 @implementation UpLoadList
-@synthesize t_id,t_name,t_lenght,t_date,t_state,t_fileUrl,t_url_pid,t_url_name,t_file_type,user_id,file_id,upload_size,is_autoUpload,is_share,spaceId;
+@synthesize t_id,t_name,t_lenght,t_date,t_state,t_fileUrl,t_url_pid,t_url_name,t_file_type,user_id,file_id,upload_size,is_autoUpload,is_share,spaceId,sudu;
 
 -(BOOL)insertUploadList
 {
@@ -283,6 +283,7 @@
         const char *insert_stmt = [SelectUploadListAllAndUploaded UTF8String];
         sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
         sqlite3_bind_text(statement, 1, [user_id UTF8String], -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(statement, 2, t_id);
         while (sqlite3_step(statement)==SQLITE_ROW) {
             UpLoadList *uploadList = [[UpLoadList alloc] init];
             uploadList.t_id = sqlite3_column_int(statement, 0);
