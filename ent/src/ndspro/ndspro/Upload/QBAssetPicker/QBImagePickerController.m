@@ -7,9 +7,8 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-#define TabBarHeight 60
 #define QBY 20
+#define TabBarHeight 60
 #define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -204,7 +203,12 @@
     
     //添加底部视图
     DDLogCInfo(@"BottonViewHeight:%f",BottonViewHeight);
-    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, BottonViewHeight, 320, 60)];
+    float bottonHeigth = BottonViewHeight;
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        bottonHeigth = bottonHeigth+QBY;
+    }
+    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, bottonHeigth, 320, 60)];
     UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
     [botton_image setImage:[UIImage imageNamed:@"Bk_Nav.png"]];
     [bottonView addSubview:botton_image];

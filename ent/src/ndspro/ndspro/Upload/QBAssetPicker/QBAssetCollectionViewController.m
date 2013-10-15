@@ -11,15 +11,6 @@
 /*
     重新编写选择视图
  */
-#define TabBarHeight 88
-#define TabBarButtonHeight TabBarHeight-45
-#define QBY 20
-#define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
-#define ChangeTabWidth 90
-#define RightButtonBoderWidth 0
-#define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
-#define BottonViewHeight self.view.frame.size.height-TabBarHeight
-
 
 #import "QBAssetCollectionViewController.h"
 
@@ -28,6 +19,15 @@
 #import "QBImagePickerFooterView.h"
 #import "QBImageFileViewController.h"
 #import <QuartzCore/QuartzCore.h>
+
+#define QBY 20
+#define TabBarHeight 88
+#define TabBarButtonHeight TabBarHeight-45
+#define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
+#define ChangeTabWidth 90
+#define RightButtonBoderWidth 0
+#define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
+#define BottonViewHeight self.view.frame.size.height-TabBarHeight
 
 @interface QBAssetCollectionViewController ()
 
@@ -130,9 +130,12 @@
     
     
     //添加底部视图
-    NSLog(@"BottonViewHeight:%f",BottonViewHeight);
-    
-    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, BottonViewHeight, 320, TabBarHeight)];
+    float bottonHeigth = BottonViewHeight;
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        bottonHeigth = bottonHeigth+QBY;
+    }
+    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, bottonHeigth, 320, TabBarHeight)];
     UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
     [botton_image setImage:[UIImage imageNamed:@"Bk_naBottom.png"]];
     [bottonView addSubview:botton_image];

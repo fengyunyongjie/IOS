@@ -19,6 +19,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AppDelegate.h"
 #import "SCBSession.h"
+#import "YNFunctions.h"
 
 @interface QBImageFileViewController ()
 
@@ -68,9 +69,13 @@
 //    }
     
     NSLog(@"space_id:%@",space_id);
-    
     //添加头部试图
-    topView = [[UIView alloc] initWithFrame:CGRectMake(0, QBY, 320, 44)];
+    float topHeigth = QBY;
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        topHeigth = 0;
+    }
+    topView = [[UIView alloc] initWithFrame:CGRectMake(0, topHeigth, 320, 44)];
     UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     [images setImage:[UIImage imageNamed:@"Bk_Title.png"]];
     [topView addSubview:images];
@@ -146,7 +151,13 @@
     
     [self.view addSubview:bottonView];
     
-    CGRect rect = CGRectMake(0, 44+QBY, 320, TableViewHeight);
+    
+    float tableHeigth = 44+QBY;
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        tableHeigth = 44;
+    }
+    CGRect rect = CGRectMake(0, tableHeigth, 320, TableViewHeight);
     table_view = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     table_view.dataSource = self;
     table_view.delegate = self;
