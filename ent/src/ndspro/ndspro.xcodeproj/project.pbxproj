@@ -33,33 +33,23 @@
 		291CCC1717F4082B005C029C /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1517F4082B005C029C /* MainViewController.xib */; };
 		291CCC1B17F4086D005C029C /* FileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC1917F4086D005C029C /* FileListViewController.m */; };
 		291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1A17F4086D005C029C /* FileListViewController.xib */; };
-		291CCC2117F408EF005C029C /* Bk_Login.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1E17F408EF005C029C /* Bk_Login.png */; };
-		291CCC2217F408EF005C029C /* Bt_LoginClick.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC1F17F408EF005C029C /* Bt_LoginClick.png */; };
-		291CCC2317F408EF005C029C /* Bt_LoginNor.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC2017F408EF005C029C /* Bt_LoginNor.png */; };
 		291CCC2717F40D05005C029C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC2617F40D05005C029C /* MBProgressHUD.m */; };
 		291CCC2B17F410E2005C029C /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC2917F410E2005C029C /* SettingViewController.m */; };
 		291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC2A17F410E2005C029C /* SettingViewController.xib */; };
 		291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC2E17F411F5005C029C /* MyTabBarViewController.m */; };
 		291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */; };
 		291CCC3717F53075005C029C /* FileItemTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC3617F53075005C029C /* FileItemTableCell.m */; };
-		291CCC3B17F5834C005C029C /* Bt_UsercentreCh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */; };
-		291CCC3D17F583D6005C029C /* Bt_UsercentreNo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */; };
 		291CCC4117F7C6EB005C029C /* SCBUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4017F7C6EB005C029C /* SCBUploader.m */; };
 		291CCC4B17F7D9D6005C029C /* UpDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */; };
 		291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */; };
 		292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 292B6B8917F91B3B0015669A /* IconDownloader.m */; };
 		292B6B8D17F9659E0015669A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 292B6B8B17F9659E0015669A /* Main.storyboard */; };
-		29728C691803A211004B4724 /* Geren.png in Resources */ = {isa = PBXBuildFile; fileRef = 29728C671803A211004B4724 /* Geren.png */; };
-		29728C6A1803A211004B4724 /* Qiye.png in Resources */ = {isa = PBXBuildFile; fileRef = 29728C681803A211004B4724 /* Qiye.png */; };
-		29728C6C1803A80B004B4724 /* Bk_Login@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29728C6B1803A80B004B4724 /* Bk_Login@iPhone5.png */; };
 		29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29728C6E1803B226004B4724 /* SelectFileListViewController.m */; };
 		29728C711803B226004B4724 /* SelectFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29728C6F1803B226004B4724 /* SelectFileListViewController.xib */; };
 		29B44B13180638F40025AB61 /* SendEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B11180638F40025AB61 /* SendEmailViewController.m */; };
 		29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B12180638F40025AB61 /* SendEmailViewController.xib */; };
 		29B44B18180654320025AB61 /* UserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B16180654320025AB61 /* UserListViewController.m */; };
 		29B44B19180654320025AB61 /* UserListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B17180654320025AB61 /* UserListViewController.xib */; };
-		29B44B1C180688B00025AB61 /* Selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B1A180688B00025AB61 /* Selected.png */; };
-		29B44B1D180688B00025AB61 /* Unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B1B180688B00025AB61 /* Unselected.png */; };
 		29B44B22180795A10025AB61 /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B44B20180795A10025AB61 /* libPushSDK-Simulator.a */; };
 		29B44B23180795A10025AB61 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B44B21180795A10025AB61 /* libPushSDK.a */; };
 		29B44B251807963A0025AB61 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B44B241807963A0025AB61 /* CFNetwork.framework */; };
@@ -242,9 +232,6 @@
 		291CCC1817F4086D005C029C /* FileListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileListViewController.h; sourceTree = "<group>"; };
 		291CCC1917F4086D005C029C /* FileListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileListViewController.m; sourceTree = "<group>"; };
 		291CCC1A17F4086D005C029C /* FileListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileListViewController.xib; sourceTree = "<group>"; };
-		291CCC1E17F408EF005C029C /* Bk_Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Login.png; sourceTree = "<group>"; };
-		291CCC1F17F408EF005C029C /* Bt_LoginClick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_LoginClick.png; sourceTree = "<group>"; };
-		291CCC2017F408EF005C029C /* Bt_LoginNor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_LoginNor.png; sourceTree = "<group>"; };
 		291CCC2517F40D05005C029C /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		291CCC2617F40D05005C029C /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		291CCC2817F410E2005C029C /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -255,8 +242,6 @@
 		291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyTabBarViewController.xib; sourceTree = "<group>"; };
 		291CCC3517F53074005C029C /* FileItemTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileItemTableCell.h; sourceTree = "<group>"; };
 		291CCC3617F53075005C029C /* FileItemTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileItemTableCell.m; sourceTree = "<group>"; };
-		291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_UsercentreCh@2x.png"; sourceTree = "<group>"; };
-		291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bt_UsercentreNo@2x.png"; sourceTree = "<group>"; };
 		291CCC3F17F7C6EB005C029C /* SCBUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBUploader.h; sourceTree = "<group>"; };
 		291CCC4017F7C6EB005C029C /* SCBUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBUploader.m; sourceTree = "<group>"; };
 		291CCC4817F7D9D6005C029C /* UpDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpDownloadViewController.h; sourceTree = "<group>"; };
@@ -266,9 +251,6 @@
 		292B6B8917F91B3B0015669A /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
 		292B6B8C17F9659E0015669A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		292B6B8E17F965F10015669A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
-		29728C671803A211004B4724 /* Geren.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Geren.png; sourceTree = "<group>"; };
-		29728C681803A211004B4724 /* Qiye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Qiye.png; sourceTree = "<group>"; };
-		29728C6B1803A80B004B4724 /* Bk_Login@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bk_Login@iPhone5.png"; sourceTree = "<group>"; };
 		29728C6D1803B226004B4724 /* SelectFileListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFileListViewController.h; sourceTree = "<group>"; };
 		29728C6E1803B226004B4724 /* SelectFileListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFileListViewController.m; sourceTree = "<group>"; };
 		29728C6F1803B226004B4724 /* SelectFileListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectFileListViewController.xib; sourceTree = "<group>"; };
@@ -278,8 +260,6 @@
 		29B44B15180654320025AB61 /* UserListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserListViewController.h; sourceTree = "<group>"; };
 		29B44B16180654320025AB61 /* UserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserListViewController.m; sourceTree = "<group>"; };
 		29B44B17180654320025AB61 /* UserListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserListViewController.xib; sourceTree = "<group>"; };
-		29B44B1A180688B00025AB61 /* Selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Selected.png; sourceTree = "<group>"; };
-		29B44B1B180688B00025AB61 /* Unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unselected.png; sourceTree = "<group>"; };
 		29B44B1F180795A10025AB61 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
 		29B44B20180795A10025AB61 /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
 		29B44B21180795A10025AB61 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
@@ -646,16 +626,6 @@
 			isa = PBXGroup;
 			children = (
 				29B44B87180807330025AB61 /* iPhone */,
-				29B44B1A180688B00025AB61 /* Selected.png */,
-				29B44B1B180688B00025AB61 /* Unselected.png */,
-				291CCC3A17F5834C005C029C /* Bt_UsercentreCh@2x.png */,
-				291CCC3C17F583D6005C029C /* Bt_UsercentreNo@2x.png */,
-				291CCC1E17F408EF005C029C /* Bk_Login.png */,
-				29728C6B1803A80B004B4724 /* Bk_Login@iPhone5.png */,
-				291CCC1F17F408EF005C029C /* Bt_LoginClick.png */,
-				291CCC2017F408EF005C029C /* Bt_LoginNor.png */,
-				29728C671803A211004B4724 /* Geren.png */,
-				29728C681803A211004B4724 /* Qiye.png */,
 			);
 			path = imgRes;
 			sourceTree = "<group>";
@@ -1035,8 +1005,6 @@
 				29DF3B7A180BE0FC003FEE3B /* set_close@2x.png in Resources */,
 				29DF3B75180BE0FC003FEE3B /* ownerfiles@2x.png in Resources */,
 				29DF3B88180BE0FC003FEE3B /* title_menu@2x.png in Resources */,
-				29B44B1C180688B00025AB61 /* Selected.png in Resources */,
-				291CCC2217F408EF005C029C /* Bt_LoginClick.png in Resources */,
 				29DF3B69180BE0FC003FEE3B /* more_se@2x.png in Resources */,
 				29FDD8F0180C035000FFC558 /* overlay.png in Resources */,
 				29FDD8F5180C035000FFC558 /* video@2x.png in Resources */,
@@ -1077,16 +1045,12 @@
 				29DF3B7C180BE0FC003FEE3B /* set_quit_nor@2x.png in Resources */,
 				29DF3B84180BE0FC003FEE3B /* title_bt_sort_se@2x.png in Resources */,
 				29DF3B8F180BE0FC003FEE3B /* zc_se@2x.png in Resources */,
-				291CCC3D17F583D6005C029C /* Bt_UsercentreNo@2x.png in Resources */,
 				29FDD8EE180C035000FFC558 /* minus.png in Resources */,
-				29728C6C1803A80B004B4724 /* Bk_Login@iPhone5.png in Resources */,
 				29DF3B60180BE0FC003FEE3B /* file_other@2x.png in Resources */,
 				29DF3B73180BE0FC003FEE3B /* nav_trans_nor@2x.png in Resources */,
-				291CCC3B17F5834C005C029C /* Bt_UsercentreCh@2x.png in Resources */,
 				29DF3B8B180BE0FC003FEE3B /* title_se@2x.png in Resources */,
 				29B44B19180654320025AB61 /* UserListViewController.xib in Resources */,
 				29DF3B72180BE0FC003FEE3B /* nav_set_se@2x.png in Resources */,
-				291CCC2317F408EF005C029C /* Bt_LoginNor.png in Resources */,
 				29DF3B55180BE0FC003FEE3B /* Bt_LoginClick.png in Resources */,
 				29FDD8F1180C035000FFC558 /* overlay@2x.png in Resources */,
 				29728C711803B226004B4724 /* SelectFileListViewController.xib in Resources */,
@@ -1103,7 +1067,6 @@
 				29DF3B6E180BE0FC003FEE3B /* nav_selected@2x.png in Resources */,
 				29DF3B59180BE0FC003FEE3B /* del.png in Resources */,
 				29FDD8EA180C035000FFC558 /* Bk_Title.png in Resources */,
-				29B44B1D180688B00025AB61 /* Unselected.png in Resources */,
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
 				29DF3B5B180BE0FC003FEE3B /* download_se@2x.png in Resources */,
 				29DF3B64180BE0FC003FEE3B /* lock_bt_other_nor@2x.png in Resources */,
@@ -1122,7 +1085,6 @@
 				29B44B2D180797950025AB61 /* PushConfig.plist in Resources */,
 				29DF3B51180BE0FC003FEE3B /* Bk_Login@iPhone5.png in Resources */,
 				29DF3B7B180BE0FC003FEE3B /* set_open@2x.png in Resources */,
-				291CCC2117F408EF005C029C /* Bk_Login.png in Resources */,
 				290C7A051804F3FF00EF4A32 /* EmailListViewController.xib in Resources */,
 				29DF3B76180BE0FC003FEE3B /* rename_nor@2x.png in Resources */,
 				29FDD8ED180C035000FFC558 /* Bt_SelectFolder.png in Resources */,
@@ -1132,8 +1094,6 @@
 				29DF3B52180BE0FC003FEE3B /* bk_nav@2x.png in Resources */,
 				29DF3B6A180BE0FC003FEE3B /* move_nor@2x.png in Resources */,
 				29DF3B86180BE0FC003FEE3B /* title_bt_upload_se@2x.png in Resources */,
-				29728C691803A211004B4724 /* Geren.png in Resources */,
-				29728C6A1803A211004B4724 /* Qiye.png in Resources */,
 				29DF3B66180BE0FC003FEE3B /* lock_forget_se@2x.png in Resources */,
 				29DF3B81180BE0FC003FEE3B /* title_bt_new_nor@2x.png in Resources */,
 				291CCC1717F4082B005C029C /* MainViewController.xib in Resources */,

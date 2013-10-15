@@ -33,8 +33,8 @@
     // Do any additional setup after loading the view from its nib.
     UINavigationController *vc1=[[UINavigationController alloc] init];
     [vc1.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
-    [vc1.navigationBar setBarStyle:UIBarStyleDefault];
-    [vc1.navigationBar setTranslucent:NO];
+//    [vc1.navigationBar setBarStyle:UIBarStyleDefault];
+//    [vc1.navigationBar setTranslucent:NO];
     [vc1.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
 //    [vc1.navigationBar setBackgroundColor:[UIColor colorWithRed:102/255.0f green:163/255.0f blue:222/255.0f alpha:1]];
 //    [vc1.navigationBar setTintColor:[UIColor blueColor]];

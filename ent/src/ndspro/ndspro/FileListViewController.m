@@ -132,7 +132,7 @@ typedef enum{
 {
     [self hideSingleBar];
     if (!self.menuView) {
-        self.menuView=[[UIView alloc] initWithFrame:CGRectMake(150, 64, 161, 47)];
+        self.menuView=[[UIView alloc] initWithFrame:CGRectMake(150, 0, 161, 47)];
         UIImageView *bgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title_menu4.png"]];
         [self.menuView addSubview:bgView];
         UIButton *btnUpload,*btnNewFinder,*btnEdit,*btnSort;
