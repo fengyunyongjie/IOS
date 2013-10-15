@@ -60,10 +60,20 @@ typedef enum{
 {
     [self updateFileList];
 }
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
+    NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+//    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+//        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+//    }
+    
     self.tableView=[[UITableView alloc] init];
     self.tableView.delegate=self;
     self.tableView.dataSource=self;

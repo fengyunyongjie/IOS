@@ -52,26 +52,29 @@ typedef enum{
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
     // Do any additional setup after loading the view from its nib.
     self.tableView=[[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.delegate=self;
     self.tableView.dataSource=self;
     [self.view addSubview:self.tableView];
-    self.tableView.frame=CGRectMake(0, 64, self.view.frame.size.width, [[UIScreen mainScreen] bounds].size.height-49-64);
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     //[self.tableView setBackgroundColor:[UIColor whiteColor]];
     
     self.space_used=@"";
     self.space_total=@"";
     
     UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    [exitButton setTitle:@"退出登录" forState:UIControlStateNormal];
+//    [exitButton setTitle:@"退出登录" forState:UIControlStateNormal];
     [exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [exitButton setBackgroundColor:[UIColor redColor]];
-    //[exitButton setBackgroundImage:[UIImage imageNamed:@"Bt_Filter.png"] forState:UIControlStateNormal];
-    //[exitButton setBackgroundImage:[UIImage imageNamed:@"btn_quit_on.png"] forState:UIControlStateHighlighted];
+    [exitButton setBackgroundImage:[UIImage imageNamed:@"set_quit_nor.png"] forState:UIControlStateNormal];
+    [exitButton setBackgroundImage:[UIImage imageNamed:@"set_quit_se.png"] forState:UIControlStateHighlighted];
     int y=self.tableView.frame.size.height-30;
-    y=608;
-    [exitButton setFrame:CGRectMake(10, y, 301, 50)];
+    y=638;
+    [exitButton setFrame:CGRectMake(12.5f, y, 295,30)];
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
@@ -79,6 +82,7 @@ typedef enum{
 }
 -(void)viewDidAppear:(BOOL)animated
 {
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self updateData];
     [self calcCacheSize];
 }

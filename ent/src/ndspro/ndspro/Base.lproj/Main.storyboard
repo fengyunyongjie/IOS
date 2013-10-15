@@ -207,12 +207,12 @@
             <objects>
                 <tableViewController id="61v-B2-ryG" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="hLd-9x-FxP">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="zAd-J1-qzU">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zAd-J1-qzU" id="WNv-oG-abh">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -224,12 +224,13 @@
                     <navigationItem key="navigationItem" id="MOw-sN-pN7">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="XCF-qm-K0R">
-                            <rect key="frame" x="96" y="8" width="128" height="29"/>
+                            <rect key="frame" x="9" y="8" width="302" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="收件箱"/>
                                 <segment title="发件箱"/>
                             </segments>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </segmentedControl>
                     </navigationItem>
                 </tableViewController>
@@ -242,8 +243,9 @@
             <objects>
                 <navigationController title="文件收发" definesPresentationContext="YES" id="5m3-G6-8Yu" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="FUi-N1-sjq"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="81A-ha-cCa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="81A-ha-cCa">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.40000003579999999" green="0.63921570780000003" blue="0.87058830259999997" alpha="1" colorSpace="deviceRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="61v-B2-ryG" kind="relationship" relationship="rootViewController" id="Gxe-pN-0um"/>

@@ -39,6 +39,10 @@
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+}
 -(void)viewWillAppear:(BOOL)animated
 {
     [self updateEmailList];
@@ -224,72 +228,49 @@
             case 5:
 //                return @"文件：";
             {
-    if (self.fileArray) {
-        NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
-        if (dic) {
-            cell.textLabel.text=[dic objectForKey:@"fname"];
-            //NSString *fisdir=[dic objectForKey:@"fisdir"];
-            long fsize=[[dic objectForKey:@"fsize"] longValue];
-            if (fsize==0) {
-                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
-                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreNo.png"];
-            }else
-            {
-                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreCh.png"];
-                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
-                NSString *fname=[dic objectForKey:@"fname"];
-                NSString *fmime=[[fname pathExtension] lowercaseString];
-                //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
-                NSLog(@"fmime:%@",fmime);
-                if ([fmime isEqualToString:@"png"]||
-                    [fmime isEqualToString:@"jpg"]||
-                    [fmime isEqualToString:@"jpeg"]||
-                    [fmime isEqualToString:@"bmp"]||
-                    [fmime isEqualToString:@"gif"]){
-//                    NSString *fthumb=[dic objectForKey:@"fthumb"];
-//                    NSString *localThumbPath=[YNFunctions getIconCachePath];
-//                    fthumb =[YNFunctions picFileNameFromURL:fthumb];
-//                    localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
-//                    NSLog(@"是否存在文件：%@",localThumbPath);
-//                    if ([[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
-//                        NSLog(@"存在文件：%@",localThumbPath);
-//                        UIImage *icon=[UIImage imageWithContentsOfFile:localThumbPath];
-//                        CGSize itemSize = CGSizeMake(100, 100);
-//                        UIGraphicsBeginImageContext(itemSize);
-//                        CGRect theR=CGRectMake(0, 0, itemSize.width, itemSize.height);
-//                        if (icon.size.width>icon.size.height) {
-//                            theR.size.width=icon.size.width/(icon.size.height/itemSize.height);
-//                            theR.origin.x=-(theR.size.width/2)-itemSize.width;
-//                        }else
-//                        {
-//                            theR.size.height=icon.size.height/(icon.size.width/itemSize.width);
-//                            theR.origin.y=-(theR.size.height/2)-itemSize.height;
-//                        }
-//                        CGRect imageRect = CGRectMake(2, 2, 96, 96);
-//                        //                        CGSize size=icon.size;
-//                        //                        if (size.width>size.height) {
-//                        //                            imageRect.size.height=size.height*(30.0f/imageRect.size.width);
-//                        //                            imageRect.origin.y+=(30-imageRect.size.height)/2;
-//                        //                        }else{
-//                        //                            imageRect.size.width=size.width*(30.0f/imageRect.size.height);
-//                        //                            imageRect.origin.x+=(30-imageRect.size.width)/2;
-//                        //                        }
-//                        [icon drawInRect:imageRect];
-//                        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-//                        UIGraphicsEndImageContext();
-//                        cell.imageView.image = image;
-//                        CGRect r=cell.imageView.frame;
-//                        r.size.width=r.size.height=30;
-//                        cell.imageView.frame=r;
-//
-//                    }else{
-//                        NSLog(@"将要下载的文件：%@",localThumbPath);
-//                        [self startIconDownload:dic forIndexPath:indexPath];
-//                    }
+                if (self.fileArray) {
+                    NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
+                    if (dic) {
+                        cell.textLabel.text=[dic objectForKey:@"fname"];
+                        //NSString *fisdir=[dic objectForKey:@"fisdir"];
+                        long fsize=[[dic objectForKey:@"fsize"] longValue];
+                        if (fsize==0) {
+                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
+                            cell.imageView.image=[UIImage imageNamed:@"file_folder.png"];
+                        }else
+                        {
+                            cell.imageView.image=[UIImage imageNamed:@"file_other.png"];
+                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
+                            NSString *fname=[dic objectForKey:@"fname"];
+                            NSString *fmime=[[fname pathExtension] lowercaseString];
+                            //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
+                            NSLog(@"fmime:%@",fmime);
+                            if ([fmime isEqualToString:@"png"]||
+                                [fmime isEqualToString:@"jpg"]||
+                                [fmime isEqualToString:@"jpeg"]||
+                                [fmime isEqualToString:@"bmp"]||
+                                [fmime isEqualToString:@"gif"]){
+                                cell.imageView.image = [UIImage imageNamed:@"file_pic.png"];
+                            }else if ([fmime isEqualToString:@"doc"]||
+                                      [fmime isEqualToString:@"docx"])
+                            {
+                                cell.imageView.image = [UIImage imageNamed:@"file_doc.png"];
+                            }else if ([fmime isEqualToString:@"mp3"])
+                            {
+                                cell.imageView.image = [UIImage imageNamed:@"file_music.png"];
+                            }else if ([fmime isEqualToString:@"mov"])
+                            {
+                                cell.imageView.image = [UIImage imageNamed:@"file_moving.png"];
+                            }else if ([fmime isEqualToString:@"ppt"])
+                            {
+                                cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
+                            }else
+                            {
+                                cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
             }
                 break;
             default:

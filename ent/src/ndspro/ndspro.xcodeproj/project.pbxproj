@@ -121,7 +121,6 @@
 		29DF3B8D180BE0FC003FEE3B /* tj_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B4C180BE0FC003FEE3B /* tj_se@2x.png */; };
 		29DF3B8E180BE0FC003FEE3B /* zc_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B4D180BE0FC003FEE3B /* zc_nor@2x.png */; };
 		29DF3B8F180BE0FC003FEE3B /* zc_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B4E180BE0FC003FEE3B /* zc_se@2x.png */; };
-		29DF3B91180BEE38003FEE3B /* nav_title@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B90180BEE38003FEE3B /* nav_title@2x.png */; };
 		29DF3B93180BEEE2003FEE3B /* title_bk_ti@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B92180BEEE2003FEE3B /* title_bk_ti@2x.png */; };
 		29FDD8D8180C033000FFC558 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FDD8D7180C033000FFC558 /* Reachability.m */; };
 		29FDD8E8180C035000FFC558 /* Bk_naBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DA180C035000FFC558 /* Bk_naBottom.png */; };
@@ -332,7 +331,6 @@
 		29DF3B4C180BE0FC003FEE3B /* tj_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tj_se@2x.png"; sourceTree = "<group>"; };
 		29DF3B4D180BE0FC003FEE3B /* zc_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zc_nor@2x.png"; sourceTree = "<group>"; };
 		29DF3B4E180BE0FC003FEE3B /* zc_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zc_se@2x.png"; sourceTree = "<group>"; };
-		29DF3B90180BEE38003FEE3B /* nav_title@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_title@2x.png"; sourceTree = "<group>"; };
 		29DF3B92180BEEE2003FEE3B /* title_bk_ti@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_bk_ti@2x.png"; sourceTree = "<group>"; };
 		29FDD8D6180C033000FFC558 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		29FDD8D7180C033000FFC558 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
@@ -709,7 +707,6 @@
 			isa = PBXGroup;
 			children = (
 				29DF3B92180BEEE2003FEE3B /* title_bk_ti@2x.png */,
-				29DF3B90180BEE38003FEE3B /* nav_title@2x.png */,
 				29DF3B0E180BE0FC003FEE3B /* bizfiles@2x.png */,
 				29DF3B0F180BE0FC003FEE3B /* Bk_Login.png */,
 				29DF3B10180BE0FC003FEE3B /* Bk_Login@iPhone5.png */,
@@ -1057,7 +1054,6 @@
 				291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */,
 				29FDD8EC180C035000FFC558 /* Bt_Cancle.png in Resources */,
 				29FE57B31808D66E0068DE48 /* Bt_UploadOkCh.png in Resources */,
-				29DF3B91180BEE38003FEE3B /* nav_title@2x.png in Resources */,
 				292B6B8D17F9659E0015669A /* Main.storyboard in Resources */,
 				29DF3B54180BE0FC003FEE3B /* Bk_Start@iPhone5.png in Resources */,
 				29DF3B77180BE0FC003FEE3B /* rename_se@2x.png in Resources */,

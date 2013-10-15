@@ -42,6 +42,10 @@
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+}
 
 - (void)didReceiveMemoryWarning
 {

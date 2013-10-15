@@ -29,7 +29,10 @@
     }
     return self;
 }
-
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,7 +43,8 @@
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     self.segmentedControl=[[UISegmentedControl alloc] initWithItems:@[@"收件箱",@"发件箱"]];
-    self.segmentedControl.frame=CGRectMake(96, 8, 128, 29);
+    self.segmentedControl.frame=CGRectMake(10, 8, 300, 29);
+    [self.segmentedControl setTintColor:[UIColor whiteColor]];
     [self.segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     [self.navigationItem setTitleView:self.segmentedControl];
     [self.segmentedControl setSelectedSegmentIndex:0];

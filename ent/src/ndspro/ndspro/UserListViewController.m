@@ -9,7 +9,6 @@
 #import "UserListViewController.h"
 #import "YNFunctions.h"
 #import "SCBAccountManager.h"
-#import "FileItemTableCell.h"
 
 @implementation FileItem
 
@@ -48,7 +47,7 @@
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     UIBarButtonItem *barItem=[[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(okAction:)];
     self.navigationItem.rightBarButtonItem=barItem;
-    
+    [self.tableView setEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -118,9 +117,9 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[FileItemTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
 //        NSString *osVersion = [[UIDevice currentDevice] systemVersion];
 //        NSString *versionWithoutRotation = @"7.0";
 //        BOOL noRotationNeeded = ([versionWithoutRotation compare:osVersion options:NSNumericSearch]
@@ -137,13 +136,6 @@
         if (dic)
         {
             cell.textLabel.text=[dic objectForKey:@"usrturename"];
-            FileItem* fileItem = [self.userItems objectAtIndex:indexPath.row];
-            if (fileItem.checked) {
-                cell.imageView.image=[UIImage imageNamed:@"Selected.png"];
-            }else
-            {
-                cell.imageView.image=[UIImage imageNamed:@"Unselected.png"];
-            }
         }
     }
     return cell;
@@ -154,7 +146,7 @@
 }
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return UITableViewCellEditingStyleNone;
+	return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
 }
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
@@ -166,11 +158,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     FileItem* fileItem = [self.userItems objectAtIndex:indexPath.row];
-    FileItemTableCell *cell = (FileItemTableCell*)[tableView cellForRowAtIndexPath:indexPath];
-    fileItem.checked = !fileItem.checked;
-    [cell setChecked:fileItem.checked];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    fileItem.checked = YES;
+    return;
+}
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    FileItem* fileItem = [self.userItems objectAtIndex:indexPath.row];
+    fileItem.checked = NO;
     return;
 }
 
