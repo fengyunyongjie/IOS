@@ -8,7 +8,6 @@
 
 #import "SqlliteManager.h"
 #import "UserInfo.h"
-#import "PhotoFile.h"
 #import "UpLoadList.h"
 
 @implementation SqlliteManager
@@ -26,27 +25,6 @@
                 break;
             case 2:
                 [info updateUserinfo];
-                break;
-            default:
-                break;
-        }
-    }
-    else if([demo isKindOfClass:[PhotoFile class]])
-    {
-        
-        PhotoFile *info = (PhotoFile *)demo;
-        switch (sqlIndex) {
-            case 1:
-                [info insertPhotoFileTable];
-                break;
-            case 2:
-                [info deletePhotoFileTable];
-                break;
-            case 3:
-                [info deleteAllPhotoFileTable];
-                break;
-            case 4:
-                [info updatePhotoFileTable];
                 break;
             default:
                 break;

@@ -8,6 +8,7 @@
 
 #import "DownList.h"
 #import "NSString+Format.h"
+#import "YNFunctions.h"
 
 @implementation DownList
 @synthesize d_thumbUrl,d_baseUrl,d_datetime,d_downSize,d_id,d_name,d_state,d_file_id,d_ure_id,curr_size,sudu;
@@ -47,6 +48,9 @@
 //根据文件id删除一条记录
 -(BOOL)deleteDownList
 {
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    BOOL isDelete = [filemgr removeItemAtPath:self.d_baseUrl error:nil];
+    DDLogCInfo(@"删除文件是否成功：%i",isDelete);
     sqlite3_stmt *statement;
     __block BOOL bl = TRUE;
     const char *dbpath = [self.databasePath UTF8String];

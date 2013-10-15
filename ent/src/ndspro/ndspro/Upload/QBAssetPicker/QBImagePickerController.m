@@ -210,7 +210,7 @@
     }
     bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, bottonHeigth, 320, 60)];
     UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
-    [botton_image setImage:[UIImage imageNamed:@"Bk_Nav.png"]];
+    [botton_image setImage:[UIImage imageNamed:@"bk_nav.png"]];
     [bottonView addSubview:botton_image];
     
     UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];

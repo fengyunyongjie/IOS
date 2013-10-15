@@ -33,12 +33,7 @@
 {
     [super viewDidLoad];
     isShowUpload = YES;
-    float topHeigth = 0;
-    if([[[UIDevice currentDevice] systemVersion] floatValue] >=7.0)
-    {
-        topHeigth = 64;
-    }
-    CGRect customRect = CGRectMake(0, topHeigth, 320, 30);
+    CGRect customRect = CGRectMake(0, 0, 320, 30);
     self.customSelectButton = [[CustomSelectButton alloc] initWithFrame:customRect leftText:@"正在上传" rightText:@"正在下载" isShowLeft:isShowUpload];
     [self.customSelectButton setDelegate:self];
     [self.view addSubview:self.customSelectButton];

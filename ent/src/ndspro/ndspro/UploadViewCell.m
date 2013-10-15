@@ -33,10 +33,10 @@
         self.jinDuView = [[CustomJinDu alloc] initWithFrame:progress_rect];
         [self addSubview:self.jinDuView];
         
-        CGRect sizeRect = CGRectMake(220, 6, 70, 15);
+        CGRect sizeRect = CGRectMake(220, 25, 70, 15);
         self.size_label = [[UILabel alloc] initWithFrame:sizeRect];
-        [self.size_label setTextColor:[UIColor blackColor]];
-        [self.size_label setFont:[UIFont systemFontOfSize:14]];
+        [self.size_label setTextColor:[UIColor colorWithRed:180.0/255.0 green:181.0/255.0 blue:181.0/255.0 alpha:1]];
+        [self.size_label setFont:[UIFont systemFontOfSize:11]];
         [self addSubview:self.size_label];
         CGRect suduRect = CGRectMake(220, 22, 70, 15);
         self.sudu_label = [[UILabel alloc] initWithFrame:suduRect];
@@ -66,7 +66,7 @@
 
 -(void)start
 {
-    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if([self.button_start_button.titleLabel.text isEqualToString:@"暂停"])
     {
         NSLog(@"self.button_start_button.titleLabel.text 0");
@@ -89,19 +89,11 @@
 -(void)setUploadDemo:(UpLoadList *)list
 {
     upload_list = list;
+    down_list = nil;
     [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",(int)list.t_lenght]]];
-    [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
-    if(list.sudu==-1)
-    {
-        [self.sudu_label setHidden:YES];
-    }
-    else
-    {
-        [self.sudu_label setHidden:NO];
-    }
+//    [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
     if(list.t_state == 1)
     {
-        [self.sudu_label setHidden:YES];
         [self.jinDuView showDate:list.t_date];
     }
     else if(list.t_state == 0)
@@ -168,17 +160,10 @@
 
 -(void)setDownDemo:(DownList *)list
 {
-    [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",(int)list.d_downSize]]];
-    [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
-    if(list.sudu==-1)
-    {
-        [self.sudu_label setHidden:YES];
-    }
-    else
-    {
-        [self.sudu_label setHidden:NO];
-    }
     down_list = list;
+    upload_list = nil;
+    [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",(int)list.d_downSize]]];
+//    [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
     if(list.d_state == 1)
     {
         [self.sudu_label setHidden:YES];

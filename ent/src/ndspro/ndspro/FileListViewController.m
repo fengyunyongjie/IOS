@@ -16,6 +16,9 @@
 #import "SendEmailViewController.h"
 #import "DownManager.h"
 #import "AppDelegate.h"
+#import "DownList.h"
+#import "PhotoLookViewController.h"
+#import "OtherBrowserViewController.h"
 
 typedef enum{
     kAlertTagDeleteOne,
@@ -799,12 +802,62 @@ typedef enum{
         NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
         if (dic) {
             NSString *fisdir=[dic objectForKey:@"fisdir"];
+            NSString *fname = [dic objectForKey:@"fname"];
+            NSString *fmime=[[fname pathExtension] lowercaseString];
             if ([fisdir isEqualToString:@"0"]) {
                 FileListViewController *flVC=[[FileListViewController alloc] init];
                 flVC.spid=self.spid;
                 flVC.f_id=[dic objectForKey:@"fid"];
                 flVC.title=[dic objectForKey:@"fname"];
                 [self.navigationController pushViewController:flVC animated:YES];
+            }
+            else if ([fmime isEqualToString:@"png"]||
+                     [fmime isEqualToString:@"jpg"]||
+                     [fmime isEqualToString:@"jpeg"]||
+                     [fmime isEqualToString:@"bmp"]||
+                     [fmime isEqualToString:@"gif"])
+            {
+                if(indexPath.row<[self.listArray count])
+                {
+                    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+                    for(int i=0;i<[self.listArray count];i++) {
+                        NSDictionary *diction = [self.listArray objectAtIndex:i];
+                        NSString *fname = [diction objectForKey:@"fname"];
+                        NSString *fmime=[[fname pathExtension] lowercaseString];
+                        if([[dic objectForKey:@"fisdir"] boolValue] && ([fmime isEqualToString:@"png"]||
+                           [fmime isEqualToString:@"jpg"]||
+                           [fmime isEqualToString:@"jpeg"]||
+                           [fmime isEqualToString:@"bmp"]||
+                           [fmime isEqualToString:@"gif"]))
+                        {
+                            NSLog(@"fmime:%@",fmime);
+                            DownList *list = [[DownList alloc] init];
+                            list.d_file_id = [NSString formatNSStringForOjbect:[diction objectForKey:@"fid"]];
+                            list.d_thumbUrl = [NSString formatNSStringForOjbect:[diction objectForKey:@"fthumb"]];
+                            if([list.d_thumbUrl length]==0)
+                            {
+                                list.d_thumbUrl = @"0";
+                            }
+                            list.d_name = [NSString formatNSStringForOjbect:[diction objectForKey:@"fname"]];
+                            list.d_baseUrl = [NSString get_image_save_file_path:list.d_name];
+                            [tableArray addObject:list];
+                        }
+                    }
+                    if([tableArray count]>0)
+                    {
+                        PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+                        [look setTableArray:tableArray];
+                        [self presentModalViewController:look animated:YES];
+                    }
+                }
+            }
+            else
+            {
+                OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
+                otherBrowser.dataDic=dic;
+                NSString *f_name=[dic objectForKey:@"fname"];
+                otherBrowser.title=f_name;
+                [self presentModalViewController:otherBrowser animated:YES];
             }
         }
     }
