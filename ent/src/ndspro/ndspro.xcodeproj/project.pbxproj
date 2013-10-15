@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2902B133180D5B5B00AF04DA /* LookDownFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2902B12B180D5B5B00AF04DA /* LookDownFile.m */; };
+		2902B134180D5B5B00AF04DA /* OtherBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2902B12C180D5B5B00AF04DA /* OtherBrowser.xib */; };
+		2902B135180D5B5B00AF04DA /* OtherBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2902B12E180D5B5B00AF04DA /* OtherBrowserViewController.m */; };
+		2902B136180D5B5B00AF04DA /* PhotoLookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2902B130180D5B5B00AF04DA /* PhotoLookViewController.m */; };
+		2902B137180D5B5B00AF04DA /* QLBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2902B132180D5B5B00AF04DA /* QLBrowserViewController.m */; };
 		290C79FF1804E16900EF4A32 /* SCBEmailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 290C79FE1804E16900EF4A32 /* SCBEmailManager.m */; };
 		290C7A041804F3FF00EF4A32 /* EmailListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290C7A021804F3FF00EF4A32 /* EmailListViewController.m */; };
 		290C7A051804F3FF00EF4A32 /* EmailListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 290C7A031804F3FF00EF4A32 /* EmailListViewController.xib */; };
@@ -124,7 +129,6 @@
 		29DF3B93180BEEE2003FEE3B /* title_bk_ti@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B92180BEEE2003FEE3B /* title_bk_ti@2x.png */; };
 		29FDD8D8180C033000FFC558 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FDD8D7180C033000FFC558 /* Reachability.m */; };
 		29FDD8E8180C035000FFC558 /* Bk_naBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DA180C035000FFC558 /* Bk_naBottom.png */; };
-		29FDD8E9180C035000FFC558 /* Bk_Nav.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DB180C035000FFC558 /* Bk_Nav.png */; };
 		29FDD8EA180C035000FFC558 /* Bk_Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DC180C035000FFC558 /* Bk_Title.png */; };
 		29FDD8EB180C035000FFC558 /* Bt_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DD180C035000FFC558 /* Bt_Back.png */; };
 		29FDD8EC180C035000FFC558 /* Bt_Cancle.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DE180C035000FFC558 /* Bt_Cancle.png */; };
@@ -187,6 +191,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2902B12A180D5B5B00AF04DA /* LookDownFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookDownFile.h; sourceTree = "<group>"; };
+		2902B12B180D5B5B00AF04DA /* LookDownFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LookDownFile.m; sourceTree = "<group>"; };
+		2902B12C180D5B5B00AF04DA /* OtherBrowser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherBrowser.xib; sourceTree = "<group>"; };
+		2902B12D180D5B5B00AF04DA /* OtherBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherBrowserViewController.h; sourceTree = "<group>"; };
+		2902B12E180D5B5B00AF04DA /* OtherBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherBrowserViewController.m; sourceTree = "<group>"; };
+		2902B12F180D5B5B00AF04DA /* PhotoLookViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoLookViewController.h; sourceTree = "<group>"; };
+		2902B130180D5B5B00AF04DA /* PhotoLookViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoLookViewController.m; sourceTree = "<group>"; };
+		2902B131180D5B5B00AF04DA /* QLBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QLBrowserViewController.h; sourceTree = "<group>"; };
+		2902B132180D5B5B00AF04DA /* QLBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QLBrowserViewController.m; sourceTree = "<group>"; };
 		290C79FD1804E16900EF4A32 /* SCBEmailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCBEmailManager.h; sourceTree = "<group>"; };
 		290C79FE1804E16900EF4A32 /* SCBEmailManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCBEmailManager.m; sourceTree = "<group>"; };
 		290C7A011804F3FF00EF4A32 /* EmailListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailListViewController.h; sourceTree = "<group>"; };
@@ -335,7 +348,6 @@
 		29FDD8D6180C033000FFC558 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		29FDD8D7180C033000FFC558 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		29FDD8DA180C035000FFC558 /* Bk_naBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_naBottom.png; sourceTree = "<group>"; };
-		29FDD8DB180C035000FFC558 /* Bk_Nav.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Nav.png; sourceTree = "<group>"; };
 		29FDD8DC180C035000FFC558 /* Bk_Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Title.png; sourceTree = "<group>"; };
 		29FDD8DD180C035000FFC558 /* Bt_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Back.png; sourceTree = "<group>"; };
 		29FDD8DE180C035000FFC558 /* Bt_Cancle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Cancle.png; sourceTree = "<group>"; };
@@ -451,6 +463,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2902B129180D5B5B00AF04DA /* Look */ = {
+			isa = PBXGroup;
+			children = (
+				2902B12A180D5B5B00AF04DA /* LookDownFile.h */,
+				2902B12B180D5B5B00AF04DA /* LookDownFile.m */,
+				2902B12C180D5B5B00AF04DA /* OtherBrowser.xib */,
+				2902B12D180D5B5B00AF04DA /* OtherBrowserViewController.h */,
+				2902B12E180D5B5B00AF04DA /* OtherBrowserViewController.m */,
+				2902B12F180D5B5B00AF04DA /* PhotoLookViewController.h */,
+				2902B130180D5B5B00AF04DA /* PhotoLookViewController.m */,
+				2902B131180D5B5B00AF04DA /* QLBrowserViewController.h */,
+				2902B132180D5B5B00AF04DA /* QLBrowserViewController.m */,
+			);
+			path = Look;
+			sourceTree = "<group>";
+		};
 		290C7A001804F3A000EF4A32 /* Email */ = {
 			isa = PBXGroup;
 			children = (
@@ -681,6 +709,7 @@
 			isa = PBXGroup;
 			children = (
 				29FE57711808D66E0068DE48 /* Upload */,
+				2902B129180D5B5B00AF04DA /* Look */,
 				291CCC4817F7D9D6005C029C /* UpDownloadViewController.h */,
 				291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */,
 				291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */,
@@ -779,7 +808,6 @@
 			isa = PBXGroup;
 			children = (
 				29FDD8DA180C035000FFC558 /* Bk_naBottom.png */,
-				29FDD8DB180C035000FFC558 /* Bk_Nav.png */,
 				29FDD8DC180C035000FFC558 /* Bk_Title.png */,
 				29FDD8DD180C035000FFC558 /* Bt_Back.png */,
 				29FDD8DE180C035000FFC558 /* Bt_Cancle.png */,
@@ -1020,7 +1048,6 @@
 				29DF3B58180BE0FC003FEE3B /* del_se@2x.png in Resources */,
 				29DF3B57180BE0FC003FEE3B /* del_nor@2x.png in Resources */,
 				29DF3B6D180BE0FC003FEE3B /* nav_file_se@2x.png in Resources */,
-				29FDD8E9180C035000FFC558 /* Bk_Nav.png in Resources */,
 				29DF3B68180BE0FC003FEE3B /* more_nor@2x.png in Resources */,
 				29DF3B7E180BE0FC003FEE3B /* title_bk@2x.png in Resources */,
 				29FE57B01808D66E0068DE48 /* Bt_UploadCancle.png in Resources */,
@@ -1041,6 +1068,7 @@
 				291CCC1217F4041D005C029C /* LoginViewController.xib in Resources */,
 				29DF3B7C180BE0FC003FEE3B /* set_quit_nor@2x.png in Resources */,
 				29DF3B84180BE0FC003FEE3B /* title_bt_sort_se@2x.png in Resources */,
+				2902B134180D5B5B00AF04DA /* OtherBrowser.xib in Resources */,
 				29DF3B8F180BE0FC003FEE3B /* zc_se@2x.png in Resources */,
 				29FDD8EE180C035000FFC558 /* minus.png in Resources */,
 				29DF3B60180BE0FC003FEE3B /* file_other@2x.png in Resources */,
@@ -1163,6 +1191,7 @@
 				291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */,
 				291CCBBB17F3C40A005C029C /* SCBAccountManager.m in Sources */,
 				291CCC1617F4082B005C029C /* MainViewController.m in Sources */,
+				2902B136180D5B5B00AF04DA /* PhotoLookViewController.m in Sources */,
 				29FE576E1808D3210068DE48 /* DispatchQueueLogFormatter.m in Sources */,
 				291CCB4617F27F99005C029C /* AppDelegate.m in Sources */,
 				291CCC1B17F4086D005C029C /* FileListViewController.m in Sources */,
@@ -1170,6 +1199,7 @@
 				291CCB4217F27F99005C029C /* main.m in Sources */,
 				29FE576D1808D3210068DE48 /* ContextFilterLogFormatter.m in Sources */,
 				29FE57D01808D7850068DE48 /* UploadViewCell.m in Sources */,
+				2902B135180D5B5B00AF04DA /* OtherBrowserViewController.m in Sources */,
 				291CCC1117F4041D005C029C /* LoginViewController.m in Sources */,
 				29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */,
 				29FE57C71808D7380068DE48 /* UpLoadList.m in Sources */,
@@ -1183,6 +1213,8 @@
 				29FE57C61808D7380068DE48 /* SqlliteManager.m in Sources */,
 				29FE576C1808D3210068DE48 /* DDTTYLogger.m in Sources */,
 				291CCC2717F40D05005C029C /* MBProgressHUD.m in Sources */,
+				2902B137180D5B5B00AF04DA /* QLBrowserViewController.m in Sources */,
+				2902B133180D5B5B00AF04DA /* LookDownFile.m in Sources */,
 				291CCC2B17F410E2005C029C /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
