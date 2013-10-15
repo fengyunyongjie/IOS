@@ -13,19 +13,7 @@
 #import "MF_Base64Additions.h"
 
 @implementation DwonFile
-@synthesize delegate;
-@synthesize downsize;
-@synthesize imageConnection;
-@synthesize imageViewIndex;
-@synthesize file_id;
-@synthesize index;
-@synthesize showType;
-@synthesize indexPath;
-@synthesize isStop;
-@synthesize macTimeOut;
-@synthesize fileSize;
-@synthesize fileName;
-@synthesize file_path;
+@synthesize delegate,downsize,imageConnection,imageViewIndex,file_id,index,showType,indexPath,isStop,macTimeOut,fileSize,fileName,file_path;
 
 - (void)startDownload
 {
@@ -68,6 +56,11 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
+    if(isStop)
+    {
+        [imageConnection cancel];
+        DDLogCInfo(@"暂停下载");
+    }
     DDLogInfo(@"下载的大小:%i",[data length]);
     downsize += [data length];
 #pragma unused(connection)
