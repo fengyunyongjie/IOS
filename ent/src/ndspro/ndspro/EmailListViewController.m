@@ -156,6 +156,14 @@
     if (dic) {
         cell.textLabel.text=[dic objectForKey:@"etitle"];
         cell.detailTextLabel.text=[dic objectForKey:@"sendtime"];
+        int readstate=-1;
+        readstate=[[dic objectForKey:@"readstate"] intValue];
+        if (readstate==0) {
+            cell.imageView.image=[UIImage imageNamed:@"mail_unread.png"];
+        }else
+        {
+            cell.imageView.image=[UIImage imageNamed:@"mail_readed.png"];
+        }
     }
 //    if (self.listArray) {
 //        NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];

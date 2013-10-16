@@ -44,8 +44,8 @@ typedef enum{
 
 @property (strong,nonatomic) UIToolbar *singleEditBar;
 @property (strong,nonatomic) UIToolbar *moreEditBar;
-@property (strong,nonatomic) UIView *menuView;
-
+@property (strong,nonatomic) UIControl *menuView;
+@property (strong,nonatomic) UIControl *singleBg;
 @property (strong,nonatomic) UIBarButtonItem *titleRightBtn;
 @end
 
@@ -114,6 +114,7 @@ typedef enum{
         self.dataDic=[NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
         if (self.dataDic) {
             self.listArray=self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
+            
             if (self.listArray) {
                 [self.tableView reloadData];
             }
@@ -133,21 +134,27 @@ typedef enum{
     [self.fm setDelegate:self];
     [self.fm operateUpdateWithID:self.f_id sID:self.spid];
 }
+-(void)handelSingleTap:(UITapGestureRecognizer*)gestureRecognizer{
+    [self hideMenu];
+    [self hideSingleBar];
+}
 -(void)hideMenu
 {
     [self.menuView setHidden:YES];
 }
 -(void)hideSingleBar
 {
+    [self.singleBg setHidden:YES];
     [self.singleEditBar setHidden:YES];
 }
 -(void)menuAction:(id)sender
 {
     [self hideSingleBar];
     if (!self.menuView) {
-        self.menuView=[[UIView alloc] initWithFrame:CGRectMake(150, 0, 161, 47)];
+        self.menuView =[[UIControl alloc] initWithFrame:self.tableView.frame];
+        UIView * mView=[[UIView alloc] initWithFrame:CGRectMake(150, 0, 161, 47)];
         UIImageView *bgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title_menu4.png"]];
-        [self.menuView addSubview:bgView];
+        [mView addSubview:bgView];
         UIButton *btnUpload,*btnNewFinder,*btnEdit,*btnSort;
         btnUpload=[[UIButton alloc] initWithFrame:CGRectMake(0, 7, 40, 40)];
         [btnUpload setImage:[UIImage imageNamed:@"title_bt_upload_nor.png"] forState:UIControlStateHighlighted];
@@ -169,10 +176,12 @@ typedef enum{
         [btnSort setImage:[UIImage imageNamed:@"title_bt_sort_se.png"] forState:UIControlStateNormal];
         [btnSort setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forState:UIControlStateHighlighted];
         [btnSort addTarget:self action:@selector(sortAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.menuView addSubview:btnUpload];
-        [self.menuView addSubview:btnNewFinder];
-        [self.menuView addSubview:btnEdit];
-        [self.menuView addSubview:btnSort];
+        [mView addSubview:btnUpload];
+        [mView addSubview:btnNewFinder];
+        [mView addSubview:btnEdit];
+        [mView addSubview:btnSort];
+        [self.menuView addSubview:mView];
+        [self.menuView addTarget:self action:@selector(hideMenu) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.menuView];
     }
     [self.menuView setHidden:!self.menuView.hidden];
@@ -196,7 +205,22 @@ typedef enum{
     AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.uploadmanage changeUpload:array_ changeDeviceName:device_name changeFileId:f_id changeSpaceId:s_id];
 }
-
+-(NSArray *)selectedIndexPaths
+{
+    NSArray *retVal=nil;
+    retVal=self.tableView.indexPathsForSelectedRows;
+    return retVal;
+}
+-(NSArray *)selectedIDs
+{
+    NSMutableArray *ids=[[NSMutableArray alloc] init];
+    for (NSIndexPath *indexpath in [self selectedIndexPaths]) {
+        NSDictionary *dic=[self.listArray objectAtIndex:indexpath.row];
+        NSString *fid=[dic objectForKey:@"fid"];
+        [ids addObject:fid];
+    }
+    return ids;
+}
 -(void)newFinder:(id)sender
 {
     [self hideMenu];
@@ -323,6 +347,27 @@ typedef enum{
 }
 -(void)toDelete:(id)sender
 {
+    if (self.tableView.editing) {
+        NSArray *array=[self selectedIDs];
+        NSLog(@"%@",array);
+        if (array.count==0) {
+            [self updateFileList];
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"未选中任何文件（夹）";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return;
+        }
+    }
+
     //    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     //    [alertView show];
     //    [alertView setTag:kAlertTagDeleteOne];
@@ -334,6 +379,27 @@ typedef enum{
 }
 -(void)toCommitOrResave:(id)sender
 {
+    if (self.tableView.editing) {
+        NSArray *array=[self selectedIDs];
+        NSLog(@"%@",array);
+        if (array.count==0) {
+            [self updateFileList];
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"未选中任何文件（夹）";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return;
+        }
+    }
+    
     NSLog(@"提交或转存！！！");
     if ([self.roletype isEqualToString:@"9999"]) {
         NSLog(@"提交");
@@ -357,6 +423,27 @@ typedef enum{
 }
 -(void)toSend:(id)sender
 {
+    if (self.tableView.editing) {
+        NSArray *array=[self selectedIDs];
+        NSLog(@"%@",array);
+        if (array.count==0) {
+            [self updateFileList];
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"未选中任何文件（夹）";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return;
+        }
+    }
+    
     NSLog(@"发送");
     UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"发送" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles: @"站内发送",@"站外发送",nil];
     [actionSheet setTag:kActionSheetTagSend];
@@ -365,84 +452,27 @@ typedef enum{
 }
 -(void)toMove:(id)sender
 {
-//    if (self.tableView.editing) {
-//        NSMutableArray *f_ids=[NSMutableArray array];
-//        for (int i=0;i<self.m_fileItems.count;i++) {
-//            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
-//            if (fileItem.checked) {
-//                NSDictionary *dic=[self.listArray objectAtIndex:i];
-//                NSString *f_id=[dic objectForKey:@"f_id"];
-//                [f_ids addObject:f_id];
-//            }
-//        }
-//        if ([f_ids count]==0) {
-//            if (self.hud) {
-//                [self.hud removeFromSuperview];
-//            }
-//            self.hud=nil;
-//            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-//            [self.view addSubview:self.hud];    [self.hud show:NO];
-//            self.hud.labelText=@"未选中任何文件(夹)";
-//            self.hud.mode=MBProgressHUDModeText;
-//            self.hud.margin=10.f;
-//            [self.hud show:YES];
-//            [self.hud hide:YES afterDelay:1.0f];
-//            return;
-//        }
-//    }
-//    NSMutableArray *willMoveObjects=[[[NSMutableArray alloc] init] autorelease];
-//    if ([self.tableView isEditing]) {
-//        for (int i=0;i<self.m_fileItems.count;i++) {
-//            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
-//            if (fileItem.checked) {
-//                NSDictionary *dic=[self.listArray objectAtIndex:i];
-//                NSString *m_fid=[dic objectForKey:@"f_id"];
-//                [willMoveObjects addObject:m_fid];
-//            }
-//        }
-//        if ([willMoveObjects count]<=0) {
-//            return;
-//        }
-//    }else
-//    {
-//        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-//        NSString *m_fid=[dic objectForKey:@"f_id"];
-//        willMoveObjects=@[m_fid];
-//    }
-//    MyndsViewController *moveViewController=[[[MyndsViewController alloc] init] autorelease];
-//    moveViewController.f_id=@"1";
-//    moveViewController.movefIds=willMoveObjects;
-//    switch (self.myndsType) {
-//        case kMyndsTypeDefault:
-//        case kMyndsTypeDefaultSearch:
-//        {
-//            moveViewController.myndsType=kMyndsTypeSelect;
-//            //moveViewController.title=@"我的文件";
-//            moveViewController.title=@"选择移动位置";
-//        }
-//            break;
-//        case kMyndsTypeShare:
-//        case kMyndsTypeShareSearch:
-//        {
-//            moveViewController.myndsType=kMyndsTypeShareSelect;
-//            //moveViewController.title=@"参与共享";
-//            moveViewController.title=@"选择移动位置";
-//        }
-//            break;
-//        case kMyndsTypeMyShare:
-//        case kMyndsTypeMyShareSearch:
-//        {
-//            moveViewController.myndsType=kMyndsTypeMyShareSelect;
-//            //moveViewController.title=@"我的共享";
-//            moveViewController.title=@"选择移动位置";
-//        }
-//            break;
-//        default:
-//            break;
-//    }
-//    moveViewController.delegate=self;
-//    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:moveViewController];
-//    [self presentViewController:nav animated:YES completion:nil];
+    if (self.tableView.editing) {
+        NSArray *array=[self selectedIDs];
+        NSLog(@"%@",array);
+        if (array.count==0) {
+            [self updateFileList];
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"未选中任何文件（夹）";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return;
+        }
+    }
+
     SelectFileListViewController *flvc=[[SelectFileListViewController alloc] init];
     flvc.f_id=@"0";
     flvc.roletype=self.roletype;
@@ -496,7 +526,13 @@ typedef enum{
         self.fm_move=[[SCBFileManager alloc] init];
     }
     self.fm_move.delegate=self;
-    [self.fm_move commitFileIDs:@[fid] toPID:f_id sID:s_pid];
+    if (self.tableView.isEditing) {
+        [self.fm_move commitFileIDs:[self selectedIDs] toPID:f_id sID:s_pid];
+    }else
+    {
+        [self.fm_move commitFileIDs:@[fid] toPID:f_id sID:s_pid];
+    }
+    
 }
 -(void)resaveFileToID:(NSString *)f_id
 {
@@ -509,7 +545,15 @@ typedef enum{
         self.fm_move=[[SCBFileManager alloc] init];
     }
     self.fm_move.delegate=self;
-    [self.fm_move resaveFileIDs:@[fid] toPID:f_id];
+    if (self.tableView.isEditing) {
+        
+         [self.fm_move resaveFileIDs:[self selectedIDs] toPID:f_id];
+        
+    }else
+    {
+         [self.fm_move resaveFileIDs:@[fid] toPID:f_id];
+    }
+   
 }
 -(void)moveFileToID:(NSString *)f_id
 {
@@ -522,7 +566,13 @@ typedef enum{
         self.fm_move=[[SCBFileManager alloc] init];
     }
     self.fm_move.delegate=self;
-    [self.fm_move moveFileIDs:@[fid] toPID:f_id sID:self.spid];
+    if (self.tableView.isEditing) {
+        [self.fm_move moveFileIDs:[self selectedIDs] toPID:f_id sID:self.spid];
+    }else
+    {
+        [self.fm_move moveFileIDs:@[fid] toPID:f_id sID:self.spid];
+    }
+    
 //    NSMutableArray *willMoveObjects=[[[NSMutableArray alloc] init] autorelease];
 //    if ([self.tableView isEditing]) {
 //        for (int i=0;i<self.m_fileItems.count;i++) {
@@ -730,7 +780,14 @@ typedef enum{
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+    [self hideMenu];
     self.selectedIndexPath=indexPath;
+    if (!self.singleBg) {
+        self.singleBg=[[UIControl alloc] initWithFrame:self.tableView.frame];
+        [self.singleBg addTarget:self action:@selector(hideSingleBar) forControlEvents:UIControlEventTouchUpInside];
+        [self.tableView addSubview:self.singleBg];
+    }
+    [self.singleBg setHidden:NO];
     //显示单选操作菜单
     if (!self.singleEditBar) {
         self.singleEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
@@ -873,7 +930,9 @@ typedef enum{
     self.dataDic=datadic;
     if (self.dataDic) {
         self.listArray=self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
-        [self.tableView reloadData];
+        if (self.listArray) {
+            [self.tableView reloadData];
+        }
         NSString *dataFilePath=[YNFunctions getDataCachePath];
         dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:[NSString stringWithFormat:@"%@_%@",self.spid,self.f_id]]];
         
@@ -1260,7 +1319,12 @@ typedef enum{
             NSString *fid=[dic objectForKey:@"fid"];
             SendEmailViewController *sevc=[[SendEmailViewController alloc] init];
             sevc.title=@"新邮件";
-            sevc.fids=@[fid];
+            if (self.tableView.isEditing) {
+                sevc.fids=[self selectedIDs];
+            }else
+            {
+                sevc.fids=@[fid];
+            }
             if (buttonIndex==0) {
                 //站内发送
                 sevc.tyle=kTypeSentIn;
@@ -1268,7 +1332,8 @@ typedef enum{
             {
                 //站外发送
                 sevc.tyle=kTypeSendEx;
-            }
+            }else
+            {return;}
             UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:sevc];
             [self presentViewController:nav animated:YES completion:nil];
         }
@@ -1281,7 +1346,12 @@ typedef enum{
                 [self.fm cancelAllTask];
                 self.fm=[[SCBFileManager alloc] init];
                 self.fm.delegate=self;
-                [self.fm removeFileWithIDs:@[f_id]];
+                if (self.tableView.isEditing) {
+                    [self.fm removeFileWithIDs:[self selectedIDs]];
+                }else
+                {
+                    [self.fm removeFileWithIDs:@[f_id]];
+                }
             }
 //            [self hideOptionCell];
             break;

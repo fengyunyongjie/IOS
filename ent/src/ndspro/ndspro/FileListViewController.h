@@ -24,6 +24,7 @@ typedef enum {
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSArray *finderArray;
+@property (strong,nonatomic) NSArray *selectArray;
 @property (strong,nonatomic) NSString *f_id;
 @property (strong,nonatomic) NSString *spid;
 @property (strong,nonatomic) NSString *roletype;

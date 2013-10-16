@@ -35,7 +35,7 @@
     [vc1.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
     [vc1.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
 //    [vc1.navigationBar setBackgroundColor:[UIColor colorWithRed:102/255.0f green:163/255.0f blue:222/255.0f alpha:1]];
-//    [vc1.navigationBar setTintColor:[UIColor blueColor]];
+    [vc1.navigationBar setTintColor:[UIColor whiteColor]];
     MainViewController * vc11=[[MainViewController alloc] init];
     [vc1 pushViewController:vc11 animated:YES];
     vc11.title=@"文件管理";
@@ -52,6 +52,7 @@
     vc2.title=@"文件传输";
     [vc2.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
     [vc2.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
+     [vc2.navigationBar setTintColor:[UIColor whiteColor]];
     //vc2.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemContacts tag:0];
     [vc2.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"nav_trans_se.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"nav_trans_nor.png"]];
     [vc2.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor] forState:UIControlStateSelected];
@@ -63,6 +64,7 @@
     vc3.title=@"文件收发";
     [vc3.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
     [vc3.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
+     [vc3.navigationBar setTintColor:[UIColor whiteColor]];
     //vc3.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemDownloads tag:0];
     [vc3.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"nav_send_se.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"nav_send_nor.png"]];
     [vc3.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor] forState:UIControlStateSelected];
@@ -73,6 +75,7 @@
     vc4.title=@"系统设置";
     [vc4.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
     [vc4.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
+     [vc4.navigationBar setTintColor:[UIColor whiteColor]];
     //vc4.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemFeatured tag:0];
     //[vc4.tabBarItem setImage:[UIImage imageNamed:@"Bt_UsercentreCh.png"]];
     [vc4.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"nav_set_se.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"nav_set_nor.png"]];
