@@ -13,6 +13,9 @@
 #import "YNFunctions.h"
 #import "PConfig.h"
 #import "MBProgressHUD.h"
+#import "LTHPasscodeViewController.h"
+#import "PasswordController.h"
+
 typedef enum{
     kAlertTypeNewVersion,
     kAlertTypeNoNewVersion,
@@ -423,14 +426,30 @@ typedef enum{
                     label.textColor = cell.textLabel.textColor;
                     label.textAlignment = NSTextAlignmentCenter;
                     label.backgroundColor = cell.textLabel.backgroundColor;
-                    if([YNFunctions isAutoUpload])
-                    {
-                        label.text = @"开启";
+                    if ([LTHPasscodeViewController passcodeExistsInKeychain]) {
+                        [LTHPasscodeViewController saveTimerStartTime];
+                        if ([LTHPasscodeViewController timerDuration] == 1)
+                        {
+                            label.text = @"关闭";
+                        }
+                        else
+                        {
+                            label.text = @"开启";
+                        }
                     }
                     else
                     {
                         label.text = @"关闭";
                     }
+                    
+//                    if([YNFunctions isAutoUpload])
+//                    {
+//                        label.text = @"开启";
+//                    }
+//                    else
+//                    {
+//                        label.text = @"关闭";
+//                    }
                     [cell addSubview:label];
                     
                     m_switch.hidden = YES;
@@ -604,10 +623,8 @@ typedef enum{
                     break;
                 case 3:
                 {
-//                    //点击照片自动备份
-//                    AutomicUploadViewController *uploadview = [[AutomicUploadViewController alloc] init];
-//                    //                    ReportViewController *viewController=[[ReportViewController alloc] initWithNibName:@"ReportViewController" bundle:nil];
-//                    [self.navigationController pushViewController:uploadview animated:YES];
+                    PasswordController *password = [[PasswordController alloc] init];
+                    [self.navigationController pushViewController:password animated:YES];
                 }
                     break;
                 default:

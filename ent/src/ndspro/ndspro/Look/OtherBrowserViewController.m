@@ -38,7 +38,12 @@
 	// Do any additional setup after loading the view.
     [self performSelector:@selector(showDoc) withObject:self afterDelay:1];
     //顶视图
-    UIView *nbar=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    float topHeigth = 20;
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        topHeigth = 0;
+    }
+    UIView *nbar=[[UIView alloc] initWithFrame:CGRectMake(0, topHeigth, self.view.frame.size.width, 44)];
     UIImageView *niv=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_Title.png"]];
     niv.frame=nbar.frame;
     [nbar addSubview:niv];
@@ -55,7 +60,7 @@
     self.titleLabel.font=[UIFont boldSystemFontOfSize:18];
     self.titleLabel.textAlignment=UITextAlignmentCenter;
     self.titleLabel.backgroundColor=[UIColor clearColor];
-    self.titleLabel.frame=CGRectMake(80, 0, 160, 44);
+    self.titleLabel.frame=CGRectMake(80, topHeigth, 160, 44);
     [nbar addSubview:self.titleLabel];
     //把色值转换成图片
     CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
@@ -71,7 +76,7 @@
     if(1)
     {
         UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
-        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
+        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, topHeigth+(44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
         [back_button addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
         [back_button setBackgroundImage:imge forState:UIControlStateHighlighted];
         [back_button setImage:back_image forState:UIControlStateNormal];

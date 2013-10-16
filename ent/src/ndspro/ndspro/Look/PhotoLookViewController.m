@@ -47,6 +47,16 @@
 @synthesize selected_id;
 @synthesize hud;
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -59,6 +69,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setNeedsStatusBarAppearanceUpdate];
     downArray = [[NSMutableArray alloc] init];
     linkManager = [[SCBLinkManager alloc] init];
     activityDic = [[NSMutableDictionary alloc] init];
