@@ -51,6 +51,10 @@
 		292B6B8D17F9659E0015669A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 292B6B8B17F9659E0015669A /* Main.storyboard */; };
 		29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29728C6E1803B226004B4724 /* SelectFileListViewController.m */; };
 		29728C711803B226004B4724 /* SelectFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29728C6F1803B226004B4724 /* SelectFileListViewController.xib */; };
+		2989A6F5180E5C7200DE2C6B /* LTHNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2989A6EE180E5C7200DE2C6B /* LTHNavigationViewController.m */; };
+		2989A6F6180E5C7200DE2C6B /* LTHPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2989A6F0180E5C7200DE2C6B /* LTHPasscodeViewController.m */; };
+		2989A6F7180E5C7200DE2C6B /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2989A6F2180E5C7200DE2C6B /* SFHFKeychainUtils.m */; };
+		2989A6F8180E5C7200DE2C6B /* PasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2989A6F4180E5C7200DE2C6B /* PasswordController.m */; };
 		29B44B13180638F40025AB61 /* SendEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B11180638F40025AB61 /* SendEmailViewController.m */; };
 		29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B12180638F40025AB61 /* SendEmailViewController.xib */; };
 		29B44B18180654320025AB61 /* UserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B16180654320025AB61 /* UserListViewController.m */; };
@@ -266,6 +270,14 @@
 		29728C6D1803B226004B4724 /* SelectFileListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFileListViewController.h; sourceTree = "<group>"; };
 		29728C6E1803B226004B4724 /* SelectFileListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFileListViewController.m; sourceTree = "<group>"; };
 		29728C6F1803B226004B4724 /* SelectFileListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectFileListViewController.xib; sourceTree = "<group>"; };
+		2989A6ED180E5C7200DE2C6B /* LTHNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHNavigationViewController.h; sourceTree = "<group>"; };
+		2989A6EE180E5C7200DE2C6B /* LTHNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHNavigationViewController.m; sourceTree = "<group>"; };
+		2989A6EF180E5C7200DE2C6B /* LTHPasscodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LTHPasscodeViewController.h; sourceTree = "<group>"; };
+		2989A6F0180E5C7200DE2C6B /* LTHPasscodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LTHPasscodeViewController.m; sourceTree = "<group>"; };
+		2989A6F1180E5C7200DE2C6B /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		2989A6F2180E5C7200DE2C6B /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		2989A6F3180E5C7200DE2C6B /* PasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordController.h; sourceTree = "<group>"; };
+		2989A6F4180E5C7200DE2C6B /* PasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordController.m; sourceTree = "<group>"; };
 		29B44B10180638F40025AB61 /* SendEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendEmailViewController.h; sourceTree = "<group>"; };
 		29B44B11180638F40025AB61 /* SendEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendEmailViewController.m; sourceTree = "<group>"; };
 		29B44B12180638F40025AB61 /* SendEmailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendEmailViewController.xib; sourceTree = "<group>"; };
@@ -678,6 +690,9 @@
 		291CCC3317F42B57005C029C /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				2989A6EC180E5C7200DE2C6B /* AddToYourProject */,
+				2989A6F3180E5C7200DE2C6B /* PasswordController.h */,
+				2989A6F4180E5C7200DE2C6B /* PasswordController.m */,
 				291CCC2817F410E2005C029C /* SettingViewController.h */,
 				291CCC2917F410E2005C029C /* SettingViewController.m */,
 				291CCC2A17F410E2005C029C /* SettingViewController.xib */,
@@ -719,6 +734,19 @@
 				29FE57CD1808D7850068DE48 /* UploadViewCell.m */,
 			);
 			name = "Download&Upload";
+			sourceTree = "<group>";
+		};
+		2989A6EC180E5C7200DE2C6B /* AddToYourProject */ = {
+			isa = PBXGroup;
+			children = (
+				2989A6ED180E5C7200DE2C6B /* LTHNavigationViewController.h */,
+				2989A6EE180E5C7200DE2C6B /* LTHNavigationViewController.m */,
+				2989A6EF180E5C7200DE2C6B /* LTHPasscodeViewController.h */,
+				2989A6F0180E5C7200DE2C6B /* LTHPasscodeViewController.m */,
+				2989A6F1180E5C7200DE2C6B /* SFHFKeychainUtils.h */,
+				2989A6F2180E5C7200DE2C6B /* SFHFKeychainUtils.m */,
+			);
+			path = AddToYourProject;
 			sourceTree = "<group>";
 		};
 		29B44B1E180795A10025AB61 /* JPushLib */ = {
@@ -1168,14 +1196,17 @@
 				29FE57681808D3210068DE48 /* DDAbstractDatabaseLogger.m in Sources */,
 				291CCBCC17F3CD17005C029C /* YNFunctions.m in Sources */,
 				29FE57C41808D7380068DE48 /* DownList.m in Sources */,
+				2989A6F5180E5C7200DE2C6B /* LTHNavigationViewController.m in Sources */,
 				29FE57701808D3210068DE48 /* NSString+Format.m in Sources */,
 				29FE57C51808D7380068DE48 /* PhotoFile.m in Sources */,
 				29FE57AE1808D66E0068DE48 /* QBImagePickerGroupCell.m in Sources */,
+				2989A6F8180E5C7200DE2C6B /* PasswordController.m in Sources */,
 				29FDD8D8180C033000FFC558 /* Reachability.m in Sources */,
 				29B44B13180638F40025AB61 /* SendEmailViewController.m in Sources */,
 				29FDF3031805281C001F545B /* EmailDetailViewController.m in Sources */,
 				29FE57CF1808D7850068DE48 /* CustomJinDu.m in Sources */,
 				29FE57B51808D66E0068DE48 /* UploadManager.m in Sources */,
+				2989A6F7180E5C7200DE2C6B /* SFHFKeychainUtils.m in Sources */,
 				290C7A041804F3FF00EF4A32 /* EmailListViewController.m in Sources */,
 				29FE57AF1808D66E0068DE48 /* QBImagePickerVideoInfoView.m in Sources */,
 				291CCC3017F411F5005C029C /* MyTabBarViewController.m in Sources */,
@@ -1203,6 +1234,7 @@
 				291CCC1117F4041D005C029C /* LoginViewController.m in Sources */,
 				29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */,
 				29FE57C71808D7380068DE48 /* UpLoadList.m in Sources */,
+				2989A6F6180E5C7200DE2C6B /* LTHPasscodeViewController.m in Sources */,
 				29FE57671808D3210068DE48 /* CustomSelectButton.m in Sources */,
 				29FE576A1808D3210068DE48 /* DDFileLogger.m in Sources */,
 				29FE579D1808D66E0068DE48 /* DownManager.m in Sources */,
