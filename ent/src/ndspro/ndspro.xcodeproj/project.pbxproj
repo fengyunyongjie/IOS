@@ -46,6 +46,13 @@
 		292B6B8D17F9659E0015669A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 292B6B8B17F9659E0015669A /* Main.storyboard */; };
 		29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29728C6E1803B226004B4724 /* SelectFileListViewController.m */; };
 		29728C711803B226004B4724 /* SelectFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29728C6F1803B226004B4724 /* SelectFileListViewController.xib */; };
+		29B2AE11180E63BE002D9D1B /* bk_nabottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0B180E63BE002D9D1B /* bk_nabottom.png */; };
+		29B2AE12180E63BE002D9D1B /* mail_unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0C180E63BE002D9D1B /* mail_unread@2x.png */; };
+		29B2AE13180E63BE002D9D1B /* title_bt_pause_nor.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0D180E63BE002D9D1B /* title_bt_pause_nor.png */; };
+		29B2AE14180E63BE002D9D1B /* title_bt_pause_se.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0E180E63BE002D9D1B /* title_bt_pause_se.png */; };
+		29B2AE15180E63BE002D9D1B /* title_bt_start_nor.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0F180E63BE002D9D1B /* title_bt_start_nor.png */; };
+		29B2AE16180E63BE002D9D1B /* title_bt_start_se.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE10180E63BE002D9D1B /* title_bt_start_se.png */; };
+		29B2AE18180E64A5002D9D1B /* mail_readed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE17180E64A5002D9D1B /* mail_readed@2x.png */; };
 		29B44B13180638F40025AB61 /* SendEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B11180638F40025AB61 /* SendEmailViewController.m */; };
 		29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B12180638F40025AB61 /* SendEmailViewController.xib */; };
 		29B44B18180654320025AB61 /* UserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B16180654320025AB61 /* UserListViewController.m */; };
@@ -253,6 +260,13 @@
 		29728C6D1803B226004B4724 /* SelectFileListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFileListViewController.h; sourceTree = "<group>"; };
 		29728C6E1803B226004B4724 /* SelectFileListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFileListViewController.m; sourceTree = "<group>"; };
 		29728C6F1803B226004B4724 /* SelectFileListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectFileListViewController.xib; sourceTree = "<group>"; };
+		29B2AE0B180E63BE002D9D1B /* bk_nabottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bk_nabottom.png; sourceTree = "<group>"; };
+		29B2AE0C180E63BE002D9D1B /* mail_unread@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mail_unread@2x.png"; sourceTree = "<group>"; };
+		29B2AE0D180E63BE002D9D1B /* title_bt_pause_nor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_bt_pause_nor.png; sourceTree = "<group>"; };
+		29B2AE0E180E63BE002D9D1B /* title_bt_pause_se.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_bt_pause_se.png; sourceTree = "<group>"; };
+		29B2AE0F180E63BE002D9D1B /* title_bt_start_nor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_bt_start_nor.png; sourceTree = "<group>"; };
+		29B2AE10180E63BE002D9D1B /* title_bt_start_se.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_bt_start_se.png; sourceTree = "<group>"; };
+		29B2AE17180E64A5002D9D1B /* mail_readed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mail_readed@2x.png"; sourceTree = "<group>"; };
 		29B44B10180638F40025AB61 /* SendEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendEmailViewController.h; sourceTree = "<group>"; };
 		29B44B11180638F40025AB61 /* SendEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendEmailViewController.m; sourceTree = "<group>"; };
 		29B44B12180638F40025AB61 /* SendEmailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendEmailViewController.xib; sourceTree = "<group>"; };
@@ -707,6 +721,13 @@
 			isa = PBXGroup;
 			children = (
 				29DF3B92180BEEE2003FEE3B /* title_bk_ti@2x.png */,
+				29B2AE0B180E63BE002D9D1B /* bk_nabottom.png */,
+				29B2AE0C180E63BE002D9D1B /* mail_unread@2x.png */,
+				29B2AE17180E64A5002D9D1B /* mail_readed@2x.png */,
+				29B2AE0D180E63BE002D9D1B /* title_bt_pause_nor.png */,
+				29B2AE0E180E63BE002D9D1B /* title_bt_pause_se.png */,
+				29B2AE0F180E63BE002D9D1B /* title_bt_start_nor.png */,
+				29B2AE10180E63BE002D9D1B /* title_bt_start_se.png */,
 				29DF3B0E180BE0FC003FEE3B /* bizfiles@2x.png */,
 				29DF3B0F180BE0FC003FEE3B /* Bk_Login.png */,
 				29DF3B10180BE0FC003FEE3B /* Bk_Login@iPhone5.png */,
@@ -1002,6 +1023,7 @@
 				29DF3B7A180BE0FC003FEE3B /* set_close@2x.png in Resources */,
 				29DF3B75180BE0FC003FEE3B /* ownerfiles@2x.png in Resources */,
 				29DF3B88180BE0FC003FEE3B /* title_menu@2x.png in Resources */,
+				29B2AE14180E63BE002D9D1B /* title_bt_pause_se.png in Resources */,
 				29DF3B69180BE0FC003FEE3B /* more_se@2x.png in Resources */,
 				29FDD8F0180C035000FFC558 /* overlay.png in Resources */,
 				29FDD8F5180C035000FFC558 /* video@2x.png in Resources */,
@@ -1012,6 +1034,7 @@
 				29DF3B83180BE0FC003FEE3B /* title_bt_sort_nor@2x.png in Resources */,
 				29DF3B63180BE0FC003FEE3B /* lock_bt_num1_se@2x.png in Resources */,
 				29DF3B53180BE0FC003FEE3B /* Bk_Start.png in Resources */,
+				29B2AE18180E64A5002D9D1B /* mail_readed@2x.png in Resources */,
 				29DF3B65180BE0FC003FEE3B /* lock_forget_nor@2x.png in Resources */,
 				29FDD8F2180C035000FFC558 /* plus.png in Resources */,
 				29DF3B5A180BE0FC003FEE3B /* download_nor@2x.png in Resources */,
@@ -1025,6 +1048,7 @@
 				29DF3B7E180BE0FC003FEE3B /* title_bk@2x.png in Resources */,
 				29FE57B01808D66E0068DE48 /* Bt_UploadCancle.png in Resources */,
 				29DF3B79180BE0FC003FEE3B /* send_se@2x.png in Resources */,
+				29B2AE15180E63BE002D9D1B /* title_bt_start_nor.png in Resources */,
 				29DF3B4F180BE0FC003FEE3B /* bizfiles@2x.png in Resources */,
 				29DF3B78180BE0FC003FEE3B /* send_nor@2x.png in Resources */,
 				29DF3B70180BE0FC003FEE3B /* nav_send_se@2x.png in Resources */,
@@ -1061,6 +1085,8 @@
 				29FDD8F4180C035000FFC558 /* video.png in Resources */,
 				29DF3B82180BE0FC003FEE3B /* title_bt_new_se@2x.png in Resources */,
 				29DF3B6E180BE0FC003FEE3B /* nav_selected@2x.png in Resources */,
+				29B2AE11180E63BE002D9D1B /* bk_nabottom.png in Resources */,
+				29B2AE16180E63BE002D9D1B /* title_bt_start_se.png in Resources */,
 				29DF3B59180BE0FC003FEE3B /* del.png in Resources */,
 				29FDD8EA180C035000FFC558 /* Bk_Title.png in Resources */,
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
@@ -1071,6 +1097,7 @@
 				29DF3B85180BE0FC003FEE3B /* title_bt_upload_nor@2x.png in Resources */,
 				29DF3B8C180BE0FC003FEE3B /* tj_nor@2x.png in Resources */,
 				29DF3B5C180BE0FC003FEE3B /* file_doc@2x.png in Resources */,
+				29B2AE12180E63BE002D9D1B /* mail_unread@2x.png in Resources */,
 				29DF3B67180BE0FC003FEE3B /* lock_num_bk.png in Resources */,
 				29DF3B8E180BE0FC003FEE3B /* zc_nor@2x.png in Resources */,
 				29DF3B6C180BE0FC003FEE3B /* nav_file_nor@2x.png in Resources */,
@@ -1091,6 +1118,7 @@
 				29DF3B6A180BE0FC003FEE3B /* move_nor@2x.png in Resources */,
 				29DF3B86180BE0FC003FEE3B /* title_bt_upload_se@2x.png in Resources */,
 				29DF3B66180BE0FC003FEE3B /* lock_forget_se@2x.png in Resources */,
+				29B2AE13180E63BE002D9D1B /* title_bt_pause_nor.png in Resources */,
 				29DF3B81180BE0FC003FEE3B /* title_bt_new_nor@2x.png in Resources */,
 				291CCC1717F4082B005C029C /* MainViewController.xib in Resources */,
 				291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */,

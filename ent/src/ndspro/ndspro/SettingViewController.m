@@ -67,14 +67,16 @@ typedef enum{
     self.space_total=@"";
     
     UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//    [exitButton setTitle:@"退出登录" forState:UIControlStateNormal];
+    [exitButton setTitle:@"退出当前帐号" forState:UIControlStateNormal];
     [exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [exitButton setBackgroundColor:[UIColor redColor]];
+    [exitButton setBackgroundColor:[UIColor clearColor]];
+//    [exitButton setImage:[UIImage imageNamed:@"set_quit_nor.png"] forState:UIControlStateNormal];
+//    [exitButton setImage:[UIImage imageNamed:@"set_quit_se.png"] forState:UIControlStateHighlighted];
     [exitButton setBackgroundImage:[UIImage imageNamed:@"set_quit_nor.png"] forState:UIControlStateNormal];
     [exitButton setBackgroundImage:[UIImage imageNamed:@"set_quit_se.png"] forState:UIControlStateHighlighted];
     int y=self.tableView.frame.size.height-30;
     y=638;
-    [exitButton setFrame:CGRectMake(12.5f, y, 295,30)];
+    [exitButton setFrame:CGRectMake(12.5f, y, 295,50)];
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
@@ -396,7 +398,10 @@ typedef enum{
         case 1:
         {
             UISwitch *m_switch = [[UISwitch alloc] initWithFrame:CGRectMake(220, 10, 40, 29)];
-            [m_switch setOnTintColor:[UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]];
+//            [m_switch setOnTintColor:[UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]];
+            if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+                m_switch.frame=CGRectMake(250, 10, 40, 29);
+            }
             [m_switch addTarget:self action:@selector(switchChange:) forControlEvents:UIControlEventValueChanged];
             m_switch.on = YES;
             switchTag = row;
