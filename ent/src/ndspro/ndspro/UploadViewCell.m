@@ -286,4 +286,56 @@
     
 }
 
+-(void)showEdit:(BOOL)bl
+{
+    if(bl)
+    {
+        [UIView animateWithDuration:0.5 animations:^{
+            float y = 40;
+            CGRect image_rect = CGRectMake(5+y, 5, 40, 40);
+            [self.imageView setFrame:image_rect];
+            
+            CGRect label_rect = CGRectMake(60+y, 5, 150, 20);
+            [self.label_name setFrame:label_rect];
+            
+            CGRect progress_rect = CGRectMake(60+y, 30, 150, 3);
+            [self.jinDuView setFrame:progress_rect];
+            
+            CGRect sizeRect = CGRectMake(220+y, 25, 70, 15);
+            [self.size_label setFrame:sizeRect];
+            
+            CGRect button_rect = CGRectMake(270+y, 0, 50, 50);
+            [self.button_dele_button setFrame:button_rect];
+            [self.button_dele_button setHidden:YES];
+            
+            CGRect start_rect = CGRectMake(270+y, 15, 40, 30);
+            [self.button_start_button setFrame:start_rect];
+            [self.button_start_button setHidden:YES];
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.5 animations:^{
+            CGRect image_rect = CGRectMake(5, 5, 40, 40);
+            [self.imageView setFrame:image_rect];
+            
+            CGRect label_rect = CGRectMake(60, 5, 150, 20);
+            [self.label_name setFrame:label_rect];
+            
+            CGRect progress_rect = CGRectMake(60, 30, 150, 3);
+            [self.jinDuView setFrame:progress_rect];
+            
+            CGRect sizeRect = CGRectMake(220, 25, 70, 15);
+            [self.size_label setFrame:sizeRect];
+            
+            CGRect button_rect = CGRectMake(270, 0, 50, 50);
+            [self.button_dele_button setFrame:button_rect];
+            [self.button_dele_button setHidden:NO];
+            
+            CGRect start_rect = CGRectMake(270, 15, 40, 30);
+            [self.button_start_button setFrame:start_rect];
+        }];
+    }
+}
+
 @end

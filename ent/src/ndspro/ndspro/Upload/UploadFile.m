@@ -38,15 +38,12 @@
 
 -(void)isNetWork
 {
-//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(list.is_autoUpload)
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.isStopUpload)
     {
-//        if(appleDate.isAutomicUpload)
-//        {
-//            return;
-//        }
-//        appleDate.isAutomicUpload = YES;
+        return;
     }
+    appleDate.isStopUpload = YES;
     if([self isConnection] == ReachableViaWiFi)
     {
         //WiFi 状态
@@ -75,8 +72,8 @@
 
 -(void)updateAutoUploadState
 {
-//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    appleDate.isAutomicUpload = FALSE;
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appleDate.isStopUpload = FALSE;
 }
 
 -(void)updateNetWork
@@ -88,18 +85,15 @@
 //2.生成目录
 -(void)catchurl
 {
-//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        [self updateNetWork];
-//        return;
-//    }
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        [self updateNetWork];
+        return;
+    }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_INFO]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-//    [request setValue:list.user_id forHTTPHeaderField:@"usr_id"];
-//    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-//    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     NSMutableString *body=[[NSMutableString alloc] init];
     [body appendFormat:@"fid=%@",list.t_url_pid];
     NSLog(@"body:%@",body);
@@ -111,19 +105,19 @@
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-//    if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        if(returnData == nil)
-//        {
-//            [delegate webServiceFail];
-//        }
-//        else
-//        {
-//            [self updateNetWork];
-//        }
-//        return;
-//    }
+    if(!returnData || appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        if(returnData == nil)
+        {
+            [delegate webServiceFail];
+        }
+        else
+        {
+            [self updateNetWork];
+        }
+        return;
+    }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
     
     NSLog(@"%@",dictionary);
@@ -141,12 +135,12 @@
 -(void)newRequestIsHaveFileWithID:(NSString *)fId
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        [self updateNetWork];
-//        return;
-//    }
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        [self updateNetWork];
+        return;
+    }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
     DDLogCInfo(@"%@",s_url);
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
@@ -165,23 +159,19 @@
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-    
-    
-    
-    
-//    if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        if(returnData == nil)
-//        {
-//            [delegate webServiceFail];
-//        }
-//        else
-//        {
-//            [self updateNetWork];
-//        }
-//        return;
-//    }
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        if(returnData == nil)
+        {
+            [delegate webServiceFail];
+        }
+        else
+        {
+            [self updateNetWork];
+        }
+        return;
+    }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"%@",dictionary);
     
@@ -232,11 +222,11 @@
 -(void)newRequestNewFold:(NSString *)name FID:(NSString *)fId
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateNetWork];
-//        return;
-//    }
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateNetWork];
+        return;
+    }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URL]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
@@ -253,18 +243,18 @@
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-//    if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        if(returnData == nil)
-//        {
-//            [delegate webServiceFail];
-//        }
-//        else
-//        {
-//            [self updateNetWork];
-//        }
-//        return;
-//    }
+    if(!returnData || appleDate.uploadmanage.isStopCurrUpload)
+    {
+        if(returnData == nil)
+        {
+            [delegate webServiceFail];
+        }
+        else
+        {
+            [self updateNetWork];
+        }
+        return;
+    }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"%@",dictionary);
     
@@ -315,17 +305,14 @@
 -(void)newRequestVerify
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        [self updateNetWork];
-//        return;
-//    }
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        [self updateNetWork];
+        return;
+    }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_VERIFY]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-    //             [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
-    //             [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
-    //             [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     NSMutableString *body=[[NSMutableString alloc] init];
     [body appendFormat:@"f_pid=%@&f_name=%@&f_size=%@&space_id=%@",list.t_url_pid,list.t_name,[NSString stringWithFormat:@"%i",list.t_lenght],list.spaceId];
     NSLog(@"body:%@",body);
@@ -342,21 +329,19 @@
     NSError *error = nil;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-    //             if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-    //             {
-    //                 [self updateAutoUploadState];
-    //                 [file_data release];
-    //                 [md5String release];
-    //                 if(returnData == nil)
-    //                 {
-    //                     [delegate webServiceFail];
-    //                 }
-    //                 else
-    //                 {
-    //                     [self updateNetWork];
-    //                 }
-    //                 return;
-    //             }
+             if(!returnData || appleDate.uploadmanage.isStopCurrUpload)
+             {
+                 [self updateAutoUploadState];
+                 if(returnData == nil)
+                 {
+                     [delegate webServiceFail];
+                 }
+                 else
+                 {
+                     [self updateNetWork];
+                 }
+                 return;
+             }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"%@",dictionary);
     
@@ -413,12 +398,12 @@
 -(void)newRequestUploadState:(NSString *)s_name
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        [self updateNetWork];
-//        return;
-//    }
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        [self updateNetWork];
+        return;
+    }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_STATE]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
@@ -436,21 +421,19 @@
     NSError *error;
     NSData *returnData = [NSURLConnection sendSynchronousRequest:request
                                                returningResponse:nil error:&error];
-//    if(!returnData || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        [file_data release];
-//        [md5String release];
-//        if(returnData == nil)
-//        {
-//            [delegate webServiceFail];
-//        }
-//        else
-//        {
-//            [self updateNetWork];
-//        }
-//        return;
-//    }
+    if(!returnData || appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        if(returnData == nil)
+        {
+            [delegate webServiceFail];
+        }
+        else
+        {
+            [self updateNetWork];
+        }
+        return;
+    }
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"%@",dictionary);
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -487,14 +470,12 @@
 -(void)comeBackNewTheadMian:(NSDictionary *)dictionary
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        [file_data release];
-//        [md5String release];
-//        [self updateNetWork];
-//        return;
-//    }
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        [self updateNetWork];
+        return;
+    }
     if([[dictionary objectForKey:@"code"] intValue] == 0)
     {
         NSLog(@"4:提交上传表单:%@",finishName);
@@ -512,15 +493,13 @@
 #pragma mark 新的上传 提交上传表单
 -(void)newRequestUploadCommit:(NSString *)fPid f_name:(NSString *)f_name s_name:(NSString *)s_name skip:(NSString *)skip space_id:(NSString *)spaceId
 {
-//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        [file_data release];
-//        [md5String release];
-//        [self updateNetWork];
-//        return;
-//    }
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        [self updateNetWork];
+        return;
+    }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
     
     NSData *returnData;
@@ -544,19 +523,19 @@
         [request setHTTPMethod:@"POST"];
         returnData = [NSURLConnection sendSynchronousRequest:request
                                            returningResponse:nil error:&error];
-//        if(returnData == nil || (list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//        {
-//            [self updateAutoUploadState];
-//            if(returnData == nil)
-//            {
-//                [delegate webServiceFail];
-//            }
-//            else
-//            {
-//                [self updateNetWork];
-//            }
-//            return;
-//        }
+        if(returnData == nil || appleDate.uploadmanage.isStopCurrUpload)
+        {
+            [self updateAutoUploadState];
+            if(returnData == nil)
+            {
+                [delegate webServiceFail];
+            }
+            else
+            {
+                [self updateNetWork];
+            }
+            return;
+        }
     }
     @catch (NSException *exception) {
         NSLog(@"exception:%@",exception);
@@ -614,14 +593,12 @@
 -(void)uploadFinish:(NSDictionary *)dictionary
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [self updateAutoUploadState];
-//        [file_data release];
-//        [md5String release];
-//        [self updateNetWork];
-//        return;
-//    }
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        [self updateNetWork];
+        return;
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         [self uploadFiles:list.t_lenght sudu:list.sudu];
         connection = nil;
@@ -638,14 +615,14 @@
 //上传文件流
 -(void)uploadFiles:(int)proress sudu:(NSInteger)sudu
 {
-//    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    if((list.is_autoUpload && appleDate.autoUpload.isStopCurrUpload && !appleDate.autoUpload.isGoOn) || (!list.is_autoUpload && appleDate.moveUpload.isStopCurrUpload))
-//    {
-//        [connection cancel];
-//        connection = nil;
-//        [self updateNetWork];
-//        return;
-//    }
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [connection cancel];
+        connection = nil;
+        [self updateNetWork];
+        return;
+    }
     [delegate upProess:proress fileTag:sudu];
 }
 

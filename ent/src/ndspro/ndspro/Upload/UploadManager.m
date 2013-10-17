@@ -320,21 +320,16 @@
 //删除一条上传
 -(void)deleteOneUpload:(NSInteger)selectIndex
 {
-    for(int i=0;i<[uploadArray count];i++)
+    if(selectIndex<[uploadArray count])
     {
-        UpLoadList *list = [uploadArray objectAtIndex:i];
-        NSLog(@"list.id:%i",list.t_id);
-        if(list.t_id == selectIndex)
+        UpLoadList *list = [uploadArray objectAtIndex:selectIndex];
+        if(selectIndex==0)
         {
-            if(i == 0)
-            {
-                isStopCurrUpload = YES;
-            }
-            [list deleteUploadList];
-            [uploadArray removeObjectAtIndex:i];
-            [self updateTable];
-            break;
+            isStopCurrUpload = YES;
         }
+        [list deleteUploadList];
+        [uploadArray removeObjectAtIndex:selectIndex];
+        [self updateTable];
     }
 }
 

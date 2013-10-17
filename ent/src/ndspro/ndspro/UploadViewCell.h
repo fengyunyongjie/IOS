@@ -46,6 +46,7 @@
 -(void)setUploadDemo:(UpLoadList *)list;
 -(void)setDownDemo:(DownList *)list;
 -(void)showTopBar;
+-(void)showEdit:(BOOL)bl;
 
 @end
 

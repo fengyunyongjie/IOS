@@ -14,7 +14,7 @@
 #import "MyTabBarViewController.h"
 
 @implementation DownManager
-@synthesize downingArray,isOpenedDown,isStart,isStopCurrDown;
+@synthesize downingArray,isOpenedDown,isStart,isStopCurrDown,file;
 
 -(id)init
 {
@@ -101,12 +101,12 @@
         DownList *list = [downingArray objectAtIndex:0];
         DDLogInfo(@"下载的文件大小:%i",list.d_downSize);
         //开始下载
-        DwonFile *file = [[DwonFile alloc] init];
-        file.fileSize = list.d_downSize;
-        file.file_id = list.d_file_id;
-        file.fileName = list.d_name;
-        file.delegate = self;
-        [file startDownload];
+        self.file = [[DwonFile alloc] init];
+        self.file.fileSize = list.d_downSize;
+        self.file.file_id = list.d_file_id;
+        self.file.fileName = list.d_name;
+        self.file.delegate = self;
+        [self.file startDownload];
     }
     if([downingArray count]==0)
     {
@@ -241,10 +241,15 @@
 }
 
 
-//暂时所有上传
+//暂时所有下载
 -(void)stopAllDown
 {
-    
+    if(self.file)
+    {
+        [self.file cancelDownload];
+    }
+    isStart = FALSE;
+    [self updateTable];
 }
 //删除一条上传
 -(void)deleteOneDown:(NSInteger)selectIndex
