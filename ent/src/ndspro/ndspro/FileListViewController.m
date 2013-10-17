@@ -65,7 +65,10 @@ typedef enum{
 }
 - (void)viewDidAppear:(BOOL)animated
 {
-    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    CGRect r=self.view.frame;
+    r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
+    self.view.frame=r;
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
     NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
     NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
 }
@@ -73,9 +76,9 @@ typedef enum{
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-//    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-//        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-//    }
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
     
     self.tableView=[[UITableView alloc] init];
     self.tableView.delegate=self;
@@ -94,12 +97,59 @@ typedef enum{
     }
 
     self.navigationItem.rightBarButtonItem=self.titleRightBtn;
+    
+    if (_refreshHeaderView==nil) {
+        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = view;
+    }
+    [_refreshHeaderView refreshLastUpdatedDate];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+#pragma mark -
+#pragma mark Data Source Loading / Reloading Methods
+
+- (void)reloadTableViewDataSource{
+	
+	//  should be calling your tableviews data source model to reload
+	//  put here just for demo
+	_reloading = YES;
+    [self updateFileList];
+}
+
+- (void)doneLoadingTableViewData{
+	
+	//  model should call this when its done loading
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+	
+}
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	
+	[self reloadTableViewDataSource];
+//	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+	
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	
+	return _reloading; // should return if data source model is reloading
+	
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
 }
 #pragma mark - 操作方法
 - (void)updateFileList
@@ -190,6 +240,7 @@ typedef enum{
             [btnUpload setHidden:YES];
             [bgView setFrame:CGRectMake(80, 0, 81, 47)];
         }
+        [self.menuView setHidden:YES];
     }
     [self.menuView setHidden:!self.menuView.hidden];
 }
@@ -297,7 +348,7 @@ typedef enum{
     }
     
     if (!self.moreEditBar) {
-        self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 49)];
+        self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
         [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
             [self.moreEditBar setBarTintColor:[UIColor blueColor]];
@@ -776,18 +827,21 @@ typedef enum{
         {
             cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
         }
+        [cell.detailTextLabel setTextColor:[UIColor grayColor]];
     }
     
     //修改accessoryType
     UIButton *accessory=[[UIButton alloc] init];
-    [accessory setFrame:CGRectMake(0, 0, 25, 25)];
+    [accessory setFrame:CGRectMake(5, 5, 40, 40)];
     [accessory setTag:indexPath.row];
-    [accessory setImage:[UIImage imageNamed:@"sel.png"] forState:UIControlStateNormal];
+    [accessory setImage:[UIImage imageNamed:@"sel_nor.png"] forState:UIControlStateNormal];
+    [accessory setImage:[UIImage imageNamed:@"sel_se.png"] forState:UIControlStateHighlighted];
     [accessory  addTarget:self action:@selector(accessoryButtonPressedAction:) forControlEvents:UIControlEventTouchUpInside];
     cell.accessoryView=accessory;
     
     if (self.listArray) {
         NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
+        cell.imageView.transform=CGAffineTransformMakeScale(1.0f,1.0f);
         if (dic) {
             cell.textLabel.text=[dic objectForKey:@"fname"];
             NSString *fisdir=[dic objectForKey:@"fisdir"];
@@ -816,7 +870,7 @@ typedef enum{
                     if ([[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
                         NSLog(@"存在文件：%@",localThumbPath);
                         UIImage *icon=[UIImage imageWithContentsOfFile:localThumbPath];
-                        CGSize itemSize = CGSizeMake(100, 100);
+                        CGSize itemSize = CGSizeMake(80, 80);
                         UIGraphicsBeginImageContext(itemSize);
                         CGRect theR=CGRectMake(0, 0, itemSize.width, itemSize.height);
                         if (icon.size.width>icon.size.height) {
@@ -827,7 +881,7 @@ typedef enum{
                             theR.size.height=icon.size.height/(icon.size.width/itemSize.width);
                             theR.origin.y=-(theR.size.height/2)-itemSize.height;
                         }
-                        CGRect imageRect = CGRectMake(2, 2, 96, 96);
+                        CGRect imageRect = CGRectMake(0, 0, 80, 80);
 //                        CGSize size=icon.size;
 //                        if (size.width>size.height) {
 //                            imageRect.size.height=size.height*(30.0f/imageRect.size.width);
@@ -840,9 +894,10 @@ typedef enum{
                         UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
                         UIGraphicsEndImageContext();
                         cell.imageView.image = image;
-                        CGRect r=cell.imageView.frame;
-                        r.size.width=r.size.height=30;
-                        cell.imageView.frame=r;
+//                        CGRect r=cell.imageView.frame;
+//                        r.size.width=r.size.height=30;
+//                        cell.imageView.frame=r;
+                        cell.imageView.transform=CGAffineTransformMakeScale(0.5f,0.5f);
 
                     }else{
                         NSLog(@"将要下载的文件：%@",localThumbPath);
@@ -1101,6 +1156,7 @@ typedef enum{
     if (self.dataDic) {
         self.listArray=self.listArray=(NSArray *)[self.dataDic objectForKey:@"files"];
         if (self.listArray) {
+            [self doneLoadingTableViewData];
             [self.tableView reloadData];
         }
         NSString *dataFilePath=[YNFunctions getDataCachePath];
@@ -1251,6 +1307,11 @@ typedef enum{
     [self operateUpdate];
 }
 #pragma mark - Deferred image loading (UIScrollViewDelegate)
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+}
 
 // Load images for all onscreen rows when scrolling is finished
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -1267,6 +1328,7 @@ typedef enum{
 //        }
         [self loadImagesForOnscreenRows];
     }
+    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -1491,9 +1553,17 @@ typedef enum{
             sevc.title=@"新邮件";
             if (self.tableView.isEditing) {
                 sevc.fids=[self selectedIDs];
+                NSMutableArray *fileDatas=[NSMutableArray array];
+                NSArray *indexs=[self selectedIndexPaths];
+                for (NSIndexPath *indexpath in indexs) {
+                    NSDictionary *dic=[self.listArray objectAtIndex:indexpath.row];
+                    [fileDatas addObject:dic];
+                }
+                sevc.fileArray=fileDatas;
             }else
             {
                 sevc.fids=@[fid];
+                sevc.fileArray=@[dic];
             }
             if (buttonIndex==0) {
                 //站内发送
@@ -1503,7 +1573,9 @@ typedef enum{
                 //站外发送
                 sevc.tyle=kTypeSendEx;
             }else
-            {return;}
+            {
+                return;
+            }
             UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:sevc];
             [self presentViewController:nav animated:YES completion:nil];
         }

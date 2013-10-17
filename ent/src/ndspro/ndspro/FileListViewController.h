@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "QBImagePickerController.h"
+#import "EGORefreshTableHeaderView.h"
 
 typedef enum {
     kMyndsTypeDefault,
@@ -20,7 +21,11 @@ typedef enum {
     kMyndsTypeMyShareSearch,
     kMyndsTypeShareSearch,
 } FileListType;
-@interface FileListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate>
+@interface FileListViewController : UIViewController<EGORefreshTableHeaderDelegate,UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate>
+{
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _reloading;
+}
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSArray *finderArray;

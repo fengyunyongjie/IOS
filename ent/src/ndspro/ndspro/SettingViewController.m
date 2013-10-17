@@ -81,6 +81,7 @@ typedef enum{
     y=638;
     [exitButton setFrame:CGRectMake(12.5f, y, 295,50)];
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
+    [exitButton setTag:10000];
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
 
@@ -184,37 +185,17 @@ typedef enum{
             NSLog(@"打开或关闭仅Wifi:: %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"]);
         }
             break;
-        case 3:
+        case 2:
         {
             UISwitch *theSwith = (UISwitch *)sender;
-            NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
-            if (![YNFunctions isOnlyWifi] && ![YNFunctions isAutoUpload]) {
-                //                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                //                                                                    message:@"这可能会产生流量费用，您是否要继续？"
-                //                                                                   delegate:self
-                //                                                          cancelButtonTitle:@"取消"
-                //                                                          otherButtonTitles:@"继续", nil];
-                //                alertView.tag=kAlertTypeAuto;
-                //                [alertView show];
-                //                [alertView release];
-                UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"这可能会产生流量费用，您是否要继续？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"继续" otherButtonTitles: nil];
-                [actionSheet setTag:kActionSheetTypeAuto];
-                [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-                [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+            if (theSwith.on) {
+                //开启消息提醒
+                NSLog(@"开启消息提醒");
             }else
             {
-                [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
-                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                if([onStr isEqualToString:@"0"])
-                {
-//                    [appleDate.maticUpload colseAutomaticUpload];
-                }
-                else
-                {
-//                    [appleDate.maticUpload startAutomaticUpload];
-                }
+                NSLog(@"关闭消息提醒");
             }
-            NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
+            [YNFunctions setIsMessageAlert:theSwith.on];
         }
             break;
         default:
@@ -261,19 +242,19 @@ typedef enum{
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	
-    switch (section) {
-        case 0:
-            return @"账号信息";
-            break;
-        case 1:
-            return @"设置";
-            break;
-        case 2:
-            return @"关于";
-            break;
-        default:
-            break;
-    }
+//    switch (section) {
+//        case 0:
+//            return @"账号信息";
+//            break;
+//        case 1:
+//            return @"设置";
+//            break;
+//        case 2:
+//            return @"关于";
+//            break;
+//        default:
+//            break;
+//    }
 	return nil;
     
 }
@@ -494,39 +475,24 @@ typedef enum{
                     break;
                 case 1:
                 {
-                    titleLabel.text = @"缓存占用";
+                    titleLabel.text = @"清除缓存";
                     descLabel.hidden = NO;
                     NSString *sizeStr = [NSString stringWithFormat:@"%f",locationCacheSize];
                     descLabel.text = [YNFunctions convertSize:sizeStr];
                     descLabel.textColor = [UIColor grayColor];
-                    
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     m_switch.hidden = YES;
                 }
                     
                     break;
                 case 2:
-                    
-                    
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     descLabel.hidden = YES;
-                    m_switch.hidden = YES;
-                    titleLabel.text = @"清除缓存";
+                    m_switch.hidden = NO;
+                    titleLabel.text = @"消息提醒";
+                    m_switch.on=[YNFunctions isMessageAlert];
                     break;
-                    /*       case 1:
-                     titleLabel.text = @"更新照片时自动上传";
-                     break;
-                     case 2:
-                     titleLabel.text = @"自动共享";
-                     m_switch.on = NO;
-                     break;
-                     case 3:
-                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-                     titleLabel.text = @"选择自动共享目录";
-                     m_switch.hidden = YES;
-                     break;
-                     */
                 default:
                     break;
             }
@@ -571,7 +537,14 @@ typedef enum{
             break;
             
         case 3:
+        {
             cell.hidden = YES;
+            //重设退出安钮位置
+            UIButton *exitButton=(UIButton *)[self.tableView viewWithTag:10000];
+            CGRect r=exitButton.frame;
+            r.origin.y=self.tableView.contentSize.height-80;
+            exitButton.frame=r;
+        }
             break;
         default:
             break;
@@ -616,13 +589,13 @@ typedef enum{
                     
                 }
                     break;
-                case 1:
+                case 2:
                 {
                     //缓存占用
                 }
                     
                     break;
-                case 2:
+                case 1:
                     //清除缓存
                     [self clearCache];
                     break;

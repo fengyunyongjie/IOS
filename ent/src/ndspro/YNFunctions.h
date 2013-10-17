@@ -36,6 +36,8 @@
 #pragma mark --------获取是否仅Wifi上传下载
 +(BOOL)isOnlyWifi;
 +(void)setIsOnlyWifi:(BOOL)value;
++(BOOL)isMessageAlert;
++(void)setIsMessageAlert:(BOOL)value;
 #pragma mark --------获取是否打开自动上传照片
 +(BOOL)isAutoUpload;
 +(void)setIsAutoUpload:(BOOL)value;

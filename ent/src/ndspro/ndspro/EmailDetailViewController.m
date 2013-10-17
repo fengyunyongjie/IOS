@@ -190,6 +190,10 @@
 //            cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
 //        }
     }
+    cell.textLabel.text=@"";
+    cell.detailTextLabel.text=@"";
+    [cell.detailTextLabel setTextColor:[UIColor grayColor]];
+    cell.imageView.image=nil;
     if (self.dataDic) {
         NSDictionary *dic=[self.dataDic objectForKey:@"email"];
         switch (indexPath.section) {
@@ -204,6 +208,9 @@
             case 2:
 //                return @"标题：";
                 cell.textLabel.text=[dic objectForKey:@"etitle"];
+                if ([cell.textLabel.text isEqualToString:@""]) {
+                    cell.textLabel.text=@"无主题";
+                }
                 break;
             case 3:
 //                return @"时间：";
@@ -235,12 +242,12 @@
                         //NSString *fisdir=[dic objectForKey:@"fisdir"];
                         long fsize=[[dic objectForKey:@"fsize"] longValue];
                         if (fsize==0) {
-                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
+//                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
                             cell.imageView.image=[UIImage imageNamed:@"file_folder.png"];
                         }else
                         {
                             cell.imageView.image=[UIImage imageNamed:@"file_other.png"];
-                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
+                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
                             NSString *fname=[dic objectForKey:@"fname"];
                             NSString *fmime=[[fname pathExtension] lowercaseString];
                             //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];

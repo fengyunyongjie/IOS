@@ -35,6 +35,9 @@
     self.tableView.dataSource=self;
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    if (self.type==kTypeCommit||self.type==kTypeResave) {
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(dissmissSelf:)]];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -66,6 +69,10 @@
     self.fm=[[SCBFileManager alloc] init];
     [self.fm setDelegate:self];
     [self.fm authorMenus];
+}
+-(void)dissmissSelf:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:Nil];
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

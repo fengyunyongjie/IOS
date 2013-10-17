@@ -65,6 +65,25 @@
 		29B2AE24180E8CC9002D9D1B /* bk_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE22180E8CC9002D9D1B /* bk_select.png */; };
 		29B2AE25180E8CC9002D9D1B /* bk_selectTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE23180E8CC9002D9D1B /* bk_selectTop.png */; };
 		29B2AE27180E9606002D9D1B /* sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE26180E9606002D9D1B /* sel@2x.png */; };
+		29B2AE36180F7E1A002D9D1B /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2AE2C180F7E1A002D9D1B /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		29B2AE37180F7E1A002D9D1B /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE2E180F7E1A002D9D1B /* blackArrow.png */; };
+		29B2AE38180F7E1A002D9D1B /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE2F180F7E1A002D9D1B /* blackArrow@2x.png */; };
+		29B2AE39180F7E1A002D9D1B /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE30180F7E1A002D9D1B /* blueArrow.png */; };
+		29B2AE3A180F7E1A002D9D1B /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE31180F7E1A002D9D1B /* blueArrow@2x.png */; };
+		29B2AE3B180F7E1A002D9D1B /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE32180F7E1A002D9D1B /* grayArrow.png */; };
+		29B2AE3C180F7E1A002D9D1B /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE33180F7E1A002D9D1B /* grayArrow@2x.png */; };
+		29B2AE3D180F7E1A002D9D1B /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE34180F7E1A002D9D1B /* whiteArrow.png */; };
+		29B2AE3E180F7E1A002D9D1B /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE35180F7E1A002D9D1B /* whiteArrow@2x.png */; };
+		29B2AE49180FE3A4002D9D1B /* guide_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE3F180FE3A4002D9D1B /* guide_1.png */; };
+		29B2AE4A180FE3A4002D9D1B /* guide_1@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE40180FE3A4002D9D1B /* guide_1@iPhone5.png */; };
+		29B2AE4B180FE3A4002D9D1B /* guide_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE41180FE3A4002D9D1B /* guide_2.png */; };
+		29B2AE4C180FE3A4002D9D1B /* guide_2@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE42180FE3A4002D9D1B /* guide_2@iPhone5.png */; };
+		29B2AE4D180FE3A4002D9D1B /* guide_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE43180FE3A4002D9D1B /* guide_3.png */; };
+		29B2AE4E180FE3A4002D9D1B /* guide_3@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE44180FE3A4002D9D1B /* guide_3@iPhone5.png */; };
+		29B2AE4F180FE3A4002D9D1B /* mail_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE45180FE3A4002D9D1B /* mail_unread.png */; };
+		29B2AE50180FE3A4002D9D1B /* sel_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE46180FE3A4002D9D1B /* sel_nor@2x.png */; };
+		29B2AE51180FE3A4002D9D1B /* sel_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE47180FE3A4002D9D1B /* sel_se@2x.png */; };
+		29B2AE52180FE3A4002D9D1B /* title_menu2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE48180FE3A4002D9D1B /* title_menu2@2x.png */; };
 		29B44B13180638F40025AB61 /* SendEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B11180638F40025AB61 /* SendEmailViewController.m */; };
 		29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B12180638F40025AB61 /* SendEmailViewController.xib */; };
 		29B44B18180654320025AB61 /* UserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B16180654320025AB61 /* UserListViewController.m */; };
@@ -298,6 +317,26 @@
 		29B2AE22180E8CC9002D9D1B /* bk_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bk_select.png; sourceTree = "<group>"; };
 		29B2AE23180E8CC9002D9D1B /* bk_selectTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bk_selectTop.png; sourceTree = "<group>"; };
 		29B2AE26180E9606002D9D1B /* sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sel@2x.png"; sourceTree = "<group>"; };
+		29B2AE2B180F7E1A002D9D1B /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		29B2AE2C180F7E1A002D9D1B /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		29B2AE2E180F7E1A002D9D1B /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
+		29B2AE2F180F7E1A002D9D1B /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
+		29B2AE30180F7E1A002D9D1B /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
+		29B2AE31180F7E1A002D9D1B /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
+		29B2AE32180F7E1A002D9D1B /* grayArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayArrow.png; sourceTree = "<group>"; };
+		29B2AE33180F7E1A002D9D1B /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
+		29B2AE34180F7E1A002D9D1B /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
+		29B2AE35180F7E1A002D9D1B /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
+		29B2AE3F180FE3A4002D9D1B /* guide_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guide_1.png; sourceTree = "<group>"; };
+		29B2AE40180FE3A4002D9D1B /* guide_1@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide_1@iPhone5.png"; sourceTree = "<group>"; };
+		29B2AE41180FE3A4002D9D1B /* guide_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guide_2.png; sourceTree = "<group>"; };
+		29B2AE42180FE3A4002D9D1B /* guide_2@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide_2@iPhone5.png"; sourceTree = "<group>"; };
+		29B2AE43180FE3A4002D9D1B /* guide_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guide_3.png; sourceTree = "<group>"; };
+		29B2AE44180FE3A4002D9D1B /* guide_3@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide_3@iPhone5.png"; sourceTree = "<group>"; };
+		29B2AE45180FE3A4002D9D1B /* mail_unread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mail_unread.png; sourceTree = "<group>"; };
+		29B2AE46180FE3A4002D9D1B /* sel_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sel_nor@2x.png"; sourceTree = "<group>"; };
+		29B2AE47180FE3A4002D9D1B /* sel_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sel_se@2x.png"; sourceTree = "<group>"; };
+		29B2AE48180FE3A4002D9D1B /* title_menu2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_menu2@2x.png"; sourceTree = "<group>"; };
 		29B44B10180638F40025AB61 /* SendEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendEmailViewController.h; sourceTree = "<group>"; };
 		29B44B11180638F40025AB61 /* SendEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendEmailViewController.m; sourceTree = "<group>"; };
 		29B44B12180638F40025AB61 /* SendEmailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendEmailViewController.xib; sourceTree = "<group>"; };
@@ -622,6 +661,7 @@
 		291CCB6B17F3B9A7005C029C /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				29B2AE28180F7E1A002D9D1B /* EGOTableViewPullRefresh */,
 				29B44B1E180795A10025AB61 /* JPushLib */,
 				291CCC2417F40D05005C029C /* MBProgressHUD */,
 				291CCBD217F3CDB4005C029C /* Reachability */,
@@ -769,6 +809,47 @@
 			path = AddToYourProject;
 			sourceTree = "<group>";
 		};
+		29B2AE28180F7E1A002D9D1B /* EGOTableViewPullRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				29B2AE29180F7E1A002D9D1B /* Classes */,
+				29B2AE2D180F7E1A002D9D1B /* Resources */,
+			);
+			path = EGOTableViewPullRefresh;
+			sourceTree = "<group>";
+		};
+		29B2AE29180F7E1A002D9D1B /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				29B2AE2A180F7E1A002D9D1B /* View */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		29B2AE2A180F7E1A002D9D1B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				29B2AE2B180F7E1A002D9D1B /* EGORefreshTableHeaderView.h */,
+				29B2AE2C180F7E1A002D9D1B /* EGORefreshTableHeaderView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		29B2AE2D180F7E1A002D9D1B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				29B2AE2E180F7E1A002D9D1B /* blackArrow.png */,
+				29B2AE2F180F7E1A002D9D1B /* blackArrow@2x.png */,
+				29B2AE30180F7E1A002D9D1B /* blueArrow.png */,
+				29B2AE31180F7E1A002D9D1B /* blueArrow@2x.png */,
+				29B2AE32180F7E1A002D9D1B /* grayArrow.png */,
+				29B2AE33180F7E1A002D9D1B /* grayArrow@2x.png */,
+				29B2AE34180F7E1A002D9D1B /* whiteArrow.png */,
+				29B2AE35180F7E1A002D9D1B /* whiteArrow@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		29B44B1E180795A10025AB61 /* JPushLib */ = {
 			isa = PBXGroup;
 			children = (
@@ -783,6 +864,16 @@
 		29B44B87180807330025AB61 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				29B2AE3F180FE3A4002D9D1B /* guide_1.png */,
+				29B2AE40180FE3A4002D9D1B /* guide_1@iPhone5.png */,
+				29B2AE41180FE3A4002D9D1B /* guide_2.png */,
+				29B2AE42180FE3A4002D9D1B /* guide_2@iPhone5.png */,
+				29B2AE43180FE3A4002D9D1B /* guide_3.png */,
+				29B2AE44180FE3A4002D9D1B /* guide_3@iPhone5.png */,
+				29B2AE45180FE3A4002D9D1B /* mail_unread.png */,
+				29B2AE46180FE3A4002D9D1B /* sel_nor@2x.png */,
+				29B2AE47180FE3A4002D9D1B /* sel_se@2x.png */,
+				29B2AE48180FE3A4002D9D1B /* title_menu2@2x.png */,
 				29B2AE26180E9606002D9D1B /* sel@2x.png */,
 				29B2AE22180E8CC9002D9D1B /* bk_select.png */,
 				29B2AE23180E8CC9002D9D1B /* bk_selectTop.png */,
@@ -1088,6 +1179,7 @@
 				29DF3B7A180BE0FC003FEE3B /* set_close@2x.png in Resources */,
 				29DF3B75180BE0FC003FEE3B /* ownerfiles@2x.png in Resources */,
 				29DF3B88180BE0FC003FEE3B /* title_menu@2x.png in Resources */,
+				29B2AE3B180F7E1A002D9D1B /* grayArrow.png in Resources */,
 				29B2AE14180E63BE002D9D1B /* title_bt_pause_se.png in Resources */,
 				29DF3B69180BE0FC003FEE3B /* more_se@2x.png in Resources */,
 				29FDD8F0180C035000FFC558 /* overlay.png in Resources */,
@@ -1098,6 +1190,7 @@
 				29DF3B89180BE0FC003FEE3B /* title_menu4@2x.png in Resources */,
 				29DF3B83180BE0FC003FEE3B /* title_bt_sort_nor@2x.png in Resources */,
 				29DF3B63180BE0FC003FEE3B /* lock_bt_num1_se@2x.png in Resources */,
+				29B2AE39180F7E1A002D9D1B /* blueArrow.png in Resources */,
 				29DF3B53180BE0FC003FEE3B /* Bk_Start.png in Resources */,
 				29B2AE24180E8CC9002D9D1B /* bk_select.png in Resources */,
 				29B2AE18180E64A5002D9D1B /* mail_readed@2x.png in Resources */,
@@ -1110,6 +1203,7 @@
 				29DF3B57180BE0FC003FEE3B /* del_nor@2x.png in Resources */,
 				29DF3B6D180BE0FC003FEE3B /* nav_file_se@2x.png in Resources */,
 				29DF3B68180BE0FC003FEE3B /* more_nor@2x.png in Resources */,
+				29B2AE4C180FE3A4002D9D1B /* guide_2@iPhone5.png in Resources */,
 				29DF3B7E180BE0FC003FEE3B /* title_bk@2x.png in Resources */,
 				29FE57B01808D66E0068DE48 /* Bt_UploadCancle.png in Resources */,
 				29DF3B79180BE0FC003FEE3B /* send_se@2x.png in Resources */,
@@ -1127,9 +1221,11 @@
 				29DF3B6B180BE0FC003FEE3B /* move_se@2x.png in Resources */,
 				29FDD8F3180C035000FFC558 /* plus@2x.png in Resources */,
 				29FDD8EB180C035000FFC558 /* Bt_Back.png in Resources */,
+				29B2AE4B180FE3A4002D9D1B /* guide_2.png in Resources */,
 				291CCC1217F4041D005C029C /* LoginViewController.xib in Resources */,
 				29DF3B7C180BE0FC003FEE3B /* set_quit_nor@2x.png in Resources */,
 				29DF3B84180BE0FC003FEE3B /* title_bt_sort_se@2x.png in Resources */,
+				29B2AE4D180FE3A4002D9D1B /* guide_3.png in Resources */,
 				2902B134180D5B5B00AF04DA /* OtherBrowser.xib in Resources */,
 				29DF3B8F180BE0FC003FEE3B /* zc_se@2x.png in Resources */,
 				29FDD8EE180C035000FFC558 /* minus.png in Resources */,
@@ -1138,6 +1234,7 @@
 				29DF3B8B180BE0FC003FEE3B /* title_se@2x.png in Resources */,
 				29B44B19180654320025AB61 /* UserListViewController.xib in Resources */,
 				29DF3B72180BE0FC003FEE3B /* nav_set_se@2x.png in Resources */,
+				29B2AE4E180FE3A4002D9D1B /* guide_3@iPhone5.png in Resources */,
 				29B2AE27180E9606002D9D1B /* sel@2x.png in Resources */,
 				29B2AE25180E8CC9002D9D1B /* bk_selectTop.png in Resources */,
 				29DF3B55180BE0FC003FEE3B /* Bt_LoginClick.png in Resources */,
@@ -1149,18 +1246,26 @@
 				292B6B8D17F9659E0015669A /* Main.storyboard in Resources */,
 				29DF3B54180BE0FC003FEE3B /* Bk_Start@iPhone5.png in Resources */,
 				29DF3B77180BE0FC003FEE3B /* rename_se@2x.png in Resources */,
+				29B2AE37180F7E1A002D9D1B /* blackArrow.png in Resources */,
 				291CCB4E17F27F99005C029C /* Images.xcassets in Resources */,
 				29FDD8F4180C035000FFC558 /* video.png in Resources */,
+				29B2AE52180FE3A4002D9D1B /* title_menu2@2x.png in Resources */,
 				29DF3B82180BE0FC003FEE3B /* title_bt_new_se@2x.png in Resources */,
 				29DF3B6E180BE0FC003FEE3B /* nav_selected@2x.png in Resources */,
 				29B2AE11180E63BE002D9D1B /* bk_nabottom.png in Resources */,
 				29B2AE16180E63BE002D9D1B /* title_bt_start_se.png in Resources */,
+				29B2AE51180FE3A4002D9D1B /* sel_se@2x.png in Resources */,
+				29B2AE49180FE3A4002D9D1B /* guide_1.png in Resources */,
+				29B2AE3C180F7E1A002D9D1B /* grayArrow@2x.png in Resources */,
+				29B2AE50180FE3A4002D9D1B /* sel_nor@2x.png in Resources */,
 				29DF3B59180BE0FC003FEE3B /* del.png in Resources */,
 				29FDD8EA180C035000FFC558 /* Bk_Title.png in Resources */,
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
 				29DF3B5B180BE0FC003FEE3B /* download_se@2x.png in Resources */,
 				29DF3B64180BE0FC003FEE3B /* lock_bt_other_nor@2x.png in Resources */,
 				29DF3B93180BEEE2003FEE3B /* title_bk_ti@2x.png in Resources */,
+				29B2AE3D180F7E1A002D9D1B /* whiteArrow.png in Resources */,
+				29B2AE3A180F7E1A002D9D1B /* blueArrow@2x.png in Resources */,
 				29FE57B21808D66E0068DE48 /* Bt_UploadOk.png in Resources */,
 				29DF3B85180BE0FC003FEE3B /* title_bt_upload_nor@2x.png in Resources */,
 				29DF3B8C180BE0FC003FEE3B /* tj_nor@2x.png in Resources */,
@@ -1173,13 +1278,17 @@
 				29FE57B11808D66E0068DE48 /* Bt_UploadCancleCh.png in Resources */,
 				29FDD8EF180C035000FFC558 /* minus@2x.png in Resources */,
 				29DF3B8D180BE0FC003FEE3B /* tj_se@2x.png in Resources */,
+				29B2AE4F180FE3A4002D9D1B /* mail_unread.png in Resources */,
 				29B44B2D180797950025AB61 /* PushConfig.plist in Resources */,
 				29DF3B51180BE0FC003FEE3B /* Bk_Login@iPhone5.png in Resources */,
 				29DF3B7B180BE0FC003FEE3B /* set_open@2x.png in Resources */,
 				290C7A051804F3FF00EF4A32 /* EmailListViewController.xib in Resources */,
 				29DF3B76180BE0FC003FEE3B /* rename_nor@2x.png in Resources */,
+				29B2AE4A180FE3A4002D9D1B /* guide_1@iPhone5.png in Resources */,
 				29FDD8ED180C035000FFC558 /* Bt_SelectFolder.png in Resources */,
+				29B2AE3E180F7E1A002D9D1B /* whiteArrow@2x.png in Resources */,
 				29FE576F1808D3210068DE48 /* README.txt in Resources */,
+				29B2AE38180F7E1A002D9D1B /* blackArrow@2x.png in Resources */,
 				29DF3B5F180BE0FC003FEE3B /* file_music@2x.png in Resources */,
 				29DF3B7F180BE0FC003FEE3B /* title_bt_edit_nor@2x.png in Resources */,
 				29DF3B52180BE0FC003FEE3B /* bk_nav@2x.png in Resources */,
@@ -1269,6 +1378,7 @@
 				290C79FF1804E16900EF4A32 /* SCBEmailManager.m in Sources */,
 				291CCB4217F27F99005C029C /* main.m in Sources */,
 				29FE576D1808D3210068DE48 /* ContextFilterLogFormatter.m in Sources */,
+				29B2AE36180F7E1A002D9D1B /* EGORefreshTableHeaderView.m in Sources */,
 				29FE57D01808D7850068DE48 /* UploadViewCell.m in Sources */,
 				2902B135180D5B5B00AF04DA /* OtherBrowserViewController.m in Sources */,
 				291CCC1117F4041D005C029C /* LoginViewController.m in Sources */,

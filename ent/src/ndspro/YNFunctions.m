@@ -269,6 +269,20 @@ static BOOL h_f=NO;
     NSString *strValue = [NSString stringWithFormat:@"%d",value];
     [[NSUserDefaults standardUserDefaults] setObject:strValue forKey:@"switch_flag"];
 }
+#pragma mark --------获取是否打开消息提醒
++(BOOL)isMessageAlert
+{
+    NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"isMessageAlert"];
+    if (value==nil) {
+        return YES;
+    }
+    return [value boolValue];
+}
++(void)setIsMessageAlert:(BOOL)value
+{
+    NSString *strValue = [NSString stringWithFormat:@"%d",value];
+    [[NSUserDefaults standardUserDefaults] setObject:strValue forKey:@"isMessageAlert"];
+}
 #pragma mark --------获取是否打开自动上传照片
 +(BOOL)isAutoUpload
 {

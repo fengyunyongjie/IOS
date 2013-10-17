@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "EGORefreshTableHeaderView.h"
 
-@interface EmailListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface EmailListViewController : UIViewController<EGORefreshTableHeaderDelegate,UITableViewDataSource,UITableViewDelegate>
+{
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _reloading;
+}
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *inArray;
 @property (strong,nonatomic) NSArray *outArray;

@@ -195,7 +195,11 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
     NSString *desc=[YNFunctions getDesc];
-    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,desc,@"desc"];
+    NSString *order=@"asc";
+    if ([desc isEqualToString:@"time"]) {
+        order=@"desc";
+    }
+    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,desc,order];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -220,7 +224,11 @@
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
     NSMutableString *body=[[NSMutableString alloc] init];
     NSString *desc=[YNFunctions getDesc];
-    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,desc,@"desc"];
+    NSString *order=@"asc";
+    if ([desc isEqualToString:@"time"]) {
+        order=@"desc";
+    }
+    [body appendFormat:@"fpid=%@&cursor=%d&offset=%d&spid=%@&order=%@&desc=%@",f_id,0,0,s_id,desc,order];
     NSLog(@"%@",body);
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];

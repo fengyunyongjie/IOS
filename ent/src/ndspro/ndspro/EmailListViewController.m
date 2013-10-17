@@ -31,11 +31,17 @@
 }
 - (void)viewDidAppear:(BOOL)animated
 {
-    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    CGRect r=self.view.frame;
+    r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
+    self.view.frame=r;
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
     // Do any additional setup after loading the view from its nib.
     self.tableView=[[UITableView alloc] init];
     self.tableView.delegate=self;
@@ -48,6 +54,14 @@
     [self.segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     [self.navigationItem setTitleView:self.segmentedControl];
     [self.segmentedControl setSelectedSegmentIndex:0];
+    
+    if (_refreshHeaderView==nil) {
+        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = view;
+    }
+    [_refreshHeaderView refreshLastUpdatedDate];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -57,6 +71,45 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+#pragma mark -
+#pragma mark Data Source Loading / Reloading Methods
+
+- (void)reloadTableViewDataSource{
+	
+	//  should be calling your tableviews data source model to reload
+	//  put here just for demo
+	_reloading = YES;
+    [self updateEmailList];
+}
+
+- (void)doneLoadingTableViewData{
+	
+	//  model should call this when its done loading
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+	
+}
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	
+	[self reloadTableViewDataSource];
+    //	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+	
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	
+	return _reloading; // should return if data source model is reloading
+	
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
 }
 #pragma mark - 操作方法
 - (void)updateEmailList
@@ -97,6 +150,12 @@
     self.em=nil;
     self.em=[[SCBEmailManager alloc] init];
     [self.em setDelegate:self];
+//    if (self.segmentedControl.selectedSegmentIndex==0) {
+//        [self.em listEmailWithType:@"0"];
+//    }else
+//    {
+//        [self.em listEmailWithType:@"1"];
+//    }
     [self.em listEmailWithType:@"2"];
 }
 -(void)segmentAction:(UISegmentedControl *)seg
@@ -128,113 +187,104 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
         
-//        NSString *osVersion = [[UIDevice currentDevice] systemVersion];
-//        NSString *versionWithoutRotation = @"7.0";
-//        BOOL noRotationNeeded = ([versionWithoutRotation compare:osVersion options:NSNumericSearch]
-//                                 != NSOrderedDescending);
-//        if (noRotationNeeded) {
-//            cell.accessoryType=UITableViewCellAccessoryDetailButton;
-//        }else
-//        {
-//            cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
-//        }
+        UIImageView *unread_tag=[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 10, 10)];
+        UILabel *lab_role=[[UILabel alloc] initWithFrame:CGRectMake(30, 4, 150, 21)];
+        UILabel *lab_title=[[UILabel alloc] initWithFrame:CGRectMake(30, 24, 150, 21)];
+        UILabel *lab_time=[[UILabel alloc] initWithFrame:CGRectMake(190, 4, 130, 21)];
+        UILabel *lab_econtent=[[UILabel alloc] initWithFrame:CGRectMake(30, 44, 270, 55)];
+        [cell.contentView addSubview:lab_role];
+        [cell.contentView addSubview:lab_title];
+        [cell.contentView addSubview:lab_time];
+        [cell.contentView addSubview:lab_econtent];
+        [cell.contentView addSubview:unread_tag];
+        
+        [lab_role setFont:[UIFont boldSystemFontOfSize:16]];
+        [lab_title setFont:[UIFont systemFontOfSize:14]];
+        [lab_econtent setFont:[UIFont systemFontOfSize:14]];
+        [lab_time setFont:[UIFont systemFontOfSize:13]];
+        
+        [lab_econtent setTextColor:[UIColor grayColor]];
+        [lab_time setTextColor:[UIColor grayColor]];
+        
+        [lab_econtent setNumberOfLines:0];
+        
+        
+        
+        
+        unread_tag.tag=1;
+        lab_role.tag=2;
+        lab_title.tag=3;
+        lab_time.tag=4;
+        lab_econtent.tag=5;
     }
+    UIImageView *unread_tag=(UIImageView *)[cell.contentView viewWithTag:1];
+    UILabel *lab_role=(UILabel *)[cell.contentView viewWithTag:2];
+    UILabel *lab_title=(UILabel *)[cell.contentView viewWithTag:3];
+    UILabel *lab_time=(UILabel *)[cell.contentView viewWithTag:4];
+    UILabel *lab_econtent=(UILabel *)[cell.contentView viewWithTag:5];
     NSDictionary *dic;
     if (self.segmentedControl.selectedSegmentIndex==0) {
         //收件箱
         if (self.inArray) {
             dic=[self.inArray objectAtIndex:indexPath.row];
+            if (dic) {
+                NSString *sender=(NSString *)[dic objectForKey:@"sender"];
+                 if (![sender isKindOfClass:NSClassFromString(@"NSNull")]) {
+                    lab_role.text=sender;
+                }else
+                {
+                    lab_role.text=@"";
+                }
+                
+            }
         }
     }else
     {
         //发件箱
         if (self.outArray) {
             dic=[self.outArray objectAtIndex:indexPath.row];
+            if (dic) {
+                NSString *sender=(NSString *)[dic objectForKey:@"receivelist"];
+                if (![sender isKindOfClass:NSClassFromString(@"NSNull")]) {
+                    lab_role.text=sender;
+                }else
+                {
+                    lab_role.text=@"";
+                }
+            }
         }
     }
     if (dic) {
-        cell.textLabel.text=[dic objectForKey:@"etitle"];
-        cell.detailTextLabel.text=[dic objectForKey:@"sendtime"];
+//        cell.textLabel.text=[dic objectForKey:@"etitle"];
+//        cell.detailTextLabel.text=[dic objectForKey:@"sendtime"];
+        lab_title.text=[dic objectForKey:@"etitle"];
+        if ([lab_title.text isEqualToString:@""]) {
+            lab_title.text=@"无主题";
+        }
+        lab_econtent.text=[dic objectForKey:@"econtent"];
+        if ([lab_econtent.text isEqualToString:@""]) {
+            lab_econtent.text=@"此邮件中无内容";
+        }
+        lab_time.text=[dic objectForKey:@"sendtime"];
+        
         int readstate=-1;
         readstate=[[dic objectForKey:@"readstate"] intValue];
         if (readstate==0) {
-            cell.imageView.image=[UIImage imageNamed:@"mail_unread.png"];
+//            cell.imageView.image=[UIImage imageNamed:@"mail_unread.png"];
+            unread_tag.image=[UIImage imageNamed:@"mail_unread.png"];
         }else
         {
-            cell.imageView.image=[UIImage imageNamed:@"mail_readed.png"];
+//            cell.imageView.image=[UIImage imageNamed:@"mail_readed.png"];
+            unread_tag.image=[UIImage imageNamed:@"mail_readed.png"];
         }
     }
-//    if (self.listArray) {
-//        NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
-//        if (dic) {
-//            cell.textLabel.text=[dic objectForKey:@"fname"];
-//            NSString *fisdir=[dic objectForKey:@"fisdir"];
-//            if ([fisdir isEqualToString:@"0"]) {
-//                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
-//                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreNo.png"];
-//            }else
-//            {
-//                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreCh.png"];
-//                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
-//                NSString *fname=[dic objectForKey:@"fname"];
-//                NSString *fmime=[[fname pathExtension] lowercaseString];
-//                //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
-//                NSLog(@"fmime:%@",fmime);
-//                if ([fmime isEqualToString:@"png"]||
-//                    [fmime isEqualToString:@"jpg"]||
-//                    [fmime isEqualToString:@"jpeg"]||
-//                    [fmime isEqualToString:@"bmp"]||
-//                    [fmime isEqualToString:@"gif"]){
-//                    NSString *fthumb=[dic objectForKey:@"fthumb"];
-//                    NSString *localThumbPath=[YNFunctions getIconCachePath];
-//                    fthumb =[YNFunctions picFileNameFromURL:fthumb];
-//                    localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
-//                    NSLog(@"是否存在文件：%@",localThumbPath);
-//                    if ([[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
-//                        NSLog(@"存在文件：%@",localThumbPath);
-//                        UIImage *icon=[UIImage imageWithContentsOfFile:localThumbPath];
-//                        CGSize itemSize = CGSizeMake(100, 100);
-//                        UIGraphicsBeginImageContext(itemSize);
-//                        CGRect theR=CGRectMake(0, 0, itemSize.width, itemSize.height);
-//                        if (icon.size.width>icon.size.height) {
-//                            theR.size.width=icon.size.width/(icon.size.height/itemSize.height);
-//                            theR.origin.x=-(theR.size.width/2)-itemSize.width;
-//                        }else
-//                        {
-//                            theR.size.height=icon.size.height/(icon.size.width/itemSize.width);
-//                            theR.origin.y=-(theR.size.height/2)-itemSize.height;
-//                        }
-//                        CGRect imageRect = CGRectMake(2, 2, 96, 96);
-//                        //                        CGSize size=icon.size;
-//                        //                        if (size.width>size.height) {
-//                        //                            imageRect.size.height=size.height*(30.0f/imageRect.size.width);
-//                        //                            imageRect.origin.y+=(30-imageRect.size.height)/2;
-//                        //                        }else{
-//                        //                            imageRect.size.width=size.width*(30.0f/imageRect.size.height);
-//                        //                            imageRect.origin.x+=(30-imageRect.size.width)/2;
-//                        //                        }
-//                        [icon drawInRect:imageRect];
-//                        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-//                        UIGraphicsEndImageContext();
-//                        cell.imageView.image = image;
-//                        CGRect r=cell.imageView.frame;
-//                        r.size.width=r.size.height=30;
-//                        cell.imageView.frame=r;
-//                        
-//                    }else{
-//                        NSLog(@"将要下载的文件：%@",localThumbPath);
-//                        [self startIconDownload:dic forIndexPath:indexPath];
-//                    }
-//                }
-//            }
-//        }
-//    }
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    return 100;
 }
 
 #pragma mark - Table view delegate
@@ -270,6 +320,19 @@
     }
 
 }
+
+
+#pragma mark - Deferred image loading (UIScrollViewDelegate)
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+
 #pragma mark - SCBEmailManagerDelegate
 -(void)listEmailSucceed:(NSDictionary *)datadic
 {
@@ -294,6 +357,7 @@
         }
         self.inArray=tempInArray;
         self.outArray=tempOutArray;
+        [self doneLoadingTableViewData];
         [self.tableView reloadData];
 
         NSString *dataFilePath=[YNFunctions getDataCachePath];

@@ -10,6 +10,7 @@
 #import "UserListViewController.h"
 #import "SCBEmailManager.h"
 #import "MBProgressHUD.h"
+#import "YNFunctions.h"
 
 @interface SendEmailViewController ()<SCBEmailManagerDelegate>
 @property (strong,nonatomic) SCBEmailManager *em;
@@ -119,6 +120,11 @@
     //            return self.outArray.count;
     //        }
     //    }
+    if (section==3) {
+        if (self.fileArray) {
+            return self.fileArray.count;
+        }
+    }
     return 1;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -140,7 +146,7 @@
         default:
             break;
     }
-    return @"";
+    return nil;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -177,7 +183,7 @@
                 if (self.receversTextField) {
                 }else
                 {
-                    UITextField *textField=[[UITextField alloc] initWithFrame:cell.frame];
+                    UITextField *textField=[[UITextField alloc] initWithFrame:CGRectMake(20, 0, cell.frame.size.width-20, cell.frame.size.height)];
                     self.receversTextField=textField;
                 }
                 [cell.contentView addSubview:self.receversTextField];
@@ -192,7 +198,7 @@
             if (self.eTitleTextField) {
             }else
             {
-                UITextField *textField=[[UITextField alloc] initWithFrame:cell.frame];
+                UITextField *textField=[[UITextField alloc] initWithFrame:CGRectMake(20, 0, cell.frame.size.width-20, cell.frame.size.height)];
                 self.eTitleTextField=textField;
             }
             [cell.contentView addSubview:self.eTitleTextField];
@@ -206,7 +212,7 @@
             if (self.eContentView) {
             }else
             {
-                UITextView *textView=[[UITextView alloc] initWithFrame:CGRectMake(0, 0, 320, 200)];
+                UITextView *textView=[[UITextView alloc] initWithFrame:CGRectMake(20, 10, cell.frame.size.width-20, 180)];
                 textView.editable=YES;
                 self.eContentView=textView;
 
@@ -217,6 +223,51 @@
             break;
         case 3:
 //            return @"文件：";
+        {
+            if (self.fileArray) {
+                NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
+                if (dic) {
+                    cell.textLabel.text=[dic objectForKey:@"fname"];
+                    //NSString *fisdir=[dic objectForKey:@"fisdir"];
+                    long fsize=[[dic objectForKey:@"fsize"] longValue];
+                    if (fsize==0) {
+                        //                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
+                        cell.imageView.image=[UIImage imageNamed:@"file_folder.png"];
+                    }else
+                    {
+                        cell.imageView.image=[UIImage imageNamed:@"file_other.png"];
+                        cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
+                        NSString *fname=[dic objectForKey:@"fname"];
+                        NSString *fmime=[[fname pathExtension] lowercaseString];
+                        //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
+                        NSLog(@"fmime:%@",fmime);
+                        if ([fmime isEqualToString:@"png"]||
+                            [fmime isEqualToString:@"jpg"]||
+                            [fmime isEqualToString:@"jpeg"]||
+                            [fmime isEqualToString:@"bmp"]||
+                            [fmime isEqualToString:@"gif"]){
+                            cell.imageView.image = [UIImage imageNamed:@"file_pic.png"];
+                        }else if ([fmime isEqualToString:@"doc"]||
+                                  [fmime isEqualToString:@"docx"])
+                        {
+                            cell.imageView.image = [UIImage imageNamed:@"file_doc.png"];
+                        }else if ([fmime isEqualToString:@"mp3"])
+                        {
+                            cell.imageView.image = [UIImage imageNamed:@"file_music.png"];
+                        }else if ([fmime isEqualToString:@"mov"])
+                        {
+                            cell.imageView.image = [UIImage imageNamed:@"file_moving.png"];
+                        }else if ([fmime isEqualToString:@"ppt"])
+                        {
+                            cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
+                        }else
+                        {
+                            cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
+                        }
+                    }
+                }
+            }
+        }
             break;
         default:
             break;
@@ -297,5 +348,13 @@
     self.hud.margin=10.f;
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
+}
+#pragma mark - Deferred image loading (UIScrollViewDelegate)
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	
+	[self.eTitleTextField endEditing:YES];
+    [self.receversTextField endEditing:YES];
+    [self.eContentView endEditing:YES];
+    
 }
 @end
