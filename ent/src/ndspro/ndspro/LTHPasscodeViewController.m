@@ -318,7 +318,6 @@ static CGFloat const kSlideAnimationDuration = 0.15f;
 	[self.view addConstraint:failedAttemptLabelHeight];
 }
 
-
 - (void)cancelAndDismissMe {
 	_isCurrentlyOnScreen = NO;
 	[_passcodeTextField resignFirstResponder];
@@ -446,6 +445,8 @@ static CGFloat const kSlideAnimationDuration = 0.15f;
 		}];
 		_isCurrentlyOnScreen = YES;
 	}
+    self.navigationController.navigationBar.frame = CGRectMake(0, 0, 320, 44);
+    DDLogCInfo(@"frame:%@",NSStringFromCGRect(self.navigationController.navigationBar.frame));
 }
 
 
@@ -691,6 +692,13 @@ static CGFloat const kSlideAnimationDuration = 0.15f;
 	_failedAttemptLabel.textColor = kLabelTextColor;
 }
 
+
+-(void)hiddenPassword
+{
+    _beingDisplayedAsLockscreen = FALSE;
+    _isUserTurningPasscodeOff = YES;
+    [self dismissMe];
+}
 
 - (void)denyAccess {
 	[self resetTextFields];

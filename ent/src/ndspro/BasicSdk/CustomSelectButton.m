@@ -29,16 +29,16 @@
 {
     if(bl)
     {
-        [self.left_button.titleLabel setFont:[UIFont boldSystemFontOfSize:14]];
+        [self.left_button.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
         [self.left_botton_image setHidden:NO];
-        [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [self.right_botton_image setHidden:YES];
     }
     else
     {
-        [self.left_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.left_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [self.left_botton_image setHidden:YES];
-        [self.right_button.titleLabel setFont:[UIFont boldSystemFontOfSize:14]];
+        [self.right_button.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
         [self.right_botton_image setHidden:NO];
     }
     [delegate isSelectedLeft:bl];
@@ -55,8 +55,8 @@
         [self addSubview:self.left_backimage];
         
         self.left_button = [[UIButton alloc] initWithFrame:left_baceRect];
-        [self.left_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [self.left_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.left_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.left_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [self.left_button setBackgroundColor:[UIColor clearColor]];
         [self addSubview:self.left_button];
         
@@ -71,8 +71,8 @@
         [self addSubview:self.right_backimage];
         
         self.right_button = [[UIButton alloc] initWithFrame:right_baceRect];
-        [self.right_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.right_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [self.right_button setBackgroundColor:[UIColor clearColor]];
         [self addSubview:self.right_button];
         

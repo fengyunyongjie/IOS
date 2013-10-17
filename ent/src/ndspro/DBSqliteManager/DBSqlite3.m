@@ -8,6 +8,7 @@
 
 #import "DBSqlite3.h"
 #import "YNFunctions.h"
+#import "LTHPasscodeViewController.h"
 
 @implementation DBSqlite3
 @synthesize databasePath;
@@ -19,10 +20,11 @@
     //判断更新数据库文件
     if(![self isHaveTable:@"UploadList"])
     {
-        NSLog(@"--------------------------------------------------\n删除所有数据库文件\n--------------------------------------------------");
-        NSFileManager *filemgr = [NSFileManager defaultManager];
-        BOOL bl = [filemgr removeItemAtPath:self.databasePath error:nil];
-        NSLog(@"bl:%i",bl);
+        [[LTHPasscodeViewController sharedUser] hiddenPassword];
+//        NSLog(@"--------------------------------------------------\n删除所有数据库文件\n--------------------------------------------------");
+//        NSFileManager *filemgr = [NSFileManager defaultManager];
+//        BOOL bl = [filemgr removeItemAtPath:self.databasePath error:nil];
+//        NSLog(@"bl:%i",bl);
     }
 }
 

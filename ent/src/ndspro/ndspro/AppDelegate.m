@@ -13,16 +13,18 @@
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
 #import "LTHPasscodeViewController.h"
+#import "DBSqlite3.h"
 
 @implementation AppDelegate
-@synthesize downmange,myTabBarVC,loginVC,uploadmanage;
+@synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //初始化数据
     downmange = [[DownManager alloc] init];
     uploadmanage = [[UploadManager alloc] init];
-    
+    DBSqlite3 *sql = [[DBSqlite3 alloc] init];
+    [sql updateVersion];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];

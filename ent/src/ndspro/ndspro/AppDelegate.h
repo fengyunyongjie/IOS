@@ -20,6 +20,7 @@
 @property (strong, nonatomic) MyTabBarViewController *myTabBarVC;
 @property (strong, nonatomic) DownManager *downmange;
 @property (strong, nonatomic) UploadManager *uploadmanage;
+@property (assign, nonatomic) BOOL isStopUpload;
 
 -(void)finishLogin;
 -(void)finishLogout;
