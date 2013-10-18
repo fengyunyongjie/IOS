@@ -14,6 +14,8 @@
 #import "DDTTYLogger.h"
 #import "LTHPasscodeViewController.h"
 #import "DBSqlite3.h"
+#import "WelcomeViewController.h"
+#import "PConfig.h"
 
 @implementation AppDelegate
 @synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload;
@@ -51,6 +53,11 @@
 		if ([LTHPasscodeViewController didPasscodeTimerEnd])
 			[[LTHPasscodeViewController sharedUser] showLockscreen];
 	}
+    NSString *vinfo=[[NSUserDefaults standardUserDefaults]objectForKey:VERSION];
+    if (!vinfo) {
+        [[WelcomeViewController sharedUser] showWelCome];
+        [[NSUserDefaults standardUserDefaults] setObject:VERSION forKey:VERSION];
+    }
     return YES;
 }
 

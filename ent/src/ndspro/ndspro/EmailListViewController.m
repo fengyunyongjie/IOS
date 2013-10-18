@@ -12,11 +12,15 @@
 #import "YNFunctions.h"
 #import "EmailDetailViewController.h"
 
+enum{
+    kActionSheetTagDeleteOne
+};
 
 @interface EmailListViewController ()<SCBEmailManagerDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 @property (strong,nonatomic) SCBEmailManager *em;
 @property(strong,nonatomic) MBProgressHUD *hud;
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
+@property (strong,nonatomic) UIToolbar *moreEditBar;
 @end
 
 @implementation EmailListViewController
@@ -49,11 +53,14 @@
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     self.segmentedControl=[[UISegmentedControl alloc] initWithItems:@[@"收件箱",@"发件箱"]];
-    self.segmentedControl.frame=CGRectMake(10, 8, 300, 29);
+    self.segmentedControl.frame=CGRectMake(100, 8, 120, 29);
     [self.segmentedControl setTintColor:[UIColor whiteColor]];
     [self.segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     [self.navigationItem setTitleView:self.segmentedControl];
     [self.segmentedControl setSelectedSegmentIndex:0];
+    
+    UIBarButtonItem *editItem=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
+    [self.navigationItem setRightBarButtonItem:editItem];
     
     if (_refreshHeaderView==nil) {
         EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
@@ -158,9 +165,170 @@
 //    }
     [self.em listEmailWithType:@"2"];
 }
+- (void)operateUpdate
+{
+    [self.em cancelAllTask];
+    self.em=nil;
+    self.em=[[SCBEmailManager alloc] init];
+    [self.em setDelegate:self];
+    [self.em operateUpdateWithType:@"2"];
+}
 -(void)segmentAction:(UISegmentedControl *)seg
 {
     [self updateEmailList];
+}
+-(void)selectAllCell:(id)sender
+{
+    NSArray *array=nil;
+    if (self.segmentedControl.selectedSegmentIndex==0) {
+        array=self.inArray;
+    }else
+    {
+        array=self.outArray;
+    }
+    if (array) {
+        for (int i=0; i<array.count; i++) {
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(deselectAllCell:)]];
+}
+-(void)deselectAllCell:(id)sender
+{
+    NSArray *array=nil;
+    if (self.segmentedControl.selectedSegmentIndex==0) {
+        array=self.inArray;
+    }else
+    {
+        array=self.outArray;
+    }
+    if (array) {
+        for (int i=0; i<array.count; i++) {
+            [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES];
+        }
+    }
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+}
+-(NSArray *)selectedIndexPaths
+{
+    NSArray *retVal=nil;
+    retVal=self.tableView.indexPathsForSelectedRows;
+    return retVal;
+}
+-(NSArray *)selectedIDs
+{
+    NSArray *array;
+    if (self.segmentedControl.selectedSegmentIndex==0) {
+        array=self.inArray;
+    }else
+    {
+        array=self.outArray;
+    }
+    NSMutableArray *ids=[[NSMutableArray alloc] init];
+    for (NSIndexPath *indexpath in [self selectedIndexPaths]) {
+        NSDictionary *dic=[array objectAtIndex:indexpath.row];
+        NSString *fid=[dic objectForKey:@"eid"];
+        [ids addObject:fid];
+    }
+    return ids;
+}
+-(void)toDelete:(id)sender
+{
+    if (self.tableView.editing) {
+        NSArray *array=[self selectedIDs];
+        NSLog(@"%@",array);
+        if (array.count==0) {
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"未选中任何邮件";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return;
+        }
+    }
+    
+    //    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    //    [alertView show];
+    //    [alertView setTag:kAlertTagDeleteOne];
+    //    [alertView release];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+    [actionSheet setTag:kActionSheetTagDeleteOne];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+}
+
+-(void)editAction:(id)sender
+{
+    [self.tableView setEditing:!self.tableView.editing animated:YES];
+    BOOL isHideTabBar=self.tableView.editing;
+    //isHideTabBar=!isHideTabBar;
+    for(UIView *view in self.tabBarController.view.subviews)
+    {
+        if([view isKindOfClass:[UITabBar class]])
+        {
+            if (isHideTabBar) { //if hidden tabBar
+                [view setFrame:CGRectMake(view.frame.origin.x,[[UIScreen mainScreen]bounds].size.height, view.frame.size.width, view.frame.size.height)];
+            }else {
+                NSLog(@"isHideTabBar %@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, [[UIScreen mainScreen]bounds].size.height-49, view.frame.size.width, view.frame.size.height)];
+            }
+        }else
+        {
+            if (isHideTabBar) {
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, [[UIScreen mainScreen]bounds].size.height)];
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+            }else {
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width,[[UIScreen mainScreen]bounds].size.height-49)];
+            }
+        }
+    }
+    
+    //隐藏返回按钮
+    if (isHideTabBar) {
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+    }else
+    {
+        [self.navigationItem setLeftBarButtonItem:nil];
+        UIBarButtonItem *editItem=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
+        [self.navigationItem setRightBarButtonItem:editItem];
+
+    }
+    
+    if (!self.moreEditBar) {
+        self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
+        [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+            [self.moreEditBar setBarTintColor:[UIColor blueColor]];
+        }else
+        {
+            [self.moreEditBar setTintColor:[UIColor blueColor]];
+        }
+        [self.view addSubview:self.moreEditBar];
+        //发送 删除 提交 移动 全选
+        UIButton *btn_del;
+        UIBarButtonItem *item_del,*item_flexible;
+        
+        btn_del =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        [btn_del setImage:[UIImage imageNamed:@"del_nor.png"] forState:UIControlStateNormal];
+        [btn_del setImage:[UIImage imageNamed:@"del_se.png"] forState:UIControlStateHighlighted];
+        [btn_del addTarget:self action:@selector(toDelete:) forControlEvents:UIControlEventTouchUpInside];
+        item_del=[[UIBarButtonItem alloc] initWithCustomView:btn_del];
+        
+        
+        item_flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        
+        [self.moreEditBar setItems:@[item_flexible,item_del,item_flexible]];
+    }
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -186,7 +354,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
         
         UIImageView *unread_tag=[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 10, 10)];
@@ -288,6 +456,10 @@
 }
 
 #pragma mark - Table view delegate
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
+}
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
 //    self.selectedIndexPath=indexPath;
@@ -296,6 +468,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.tableView.isEditing) {
+        return;
+    }
     NSDictionary *dic;
     if (self.segmentedControl.selectedSegmentIndex==0) {
         //收件箱
@@ -316,6 +491,7 @@
         edvc.eid=eid;
         edvc.etype=etype;
         edvc.title=[dic objectForKey:@"etitle"];
+        [edvc setHidesBottomBarWhenPushed:YES];
         [self.navigationController pushViewController:edvc animated:YES];
     }
 
@@ -334,6 +510,42 @@
 
 
 #pragma mark - SCBEmailManagerDelegate
+-(void)operateSucceed:(NSDictionary *)datadic
+{
+    [self listEmailSucceed:datadic];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)removeEmailSucceed
+{
+    [self operateUpdate];
+}
+-(void)removeEmailFail
+{
+    NSLog(@"openFinderUnsucess: 网络连接失败!!");
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
 -(void)listEmailSucceed:(NSDictionary *)datadic
 {
     self.dataDic=datadic;
@@ -393,4 +605,28 @@
 //        }
 //    }
 }
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch ([actionSheet tag]) {
+        case kActionSheetTagDeleteOne:
+        {
+            if (buttonIndex==0) {
+                [self.em cancelAllTask];
+                self.em=[[SCBEmailManager alloc] init];
+                self.em.delegate=self;
+                if (self.segmentedControl.selectedSegmentIndex==0) {
+                    [self.em removeEmailWithIDs:[self selectedIDs] type:@"0"];
+                }else
+                {
+                    [self.em removeEmailWithIDs:[self selectedIDs] type:@"0"];
+                }
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 @end

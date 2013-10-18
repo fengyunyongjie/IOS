@@ -38,6 +38,30 @@
     NSLog(@"%s: %@",__PRETTY_FUNCTION__,body);
     NSLog(@"%s: %@",__PRETTY_FUNCTION__,[request allHTTPHeaderFields]);
 }
+-(void)operateUpdateWithType:(NSString *)type  //type 0为收件箱，1为发件箱，2为所有
+{
+    self.em_type=kEMTypeOperate;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,EMAIL_LIST_URI]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    //    NSString *fids=[f_ids componentsJoinedByString:@"&fids[]="];
+    [body appendFormat:@"type=%@&cursor=%d&offset=%d",type,0,0];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
+    
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"%s: %@",__PRETTY_FUNCTION__,s_url);
+    NSLog(@"%s: %@",__PRETTY_FUNCTION__,body);
+    NSLog(@"%s: %@",__PRETTY_FUNCTION__,[request allHTTPHeaderFields]);
+}
 -(void)detailEmailWithID:(NSString *)eid type:(NSString *)type //type 同上
 {
     self.em_type=kEMTypeDetail;
@@ -120,6 +144,30 @@
     NSMutableString *body=[[NSMutableString alloc] init];
     //    NSString *fids=[f_ids componentsJoinedByString:@"&fids[]="];
     [body appendFormat:@"type=%@&eid=%@",type,eid];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [request setHTTPBody:myRequestData];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+    [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
+    
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSLog(@"%s: %@",__PRETTY_FUNCTION__,s_url);
+    NSLog(@"%s: %@",__PRETTY_FUNCTION__,body);
+    NSLog(@"%s: %@",__PRETTY_FUNCTION__,[request allHTTPHeaderFields]);
+}
+-(void)removeEmailWithIDs:(NSArray *)eids type:(NSString *)type //type 同上
+{
+    self.em_type=kEMTypeDelete;
+    self.activeData=[NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,EMAIL_DELALL_URL]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    NSString *e_ids=[eids componentsJoinedByString:@"&eids[]="];
+    [body appendFormat:@"type=%@&eids[]=%@",type,e_ids];
     NSMutableData *myRequestData=[NSMutableData data];
     [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
     
@@ -262,6 +310,12 @@
                     case kEMTypeSendInterior:
                         [self.delegate sendEmailSucceed];
                         break;
+                    case kEMTypeDelete:
+                        [self.delegate removeEmailSucceed];
+                        break;
+                    case kEMTypeOperate:
+                        [self.delegate operateSucceed:dic];
+                        break;
 
                 }
             }
@@ -280,6 +334,9 @@
                         break;
                     case kEMTypeSendInterior:
                         [self.delegate sendEmailFail];
+                        break;
+                    case kEMTypeDelete:
+                        [self.delegate removeEmailFail];
                         break;
                         
                 }

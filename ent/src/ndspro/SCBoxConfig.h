@@ -93,6 +93,7 @@
 #define EMAIL_DETAIL_URI @"/email/detail"
 //站内外信删除/ent/email/del
 #define EMAIL_DEL_URI @"/email/del"
+#define EMAIL_DELALL_URL @"/email/delall"
 //获取邮件内文件列表/ent/email/fids
 #define EMAIL_FILELIST_URI @"/email/fids"
 

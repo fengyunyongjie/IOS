@@ -187,6 +187,7 @@
                 flVC.f_id=[dic objectForKey:@"fid"];
                 flVC.title=[dic objectForKey:@"fname"];
                 flVC.delegate=self.delegate;
+                flVC.type=self.type;
                 [self.navigationController pushViewController:flVC animated:YES];
             }
         }

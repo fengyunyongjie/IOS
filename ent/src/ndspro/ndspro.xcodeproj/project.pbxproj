@@ -86,6 +86,8 @@
 		29B2AE50180FE3A4002D9D1B /* sel_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE46180FE3A4002D9D1B /* sel_nor@2x.png */; };
 		29B2AE51180FE3A4002D9D1B /* sel_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE47180FE3A4002D9D1B /* sel_se@2x.png */; };
 		29B2AE52180FE3A4002D9D1B /* title_menu2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE48180FE3A4002D9D1B /* title_menu2@2x.png */; };
+		29B2AE5618110325002D9D1B /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2AE5418110325002D9D1B /* WelcomeViewController.m */; };
+		29B2AE5718110325002D9D1B /* WelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE5518110325002D9D1B /* WelcomeViewController.xib */; };
 		29B44B13180638F40025AB61 /* SendEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B11180638F40025AB61 /* SendEmailViewController.m */; };
 		29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B12180638F40025AB61 /* SendEmailViewController.xib */; };
 		29B44B18180654320025AB61 /* UserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B44B16180654320025AB61 /* UserListViewController.m */; };
@@ -341,6 +343,9 @@
 		29B2AE46180FE3A4002D9D1B /* sel_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sel_nor@2x.png"; sourceTree = "<group>"; };
 		29B2AE47180FE3A4002D9D1B /* sel_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sel_se@2x.png"; sourceTree = "<group>"; };
 		29B2AE48180FE3A4002D9D1B /* title_menu2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_menu2@2x.png"; sourceTree = "<group>"; };
+		29B2AE5318110325002D9D1B /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
+		29B2AE5418110325002D9D1B /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
+		29B2AE5518110325002D9D1B /* WelcomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WelcomeViewController.xib; sourceTree = "<group>"; };
 		29B44B10180638F40025AB61 /* SendEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendEmailViewController.h; sourceTree = "<group>"; };
 		29B44B11180638F40025AB61 /* SendEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendEmailViewController.m; sourceTree = "<group>"; };
 		29B44B12180638F40025AB61 /* SendEmailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendEmailViewController.xib; sourceTree = "<group>"; };
@@ -625,6 +630,9 @@
 				291CCC2D17F411F5005C029C /* MyTabBarViewController.h */,
 				291CCC2E17F411F5005C029C /* MyTabBarViewController.m */,
 				291CCC2F17F411F5005C029C /* MyTabBarViewController.xib */,
+				29B2AE5318110325002D9D1B /* WelcomeViewController.h */,
+				29B2AE5418110325002D9D1B /* WelcomeViewController.m */,
+				29B2AE5518110325002D9D1B /* WelcomeViewController.xib */,
 				291CCB4D17F27F99005C029C /* Images.xcassets */,
 				292B6B8B17F9659E0015669A /* Main.storyboard */,
 				291CCC1D17F408EF005C029C /* imgRes */,
@@ -1201,6 +1209,7 @@
 				29B2AE24180E8CC9002D9D1B /* bk_select.png in Resources */,
 				29B2AE18180E64A5002D9D1B /* mail_readed@2x.png in Resources */,
 				29DF3B65180BE0FC003FEE3B /* lock_forget_nor@2x.png in Resources */,
+				29B2AE5718110325002D9D1B /* WelcomeViewController.xib in Resources */,
 				29FDD8F2180C035000FFC558 /* plus.png in Resources */,
 				29DF3B5A180BE0FC003FEE3B /* download_nor@2x.png in Resources */,
 				29DF3B80180BE0FC003FEE3B /* title_bt_edit_se@2x.png in Resources */,
@@ -1342,6 +1351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29B2AE5618110325002D9D1B /* WelcomeViewController.m in Sources */,
 				29FE57C81808D7380068DE48 /* UserInfo.m in Sources */,
 				29FE576B1808D3210068DE48 /* DDLog.m in Sources */,
 				291CCC4117F7C6EB005C029C /* SCBUploader.m in Sources */,

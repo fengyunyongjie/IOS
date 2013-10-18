@@ -461,7 +461,6 @@ typedef enum{
         NSArray *array=[self selectedIDs];
         NSLog(@"%@",array);
         if (array.count==0) {
-            [self updateFileList];
             if (self.hud) {
                 [self.hud removeFromSuperview];
             }
@@ -493,7 +492,6 @@ typedef enum{
         NSArray *array=[self selectedIDs];
         NSLog(@"%@",array);
         if (array.count==0) {
-            [self updateFileList];
             if (self.hud) {
                 [self.hud removeFromSuperview];
             }
@@ -537,7 +535,6 @@ typedef enum{
         NSArray *array=[self selectedIDs];
         NSLog(@"%@",array);
         if (array.count==0) {
-            [self updateFileList];
             if (self.hud) {
                 [self.hud removeFromSuperview];
             }
@@ -566,7 +563,6 @@ typedef enum{
         NSArray *array=[self selectedIDs];
         NSLog(@"%@",array);
         if (array.count==0) {
-            [self updateFileList];
             if (self.hud) {
                 [self.hud removeFromSuperview];
             }

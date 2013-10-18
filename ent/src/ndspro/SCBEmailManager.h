@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 typedef enum {
+    kEMTypeOperate,
     kEMTypeList,            //收发邮件列表/ent/email/list
     kEMTypeDetail,          //收发邮件详情/ent/email/detail
     kEMTypeSendInterior,    //发送站内信/ent/email/send/interior
@@ -25,10 +26,12 @@ typedef enum {
 
 -(void)cancelAllTask;
 -(void)listEmailWithType:(NSString *)type;  //type 0为收件箱，1为发件箱，2为所有
+-(void)operateUpdateWithType:(NSString *)type;
 -(void)detailEmailWithID:(NSString *)eid type:(NSString *)type; //type 同上
 -(void)sendInteriorEmailToUser:(NSArray *)usrids Title:(NSString *)title Content:(NSString *)content Files:(NSArray *)fids;
 -(void)sendExternalEmailToUser:(NSString *)recevers Title:(NSString *)title Content:(NSString *)content Files:(NSArray *)fids;
 -(void)removeEmailWithID:(NSString *)eid type:(NSString *)type; //type 同上
+-(void)removeEmailWithIDs:(NSArray *)eids type:(NSString *)type;
 -(void)fileListWithID:(NSString *)eid;
 @end
 @protocol SCBEmailManagerDelegate
@@ -43,4 +46,5 @@ typedef enum {
 -(void)removeEmailFail;
 -(void)fileListSucceed:(NSData *)data;
 -(void)fileListFail;
+-(void)operateSucceed:(NSDictionary *)datadic;
 @end

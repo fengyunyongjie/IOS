@@ -11,11 +11,16 @@
 #import "MBProgressHUD.h"
 #import "YNFunctions.h"
 #import "IconDownloader.h"
+#import "AppDelegate.h"
+#import "MainViewController.h"
+#import "SCBFileManager.h"
 
-@interface EmailDetailViewController ()<SCBEmailManagerDelegate,IconDownloaderDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
+@interface EmailDetailViewController ()<SCBFileManagerDelegate,SCBEmailManagerDelegate,IconDownloaderDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 @property (strong,nonatomic) SCBEmailManager *em;
 @property (strong,nonatomic) SCBEmailManager *em_list;
 @property(strong,nonatomic) MBProgressHUD *hud;
+@property (strong,nonatomic) UIToolbar *moreEditBar;
+@property (strong,nonatomic) SCBFileManager *fm_move;
 @end
 
 @implementation EmailDetailViewController
@@ -38,10 +43,44 @@
     self.tableView.dataSource=self;
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    [self.tableView setEditing:YES];
 }
 -(void)viewDidAppear:(BOOL)animated
 {
-    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    
+    if (!self.moreEditBar) {
+        self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
+        [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+            [self.moreEditBar setBarTintColor:[UIColor blueColor]];
+        }else
+        {
+            [self.moreEditBar setTintColor:[UIColor blueColor]];
+        }
+        [self.view addSubview:self.moreEditBar];
+        //发送 删除 提交 移动 全选
+        UIButton *btn_download ,*btn_resave;
+        UIBarButtonItem  *item_download, *item_resave,*item_flexible;
+        
+        btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        [btn_resave setImage:[UIImage imageNamed:@"zc_nor.png"] forState:UIControlStateNormal];
+        [btn_resave setImage:[UIImage imageNamed:@"zc_se.png"] forState:UIControlStateHighlighted];
+        [btn_resave addTarget:self action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
+        item_resave=[[UIBarButtonItem alloc] initWithCustomView:btn_resave];
+        
+        btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        [btn_download setImage:[UIImage imageNamed:@"download_nor.png"] forState:UIControlStateNormal];
+        [btn_download setImage:[UIImage imageNamed:@"download_se.png"] forState:UIControlStateHighlighted];
+        [btn_download addTarget:self action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
+        item_download=[[UIBarButtonItem alloc] initWithCustomView:btn_download];
+        
+        item_flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+        [self.moreEditBar setItems:@[item_flexible,item_download,item_flexible,item_resave,item_flexible]];
+
+    }
+
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -116,6 +155,124 @@
     [self.em setDelegate:self];
     [self.em detailEmailWithID:self.eid type:self.etype];
 }
+-(NSArray *)selectedIDs
+{
+    NSMutableArray *ids=[[NSMutableArray alloc] init];
+    for (NSIndexPath *indexpath in [self selectedIndexPaths]) {
+        if (indexpath.section!=5) {
+            continue;
+        }
+        NSDictionary *dic=[self.fileArray objectAtIndex:indexpath.row];
+        NSString *fid=[dic objectForKey:@"fid"];
+        [ids addObject:fid];
+    }
+    return ids;
+}
+-(NSArray *)selectedIndexPaths
+{
+    NSArray *retVal=nil;
+    retVal=self.tableView.indexPathsForSelectedRows;
+    return retVal;
+}
+-(void)toDownload:(id)sender
+{
+    if (self.tableView.isEditing) {
+        NSArray *selectArray=[self selectedIndexPaths];
+        for (NSIndexPath *indexPath in selectArray) {
+            if (indexPath.section!=5) {
+                continue;
+            }
+            NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
+            
+            long fsize=[[dic objectForKey:@"fsize"] longValue];
+
+            BOOL isDir;
+            if (fsize==0) {
+                if (self.hud)
+                {
+                    [self.hud removeFromSuperview];
+                }
+                self.hud=nil;
+                self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+                [self.view addSubview:self.hud];
+                [self.hud show:NO];
+                self.hud.labelText=@"不能下载文件夹";
+                self.hud.mode=MBProgressHUDModeText;
+                self.hud.margin=10.f;
+                [self.hud show:YES];
+                [self.hud hide:YES afterDelay:1.0f];
+                return;
+            }
+        }
+        for (NSIndexPath *indexPath in selectArray) {
+            if (indexPath.section!=5) {
+                continue;
+            }
+            NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
+            NSString *file_id = [NSString formatNSStringForOjbect:[dic objectForKey:@"fid"]];
+            NSString *thumb = [NSString formatNSStringForOjbect:[dic objectForKey:@"fthumb"]];
+            if([thumb length]==0)
+            {
+                thumb = @"0";
+            }
+            NSString *name = [NSString formatNSStringForOjbect:[dic objectForKey:@"fname"]];
+            NSInteger fsize = [[dic objectForKey:@"fsize"] integerValue];
+            AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            [delegate.downmange addDownList:name thumbName:thumb d_fileId:file_id d_downSize:fsize];
+        }
+        
+    }
+}
+-(void)toResave:(id)sender
+{
+    if (self.tableView.editing) {
+        NSArray *array=[self selectedIDs];
+        NSLog(@"%@",array);
+        if (array.count==0) {
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"未选中任何文件（夹）";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return;
+        }
+    }
+    NSLog(@"转存");
+    MainViewController *flvc=[[MainViewController alloc] init];
+    flvc.title=@"选择转存的位置";
+    flvc.delegate=self;
+    flvc.type=kTypeResave;
+    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:flvc];
+    [self presentViewController:nav animated:YES completion:nil];
+}
+-(void)resaveFileToID:(NSString *)f_id
+{
+    NSDictionary *dic=[self.fileArray objectAtIndex:self.selectedIndexPath.row];
+    NSString *fid=[dic objectForKey:@"fid"];
+    if (self.fm_move) {
+        [self.fm_move cancelAllTask];
+    }else
+    {
+        self.fm_move=[[SCBFileManager alloc] init];
+    }
+    self.fm_move.delegate=self;
+    if (self.tableView.isEditing) {
+        
+        [self.fm_move resaveFileIDs:[self selectedIDs] toPID:f_id];
+        
+    }else
+    {
+        [self.fm_move resaveFileIDs:@[fid] toPID:f_id];
+    }
+    
+}
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView              // Default is 1 if not implemented
 {
@@ -177,7 +334,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
 //        NSString *osVersion = [[UIDevice currentDevice] systemVersion];
 //        NSString *versionWithoutRotation = @"7.0";
@@ -379,6 +536,13 @@
 }
 
 #pragma mark - Table view delegate
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section==5) {
+        return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
+    }
+    return UITableViewCellEditingStyleNone;
+}
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     //    self.selectedIndexPath=indexPath;
@@ -468,6 +632,37 @@
         [self updateFileList];
     }
 
+}
+#pragma mark - SCBEmailManagerDelegate
+-(void)moveUnsucess
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)moveSucess
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 #pragma mark - Deferred image loading (UIScrollViewDelegate)
 
