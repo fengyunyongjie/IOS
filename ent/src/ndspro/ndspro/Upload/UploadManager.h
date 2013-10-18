@@ -28,5 +28,7 @@
 -(void)deleteOneUpload:(NSInteger)selectIndex;
 //删除所有上传
 -(void)deleteAllUpload;
+//更新ui
+-(void)updateTable;
 
 @end

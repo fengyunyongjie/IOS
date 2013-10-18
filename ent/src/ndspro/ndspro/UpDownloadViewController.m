@@ -715,6 +715,83 @@
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 
+-(NSMutableArray *)getSelectedIds
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    for(int i=0;i<self.table_view.indexPathsForSelectedRows.count;i++)
+    {
+        NSLog(@"多少次：%i",i);
+        NSIndexPath *indexPath = [self.table_view.indexPathsForSelectedRows objectAtIndex:i];
+        if(isShowUpload)
+        {
+            NSInteger type = [self getUploadType];
+            if(type == 1)
+            {
+                if(indexPath.row<[self.upLoading_array count])
+                {
+                    UpLoadList *list = [self.upLoading_array objectAtIndex:indexPath.row];
+                    [array addObject:list];
+                }
+            }
+            else if(type == 2)
+            {
+                if(indexPath.row<[self.upLoaded_array count])
+                {
+                    UpLoadList *list = [self.upLoaded_array objectAtIndex:indexPath.row];
+                    [array addObject:list];
+                }
+            }
+            else if(type == 3)
+            {
+                if(indexPath.section==0 && indexPath.row<[self.upLoading_array count])
+                {
+                    UpLoadList *list = [self.upLoading_array objectAtIndex:indexPath.row];
+                    [array addObject:list];
+                }
+                if(indexPath.section==1  && indexPath.row<[self.upLoaded_array count])
+                {
+                    UpLoadList *list = [self.upLoaded_array objectAtIndex:indexPath.row];
+                    [array addObject:list];
+                }
+            }
+        }
+        else
+        {
+            NSInteger type = [self getDownType];
+            if(type == 1)
+            {
+                if(indexPath.row<[self.downLoading_array count])
+                {
+                    DownList *list = [self.downLoading_array objectAtIndex:indexPath.row];
+                    [array addObject:list];
+                }
+            }
+            else if(type == 2)
+            {
+                if(indexPath.row<[self.downLoaded_array count])
+                {
+                    DownList *list = [self.downLoaded_array objectAtIndex:indexPath.row];
+                    [array addObject:list];
+                }
+            }
+            else if(type == 3)
+            {
+                if(indexPath.section==0 && indexPath.row<[self.downLoading_array count])
+                {
+                    DownList *list = [self.downLoading_array objectAtIndex:indexPath.row];
+                    [array addObject:list];
+                }
+                if(indexPath.section==1 && indexPath.row<[self.downLoaded_array count])
+                {
+                    DownList *list = [self.downLoaded_array objectAtIndex:indexPath.row];
+                    [array addObject:list];
+                }
+            }
+        }
+    }
+    return array;
+}
+
 #pragma makr UIActionSheetDelegate
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -725,138 +802,74 @@
     }
     else if(actionSheet.tag == kActionSheetTagAllDelete && buttonIndex == 0)
     {
-        for(int i=0;i<self.table_view.indexPathsForSelectedRows.count;i++)
-        {
-            NSIndexPath *indexPath = [self.table_view.indexPathsForSelectedRows objectAtIndex:i];
-            if(isShowUpload)
-            {
-                NSInteger type = [self getUploadType];
-                if(type == 1)
-                {
-                    if(indexPath.row<[self.upLoading_array count])
-                    {
-                        UpLoadList *list = [self.upLoading_array objectAtIndex:indexPath.row];
-                        [self deleteOldList:list];
-                    }
-                }
-                else if(type == 2)
-                {
-                    if(indexPath.row<[self.upLoaded_array count])
-                    {
-                        UpLoadList *list = [self.upLoaded_array objectAtIndex:indexPath.row];
-                        [self deleteOldList:list];
-                    }
-                }
-                else if(type == 3)
-                {
-                    if(indexPath.section==0 && indexPath.row<[self.upLoading_array count])
-                    {
-                        UpLoadList *list = [self.upLoading_array objectAtIndex:indexPath.row];
-                        [self deleteOldList:list];
-                    }
-                    if(indexPath.section==1  && indexPath.row<[self.upLoaded_array count])
-                    {
-                        UpLoadList *list = [self.upLoaded_array objectAtIndex:indexPath.row];
-                        [self deleteOldList:list];
-                    }
-                }
-            }
-            else
-            {
-                NSInteger type = [self getDownType];
-                if(type == 1)
-                {
-                    if(indexPath.row<[self.downLoading_array count])
-                    {
-                        DownList *list = [self.downLoading_array objectAtIndex:indexPath.row];
-                        [self deleteOldList:list];
-                    }
-                }
-                else if(type == 2)
-                {
-                    if(indexPath.row<[self.downLoaded_array count])
-                    {
-                        DownList *list = [self.downLoaded_array objectAtIndex:indexPath.row];
-                        [self deleteOldList:list];
-                    }
-                }
-                else if(type == 3)
-                {
-                    if(indexPath.section==0 && indexPath.row<[self.downLoading_array count])
-                    {
-                        DownList *list = [self.downLoading_array objectAtIndex:indexPath.row];
-                        [self deleteOldList:list];
-                    }
-                    if(indexPath.section==1 && indexPath.row<[self.downLoaded_array count])
-                    {
-                        DownList *list = [self.downLoaded_array objectAtIndex:indexPath.row];
-                        [self deleteOldList:list];
-                    }
-                }
-            }
-        }
+        [self deleteOldList:[self getSelectedIds]];
     }
 }
 
 -(void)deleteList
 {
-    [self deleteOldList:deleteObject];
+    [self deleteOldList:[NSMutableArray arrayWithObject:deleteObject]];
 }
 
--(void)deleteOldList:(NSObject *)object
+-(void)deleteOldList:(NSMutableArray *)array
 {
-    if([object isKindOfClass:[UpLoadList class]])
-    {
-        for(int i=0;i<[upLoading_array count];i++)
+    for (int i=0;i<[array count]; i++) {
+        NSObject *object = [array objectAtIndex:i];
+        if([object isKindOfClass:[UpLoadList class]])
         {
-            UpLoadList *list = (UpLoadList *)[upLoading_array objectAtIndex:i];
-            UpLoadList *oldList = (UpLoadList *)object;
-            if(list.t_id == oldList.t_id)
+            for(int i=0;i<[upLoading_array count];i++)
             {
-                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [delegate.uploadmanage deleteOneUpload:i];
-                break;
+                UpLoadList *list = (UpLoadList *)[upLoading_array objectAtIndex:i];
+                UpLoadList *oldList = (UpLoadList *)object;
+                if(list.t_id == oldList.t_id)
+                {
+                    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                    [delegate.uploadmanage deleteOneUpload:i];
+                    break;
+                }
+            }
+            for(int i=0;i<[upLoaded_array count];i++)
+            {
+                UpLoadList *list = (UpLoadList *)[upLoaded_array objectAtIndex:i];
+                UpLoadList *oldList = (UpLoadList *)object;
+                if(list.t_id == oldList.t_id)
+                {
+                    [list deleteUploadList];
+                    [upLoaded_array removeObjectAtIndex:i];
+                    break;
+                }
             }
         }
-        for(int i=0;i<[upLoaded_array count];i++)
+        else if([object isKindOfClass:[DownList class]])
         {
-            UpLoadList *list = (UpLoadList *)[upLoaded_array objectAtIndex:i];
-            UpLoadList *oldList = (UpLoadList *)object;
-            if(list.t_id == oldList.t_id)
+            for(int i=0;i<[downLoading_array count];i++)
             {
-                [list deleteUploadList];
-                [upLoaded_array removeObjectAtIndex:i];
-                [table_view reloadData];
-                break;
+                DownList *list = (DownList *)[downLoading_array objectAtIndex:i];
+                DownList *oldList = (DownList *)object;
+                if(list.d_id == oldList.d_id)
+                {
+                    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                    [delegate.downmange deleteOneDown:i];
+                    break;
+                }
+            }
+            for(int i=0;i<[downLoaded_array count];i++)
+            {
+                DownList *list = (DownList *)[downLoaded_array objectAtIndex:i];
+                DownList *oldList = (DownList *)object;
+                if(list.d_id == oldList.d_id)
+                {
+                    [list deleteDownList];
+                    [downLoaded_array removeObjectAtIndex:i];
+                    break;
+                }
             }
         }
     }
-    else if([object isKindOfClass:[DownList class]])
-    {
-        for(int i=0;i<[downLoading_array count];i++)
-        {
-            DownList *list = (DownList *)[downLoading_array objectAtIndex:i];
-            DownList *oldList = (DownList *)object;
-            if(list.d_id == oldList.d_id)
-            {
-                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [delegate.downmange deleteOneDown:i];
-                break;
-            }
-        }
-        for(int i=0;i<[downLoaded_array count];i++)
-        {
-            DownList *list = (DownList *)[downLoaded_array objectAtIndex:i];
-            DownList *oldList = (DownList *)object;
-            if(list.d_id == oldList.d_id)
-            {
-                [list deleteDownList];
-                [downLoaded_array removeObjectAtIndex:i];
-                [table_view reloadData];
-                break;
-            }
-        }
-    }
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [delegate.uploadmanage updateTable];
+    [delegate.downmange updateTable];
+    [self isSelectedLeft:isShowUpload];
 }
 
 

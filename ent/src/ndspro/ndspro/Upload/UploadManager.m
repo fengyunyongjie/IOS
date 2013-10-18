@@ -329,7 +329,6 @@
         }
         [list deleteUploadList];
         [uploadArray removeObjectAtIndex:selectIndex];
-        [self updateTable];
     }
 }
 

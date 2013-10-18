@@ -260,7 +260,6 @@
         [list deleteDownList];
         [downingArray removeObjectAtIndex:selectIndex];
     }
-    [self updateTable];
 }
 
 //删除所有上传

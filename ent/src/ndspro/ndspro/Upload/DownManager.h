@@ -33,5 +33,6 @@
 -(void)deleteAllDown;
 //暂时所有下载
 -(void)stopAllDown;
+-(void)updateTable;
 
 @end
