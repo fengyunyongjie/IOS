@@ -722,30 +722,7 @@
         return;
     }
     
-    if(isShowUpload)
-    {
-        NSInteger type = [self getUploadType];
-        if(type == 1)
-        {
-            
-        }
-        else if(type == 2)
-        {
-            
-        }
-        else if(type == 3)
-        {
-            if(indexPath.section==0 && [upLoading_array count]>0)
-            {
-                
-            }
-            if(indexPath.section==1 && [upLoaded_array count]>0)
-            {
-                
-            }
-        }
-    }
-    else
+    if(!isShowUpload)
     {
         NSInteger type = [self getDownType];
         if(type == 2)
@@ -771,7 +748,7 @@
                             ls.d_file_id = [NSString formatNSStringForOjbect:oldList.d_file_id];
                             ls.d_thumbUrl = [NSString formatNSStringForOjbect:oldList.d_thumbUrl];
                             ls.d_name = [NSString formatNSStringForOjbect:oldList.d_name];
-                            ls.d_baseUrl = [NSString get_image_save_file_path:list.d_name];
+                            ls.d_baseUrl = [NSString get_image_save_file_path:oldList.d_baseUrl];
                             [tableArray addObject:ls];
                         }
                     }
