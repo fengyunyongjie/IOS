@@ -47,6 +47,7 @@
 		291CCC4117F7C6EB005C029C /* SCBUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4017F7C6EB005C029C /* SCBUploader.m */; };
 		291CCC4B17F7D9D6005C029C /* UpDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */; };
 		291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */; };
+		292973FF1810B9BE001BD086 /* title_menu2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292973FE1810B9BE001BD086 /* title_menu2@2x.png */; };
 		292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 292B6B8917F91B3B0015669A /* IconDownloader.m */; };
 		292B6B8D17F9659E0015669A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 292B6B8B17F9659E0015669A /* Main.storyboard */; };
 		29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29728C6E1803B226004B4724 /* SelectFileListViewController.m */; };
@@ -292,6 +293,7 @@
 		291CCC4817F7D9D6005C029C /* UpDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpDownloadViewController.h; sourceTree = "<group>"; };
 		291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpDownloadViewController.m; sourceTree = "<group>"; };
 		291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpDownloadViewController.xib; sourceTree = "<group>"; };
+		292973FE1810B9BE001BD086 /* title_menu2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_menu2@2x.png"; sourceTree = "<group>"; };
 		292B6B8817F91B3B0015669A /* IconDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconDownloader.h; sourceTree = "<group>"; };
 		292B6B8917F91B3B0015669A /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
 		292B6B8C17F9659E0015669A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -943,6 +945,7 @@
 				29DF3B45180BE0FC003FEE3B /* title_bt_upload_se@2x.png */,
 				29DF3B47180BE0FC003FEE3B /* title_menu@2x.png */,
 				29DF3B48180BE0FC003FEE3B /* title_menu4@2x.png */,
+				292973FE1810B9BE001BD086 /* title_menu2@2x.png */,
 				29DF3B49180BE0FC003FEE3B /* title_more@2x.png */,
 				29DF3B4A180BE0FC003FEE3B /* title_se@2x.png */,
 				29DF3B4B180BE0FC003FEE3B /* tj_nor@2x.png */,
@@ -1268,6 +1271,7 @@
 				29B2AE3A180F7E1A002D9D1B /* blueArrow@2x.png in Resources */,
 				29FE57B21808D66E0068DE48 /* Bt_UploadOk.png in Resources */,
 				29DF3B85180BE0FC003FEE3B /* title_bt_upload_nor@2x.png in Resources */,
+				292973FF1810B9BE001BD086 /* title_menu2@2x.png in Resources */,
 				29DF3B8C180BE0FC003FEE3B /* tj_nor@2x.png in Resources */,
 				29DF3B5C180BE0FC003FEE3B /* file_doc@2x.png in Resources */,
 				29B2AE12180E63BE002D9D1B /* mail_unread@2x.png in Resources */,
