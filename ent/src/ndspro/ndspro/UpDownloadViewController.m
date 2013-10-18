@@ -10,6 +10,8 @@
 #import "AppDelegate.h"
 #import "SCBSession.h"
 #import "YNFunctions.h"
+#import "PhotoLookViewController.h"
+#import "OtherBrowserViewController.h"
 
 #define UpTabBarHeight (49+20+44)
 #define kActionSheetTagDelete 77
@@ -637,7 +639,7 @@
     if(cell==nil)
     {
         cell = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     }
     int section = indexPath.section;
     if(isShowUpload)
@@ -711,6 +713,103 @@
     [cell showEdit:self.table_view.editing];
     [cell setDelegate:self];
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(self.table_view.isEditing)
+    {
+        return;
+    }
+    
+    if(isShowUpload)
+    {
+        NSInteger type = [self getUploadType];
+        if(type == 1)
+        {
+            
+        }
+        else if(type == 2)
+        {
+            
+        }
+        else if(type == 3)
+        {
+            if(indexPath.section==0 && [upLoading_array count]>0)
+            {
+                
+            }
+            if(indexPath.section==1 && [upLoaded_array count]>0)
+            {
+                
+            }
+        }
+    }
+    else
+    {
+        NSInteger type = [self getDownType];
+        if(type == 2)
+        {
+            if(indexPath.row < [downLoaded_array count])
+            {
+                DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
+                NSString *fmime=[[list.d_name pathExtension] lowercaseString];
+                if ([fmime isEqualToString:@"png"]||
+                    [fmime isEqualToString:@"jpg"]||
+                    [fmime isEqualToString:@"jpeg"]||
+                    [fmime isEqualToString:@"bmp"]||
+                    [fmime isEqualToString:@"gif"])
+                {
+                    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+                    for(int i=0;i<[downLoaded_array count];i++) {
+                       DownList *oldList = [downLoaded_array objectAtIndex:i];
+                        NSString *fmime=[[oldList.d_name pathExtension] lowercaseString];
+                        if([fmime isEqualToString:@"png"]|| [fmime isEqualToString:@"jpg"]|| [fmime isEqualToString:@"jpeg"]|| [fmime isEqualToString:@"bmp"]|| [fmime isEqualToString:@"gif"])
+                        {
+                            NSLog(@"fmime:%@",fmime);
+                            DownList *ls = [[DownList alloc] init];
+                            ls.d_file_id = [NSString formatNSStringForOjbect:oldList.d_file_id];
+                            ls.d_thumbUrl = [NSString formatNSStringForOjbect:oldList.d_thumbUrl];
+                            ls.d_name = [NSString formatNSStringForOjbect:oldList.d_name];
+                            ls.d_baseUrl = [NSString get_image_save_file_path:list.d_name];
+                            [tableArray addObject:ls];
+                        }
+                    }
+                    if([tableArray count]>0)
+                    {
+                        PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+                        [look setTableArray:tableArray];
+                        [self presentModalViewController:look animated:YES];
+                    }
+                }
+                else
+                {
+                    OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
+                    otherBrowser.dataDic=[[NSDictionary alloc] initWithObjectsAndKeys:list.d_file_id,@"fid",list.d_name,@"fname",[NSNumber numberWithInteger:list.d_downSize],@"fsize",nil];
+                    otherBrowser.title=list.d_name;
+                    [self presentModalViewController:otherBrowser animated:YES];
+                }
+            }
+            PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+            [look setTableArray:downLoaded_array];
+            [self presentModalViewController:look animated:YES];
+        }
+        else if(type == 3)
+        {
+            if(indexPath.section==0 && [downLoading_array count]>0)
+            {
+                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+                [look setTableArray:downLoading_array];
+                [self presentModalViewController:look animated:YES];
+            }
+            if(indexPath.section==1 && [downLoaded_array count]>0)
+            {
+                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+                [look setTableArray:downLoaded_array];
+                [self presentModalViewController:look animated:YES];
+            }
+        }
+    }
 }
 
 #pragma mark - Table view delegate

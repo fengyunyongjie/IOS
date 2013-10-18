@@ -479,9 +479,9 @@
         [s addGestureRecognizer:onceTap];
         UIImage *oldImge = nil;
         
-        if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_name]])
+        if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
         {
-            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_name]];
+            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
             oldImge = [UIImage imageWithContentsOfFile:path];
         }
         else
@@ -549,14 +549,14 @@
         [s addGestureRecognizer:onceTap];
         __block BOOL isAction = FALSE;
         UIImage *oldImge = nil;
-        if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_name]])
+        if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
         {
-            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_name]];
+            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
             oldImge = [UIImage imageWithContentsOfFile:path];
         }
         else
         {
-            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_name]];
+            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
             oldImge = [UIImage imageWithContentsOfFile:path];
             isAction = YES;
             LookDownFile *downImage = [[LookDownFile alloc] init];

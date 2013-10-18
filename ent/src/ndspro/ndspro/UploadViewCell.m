@@ -114,44 +114,7 @@
         ALAssetsLibrary *libary = [[ALAssetsLibrary alloc] init];
         [libary assetForURL:[NSURL URLWithString:list.t_fileUrl] resultBlock:^(ALAsset *result){
             UIImage *imageV = [UIImage imageWithCGImage:[result thumbnail]];
-            if(imageV.size.width>=imageV.size.height)
-            {
-                if(imageV.size.height<=88)
-                {
-                    CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
-                    imageV = [self imageFromImage:imageV inRect:imageRect];
-                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                }
-                else
-                {
-                    CGSize newImageSize;
-                    newImageSize.height = 88;
-                    newImageSize.width = 88*imageV.size.width/imageV.size.height;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake((newImageSize.width-88)/2, 0, 88, 88);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-                }
-            }
-            else if(imageV.size.width<=imageV.size.height)
-            {
-                if(imageV.size.width<=88)
-                {
-                    CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
-                    imageV = [self imageFromImage:imageV inRect:imageRect];
-                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-                }
-                else
-                {
-                    CGSize newImageSize;
-                    newImageSize.width = 88;
-                    newImageSize.height = 88*imageV.size.height/imageV.size.width;
-                    UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                    CGRect imageRect = CGRectMake(0, (newImageSize.height-88)/2, 88, 88);
-                    imageS = [self imageFromImage:imageS inRect:imageRect];
-                    [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-                }
-            }
+            [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
         } failureBlock:^(NSError *error){}];
         
     }
@@ -184,64 +147,30 @@
     }
     if(![self.label_name.text isEqualToString:list.d_name])
     {
-        UIImage *imageV;
-        NSString *fmime=[[list.d_name pathExtension] lowercaseString];
-        if ([fmime isEqualToString:@"doc"]|| [fmime isEqualToString:@"docx"])
+        NSString *thumbUrl = [self getThumbPath:list.d_thumbUrl];
+        UIImage *imageV = [UIImage imageWithContentsOfFile:thumbUrl];
+        if(!imageV)
         {
-            imageV = [UIImage imageNamed:@"file_doc.png"];
-        }else if ([fmime isEqualToString:@"mp3"])
-        {
-            imageV = [UIImage imageNamed:@"file_music.png"];
-        }else if ([fmime isEqualToString:@"mov"])
-        {
-            imageV = [UIImage imageNamed:@"file_moving.png"];
-        }else if ([fmime isEqualToString:@"ppt"])
-        {
-            imageV = [UIImage imageNamed:@"file_other.png"];
-        }
-        else
-        {
-            NSString *thumbUrl = [self getThumbPath:list.d_thumbUrl];
-            imageV = [UIImage imageWithContentsOfFile:thumbUrl];
-        }
-        if(imageV.size.width>=imageV.size.height)
-        {
-            if(imageV.size.height<=88)
+            NSString *fmime=[[list.d_name pathExtension] lowercaseString];
+            if ([fmime isEqualToString:@"doc"]|| [fmime isEqualToString:@"docx"])
             {
-                CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
-                imageV = [self imageFromImage:imageV inRect:imageRect];
-                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                imageV = [UIImage imageNamed:@"file_doc.png"];
+            }else if ([fmime isEqualToString:@"mp3"])
+            {
+                imageV = [UIImage imageNamed:@"file_music.png"];
+            }else if ([fmime isEqualToString:@"mov"])
+            {
+                imageV = [UIImage imageNamed:@"file_moving.png"];
+            }else if ([fmime isEqualToString:@"ppt"])
+            {
+                imageV = [UIImage imageNamed:@"file_other.png"];
             }
             else
             {
-                CGSize newImageSize;
-                newImageSize.height = 88;
-                newImageSize.width = 88*imageV.size.width/imageV.size.height;
-                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                CGRect imageRect = CGRectMake((newImageSize.width-88)/2, 0, 88, 88);
-                imageS = [self imageFromImage:imageS inRect:imageRect];
-                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                imageV = [UIImage imageNamed:@"file_other.png"];
             }
         }
-        else if(imageV.size.width<=imageV.size.height)
-        {
-            if(imageV.size.width<=88)
-            {
-                CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
-                imageV = [self imageFromImage:imageV inRect:imageRect];
-                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
-            }
-            else
-            {
-                CGSize newImageSize;
-                newImageSize.width = 88;
-                newImageSize.height = 88*imageV.size.height/imageV.size.width;
-                UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
-                CGRect imageRect = CGRectMake(0, (newImageSize.height-88)/2, 88, 88);
-                imageS = [self imageFromImage:imageS inRect:imageRect];
-                [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
-            }
-        }
+        [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
         
     }
     [self.label_name setText:list.d_name];
