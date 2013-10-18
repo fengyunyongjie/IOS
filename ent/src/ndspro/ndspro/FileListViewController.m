@@ -71,7 +71,13 @@ typedef enum{
     CGRect r=self.view.frame;
     r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
     self.view.frame=r;
-    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    }else
+    {
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+    }
+    
     NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
     NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
 }
@@ -353,6 +359,9 @@ typedef enum{
     
     if (!self.moreEditBar) {
         self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
+        if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+            self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
+        }
         [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
             [self.moreEditBar setBarTintColor:[UIColor blueColor]];
@@ -440,13 +449,15 @@ typedef enum{
 }
 -(void)toMore:(id)sender
 {
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名",@"删除",@"下载",@"发送",@"提交/转存", nil];
+    [self hideSingleBar];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名",@"下载", nil];
     [actionSheet setTag:kActionSheetTagMore];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 -(void)toRename:(id)sender
 {
+    [self hideSingleBar];
     NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
     NSString *name=[dic objectForKey:@"fname"];
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"重命名" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
@@ -457,6 +468,7 @@ typedef enum{
 }
 -(void)toDelete:(id)sender
 {
+    [self hideSingleBar];
     if (self.tableView.editing) {
         NSArray *array=[self selectedIDs];
         NSLog(@"%@",array);
@@ -488,6 +500,7 @@ typedef enum{
 }
 -(void)toCommitOrResave:(id)sender
 {
+    [self hideSingleBar];
     if (self.tableView.editing) {
         NSArray *array=[self selectedIDs];
         NSLog(@"%@",array);
@@ -531,6 +544,7 @@ typedef enum{
 }
 -(void)toSend:(id)sender
 {
+    [self hideSingleBar];
     if (self.tableView.editing) {
         NSArray *array=[self selectedIDs];
         NSLog(@"%@",array);
@@ -559,6 +573,7 @@ typedef enum{
 }
 -(void)toMove:(id)sender
 {
+    [self hideSingleBar];
     if (self.tableView.editing) {
         NSArray *array=[self selectedIDs];
         NSLog(@"%@",array);
@@ -590,6 +605,7 @@ typedef enum{
 }
 -(void)toDownload:(id)sender
 {
+    [self hideSingleBar];
     if (self.tableView.isEditing) {
         NSArray *selectArray=[self selectedIndexPaths];
         for (NSIndexPath *indexPath in selectArray) {
@@ -1679,19 +1695,10 @@ typedef enum{
                 NSLog(@"重命名");
                 [self toRename:nil];
             }else if(buttonIndex == 2) {
-                NSLog(@"删除");
-                [self toDelete:nil];
-            }else if(buttonIndex == 3) {
                 NSLog(@"下载");
                 [self toDownload:nil];
-            }else if(buttonIndex == 4) {
-                NSLog(@"发送");
-                [self toSend:nil];
-            }else if(buttonIndex == 5) {
-                NSLog(@"提交/转存");
-                [self toCommitOrResave:nil];
             }
-            else if(buttonIndex == 6) {
+            else{
                 NSLog(@"取消");
             }
             break;

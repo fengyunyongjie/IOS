@@ -10,6 +10,7 @@
 @interface LoginViewController : UIViewController<UITextFieldDelegate>
 @property (strong,nonatomic)IBOutlet UITextField *userNameTextField;
 @property (strong,nonatomic)IBOutlet UITextField *passwordTextField;
+@property (strong,nonatomic)IBOutlet UIImageView *bgview;
 - (IBAction)login:(id)sender;
 - (IBAction)endEdit:(id)sender;
 @end

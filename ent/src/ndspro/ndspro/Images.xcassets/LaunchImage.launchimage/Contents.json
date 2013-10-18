@@ -9,6 +9,15 @@
       "scale" : "2x"
     },
     {
+      "orientation" : "portrait",
+      "idiom" : "iphone",
+      "extent" : "full-screen",
+      "minimum-system-version" : "5.0",
+      "filename" : "Bk_Start.png",
+      "scale" : "1x"
+    },
+
+    {
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",

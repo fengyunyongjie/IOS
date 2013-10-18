@@ -80,7 +80,10 @@
         [self.moreEditBar setItems:@[item_flexible,item_download,item_flexible,item_resave,item_flexible]];
 
     }
-
+    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+        //self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+        self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
+    }
 }
 -(void)viewWillAppear:(BOOL)animated
 {

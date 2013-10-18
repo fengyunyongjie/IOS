@@ -39,6 +39,10 @@ enum{
     r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
     self.view.frame=r;
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+        self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
+    }
 }
 - (void)viewDidLoad
 {
@@ -306,6 +310,9 @@ enum{
     
     if (!self.moreEditBar) {
         self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
+        if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+            self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
+        }
         [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
             [self.moreEditBar setBarTintColor:[UIColor blueColor]];
@@ -431,9 +438,16 @@ enum{
         if ([lab_title.text isEqualToString:@""]) {
             lab_title.text=@"无主题";
         }
-        lab_econtent.text=[dic objectForKey:@"econtent"];
-        if ([lab_econtent.text isEqualToString:@""]) {
+        NSString *econtent=[dic objectForKey:@"econtent"];
+        if ([econtent isKindOfClass:NSClassFromString(@"NSNull")]) {
+            
             lab_econtent.text=@"此邮件中无内容";
+        }else if ([econtent isEqualToString:@""])
+        {
+            lab_econtent.text=@"此邮件中无内容";
+        }else
+        {
+            lab_econtent.text=econtent;
         }
         lab_time.text=[dic objectForKey:@"sendtime"];
         

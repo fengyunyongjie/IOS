@@ -58,12 +58,51 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+-(BOOL)canSend
+{
+    if (self.tyle==kTypeSendEx) {
+        self.recevers=self.receversTextField.text;
+        if (self.recevers==nil||[self.recevers isEqualToString:@""]) {
+            return NO;
+        }
+    }else
+    {
+        if (self.usrids==nil||self.usrids.count==0) {
+            return NO;
+        }
+    }
+    return YES;
+}
 -(void)sendAction:(id)sender
 {
+    if (![self canSend]) {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"收件人不能为空";
+        //self.hud.labelText=error_info;
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return;
+    }
+    
     self.em=[[SCBEmailManager alloc] init];
     self.em.delegate=self;
     self.eTitle=self.eTitleTextField.text;
     self.eContent=self.eContentView.text;
+    if (!self.eTitle) {
+        self.eTitle=@"";
+    }
+    if (!self.eContent) {
+        self.eContent=@"";
+    }
+    
     
     if (self.tyle==kTypeSendEx) {
         self.recevers=self.receversTextField.text;

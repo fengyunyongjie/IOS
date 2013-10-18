@@ -13,6 +13,7 @@
 #define AUTHOR_MENU @"AuthorMenus"
 @interface MainViewController()<SCBFileManagerDelegate>
 @property (strong,nonatomic) SCBFileManager *fm;
+@property (strong,nonatomic) NSArray *commitList;
 @end
 
 @implementation MainViewController
@@ -25,10 +26,18 @@
     }
     return self;
 }
-
+- (void)viewDidAppear:(BOOL)animated
+{
+    CGSize winSize=[UIScreen mainScreen].bounds.size;
+    //self.view.frame=CGRectMake(0, 64, winSize.width,winSize.height-64 );
+    self.tableView.frame=CGRectMake(0, 0, winSize.width, self.view.frame.size.height);
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    }
     // Do any additional setup after loading the view from its nib.
     self.tableView=[[UITableView alloc] init];
     self.tableView.delegate=self;
@@ -79,7 +88,15 @@
 {
     if (self.listArray) {
         if (self.type==kTypeCommit) {
-            return self.listArray.count-1;
+            NSMutableArray *array=[NSMutableArray array];
+            for (NSDictionary *dic in self.listArray) {
+                NSString *roleType=[dic objectForKey:@"roletype"];
+                if ([roleType isEqualToString:@"0"]||[roleType isEqualToString:@"1"]) {
+                    [array addObject:dic];
+                }
+            }
+            self.commitList=array;
+            return self.commitList.count;
         }else if(self.type==kTypeResave)
         {
             return 1;
@@ -100,7 +117,7 @@
     if (self.listArray) {
         NSDictionary *dic;
         if (self.type==kTypeCommit) {
-            dic=[self.listArray objectAtIndex:indexPath.row+1];
+            dic=[self.commitList objectAtIndex:indexPath.row];
         }else{
             dic=[self.listArray objectAtIndex:indexPath.row];
         }
@@ -115,7 +132,14 @@
                 cell.imageView.image=[UIImage imageNamed:@"bizfiles.png"];
             }
             //显示工作区大小
-            cell.detailTextLabel.text=@"1.23G/5G";
+            NSString *totalspace=[dic objectForKey:@"totalspace"];
+            NSString *usedspace=[dic objectForKey:@"usedspace"];
+            if (totalspace==nil||usedspace==nil) {
+                cell.detailTextLabel.text=@"1.23G/5G";
+            }else
+            {
+                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@/%@",[YNFunctions convertSize:usedspace],[YNFunctions convertSize:totalspace]];
+            }
         }
     }
     return cell;
@@ -131,7 +155,7 @@
     if (self.listArray) {
         NSDictionary *dic;
         if (self.type==kTypeCommit) {
-            dic=[self.listArray objectAtIndex:indexPath.row+1];
+            dic=[self.commitList objectAtIndex:indexPath.row];
             if (dic) {
                 SelectFileListViewController *flVC=[[SelectFileListViewController alloc] init];
                 flVC.spid=[dic objectForKey:@"spid"];

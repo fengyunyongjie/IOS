@@ -32,6 +32,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    if ([UIScreen mainScreen].bounds.size.height<=480) {
+        self.bgview.image=[UIImage imageNamed:@"Bk_Login.png"];
+    }
 }
 
 - (void)didReceiveMemoryWarning

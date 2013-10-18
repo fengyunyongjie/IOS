@@ -64,7 +64,7 @@
 		29B2AE1D180E6A05002D9D1B /* LTHNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2AE1A180E6A05002D9D1B /* LTHNavigationViewController.m */; };
 		29B2AE1E180E6A05002D9D1B /* LTHPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2AE1C180E6A05002D9D1B /* LTHPasscodeViewController.m */; };
 		29B2AE21180E6A19002D9D1B /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2AE20180E6A19002D9D1B /* SFHFKeychainUtils.m */; };
-		29B2AE24180E8CC9002D9D1B /* bk_select.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE22180E8CC9002D9D1B /* bk_select.png */; };
+		29B2AE24180E8CC9002D9D1B /* bk_select@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE22180E8CC9002D9D1B /* bk_select@2x.png */; };
 		29B2AE25180E8CC9002D9D1B /* bk_selectTop.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE23180E8CC9002D9D1B /* bk_selectTop.png */; };
 		29B2AE27180E9606002D9D1B /* sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE26180E9606002D9D1B /* sel@2x.png */; };
 		29B2AE36180F7E1A002D9D1B /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2AE2C180F7E1A002D9D1B /* EGORefreshTableHeaderView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -320,7 +320,7 @@
 		29B2AE1C180E6A05002D9D1B /* LTHPasscodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LTHPasscodeViewController.m; path = ndspro/LTHPasscodeViewController.m; sourceTree = SOURCE_ROOT; };
 		29B2AE1F180E6A19002D9D1B /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFHFKeychainUtils.h; path = ndspro/SFHFKeychainUtils.h; sourceTree = SOURCE_ROOT; };
 		29B2AE20180E6A19002D9D1B /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFHFKeychainUtils.m; path = ndspro/SFHFKeychainUtils.m; sourceTree = SOURCE_ROOT; };
-		29B2AE22180E8CC9002D9D1B /* bk_select.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bk_select.png; sourceTree = "<group>"; };
+		29B2AE22180E8CC9002D9D1B /* bk_select@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bk_select@2x.png"; sourceTree = "<group>"; };
 		29B2AE23180E8CC9002D9D1B /* bk_selectTop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bk_selectTop.png; sourceTree = "<group>"; };
 		29B2AE26180E9606002D9D1B /* sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sel@2x.png"; sourceTree = "<group>"; };
 		29B2AE2B180F7E1A002D9D1B /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
@@ -888,7 +888,7 @@
 				29B2AE47180FE3A4002D9D1B /* sel_se@2x.png */,
 				29B2AE48180FE3A4002D9D1B /* title_menu2@2x.png */,
 				29B2AE26180E9606002D9D1B /* sel@2x.png */,
-				29B2AE22180E8CC9002D9D1B /* bk_select.png */,
+				29B2AE22180E8CC9002D9D1B /* bk_select@2x.png */,
 				29B2AE23180E8CC9002D9D1B /* bk_selectTop.png */,
 				29DF3B92180BEEE2003FEE3B /* title_bk_ti@2x.png */,
 				29B2AE0B180E63BE002D9D1B /* bk_nabottom.png */,
@@ -1206,7 +1206,7 @@
 				29DF3B63180BE0FC003FEE3B /* lock_bt_num1_se@2x.png in Resources */,
 				29B2AE39180F7E1A002D9D1B /* blueArrow.png in Resources */,
 				29DF3B53180BE0FC003FEE3B /* Bk_Start.png in Resources */,
-				29B2AE24180E8CC9002D9D1B /* bk_select.png in Resources */,
+				29B2AE24180E8CC9002D9D1B /* bk_select@2x.png in Resources */,
 				29B2AE18180E64A5002D9D1B /* mail_readed@2x.png in Resources */,
 				29DF3B65180BE0FC003FEE3B /* lock_forget_nor@2x.png in Resources */,
 				29B2AE5718110325002D9D1B /* WelcomeViewController.xib in Resources */,
@@ -1342,7 +1342,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=`echo $buildNumber +1|bc`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+			shellScript = "#!/bin/bash\n#buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\n#buildNumber=`echo $buildNumber +1|bc`\n#/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1454,7 +1454,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1484,8 +1484,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos7.0;
 			};
 			name = Debug;
 		};
@@ -1493,7 +1493,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1517,7 +1517,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos7.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1525,6 +1525,7 @@
 		291CCB6517F27F99005C029C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1546,6 +1547,7 @@
 		291CCB6617F27F99005C029C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;

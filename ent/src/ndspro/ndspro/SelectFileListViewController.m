@@ -32,6 +32,10 @@
 }
 - (void)viewDidAppear:(BOOL)animated
 {
+    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+        self.toolbar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    }
 }
 - (void)viewDidLoad
 {
@@ -66,6 +70,7 @@
     [self.toolbar setItems:@[fix,cancel_btn,fix,ok_btn,fix]];
     //self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-toolbarHeight);
     self.tableView.frame=CGRectMake(0, 64, self.view.frame.size.width, [[UIScreen mainScreen] bounds].size.height-49-64);
+
 }
 
 - (void)didReceiveMemoryWarning

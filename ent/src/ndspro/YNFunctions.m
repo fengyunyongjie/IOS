@@ -189,7 +189,7 @@ static BOOL h_f=NO;
 }
 #pragma mark --------获取图片存档文件名
 +(NSString*)picFileNameFromURL:(NSString*)URL{
-    if (URL==nil) {
+    if ([URL isKindOfClass:NSClassFromString(@"NSNull")]||URL==nil) {
         return nil;
     }
 	NSRange rang ;
