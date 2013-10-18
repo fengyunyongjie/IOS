@@ -11,12 +11,34 @@
 #import "SCBoxConfig.h"
 #import "SCBSession.h"
 #import "MF_Base64Additions.h"
+#import "Reachability.h"
 
 @implementation DwonFile
 @synthesize delegate,downsize,imageConnection,imageViewIndex,file_id,index,showType,indexPath,isStop,macTimeOut,fileSize,fileName,file_path;
 
 - (void)startDownload
 {
+    
+    if([self isConnection] == ReachableViaWiFi)
+    {
+        
+    }
+    else if([self isConnection] == ReachableViaWWAN)
+    {
+        if([YNFunctions isOnlyWifi])
+        {
+            //等待WiFi
+            [delegate upWaitWiFi];
+            return;
+        }
+    }
+    else
+    {
+        //网络连接断开
+        [delegate upNetworkStop];
+        return;
+    }
+    
     downsize = 0;
     endSudu = 0;
     NSString *path = [self get_image_save_file_path:file_id];
@@ -44,6 +66,13 @@
         [request setHTTPMethod:@"GET"];
         imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     }
+}
+
+//判断当前的网络是3g还是wifi
+-(NetworkStatus) isConnection
+{
+    Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    return [hostReach currentReachabilityStatus];
 }
 
 - (void)cancelDownload

@@ -183,12 +183,14 @@
 //等待WiFi
 -(void)upWaitWiFi
 {
-    
+    [self updateTableStateForWaitWiFi];
+    [self stopAllDown];
 }
 //网络失败
 -(void)upNetworkStop
 {
-    
+    [self updateTableStateForStop];
+    [self stopAllDown];
 }
 
 

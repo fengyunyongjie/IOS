@@ -209,8 +209,8 @@
 {
     NSLog(@"clicked_changeMyFile count:%i",[self.selectedAssets count]);
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
-    qbImage_fileView.f_id = @"0";
-    qbImage_fileView.f_name=@"选择上传位置";
+    qbImage_fileView.f_id = self.f_id;
+    qbImage_fileView.f_name = self.device_name;
     qbImage_fileView.space_id = space_id;
     [qbImage_fileView setQbDelegate:self];
     
