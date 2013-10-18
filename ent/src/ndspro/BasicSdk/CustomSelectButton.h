@@ -23,6 +23,7 @@
 @property(strong,nonatomic)UIButton *right_button;
 @property(strong,nonatomic)UIImageView *right_botton_image;
 @property(strong,nonatomic)id<CustomSelectButtonDelegate> delegate;
+@property(strong,nonatomic) UIImageView *boderImageView;
 
 - (id)initWithFrame:(CGRect)frame leftText:(NSString *)left_title rightText:(NSString *)right_title isShowLeft:(BOOL)bl;
 //是否显示左边视图

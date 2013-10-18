@@ -19,6 +19,9 @@
 #import "DownList.h"
 #import "PhotoLookViewController.h"
 #import "OtherBrowserViewController.h"
+#import "SCBSession.h"
+
+#define KCOVERTag 888
 
 typedef enum{
     kAlertTagDeleteOne,
@@ -250,7 +253,8 @@ typedef enum{
     QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
     imagePickerController.delegate = self;
     imagePickerController.allowsMultipleSelection = YES;
-    imagePickerController.f_id  = @"1";
+    imagePickerController.f_id  = self.f_id;
+    imagePickerController.f_name = self.title;
     imagePickerController.space_id = self.spid;
     [imagePickerController requestFileDetail];
     UINavigationController *navigation=[[UINavigationController alloc] initWithRootViewController:imagePickerController];
@@ -828,6 +832,16 @@ typedef enum{
             cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
         }
         [cell.detailTextLabel setTextColor:[UIColor grayColor]];
+        UIView *tagView = [cell viewWithTag:KCOVERTag];
+        if(tagView == nil)
+        {
+            tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF@2x.png"]];
+            CGRect rect = CGRectMake(40, 28, 22, 22);
+            [tagView setFrame:rect];
+            [tagView setTag:KCOVERTag];
+            [cell addSubview:tagView];
+            [tagView setHidden:YES];
+        }
     }
     
     //修改accessoryType
@@ -922,6 +936,20 @@ typedef enum{
                 }
 
             }
+        }
+        //判断文件是否已经下载
+        DownList *list = [[DownList alloc] init];
+        list.d_ure_id = [[SCBSession sharedSession] userId];
+        list.d_name = cell.textLabel.text;
+        list.d_state = 1;
+        UIImageView *tagView = (UIImageView *)[cell viewWithTag:KCOVERTag];
+        if([list selectUploadListIsHave])
+        {
+            [tagView setHidden:NO];
+        }
+        else
+        {
+            [tagView setHidden:YES];
         }
     }
     return cell;

@@ -16,7 +16,7 @@
 #define UpdateDownListForUserId @"UPDATE DownList SET d_state=?,d_baseUrl=?,d_file_id=?,d_downSize=?,d_datetime=? WHERE d_id=? and d_ure_id=?"
 
 #define SelectDowningAll @"SELECT * FROM DownList WHERE d_state<>1 and d_id>? and d_ure_id=?"
-#define SelectDownedAll @"SELECT * FROM DownList WHERE d_state=1 and d_id>? and d_ure_id=?"
+#define SelectDownedAll @"SELECT * FROM DownList WHERE d_state=1 and d_id>? and d_ure_id=? ORDER BY d_id desc"
 
 @interface DownList : DBSqlite3
 

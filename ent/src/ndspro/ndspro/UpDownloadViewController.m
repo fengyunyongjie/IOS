@@ -43,7 +43,7 @@
     self.navigationItem.rightBarButtonItem=rightItem;
     
     isShowUpload = YES;
-    CGRect customRect = CGRectMake(0, 0, 320, 22);
+    CGRect customRect = CGRectMake(0, 0, 320, 30);
     self.customSelectButton = [[CustomSelectButton alloc] initWithFrame:customRect leftText:@"正在上传" rightText:@"正在下载" isShowLeft:isShowUpload];
     [self.customSelectButton setDelegate:self];
     [self.customSelectButton setBackgroundColor:[UIColor lightGrayColor]];
@@ -413,6 +413,8 @@
         [self editAction:nil];
     }
     isShowUpload = bl;
+    
+    [self updateTableViewCount];
     //测试代码
     //打开照片库
     if(!bl)
@@ -427,9 +429,15 @@
         }
         else
         {
-            DownList *ls = [self.downLoaded_array lastObject];
+            DownList *ls = [self.downLoaded_array firstObject];
             list.d_id = ls.d_id;
-            [self.downLoaded_array addObjectsFromArray:[list selectDownedAll]];
+            NSArray *array = [list selectDownedAll];
+            NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+            for(int i=0;i<[array count];i++)
+            {
+                [indexSet addIndex:i];
+            }
+            [self.downLoaded_array insertObjects:array atIndexes:indexSet];
         }
     }
     else
@@ -444,9 +452,15 @@
         }
         else
         {
-            UpLoadList *ls = [self.upLoaded_array lastObject];
+            UpLoadList *ls = [self.upLoaded_array firstObject];
             list.t_id = ls.t_id;
-            [self.upLoaded_array addObjectsFromArray:[list selectUploadListAllAndUploaded]];
+            NSArray *array = [list selectUploadListAllAndUploaded];
+            NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+            for(int i=0;i<[array count];i++)
+            {
+                [indexSet addIndex:i];
+            }
+            [self.upLoaded_array insertObjects:array atIndexes:indexSet];
         }
     }
     [self.table_view reloadData];
@@ -494,7 +508,6 @@
 
 -(float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    [self updateTableViewCount];
     return 20;
 }
 

@@ -9,7 +9,7 @@
 #import "CustomSelectButton.h"
 
 @implementation CustomSelectButton
-@synthesize left_backimage,left_button,left_botton_image,right_backimage,right_button,right_botton_image,delegate;
+@synthesize left_backimage,left_button,left_botton_image,right_backimage,right_button,right_botton_image,delegate,boderImageView;
 
 - (id)initWithFrame:(CGRect)frame leftText:(NSString *)left_title rightText:(NSString *)right_title isShowLeft:(BOOL)bl 
 {
@@ -33,6 +33,10 @@
         [self.left_botton_image setHidden:NO];
         [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [self.right_botton_image setHidden:YES];
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect boderRect = CGRectMake(0, self.frame.size.height-2, 160, 2);
+            [self.boderImageView setFrame:boderRect];
+        }];
     }
     else
     {
@@ -40,6 +44,10 @@
         [self.left_botton_image setHidden:YES];
         [self.right_button.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
         [self.right_botton_image setHidden:NO];
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect boderRect = CGRectMake(160, self.frame.size.height-2, 160, 2);
+            [self.boderImageView setFrame:boderRect];
+        }];
     }
     [delegate isSelectedLeft:bl];
 }
@@ -80,6 +88,11 @@
         self.right_botton_image = [[UIImageView alloc] initWithFrame:right_buttonRect];
         [self.right_botton_image setHidden:YES];
         [self addSubview:self.right_botton_image];
+        
+        CGRect boderRect = CGRectMake(0, rect.size.height-2, 160, 2);
+        self.boderImageView = [[UIImageView alloc] initWithFrame:boderRect];
+        [self.boderImageView setBackgroundColor:[UIColor blueColor]];
+        [self addSubview:self.boderImageView];
     }
 }
 

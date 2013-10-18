@@ -48,6 +48,7 @@
 		291CCC4B17F7D9D6005C029C /* UpDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */; };
 		291CCC4C17F7D9D6005C029C /* UpDownloadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */; };
 		292973FF1810B9BE001BD086 /* title_menu2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292973FE1810B9BE001BD086 /* title_menu2@2x.png */; };
+		2929740118110C77001BD086 /* Ico_CoverF@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2929740018110C77001BD086 /* Ico_CoverF@2x.png */; };
 		292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 292B6B8917F91B3B0015669A /* IconDownloader.m */; };
 		292B6B8D17F9659E0015669A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 292B6B8B17F9659E0015669A /* Main.storyboard */; };
 		29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29728C6E1803B226004B4724 /* SelectFileListViewController.m */; };
@@ -294,6 +295,7 @@
 		291CCC4917F7D9D6005C029C /* UpDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpDownloadViewController.m; sourceTree = "<group>"; };
 		291CCC4A17F7D9D6005C029C /* UpDownloadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpDownloadViewController.xib; sourceTree = "<group>"; };
 		292973FE1810B9BE001BD086 /* title_menu2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_menu2@2x.png"; sourceTree = "<group>"; };
+		2929740018110C77001BD086 /* Ico_CoverF@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ico_CoverF@2x.png"; sourceTree = "<group>"; };
 		292B6B8817F91B3B0015669A /* IconDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconDownloader.h; sourceTree = "<group>"; };
 		292B6B8917F91B3B0015669A /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
 		292B6B8C17F9659E0015669A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -866,6 +868,7 @@
 		29B44B87180807330025AB61 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				2929740018110C77001BD086 /* Ico_CoverF@2x.png */,
 				29B2AE3F180FE3A4002D9D1B /* guide_1.png */,
 				29B2AE40180FE3A4002D9D1B /* guide_1@iPhone5.png */,
 				29B2AE41180FE3A4002D9D1B /* guide_2.png */,
@@ -1222,6 +1225,7 @@
 				29DF3B5D180BE0FC003FEE3B /* file_folder@2x.png in Resources */,
 				29DF3B5E180BE0FC003FEE3B /* file_moving@2x.png in Resources */,
 				29DF3B6B180BE0FC003FEE3B /* move_se@2x.png in Resources */,
+				2929740118110C77001BD086 /* Ico_CoverF@2x.png in Resources */,
 				29FDD8F3180C035000FFC558 /* plus@2x.png in Resources */,
 				29FDD8EB180C035000FFC558 /* Bt_Back.png in Resources */,
 				29B2AE4B180FE3A4002D9D1B /* guide_2.png in Resources */,

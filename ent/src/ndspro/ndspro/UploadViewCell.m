@@ -185,9 +185,19 @@
     if(![self.label_name.text isEqualToString:list.d_name])
     {
         UIImage *imageV;
-        if([list.d_thumbUrl length]==0)
+        NSString *fmime=[[list.d_name pathExtension] lowercaseString];
+        if ([fmime isEqualToString:@"doc"]|| [fmime isEqualToString:@"docx"])
         {
-            imageV = [UIImage imageNamed:@"file_other@2x.png"];
+            imageV = [UIImage imageNamed:@"file_doc.png"];
+        }else if ([fmime isEqualToString:@"mp3"])
+        {
+            imageV = [UIImage imageNamed:@"file_music.png"];
+        }else if ([fmime isEqualToString:@"mov"])
+        {
+            imageV = [UIImage imageNamed:@"file_moving.png"];
+        }else if ([fmime isEqualToString:@"ppt"])
+        {
+            imageV = [UIImage imageNamed:@"file_other.png"];
         }
         else
         {
