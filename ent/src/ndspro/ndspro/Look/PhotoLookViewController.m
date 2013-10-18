@@ -69,7 +69,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setNeedsStatusBarAppearanceUpdate];
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+    else
+    {
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
+    
     downArray = [[NSMutableArray alloc] init];
     linkManager = [[SCBLinkManager alloc] init];
     activityDic = [[NSMutableDictionary alloc] init];
@@ -235,6 +243,10 @@
 
 -(void)backClick
 {
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    }
     [self dismissModalViewControllerAnimated:YES];
     for(int i=0;i<[downArray count];i++)
     {
