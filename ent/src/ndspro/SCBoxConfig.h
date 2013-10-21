@@ -13,9 +13,9 @@
 #define CONNECT_TIMEOUT 15
 #define RESPONSE_TIMEOUT 10
 //商业版URL
-//#define HOST_URL @"http://192.168.1.9/"
+#define HOST_URL @"http://192.168.1.9/"
 //#define HOST_URL @"http://b.7cbox.cn/"
-#define HOST_URL @"http://192.168.1.55:8080/"
+//#define HOST_URL @"http://192.168.1.55:8080/"
 #define SERVER_URL [NSString stringWithFormat:@"%@%@",HOST_URL,@"biz/ent"]
 
 
@@ -126,8 +126,8 @@
 #define FM_DOWNLOAD_THUMB_URI @"/fm/download/thumb"
 //新缩略图下载
 #define FM_DOWNLOAD_THUMB_URI_NEW @"/fm/download/thumb_new"
-//预览图下载
-#define FM_DOWNLOAD_Look @"/fm/download/preview"
+//预览图下载 图片预览/ent/file/preview/pic
+#define FM_DOWNLOAD_Look @"/file/preview/pic"
 //获取文件详细信息
 #define FM_GETFILEINFO @"/fm/getFileInfo"
 //搜索当前文件夹 fm/search/current

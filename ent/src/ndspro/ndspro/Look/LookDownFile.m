@@ -35,11 +35,14 @@
         self.fileStream=[NSOutputStream outputStreamToFileAtPath:file_path append:NO];
         assert(self.fileStream!=nil);
         [self.fileStream open];
-        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?ent_uid=%@&fids[]=%@",SERVER_URL,FM_DOWNLOAD_URI,[NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]],file_id]];
+        NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?pic=1&fid=%@",SERVER_URL,FM_DOWNLOAD_Look,file_id]];
         DDLogInfo(@"url:%@",s_url);
         NSMutableURLRequest *request=[[NSMutableURLRequest alloc] initWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
-        
         [request setHTTPMethod:@"GET"];
+        [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
+        [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];
+        [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"ent_utoken"];
+        [request setValue:[[SCBSession sharedSession] ent_utype] forHTTPHeaderField:@"ent_utype"];
         imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     }
 }

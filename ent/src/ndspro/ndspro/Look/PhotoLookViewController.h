@@ -11,8 +11,9 @@
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
 #import "LookDownFile.h"
+#import "SCBFileManager.h"
 
-@interface PhotoLookViewController : UIViewController<UIScrollViewDelegate,UIActionSheetDelegate,SCBLinkManagerDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,UIActionSheetDelegate,LookDownDelegate>{
+@interface PhotoLookViewController : UIViewController<UIScrollViewDelegate,UIActionSheetDelegate,SCBLinkManagerDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,UIActionSheetDelegate,LookDownDelegate,SCBFileManagerDelegate>{
     /*
      缩放代码
      */
@@ -71,7 +72,6 @@
 @property(retain,nonatomic) UIToolbar *topToolBar;
 
 @property(retain,nonatomic) UIButton *leftButton;
-@property(retain,nonatomic) UIButton *centerButton;
 @property(retain,nonatomic) UIButton *rightButton;
 @property(assign,nonatomic) BOOL isCliped;
 @property(retain,nonatomic) UIToolbar *bottonToolBar;
@@ -81,6 +81,7 @@
 @property(nonatomic,retain) SCBLinkManager *linkManager;
 @property(nonatomic,retain) NSString *selected_id;
 @property(nonatomic,retain) MBProgressHUD *hud;
+@property (strong,nonatomic) SCBFileManager *fm;
 
 -(CGRect)zoomRectForScale:(float)scale inView:(UIScrollView*)scrollView withCenter:(CGPoint)center;
 

@@ -47,6 +47,17 @@
 @synthesize selected_id;
 @synthesize hud;
 
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return YES;
+}
+
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return YES;
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
@@ -200,7 +211,7 @@
     [self.bottonToolBar setBarStyle:UIBarStyleBlackTranslucent];
     
     
-    int width = (currWidth-36*4)/3;
+    int width = (currWidth-36*3)/2;
     
     CGRect leftRect = CGRectMake(36, 5, width, 33);
     self.leftButton = [[UIButton alloc] initWithFrame:leftRect];
@@ -213,18 +224,7 @@
     [self.bottonToolBar addSubview:self.leftButton];
     self.leftButton.showsTouchWhenHighlighted = YES;
     
-    CGRect centerRect = CGRectMake(width+36*2, 5, width, 33);
-    self.centerButton = [[UIButton alloc] initWithFrame:centerRect];
-    [self.centerButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [self.centerButton.titleLabel setTextColor:[UIColor blackColor]];
-    [self.centerButton setTitle:@"分享" forState:UIControlStateNormal];
-    [self.centerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.centerButton addTarget:self action:@selector(shareClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.centerButton setBackgroundColor:[UIColor clearColor]];
-    [self.bottonToolBar addSubview:self.centerButton];
-    self.centerButton.showsTouchWhenHighlighted = YES;
-    
-    CGRect rightRect = CGRectMake(width*2+36*3, 5, width, 33);
+    CGRect rightRect = CGRectMake(width*1+36*2, 5, width, 33);
     self.rightButton = [[UIButton alloc] initWithFrame:rightRect];
     [self.rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [self.rightButton.titleLabel setTextColor:[UIColor blackColor]];
@@ -706,44 +706,6 @@
     return zoomRect;
 }
 
--(void)isHiddenDelete:(BOOL)bl
-{
-    if(bl)
-    {
-        float fWidth = (currWidth-36*3)/2;
-        CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
-        [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
-        [self.leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-        [self.leftButton setFrame:leftRect];
-        CGRect centerRect = CGRectMake(36*2+fWidth, 5, fWidth, 33);
-        [self.centerButton setFrame:centerRect];
-        [self.rightButton setHidden:YES];
-    }
-    else
-    {
-        float fWidth = (currWidth-36*4)/3;
-        CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
-        [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
-        [self.leftButton setFrame:leftRect];
-        CGRect centerRect = CGRectMake(fWidth+36*2, 5, fWidth, 33);
-        [self.centerButton setFrame:centerRect];
-        [self.rightButton setHidden:NO];
-        CGRect rightRect = CGRectMake(fWidth*2+36*3, 5, fWidth, 33);
-        [self.rightButton setFrame:rightRect];
-        if(isCliped)
-        {
-            fWidth = (currWidth-36*3)/2;
-            CGRect leftRect = CGRectMake(36, 5, fWidth, 33);
-            [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
-            [self.leftButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
-            [self.leftButton setFrame:leftRect];
-            CGRect centerRect = CGRectMake(36*2+fWidth, 5, fWidth, 33);
-            [self.centerButton setFrame:centerRect];
-            [self.rightButton setHidden:YES];
-        }
-    }
-}
-
 #pragma mark 收藏按钮事件
 -(void)clipClicked:(id)sender
 {
@@ -752,6 +714,8 @@
     if([[tableArray objectAtIndex:page] isKindOfClass:[DownList class]])
     {
         demo = [tableArray objectAtIndex:page];
+        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [delegate.downmange addDownList:demo.d_name thumbName:demo.d_thumbUrl d_fileId:demo.d_file_id d_downSize:demo.d_downSize];
     }
 }
 
@@ -817,11 +781,12 @@
             {
                 demo = [tableArray objectAtIndex:page];
             }
-//            SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
-//            [photoManager setPhotoDelegate:self];
-//            NSArray *array = [NSArray arrayWithObject:[NSString stringWithFormat:@"%i",demo.f_id]];
-//            [photoManager requestDeletePhoto:array];
-//            
+            if (buttonIndex==0) {
+                [self.fm cancelAllTask];
+                self.fm=[[SCBFileManager alloc] init];
+                self.fm.delegate=self;
+                [self.fm removeFileWithIDs:@[demo.d_file_id]];
+            }
             hud = [[MBProgressHUD alloc] initWithView:self.view];
             [self.view addSubview:hud];
             hud.mode=MBProgressHUDModeIndeterminate;
@@ -902,139 +867,7 @@
 #pragma mark SCBPhotoDelegate
 -(void)requstDelete:(NSDictionary *)dictioinary
 {
-    if([[dictioinary objectForKey:@"code"] intValue] == 0)
-    {
-        /*
-         重新添加数据
-         */
-        if(deletePage<[tableArray count])
-        {
-            [tableArray removeObjectAtIndex:deletePage];
-        }
-        
-        if(imageScrollView)
-        {
-            [imageScrollView removeFromSuperview];
-            imageScrollView = nil;
-            [activityDic removeAllObjects];
-        }
-        
-        if([tableArray count]==0)
-        {
-            [self dismissModalViewControllerAnimated:YES];
-        }
-        
-        self.offset = 0.0;
-        scale_ = 1.0;
-        if(deletePage==[tableArray count])
-        {
-            currPage = deletePage-1;
-        }
-        imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, currWidth, currHeight)];
-        imageScrollView.backgroundColor = [UIColor clearColor];
-        imageScrollView.scrollEnabled = YES;
-        imageScrollView.pagingEnabled = YES;
-        imageScrollView.showsHorizontalScrollIndicator = NO;
-        imageScrollView.delegate = self;
-        
-        if(currPage==0&&[tableArray count]>=3)
-        {
-            startPage = 0;
-            endPage = currPage+2;
-            for (int i = 0; i<currPage+3; i++){
-                if(i>=[tableArray count])
-                {
-                    break;
-                }
-                [self loadPageColoumn:i];
-            }
-        }
-        
-        if(currPage==0&&[tableArray count]<=3)
-        {
-            startPage = 0;
-            endPage = [tableArray count]-1;
-            for (int i = 0; i<[tableArray count]; i++){
-                if(i>=[tableArray count])
-                {
-                    break;
-                }
-                if(i<0)
-                {
-                    continue;
-                }
-                [self loadPageColoumn:i];
-            }
-        }
-        
-        if(currPage>0&&currPage+1<[tableArray count])
-        {
-            startPage = currPage-1;
-            endPage = currPage+1;
-            for (int i = currPage-1; i<currPage+2; i++){
-                if(i>=[tableArray count])
-                {
-                    break;
-                }
-                if(i<0)
-                {
-                    continue;
-                }
-                [self loadPageColoumn:i];
-            }
-        }
-        
-        if(currPage+1==[tableArray count] && [tableArray count]>=3)
-        {
-            startPage = currPage-2;
-            endPage = currPage-1;
-            for (int i = currPage-2; i<=currPage; i++){
-                if(i>=[tableArray count])
-                {
-                    break;
-                }
-                if(i<0)
-                {
-                    continue;
-                }
-                [self loadPageColoumn:i];
-            }
-        }
-        
-        if(currPage+1==[tableArray count] && [tableArray count]<3)
-        {
-            startPage = 0;
-            endPage = currPage-1;
-            for (int i = 0; i<=currPage; i++){
-                if(i>=[tableArray count])
-                {
-                    break;
-                }
-                
-                [self loadPageColoumn:i];
-            }
-        }
-        
-        [self.view addSubview:imageScrollView];
-        [self.view bringSubviewToFront:self.topToolBar];
-        [self.view bringSubviewToFront:self.bottonToolBar];
-        
-        imageScrollView.contentSize = CGSizeMake(currWidth*[tableArray count], currHeight);
-        [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
-        [self handleOnceTap:nil];
-        
-        hud.labelText=@"删除成功";
-        hud.mode=MBProgressHUDModeText;
-        [hud hide:YES afterDelay:0.8f];
-        hud = nil;
-    }
-    else
-    {
-        hud.labelText=@"删除失败";
-        hud.mode=MBProgressHUDModeText;
-        [hud hide:YES afterDelay:0.8f];
-        hud = nil;
-    }
+    
 }
 
 -(void)getFileDetail:(NSDictionary *)dictionary
@@ -1075,6 +908,8 @@
         [activity_indicator stopAnimating];
         [activity_indicator removeFromSuperview];
     }
+    [hud hide:YES afterDelay:0.8f];
+    hud = nil;
 }
 
 
@@ -1127,6 +962,9 @@
             UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:indexPath.row];
             [activity_indicator stopAnimating];
             [activity_indicator removeFromSuperview];
+        }
+        if (self.hud) {
+            [self.hud removeFromSuperview];
         }
     NSLog(@"下载完成后显示结束。。。");
     });
@@ -1213,6 +1051,164 @@
     [self.hud hide:YES afterDelay:1.0f];
 }
 
+#pragma mark SCBFileManagerDelegate
+
+-(void)authorMenusSuccess:(NSData*)data
+{
+
+}
+-(void)searchSucess:(NSDictionary *)datadic
+{
+
+}
+-(void)operateSucess:(NSDictionary *)datadic
+{
+
+}
+-(void)openFinderSucess:(NSDictionary *)datadic
+{
+
+}
+//打开家庭成员
+-(void)getOpenFamily:(NSDictionary *)dictionary{}
+-(void)openFinderUnsucess{}
+-(void)removeSucess
+{
+    if(deletePage<[tableArray count])
+    {
+        [tableArray removeObjectAtIndex:deletePage];
+    }
+    
+    if(imageScrollView)
+    {
+        [imageScrollView removeFromSuperview];
+        imageScrollView = nil;
+        [activityDic removeAllObjects];
+    }
+    
+    if([tableArray count]==0)
+    {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    
+    self.offset = 0.0;
+    scale_ = 1.0;
+    if(deletePage==[tableArray count])
+    {
+        currPage = deletePage-1;
+    }
+    imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, currWidth, currHeight)];
+    imageScrollView.backgroundColor = [UIColor clearColor];
+    imageScrollView.scrollEnabled = YES;
+    imageScrollView.pagingEnabled = YES;
+    imageScrollView.showsHorizontalScrollIndicator = NO;
+    imageScrollView.delegate = self;
+    
+    if(currPage==0&&[tableArray count]>=3)
+    {
+        startPage = 0;
+        endPage = currPage+2;
+        for (int i = 0; i<currPage+3; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
+            [self loadPageColoumn:i];
+        }
+    }
+    
+    if(currPage==0&&[tableArray count]<=3)
+    {
+        startPage = 0;
+        endPage = [tableArray count]-1;
+        for (int i = 0; i<[tableArray count]; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
+            if(i<0)
+            {
+                continue;
+            }
+            [self loadPageColoumn:i];
+        }
+    }
+    
+    if(currPage>0&&currPage+1<[tableArray count])
+    {
+        startPage = currPage-1;
+        endPage = currPage+1;
+        for (int i = currPage-1; i<currPage+2; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
+            if(i<0)
+            {
+                continue;
+            }
+            [self loadPageColoumn:i];
+        }
+    }
+    
+    if(currPage+1==[tableArray count] && [tableArray count]>=3)
+    {
+        startPage = currPage-2;
+        endPage = currPage-1;
+        for (int i = currPage-2; i<=currPage; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
+            if(i<0)
+            {
+                continue;
+            }
+            [self loadPageColoumn:i];
+        }
+    }
+    
+    if(currPage+1==[tableArray count] && [tableArray count]<3)
+    {
+        startPage = 0;
+        endPage = currPage-1;
+        for (int i = 0; i<=currPage; i++){
+            if(i>=[tableArray count])
+            {
+                break;
+            }
+            
+            [self loadPageColoumn:i];
+        }
+    }
+    
+    [self.view addSubview:imageScrollView];
+    [self.view bringSubviewToFront:self.topToolBar];
+    [self.view bringSubviewToFront:self.bottonToolBar];
+    
+    imageScrollView.contentSize = CGSizeMake(currWidth*[tableArray count], currHeight);
+    [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
+    [self handleOnceTap:nil];
+    
+    hud.labelText=@"删除成功";
+    hud.mode=MBProgressHUDModeText;
+    [hud hide:YES afterDelay:0.8f];
+    hud = nil;
+}
+-(void)removeUnsucess
+{
+    hud.labelText=@"删除失败";
+    hud.mode=MBProgressHUDModeText;
+    [hud hide:YES afterDelay:0.8f];
+    hud = nil;
+}
+-(void)renameSucess{}
+-(void)renameUnsucess{}
+-(void)moveSucess{}
+-(void)moveUnsucess{}
+-(void)newFinderSucess{}
+-(void)newFinderUnsucess{}
+
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller
                  didFinishWithResult:(MessageComposeResult)result {
 	NSString *resultValue=@"";
@@ -1233,17 +1229,6 @@
 	}
     NSLog(@"%@",resultValue);
 	[self dismissModalViewControllerAnimated:YES];
-}
-
-//<ios 6.0
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    return YES;
-}
-
-//>ios 6.0
-- (BOOL)shouldAutorotate{
-    return YES;
 }
 
 
@@ -1345,15 +1330,13 @@
         {
             int width = (currWidth-36*3)/2;
             [self.leftButton setFrame:CGRectMake(36, 0, width, 44)];
-            [self.centerButton setFrame:CGRectMake(36*2+width, 0, width, 44)];
-            [self.rightButton setFrame:CGRectMake(36*3+width*2, 0, width, 44)];
+            [self.rightButton setFrame:CGRectMake(36*2+width*1, 0, width, 44)];
         }
         else
         {
-            int width = (currWidth-36*4)/3;
+            int width = (currWidth-36*3)/2;
             [self.leftButton setFrame:CGRectMake(36, 0, width, 44)];
-            [self.centerButton setFrame:CGRectMake(36*2+width, 0, width, 44)];
-            [self.rightButton setFrame:CGRectMake(36*3+width*2, 0, width, 44)];
+            [self.rightButton setFrame:CGRectMake(36*2+width*1, 0, width, 44)];
         }
         
     }
@@ -1405,15 +1388,13 @@
         {
             int width = (currWidth-36*3)/2;
             [self.leftButton setFrame:CGRectMake(36, 0, width, 44)];
-            [self.centerButton setFrame:CGRectMake(36*2+width, 0, width, 44)];
             [self.rightButton setFrame:CGRectMake(36*3+width*2, 0, width, 44)];
         }
         else
         {
-            int width = (currWidth-36*4)/3;
+            int width = (currWidth-36*3)/2;
             [self.leftButton setFrame:CGRectMake(36, 0, width, 44)];
-            [self.centerButton setFrame:CGRectMake(36*2+width, 0, width, 44)];
-            [self.rightButton setFrame:CGRectMake(36*3+width*2, 0, width, 44)];
+            [self.rightButton setFrame:CGRectMake(36*2+width*1, 0, width, 44)];
         }
     }
 }

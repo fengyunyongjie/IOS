@@ -20,6 +20,7 @@
 #import "PhotoLookViewController.h"
 #import "OtherBrowserViewController.h"
 #import "SCBSession.h"
+#import "CustomViewController.h"
 
 #define KCOVERTag 888
 
@@ -53,6 +54,17 @@ typedef enum{
 @end
 
 @implementation FileListViewController
+
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
+
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return NO;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -263,7 +275,7 @@ typedef enum{
     imagePickerController.f_name = self.title;
     imagePickerController.space_id = self.spid;
     [imagePickerController requestFileDetail];
-    UINavigationController *navigation=[[UINavigationController alloc] initWithRootViewController:imagePickerController];
+    CustomViewController *navigation=[[CustomViewController alloc] initWithRootViewController:imagePickerController];
     [navigation setNavigationBarHidden:YES];
     [self presentModalViewController:navigation animated:YES];
 }
@@ -1139,20 +1151,20 @@ typedef enum{
                      [fmime isEqualToString:@"bmp"]||
                      [fmime isEqualToString:@"gif"])
             {
+                int row = 0;
                 if(indexPath.row<[self.listArray count])
                 {
                     NSMutableArray *tableArray = [[NSMutableArray alloc] init];
                     for(int i=0;i<[self.listArray count];i++) {
                         NSDictionary *diction = [self.listArray objectAtIndex:i];
-                        NSString *fname = [diction objectForKey:@"fname"];
-                        NSString *fmime=[[fname pathExtension] lowercaseString];
-                        if([[dic objectForKey:@"fisdir"] boolValue] && ([fmime isEqualToString:@"png"]||
-                           [fmime isEqualToString:@"jpg"]||
-                           [fmime isEqualToString:@"jpeg"]||
-                           [fmime isEqualToString:@"bmp"]||
-                           [fmime isEqualToString:@"gif"]))
+                        NSString *fname_ = [diction objectForKey:@"fname"];
+                        NSString *fmime_=[[fname pathExtension] lowercaseString];
+                        if([[diction objectForKey:@"fisdir"] boolValue] && ([fmime_ isEqualToString:@"png"]||
+                           [fmime_ isEqualToString:@"jpg"]||
+                           [fmime_ isEqualToString:@"jpeg"]||
+                           [fmime_ isEqualToString:@"bmp"]||
+                           [fmime_ isEqualToString:@"gif"]))
                         {
-                            NSLog(@"fmime:%@",fmime);
                             DownList *list = [[DownList alloc] init];
                             list.d_file_id = [NSString formatNSStringForOjbect:[diction objectForKey:@"fid"]];
                             list.d_thumbUrl = [NSString formatNSStringForOjbect:[diction objectForKey:@"fthumb"]];
@@ -1163,11 +1175,16 @@ typedef enum{
                             list.d_name = [NSString formatNSStringForOjbect:[diction objectForKey:@"fname"]];
                             list.d_baseUrl = [NSString get_image_save_file_path:list.d_name];
                             [tableArray addObject:list];
+                            if(row==0 && [fname isEqualToString:fname_])
+                            {
+                                row = [tableArray count]-1;
+                            }
                         }
                     }
                     if([tableArray count]>0)
                     {
                         PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+                        [look setCurrPage:row];
                         [look setTableArray:tableArray];
                         [self presentModalViewController:look animated:YES];
                     }

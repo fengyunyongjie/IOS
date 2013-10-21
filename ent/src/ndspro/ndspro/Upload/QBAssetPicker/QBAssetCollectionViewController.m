@@ -19,6 +19,7 @@
 #import "QBImagePickerFooterView.h"
 #import "QBImageFileViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CustomViewController.h"
 
 #define QBY 20
 #define TabBarHeight 88
@@ -214,7 +215,7 @@
     qbImage_fileView.space_id = space_id;
     [qbImage_fileView setQbDelegate:self];
     
-    UINavigationController *nagation = [[UINavigationController alloc] initWithRootViewController:qbImage_fileView];
+    CustomViewController *nagation = [[CustomViewController alloc] initWithRootViewController:qbImage_fileView];
     [nagation setNavigationBarHidden:YES];
     [self presentModalViewController:nagation animated:YES];
 }
