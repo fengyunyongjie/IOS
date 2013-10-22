@@ -12,16 +12,18 @@
 #import "YNFunctions.h"
 #import "EmailDetailViewController.h"
 #import "UIBarButtonItem+Yn.h"
+#import "CustomSelectButton.h"
 
 enum{
     kActionSheetTagDeleteOne
 };
 
-@interface EmailListViewController ()<SCBEmailManagerDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
+@interface EmailListViewController ()<SCBEmailManagerDelegate,UIAlertViewDelegate,UIActionSheetDelegate,CustomSelectButtonDelegate>
 @property (strong,nonatomic) SCBEmailManager *em;
 @property(strong,nonatomic) MBProgressHUD *hud;
 @property(strong,nonatomic) UISegmentedControl *segmentedControl;
 @property (strong,nonatomic) UIToolbar *moreEditBar;
+@property (strong,nonatomic) CustomSelectButton *customSelectButton;
 @end
 
 @implementation EmailListViewController
@@ -39,9 +41,9 @@ enum{
     CGRect r=self.view.frame;
     r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
     self.view.frame=r;
-    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    self.tableView.frame=CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height-49-30);
     if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
-        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+        self.tableView.frame=CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height-49-64-30);
         self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
     }
     
@@ -64,7 +66,8 @@ enum{
     self.segmentedControl.frame=CGRectMake(100, 8, 120, 29);
     [self.segmentedControl setTintColor:[UIColor whiteColor]];
     [self.segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
-    [self.navigationItem setTitleView:self.segmentedControl];
+    [self.segmentedControl setHidden:YES];
+//    [self.navigationItem setTitleView:self.segmentedControl];
     [self.segmentedControl setSelectedSegmentIndex:0];
     
     UIBarButtonItem *editItem=[[UIBarButtonItem alloc] initWithTitleStr:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
@@ -77,6 +80,12 @@ enum{
 		_refreshHeaderView = view;
     }
     [_refreshHeaderView refreshLastUpdatedDate];
+    
+    CGRect customRect = CGRectMake(0, 0, 320, 30);
+    self.customSelectButton = [[CustomSelectButton alloc] initWithFrame:customRect leftText:@"收件箱" rightText:@"发件箱" isShowLeft:YES];
+    [self.customSelectButton setDelegate:self];
+    [self.customSelectButton setBackgroundColor:[UIColor lightGrayColor]];
+    [self.view addSubview:self.customSelectButton];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -86,6 +95,28 @@ enum{
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+#pragma mark CustomSelectButtonDelegate -------------------
+
+-(void)isSelectedLeft:(BOOL)bl
+{
+    if (bl) {
+        self.segmentedControl.selectedSegmentIndex=0;
+    }else
+    {
+        self.segmentedControl.selectedSegmentIndex=1;
+    }
+    [self.tableView reloadData];
+}
+
+-(void)leftSwipeFrom
+{
+    [self.customSelectButton showLeftWithIsSelected:NO];
+}
+
+-(void)rightSwipeFrom
+{
+    [self.customSelectButton showLeftWithIsSelected:YES];
 }
 #pragma mark -
 #pragma mark Data Source Loading / Reloading Methods
@@ -274,6 +305,16 @@ enum{
 
 -(void)editAction:(id)sender
 {
+    CGRect r=self.view.frame;
+    r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
+    self.view.frame=r;
+    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+        self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
+    }
+    NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
+    NSLog(@"self.table.frame:%@",NSStringFromCGRect(self.tableView.frame));
     [self.tableView setEditing:!self.tableView.editing animated:YES];
     BOOL isHideTabBar=self.tableView.editing;
     //isHideTabBar=!isHideTabBar;
@@ -368,11 +409,12 @@ enum{
         //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
         
-        UIImageView *unread_tag=[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 10, 10)];
+        
+        UIImageView *unread_tag=[[UIImageView alloc] initWithFrame:CGRectMake(10, 30, 10, 10)];
         UILabel *lab_role=[[UILabel alloc] initWithFrame:CGRectMake(30, 4, 150, 21)];
         UILabel *lab_title=[[UILabel alloc] initWithFrame:CGRectMake(30, 24, 150, 21)];
         UILabel *lab_time=[[UILabel alloc] initWithFrame:CGRectMake(190, 4, 130, 21)];
-        UILabel *lab_econtent=[[UILabel alloc] initWithFrame:CGRectMake(30, 44, 270, 55)];
+        UILabel *lab_econtent=[[UILabel alloc] initWithFrame:CGRectMake(30, 44, 270, 21)];
         [cell.contentView addSubview:lab_role];
         [cell.contentView addSubview:lab_title];
         [cell.contentView addSubview:lab_time];
@@ -387,7 +429,7 @@ enum{
         [lab_econtent setTextColor:[UIColor grayColor]];
         [lab_time setTextColor:[UIColor grayColor]];
         
-        [lab_econtent setNumberOfLines:0];
+        [lab_econtent setNumberOfLines:1];
         
         
         
@@ -470,7 +512,7 @@ enum{
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 100;
+    return 70;
 }
 
 #pragma mark - Table view delegate

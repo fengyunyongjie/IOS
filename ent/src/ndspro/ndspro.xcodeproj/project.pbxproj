@@ -103,6 +103,9 @@
 		29B561DE1814CC190018D1FF /* logo1_120.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B561DD1814CC190018D1FF /* logo1_120.png */; };
 		29B561E018150F270018D1FF /* title_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B561DF18150F270018D1FF /* title_back@2x.png */; };
 		29B561E318151F500018D1FF /* UIBarButtonItem+Yn.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B561E218151F500018D1FF /* UIBarButtonItem+Yn.m */; };
+		29B561E718166D600018D1FF /* set_bk_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B561E418166D600018D1FF /* set_bk_1@2x.png */; };
+		29B561E818166D600018D1FF /* set_bk_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B561E518166D600018D1FF /* set_bk_2@2x.png */; };
+		29B561E918166D600018D1FF /* set_bk_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B561E618166D600018D1FF /* set_bk_3@2x.png */; };
 		29DF3B4F180BE0FC003FEE3B /* bizfiles@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B0E180BE0FC003FEE3B /* bizfiles@2x.png */; };
 		29DF3B50180BE0FC003FEE3B /* Bk_Login.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B0F180BE0FC003FEE3B /* Bk_Login.png */; };
 		29DF3B51180BE0FC003FEE3B /* Bk_Login@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B10180BE0FC003FEE3B /* Bk_Login@iPhone5.png */; };
@@ -370,6 +373,9 @@
 		29B561DF18150F270018D1FF /* title_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_back@2x.png"; sourceTree = "<group>"; };
 		29B561E118151F500018D1FF /* UIBarButtonItem+Yn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Yn.h"; sourceTree = "<group>"; };
 		29B561E218151F500018D1FF /* UIBarButtonItem+Yn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Yn.m"; sourceTree = "<group>"; };
+		29B561E418166D600018D1FF /* set_bk_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "set_bk_1@2x.png"; sourceTree = "<group>"; };
+		29B561E518166D600018D1FF /* set_bk_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "set_bk_2@2x.png"; sourceTree = "<group>"; };
+		29B561E618166D600018D1FF /* set_bk_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "set_bk_3@2x.png"; sourceTree = "<group>"; };
 		29DF3B0E180BE0FC003FEE3B /* bizfiles@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bizfiles@2x.png"; sourceTree = "<group>"; };
 		29DF3B0F180BE0FC003FEE3B /* Bk_Login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Login.png; sourceTree = "<group>"; };
 		29DF3B10180BE0FC003FEE3B /* Bk_Login@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bk_Login@iPhone5.png"; sourceTree = "<group>"; };
@@ -889,6 +895,9 @@
 		29B44B87180807330025AB61 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				29B561E418166D600018D1FF /* set_bk_1@2x.png */,
+				29B561E518166D600018D1FF /* set_bk_2@2x.png */,
+				29B561E618166D600018D1FF /* set_bk_3@2x.png */,
 				29B561DF18150F270018D1FF /* title_back@2x.png */,
 				2929740018110C77001BD086 /* Ico_CoverF@2x.png */,
 				29B2AE3F180FE3A4002D9D1B /* guide_1.png */,
@@ -1228,6 +1237,8 @@
 				29B2AE5718110325002D9D1B /* WelcomeViewController.xib in Resources */,
 				29FDD8F2180C035000FFC558 /* plus.png in Resources */,
 				29DF3B5A180BE0FC003FEE3B /* download_nor@2x.png in Resources */,
+				29B561E718166D600018D1FF /* set_bk_1@2x.png in Resources */,
+				29B561E818166D600018D1FF /* set_bk_2@2x.png in Resources */,
 				29DF3B80180BE0FC003FEE3B /* title_bt_edit_se@2x.png in Resources */,
 				29FDD8E8180C035000FFC558 /* Bk_naBottom.png in Resources */,
 				29DF3B58180BE0FC003FEE3B /* del_se@2x.png in Resources */,
@@ -1316,6 +1327,7 @@
 				29B44B2D180797950025AB61 /* PushConfig.plist in Resources */,
 				29DF3B51180BE0FC003FEE3B /* Bk_Login@iPhone5.png in Resources */,
 				29DF3B7B180BE0FC003FEE3B /* set_open@2x.png in Resources */,
+				29B561E918166D600018D1FF /* set_bk_3@2x.png in Resources */,
 				290C7A051804F3FF00EF4A32 /* EmailListViewController.xib in Resources */,
 				29DF3B76180BE0FC003FEE3B /* rename_nor@2x.png in Resources */,
 				29B2AE4A180FE3A4002D9D1B /* guide_1@iPhone5.png in Resources */,

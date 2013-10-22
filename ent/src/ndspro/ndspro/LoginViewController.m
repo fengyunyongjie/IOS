@@ -46,6 +46,8 @@
         self.bgview.frame=CGRectMake(0, 0, 320, 480);
         self.bgview.image=[UIImage imageNamed:@"Bk_Login.png"];
     }
+    self.userNameTextField.delegate=self;
+    self.passwordTextField.delegate=self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -189,5 +191,24 @@
         //        }
     }
     return YES;
+}
+- (BOOL)textFieldShouldReturn:(UITextField*)textField {
+    BOOL retValue = NO;
+    // see if we're on the username or password fields
+    if (textField == self.userNameTextField)//当是 “帐号”输入框时
+    {
+//        if ([textField.text length]  == 11)//输入的号码完整时
+//        {
+        [self.passwordTextField becomeFirstResponder];// “会员密码”输入框 作为 键盘的第一 响应者，光标 进入此输入框中
+        retValue = NO;
+//        }
+    }
+    else
+    {
+//        [self.userPass resignFirstResponder];//如果 现在 是 第二个输入框，那么 键盘 隐藏
+        [textField resignFirstResponder];
+    }
+    return retValue;
+    //返回值为NO，即 忽略 按下此键；若返回为YES则 认为 用户按下了此键，并去调用TextFieldDoneEditint方法，在此方法中，你可以继续 写下 你想做的事
 }
 @end

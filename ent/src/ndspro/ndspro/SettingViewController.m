@@ -15,6 +15,7 @@
 #import "MBProgressHUD.h"
 #import "LTHPasscodeViewController.h"
 #import "PasswordController.h"
+#import "SCBSession.h"
 
 typedef enum{
     kAlertTypeNewVersion,
@@ -65,7 +66,7 @@ typedef enum{
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     //[self.tableView setBackgroundColor:[UIColor whiteColor]];
-    
+    self.tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     self.space_used=@"";
     self.space_total=@"";
     
@@ -84,6 +85,7 @@ typedef enum{
     [exitButton setTag:10000];
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
+    
 
 }
 -(void)viewDidAppear:(BOOL)animated
@@ -196,6 +198,19 @@ typedef enum{
                 NSLog(@"关闭消息提醒");
             }
             [YNFunctions setIsMessageAlert:theSwith.on];
+            if ([YNFunctions isMessageAlert]) {
+                // Required
+                [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                               UIRemoteNotificationTypeSound |
+                                                               UIRemoteNotificationTypeAlert)];
+                
+                NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] entjpush]];
+                [APService setTags:nil alias:alias];
+                NSLog(@"设置别名成功：%@",alias);
+            }else
+            {
+                [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+            }
         }
             break;
         default:
@@ -236,7 +251,7 @@ typedef enum{
 {
     SCBAccountManager *am=[[SCBAccountManager alloc] init];
     am.delegate=self;
-    [am checkNewVersion:VERSION];
+    [am checkNewVersion:BUILD_VERSION];
 }
 #pragma mark - Table view data source
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -304,6 +319,13 @@ typedef enum{
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        //cell.backgroundView=nil;
+        //cell.backgroundColor=[UIColor redColor];
+        
+        UIImageView *bgView=[[UIImageView alloc] initWithFrame:cell.frame];
+        bgView.tag=3;
+        [cell.contentView addSubview:bgView];
+        
         UILabel *itemTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 12, 280, 20)];
         itemTitleLabel.tag = 1;
         itemTitleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
@@ -331,6 +353,7 @@ typedef enum{
     cell.accessoryType = UITableViewCellAccessoryNone;
     UILabel *titleLabel = (UILabel *)[cell.contentView  viewWithTag:1];
     UILabel *descLabel  = (UILabel *)[cell.contentView  viewWithTag:2];
+    UIImageView *bgView=(UIImageView *)[cell.contentView viewWithTag:3];
     UILabel *ocLabel=(UILabel *)[cell.contentView viewWithTag:231];
     ocLabel.hidden=YES;
     descLabel.hidden = NO;
@@ -350,6 +373,7 @@ typedef enum{
                     titleLabel.text = @"帐号";
                     descLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
                     descLabel.textColor = [UIColor colorWithRed:0.0 green:0.4 blue:0.0 alpha:1.0];
+                    bgView.image=[UIImage imageNamed:@"set_bk_1.png"];
                 }
                     break;
                 case 1:

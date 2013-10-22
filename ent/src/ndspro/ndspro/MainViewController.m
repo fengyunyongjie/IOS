@@ -148,6 +148,7 @@
             }
         }
     }
+    [cell.detailTextLabel setTextColor:[UIColor grayColor]];
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -26,6 +26,7 @@ static SCBSession * _sharedSession;
         self.homeID=(NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"home_id"];
         self.userTag=(NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_tag"];
         self.ent_utype=(NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"ent_utype"];
+        self.entjpush=(NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"entjpush"];
     }
     return self;
 }

@@ -242,6 +242,7 @@ static SCBAccountManager *_sharedAccountManager;
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"space_id"]  forKey:@"space_id"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"usr_tag"]  forKey:@"usr_tag"];
                 [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"ent_utype"]  forKey:@"ent_utype"];
+                [[NSUserDefaults standardUserDefaults] setObject:(NSString *)[dic objectForKey:@"entjpush"]  forKey:@"entjpush"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
                 NSLog(@"%@",[[SCBSession sharedSession] userId]);

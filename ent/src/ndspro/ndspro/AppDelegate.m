@@ -16,6 +16,7 @@
 #import "DBSqlite3.h"
 #import "WelcomeViewController.h"
 #import "PConfig.h"
+#import "YNFunctions.h"
 
 @implementation AppDelegate
 @synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload;
@@ -41,10 +42,20 @@
         [self finishLogout];
     }
     
-    // Required
-    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                   UIRemoteNotificationTypeSound |
-                                                   UIRemoteNotificationTypeAlert)];
+    if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
+        NSLog(@"应用程序从知道中心启动：%@",[launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]);
+    }else
+    {
+        NSLog(@"应用程序正常启动");
+    }
+    
+    if ([YNFunctions isMessageAlert]) {
+        // Required
+        [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                       UIRemoteNotificationTypeSound |
+                                                       UIRemoteNotificationTypeAlert)];
+    }
+
     // Required
     [APService setupWithOption:launchOptions];
     //给程序添加日志
@@ -122,6 +133,9 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     // Required
     [APService handleRemoteNotification:userInfo];
+    NSLog(@"接收到通知，内容：%@",userInfo);
+    NSLog(@"应用程序状态：%@",@"");
+    
 }
 
 @end

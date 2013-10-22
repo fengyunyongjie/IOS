@@ -60,14 +60,73 @@
 }
 -(BOOL)canSend
 {
+    self.eTitle=self.eTitleTextField.text;
+    if (self.eTitle==nil||[self.eTitle isEqualToString:@""]) {
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"请填写标题栏";
+        //self.hud.labelText=error_info;
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        return NO;
+    }
     if (self.tyle==kTypeSendEx) {
         self.recevers=self.receversTextField.text;
         if (self.recevers==nil||[self.recevers isEqualToString:@""]) {
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"请填写收件人";
+            //self.hud.labelText=error_info;
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return NO;
+        }else if(![self checkIsEmail:self.recevers])
+        {
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"请输入正确的邮箱帐号";
+            //self.hud.labelText=error_info;
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
             return NO;
         }
     }else
     {
         if (self.usrids==nil||self.usrids.count==0) {
+            if (self.hud) {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"请选择收件人";
+            //self.hud.labelText=error_info;
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
             return NO;
         }
     }
@@ -76,19 +135,6 @@
 -(void)sendAction:(id)sender
 {
     if (![self canSend]) {
-        if (self.hud) {
-            [self.hud removeFromSuperview];
-        }
-        self.hud=nil;
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
-        [self.hud show:NO];
-        self.hud.labelText=@"收件人不能为空";
-        //self.hud.labelText=error_info;
-        self.hud.mode=MBProgressHUDModeText;
-        self.hud.margin=10.f;
-        [self.hud show:YES];
-        [self.hud hide:YES afterDelay:1.0f];
         return;
     }
     
@@ -320,7 +366,7 @@
 //        UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
 //        return cell.frame.size.height+30;
     }
-    return 50;
+    return tableView.rowHeight;
 }
 
 #pragma mark - Table view delegate
