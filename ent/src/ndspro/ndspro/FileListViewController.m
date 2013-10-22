@@ -21,6 +21,7 @@
 #import "OtherBrowserViewController.h"
 #import "SCBSession.h"
 #import "CustomViewController.h"
+#import "UIBarButtonItem+Yn.h"
 
 #define KCOVERTag 888
 
@@ -51,6 +52,7 @@ typedef enum{
 @property (strong,nonatomic) UIControl *menuView;
 @property (strong,nonatomic) UIControl *singleBg;
 @property (strong,nonatomic) UIBarButtonItem *titleRightBtn;
+@property (strong,nonatomic) UIBarButtonItem *backBarButtonItem;
 @end
 
 @implementation FileListViewController
@@ -118,6 +120,22 @@ typedef enum{
     }
 
     self.navigationItem.rightBarButtonItem=self.titleRightBtn;
+
+    //初始化返回按钮
+    UIButton*backButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,35,29)];
+    [backButton setImage:[UIImage imageNamed:@"title_back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.backBarButtonItem=backItem;
+    
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
+        temporaryBarButtonItem.title = @"";
+        self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
+    }else
+    {
+        self.navigationItem.leftBarButtonItem = backItem;
+    }
     
     if (_refreshHeaderView==nil) {
         EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
@@ -319,7 +337,17 @@ typedef enum{
             [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
         }
     }
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(deselectAllCell:)]];
+//    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+//        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(deselectAllCell:)]];
+//    }else
+//    {
+//        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(0,0,71,33)];
+//        [button setTitle:@"取消全选" forState:UIControlStateNormal];
+//        button.titleLabel.font=[UIFont systemFontOfSize:12];
+//        [button addTarget:self action:@selector(deselectAllCell:) forControlEvents:UIControlEventTouchUpInside];
+//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+//    }
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(deselectAllCell:)]];
 }
 -(void)deselectAllCell:(id)sender
 {
@@ -328,7 +356,18 @@ typedef enum{
             [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES];
         }
     }
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+    
+//    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+//        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+//    }else
+//    {
+//        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(0,0,71,33)];
+//        [button setTitle:@"全选" forState:UIControlStateNormal];
+//        button.titleLabel.font=[UIFont systemFontOfSize:12];
+//        [button addTarget:self action:@selector(selectAllCell:) forControlEvents:UIControlEventTouchUpInside];
+//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+//    }
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
 }
 -(void)editAction:(id)sender
 {
@@ -361,11 +400,33 @@ typedef enum{
     
     //隐藏返回按钮
     if (isHideTabBar) {
-        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+//        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+//            [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
+//            [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+//        }else
+//        {
+//            UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(0,0,71,33)];
+//            [button setTitle:@"全选" forState:UIControlStateNormal];
+//            button.titleLabel.font=[UIFont systemFontOfSize:12];
+//            [button addTarget:self action:@selector(selectAllCell:) forControlEvents:UIControlEventTouchUpInside];
+//            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+//            
+//            UIButton *leftButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,71,33)];
+//            [leftButton setTitle:@"取消" forState:UIControlStateNormal];
+//            leftButton.titleLabel.font=[UIFont systemFontOfSize:12];
+//            [leftButton addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+//            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
+//        }
+            [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
+            [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
     }else
     {
-        [self.navigationItem setLeftBarButtonItem:nil];
+        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+            [self.navigationItem setLeftBarButtonItem:nil];
+        }else
+        {
+            [self.navigationItem setLeftBarButtonItem:self.backBarButtonItem];
+        }
         [self.navigationItem setRightBarButtonItem:self.titleRightBtn];
     }
     
@@ -1001,11 +1062,12 @@ typedef enum{
     [self hideMenu];
     self.selectedIndexPath=indexPath;
     if (!self.singleBg) {
-        self.singleBg=[[UIControl alloc] initWithFrame:self.tableView.frame];
+        self.singleBg=[[UIControl alloc] initWithFrame:CGRectMake(0, 0,self.tableView.contentSize.width, self.tableView.contentSize.height)];
         [self.singleBg addTarget:self action:@selector(hideSingleBar) forControlEvents:UIControlEventTouchUpInside];
         [self.tableView addSubview:self.singleBg];
     }
     [self.singleBg setHidden:NO];
+    self.singleBg.frame=CGRectMake(0, 0,self.tableView.contentSize.width, self.tableView.contentSize.height);
     //显示单选操作菜单
     if (!self.singleEditBar) {
         self.singleEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
@@ -1141,6 +1203,7 @@ typedef enum{
             if ([fisdir isEqualToString:@"0"]) {
                 FileListViewController *flVC=[[FileListViewController alloc] init];
                 flVC.spid=self.spid;
+                flVC.roletype=self.roletype;
                 flVC.f_id=[dic objectForKey:@"fid"];
                 flVC.title=[dic objectForKey:@"fname"];
                 [self.navigationController pushViewController:flVC animated:YES];

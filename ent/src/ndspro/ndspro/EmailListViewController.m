@@ -11,6 +11,7 @@
 #import "MBProgressHUD.h"
 #import "YNFunctions.h"
 #import "EmailDetailViewController.h"
+#import "UIBarButtonItem+Yn.h"
 
 enum{
     kActionSheetTagDeleteOne
@@ -43,6 +44,9 @@ enum{
         self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
         self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
     }
+    
+    NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
+    NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
 }
 - (void)viewDidLoad
 {
@@ -63,7 +67,7 @@ enum{
     [self.navigationItem setTitleView:self.segmentedControl];
     [self.segmentedControl setSelectedSegmentIndex:0];
     
-    UIBarButtonItem *editItem=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
+    UIBarButtonItem *editItem=[[UIBarButtonItem alloc] initWithTitleStr:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
     [self.navigationItem setRightBarButtonItem:editItem];
     
     if (_refreshHeaderView==nil) {
@@ -195,7 +199,7 @@ enum{
             [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
         }
     }
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(deselectAllCell:)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(deselectAllCell:)]];
 }
 -(void)deselectAllCell:(id)sender
 {
@@ -211,7 +215,7 @@ enum{
             [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES];
         }
     }
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
 }
 -(NSArray *)selectedIndexPaths
 {
@@ -298,12 +302,12 @@ enum{
     
     //隐藏返回按钮
     if (isHideTabBar) {
-        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
     }else
     {
         [self.navigationItem setLeftBarButtonItem:nil];
-        UIBarButtonItem *editItem=[[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
+        UIBarButtonItem *editItem=[[UIBarButtonItem alloc] initWithTitleStr:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)];
         [self.navigationItem setRightBarButtonItem:editItem];
 
     }
@@ -633,7 +637,7 @@ enum{
                     [self.em removeEmailWithIDs:[self selectedIDs] type:@"0"];
                 }else
                 {
-                    [self.em removeEmailWithIDs:[self selectedIDs] type:@"0"];
+                    [self.em removeEmailWithIDs:[self selectedIDs] type:@"1"];
                 }
             }
             break;

@@ -36,6 +36,21 @@
 {
     [self updateList];
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    CGRect r=self.view.frame;
+    r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
+    self.view.frame=r;
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    }else
+    {
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+    }
+    
+    NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
+    NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];

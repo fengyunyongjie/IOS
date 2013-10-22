@@ -101,7 +101,7 @@ __strong static WelcomeViewController *_welcommeVC;
         [self.pageCtrl setHidden:NO];
     }
     [self.pageCtrl setCurrentPage:page];
-    if(scrollView.contentOffset.x> self.view.frame.size.width * 2.3 || page==3)
+    if(scrollView.contentOffset.x> self.view.frame.size.width * 2.2 || page==3)
     {
          [self.view removeFromSuperview];
     }

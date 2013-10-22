@@ -42,6 +42,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
     UINavigationController *vc1=[[UINavigationController alloc] init];
     [vc1.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
     [vc1.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
@@ -53,6 +54,7 @@
     vc1.title=@"文件管理";
     //vc1.tabBarItem=[[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemBookmarks tag:0];
     [vc1.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"nav_file_se.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"nav_file_nor.png"]];
+//    [vc1.tabBarItem setSelectedImage:[UIImage imageNamed:@"nav_selected.png"]];
     [vc1.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor] forState:UIControlStateSelected];
     [vc1.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor colorWithRed:35/255.0f green:73/255.0f blue:127/255.0f alpha:1] forKey:UITextAttributeTextColor] forState:UIControlStateNormal];
     //[vc1.tabBarItem setImage:[UIImage imageNamed: @"nav_selected.png"]];

@@ -269,7 +269,7 @@ typedef enum{
     // Return the number of rows in the section.
     switch (section) {
         case 0:
-            return 3;
+            return 1;
             break;
         case 1:
             return 4;
@@ -317,13 +317,22 @@ typedef enum{
         [cell.contentView addSubview:descTitleLabel];
         descTitleLabel.backgroundColor= [UIColor clearColor];
         
-        
+        CGRect label_rect = CGRectMake(240, 12, 40, 20);
+        UILabel *label = [[UILabel alloc] initWithFrame:label_rect];
+//        label.font = cell.textLabel.font;
+//        label.textColor = cell.textLabel.textColor;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.backgroundColor = [UIColor clearColor];
+        label.tag=231;
+        [cell.contentView addSubview:label];
     }
     [cell setBackgroundColor:[UIColor colorWithRed:225/255.0f green:225/255.0f blue:225/255.0f alpha:1.0f]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
     UILabel *titleLabel = (UILabel *)[cell.contentView  viewWithTag:1];
     UILabel *descLabel  = (UILabel *)[cell.contentView  viewWithTag:2];
+    UILabel *ocLabel=(UILabel *)[cell.contentView viewWithTag:231];
+    ocLabel.hidden=YES;
     descLabel.hidden = NO;
     for(UIView *view in cell.contentView.subviews)
     {
@@ -338,7 +347,7 @@ typedef enum{
             switch (row) {
                 case 0:
                 {
-                    titleLabel.text = @"当前用户";
+                    titleLabel.text = @"帐号";
                     descLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
                     descLabel.textColor = [UIColor colorWithRed:0.0 green:0.4 blue:0.0 alpha:1.0];
                 }
@@ -398,34 +407,34 @@ typedef enum{
             switch (row) {
                 case 3:
                 {
-                    //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
+                    titleLabel.text =@"密码锁";
                     //titleLabel.hidden=YES;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.textLabel.text=@"密码锁";
-                    [cell.textLabel setFont:titleLabel.font];
+                    //cell.textLabel.text=@"密码锁";
+                    //[cell.textLabel setFont:titleLabel.font];
                     //cell.detailTextLabel.text=@"仅Wi-Fi下进行,节省流量";
-                    [cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
+                    //[cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
                     
-                    CGRect label_rect = CGRectMake(240, 12, 40, 20);
-                    UILabel *label = [[UILabel alloc] initWithFrame:label_rect];
-                    label.font = cell.textLabel.font;
-                    label.textColor = cell.textLabel.textColor;
-                    label.textAlignment = NSTextAlignmentCenter;
-                    label.backgroundColor = cell.textLabel.backgroundColor;
+//                    CGRect label_rect = CGRectMake(240, 12, 40, 20);
+//                    UILabel *label = [[UILabel alloc] initWithFrame:label_rect];
+//                    label.font = cell.textLabel.font;
+//                    label.textColor = cell.textLabel.textColor;
+//                    label.textAlignment = NSTextAlignmentCenter;
+//                    label.backgroundColor = cell.textLabel.backgroundColor;
                     if ([LTHPasscodeViewController passcodeExistsInKeychain]) {
                         [LTHPasscodeViewController saveTimerStartTime];
                         if ([LTHPasscodeViewController timerDuration] == 1)
                         {
-                            label.text = @"关闭";
+                            ocLabel.text = @"关闭";
                         }
                         else
                         {
-                            label.text = @"开启";
+                            ocLabel.text = @"开启";
                         }
                     }
                     else
                     {
-                        label.text = @"关闭";
+                        ocLabel.text = @"关闭";
                     }
                     
 //                    if([YNFunctions isAutoUpload])
@@ -436,7 +445,6 @@ typedef enum{
 //                    {
 //                        label.text = @"关闭";
 //                    }
-                    [cell addSubview:label];
                     
                     m_switch.hidden = YES;
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"];
@@ -446,6 +454,7 @@ typedef enum{
                     else{
                         m_switch.on = [switchFlag boolValue];
                     }
+                    ocLabel.hidden=NO;
                 }
                     break;
                 case 0:
@@ -480,7 +489,7 @@ typedef enum{
                     NSString *sizeStr = [NSString stringWithFormat:@"%f",locationCacheSize];
                     descLabel.text = [YNFunctions convertSize:sizeStr];
                     descLabel.textColor = [UIColor grayColor];
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     m_switch.hidden = YES;
                 }
                     

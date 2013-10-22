@@ -10,6 +10,7 @@
 #import "SCBFileManager.h"
 #import "YNFunctions.h"
 #import "SelectFileListViewController.h"
+#import "UIBarButtonItem+Yn.h"
 #define AUTHOR_MENU @"AuthorMenus"
 @interface MainViewController()<SCBFileManagerDelegate>
 @property (strong,nonatomic) SCBFileManager *fm;
@@ -45,7 +46,12 @@
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     if (self.type==kTypeCommit||self.type==kTypeResave) {
-        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(dissmissSelf:)]];
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(dissmissSelf:)]];
+    }
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
+        temporaryBarButtonItem.title = @"";
+        self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
     }
 }
 
