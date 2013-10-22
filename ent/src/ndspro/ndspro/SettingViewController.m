@@ -326,13 +326,13 @@ typedef enum{
         bgView.tag=3;
         [cell.contentView addSubview:bgView];
         
-        UILabel *itemTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 12, 280, 20)];
+        UILabel *itemTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, 260, 20)];
         itemTitleLabel.tag = 1;
         itemTitleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
         [cell.contentView addSubview:itemTitleLabel];
         itemTitleLabel.backgroundColor= [UIColor clearColor];
         
-        UILabel *descTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 12, 280, 20)];
+        UILabel *descTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, 260, 20)];
         descTitleLabel.textAlignment = UITextAlignmentRight;
         descTitleLabel.tag = 2;
         descTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:12];
@@ -363,6 +363,7 @@ typedef enum{
             [view removeFromSuperview];
         }
     }
+    bgView.image=[UIImage imageNamed:@"set_bk_2.png"];
     switch (section) {
         case 0:
         {
@@ -373,7 +374,6 @@ typedef enum{
                     titleLabel.text = @"帐号";
                     descLabel.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
                     descLabel.textColor = [UIColor colorWithRed:0.0 green:0.4 blue:0.0 alpha:1.0];
-                    bgView.image=[UIImage imageNamed:@"set_bk_1.png"];
                 }
                     break;
                 case 1:
@@ -483,6 +483,7 @@ typedef enum{
                     break;
                 case 0:
                 {
+                    bgView.image=[UIImage imageNamed:@"set_bk_3.png"];
                     titleLabel.text = @"仅在Wi-Fi下上传/下载";
                     NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"switch_flag"];
                     automicOff_button.hidden = NO;
@@ -508,6 +509,7 @@ typedef enum{
                     break;
                 case 1:
                 {
+                    bgView.image=[UIImage imageNamed:@"set_bk_3.png"];
                     titleLabel.text = @"清除缓存";
                     descLabel.hidden = NO;
                     NSString *sizeStr = [NSString stringWithFormat:@"%f",locationCacheSize];
@@ -519,6 +521,7 @@ typedef enum{
                     
                     break;
                 case 2:
+                    bgView.image=[UIImage imageNamed:@"set_bk_3.png"];
                     //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     descLabel.hidden = YES;
@@ -547,11 +550,13 @@ typedef enum{
             titleLabel.textAlignment = UITextAlignmentLeft;
             switch (row) {
                 case 0:
+                    bgView.image=[UIImage imageNamed:@"set_bk_3.png"];
                     descLabel.hidden = NO;
                     titleLabel.text = @"版本";
                     descLabel.text = VERSION;
                     break;
                 case 1:
+                    bgView.image=[UIImage imageNamed:@"set_bk_3.png"];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     descLabel.hidden = YES;
