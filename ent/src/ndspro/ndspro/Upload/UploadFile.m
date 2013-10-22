@@ -89,7 +89,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [self updateNetWork];
+        [delegate upNetworkStop];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_INFO]];
@@ -114,7 +114,7 @@
         }
         else
         {
-            [self updateNetWork];
+            [delegate upNetworkStop];
         }
         return;
     }
@@ -138,7 +138,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [self updateNetWork];
+        [delegate upNetworkStop];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
@@ -168,7 +168,7 @@
         }
         else
         {
-            [self updateNetWork];
+            [delegate upNetworkStop];
         }
         return;
     }
@@ -224,7 +224,8 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
-        [self updateNetWork];
+        [self updateAutoUploadState];
+        [delegate upNetworkStop];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URL]];
@@ -245,13 +246,14 @@
                                                returningResponse:nil error:&error];
     if(!returnData || appleDate.uploadmanage.isStopCurrUpload)
     {
+        [self updateAutoUploadState];
         if(returnData == nil)
         {
             [delegate webServiceFail];
         }
         else
         {
-            [self updateNetWork];
+            [delegate upNetworkStop];
         }
         return;
     }
@@ -308,7 +310,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [self updateNetWork];
+        [delegate upNetworkStop];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_VERIFY]];
@@ -338,7 +340,7 @@
                  }
                  else
                  {
-                     [self updateNetWork];
+                     [delegate upNetworkStop];
                  }
                  return;
              }
@@ -401,7 +403,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [self updateNetWork];
+        [delegate upNetworkStop];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_STATE]];
@@ -430,7 +432,7 @@
         }
         else
         {
-            [self updateNetWork];
+            [delegate upNetworkStop];
         }
         return;
     }
@@ -473,7 +475,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [self updateNetWork];
+        [delegate upNetworkStop];
         return;
     }
     if([[dictionary objectForKey:@"code"] intValue] == 0)
@@ -497,7 +499,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [self updateNetWork];
+        [delegate upNetworkStop];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
@@ -532,7 +534,7 @@
             }
             else
             {
-                [self updateNetWork];
+                [delegate upNetworkStop];
             }
             return;
         }
@@ -596,7 +598,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [self updateNetWork];
+        [delegate upNetworkStop];
         return;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -618,9 +620,10 @@
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
+        [self updateAutoUploadState];
         [connection cancel];
         connection = nil;
-        [self updateNetWork];
+        [delegate upNetworkStop];
         return;
     }
     [delegate upProess:proress fileTag:sudu];

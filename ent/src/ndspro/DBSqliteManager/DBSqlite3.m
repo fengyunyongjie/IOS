@@ -16,15 +16,11 @@
 -(void)updateVersion
 {
     self.databasePath=[YNFunctions getDBCachePath];
-    self.databasePath=[self.databasePath stringByAppendingPathComponent:@"hongPan.sqlite"];
+    self.databasePath=[self.databasePath stringByAppendingPathComponent:@"hongPanShangYe.sqlite"];
     //判断更新数据库文件
     if(![self isHaveTable:@"UploadList"])
     {
         [[LTHPasscodeViewController sharedUser] hiddenPassword];
-//        NSLog(@"--------------------------------------------------\n删除所有数据库文件\n--------------------------------------------------");
-//        NSFileManager *filemgr = [NSFileManager defaultManager];
-//        BOOL bl = [filemgr removeItemAtPath:self.databasePath error:nil];
-//        NSLog(@"bl:%i",bl);
     }
 }
 

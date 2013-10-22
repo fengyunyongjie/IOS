@@ -20,8 +20,8 @@ static CGFloat const kLabelFontSize = 15.0f;
 static CGFloat const kPasscodeFontSize = 33.0f;
 static CGFloat const kFontSizeModifier = 1.5f;
 static CGFloat const kiPhoneHorizontalGap = 40.0f;
-static CGFloat const kLockAnimationDuration = 0.15f;
-static CGFloat const kSlideAnimationDuration = 0.15f;
+static CGFloat const kLockAnimationDuration = 0.0f;
+static CGFloat const kSlideAnimationDuration = 0.0f;
 
 #define DegreesToRadians(x) ((x) * M_PI / 180.0)
 // Gaps
@@ -659,19 +659,22 @@ static CGFloat const kSlideAnimationDuration = 0.15f;
 	[self resetTextFields];
 	_failedAttemptLabel.backgroundColor	= kFailedAttemptLabelBackgroundColor;
 	_failedAttemptLabel.textColor = kFailedAttemptLabelTextColor;
-	_failedAttempts = 5;
 	_failedAttemptLabel.hidden = YES;
+    if(_failedAttempts<5)
+    {
+        _failedAttemptLabel.hidden = NO;
+    }
 	_passcodeTextField.text = @"";
 	if (_isUserConfirmingPasscode) {
-		if (_isUserEnablingPasscode) _enterPasscodeLabel.text = @"请重新输入密码";
-		else if (_isUserChangingPasscode) _enterPasscodeLabel.text = @"请重新输入新密码";
+		if (_isUserEnablingPasscode) _enterPasscodeLabel.text = @"请再次输入密码";
+		else if (_isUserChangingPasscode) _enterPasscodeLabel.text = @"请再次输入新密码";
 	}
 	else if (_isUserBeingAskedForNewPasscode) {
 		if (_isUserEnablingPasscode || _isUserChangingPasscode) {
 			_enterPasscodeLabel.text = @"请输入新密码";
 		}
 	}
-	else _enterPasscodeLabel.text = @"请输入密码";
+	else _enterPasscodeLabel.text = @"请输入原密码";
 }
 
 
@@ -682,10 +685,10 @@ static CGFloat const kSlideAnimationDuration = 0.15f;
 	NSString *savedPasscode = [SFHFKeychainUtils getPasswordForUsername: kKeychainPasscode
 														 andServiceName: kKeychainServiceName
 																  error: nil];
-	_enterPasscodeLabel.text = savedPasscode.length == 0 ? @"Enter your passcode" : @"Enter your new passcode";
+	_enterPasscodeLabel.text = savedPasscode.length == 0 ? @"请输入密码" : @"Enter your new passcode";
 	
 	_failedAttemptLabel.hidden = NO;
-	_failedAttemptLabel.text = @"Passcodes did not match. Try again.";
+	_failedAttemptLabel.text = @"密码不匹配，请再尝试一次";
 	_failedAttemptLabel.backgroundColor = [UIColor clearColor];
 	_failedAttemptLabel.layer.borderWidth = 0;
 	_failedAttemptLabel.layer.borderColor = [UIColor clearColor].CGColor;

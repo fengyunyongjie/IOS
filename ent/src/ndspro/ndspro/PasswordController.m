@@ -35,6 +35,18 @@
     self.table_view.dataSource = self;
     self.table_view.delegate = self;
     [self.view addSubview:self.table_view];
+    
+    if ([LTHPasscodeViewController passcodeExistsInKeychain]) {
+        [LTHPasscodeViewController saveTimerStartTime];
+        if ([LTHPasscodeViewController timerDuration] == 1)
+        {
+            [[LTHPasscodeViewController sharedUser] showForEnablingPasscodeInViewController: self];
+        }
+    }
+    else
+    {
+        [[LTHPasscodeViewController sharedUser] showForEnablingPasscodeInViewController: self];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

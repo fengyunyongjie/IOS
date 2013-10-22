@@ -417,12 +417,9 @@
     isShowUpload = bl;
     
     [self updateTableViewCount];
-    //测试代码
-    //打开照片库
+    
     if(!bl)
     {
-        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [delegate.downmange updateLoad];
         DownList *list = [[DownList alloc] init];
         list.d_ure_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
         if(self.downLoaded_array == nil)
@@ -444,8 +441,6 @@
     }
     else
     {
-        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [delegate.uploadmanage updateLoad];
         UpLoadList *list = [[UpLoadList alloc] init];
         list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
         if(self.upLoaded_array == nil)
@@ -959,6 +954,10 @@
     [delegate.uploadmanage updateTable];
     [delegate.downmange updateTable];
     [self isSelectedLeft:isShowUpload];
+    if(self.table_view.editing)
+    {
+        [self editAction:nil];
+    }
 }
 
 

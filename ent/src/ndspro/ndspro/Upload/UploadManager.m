@@ -45,7 +45,6 @@
         list.t_id =  ((UpLoadList *)[uploadArray lastObject]).t_id;
     }
     list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
-    
     [uploadArray addObjectsFromArray:[list selectMoveUploadListAllAndNotUpload]];
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
@@ -56,6 +55,10 @@
         {
             [uploadView setUpLoading_array:uploadArray];
         }
+    }
+    if(!isStart)
+    {
+        [self updateTableStateForStop];
     }
 }
 
@@ -122,6 +125,7 @@
     isOpenedUpload = YES;
     if(!isStart)
     {
+        [self updateTableStateForWaiting];
         isStart = YES;
         [self startUpload];
     }
@@ -273,7 +277,7 @@
                 [uploadView setUpLoading_array:uploadArray];
             }
             //更新UI
-            [uploadView isSelectedLeft:uploadView.isShowUpload];
+            [uploadView.table_view reloadData];
         }
     });
 }

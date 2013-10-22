@@ -704,6 +704,9 @@ typedef enum{
                 [APService setTags:nil alias:nil];
                 
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [appDelegate.uploadmanage stopAllUpload];
+                [appDelegate.downmange stopAllDown];
+                [[LTHPasscodeViewController sharedUser] hiddenPassword];
                 [appDelegate finishLogout];
             }
             break;
