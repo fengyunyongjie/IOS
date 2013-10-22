@@ -55,6 +55,8 @@
     
     SCBLinkManager *linkManager;
     NSString *selected_id;
+    CGFloat ScollviewHeight; //当前屏幕的高度
+    CGFloat ScollviewWidth; //当前屏幕的宽度
 }
 
 @property (atomic, retain) UIScrollView *imageScrollView;

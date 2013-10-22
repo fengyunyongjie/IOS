@@ -63,6 +63,10 @@
     
     //加载列表
     CGRect table_rect = CGRectMake(0, customRect.origin.y+customRect.size.height, 320, self.view.frame.size.height-(customRect.origin.y+customRect.size.height)-UpTabBarHeight);
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        table_rect.size.height = table_rect.size.height+20;
+    }
     self.table_view = [[UITableView alloc] initWithFrame:table_rect];
     self.table_view.delegate = self;
     self.table_view.dataSource = self;
@@ -1030,6 +1034,40 @@
         }
     }
     return type;
+}
+
+//文件夹不存在
+-(void)showFloderNot
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"目标文件夹不存在";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+
+//空间不足
+-(void)showSpaceNot
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"空间不足";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 @end

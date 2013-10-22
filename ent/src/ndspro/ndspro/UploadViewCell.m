@@ -13,7 +13,7 @@
 
 @implementation UploadViewCell
 @synthesize button_dele_button,imageView,contentView,label_name;
-@synthesize delegate,button_start_button,jinDuView,size_label,sudu_label;
+@synthesize delegate,button_start_button,jinDuView,size_label;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -39,10 +39,6 @@
         [self.size_label setFont:[UIFont systemFontOfSize:11]];
         [self addSubview:self.size_label];
         CGRect suduRect = CGRectMake(220, 22, 70, 15);
-        self.sudu_label = [[UILabel alloc] initWithFrame:suduRect];
-        [self.sudu_label setTextColor:[UIColor colorWithRed:0.0/255.0 green:160.0/255.0 blue:230.0/255.0 alpha:1]];
-        [self.sudu_label setFont:[UIFont systemFontOfSize:14]];
-        [self addSubview:self.sudu_label];
         
         CGRect button_rect = CGRectMake(270, 0, 50, 50);
         self.button_dele_button = [[UIButton alloc] initWithFrame:button_rect];
@@ -129,7 +125,6 @@
 //    [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
     if(list.d_state == 1)
     {
-        [self.sudu_label setHidden:YES];
         [self.jinDuView showDate:list.d_datetime];
     }
     else if(list.d_state == 0)

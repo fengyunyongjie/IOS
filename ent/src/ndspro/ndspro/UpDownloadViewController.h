@@ -33,5 +33,7 @@
 
 -(void)isSelectedLeft:(BOOL)bl;
 -(void)updateCount:(NSString *)upload_count downCount:(NSString *)down_count;
+-(void)showFloderNot;
+-(void)showSpaceNot;
 
 @end

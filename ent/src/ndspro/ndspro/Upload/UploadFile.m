@@ -47,13 +47,13 @@
     if([self isConnection] == ReachableViaWiFi)
     {
         //WiFi 状态
-        [self catchurl];
+        [self newRequestVerify];
     }
     else if([self isConnection] == ReachableViaWWAN)
     {
         if(![YNFunctions isOnlyWifi])
         {
-            [self catchurl];
+            [self newRequestVerify];
         }
         else
         {
@@ -371,19 +371,13 @@
              NSLog(@"error:%@",error);
          }];
     }
-    else if([[dictionary objectForKey:@"code"] intValue] == 5 )
-    {
-        [self updateAutoUploadState];
-        //重命名
-        [delegate upReName];
-    }
     else if([[dictionary objectForKey:@"code"] intValue] == 7 )
     {
         [self updateAutoUploadState];
         //重命名
         [delegate upNotUpload];
     }
-    else if([[dictionary objectForKey:@"code"] intValue] == 4 )
+    else if([[dictionary objectForKey:@"code"] intValue] == 5 )
     {
         [self updateAutoUploadState];
         //重命名

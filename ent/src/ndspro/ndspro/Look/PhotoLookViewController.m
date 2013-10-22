@@ -17,22 +17,6 @@
 #define kAlertTagMailAddr 72
 #define kActionSheetTagShare 74
 #define kActionSheetTagDelete 77
-#define ScollviewHeight self.view.frame.size.height //当前屏幕的高度
-#define ScollviewWidth self.view.frame.size.width //当前屏幕的宽度
-
-#define ImageContentSize CGSizeMake(320,ScollviewHeight) //每个UIScrollView的大小
-#define ScrollRect(index,size) CGRectMake(320*index, 0, 320, ScollviewHeight) //每个UIScrollView的坐标
-#define ImagePoint(size) CGPointMake((320-size.width)/2, (ScollviewHeight-size.height)/2) //imageview的起始点
-#define GetHeight(size) 320*size.height/size.width //获取等比例高度
-#define GetWidth(size) ScollviewHeight*size.width/size.height //获取等比例宽度
-
-//横屏后
-#define ScapeScrollviewRect CGRectMake(0, 0, ScollviewHeight+20, 300)
-#define ScapeTopLeftRect CGRectMake(0, 0, ScollviewHeight+20, 44)
-#define ScapeScrollRect(index,size) CGRectMake((ScollviewHeight+20)*index, 0, ScollviewHeight+20, 300) //每个UIScrollView的坐标
-#define ScapeImagePoint(size) CGPointMake((ScollviewHeight+20-size.width)/2, (300-size.height)/2) //imageview的起始点
-#define GetScapeHeight(size) (ScollviewHeight+20)*size.height/size.width //获取等比例高度
-#define GetScapeWidth(size) 300*size.width/size.height //获取等比例宽度
 
 @interface PhotoLookViewController ()
 @property float scale_;
@@ -92,13 +76,22 @@
     downArray = [[NSMutableArray alloc] init];
     linkManager = [[SCBLinkManager alloc] init];
     activityDic = [[NSMutableDictionary alloc] init];
-    currWidth = ScollviewWidth;
-    currHeight = ScollviewHeight;
+    
     self.view.backgroundColor = [UIColor blackColor];
     self.offset = 0.0;
     scale_ = 1.0;
-    currWidth = 320;
-    currHeight = self.view.frame.size.height;
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        ScollviewHeight = self.view.frame.size.height+20;
+        ScollviewWidth = self.view.frame.size.width;
+    }
+    else
+    {
+        ScollviewHeight = self.view.frame.size.height;
+        ScollviewWidth = self.view.frame.size.width;
+    }
+    currWidth = ScollviewWidth;
+    currHeight = ScollviewHeight;
     
     imageScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     imageScrollView.backgroundColor = [UIColor clearColor];
@@ -175,7 +168,6 @@
     }
     
     [imageScrollView setContentOffset:CGPointMake(320*currPage, 0) animated:NO];
-    NSLog(@"320*currPage:%i",320*currPage);
     [self.view addSubview:imageScrollView];
     
     
@@ -458,7 +450,6 @@
 
 -(void)loadPageColoumn:(int)i
 {
-    DDLogCInfo(@"开始加载。。。:%i",i);
     UIView *view = [imageScrollView viewWithTag:i+ScrollViewTag];
     if(view)
     {
@@ -514,7 +505,7 @@
         CGSize size = [self getSacpeImageSize:oldImge];
         imageview.image = oldImge;
         
-        [s setFrame:CGRectMake(currWidth*i, 0, currWidth, 300)];
+        [s setFrame:CGRectMake(currWidth*i, 0, currWidth, 320)];
         CGRect imageFrame = imageview.frame;
         imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
         imageFrame.size = size;
@@ -530,7 +521,6 @@
             [activity_indicator setTag:ACTNUMBER+i];
             
             [s addSubview:activity_indicator];
-            NSLog(@"activity_indicator index-------------:%i",activity_indicator.tag);
             [activity_indicator startAnimating];
         }
         [imageScrollView addSubview:s];
@@ -583,10 +573,9 @@
         
         CGSize size = [self getSacpeImageSize:oldImge];
         imageview.image = oldImge;
-        
-        [s setFrame:ScrollRect(i,size)];
+        [s setFrame:[self ScrollRect:i size:size]];
         CGRect imageFrame = imageview.frame;
-        imageFrame.origin = ImagePoint(size);
+        imageFrame.origin = [self ImagePoint:size];
         imageFrame.size = size;
         imageview.contentMode = UIViewContentModeScaleAspectFit;
         [imageview setFrame:imageFrame];
@@ -599,12 +588,10 @@
             [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
             [activity_indicator setTag:ACTNUMBER+i];
             [s addSubview:activity_indicator];
-            NSLog(@"activity_indicator index-------------:%i",activity_indicator.tag);
             [activity_indicator startAnimating];
         }
         [imageScrollView addSubview:s];
     }
-    NSLog(@"加载完成。。。");
 }
 
 //竖屏
@@ -617,13 +604,13 @@
     }
     if(size.width>320)
     {
-        size.height = GetHeight(size);
+        size.height = [self GetHeight:size]; //GetHeight(size);
         size.width = 320;
     }
     
     if(size.height>ScollviewHeight)
     {
-        size.width = GetWidth(size);
+        size.width = [self GetWidth:size];//GetWidth(size);
         size.height = ScollviewHeight;
     }
     return size;
@@ -744,11 +731,9 @@
         selected_id = [NSString stringWithFormat:@"%@",demo.d_name];
         
         if (buttonIndex == 0) {
-            NSLog(@"短信分享");
             //[self toDelete:nil];
             [self messageShare:actionSheet.title];
         }else if (buttonIndex == 1) {
-            NSLog(@"邮件分享");
             NSString *name=@"";
             UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"邮件分享" message:@"请您输入分享人的邮件地址：" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
             [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
@@ -756,18 +741,13 @@
             [alert setTag:kAlertTagMailAddr];
             [alert show];
         }else if(buttonIndex == 2) {
-            NSLog(@"复制");
             [self pasteBoard:actionSheet.title];
         }else if(buttonIndex == 3) {
-            NSLog(@"微信");
             [self weixin:actionSheet.title];
         }else if(buttonIndex == 4) {
-            NSLog(@"朋友圈");
             [self frends:actionSheet.title];
         }else if(buttonIndex == 5) {
-            NSLog(@"新浪");
         }else if(buttonIndex == 6) {
-            NSLog(@"取消");
         }
     }
     else if (actionSheet.tag == kActionSheetTagDelete)
@@ -842,10 +822,6 @@
     {
         [linkManager linkWithIDs:array];
     }
-    else
-    {
-        NSLog(@"没有选中文件");
-    }
 }
 
 #pragma mark 删除按钮事件
@@ -854,7 +830,7 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [actionSheet setTag:kActionSheetTagDelete];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    [actionSheet showInView:self.imageScrollView];
 }
 
 #pragma mark UIAalertViewDelegate
@@ -872,7 +848,6 @@
 
 -(void)getFileDetail:(NSDictionary *)dictionary
 {
-    NSLog(@"dictionary:%@",dictionary);
     if([[dictionary objectForKey:@"code"] intValue] == 0)
     {
         hud = [[MBProgressHUD alloc] initWithView:self.view];
@@ -921,7 +896,6 @@
 -(void)appImageDidLoad:(NSInteger)indexTag urlImage:(NSString *)path index:(NSIndexPath *)indexPath
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-    NSLog(@"下载完成后显示开始。。。");
         if([[imageScrollView viewWithTag:indexTag] isKindOfClass:[UIImageView class]])
         {
             UIImage *scaleImage = [UIImage imageWithContentsOfFile:path];
@@ -934,10 +908,8 @@
                 [s setContentSize:size];
                 int x = s.tag-ScrollViewTag;
                 [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
-                NSLog(@"第%i个 s:%@",x,NSStringFromCGRect(s.frame));
                 CGRect imageFrame = imageV.frame;
                 imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
-                NSLog(@"imageFrame.origin:%@;size:%@",NSStringFromCGPoint(imageFrame.origin),NSStringFromCGSize(size));
                 imageFrame.size = size;
                 [imageV setFrame:imageFrame];
             }
@@ -948,15 +920,14 @@
                 s.zoomScale = 1.0;
                 [s setContentSize:size];
                 int x = s.tag-ScrollViewTag;
-                [s setFrame:ScrollRect(x,size)];
+                [s setFrame:[self ScrollRect:x size:size]];
                 CGRect imageFrame = imageV.frame;
-                imageFrame.origin = ImagePoint(size);
+                imageFrame.origin = [self ImagePoint:size];//ImagePoint(size);
                 imageFrame.size = size;
                 [imageV setFrame:imageFrame];
             }
             [imageV performSelectorOnMainThread:@selector(setImage:) withObject:scaleImage waitUntilDone:YES];
         }
-        NSLog(@"appImageDidLoad index-------------:%i",indexPath.row);
         if([[imageScrollView viewWithTag:indexPath.row] isKindOfClass:[UIActivityIndicatorView class]])
         {
             UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:indexPath.row];
@@ -966,19 +937,17 @@
         if (self.hud) {
             [self.hud removeFromSuperview];
         }
-    NSLog(@"下载完成后显示结束。。。");
     });
 }
 
 #pragma mark SCBLinkManagerDelegate -------------
 -(void)releaseEmailSuccess:(NSString *)l_url
 {
-    NSLog(@"l_url:%@",l_url);
+    
 }
 
 -(void)releaseLinkSuccess:(NSString *)l_url
 {
-    NSLog(@"releaseLinkSuccess:%@",l_url);
     if(sharedType == 1)
     {
         //短信分享
@@ -1030,8 +999,6 @@
 
 -(void)releaseLinkUnsuccess:(NSString *)error_info
 {
-    NSLog(@"error_info:%@",error_info);
-    NSLog(@"openFinderUnsucess: 网络连接失败!!");
     if (self.hud) {
         [self.hud removeFromSuperview];
     }
@@ -1227,7 +1194,6 @@
 			resultValue = @"Result: SMS not sent";
 			break;
 	}
-    NSLog(@"%@",resultValue);
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -1269,21 +1235,21 @@
 //视图旋转动画前一半发生之后自动调用
 
 -(void)didAnimateFirstHalfOfRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    NSLog(@"5");
+    
 }
 
 //横屏后，修改试图
 -(void)isScapeLeftOrRight:(BOOL)bl
 {
-    NSLog(@"ScollviewWidth:%f,ScollviewHeight:%f",ScollviewWidth,ScollviewHeight);
     if(!self.page)
     {
         self.page = currPage;
     }
     if(bl)
     {
-        currWidth = ScollviewHeight+20;
-        currHeight = ScollviewWidth-20;
+        currWidth = ScollviewHeight;
+        currHeight = ScollviewWidth;
+        
         //整个视图大小调整
         [imageScrollView setFrame:CGRectMake(0, 0, currWidth, currHeight)];
         [imageScrollView setContentSize:CGSizeMake(currWidth*[self.tableArray count], currHeight)];
@@ -1303,18 +1269,14 @@
                 UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
                 s.zoomScale = 1.0;
                 UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
-                NSLog(@"size1:%@",NSStringFromCGSize(imageview.image.size));
                 size = [self getSacpeImageSize:imageview.image];
-                NSLog(@"size2:%@",NSStringFromCGSize(size));
                 [s setContentSize:size];
                 int x = s.tag-ScrollViewTag;
                 [s setFrame:CGRectMake(currWidth*x, 0, currWidth, currHeight)];
                 CGRect imageFrame = imageview.frame;
                 imageFrame.origin = CGPointMake((currWidth-size.width)/2, (currHeight-size.height)/2);
-                NSLog(@"size3:%@",NSStringFromCGSize(size));
                 imageFrame.size = size;
                 [imageview setFrame:imageFrame];
-                NSLog(@"size4:%@",NSStringFromCGSize(imageview.image.size));
             }
         }
         [imageScrollView reloadInputViews];
@@ -1342,8 +1304,8 @@
     }
     else
     {
-        currWidth = ScollviewWidth+20;
-        currHeight = ScollviewHeight-20;
+        currWidth = ScollviewWidth;
+        currHeight = ScollviewHeight;
         //整个视图大小调整
         [imageScrollView setFrame:CGRectMake(0, 0, currWidth, currHeight)];
         [imageScrollView setContentSize:CGSizeMake(currWidth*[self.tableArray count], currWidth)];
@@ -1363,14 +1325,12 @@
                 UIScrollView *s = [imageScrollView.subviews objectAtIndex:i];
                 s.zoomScale = 1.0;
                 UIImageView *imageview = (UIImageView *)[s viewWithTag:ImageViewTag+s.tag-ScrollViewTag];
-                NSLog(@"size1:%@",NSStringFromCGSize(imageview.image.size));
                 size = [self getImageSize:imageview.image];
-                NSLog(@"size2:%@",NSStringFromCGSize(size));
                 [s setContentSize:size];
                 int x = s.tag-ScrollViewTag;
-                [s setFrame:ScrollRect(x,size)];
+                [s setFrame:[self ScrollRect:x size:size]];
                 CGRect imageFrame = imageview.frame;
-                imageFrame.origin = ImagePoint(size);
+                imageFrame.origin = [self ImagePoint:size];//ImagePoint(size);
                 imageFrame.size = size;
                 [imageview setFrame:imageFrame];
             }
@@ -1415,6 +1375,35 @@
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
+}
+
+//每个UIScrollView的大小
+-(CGSize)ImageContentSize
+{
+    return CGSizeMake(320,ScollviewHeight);
+}
+
+//每个UIScrollView的坐标
+-(CGRect)ScrollRect:(int)index size:(CGSize)size
+{
+    return CGRectMake(320*index, 0, 320, ScollviewHeight);
+}
+
+//imageview的起始点
+-(CGPoint)ImagePoint:(CGSize)size
+{
+    return CGPointMake((320-size.width)/2, (ScollviewHeight-size.height)/2);
+}
+
+//获取等比例高度
+-(CGFloat)GetHeight:(CGSize)size
+{
+    return 320*size.height/size.width;
+}
+
+-(CGFloat)GetWidth:(CGSize)size
+{
+    return ScollviewHeight*size.width/size.height;
 }
 
 @end

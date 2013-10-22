@@ -14,6 +14,17 @@ __strong static WelcomeViewController *_welcommeVC;
 @end
 
 @implementation WelcomeViewController
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
+
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return NO;
+}
+
 +(WelcomeViewController *)sharedUser
 {
     if (_welcommeVC) {

@@ -191,12 +191,39 @@
 //用户存储空间不足
 -(void)upUserSpaceLass
 {
+    //调用ui
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            [uploadView showSpaceNot];
+        }
+    });
     
+    if([uploadArray count]>0)
+    {
+        UpLoadList *list = [uploadArray objectAtIndex:0];
+        [list deleteUploadList];
+        [uploadArray removeObjectAtIndex:0];
+        [self updateTable];
+    }
+    [self startUpload];
 }
 
 -(void)upNotUpload
 {
     //调用ui
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            [uploadView showFloderNot];
+        }
+    });
     
     if([uploadArray count]>0)
     {
@@ -279,6 +306,8 @@
             //更新UI
             [uploadView.table_view reloadData];
         }
+        UIApplication *app = [UIApplication sharedApplication];
+        app.applicationIconBadgeNumber = [self.uploadArray count];
     });
 }
 
