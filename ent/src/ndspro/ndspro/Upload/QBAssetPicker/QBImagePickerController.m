@@ -60,7 +60,7 @@
         
         /* Initialization */
         self.title = @"Photos";
-        self.filterType = QBImagePickerFilterTypeAllPhotos;
+        self.filterType = QBImagePickerFilterTypeAllAssets;
         self.showsCancelButton = YES;
         self.fullScreenLayoutEnabled = YES;
         

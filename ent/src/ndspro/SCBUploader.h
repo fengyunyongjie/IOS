@@ -53,7 +53,7 @@
 -(void)requestUploadVerify:(int)f_pid f_name:(NSString *)f_name f_size:(NSString *)f_size f_md5:(NSString *)f_md5 sapce_id:(NSString *)sapce_id;
 
 //上传
--(NSURLConnection *)requestUploadFile:(NSString *)s_name skip:(NSString *)skip Image:(NSData *)image;
+-(NSURLConnection *)requestUploadFile:(NSString *)s_name startSkip:(NSString *)startSkip skip:(NSString *)skip Image:(NSData *)image;
 
 //上传
 -(void)requestUploadState:(NSString *)s_name;

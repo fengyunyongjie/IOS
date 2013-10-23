@@ -15,8 +15,10 @@
 #import "AppDelegate.h"
 #import "Reachability.h"
 
+#define SomeDataSize 1024*200
+
 @implementation UploadFile
-@synthesize connection,finishName,list,delegate,urlNameArray,urlIndex,file_data,md5String,uploderDemo;
+@synthesize connection,finishName,list,delegate,urlNameArray,urlIndex,file_data,md5String,uploderDemo,total;
 
 -(id)init
 {
@@ -351,25 +353,7 @@
     {
         finishName = [dictionary objectForKey:@"s_name"];
         NSLog(@"3:开始上传：%@",list.t_fileUrl);
-        
-        
-        ALAssetsLibrary *libary = [[ALAssetsLibrary alloc] init];
-        [libary assetForURL:[NSURL URLWithString:list.t_fileUrl] resultBlock:^(ALAsset *result)
-         {
-             NSError *error = nil;
-             Byte *byte_data = malloc((unsigned)result.defaultRepresentation.size);
-             //获得照片图像数据
-             [result.defaultRepresentation getBytes:byte_data fromOffset:0 length:(unsigned)result.defaultRepresentation.size error:&error];
-             file_data = [[NSData alloc] initWithData:[NSData dataWithBytesNoCopy:byte_data length:(unsigned)result.defaultRepresentation.size]];
-             NSLog(@"文件大小：%i",[file_data length]);
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 connection = [uploderDemo requestUploadFile:finishName skip:[NSString stringWithFormat:@"%i",list.upload_size] Image:file_data];
-             });
-             
-         } failureBlock:^(NSError *error)
-         {
-             NSLog(@"error:%@",error);
-         }];
+        [self uploadSomeFile];
     }
     else if([[dictionary objectForKey:@"code"] intValue] == 7 )
     {
@@ -389,6 +373,41 @@
         //失败
         [self updateNetWork];
     }
+}
+
+//分段上传
+-(void)uploadSomeFile
+{
+    ALAssetsLibrary *libary = [[ALAssetsLibrary alloc] init];
+    [libary assetForURL:[NSURL URLWithString:list.t_fileUrl] resultBlock:^(ALAsset *result)
+     {
+         NSError *error = nil;
+         Byte *byte_data = malloc(SomeDataSize);
+         if(SomeDataSize<list.t_lenght-list.upload_size)
+         {
+             total = SomeDataSize;
+             [result.defaultRepresentation getBytes:byte_data fromOffset:list.upload_size length:SomeDataSize error:&error];
+             file_data = [NSData dataWithBytesNoCopy:byte_data length:SomeDataSize];
+             DDLogCInfo(@"文件大小：%i",[file_data length]);
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 connection = [uploderDemo requestUploadFile:finishName startSkip:[NSString stringWithFormat:@"%i",list.upload_size] skip:[NSString stringWithFormat:@"%i",SomeDataSize] Image:file_data];
+             });
+         }
+         else
+         {
+             total = list.t_lenght-list.upload_size;
+             [result.defaultRepresentation getBytes:byte_data fromOffset:list.upload_size length:list.t_lenght-list.upload_size error:&error];
+             file_data = [NSData dataWithBytesNoCopy:byte_data length:list.t_lenght-list.upload_size];
+             DDLogCInfo(@"这次上传了多少:%i",total);
+             DDLogCInfo(@"文件大小：%i",[file_data length]);
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 connection = [uploderDemo requestUploadFile:finishName startSkip:[NSString stringWithFormat:@"%i",list.upload_size] skip:[NSString stringWithFormat:@"%i",list.t_lenght-list.upload_size] Image:file_data];
+             });
+         }
+     } failureBlock:^(NSError *error)
+     {
+         NSLog(@"error:%@",error);
+     }];
 }
 
 -(void)newRequestUploadState:(NSString *)s_name
@@ -448,7 +467,7 @@
                  [result.defaultRepresentation getBytes:byte_data fromOffset:0 length:(long)result.defaultRepresentation.size error:&error];
                  file_data = [[NSData alloc] initWithData:[NSData dataWithBytesNoCopy:byte_data length:(long)result.defaultRepresentation.size]];
                  DDLogCInfo(@"1:申请效验:%i",[file_data length]);
-                 connection = [uploderDemo requestUploadFile:finishName skip:[NSString stringWithFormat:@"%i",list.upload_size] Image:[NSData dataWithBytesNoCopy:byte_data length:(long)result.defaultRepresentation.size]];
+                 connection = [uploderDemo requestUploadFile:finishName startSkip:@"0" skip:[NSString stringWithFormat:@"%i",list.upload_size] Image:[NSData dataWithBytesNoCopy:byte_data length:(long)result.defaultRepresentation.size]];
              } failureBlock:^(NSError *error)
              {
                  NSLog(@"error:%@",error);
@@ -595,10 +614,24 @@
         [delegate upNetworkStop];
         return;
     }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self uploadFiles:list.t_lenght sudu:list.sudu];
+        [NSThread sleepForTimeInterval:0.5];
+        list.upload_size = list.upload_size + total;
+        DDLogCInfo(@"上传大小:%i",list.upload_size);
+        [delegate upProess:list.upload_size fileTag:list.sudu];
         connection = nil;
-        [NSThread detachNewThreadSelector:@selector(comeBackNewTheadMian:) toTarget:self withObject:dictionary];
+        DDLogCInfo(@"当前大小:%i",list.upload_size);
+        DDLogCInfo(@"上传大小:%i",total);
+        DDLogCInfo(@"总共大小:%i",list.t_lenght);
+        if(list.upload_size == list.t_lenght)
+        {
+            [NSThread detachNewThreadSelector:@selector(comeBackNewTheadMian:) toTarget:self withObject:dictionary];
+        }
+        else
+        {
+            [self uploadSomeFile];
+        }
     });
 }
 
@@ -620,7 +653,6 @@
         [delegate upNetworkStop];
         return;
     }
-    [delegate upProess:proress fileTag:sudu];
 }
 
 //上传提交

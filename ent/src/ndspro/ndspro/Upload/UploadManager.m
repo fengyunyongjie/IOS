@@ -93,7 +93,6 @@
                 
                 list.is_share = NO;
                 list.spaceId = [NSString formatNSStringForOjbect:s_id];
-                NSLog(@"[[SCBSession sharedSession] spaceID]:%@;[[SCBSession sharedSession] homeID]:%@",[[SCBSession sharedSession] spaceID],[[SCBSession sharedSession] homeID]);
                 [list insertUploadList];
             }
         }
@@ -176,7 +175,6 @@
     if([uploadArray count]>0)
     {
         UpLoadList *list = [uploadArray objectAtIndex:0];
-        list.upload_size = proress;
         if(sudu<0)
         {
             sudu = 0-sudu;
@@ -201,15 +199,7 @@
             [uploadView showSpaceNot];
         }
     });
-    
-    if([uploadArray count]>0)
-    {
-        UpLoadList *list = [uploadArray objectAtIndex:0];
-        [list deleteUploadList];
-        [uploadArray removeObjectAtIndex:0];
-        [self updateTable];
-    }
-    [self startUpload];
+    [self stopAllUpload];
 }
 
 -(void)upNotUpload
@@ -348,6 +338,7 @@
     isOpenedUpload = FALSE;
     isStopCurrUpload = YES;
     isStart = NO;
+    [self updateTableStateForStop];
 }
 
 //删除一条上传

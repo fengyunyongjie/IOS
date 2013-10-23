@@ -43,6 +43,7 @@
 @property(nonatomic,assign) NSInteger urlIndex;
 @property(nonatomic,retain) __block NSData *file_data;
 @property(nonatomic,retain) NSString *md5String;
+@property(nonatomic,assign) NSInteger total;
 
 @property(nonatomic,retain) id<NewUploadDelegate> delegate;
 

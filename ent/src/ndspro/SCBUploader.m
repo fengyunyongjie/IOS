@@ -66,7 +66,7 @@
 }
 
 //上传
--(NSURLConnection *)requestUploadFile:(NSString *)s_name skip:(NSString *)skip Image:(NSData *)image
+-(NSURLConnection *)requestUploadFile:(NSString *)s_name startSkip:(NSString *)startSkip skip:(NSString *)skip Image:(NSData *)image
 {
     currSize = 0;
     endSudu = 0;
@@ -79,7 +79,7 @@
 //    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
 //    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
     [request setValue:s_name forHTTPHeaderField:@"s_name"];
-    [request setValue:[NSString stringWithFormat:@"bytes=0-%@",skip] forHTTPHeaderField:@"Range"];
+    [request setValue:[NSString stringWithFormat:@"bytes=%@-%@",startSkip,skip] forHTTPHeaderField:@"Range"];
     [request setHTTPBody:image];
     [request setHTTPMethod:@"PUT"];
     NSLog(@"上传请求：%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
