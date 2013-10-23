@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "FileListViewController.h"
+#import "EGORefreshTableHeaderView.h"
 typedef enum {
     kTypeDefault,
     kTypeCommit,
     kTypeResave,
 } MainType;
-@interface MainViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface MainViewController : UIViewController<EGORefreshTableHeaderDelegate,UITableViewDataSource,UITableViewDelegate>
+{
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _reloading;
+}
 @property(strong,nonatomic) NSArray *listArray;
 @property(strong,nonatomic) UITableView *tableView;
 @property(weak,nonatomic) FileListViewController *delegate;

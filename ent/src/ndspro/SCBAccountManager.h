@@ -46,6 +46,7 @@ typedef enum {
 
 @protocol SCBAccountManagerDelegate
 @optional
+-(void)networkError;
 -(void)checkVersionSucceed:(NSDictionary *)datadic;
 -(void)checkVersionFail;
 -(void)getUserListSucceed:(NSDictionary *)datadic;

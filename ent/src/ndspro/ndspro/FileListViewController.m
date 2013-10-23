@@ -327,6 +327,7 @@ typedef enum{
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     [[alert textFieldAtIndex:0] setText:@"新建文件夹"];
     [[alert textFieldAtIndex:0] setDelegate:self];
+    [[alert textFieldAtIndex:0] setPlaceholder:@"请输入名称"];
     [alert setTag:kAlertTagNewFinder];
     [alert show];
 }
@@ -368,6 +369,12 @@ typedef enum{
 //        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 //    }
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+}
+-(void)editFinished;
+{
+    if (self.tableView.isEditing) {
+        [self editAction:nil];
+    }
 }
 -(void)editAction:(id)sender
 {
@@ -701,6 +708,22 @@ typedef enum{
                 return;
             }
         }
+        if (selectArray.count==0) {
+            if (self.hud)
+            {
+                [self.hud removeFromSuperview];
+            }
+            self.hud=nil;
+            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:self.hud];
+            [self.hud show:NO];
+            self.hud.labelText=@"未选中任何文件";
+            self.hud.mode=MBProgressHUDModeText;
+            self.hud.margin=10.f;
+            [self.hud show:YES];
+            [self.hud hide:YES afterDelay:1.0f];
+            return;
+        }
         for (NSIndexPath *indexPath in selectArray) {
             NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
             NSString *file_id = [NSString formatNSStringForOjbect:[dic objectForKey:@"fid"]];
@@ -714,7 +737,7 @@ typedef enum{
             AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [delegate.downmange addDownList:name thumbName:thumb d_fileId:file_id d_downSize:fsize];
         }
-
+        [self editFinished];
     }else
     {
         NSLog(@"下载");
@@ -766,7 +789,7 @@ typedef enum{
     {
         [self.fm_move commitFileIDs:@[fid] toPID:f_id sID:s_pid];
     }
-    
+    [self editFinished];
 }
 -(void)resaveFileToID:(NSString *)f_id
 {
@@ -787,7 +810,7 @@ typedef enum{
     {
          [self.fm_move resaveFileIDs:@[fid] toPID:f_id];
     }
-   
+   [self editFinished];
 }
 -(void)moveFileToID:(NSString *)f_id
 {
@@ -806,88 +829,7 @@ typedef enum{
     {
         [self.fm_move moveFileIDs:@[fid] toPID:f_id sID:self.spid];
     }
-    
-//    NSMutableArray *willMoveObjects=[[[NSMutableArray alloc] init] autorelease];
-//    if ([self.tableView isEditing]) {
-//        for (int i=0;i<self.m_fileItems.count;i++) {
-//            FileItem *fileItem=[self.m_fileItems objectAtIndex:i];
-//            if (fileItem.checked) {
-//                NSDictionary *dic=[self.listArray objectAtIndex:i];
-//                NSString *m_fid=[dic objectForKey:@"f_id"];
-//                if ([f_id intValue]==[m_fid intValue]) {
-//                    if (self.hud) {
-//                        [self.hud removeFromSuperview];
-//                    }
-//                    self.hud=nil;
-//                    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-//                    [self.view addSubview:self.hud];
-//                    [self.hud show:NO];
-//                    self.hud.labelText=@"您当前操作有误";
-//                    self.hud.mode=MBProgressHUDModeText;
-//                    self.hud.margin=10.f;
-//                    [self.hud show:YES];
-//                    [self.hud hide:YES afterDelay:1.0f];
-//                    return;
-//                }
-//                [willMoveObjects addObject:m_fid];
-//            }
-//        }
-//        if ([willMoveObjects count]<=0) {
-//            return;
-//        }
-//    }else
-//    {
-//        NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-//        NSString *m_fid=[dic objectForKey:@"f_id"];
-//        if ([f_id intValue]==[m_fid intValue]) {
-//            if (self.hud) {
-//                [self.hud removeFromSuperview];
-//            }
-//            self.hud=nil;
-//            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-//            [self.view addSubview:self.hud];
-//            [self.hud show:NO];
-//            self.hud.labelText=@"您当前操作有误";
-//            self.hud.mode=MBProgressHUDModeText;
-//            self.hud.margin=10.f;
-//            [self.hud show:YES];
-//            [self.hud hide:YES afterDelay:1.0f];
-//            return;
-//        }
-//        willMoveObjects=@[m_fid];
-//    }
-//    switch (self.myndsType) {
-//        case kMyndsTypeDefault:
-//        case kMyndsTypeDefaultSearch:
-//        {
-//            if (self.fm_move) {
-//                [self.fm_move cancelAllTask];
-//            }else
-//            {
-//                self.fm_move=[[[SCBFileManager alloc] init] autorelease];
-//            }
-//            self.fm_move.delegate=self;
-//            [self.fm_move moveFileIDs:willMoveObjects toPID:f_id];
-//        }
-//            break;
-//        case kMyndsTypeMyShareSearch:
-//        case kMyndsTypeShare:
-//        case kMyndsTypeMyShare:
-//        case kMyndsTypeShareSearch:
-//        {
-//            if (self.sm_move) {
-//                [self.sm_move cancelAllTask];
-//            }else
-//            {
-//                self.sm_move=[[[SCBShareManager alloc] init] autorelease];
-//            }
-//            self.sm_move.delegate=self;
-//            [self.sm_move moveFileIDs:willMoveObjects toPID:f_id];
-//        }
-//            break;
-//        default:
-//            break;
-//    }
+    [self editFinished];
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -1270,6 +1212,23 @@ typedef enum{
     }
 }
 #pragma mark - SCBFileManagerDelegate
+-(void)networkError
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"链接失败，请检查网络";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+    [self doneLoadingTableViewData];
+}
 -(void)openFinderSucess:(NSDictionary *)datadic
 {
     self.dataDic=datadic;
@@ -1698,6 +1657,7 @@ typedef enum{
             }
             UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:sevc];
             [self presentViewController:nav animated:YES completion:nil];
+            [self editFinished];
         }
             break;
         case kActionSheetTagDeleteOne:

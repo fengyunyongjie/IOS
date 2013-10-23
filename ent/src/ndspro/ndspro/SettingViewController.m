@@ -86,6 +86,12 @@ typedef enum{
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
     
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
+        temporaryBarButtonItem.title = @"";
+        self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
+    }
+    
 
 }
 -(void)viewDidAppear:(BOOL)animated
@@ -589,7 +595,9 @@ typedef enum{
     }
     
     
-    
+    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+        bgView.image=nil;
+    }
     return cell;
 }
 #pragma mark - Table view delegate

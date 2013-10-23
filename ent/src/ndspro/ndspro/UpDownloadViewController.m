@@ -12,6 +12,7 @@
 #import "YNFunctions.h"
 #import "PhotoLookViewController.h"
 #import "OtherBrowserViewController.h"
+#import "UIBarButtonItem+Yn.h"
 
 #define UpTabBarHeight (49+20+44)
 #define kActionSheetTagDelete 77
@@ -185,8 +186,8 @@
     }
     //隐藏按钮
     if (isHideTabBar) {
-        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
-        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+        [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
+        [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
     }else
     {
         [self.navigationItem setLeftBarButtonItem:nil];
@@ -312,7 +313,7 @@
             }
         }
     }
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(cancelSelectAllCell:)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(cancelSelectAllCell:)]];
 }
 
 -(void)cancelSelectAllCell:(id)sender
@@ -367,7 +368,7 @@
             }
         }
     }
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
 }
 
 -(void)viewWillAppear:(BOOL)animated

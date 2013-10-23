@@ -217,6 +217,23 @@
     }
 }
 #pragma mark - SCBFileManagerDelegate
+-(void)networkError
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"链接失败，请检查网络";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+//    [self doneLoadingTableViewData];
+}
 -(void)openFinderSucess:(NSDictionary *)datadic
 {
     self.dataDic=datadic;

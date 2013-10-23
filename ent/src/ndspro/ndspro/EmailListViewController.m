@@ -86,6 +86,13 @@ enum{
     [self.customSelectButton setDelegate:self];
     [self.customSelectButton setBackgroundColor:[UIColor lightGrayColor]];
     [self.view addSubview:self.customSelectButton];
+    
+    
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
+        temporaryBarButtonItem.title = @"";
+        self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
+    }
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -308,9 +315,9 @@ enum{
     CGRect r=self.view.frame;
     r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
     self.view.frame=r;
-    self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    self.tableView.frame=CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height-49-30);
     if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
-        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+        self.tableView.frame=CGRectMake(0, 30, self.view.frame.size.width, self.view.frame.size.height-49-64-30);
         self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
     }
     NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));

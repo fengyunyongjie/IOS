@@ -10,9 +10,10 @@
 #import "LTHPasscodeViewController.h"
 #import "APService.h"
 #import "AppDelegate.h"
+#import "YNFunctions.h"
 
 @interface PasswordController ()
-
+@property (strong,nonatomic) UIBarButtonItem *backBarButtonItem;
 @end
 
 @implementation PasswordController
@@ -46,6 +47,22 @@
     else
     {
         [[LTHPasscodeViewController sharedUser] showForEnablingPasscodeInViewController: self];
+    }
+    
+    //初始化返回按钮
+    UIButton*backButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,35,29)];
+    [backButton setImage:[UIImage imageNamed:@"title_back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.backBarButtonItem=backItem;
+    
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
+        temporaryBarButtonItem.title = @"";
+        self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
+    }else
+    {
+        self.navigationItem.leftBarButtonItem = backItem;
     }
 }
 

@@ -80,6 +80,7 @@ typedef enum {
 @end
 @protocol SCBFileManagerDelegate
 @optional
+-(void)networkError;
 -(void)authorMenusSuccess:(NSData*)data;
 -(void)searchSucess:(NSDictionary *)datadic;
 -(void)operateSucess:(NSDictionary *)datadic;

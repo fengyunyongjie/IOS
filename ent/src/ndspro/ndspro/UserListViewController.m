@@ -42,10 +42,10 @@
     r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
     self.view.frame=r;
     if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
-        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     }else
     {
-        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-64);
     }
     
     NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));

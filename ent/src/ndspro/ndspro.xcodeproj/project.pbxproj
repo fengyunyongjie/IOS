@@ -51,6 +51,10 @@
 		2929740118110C77001BD086 /* Ico_CoverF@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2929740018110C77001BD086 /* Ico_CoverF@2x.png */; };
 		292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 292B6B8917F91B3B0015669A /* IconDownloader.m */; };
 		292B6B8D17F9659E0015669A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 292B6B8B17F9659E0015669A /* Main.storyboard */; };
+		293B36E618175A5800B3CBE6 /* send_download_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 293B36E218175A5800B3CBE6 /* send_download_nor@2x.png */; };
+		293B36E718175A5800B3CBE6 /* send_download_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 293B36E318175A5800B3CBE6 /* send_download_se@2x.png */; };
+		293B36E818175A5800B3CBE6 /* send_zc_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 293B36E418175A5800B3CBE6 /* send_zc_nor@2x.png */; };
+		293B36E918175A5800B3CBE6 /* send_zc_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 293B36E518175A5800B3CBE6 /* send_zc_se@2x.png */; };
 		29728C701803B226004B4724 /* SelectFileListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29728C6E1803B226004B4724 /* SelectFileListViewController.m */; };
 		29728C711803B226004B4724 /* SelectFileListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29728C6F1803B226004B4724 /* SelectFileListViewController.xib */; };
 		2989A6F8180E5C7200DE2C6B /* PasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2989A6F4180E5C7200DE2C6B /* PasswordController.m */; };
@@ -309,6 +313,10 @@
 		292B6B8917F91B3B0015669A /* IconDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconDownloader.m; sourceTree = "<group>"; };
 		292B6B8C17F9659E0015669A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		292B6B8E17F965F10015669A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		293B36E218175A5800B3CBE6 /* send_download_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_download_nor@2x.png"; sourceTree = "<group>"; };
+		293B36E318175A5800B3CBE6 /* send_download_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_download_se@2x.png"; sourceTree = "<group>"; };
+		293B36E418175A5800B3CBE6 /* send_zc_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_zc_nor@2x.png"; sourceTree = "<group>"; };
+		293B36E518175A5800B3CBE6 /* send_zc_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send_zc_se@2x.png"; sourceTree = "<group>"; };
 		29728C6D1803B226004B4724 /* SelectFileListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFileListViewController.h; sourceTree = "<group>"; };
 		29728C6E1803B226004B4724 /* SelectFileListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFileListViewController.m; sourceTree = "<group>"; };
 		29728C6F1803B226004B4724 /* SelectFileListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectFileListViewController.xib; sourceTree = "<group>"; };
@@ -895,6 +903,10 @@
 		29B44B87180807330025AB61 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
+				293B36E218175A5800B3CBE6 /* send_download_nor@2x.png */,
+				293B36E318175A5800B3CBE6 /* send_download_se@2x.png */,
+				293B36E418175A5800B3CBE6 /* send_zc_nor@2x.png */,
+				293B36E518175A5800B3CBE6 /* send_zc_se@2x.png */,
 				29B561E418166D600018D1FF /* set_bk_1@2x.png */,
 				29B561E518166D600018D1FF /* set_bk_2@2x.png */,
 				29B561E618166D600018D1FF /* set_bk_3@2x.png */,
@@ -1255,7 +1267,9 @@
 				29DF3B70180BE0FC003FEE3B /* nav_send_se@2x.png in Resources */,
 				29DF3B74180BE0FC003FEE3B /* nav_trans_se@2x.png in Resources */,
 				29DF3B6F180BE0FC003FEE3B /* nav_send_nor@2x.png in Resources */,
+				293B36E618175A5800B3CBE6 /* send_download_nor@2x.png in Resources */,
 				29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */,
+				293B36E818175A5800B3CBE6 /* send_zc_nor@2x.png in Resources */,
 				291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */,
 				29DF3B62180BE0FC003FEE3B /* lock_bt_num_se@2x.png in Resources */,
 				29DF3B5D180BE0FC003FEE3B /* file_folder@2x.png in Resources */,
@@ -1296,6 +1310,7 @@
 				29B2AE52180FE3A4002D9D1B /* title_menu2@2x.png in Resources */,
 				29DF3B82180BE0FC003FEE3B /* title_bt_new_se@2x.png in Resources */,
 				29DF3B6E180BE0FC003FEE3B /* nav_selected@2x.png in Resources */,
+				293B36E718175A5800B3CBE6 /* send_download_se@2x.png in Resources */,
 				29B2AE11180E63BE002D9D1B /* bk_nabottom.png in Resources */,
 				29B2AE16180E63BE002D9D1B /* title_bt_start_se.png in Resources */,
 				29B2AE51180FE3A4002D9D1B /* sel_se@2x.png in Resources */,
@@ -1321,6 +1336,7 @@
 				29DF3B6C180BE0FC003FEE3B /* nav_file_nor@2x.png in Resources */,
 				29DF3B50180BE0FC003FEE3B /* Bk_Login.png in Resources */,
 				29FE57B11808D66E0068DE48 /* Bt_UploadCancleCh.png in Resources */,
+				293B36E918175A5800B3CBE6 /* send_zc_se@2x.png in Resources */,
 				29FDD8EF180C035000FFC558 /* minus@2x.png in Resources */,
 				29DF3B8D180BE0FC003FEE3B /* tj_se@2x.png in Resources */,
 				29B2AE4F180FE3A4002D9D1B /* mail_unread.png in Resources */,

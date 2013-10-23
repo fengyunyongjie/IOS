@@ -444,23 +444,23 @@
     // Release the connection now that it's finished
     NSLog(@"connection:didFailWithError");
     if (self.delegate) {
-        switch (self.fm_type) {
-            case kFMTypeOpenFinder:
-                break;
-            case kFMTypeRemove:
-                [self.delegate removeUnsucess];
-                break;
-            case kFMTypeRename:
-                [self.delegate renameUnsucess];
-                break;
-            case kFMTypeMove:
-                [self.delegate moveUnsucess];
-                break;
-            case kFMTypeNewFinder:
-                [self.delegate newFinderUnsucess];
-                break;
-
-        }
+        [self.delegate networkError];
+//        switch (self.fm_type) {
+//            case kFMTypeOpenFinder:
+//                break;
+//            case kFMTypeRemove:
+//                [self.delegate removeUnsucess];
+//                break;
+//            case kFMTypeRename:
+//                [self.delegate renameUnsucess];
+//                break;
+//            case kFMTypeMove:
+//                [self.delegate moveUnsucess];
+//                break;
+//            case kFMTypeNewFinder:
+//                [self.delegate newFinderUnsucess];
+//                break;
+//        }
     }
 }
 

@@ -11,10 +11,12 @@
 #import "YNFunctions.h"
 #import "SelectFileListViewController.h"
 #import "UIBarButtonItem+Yn.h"
+#import "MBProgressHUD.h"
 #define AUTHOR_MENU @"AuthorMenus"
 @interface MainViewController()<SCBFileManagerDelegate>
 @property (strong,nonatomic) SCBFileManager *fm;
 @property (strong,nonatomic) NSArray *commitList;
+@property (strong,nonatomic) MBProgressHUD *hud;
 @end
 
 @implementation MainViewController
@@ -53,6 +55,14 @@
         temporaryBarButtonItem.title = @"";
         self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
     }
+    
+    if (_refreshHeaderView==nil) {
+        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = view;
+    }
+    [_refreshHeaderView refreshLastUpdatedDate];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -88,6 +98,54 @@
 -(void)dissmissSelf:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:Nil];
+}
+#pragma mark -
+#pragma mark Data Source Loading / Reloading Methods
+
+- (void)reloadTableViewDataSource{
+	
+	//  should be calling your tableviews data source model to reload
+	//  put here just for demo
+	_reloading = YES;
+    [self updateFileList];
+}
+
+- (void)doneLoadingTableViewData{
+	
+	//  model should call this when its done loading
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+	
+}
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+	
+	[self reloadTableViewDataSource];
+    //	[self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
+	
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	
+	return _reloading; // should return if data source model is reloading
+	
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
+}
+#pragma mark - Deferred image loading (UIScrollViewDelegate)
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -220,5 +278,23 @@
     {
         [self updateFileList];
     }
+    [self doneLoadingTableViewData];
+}
+-(void)networkError
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"链接失败，请检查网络";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+    [self doneLoadingTableViewData];
 }
 @end

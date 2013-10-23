@@ -169,17 +169,8 @@ static SCBAccountManager *_sharedAccountManager;
     //    assert(theConnection == self.connection);
     //
     //    [self stopSendWithStatus:@"Connection failed"];
-    switch (self.type) {
-        case kUserLogin:
-            [self.delegate loginUnsucceed:self];
-            break;
-        case kUserRegist:
-            [self.delegate registUnsucceed:self];
-            break;
-        case kUserGetSpace:
-            break;
-        default:
-            break;
+    if (self.delegate) {
+        [self.delegate networkError];
     }
 }
 

@@ -12,9 +12,13 @@
 #import "MBProgressHUD.h"
 #import "YNFunctions.h"
 
-@interface SendEmailViewController ()<SCBEmailManagerDelegate>
+@interface SendEmailViewController ()<SCBEmailManagerDelegate,UITextFieldDelegate>
 @property (strong,nonatomic) SCBEmailManager *em;
 @property(strong,nonatomic) MBProgressHUD *hud;
+
+@property (strong,nonatomic) UITableViewCell *personCell;
+@property (strong,nonatomic) UITableViewCell *titleCell;
+@property (strong,nonatomic) UITableViewCell *contentCell;
 @end
 
 @implementation SendEmailViewController
@@ -244,18 +248,13 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-//        NSString *osVersion = [[UIDevice currentDevice] systemVersion];
-//        NSString *versionWithoutRotation = @"7.0";
-//        BOOL noRotationNeeded = ([versionWithoutRotation compare:osVersion options:NSNumericSearch]
-//                                 != NSOrderedDescending);
-//        if (noRotationNeeded) {
-//            cell.accessoryType=UITableViewCellAccessoryDetailButton;
-//        }else
-//        {
-//            cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
-//        }
     }
+    for (UIView *view in cell.contentView.subviews) {
+        [view removeFromSuperview];
+    }
+    cell.textLabel.text=@"";
+    cell.detailTextLabel.text=@"";
+    cell.imageView.image=nil;
     switch (indexPath.section) {
         case 0:
 //            return @"接收人：";
@@ -270,6 +269,7 @@
                 {
                     UITextField *textField=[[UITextField alloc] initWithFrame:CGRectMake(20, 0, cell.frame.size.width-20, cell.frame.size.height)];
                     self.receversTextField=textField;
+                    self.receversTextField.delegate=self;
                 }
                 [cell.contentView addSubview:self.receversTextField];
                 self.receversTextField.text=self.recevers;
@@ -285,6 +285,7 @@
             {
                 UITextField *textField=[[UITextField alloc] initWithFrame:CGRectMake(20, 0, cell.frame.size.width-20, cell.frame.size.height)];
                 self.eTitleTextField=textField;
+                self.eTitleTextField.delegate=self;
             }
             [cell.contentView addSubview:self.eTitleTextField];
             self.eTitleTextField.text=self.eTitle;
@@ -300,7 +301,6 @@
                 UITextView *textView=[[UITextView alloc] initWithFrame:CGRectMake(20, 10, cell.frame.size.width-20, 180)];
                 textView.editable=YES;
                 self.eContentView=textView;
-
             }
             [cell.contentView addSubview:self.eContentView];
             self.eContentView.text=self.eContent;
@@ -441,5 +441,26 @@
     [self.receversTextField endEditing:YES];
     [self.eContentView endEditing:YES];
     
+}
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField*)textField {
+    BOOL retValue = NO;
+    // see if we're on the username or password fields
+    if (textField == self.receversTextField)//当是 “帐号”输入框时
+    {
+        //        if ([textField.text length]  == 11)//输入的号码完整时
+        //        {
+        [self.eTitleTextField becomeFirstResponder];// “会员密码”输入框 作为 键盘的第一 响应者，光标 进入此输入框中
+        retValue = NO;
+        //        }
+    }
+    else if(textField == self.eTitleTextField)
+    {
+        //        [self.userPass resignFirstResponder];//如果 现在 是 第二个输入框，那么 键盘 隐藏
+        [self.eContentView becomeFirstResponder];
+        retValue=NO;
+    }
+    return retValue;
+    //返回值为NO，即 忽略 按下此键；若返回为YES则 认为 用户按下了此键，并去调用TextFieldDoneEditint方法，在此方法中，你可以继续 写下 你想做的事
 }
 @end

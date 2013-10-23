@@ -127,6 +127,23 @@
 }
 
 #pragma mark - SCBAccountManagerDelegate Methods
+-(void)networkError
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"链接失败，请检查网络";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+//    [self doneLoadingTableViewData];
+}
 -(void)loginSucceed:(id)manager
 {
     NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] entjpush]];
@@ -163,7 +180,7 @@
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.hud];
     [self.hud show:NO];
-    self.hud.labelText=@"登录失败！";
+    self.hud.labelText=@"用户名或密码错误";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];

@@ -21,6 +21,7 @@
 @property(strong,nonatomic) MBProgressHUD *hud;
 @property (strong,nonatomic) UIToolbar *moreEditBar;
 @property (strong,nonatomic) SCBFileManager *fm_move;
+@property (strong,nonatomic) UIBarButtonItem *backBarButtonItem;
 @end
 
 @implementation EmailDetailViewController
@@ -44,6 +45,22 @@
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.tableView setEditing:YES];
+    
+    //初始化返回按钮
+    UIButton*backButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,35,29)];
+    [backButton setImage:[UIImage imageNamed:@"title_back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.backBarButtonItem=backItem;
+    
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
+        temporaryBarButtonItem.title = @"";
+        self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
+    }else
+    {
+        self.navigationItem.leftBarButtonItem = backItem;
+    }
 }
 -(void)viewDidAppear:(BOOL)animated
 {
