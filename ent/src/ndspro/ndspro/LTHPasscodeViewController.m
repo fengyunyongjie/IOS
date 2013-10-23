@@ -183,7 +183,7 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 	[_passcodeTextField becomeFirstResponder];
     [_animatingView addSubview:_passcodeTextField];
 	
-	_enterPasscodeLabel.text = _isUserChangingPasscode ? @"请输入旧密码" : @"请输入密码";
+	_enterPasscodeLabel.text = _isUserChangingPasscode ? @"请输入原密码" : @"请输入密码";
 	
 	_enterPasscodeLabel.translatesAutoresizingMaskIntoConstraints = NO;
 	_failedAttemptLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -535,6 +535,7 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 	
 	NSString *typedString = [textField.text stringByReplacingCharactersInRange: range
 																	withString: string];
+    if (typedString.length > 4) return NO;
 	if (typedString.length >= 1) _firstDigitTextField.secureTextEntry = YES;
 	else _firstDigitTextField.secureTextEntry = NO;
 	if (typedString.length >= 2) _secondDigitTextField.secureTextEntry = YES;
@@ -562,7 +563,7 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 			else if (_isUserConfirmingPasscode) {
 				// User entered the confirmation Passcode correctly
 				if ([typedString isEqualToString: _tempPasscode]) {
-					[self dismissMe];
+                    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(dismissMe) userInfo:nil repeats:NO];
 				}
 				// User entered the confirmation Passcode incorrectly, start over.
 				else {
@@ -582,7 +583,9 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 		}
 		// App launch/Turning passcode off: Passcode OK -> dismiss, Passcode incorrect -> deny access.
 		else {
-			if ([typedString isEqualToString: savedPasscode]) [self dismissMe];
+			if ([typedString isEqualToString: savedPasscode]){
+                [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(dismissMe) userInfo:nil repeats:NO];
+            }
 			else {
 				[self performSelector: @selector(denyAccess) withObject: nil afterDelay: 0.15f];
 				return NO;
@@ -590,8 +593,8 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 		}
 	}
 	
-	if (typedString.length > 4) return NO;
-	
+    if (typedString.length == 4) _failedAttempts = 5;
+    
 	return YES;
 }
 
@@ -674,7 +677,11 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 			_enterPasscodeLabel.text = @"请输入新密码";
 		}
 	}
-	else _enterPasscodeLabel.text = @"请输入原密码";
+    else if (_isUserChangingPasscode)
+    {
+        _enterPasscodeLabel.text = @"请输入原密码";
+    }
+	else _enterPasscodeLabel.text = @"请输入密码";
 }
 
 
@@ -685,7 +692,7 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 	NSString *savedPasscode = [SFHFKeychainUtils getPasswordForUsername: kKeychainPasscode
 														 andServiceName: kKeychainServiceName
 																  error: nil];
-	_enterPasscodeLabel.text = savedPasscode.length == 0 ? @"请输入密码" : @"Enter your new passcode";
+	_enterPasscodeLabel.text = savedPasscode.length == 0 ? @"请输入密码" : @"请再次输入新密码";
 	
 	_failedAttemptLabel.hidden = NO;
 	_failedAttemptLabel.text = @"密码不匹配，请再尝试一次";
@@ -700,6 +707,7 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 {
     _beingDisplayedAsLockscreen = FALSE;
     _isUserTurningPasscodeOff = YES;
+    _failedAttempts = 5;
     [self dismissMe];
 }
 
