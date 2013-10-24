@@ -94,6 +94,7 @@ typedef enum{
     
     NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
     NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
+    
 }
 - (void)viewDidLoad
 {
@@ -378,6 +379,20 @@ typedef enum{
 }
 -(void)editAction:(id)sender
 {
+    CGRect r=self.view.frame;
+    r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
+    self.view.frame=r;
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
+    }else
+    {
+        self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+    }
+    
+    NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
+    NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
+    
+    
     [self hideMenu];
     [self.tableView setEditing:!self.tableView.editing animated:YES];
     BOOL isHideTabBar=self.tableView.editing;
@@ -892,7 +907,7 @@ typedef enum{
             }else
             {
                 cell.imageView.image=[UIImage imageNamed:@"file_other.png"];
-                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
+                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@   %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize1:[dic objectForKey:@"fsize"]]];
                 NSString *fname=[dic objectForKey:@"fname"];
                 NSString *fmime=[[fname pathExtension] lowercaseString];
 //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
@@ -1219,7 +1234,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"链接失败，请检查网络";
@@ -1676,6 +1691,7 @@ typedef enum{
                 }
             }
 //            [self hideOptionCell];
+            [self editFinished];
             break;
         }
         case kActionSheetTagDeleteMore:

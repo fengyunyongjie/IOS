@@ -309,7 +309,12 @@ enum{
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
-
+-(void)editFinished;
+{
+    if (self.tableView.isEditing) {
+        [self editAction:nil];
+    }
+}
 -(void)editAction:(id)sender
 {
     CGRect r=self.view.frame;
@@ -435,7 +440,6 @@ enum{
         
         [lab_econtent setTextColor:[UIColor grayColor]];
         [lab_time setTextColor:[UIColor grayColor]];
-        
         [lab_econtent setNumberOfLines:1];
         
         
@@ -689,6 +693,7 @@ enum{
                     [self.em removeEmailWithIDs:[self selectedIDs] type:@"1"];
                 }
             }
+            [self editFinished];
             break;
         }
         default:

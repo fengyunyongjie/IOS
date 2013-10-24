@@ -205,6 +205,33 @@ static BOOL h_f=NO;
 	return url;
 }
 #pragma mark --------换算文件容量大小
++ (NSString *)convertSize1:(NSString *)sourceSize
+{
+    NSString *sSize = nil;
+    float nSize = 0.0f;
+    if (sourceSize==nil) {
+        return sSize;
+    }
+    nSize = [sourceSize floatValue]/1024.0;
+    sSize = [NSString stringWithFormat:@"%.1f KB",nSize];
+    if (nSize<1) {
+        sSize = [NSString stringWithFormat:@"%d B",[sourceSize intValue]];
+        return sSize;
+    }
+    if (nSize>=1024) {
+        nSize = nSize/1024.0;
+        sSize = [NSString stringWithFormat:@"%.1f MB",nSize];
+        if (nSize>=1024) {
+            nSize = nSize/1024.0;
+            sSize = [NSString stringWithFormat:@"%.1f GB",nSize];
+            if (nSize>=1024) {
+                nSize = nSize/1024.0;
+                sSize = [NSString stringWithFormat:@"%.1f TB",nSize];
+            }
+        }
+    }
+    return sSize;
+}
 + (NSString *)convertSize:(NSString *)sourceSize
 {
     NSString *sSize = nil;

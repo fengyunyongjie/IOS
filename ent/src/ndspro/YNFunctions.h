@@ -26,6 +26,7 @@
 #pragma mark --------获取图片存档文件名
 +(NSString*)picFileNameFromURL:(NSString*)URL;
 #pragma mark --------换算文件容量大小
++ (NSString *)convertSize1:(NSString *)sourceSize;
 + (NSString *)convertSize:(NSString *)sourceSize;
 #pragma mark --------屏蔽某些新功能
 +(BOOL)isUnlockFeature;

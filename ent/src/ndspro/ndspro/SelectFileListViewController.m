@@ -87,8 +87,14 @@
     {
         self.navigationItem.leftBarButtonItem = backItem;
     }
-
-
+    
+    UIButton*rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,40,40)];
+    [rightButton setImage:[UIImage imageNamed:@"title_bt_new_nor.png"] forState:UIControlStateHighlighted];
+    [rightButton setImage:[UIImage imageNamed:@"title_bt_new_se.png"] forState:UIControlStateNormal];
+    [rightButton setBackgroundImage:[UIImage imageNamed:@"title_bk.png"] forState:UIControlStateHighlighted];
+    [rightButton addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem=rightItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -128,6 +134,14 @@
     [self.fm setDelegate:self];
     [self.fm openFinderWithID:self.f_id sID:self.spid];
 }
+- (void)operateUpdate
+{
+    [self.fm cancelAllTask];
+    self.fm=nil;
+    self.fm=[[SCBFileManager alloc] init];
+    [self.fm setDelegate:self];
+    [self.fm operateUpdateWithID:self.f_id sID:self.spid];
+}
 - (void)moveFileToHere:(id)sender
 {
     switch (self.type) {
@@ -149,6 +163,16 @@
 - (void)moveCancel:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)newFinder:(id)sender
+{
+    NSLog(@"点击新建文件夹");
+    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    [[alert textFieldAtIndex:0] setText:@"新建文件夹"];
+    [[alert textFieldAtIndex:0] setDelegate:self];
+    [[alert textFieldAtIndex:0] setPlaceholder:@"请输入名称"];
+    [alert show];
 }
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -282,5 +306,58 @@
     }
     
 }
+-(void)operateSucess:(NSDictionary *)datadic
+{
+    [self openFinderSucess:datadic];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"操作成功";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)newFinderSucess
+{
+    [self operateUpdate];
+}
+-(void)newFinderUnsucess;
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+#pragma mark - UIAlertViewDelegate Methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1) {
+        NSString *fildtext=[[alertView textFieldAtIndex:0] text];
+        if (![fildtext isEqualToString:@""]) {
+            NSLog(@"重命名");
+            [self.fm cancelAllTask];
+            self.fm=[[SCBFileManager alloc] init];
+            [self.fm newFinderWithName:fildtext pID:self.f_id sID:self.spid];
+            [self.fm setDelegate:self];
+        }
+    }else
+    {
+        NSLog(@"点击其它");
+    }
 
+}
 @end

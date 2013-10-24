@@ -16,12 +16,23 @@
 #import "SCBFileManager.h"
 
 @interface EmailDetailViewController ()<SCBFileManagerDelegate,SCBEmailManagerDelegate,IconDownloaderDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
+{
+    BOOL _isDetail;
+}
 @property (strong,nonatomic) SCBEmailManager *em;
 @property (strong,nonatomic) SCBEmailManager *em_list;
 @property(strong,nonatomic) MBProgressHUD *hud;
 @property (strong,nonatomic) UIToolbar *moreEditBar;
 @property (strong,nonatomic) SCBFileManager *fm_move;
 @property (strong,nonatomic) UIBarButtonItem *backBarButtonItem;
+@property (strong,nonatomic) UIView *headerView;
+@property (strong,nonatomic) UIView *footerView;
+@property (strong,nonatomic) UILabel *personLabel;
+@property (strong,nonatomic) UILabel *titleLabel;
+@property (strong,nonatomic) UILabel *contentLabel;
+@property (strong,nonatomic) UILabel *timeLabel;
+@property (strong,nonatomic) UIButton *switchButton;
+@property (strong,nonatomic) UIView *contentBgView;
 @end
 
 @implementation EmailDetailViewController
@@ -38,6 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _isDetail=NO;
     // Do any additional setup after loading the view from its nib.
     self.tableView=[[UITableView alloc] init];
     self.tableView.delegate=self;
@@ -272,6 +284,22 @@
     UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:flvc];
     [self presentViewController:nav animated:YES completion:nil];
 }
+-(void)loadEmail
+{
+    NSDictionary *dic=[self.dataDic objectForKey:@"email"];
+    if (self.headerView&&dic) {
+        //[dic objectForKey:@"receivelist"];
+        self.personLabel.text=[dic objectForKey:@"sender"];
+        self.titleLabel.text=[dic objectForKey:@"etitle"];
+        self.timeLabel.text=[dic objectForKey:@"sendtime"];
+        self.contentLabel.text=[dic objectForKey:@"econtent"];
+    }
+}
+-(void)switchAction:(id)sender
+{
+    _isDetail=!_isDetail;
+    [self.tableView reloadData];
+}
 -(void)resaveFileToID:(NSString *)f_id
 {
     NSDictionary *dic=[self.fileArray objectAtIndex:self.selectedIndexPath.row];
@@ -296,254 +324,145 @@
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView              // Default is 1 if not implemented
 {
-    return 6;
+    return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    if (self.segmentedControl.selectedSegmentIndex==0) {
-//        //收件箱
-//        if (self.inArray) {
-//            return self.inArray.count;
-//        }
-//    }else
-//    {
-//        //发件箱
-//        if (self.outArray) {
-//            return self.outArray.count;
-//        }
-//    }
-    if (section==5 && self.fileArray) {
+    if (self.fileArray) {
         return self.fileArray.count;
     }
-    return 1;
+    return 0;
 }
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    // fixed font style. use custom view (UILabel) if you want something different
-    switch (section) {
-        case 0:
-            return @"发送人：";
-            break;
-        case 1:
-            return @"接收人：";
-            break;
-        case 2:
-            return @"标题：";
-            break;
-        case 3:
-            return @"时间：";
-            break;
-        case 4:
-            return @"内容：";
-            break;
-        case 5:
-            return @"文件：";
-            break;
-        default:
-            break;
-    }
-    return @"";
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    // fixed font style. use custom view (UILabel) if you want something different
+////    switch (section) {
+////        case 0:
+////            return @"发送人：";
+////            break;
+////        case 1:
+////            return @"接收人：";
+////            break;
+////        case 2:
+////            return @"标题：";
+////            break;
+////        case 3:
+////            return @"时间：";
+////            break;
+////        case 4:
+////            return @"内容：";
+////            break;
+////        case 5:
+////            return @"文件：";
+////            break;
+////        default:
+////            break;
+////    }
+//    return @"";
+//}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    if (indexPath.section==5) {
-        CellIdentifier=@"FileListCell";
-    }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
         //cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-//        NSString *osVersion = [[UIDevice currentDevice] systemVersion];
-//        NSString *versionWithoutRotation = @"7.0";
-//        BOOL noRotationNeeded = ([versionWithoutRotation compare:osVersion options:NSNumericSearch]
-//                                 != NSOrderedDescending);
-//        if (noRotationNeeded) {
-//            cell.accessoryType=UITableViewCellAccessoryDetailButton;
-//        }else
-//        {
-//            cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
-//        }
     }
     cell.textLabel.text=@"";
+    cell.textLabel.font=[UIFont systemFontOfSize:15];
     cell.detailTextLabel.text=@"";
     [cell.detailTextLabel setTextColor:[UIColor grayColor]];
     cell.imageView.image=nil;
     if (self.dataDic) {
         NSDictionary *dic=[self.dataDic objectForKey:@"email"];
-        switch (indexPath.section) {
-            case 0:
-//                return @"发送人：";
-                cell.textLabel.text=[dic objectForKey:@"sender"];
-                break;
-            case 1:
-//                return @"接收人：";
-                cell.textLabel.text=[dic objectForKey:@"receivelist"];
-                break;
-            case 2:
-//                return @"标题：";
-                cell.textLabel.text=[dic objectForKey:@"etitle"];
-                if ([cell.textLabel.text isEqualToString:@""]) {
-                    cell.textLabel.text=@"无主题";
-                }
-                break;
-            case 3:
-//                return @"时间：";
-                cell.textLabel.text=[dic objectForKey:@"sendtime"];
-                break;
-            case 4:
-//                return @"内容：";
-            {
-//                UILabel *label=[[UILabel alloc] init];
-//                label.text=[dic objectForKey:@"econtent"];
-//                label.frame=CGRectMake(0, 0, 320, 200);
-//                label.numberOfLines=0;
-//                [cell.contentView addSubview:label];
-                cell.textLabel.text=[dic objectForKey:@"econtent"];
-                cell.textLabel.numberOfLines=0;
-                [cell.textLabel sizeToFit];
-                [cell.contentView sizeToFit];
-                float cellHeight=cell.textLabel.frame.size.height;
-                cell.frame=CGRectMake(cell.frame.origin.x, cell.frame.origin.x, cell.frame.size.height, cellHeight);
-            }
-                break;
-            case 5:
-//                return @"文件：";
-            {
-                if (self.fileArray) {
-                    NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
-                    if (dic) {
-                        cell.textLabel.text=[dic objectForKey:@"fname"];
-                        //NSString *fisdir=[dic objectForKey:@"fisdir"];
-                        long fsize=[[dic objectForKey:@"fsize"] longValue];
-                        if (fsize==0) {
-//                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
-                            cell.imageView.image=[UIImage imageNamed:@"file_folder.png"];
-                        }else
-                        {
-                            cell.imageView.image=[UIImage imageNamed:@"file_other.png"];
-                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
-                            NSString *fname=[dic objectForKey:@"fname"];
-                            NSString *fmime=[[fname pathExtension] lowercaseString];
-                            //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
-                            NSLog(@"fmime:%@",fmime);
-                            if ([fmime isEqualToString:@"png"]||
-                                [fmime isEqualToString:@"jpg"]||
-                                [fmime isEqualToString:@"jpeg"]||
-                                [fmime isEqualToString:@"bmp"]||
-                                [fmime isEqualToString:@"gif"]){
-                                cell.imageView.image = [UIImage imageNamed:@"file_pic.png"];
-                            }else if ([fmime isEqualToString:@"doc"]||
-                                      [fmime isEqualToString:@"docx"])
-                            {
-                                cell.imageView.image = [UIImage imageNamed:@"file_doc.png"];
-                            }else if ([fmime isEqualToString:@"mp3"])
-                            {
-                                cell.imageView.image = [UIImage imageNamed:@"file_music.png"];
-                            }else if ([fmime isEqualToString:@"mov"])
-                            {
-                                cell.imageView.image = [UIImage imageNamed:@"file_moving.png"];
-                            }else if ([fmime isEqualToString:@"ppt"])
-                            {
-                                cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
-                            }else
-                            {
-                                cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
-                            }
-                        }
+        if (self.fileArray) {
+            NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
+            if (dic) {
+                cell.textLabel.text=[dic objectForKey:@"fname"];
+                //NSString *fisdir=[dic objectForKey:@"fisdir"];
+                long fsize=[[dic objectForKey:@"fsize"] longValue];
+                if (fsize==0) {
+                    //                            cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
+                    cell.imageView.image=[UIImage imageNamed:@"file_folder.png"];
+                }else
+                {
+                    cell.imageView.image=[UIImage imageNamed:@"file_other.png"];
+                    cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
+                    NSString *fname=[dic objectForKey:@"fname"];
+                    NSString *fmime=[[fname pathExtension] lowercaseString];
+                    //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
+                    NSLog(@"fmime:%@",fmime);
+                    if ([fmime isEqualToString:@"png"]||
+                        [fmime isEqualToString:@"jpg"]||
+                        [fmime isEqualToString:@"jpeg"]||
+                        [fmime isEqualToString:@"bmp"]||
+                        [fmime isEqualToString:@"gif"]){
+                        cell.imageView.image = [UIImage imageNamed:@"file_pic.png"];
+                    }else if ([fmime isEqualToString:@"doc"]||
+                              [fmime isEqualToString:@"docx"])
+                    {
+                        cell.imageView.image = [UIImage imageNamed:@"file_doc.png"];
+                    }else if ([fmime isEqualToString:@"mp3"])
+                    {
+                        cell.imageView.image = [UIImage imageNamed:@"file_music.png"];
+                    }else if ([fmime isEqualToString:@"mov"])
+                    {
+                        cell.imageView.image = [UIImage imageNamed:@"file_moving.png"];
+                    }else if ([fmime isEqualToString:@"ppt"])
+                    {
+                        cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
+                    }else
+                    {
+                        cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
                     }
                 }
             }
-                break;
-            default:
-                break;
         }
-
     }
-//    NSDictionary *dic;
-//    if (self.segmentedControl.selectedSegmentIndex==0) {
-//        //收件箱
-//        if (self.inArray) {
-//            dic=[self.inArray objectAtIndex:indexPath.row];
+//        switch (indexPath.section) {
+//            case 0:
+////                return @"发送人：";
+//                cell.textLabel.text=[dic objectForKey:@"sender"];
+//                break;
+//            case 1:
+////                return @"接收人：";
+//                cell.textLabel.text=[dic objectForKey:@"receivelist"];
+//                break;
+//            case 2:
+////                return @"标题：";
+//                cell.textLabel.text=[dic objectForKey:@"etitle"];
+//                if ([cell.textLabel.text isEqualToString:@""]) {
+//                    cell.textLabel.text=@"无主题";
+//                }
+//                break;
+//            case 3:
+////                return @"时间：";
+//                cell.textLabel.text=[dic objectForKey:@"sendtime"];
+//                break;
+//            case 4:
+////                return @"内容：";
+//            {
+////                UILabel *label=[[UILabel alloc] init];
+////                label.text=[dic objectForKey:@"econtent"];
+////                label.frame=CGRectMake(0, 0, 320, 200);
+////                label.numberOfLines=0;
+////                [cell.contentView addSubview:label];
+//                cell.textLabel.text=[dic objectForKey:@"econtent"];
+//                cell.textLabel.numberOfLines=0;
+//                [cell.textLabel sizeToFit];
+//                [cell.contentView sizeToFit];
+//                float cellHeight=cell.textLabel.frame.size.height;
+//                cell.frame=CGRectMake(cell.frame.origin.x, cell.frame.origin.x, cell.frame.size.height, cellHeight);
+//            }
+//                break;
+//            case 5:
+////                return @"文件：";
+//            {
+//                break;
+//            default:
+//                break;
 //        }
-//    }else
-//    {
-//        //发件箱
-//        if (self.outArray) {
-//            dic=[self.outArray objectAtIndex:indexPath.row];
-//        }
-//    }
-//    if (dic) {
-//        cell.textLabel.text=[dic objectForKey:@"etitle"];
-//        cell.detailTextLabel.text=[dic objectForKey:@"sendtime"];
-//    }
-    //    if (self.listArray) {
-    //        NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
-    //        if (dic) {
-    //            cell.textLabel.text=[dic objectForKey:@"fname"];
-    //            NSString *fisdir=[dic objectForKey:@"fisdir"];
-    //            if ([fisdir isEqualToString:@"0"]) {
-    //                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
-    //                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreNo.png"];
-    //            }else
-    //            {
-    //                cell.imageView.image=[UIImage imageNamed:@"Bt_UsercentreCh.png"];
-    //                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@ %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize:[dic objectForKey:@"fsize"]]];
-    //                NSString *fname=[dic objectForKey:@"fname"];
-    //                NSString *fmime=[[fname pathExtension] lowercaseString];
-    //                //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
-    //                NSLog(@"fmime:%@",fmime);
-    //                if ([fmime isEqualToString:@"png"]||
-    //                    [fmime isEqualToString:@"jpg"]||
-    //                    [fmime isEqualToString:@"jpeg"]||
-    //                    [fmime isEqualToString:@"bmp"]||
-    //                    [fmime isEqualToString:@"gif"]){
-    //                    NSString *fthumb=[dic objectForKey:@"fthumb"];
-    //                    NSString *localThumbPath=[YNFunctions getIconCachePath];
-    //                    fthumb =[YNFunctions picFileNameFromURL:fthumb];
-    //                    localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
-    //                    NSLog(@"是否存在文件：%@",localThumbPath);
-    //                    if ([[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
-    //                        NSLog(@"存在文件：%@",localThumbPath);
-    //                        UIImage *icon=[UIImage imageWithContentsOfFile:localThumbPath];
-    //                        CGSize itemSize = CGSizeMake(100, 100);
-    //                        UIGraphicsBeginImageContext(itemSize);
-    //                        CGRect theR=CGRectMake(0, 0, itemSize.width, itemSize.height);
-    //                        if (icon.size.width>icon.size.height) {
-    //                            theR.size.width=icon.size.width/(icon.size.height/itemSize.height);
-    //                            theR.origin.x=-(theR.size.width/2)-itemSize.width;
-    //                        }else
-    //                        {
-    //                            theR.size.height=icon.size.height/(icon.size.width/itemSize.width);
-    //                            theR.origin.y=-(theR.size.height/2)-itemSize.height;
-    //                        }
-    //                        CGRect imageRect = CGRectMake(2, 2, 96, 96);
-    //                        //                        CGSize size=icon.size;
-    //                        //                        if (size.width>size.height) {
-    //                        //                            imageRect.size.height=size.height*(30.0f/imageRect.size.width);
-    //                        //                            imageRect.origin.y+=(30-imageRect.size.height)/2;
-    //                        //                        }else{
-    //                        //                            imageRect.size.width=size.width*(30.0f/imageRect.size.height);
-    //                        //                            imageRect.origin.x+=(30-imageRect.size.width)/2;
-    //                        //                        }
-    //                        [icon drawInRect:imageRect];
-    //                        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    //                        UIGraphicsEndImageContext();
-    //                        cell.imageView.image = image;
-    //                        CGRect r=cell.imageView.frame;
-    //                        r.size.width=r.size.height=30;
-    //                        cell.imageView.frame=r;
-    //
-    //                    }else{
-    //                        NSLog(@"将要下载的文件：%@",localThumbPath);
-    //                        [self startIconDownload:dic forIndexPath:indexPath];
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -554,14 +473,111 @@
     }
     return 50;
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (_isDetail) {
+        [self.contentLabel setNumberOfLines:0];
+        CGSize size = CGSizeMake(280,2000);
+        CGSize bestSize=[self.contentLabel sizeThatFits:size];
+        if (bestSize.height<34) {
+            bestSize.height=34;
+        }
+        self.contentLabel.frame=CGRectMake(20, 50, bestSize.width, bestSize.height);
+        self.headerView.frame=CGRectMake(0, 0, 320, bestSize.height+50+16);
+        self.contentBgView.frame=CGRectMake(0, 50, 320, self.headerView.frame.size.height-50);
+        self.switchButton.frame=CGRectMake(320-60, self.headerView.frame.size.height-21, 50, 21);
+        [self.switchButton setTitle:@"收起" forState:UIControlStateNormal];
+        return self.headerView.frame.size.height;
+    }else
+    {
+        [self.contentLabel setNumberOfLines:2];
+        self.contentLabel.frame=CGRectMake(20, 50, 280, 34);
+        self.headerView.frame=CGRectMake(0, 0, 320, 100);
+        self.contentBgView.frame=CGRectMake(0, 50, 320, self.headerView.frame.size.height-50);
+        self.switchButton.frame=CGRectMake(320-60, self.headerView.frame.size.height-21, 50, 21);
+        [self.switchButton setTitle:@"展开" forState:UIControlStateNormal];
+    }
+    return 100;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (self.footerView) {
+        return self.footerView.frame.size.height;
+    }
+    return 100;
+}
 #pragma mark - Table view delegate
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section   // custom view for header. will be adjusted to default or specified header height
+{
+    NSDictionary *dic=[self.dataDic objectForKey:@"email"];
+    
+    if (!self.headerView) {
+        UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
+        UILabel *p_label= [[UILabel alloc] initWithFrame:CGRectMake(20, 4, 170, 21)];
+        UILabel *title_lbl=[[UILabel alloc] initWithFrame:CGRectMake(20, 25, 280, 21)];
+        UILabel *time_lbl=[[UILabel alloc] initWithFrame:CGRectMake(200, 4, 120, 21)];
+        UILabel *content_lbl=[[UILabel alloc] initWithFrame:CGRectMake(20, 50, 280, 34)];
+        
+        [p_label setFont:[UIFont boldSystemFontOfSize:16]];
+        [title_lbl setFont:[UIFont systemFontOfSize:14]];
+        [content_lbl setFont:[UIFont systemFontOfSize:14]];
+        [time_lbl setFont:[UIFont systemFontOfSize:13]];
+        
+        [content_lbl setTextColor:[UIColor grayColor]];
+        [time_lbl setTextColor:[UIColor grayColor]];
+        [content_lbl setNumberOfLines:2];
+        //[content_lbl setLineBreakMode:NSLineBreakByWordWrapping];
+        
+        [view addSubview:p_label];
+        [view addSubview:title_lbl];
+        [view addSubview:time_lbl];
+        [view addSubview:content_lbl];
+        
+        self.personLabel=p_label;
+        self.titleLabel=title_lbl;
+        self.timeLabel=time_lbl;
+        self.contentLabel=content_lbl;
+        view.backgroundColor=[UIColor whiteColor];
+        
+        UIView *bgView=[[UIView alloc] initWithFrame:CGRectMake(0, 50, 320, 50)];
+        bgView.layer.borderWidth=0.5;
+        bgView.layer.borderColor=[UIColor grayColor].CGColor;
+        self.contentBgView=bgView;
+        [view addSubview:bgView];
+        UIButton *on_off_btn=[[UIButton alloc] initWithFrame:CGRectMake(320-50,100-21,50,21)];
+        [on_off_btn setTitle:@"展开" forState:UIControlStateNormal];
+        [on_off_btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [on_off_btn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+        [on_off_btn addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:on_off_btn];
+        self.switchButton=on_off_btn;
+        self.headerView=view;
+    }
+    [self loadEmail];
+    return self.headerView;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section   // custom view for footer. will be adjusted to default or specified footer height
+{
+    if (!self.footerView) {
+        UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
+        UIButton *download_button=[[UIButton alloc] initWithFrame:CGRectMake(40, 33, 100, 34)];
+        [download_button setImage:[UIImage imageNamed:@"send_download_nor.png"] forState:UIControlStateNormal];
+        [download_button setImage:[UIImage imageNamed:@"send_download_se.png"] forState:UIControlStateHighlighted];
+        [download_button addTarget:self  action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
+        UIButton *resave_button=[[UIButton alloc] initWithFrame:CGRectMake(180, 33, 100, 34)];
+        [resave_button setImage:[UIImage imageNamed:@"send_zc_nor.png"] forState:UIControlStateNormal];
+        [resave_button setImage:[UIImage imageNamed:@"send_zc_se.png"] forState:UIControlStateHighlighted];
+        [resave_button addTarget:self  action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:download_button];
+        [view addSubview:resave_button];
+        self.footerView=view;
+    }
+    
+    return self.footerView;
+}
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section==5) {
-        return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
-    }
-    return UITableViewCellEditingStyleNone;
+    return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
@@ -613,7 +629,7 @@
 //        self.inArray=tempInArray;
 //        self.outArray=tempOutArray;
         [self.tableView reloadData];
-        
+        [self loadEmail];
         NSString *dataFilePath=[YNFunctions getDataCachePath];
         dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:@"EmailList"]];
         
