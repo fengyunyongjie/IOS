@@ -48,9 +48,21 @@
 //根据文件id删除一条记录
 -(BOOL)deleteDownList
 {
-    NSFileManager *filemgr = [NSFileManager defaultManager];
-    BOOL isDelete = [filemgr removeItemAtPath:self.d_baseUrl error:nil];
-    DDLogCInfo(@"删除文件是否成功：%i",isDelete);
+    
+    if([self.d_baseUrl isEqualToString:@"(null)"] || [self.d_baseUrl length]==0)
+    {
+        
+    }
+    else
+    {
+        NSFileManager *filemgr = [NSFileManager defaultManager];
+        if([filemgr fileExistsAtPath:self.d_baseUrl])
+        {
+            BOOL isDelete = [filemgr removeItemAtPath:self.d_baseUrl error:nil];
+            DDLogCInfo(@"删除文件是否成功：%i",isDelete);
+        }
+    }
+    
     sqlite3_stmt *statement;
     __block BOOL bl = TRUE;
     const char *dbpath = [self.databasePath UTF8String];

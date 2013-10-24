@@ -16,13 +16,15 @@
     CGSize customSize;
     
     UILabel *backLabel;
-    UILabel *currLabel;
+    UIImageView *currLabel;
 }
 
-@property(nonatomic,retain) UIColor *backColor;
-@property(nonatomic,retain) UIColor *currColor;
+@property(nonatomic,strong) UIColor *backColor;
+@property(nonatomic,strong) UIColor *currColor;
 @property(nonatomic,assign) float currFloat;
 @property(nonatomic,assign) CGSize customSize;
+@property(nonatomic,strong) UILabel *backLabel;
+@property(nonatomic,strong) UIImageView *currLabel;
 
 -(void)showText:(NSString *)text;
 -(void)showDate:(NSString *)date;

@@ -14,12 +14,8 @@
 
 -(BOOL)insertUploadList
 {
-    BOOL isHave = [self selectUploadListIsHave];
-    if(isHave)
-    {
-        return YES;
-    }
     sqlite3_stmt *statement;
+    __block int count = 0;
     __block BOOL bl = TRUE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
@@ -46,10 +42,20 @@
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR || success != 101) {
             bl = FALSE;
+            
         }
         NSLog(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+        if(!bl)
+        {
+            if(count<2)
+            {
+                [NSThread sleepForTimeInterval:0.5];
+                [self insertUploadList];
+                count++;
+            }
+        }
     }
     return bl;
 }

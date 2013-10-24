@@ -23,7 +23,7 @@
 @end
 
 @implementation UpDownloadViewController
-@synthesize table_view,upLoading_array,upLoaded_array,downLoading_array,downLoaded_array,customSelectButton,isShowUpload,deleteObject,menuView,editView,rightItem,hud,isStartUpload,isStartDown,btnStart;
+@synthesize table_view,upLoading_array,upLoaded_array,downLoading_array,downLoaded_array,customSelectButton,isShowUpload,deleteObject,menuView,editView,rightItem,hud,isStartUpload,isStartDown,btnStart,selectAllIds;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -145,6 +145,7 @@
     [self.menuView setHidden:YES];
     [self.table_view setEditing:!self.table_view.editing animated:YES];
     [self.table_view reloadData];
+    [self updateLoadData];
     
     BOOL isHideTabBar=self.table_view.editing;
     //isHideTabBar=!isHideTabBar;
@@ -188,8 +189,10 @@
     if (isHideTabBar) {
         [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
         [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
-    }else
+    }
+    else
     {
+        [self.selectAllIds removeAllObjects];
         [self.navigationItem setLeftBarButtonItem:nil];
         [self.navigationItem setRightBarButtonItem:self.rightItem];
     }
@@ -314,6 +317,179 @@
         }
     }
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消全选" style:UIBarButtonItemStylePlain target:self action:@selector(cancelSelectAllCell:)]];
+    [self updateSelectIndexPath];
+}
+
+- (void)selectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UITableViewScrollPosition)scrollPosition
+{
+    DDLogCInfo(@"进来");
+}
+
+-(void)updateSelectIndexPath
+{
+    self.selectAllIds = [self getSelectedIds];
+}
+
+-(void)updateCurrTableViewCell
+{
+    if(isShowUpload)
+    {
+        NSInteger type = [self getUploadType];
+        if(type == 1)
+        {
+            if([upLoading_array count]>0)
+            {
+                NSArray *array = [NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]];
+                [self.table_view reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+        else if(type == 3)
+        {
+            if([upLoading_array count]>0)
+            {
+                NSArray *array = [NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]];
+                [self.table_view reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+    }
+    else
+    {
+        NSInteger type = [self getDownType];
+        if(type == 1)
+        {
+            if([downLoading_array count]>0)
+            {
+                NSArray *array = [NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]];
+                [self.table_view reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+        else if(type == 3)
+        {
+            if([downLoading_array count]>0)
+            {
+                NSArray *array = [NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]];
+                [self.table_view reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
+    }
+}
+
+-(void)updateLoadData
+{
+    if(isShowUpload && self.table_view.editing)
+    {
+        NSInteger type = [self getUploadType];
+        if(type == 1)
+        {
+            for (int i=0; i<self.upLoading_array.count; i++) {
+                UpLoadList *list = [self.upLoading_array objectAtIndex:i];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    UpLoadList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.t_id == old_list.t_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
+            }
+        }
+        else if(type == 2)
+        {
+            for (int i=0; i<self.upLoaded_array.count; i++) {
+                UpLoadList *list = [self.upLoaded_array objectAtIndex:i];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    UpLoadList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.t_id == old_list.t_id)
+                    {
+                       [self.table_view selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
+            }
+        }
+        else if(type == 3)
+        {
+            for (int i=0; i<self.upLoading_array.count; i++) {
+                UpLoadList *list = [self.upLoading_array objectAtIndex:i];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    UpLoadList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.t_id == old_list.t_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
+            }
+            for (int i=0; i<self.upLoaded_array.count; i++) {
+                UpLoadList *list = [self.upLoaded_array objectAtIndex:i];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    UpLoadList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.t_id == old_list.t_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        NSInteger type = [self getDownType];
+        if(type == 1)
+        {
+            for (int i=0; i<self.downLoading_array.count; i++) {
+                DownList *list = [self.downLoading_array objectAtIndex:i];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    DownList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.d_id == old_list.d_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
+            }
+        }
+        else if(type == 2)
+        {
+            for (int i=0; i<self.downLoaded_array.count; i++) {
+                DownList *list = [self.downLoaded_array objectAtIndex:i];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    DownList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.d_id == old_list.d_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
+            }
+        }
+        else if(type == 3)
+        {
+            for (int i=0; i<self.downLoading_array.count; i++) {
+                DownList *list = [self.downLoading_array objectAtIndex:i];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    DownList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.d_id == old_list.d_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
+            }
+            for (int i=0; i<self.downLoaded_array.count; i++) {
+                DownList *list = [self.downLoaded_array objectAtIndex:i];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    DownList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.d_id == old_list.d_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1] animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
+            }
+        }
+    }
 }
 
 -(void)cancelSelectAllCell:(id)sender
@@ -369,6 +545,7 @@
         }
     }
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
+    [self updateSelectIndexPath];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -466,6 +643,7 @@
         }
     }
     [self.table_view reloadData];
+    [self updateLoadData];
 }
 
 -(void)leftSwipeFrom
@@ -535,7 +713,7 @@
             {
                 title_State = [NSString stringWithFormat:@" 正在上传(%i)",[upLoading_array count]];
             }
-            if(section==1 && [upLoaded_array count]>0)
+            else if(section==1 && [upLoaded_array count]>0)
             {
                 title_State = [NSString stringWithFormat:@" 上传完成(%i)",[upLoaded_array count]];
             }
@@ -558,7 +736,7 @@
             {
                 title_State = [NSString stringWithFormat:@" 正在下载(%i)",[downLoading_array count]];
             }
-            if(section==1 && [downLoaded_array count]>0)
+            else if(section==1 && [downLoaded_array count]>0)
             {
                 title_State = [NSString stringWithFormat:@" 下载完成(%i)",[downLoaded_array count]];
             }
@@ -593,7 +771,7 @@
             {
                 count = [upLoading_array count];
             }
-            if(section==1 && [upLoaded_array count]>0)
+            else if(section==1 && [upLoaded_array count]>0)
             {
                 count = [upLoaded_array count];
             }
@@ -616,7 +794,7 @@
             {
                 count = [downLoading_array count];
             }
-            if(section==1 && [downLoaded_array count]>0)
+            else if(section==1 && [downLoaded_array count]>0)
             {
                 count = [downLoaded_array count];
             }
@@ -635,11 +813,11 @@
 {
     UploadViewCell *cell;
     static NSString *cellString = @"upDownCell";
-    cell = [tableView dequeueReusableCellWithIdentifier:cellString];
+    cell = [self.table_view dequeueReusableCellWithIdentifier:cellString];
     if(cell==nil)
     {
         cell = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     }
     int section = indexPath.section;
     if(isShowUpload)
@@ -650,6 +828,14 @@
             if(section==0 && indexPath.row<[self.upLoading_array count])
             {
                 UpLoadList *list = [self.upLoading_array objectAtIndex:indexPath.row];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    UpLoadList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.t_id == old_list.t_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
                 [cell setUploadDemo:list];
             }
         }
@@ -658,6 +844,14 @@
             if(section==0 && indexPath.row<[self.upLoaded_array count])
             {
                 UpLoadList *list = [self.upLoaded_array objectAtIndex:indexPath.row];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    UpLoadList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.t_id == old_list.t_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
                 [cell setUploadDemo:list];
             }
         }
@@ -666,11 +860,27 @@
             if(section==0 && indexPath.row<[self.upLoading_array count])
             {
                 UpLoadList *list = [self.upLoading_array objectAtIndex:indexPath.row];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    UpLoadList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.t_id == old_list.t_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
                 [cell setUploadDemo:list];
             }
             else if(section==1 && indexPath.row<[self.upLoaded_array count])
             {
                 UpLoadList *list = [self.upLoaded_array objectAtIndex:indexPath.row];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    UpLoadList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.t_id == old_list.t_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
                 [cell setUploadDemo:list];
             }
         }
@@ -683,6 +893,14 @@
             if(section==0 && indexPath.row<[self.downLoading_array count])
             {
                 DownList *list = [self.downLoading_array objectAtIndex:indexPath.row];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    DownList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.d_id == old_list.d_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
                 [cell setDownDemo:list];
             }
         }
@@ -691,6 +909,14 @@
             if(section==0 && indexPath.row<[self.downLoaded_array count])
             {
                 DownList *list = [self.downLoaded_array objectAtIndex:indexPath.row];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    DownList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.d_id == old_list.d_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
                 [cell setDownDemo:list];
             }
         }
@@ -700,11 +926,27 @@
             if(section==0 && indexPath.row<[self.downLoading_array count])
             {
                 DownList *list = [self.downLoading_array objectAtIndex:indexPath.row];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    DownList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.d_id == old_list.d_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
                 [cell setDownDemo:list];
             }
             else if(section==1 && indexPath.row<[self.downLoaded_array count])
             {
                 DownList *list = [self.downLoaded_array objectAtIndex:indexPath.row];
+                for(int j=0;j<self.selectAllIds.count;j++)
+                {
+                    DownList *old_list = [self.selectAllIds objectAtIndex:j];
+                    if(list.d_id == old_list.d_id)
+                    {
+                        [self.table_view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    }
+                }
                 [cell setDownDemo:list];
             }
         }
@@ -719,73 +961,82 @@
 {
     if(self.table_view.isEditing)
     {
+        [self updateSelectIndexPath];
         return;
     }
     
-    if(!isShowUpload)
+//    if(!isShowUpload)
+//    {
+//        NSInteger type = [self getDownType];
+//        if(type == 2)
+//        {
+//            if(indexPath.row < [downLoaded_array count])
+//            {
+//                DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
+//                NSString *fmime=[[list.d_name pathExtension] lowercaseString];
+//                if ([fmime isEqualToString:@"png"]||
+//                    [fmime isEqualToString:@"jpg"]||
+//                    [fmime isEqualToString:@"jpeg"]||
+//                    [fmime isEqualToString:@"bmp"]||
+//                    [fmime isEqualToString:@"gif"])
+//                {
+//                    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+//                    for(int i=0;i<[downLoaded_array count];i++) {
+//                       DownList *oldList = [downLoaded_array objectAtIndex:i];
+//                        NSString *fmime=[[oldList.d_name pathExtension] lowercaseString];
+//                        if([fmime isEqualToString:@"png"]|| [fmime isEqualToString:@"jpg"]|| [fmime isEqualToString:@"jpeg"]|| [fmime isEqualToString:@"bmp"]|| [fmime isEqualToString:@"gif"])
+//                        {
+//                            NSLog(@"fmime:%@",fmime);
+//                            DownList *ls = [[DownList alloc] init];
+//                            ls.d_file_id = [NSString formatNSStringForOjbect:oldList.d_file_id];
+//                            ls.d_thumbUrl = [NSString formatNSStringForOjbect:oldList.d_thumbUrl];
+//                            ls.d_name = [NSString formatNSStringForOjbect:oldList.d_name];
+//                            ls.d_baseUrl = [NSString get_image_save_file_path:oldList.d_baseUrl];
+//                            [tableArray addObject:ls];
+//                        }
+//                    }
+//                    if([tableArray count]>0)
+//                    {
+//                        PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+//                        [look setTableArray:tableArray];
+//                        [self presentModalViewController:look animated:YES];
+//                    }
+//                }
+//                else
+//                {
+//                    OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
+//                    otherBrowser.dataDic=[[NSDictionary alloc] initWithObjectsAndKeys:list.d_file_id,@"fid",list.d_name,@"fname",[NSNumber numberWithInteger:list.d_downSize],@"fsize",nil];
+//                    otherBrowser.title=list.d_name;
+//                    [self presentModalViewController:otherBrowser animated:YES];
+//                }
+//            }
+//            PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+//            [look setTableArray:downLoaded_array];
+//            [self presentModalViewController:look animated:YES];
+//        }
+//        else if(type == 3)
+//        {
+//            if(indexPath.section==0 && [downLoading_array count]>0)
+//            {
+//                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+//                [look setTableArray:downLoading_array];
+//                [self presentModalViewController:look animated:YES];
+//            }
+//            if(indexPath.section==1 && [downLoaded_array count]>0)
+//            {
+//                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+//                [look setTableArray:downLoaded_array];
+//                [self presentModalViewController:look animated:YES];
+//            }
+//        }
+//    }
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(self.table_view.editing)
     {
-        NSInteger type = [self getDownType];
-        if(type == 2)
-        {
-            if(indexPath.row < [downLoaded_array count])
-            {
-                DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
-                NSString *fmime=[[list.d_name pathExtension] lowercaseString];
-                if ([fmime isEqualToString:@"png"]||
-                    [fmime isEqualToString:@"jpg"]||
-                    [fmime isEqualToString:@"jpeg"]||
-                    [fmime isEqualToString:@"bmp"]||
-                    [fmime isEqualToString:@"gif"])
-                {
-                    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
-                    for(int i=0;i<[downLoaded_array count];i++) {
-                       DownList *oldList = [downLoaded_array objectAtIndex:i];
-                        NSString *fmime=[[oldList.d_name pathExtension] lowercaseString];
-                        if([fmime isEqualToString:@"png"]|| [fmime isEqualToString:@"jpg"]|| [fmime isEqualToString:@"jpeg"]|| [fmime isEqualToString:@"bmp"]|| [fmime isEqualToString:@"gif"])
-                        {
-                            NSLog(@"fmime:%@",fmime);
-                            DownList *ls = [[DownList alloc] init];
-                            ls.d_file_id = [NSString formatNSStringForOjbect:oldList.d_file_id];
-                            ls.d_thumbUrl = [NSString formatNSStringForOjbect:oldList.d_thumbUrl];
-                            ls.d_name = [NSString formatNSStringForOjbect:oldList.d_name];
-                            ls.d_baseUrl = [NSString get_image_save_file_path:oldList.d_baseUrl];
-                            [tableArray addObject:ls];
-                        }
-                    }
-                    if([tableArray count]>0)
-                    {
-                        PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-                        [look setTableArray:tableArray];
-                        [self presentModalViewController:look animated:YES];
-                    }
-                }
-                else
-                {
-                    OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
-                    otherBrowser.dataDic=[[NSDictionary alloc] initWithObjectsAndKeys:list.d_file_id,@"fid",list.d_name,@"fname",[NSNumber numberWithInteger:list.d_downSize],@"fsize",nil];
-                    otherBrowser.title=list.d_name;
-                    [self presentModalViewController:otherBrowser animated:YES];
-                }
-            }
-            PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-            [look setTableArray:downLoaded_array];
-            [self presentModalViewController:look animated:YES];
-        }
-        else if(type == 3)
-        {
-            if(indexPath.section==0 && [downLoading_array count]>0)
-            {
-                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-                [look setTableArray:downLoading_array];
-                [self presentModalViewController:look animated:YES];
-            }
-            if(indexPath.section==1 && [downLoaded_array count]>0)
-            {
-                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-                [look setTableArray:downLoaded_array];
-                [self presentModalViewController:look animated:YES];
-            }
-        }
+        [self updateSelectIndexPath];
     }
 }
 
@@ -891,7 +1142,7 @@
     }
     else if(actionSheet.tag == kActionSheetTagAllDelete && buttonIndex == 0)
     {
-        [self deleteOldList:[self getSelectedIds]];
+        [self deleteOldList:self.selectAllIds];
     }
 }
 
@@ -902,54 +1153,55 @@
 
 -(void)deleteOldList:(NSMutableArray *)array
 {
+    NSLog(@"删除文件大小：%i",[array count]);
     for (int i=0;i<[array count]; i++) {
         NSObject *object = [array objectAtIndex:i];
         if([object isKindOfClass:[UpLoadList class]])
         {
-            for(int i=0;i<[upLoading_array count];i++)
+            for(int j=0;j<[upLoading_array count];j++)
             {
-                UpLoadList *list = (UpLoadList *)[upLoading_array objectAtIndex:i];
+                UpLoadList *list = (UpLoadList *)[upLoading_array objectAtIndex:j];
                 UpLoadList *oldList = (UpLoadList *)object;
                 if(list.t_id == oldList.t_id)
                 {
                     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                    [delegate.uploadmanage deleteOneUpload:i];
+                    [delegate.uploadmanage deleteOneUpload:j];
                     break;
                 }
             }
-            for(int i=0;i<[upLoaded_array count];i++)
+            for(int j=0;j<[upLoaded_array count];j++)
             {
-                UpLoadList *list = (UpLoadList *)[upLoaded_array objectAtIndex:i];
+                UpLoadList *list = (UpLoadList *)[upLoaded_array objectAtIndex:j];
                 UpLoadList *oldList = (UpLoadList *)object;
                 if(list.t_id == oldList.t_id)
                 {
                     [list deleteUploadList];
-                    [upLoaded_array removeObjectAtIndex:i];
+                    [upLoaded_array removeObjectAtIndex:j];
                     break;
                 }
             }
         }
         else if([object isKindOfClass:[DownList class]])
         {
-            for(int i=0;i<[downLoading_array count];i++)
+            for(int j=0;j<[downLoading_array count];j++)
             {
                 DownList *list = (DownList *)[downLoading_array objectAtIndex:i];
                 DownList *oldList = (DownList *)object;
                 if(list.d_id == oldList.d_id)
                 {
                     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                    [delegate.downmange deleteOneDown:i];
+                    [delegate.downmange deleteOneDown:j];
                     break;
                 }
             }
-            for(int i=0;i<[downLoaded_array count];i++)
+            for(int j=0;j<[downLoaded_array count];j++)
             {
-                DownList *list = (DownList *)[downLoaded_array objectAtIndex:i];
+                DownList *list = (DownList *)[downLoaded_array objectAtIndex:j];
                 DownList *oldList = (DownList *)object;
                 if(list.d_id == oldList.d_id)
                 {
                     [list deleteDownList];
-                    [downLoaded_array removeObjectAtIndex:i];
+                    [downLoaded_array removeObjectAtIndex:j];
                     break;
                 }
             }

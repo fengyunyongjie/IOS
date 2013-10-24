@@ -13,7 +13,7 @@
 
 @implementation UploadViewCell
 @synthesize button_dele_button,imageView,contentView,label_name;
-@synthesize delegate,button_start_button,jinDuView,size_label;
+@synthesize delegate,jinDuView,size_label;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -38,7 +38,6 @@
         [self.size_label setTextColor:[UIColor colorWithRed:180.0/255.0 green:181.0/255.0 blue:181.0/255.0 alpha:1]];
         [self.size_label setFont:[UIFont systemFontOfSize:11]];
         [self addSubview:self.size_label];
-        CGRect suduRect = CGRectMake(220, 22, 70, 15);
         
         CGRect button_rect = CGRectMake(270, 0, 50, 50);
         self.button_dele_button = [[UIButton alloc] initWithFrame:button_rect];
@@ -46,35 +45,18 @@
         [self.button_dele_button addTarget:self action:@selector(deleteSelf) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.button_dele_button];
         
-        CGRect start_rect = CGRectMake(270, 15, 40, 30);
-        self.button_start_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [self.button_start_button setFrame:start_rect];
-        [self.button_start_button setBackgroundColor:[UIColor clearColor]];
-        [self.button_start_button setTitle:@"暂停" forState:UIControlStateNormal];
-        [self.button_start_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [self.button_start_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
-        [self.button_start_button addTarget:self action:@selector(start) forControlEvents:UIControlEventTouchDown];
-        [self addSubview:self.button_start_button];
-        [self.button_start_button setHidden:YES];
+//        CGRect start_rect = CGRectMake(270, 15, 40, 30);
+//        self.button_start_button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//        [self.button_start_button setFrame:start_rect];
+//        [self.button_start_button setBackgroundColor:[UIColor clearColor]];
+//        [self.button_start_button setTitle:@"暂停" forState:UIControlStateNormal];
+//        [self.button_start_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [self.button_start_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+//        [self.button_start_button addTarget:self action:@selector(start) forControlEvents:UIControlEventTouchDown];
+//        [self addSubview:self.button_start_button];
+//        [self.button_start_button setHidden:YES];
     }
     return self;
-}
-
--(void)start
-{
-//    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if([self.button_start_button.titleLabel.text isEqualToString:@"暂停"])
-    {
-        NSLog(@"self.button_start_button.titleLabel.text 0");
-        [self.button_start_button setTitle:@"继续" forState:UIControlStateNormal];
-        //        [app_delegate.autoUpload stopUpload];
-    }
-    else
-    {
-        NSLog(@"self.button_start_button.titleLabel.text 1");
-        [self.button_start_button setTitle:@"暂停" forState:UIControlStateNormal];
-        //        [app_delegate.autoUpload goOnUpload];
-    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -87,7 +69,6 @@
     upload_list = list;
     down_list = nil;
     [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",(int)list.t_lenght]]];
-//    [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
     if(list.t_state == 1)
     {
         [self.jinDuView showDate:list.t_date];
@@ -224,7 +205,7 @@
 {
     if(bl)
     {
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.15 animations:^{
             float y = 40;
             CGRect image_rect = CGRectMake(5+y, 5, 40, 40);
             [self.imageView setFrame:image_rect];
@@ -241,15 +222,11 @@
             CGRect button_rect = CGRectMake(270+y, 0, 50, 50);
             [self.button_dele_button setFrame:button_rect];
             [self.button_dele_button setHidden:YES];
-            
-            CGRect start_rect = CGRectMake(270+y, 15, 40, 30);
-            [self.button_start_button setFrame:start_rect];
-            [self.button_start_button setHidden:YES];
         }];
     }
     else
     {
-        [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.15 animations:^{
             CGRect image_rect = CGRectMake(5, 5, 40, 40);
             [self.imageView setFrame:image_rect];
             
@@ -265,9 +242,6 @@
             CGRect button_rect = CGRectMake(270, 0, 50, 50);
             [self.button_dele_button setFrame:button_rect];
             [self.button_dele_button setHidden:NO];
-            
-            CGRect start_rect = CGRectMake(270, 15, 40, 30);
-            [self.button_start_button setFrame:start_rect];
         }];
     }
 }

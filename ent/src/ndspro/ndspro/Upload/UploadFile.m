@@ -15,7 +15,7 @@
 #import "AppDelegate.h"
 #import "Reachability.h"
 
-#define SomeDataSize 1024*200
+#define SomeDataSize 1024*20
 
 @implementation UploadFile
 @synthesize connection,finishName,list,delegate,urlNameArray,urlIndex,file_data,md5String,uploderDemo,total;
@@ -91,7 +91,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_INFO]];
@@ -116,7 +116,7 @@
         }
         else
         {
-            [delegate upNetworkStop];
+            [delegate upError];
         }
         return;
     }
@@ -130,7 +130,7 @@
     else
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
     }
 }
 
@@ -140,7 +140,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_URI]];
@@ -170,7 +170,7 @@
         }
         else
         {
-            [delegate upNetworkStop];
+            [delegate upError];
         }
         return;
     }
@@ -227,7 +227,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_MKDIR_URL]];
@@ -255,7 +255,7 @@
         }
         else
         {
-            [delegate upNetworkStop];
+            [delegate upError];
         }
         return;
     }
@@ -312,7 +312,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_VERIFY]];
@@ -342,7 +342,7 @@
                  }
                  else
                  {
-                     [delegate upNetworkStop];
+                     [delegate upError];
                  }
                  return;
              }
@@ -382,10 +382,11 @@
     [libary assetForURL:[NSURL URLWithString:list.t_fileUrl] resultBlock:^(ALAsset *result)
      {
          NSError *error = nil;
-         Byte *byte_data = malloc(SomeDataSize);
+         
          if(SomeDataSize<list.t_lenght-list.upload_size)
          {
              total = SomeDataSize;
+             Byte *byte_data = malloc(total);
              [result.defaultRepresentation getBytes:byte_data fromOffset:list.upload_size length:SomeDataSize error:&error];
              file_data = [NSData dataWithBytesNoCopy:byte_data length:SomeDataSize];
              DDLogCInfo(@"文件大小：%i",[file_data length]);
@@ -396,6 +397,7 @@
          else
          {
              total = list.t_lenght-list.upload_size;
+             Byte *byte_data = malloc(total);
              [result.defaultRepresentation getBytes:byte_data fromOffset:list.upload_size length:list.t_lenght-list.upload_size error:&error];
              file_data = [NSData dataWithBytesNoCopy:byte_data length:list.t_lenght-list.upload_size];
              DDLogCInfo(@"这次上传了多少:%i",total);
@@ -416,7 +418,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_STATE]];
@@ -445,7 +447,7 @@
         }
         else
         {
-            [delegate upNetworkStop];
+            [delegate upError];
         }
         return;
     }
@@ -488,7 +490,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
     if([[dictionary objectForKey:@"code"] intValue] == 0)
@@ -512,7 +514,7 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_UPLOAD_NEW_COMMIT]];
@@ -547,7 +549,7 @@
             }
             else
             {
-                [delegate upNetworkStop];
+                [delegate upError];
             }
             return;
         }
@@ -611,25 +613,21 @@
     if(appleDate.uploadmanage.isStopCurrUpload)
     {
         [self updateAutoUploadState];
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [NSThread sleepForTimeInterval:0.5];
         list.upload_size = list.upload_size + total;
-        DDLogCInfo(@"上传大小:%i",list.upload_size);
         [delegate upProess:list.upload_size fileTag:list.sudu];
         connection = nil;
-        DDLogCInfo(@"当前大小:%i",list.upload_size);
-        DDLogCInfo(@"上传大小:%i",total);
-        DDLogCInfo(@"总共大小:%i",list.t_lenght);
         if(list.upload_size == list.t_lenght)
         {
             [NSThread detachNewThreadSelector:@selector(comeBackNewTheadMian:) toTarget:self withObject:dictionary];
         }
         else
         {
+            [NSThread sleepForTimeInterval:0.1];
             [self uploadSomeFile];
         }
     });
@@ -650,7 +648,7 @@
         [self updateAutoUploadState];
         [connection cancel];
         connection = nil;
-        [delegate upNetworkStop];
+        [delegate upError];
         return;
     }
 }

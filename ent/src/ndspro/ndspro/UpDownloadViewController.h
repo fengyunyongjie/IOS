@@ -30,10 +30,13 @@
 @property(assign,nonatomic) BOOL isStartUpload;
 @property(assign,nonatomic) BOOL isStartDown;
 @property(strong,nonatomic) UIButton *btnStart;
+@property(strong,nonatomic) NSMutableArray *selectAllIds;
 
 -(void)isSelectedLeft:(BOOL)bl;
 -(void)updateCount:(NSString *)upload_count downCount:(NSString *)down_count;
 -(void)showFloderNot;
 -(void)showSpaceNot;
+-(void)updateTableViewCount;
+-(void)updateCurrTableViewCell;
 
 @end

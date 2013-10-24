@@ -30,7 +30,6 @@
     app.applicationIconBadgeNumber = [uploadmanage.uploadArray count];
     
     DBSqlite3 *sql = [[DBSqlite3 alloc] init];
-    [sql updateVersion];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];

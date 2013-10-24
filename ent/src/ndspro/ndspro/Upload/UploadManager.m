@@ -58,7 +58,12 @@
     }
     if(!isStart)
     {
-        [self updateTableStateForStop];
+        isStopCurrUpload = YES;
+        isStart = FALSE;
+        for (int i=0; i<[uploadArray count]; i++) {
+            UpLoadList *list = [uploadArray objectAtIndex:i];
+            list.t_state = 2;
+        }
     }
 }
 
@@ -145,6 +150,10 @@
     {
         isStart = FALSE;
     }
+    if(!isStart)
+    {
+        [self upNetworkStop];
+    }
 }
 
 #pragma mark NewUploadDelegate
@@ -182,8 +191,22 @@
         list.sudu = (int)sudu;
         float f = (float)list.upload_size / (float)list.t_lenght;
         NSLog(@"上传进度:%f",f);
-        [self updateTable];
+        [self updateFirstTableViewCell];
     }
+}
+
+-(void)updateFirstTableViewCell
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            //更新UI
+            [uploadView updateCurrTableViewCell];
+        }
+    });
 }
 
 //用户存储空间不足
@@ -235,7 +258,7 @@
 -(void)upError
 {
     isStopCurrUpload = YES;
-    if([uploadArray count]>0)
+    if([uploadArray count]>0 && isOpenedUpload)
     {
         UpLoadList *list = [uploadArray objectAtIndex:0];
         [list deleteUploadList];
@@ -289,15 +312,11 @@
         UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
         if([uploadView isKindOfClass:[UpDownloadViewController class]])
         {
-            if([uploadView.upLoading_array count] == 0)
-            {
-                [uploadView setUpLoading_array:uploadArray];
-            }
             //更新UI
-            [uploadView.table_view reloadData];
+            [uploadView isSelectedLeft:uploadView.isShowUpload];
         }
         UIApplication *app = [UIApplication sharedApplication];
-        app.applicationIconBadgeNumber = [self.uploadArray count];
+        app.applicationIconBadgeNumber = [self.uploadArray count]+[appleDate.downmange.downingArray count];
     });
 }
 
@@ -346,13 +365,16 @@
 {
     if(selectIndex<[uploadArray count])
     {
-        UpLoadList *list = [uploadArray objectAtIndex:selectIndex];
-        if(selectIndex==0)
+        if(selectIndex==0 && isStart)
         {
             isStopCurrUpload = YES;
         }
-        [list deleteUploadList];
-        [uploadArray removeObjectAtIndex:selectIndex];
+        else
+        {
+            UpLoadList *list = [uploadArray objectAtIndex:selectIndex];
+            [list deleteUploadList];
+            [uploadArray removeObjectAtIndex:selectIndex];
+        }
     }
 }
 

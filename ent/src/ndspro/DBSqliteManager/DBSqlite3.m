@@ -26,10 +26,7 @@
 
 -(id)init
 {
-    // Do any additional setup after loading the view, typically from a nib.
-    
-    /*根据路径创建数据库并创建一个表contact(id nametext addresstext phonetext)*/
-    
+    [self updateVersion];
     self.databasePath=[YNFunctions getDBCachePath];
     self.databasePath=[self.databasePath stringByAppendingPathComponent:@"hongPanShangYe.sqlite"];
     if (sqlite3_open([self.databasePath fileSystemRepresentation], &contactDB)==SQLITE_OK)

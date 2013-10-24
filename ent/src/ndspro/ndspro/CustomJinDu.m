@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation CustomJinDu
-@synthesize backColor,currColor,currFloat,customSize;
+@synthesize backColor,currColor,currFloat,customSize,backLabel,currLabel;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -26,7 +26,7 @@
         CGRect currLabelRect = CGRectMake(0.1f, 0.1f, 0, frame.size.height-0.2f);
         [self addSubview:backLabel];
         
-        currLabel = [[UILabel alloc] initWithFrame:currLabelRect];
+        currLabel = [[UIImageView alloc] initWithFrame:currLabelRect];
         [self addSubview:currLabel];
         [self setBackColor:[UIColor whiteColor]];
         [self setCurrColor:[UIColor colorWithRed:0.0/255.0 green:160.0/255.0 blue:230.0/255.0 alpha:1]];
@@ -42,7 +42,17 @@
 
 -(void)setCurrColor:(UIColor *)currColor_
 {
-    [currLabel setBackgroundColor:currColor_];
+    //把色值转换成图片
+    CGRect rect_image = CGRectMake(0, 0, 320, 44);
+    UIGraphicsBeginImageContext(rect_image.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context,
+                                   [currColor_ CGColor]);
+    CGContextFillRect(context, rect_image);
+    UIImage * imge = [[UIImage alloc] init];
+    imge = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    [currLabel setImage:imge];
 }
 
 -(void)setCurrFloat:(float)currFloat_

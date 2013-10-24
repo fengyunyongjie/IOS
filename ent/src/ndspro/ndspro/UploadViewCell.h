@@ -38,7 +38,6 @@
 @property(nonatomic,retain) CustomJinDu *jinDuView;
 @property(nonatomic,retain) id<UploadViewCellDelegate> delegate;
 @property(nonatomic,retain) UILabel *size_label;
-@property(nonatomic,retain) UIButton *button_start_button;
 @property(nonatomic,retain) DownList *down_list;
 
 -(void)setUploadDemo:(UpLoadList *)list;
