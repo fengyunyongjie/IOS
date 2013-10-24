@@ -562,7 +562,7 @@ enum{
         edvc.eid=eid;
         edvc.etype=etype;
         edvc.title=[dic objectForKey:@"etitle"];
-        [edvc setHidesBottomBarWhenPushed:YES];
+//        [edvc setHidesBottomBarWhenPushed:YES];
         [self.navigationController pushViewController:edvc animated:YES];
     }
 

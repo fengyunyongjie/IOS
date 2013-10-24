@@ -78,41 +78,41 @@
 {
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
     
-    if (!self.moreEditBar) {
-        self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
-        [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
-            [self.moreEditBar setBarTintColor:[UIColor blueColor]];
-        }else
-        {
-            [self.moreEditBar setTintColor:[UIColor blueColor]];
-        }
-        [self.view addSubview:self.moreEditBar];
-        //发送 删除 提交 移动 全选
-        UIButton *btn_download ,*btn_resave;
-        UIBarButtonItem  *item_download, *item_resave,*item_flexible;
-        
-        btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
-        [btn_resave setImage:[UIImage imageNamed:@"zc_nor.png"] forState:UIControlStateNormal];
-        [btn_resave setImage:[UIImage imageNamed:@"zc_se.png"] forState:UIControlStateHighlighted];
-        [btn_resave addTarget:self action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
-        item_resave=[[UIBarButtonItem alloc] initWithCustomView:btn_resave];
-        
-        btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
-        [btn_download setImage:[UIImage imageNamed:@"download_nor.png"] forState:UIControlStateNormal];
-        [btn_download setImage:[UIImage imageNamed:@"download_se.png"] forState:UIControlStateHighlighted];
-        [btn_download addTarget:self action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
-        item_download=[[UIBarButtonItem alloc] initWithCustomView:btn_download];
-        
-        item_flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-
-        [self.moreEditBar setItems:@[item_flexible,item_download,item_flexible,item_resave,item_flexible]];
-
-    }
-    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
-        //self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
-        self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
-    }
+//    if (!self.moreEditBar) {
+//        self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
+//        [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+//        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+//            [self.moreEditBar setBarTintColor:[UIColor blueColor]];
+//        }else
+//        {
+//            [self.moreEditBar setTintColor:[UIColor blueColor]];
+//        }
+//        [self.view addSubview:self.moreEditBar];
+//        //发送 删除 提交 移动 全选
+//        UIButton *btn_download ,*btn_resave;
+//        UIBarButtonItem  *item_download, *item_resave,*item_flexible;
+//        
+//        btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+//        [btn_resave setImage:[UIImage imageNamed:@"zc_nor.png"] forState:UIControlStateNormal];
+//        [btn_resave setImage:[UIImage imageNamed:@"zc_se.png"] forState:UIControlStateHighlighted];
+//        [btn_resave addTarget:self action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
+//        item_resave=[[UIBarButtonItem alloc] initWithCustomView:btn_resave];
+//        
+//        btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+//        [btn_download setImage:[UIImage imageNamed:@"download_nor.png"] forState:UIControlStateNormal];
+//        [btn_download setImage:[UIImage imageNamed:@"download_se.png"] forState:UIControlStateHighlighted];
+//        [btn_download addTarget:self action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
+//        item_download=[[UIBarButtonItem alloc] initWithCustomView:btn_download];
+//        
+//        item_flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//
+//        [self.moreEditBar setItems:@[item_flexible,item_download,item_flexible,item_resave,item_flexible]];
+//
+//    }
+//    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+//        //self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+//        self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
+//    }
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -289,7 +289,14 @@
     NSDictionary *dic=[self.dataDic objectForKey:@"email"];
     if (self.headerView&&dic) {
         //[dic objectForKey:@"receivelist"];
-        self.personLabel.text=[dic objectForKey:@"sender"];
+        int etype=[[dic objectForKey:@"etype"] intValue];
+        if (etype==0) {
+            self.personLabel.text=[dic objectForKey:@"sender"];
+        }else
+        {
+            self.personLabel.text=[dic objectForKey:@"receivelist"];
+        }
+        
         self.titleLabel.text=[dic objectForKey:@"etitle"];
         self.timeLabel.text=[dic objectForKey:@"sendtime"];
         self.contentLabel.text=[dic objectForKey:@"econtent"];
