@@ -78,41 +78,47 @@
 {
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49);
     
-//    if (!self.moreEditBar) {
-//        self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
-//        [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-//        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
-//            [self.moreEditBar setBarTintColor:[UIColor blueColor]];
-//        }else
-//        {
-//            [self.moreEditBar setTintColor:[UIColor blueColor]];
-//        }
-//        [self.view addSubview:self.moreEditBar];
-//        //发送 删除 提交 移动 全选
-//        UIButton *btn_download ,*btn_resave;
-//        UIBarButtonItem  *item_download, *item_resave,*item_flexible;
-//        
-//        btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    if (!self.moreEditBar) {
+        self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height-49)-self.view.frame.origin.y, 320, 49)];
+        [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+        if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+            [self.moreEditBar setBarTintColor:[UIColor blueColor]];
+        }else
+        {
+            [self.moreEditBar setTintColor:[UIColor blueColor]];
+        }
+        [self.view addSubview:self.moreEditBar];
+        //发送 删除 提交 移动 全选
+        UIButton *btn_download ,*btn_resave;
+        UIBarButtonItem  *item_download, *item_resave,*item_flexible;
+        
+        btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 134, 35)];
 //        [btn_resave setImage:[UIImage imageNamed:@"zc_nor.png"] forState:UIControlStateNormal];
 //        [btn_resave setImage:[UIImage imageNamed:@"zc_se.png"] forState:UIControlStateHighlighted];
-//        [btn_resave addTarget:self action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
-//        item_resave=[[UIBarButtonItem alloc] initWithCustomView:btn_resave];
-//        
-//        btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        [btn_resave setBackgroundImage:[UIImage imageNamed:@"oper_bt_nor.png"] forState:UIControlStateNormal];
+        [btn_resave setBackgroundImage:[UIImage imageNamed:@"oper_bt_se.png"] forState:UIControlStateHighlighted];
+        [btn_resave setTitle:@"转存" forState:UIControlStateNormal];
+        [btn_resave addTarget:self action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
+        item_resave=[[UIBarButtonItem alloc] initWithCustomView:btn_resave];
+        
+        btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 134, 35)];
 //        [btn_download setImage:[UIImage imageNamed:@"download_nor.png"] forState:UIControlStateNormal];
 //        [btn_download setImage:[UIImage imageNamed:@"download_se.png"] forState:UIControlStateHighlighted];
-//        [btn_download addTarget:self action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
-//        item_download=[[UIBarButtonItem alloc] initWithCustomView:btn_download];
-//        
-//        item_flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//
-//        [self.moreEditBar setItems:@[item_flexible,item_download,item_flexible,item_resave,item_flexible]];
-//
-//    }
-//    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
-//        //self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
-//        self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
-//    }
+        [btn_download setBackgroundImage:[UIImage imageNamed:@"oper_bt_nor.png"] forState:UIControlStateNormal];
+        [btn_download setBackgroundImage:[UIImage imageNamed:@"oper_bt_se.png"] forState:UIControlStateHighlighted];
+        [btn_download setTitle:@"下载" forState:UIControlStateNormal];
+        [btn_download addTarget:self action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
+        item_download=[[UIBarButtonItem alloc] initWithCustomView:btn_download];
+        
+        item_flexible=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+        [self.moreEditBar setItems:@[item_flexible,item_download,item_flexible,item_resave,item_flexible]];
+
+    }
+    if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
+        //self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
+        self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
+    }
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -567,16 +573,16 @@
 {
     if (!self.footerView) {
         UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-        UIButton *download_button=[[UIButton alloc] initWithFrame:CGRectMake(40, 33, 100, 34)];
-        [download_button setImage:[UIImage imageNamed:@"send_download_nor.png"] forState:UIControlStateNormal];
-        [download_button setImage:[UIImage imageNamed:@"send_download_se.png"] forState:UIControlStateHighlighted];
-        [download_button addTarget:self  action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
-        UIButton *resave_button=[[UIButton alloc] initWithFrame:CGRectMake(180, 33, 100, 34)];
-        [resave_button setImage:[UIImage imageNamed:@"send_zc_nor.png"] forState:UIControlStateNormal];
-        [resave_button setImage:[UIImage imageNamed:@"send_zc_se.png"] forState:UIControlStateHighlighted];
-        [resave_button addTarget:self  action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
-        [view addSubview:download_button];
-        [view addSubview:resave_button];
+//        UIButton *download_button=[[UIButton alloc] initWithFrame:CGRectMake(40, 33, 100, 34)];
+//        [download_button setImage:[UIImage imageNamed:@"send_download_nor.png"] forState:UIControlStateNormal];
+//        [download_button setImage:[UIImage imageNamed:@"send_download_se.png"] forState:UIControlStateHighlighted];
+//        [download_button addTarget:self  action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
+//        UIButton *resave_button=[[UIButton alloc] initWithFrame:CGRectMake(180, 33, 100, 34)];
+//        [resave_button setImage:[UIImage imageNamed:@"send_zc_nor.png"] forState:UIControlStateNormal];
+//        [resave_button setImage:[UIImage imageNamed:@"send_zc_se.png"] forState:UIControlStateHighlighted];
+//        [resave_button addTarget:self  action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
+//        [view addSubview:download_button];
+//        [view addSubview:resave_button];
         self.footerView=view;
     }
     
