@@ -150,7 +150,21 @@
         }
         down.sudu = (int)sudu;
     }
-    [self updateTable];
+    [self updateView];
+}
+
+-(void)updateView
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            //更新UI
+            [uploadView updateCurrTableViewCell];
+        }
+    });
 }
 
 -(void)didFailWithError
@@ -163,7 +177,14 @@
 //上传失败
 -(void)upError
 {
-    
+    if([downingArray count]>0 && isOpenedDown)
+    {
+        DownList *list = [downingArray objectAtIndex:0];
+        [list deleteDownList];
+        [downingArray removeObjectAtIndex:0];
+        [self updateTable];
+    }
+    [self startDown];
 }
 //服务器异常
 -(void)webServiceFail
@@ -250,6 +271,7 @@
     {
         [self.file cancelDownload];
     }
+    isOpenedDown = FALSE;
     isStart = FALSE;
     [self updateTable];
 }
@@ -258,9 +280,16 @@
 {
     if([downingArray count]>selectIndex)
     {
-        DownList *list = [downingArray objectAtIndex:selectIndex];
-        [list deleteDownList];
-        [downingArray removeObjectAtIndex:selectIndex];
+        if(selectIndex==0 && self.file)
+        {
+            [self.file cancelDownload];
+        }
+        else
+        {
+            DownList *list = [downingArray objectAtIndex:selectIndex];
+            [list deleteDownList];
+            [downingArray removeObjectAtIndex:selectIndex];
+        }
     }
 }
 

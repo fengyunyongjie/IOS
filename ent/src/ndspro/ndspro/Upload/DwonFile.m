@@ -89,6 +89,7 @@
     {
         [imageConnection cancel];
         DDLogCInfo(@"暂停下载");
+        [delegate upError];
     }
     DDLogInfo(@"下载的大小:%i",[data length]);
     downsize += [data length];
