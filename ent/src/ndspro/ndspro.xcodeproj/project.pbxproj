@@ -15,6 +15,8 @@
 		290C79FF1804E16900EF4A32 /* SCBEmailManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 290C79FE1804E16900EF4A32 /* SCBEmailManager.m */; };
 		290C7A041804F3FF00EF4A32 /* EmailListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290C7A021804F3FF00EF4A32 /* EmailListViewController.m */; };
 		290C7A051804F3FF00EF4A32 /* EmailListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 290C7A031804F3FF00EF4A32 /* EmailListViewController.xib */; };
+		290E5D99181923F2008236E4 /* MusicPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290E5D98181923F2008236E4 /* MusicPlayerViewController.m */; };
+		290E5D9C1819272F008236E4 /* nothing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 290E5D9B1819272F008236E4 /* nothing.mp3 */; };
 		291CCB3617F27F99005C029C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3517F27F99005C029C /* Foundation.framework */; };
 		291CCB3817F27F99005C029C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3717F27F99005C029C /* CoreGraphics.framework */; };
 		291CCB3A17F27F99005C029C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3917F27F99005C029C /* UIKit.framework */; };
@@ -252,6 +254,9 @@
 		290C7A011804F3FF00EF4A32 /* EmailListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailListViewController.h; sourceTree = "<group>"; };
 		290C7A021804F3FF00EF4A32 /* EmailListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailListViewController.m; sourceTree = "<group>"; };
 		290C7A031804F3FF00EF4A32 /* EmailListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailListViewController.xib; sourceTree = "<group>"; };
+		290E5D97181923F2008236E4 /* MusicPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayerViewController.h; sourceTree = "<group>"; };
+		290E5D98181923F2008236E4 /* MusicPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicPlayerViewController.m; sourceTree = "<group>"; };
+		290E5D9B1819272F008236E4 /* nothing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = nothing.mp3; sourceTree = "<group>"; };
 		291CCB3217F27F99005C029C /* ndspro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ndspro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		291CCB3517F27F99005C029C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		291CCB3717F27F99005C029C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -600,6 +605,14 @@
 			name = Email;
 			sourceTree = "<group>";
 		};
+		290E5D9A1819272F008236E4 /* Mp3 */ = {
+			isa = PBXGroup;
+			children = (
+				290E5D9B1819272F008236E4 /* nothing.mp3 */,
+			);
+			path = Mp3;
+			sourceTree = "<group>";
+		};
 		291CCB2917F27F99005C029C = {
 			isa = PBXGroup;
 			children = (
@@ -666,6 +679,7 @@
 		291CCB3C17F27F99005C029C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				290E5D9A1819272F008236E4 /* Mp3 */,
 				29B561DD1814CC190018D1FF /* logo1_120.png */,
 				291CCBCD17F3CD34005C029C /* PConfig.h */,
 				291CCB3D17F27F99005C029C /* ndspro-Info.plist */,
@@ -1075,6 +1089,8 @@
 				29FE579A1808D66E0068DE48 /* UploadFile.m */,
 				29FE579B1808D66E0068DE48 /* UploadManager.h */,
 				29FE579C1808D66E0068DE48 /* UploadManager.m */,
+				290E5D97181923F2008236E4 /* MusicPlayerViewController.h */,
+				290E5D98181923F2008236E4 /* MusicPlayerViewController.m */,
 			);
 			path = Upload;
 			sourceTree = "<group>";
@@ -1240,6 +1256,7 @@
 				29DF3B63180BE0FC003FEE3B /* lock_bt_num1_se@2x.png in Resources */,
 				29B2AE39180F7E1A002D9D1B /* blueArrow.png in Resources */,
 				29DF3B53180BE0FC003FEE3B /* Bk_Start.png in Resources */,
+				290E5D9C1819272F008236E4 /* nothing.mp3 in Resources */,
 				29B2AE24180E8CC9002D9D1B /* bk_select@2x.png in Resources */,
 				29B2AE18180E64A5002D9D1B /* mail_readed@2x.png in Resources */,
 				29DF3B65180BE0FC003FEE3B /* lock_forget_nor@2x.png in Resources */,
@@ -1404,6 +1421,7 @@
 				291CCBC017F3C40A005C029C /* SCBLinkManager.m in Sources */,
 				29FE57681808D3210068DE48 /* DDAbstractDatabaseLogger.m in Sources */,
 				291CCBCC17F3CD17005C029C /* YNFunctions.m in Sources */,
+				290E5D99181923F2008236E4 /* MusicPlayerViewController.m in Sources */,
 				29FE57C41808D7380068DE48 /* DownList.m in Sources */,
 				29FE57701808D3210068DE48 /* NSString+Format.m in Sources */,
 				29FE57C51808D7380068DE48 /* PhotoFile.m in Sources */,

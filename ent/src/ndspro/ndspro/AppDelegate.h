@@ -7,6 +7,7 @@
 //
 #import "DownManager.h"
 #import "UploadManager.h"
+#import "MusicPlayerViewController.h"
 
 #define TabBarHeight 60
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
@@ -21,6 +22,7 @@
 @property (strong, nonatomic) DownManager *downmange;
 @property (strong, nonatomic) UploadManager *uploadmanage;
 @property (assign, nonatomic) BOOL isStopUpload;
+@property (nonatomic,strong) MusicPlayerViewController *musicPlayer;
 
 -(void)finishLogin;
 -(void)finishLogout;

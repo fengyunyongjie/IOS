@@ -29,9 +29,9 @@
 {
     if(bl)
     {
-        [self.left_button.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+        [self.left_button.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
         [self.left_botton_image setHidden:NO];
-        [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
+        [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:16]];
         [self.right_botton_image setHidden:YES];
         [UIView animateWithDuration:0.3 animations:^{
             CGRect boderRect = CGRectMake(0, self.frame.size.height-2, 160, 2);
@@ -40,9 +40,9 @@
     }
     else
     {
-        [self.left_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
+        [self.left_button.titleLabel setFont:[UIFont systemFontOfSize:16]];
         [self.left_botton_image setHidden:YES];
-        [self.right_button.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+        [self.right_button.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
         [self.right_botton_image setHidden:NO];
         [UIView animateWithDuration:0.3 animations:^{
             CGRect boderRect = CGRectMake(160, self.frame.size.height-2, 160, 2);
@@ -64,7 +64,7 @@
         
         self.left_button = [[UIButton alloc] initWithFrame:left_baceRect];
         [self.left_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.left_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
+        [self.left_button.titleLabel setFont:[UIFont systemFontOfSize:16]];
         [self.left_button setBackgroundColor:[UIColor clearColor]];
         [self addSubview:self.left_button];
         
@@ -80,7 +80,7 @@
         
         self.right_button = [[UIButton alloc] initWithFrame:right_baceRect];
         [self.right_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:18]];
+        [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:16]];
         [self.right_button setBackgroundColor:[UIColor clearColor]];
         [self addSubview:self.right_button];
         
@@ -89,9 +89,9 @@
         [self.right_botton_image setHidden:YES];
         [self addSubview:self.right_botton_image];
         
-        CGRect boderRect = CGRectMake(0, rect.size.height-2, 160, 2);
+        CGRect boderRect = CGRectMake(0, rect.size.height-2, 160, 6);
         self.boderImageView = [[UIImageView alloc] initWithFrame:boderRect];
-        [self.boderImageView setBackgroundColor:[UIColor blueColor]];
+        [self.boderImageView setBackgroundColor:[UIColor colorWithRed:54.0/255.0 green:116.0/255.0 blue:176.0/255.0 alpha:1.0]];
         [self addSubview:self.boderImageView];
     }
 }

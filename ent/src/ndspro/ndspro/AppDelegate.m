@@ -19,7 +19,7 @@
 #import "YNFunctions.h"
 
 @implementation AppDelegate
-@synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload;
+@synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload,musicPlayer;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -29,7 +29,7 @@
     UIApplication *app = [UIApplication sharedApplication];
     app.applicationIconBadgeNumber = [uploadmanage.uploadArray count];
     
-    DBSqlite3 *sql = [[DBSqlite3 alloc] init];
+    [[DBSqlite3 alloc] init];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
@@ -71,6 +71,9 @@
         [[WelcomeViewController sharedUser] showWelCome];
         [[NSUserDefaults standardUserDefaults] setObject:VERSION forKey:VERSION];
     }
+    //设置背景音乐
+    musicPlayer = [[MusicPlayerViewController alloc] init];
+    
     return YES;
 }
 
@@ -83,6 +86,7 @@
 }
 
 -(void)applicationWillEnterForeground:(UIApplication *)application {
+    [musicPlayer stopPlay];
 	if ([LTHPasscodeViewController passcodeExistsInKeychain] && [LTHPasscodeViewController didPasscodeTimerEnd]) {
 		[[LTHPasscodeViewController sharedUser] showLockscreen];
 	}
@@ -110,8 +114,14 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    if(self.downmange.isStart || self.uploadmanage.isStart)
+    {
+        [musicPlayer startPlay];
+    }
+    else
+    {
+        [musicPlayer stopPlay];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
