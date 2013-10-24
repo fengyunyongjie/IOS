@@ -559,8 +559,8 @@
         [view addSubview:bgView];
         UIButton *on_off_btn=[[UIButton alloc] initWithFrame:CGRectMake(320-50,100-21,50,21)];
         [on_off_btn setTitle:@"展开" forState:UIControlStateNormal];
-        [on_off_btn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [on_off_btn.titleLabel setFont:[UIFont systemFontOfSize:15]];
+        [on_off_btn setTitleColor:[UIColor colorWithRed:79/255.0f green:102/255.0f blue:139/255.0f alpha:1] forState:UIControlStateNormal];
+        [on_off_btn.titleLabel setFont:[UIFont boldSystemFontOfSize:14]];
         [on_off_btn addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:on_off_btn];
         self.switchButton=on_off_btn;
