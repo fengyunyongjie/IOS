@@ -218,9 +218,6 @@
     if (self.tableView.isEditing) {
         NSArray *selectArray=[self selectedIndexPaths];
         for (NSIndexPath *indexPath in selectArray) {
-            if (indexPath.section!=5) {
-                continue;
-            }
             NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
             
             long fsize=[[dic objectForKey:@"fsize"] longValue];
@@ -244,9 +241,6 @@
             }
         }
         for (NSIndexPath *indexPath in selectArray) {
-            if (indexPath.section!=5) {
-                continue;
-            }
             NSDictionary *dic=[self.fileArray objectAtIndex:indexPath.row];
             NSString *file_id = [NSString formatNSStringForOjbect:[dic objectForKey:@"fid"]];
             NSString *thumb = [NSString formatNSStringForOjbect:[dic objectForKey:@"fthumb"]];
