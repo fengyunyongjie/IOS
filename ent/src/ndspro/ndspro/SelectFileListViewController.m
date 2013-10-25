@@ -18,7 +18,16 @@
 @end
 
 @implementation SelectFileListViewController
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
 
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return NO;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -83,7 +92,7 @@
         UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
         temporaryBarButtonItem.title = @"";
         self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
-    }else
+    }else if(self.f_id.intValue!=0)
     {
         self.navigationItem.leftBarButtonItem = backItem;
     }

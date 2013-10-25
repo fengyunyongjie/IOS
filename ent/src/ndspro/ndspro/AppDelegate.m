@@ -69,7 +69,7 @@
     NSString *vinfo=[[NSUserDefaults standardUserDefaults]objectForKey:VERSION];
     if (!vinfo) {
         [[WelcomeViewController sharedUser] showWelCome];
-        [[NSUserDefaults standardUserDefaults] setObject:VERSION forKey:VERSION];
+//        [[NSUserDefaults standardUserDefaults] setObject:VERSION forKey:VERSION];
     }
     //设置背景音乐
     musicPlayer = [[MusicPlayerViewController alloc] init];
