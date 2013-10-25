@@ -332,7 +332,8 @@ enum{
     [self.tableView setEditing:!self.tableView.editing animated:YES];
     BOOL isHideTabBar=self.tableView.editing;
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(isHideTabBar)
+    UIApplication *app = [UIApplication sharedApplication];
+    if(isHideTabBar || app.applicationIconBadgeNumber==0)
     {
         [appleDate.myTabBarVC.imageView setHidden:YES];
     }

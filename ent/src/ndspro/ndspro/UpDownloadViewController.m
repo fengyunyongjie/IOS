@@ -39,6 +39,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UISwipeGestureRecognizer *recognizer;
+    
+    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(rightSwipeFrom)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [[self view] addGestureRecognizer:recognizer];
+    recognizer = nil;
+    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(leftSwipeFrom)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+    [[self view] addGestureRecognizer:recognizer];
     UIButton*rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,40,40)];
     [rightButton setImage:[UIImage imageNamed:@"title_more.png"] forState:UIControlStateNormal];
     [rightButton setBackgroundImage:[UIImage imageNamed:@"title_bk.png"] forState:UIControlStateHighlighted];
@@ -52,27 +61,27 @@
     [self.customSelectButton setDelegate:self];
     [self.customSelectButton setBackgroundColor:[UIColor lightGrayColor]];
     [self.view addSubview:self.customSelectButton];
-    
-    UISwipeGestureRecognizer *recognizer;
-    
-    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(rightSwipeFrom)];
-    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
-    [[self view] addGestureRecognizer:recognizer];
-    recognizer = nil;
-    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(leftSwipeFrom)];
-    [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
-    [[self view] addGestureRecognizer:recognizer];
-    
-    //加载列表
-    CGRect table_rect = CGRectMake(0, customRect.origin.y+customRect.size.height, 320, self.view.frame.size.height-(customRect.origin.y+customRect.size.height)-UpTabBarHeight);
+    CGRect table_rect = CGRectMake(0, customRect.origin.y+customRect.size.height, 320, self.view.frame.size.height-(customRect.origin.y+customRect.size.height)-TabBarHeight+10);
     if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
     {
-        table_rect.size.height = table_rect.size.height+20;
+        table_rect.size.height = table_rect.size.height+TabBarHeight-10;
     }
     self.table_view = [[UITableView alloc] initWithFrame:table_rect];
     self.table_view.delegate = self;
     self.table_view.dataSource = self;
     [self.view addSubview:self.table_view];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    //加载列表
+    CGRect customRect = self.customSelectButton.frame;
+    CGRect table_rect = CGRectMake(0, customRect.origin.y+customRect.size.height, 320, self.view.frame.size.height-(customRect.origin.y+customRect.size.height)-TabBarHeight+10);
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        table_rect.size.height = table_rect.size.height+TabBarHeight-10;
+    }
+    [self.table_view setFrame:table_rect];
 }
 
 -(void)menuAction:(id)sender
@@ -106,6 +115,8 @@
     {
         [self.menuView setHidden:!self.menuView.hidden];
     }
+    
+    DDLogCInfo(@"self.menuView.hidden:%i",self.menuView.hidden);
     
     AppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
@@ -151,7 +162,8 @@
     BOOL isHideTabBar=self.table_view.editing;
     
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(isHideTabBar)
+    UIApplication *app = [UIApplication sharedApplication];
+    if(isHideTabBar || app.applicationIconBadgeNumber==0)
     {
         [appleDate.myTabBarVC.imageView setHidden:YES];
     }
@@ -536,9 +548,11 @@
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [delegate.downmange updateLoad];
     [delegate.uploadmanage updateLoad];
+    
     UIApplication *app = [UIApplication sharedApplication];
     app.applicationIconBadgeNumber = [delegate.uploadmanage.uploadArray count]+[delegate.downmange.downingArray count];
     [delegate.myTabBarVC addUploadNumber:app.applicationIconBadgeNumber];
+    
     NSString *leftTitle;
     if([upLoading_array count]>0)
     {
@@ -1198,7 +1212,8 @@
 -(void)hiddenTabBar:(BOOL)isHideTabBar
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(isHideTabBar)
+    UIApplication *app = [UIApplication sharedApplication];
+    if(isHideTabBar || app.applicationIconBadgeNumber==0)
     {
         [appleDate.myTabBarVC.imageView setHidden:YES];
     }

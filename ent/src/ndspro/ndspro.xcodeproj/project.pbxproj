@@ -185,7 +185,6 @@
 		29DF3B8F180BE0FC003FEE3B /* zc_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B4E180BE0FC003FEE3B /* zc_se@2x.png */; };
 		29DF3B93180BEEE2003FEE3B /* title_bk_ti@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29DF3B92180BEEE2003FEE3B /* title_bk_ti@2x.png */; };
 		29FDD8D8180C033000FFC558 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FDD8D7180C033000FFC558 /* Reachability.m */; };
-		29FDD8E8180C035000FFC558 /* Bk_naBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DA180C035000FFC558 /* Bk_naBottom.png */; };
 		29FDD8EA180C035000FFC558 /* Bk_Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DC180C035000FFC558 /* Bk_Title.png */; };
 		29FDD8EB180C035000FFC558 /* Bt_Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DD180C035000FFC558 /* Bt_Back.png */; };
 		29FDD8EC180C035000FFC558 /* Bt_Cancle.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FDD8DE180C035000FFC558 /* Bt_Cancle.png */; };
@@ -471,7 +470,6 @@
 		29DF3B92180BEEE2003FEE3B /* title_bk_ti@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_bk_ti@2x.png"; sourceTree = "<group>"; };
 		29FDD8D6180C033000FFC558 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		29FDD8D7180C033000FFC558 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		29FDD8DA180C035000FFC558 /* Bk_naBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_naBottom.png; sourceTree = "<group>"; };
 		29FDD8DC180C035000FFC558 /* Bk_Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Title.png; sourceTree = "<group>"; };
 		29FDD8DD180C035000FFC558 /* Bt_Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Back.png; sourceTree = "<group>"; };
 		29FDD8DE180C035000FFC558 /* Bt_Cancle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bt_Cancle.png; sourceTree = "<group>"; };
@@ -1041,7 +1039,6 @@
 		29FDD8D9180C035000FFC558 /* image */ = {
 			isa = PBXGroup;
 			children = (
-				29FDD8DA180C035000FFC558 /* Bk_naBottom.png */,
 				29FDD8DC180C035000FFC558 /* Bk_Title.png */,
 				29FDD8DD180C035000FFC558 /* Bt_Back.png */,
 				29FDD8DE180C035000FFC558 /* Bt_Cancle.png */,
@@ -1292,7 +1289,6 @@
 				299BBED5181920C60035167A /* guide_gray.png in Resources */,
 				29B561E818166D600018D1FF /* set_bk_2@2x.png in Resources */,
 				29DF3B80180BE0FC003FEE3B /* title_bt_edit_se@2x.png in Resources */,
-				29FDD8E8180C035000FFC558 /* Bk_naBottom.png in Resources */,
 				29DF3B58180BE0FC003FEE3B /* del_se@2x.png in Resources */,
 				29DF3B57180BE0FC003FEE3B /* del_nor@2x.png in Resources */,
 				29DF3B6D180BE0FC003FEE3B /* nav_file_se@2x.png in Resources */,

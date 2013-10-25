@@ -94,6 +94,41 @@ typedef enum{
         self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-49-64);
     }
     
+    BOOL isHideTabBar = NO;
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    UIApplication *app = [UIApplication sharedApplication];
+    if(isHideTabBar || app.applicationIconBadgeNumber==0)
+    {
+        [appleDate.myTabBarVC.imageView setHidden:YES];
+    }
+    else
+    {
+        [appleDate.myTabBarVC.imageView setHidden:NO];
+    }
+    //isHideTabBar=!isHideTabBar;
+    for(UIView *view in self.tabBarController.view.subviews)
+    {
+        if([view isKindOfClass:[UITabBar class]])
+        {
+            if (isHideTabBar) { //if hidden tabBar
+                [view setFrame:CGRectMake(view.frame.origin.x,[[UIScreen mainScreen]bounds].size.height, view.frame.size.width, view.frame.size.height)];
+            }else {
+                NSLog(@"isHideTabBar %@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, [[UIScreen mainScreen]bounds].size.height-49, view.frame.size.width, view.frame.size.height)];
+            }
+        }else
+        {
+            if (isHideTabBar) {
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, [[UIScreen mainScreen]bounds].size.height)];
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+            }else {
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width,[[UIScreen mainScreen]bounds].size.height-49)];
+            }
+        }
+    }
+    
     NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
     NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
     
@@ -296,9 +331,10 @@ typedef enum{
     imagePickerController.f_name = self.title;
     imagePickerController.space_id = self.spid;
     [imagePickerController requestFileDetail];
-    CustomViewController *navigation=[[CustomViewController alloc] initWithRootViewController:imagePickerController];
-    [navigation setNavigationBarHidden:YES];
-    [self presentModalViewController:navigation animated:YES];
+//    CustomViewController *navigation=[[CustomViewController alloc] initWithRootViewController:imagePickerController];
+//    [navigation setNavigationBarHidden:YES];
+//    [self presentModalViewController:navigation animated:YES];
+    [self.navigationController pushViewController:imagePickerController animated:YES];
 }
 
 -(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
@@ -399,7 +435,8 @@ typedef enum{
     [self.tableView setEditing:!self.tableView.editing animated:YES];
     BOOL isHideTabBar=self.tableView.editing;
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(isHideTabBar)
+    UIApplication *app = [UIApplication sharedApplication];
+    if(isHideTabBar || app.applicationIconBadgeNumber==0)
     {
         [appleDate.myTabBarVC.imageView setHidden:YES];
     }
@@ -1217,6 +1254,7 @@ typedef enum{
                             }
                             list.d_name = [NSString formatNSStringForOjbect:[diction objectForKey:@"fname"]];
                             list.d_baseUrl = [NSString get_image_save_file_path:list.d_name];
+                            
                             [tableArray addObject:list];
                             if(row==0 && [fname isEqualToString:fname_])
                             {
@@ -1229,6 +1267,12 @@ typedef enum{
                         PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
                         [look setCurrPage:row];
                         [look setTableArray:tableArray];
+                        if ([self.roletype isEqualToString:@"9999"] || [self.roletype isEqualToString:@"0"]) {
+                             look.isHaveDelete = YES;
+                        }else if ([self.roletype isEqualToString:@"1"] || [self.roletype isEqualToString:@"2"])
+                        {
+                            look.isHaveDelete = NO;
+                        }
                         [self presentModalViewController:look animated:YES];
                     }
                 }

@@ -9,7 +9,7 @@
  */
 #define QBY 20
 #define TabBarHeight 60
-#define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
+#define TableViewHeight (self.view.frame.size.height-TabBarHeight+10)
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
 #define BottonViewHeight self.view.frame.size.height-TabBarHeight
@@ -18,6 +18,9 @@
 #import "QBImagePickerGroupCell.h"
 #import "QBAssetCollectionViewController.h"
 #import "AppDelegate.h"
+#import "YNFunctions.h"
+#import "MyTabBarViewController.h"
+
 @interface QBImagePickerController ()
 
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
@@ -59,9 +62,9 @@
         [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
         
         /* Initialization */
-        self.title = @"Photos";
+        self.title = @"选择相册";
         self.filterType = QBImagePickerFilterTypeAllAssets;
-        self.showsCancelButton = YES;
+        self.showsCancelButton = NO;
         self.fullScreenLayoutEnabled = YES;
         
         self.allowsMultipleSelection = NO;
@@ -76,7 +79,7 @@
         self.assetsGroups = [NSMutableArray array];
         
         // Table View
-        CGRect rect = CGRectMake(0, 44+QBY, 320, TableViewHeight);
+        CGRect rect = CGRectMake(0, 0, 320, TableViewHeight);
         UITableView *tableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
         tableView.dataSource = self;
         tableView.delegate = self;
@@ -152,80 +155,57 @@
     // Faces
     [self.assetsLibrary enumerateGroupsWithTypes:ALAssetsGroupFaces usingBlock:assetsGroupsEnumerationBlock failureBlock:assetsGroupsFailureBlock];
     
-    //添加头部试图
-    topView = [[UIView alloc] initWithFrame:CGRectMake(0, QBY, 320, 44)];
-    UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    [images setImage:[UIImage imageNamed:@"Bk_Title.png"]];
-    [topView addSubview:images];
-    isNeedBackButton = YES;
-    //把色值转换成图片
-    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
-    UIGraphicsBeginImageContext(rect_image.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context,
-                                   [hilighted_color CGColor]);
-    CGContextFillRect(context, rect_image);
-    UIImage * imge = [[UIImage alloc] init];
-    imge = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    //返回按钮
-    if(isNeedBackButton)
+    //初始化返回按钮
+    UIButton*backButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,35,29)];
+    [backButton setImage:[UIImage imageNamed:@"title_back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
+        temporaryBarButtonItem.title = @"";
+        self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
+    }else
     {
-        UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
-        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
-        [back_button addTarget:self action:@selector(clicked_back) forControlEvents:UIControlEventTouchUpInside];
-        [back_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-        [back_button setImage:back_image forState:UIControlStateNormal];
-        [topView addSubview:back_button];
+        self.navigationItem.leftBarButtonItem = backItem;
     }
-    
-    //选项卡栏目
-    UIButton *phoot_button = [[UIButton alloc] init];
-    [phoot_button setTag:23];
-    [phoot_button setFrame:CGRectMake((320-ChangeTabWidth)/2, 0, ChangeTabWidth, 44)];
-    [phoot_button setTitle:@"选择相册" forState:UIControlStateNormal];
-    [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    //    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
-    [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-    [topView addSubview:phoot_button];
-    
-    
-    //更多按钮
-    UIButton *more_button = [[UIButton alloc] initWithFrame:CGRectMake(320-RightButtonBoderWidth-40, 0, 40, 44)];
-    [more_button setTitle:@"全选" forState:UIControlStateNormal];
-    [more_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [more_button addTarget:self action:@selector(clicked_more:) forControlEvents:UIControlEventTouchDown];
-    [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-    [more_button.titleLabel setFont:[UIFont systemFontOfSize:12]];
-    [topView addSubview:more_button];
-    [more_button setHidden:YES];
-    [self.view addSubview:topView];
-    
-    //添加底部视图
-    DDLogCInfo(@"BottonViewHeight:%f",BottonViewHeight);
-    float bottonHeigth = BottonViewHeight;
-    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
-    {
-        bottonHeigth = bottonHeigth+QBY;
-    }
-    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, bottonHeigth, 320, 60)];
-    UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
-    [botton_image setImage:[UIImage imageNamed:@"bk_nav.png"]];
-    [bottonView addSubview:botton_image];
-    
-    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
-    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOk.png"] forState:UIControlStateNormal];
-    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOkCh.png"] forState:UIControlStateHighlighted];
-    [upload_button addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
-    [bottonView addSubview:upload_button];
-    
-    UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, (TabBarHeight-29)/2, 29, 29)];
-    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
-    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
-    [upload_back_button addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
-    [bottonView addSubview:upload_back_button];
+}
 
-    [self.view addSubview:bottonView];
+-(void)hiddenTabBar:(BOOL)isHideTabBar
+{
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    UIApplication *app = [UIApplication sharedApplication];
+    if(isHideTabBar || app.applicationIconBadgeNumber==0)
+    {
+        [appleDate.myTabBarVC.imageView setHidden:YES];
+    }
+    else
+    {
+        [appleDate.myTabBarVC.imageView setHidden:NO];
+    }
+    
+    for(UIView *view in self.tabBarController.view.subviews)
+    {
+        if([view isKindOfClass:[UITabBar class]])
+        {
+            if (isHideTabBar) { //if hidden tabBar
+                [view setFrame:CGRectMake(view.frame.origin.x,[[UIScreen mainScreen]bounds].size.height+2, view.frame.size.width, view.frame.size.height)];
+            }else {
+                NSLog(@"isHideTabBar %@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, [[UIScreen mainScreen]bounds].size.height-49, view.frame.size.width, view.frame.size.height)];
+            }
+        }else
+        {
+            if (isHideTabBar) {
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, [[UIScreen mainScreen]bounds].size.height)];
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+            }else {
+                NSLog(@"%@",NSStringFromCGRect(view.frame));
+                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width,[[UIScreen mainScreen]bounds].size.height-49)];
+            }
+        }
+    }
 }
 
 #pragma mark SCBPhotoManagerDelegate
@@ -257,15 +237,11 @@
     //请求所有的数据文件
 //    [self dismissModalViewControllerAnimated:YES];
     [self.navigationController popViewControllerAnimated:YES];
-    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
 
 -(void)clicked_uploadStop:(id)sender
 {
     [self dismissModalViewControllerAnimated:YES];
-    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    [appleDate.myTabBarController setHidesTabBarWithAnimate:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -302,7 +278,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+    [self hiddenTabBar:YES];
     // Flash scroll indicators
     [self.tableView flashScrollIndicators];
 }

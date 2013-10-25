@@ -41,6 +41,7 @@
 @property(nonatomic,assign) BOOL isChangeMove;
 @property(nonatomic,assign) NSString *space_id;
 @property(nonatomic,retain) SCBFileManager *fileManager;
+@property (strong,nonatomic) UIToolbar *moreEditBar;
 
 @end
 

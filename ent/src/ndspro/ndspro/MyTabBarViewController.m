@@ -127,10 +127,10 @@
     if(count>0)
     {
         [label setText:[NSString stringWithFormat:@"%i",count]];
-        [imageView setHidden:NO];
     }
     else
     {
+        [label setText:@""];
         [imageView setHidden:YES];
     }
 }

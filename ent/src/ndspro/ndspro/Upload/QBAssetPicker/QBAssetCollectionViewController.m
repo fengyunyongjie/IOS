@@ -20,11 +20,12 @@
 #import "QBImageFileViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CustomViewController.h"
+#import "YNFunctions.h"
 
 #define QBY 20
 #define TabBarHeight 88
 #define TabBarButtonHeight TabBarHeight-45
-#define TableViewHeight (self.view.frame.size.height-TabBarHeight-44-QBY)
+#define TableViewHeight (self.view.frame.size.height-TabBarHeight)
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
@@ -47,7 +48,7 @@
 @end
 
 @implementation QBAssetCollectionViewController
-@synthesize isNeedBackButton,device_name,f_id,space_id;
+@synthesize isNeedBackButton,device_name,f_id,space_id,moreEditBar;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,7 +62,7 @@
         self.imageSize = CGSizeMake(75, 75);
         
         // Table View
-        CGRect rect = CGRectMake(0, 44+QBY, 320, TableViewHeight);
+        CGRect rect = CGRectMake(0, 0, 320, TableViewHeight);
         UITableView *tableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
         tableView.dataSource = self;
         tableView.delegate = self;
@@ -79,98 +80,162 @@
 -(void)viewDidLoad
 {
     //添加头部试图
-    topView = [[UIView alloc] initWithFrame:CGRectMake(0, QBY, 320, 44)];
-    UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    [images setImage:[UIImage imageNamed:@"Bk_Title.png"]];
-    [topView addSubview:images];
-    isNeedBackButton = YES;
+//    topView = [[UIView alloc] initWithFrame:CGRectMake(0, QBY, 320, 44)];
+//    UIImageView *images = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+//    [images setImage:[UIImage imageNamed:@"Bk_Title.png"]];
+//    [topView addSubview:images];
+//    isNeedBackButton = YES;
     //把色值转换成图片
-    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
-    UIGraphicsBeginImageContext(rect_image.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetFillColorWithColor(context,
-                                   [hilighted_color CGColor]);
-    CGContextFillRect(context, rect_image);
-    UIImage * imge = [[UIImage alloc] init];
-    imge = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    //返回按钮
-    if(isNeedBackButton)
-    {
-        //添加背景
-        UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
-        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
-        [back_button addTarget:self action:@selector(clicked_back) forControlEvents:UIControlEventTouchUpInside];
-        [back_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-        [back_button setImage:back_image forState:UIControlStateNormal];
-        [topView addSubview:back_button];
-    }
+//    CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
+//    UIGraphicsBeginImageContext(rect_image.size);
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    CGContextSetFillColorWithColor(context,
+//                                   [hilighted_color CGColor]);
+//    CGContextFillRect(context, rect_image);
+//    UIImage * imge = [[UIImage alloc] init];
+//    imge = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    //返回按钮
+//    if(isNeedBackButton)
+//    {
+//        //添加背景
+//        UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
+//        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
+//        [back_button addTarget:self action:@selector(clicked_back) forControlEvents:UIControlEventTouchUpInside];
+//        [back_button setBackgroundImage:imge forState:UIControlStateHighlighted];
+//        [back_button setImage:back_image forState:UIControlStateNormal];
+//        [topView addSubview:back_button];
+//    }
     
     
-    //选项卡栏目
-    UIButton *phoot_button = [[UIButton alloc] init];
-    [phoot_button setTag:23];
-    [phoot_button setFrame:CGRectMake((320-ChangeTabWidth)/2, 0, ChangeTabWidth, 44)];
-    [phoot_button setTitle:@"文件上传" forState:UIControlStateNormal];
-    [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    //选项卡栏目
+//    UIButton *phoot_button = [[UIButton alloc] init];
+//    [phoot_button setTag:23];
+//    [phoot_button setFrame:CGRectMake((320-ChangeTabWidth)/2, 0, ChangeTabWidth, 44)];
+//    [phoot_button setTitle:@"文件上传" forState:UIControlStateNormal];
+//    [phoot_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 //    [phoot_button addTarget:self action:@selector(clicked_uploadState:) forControlEvents:UIControlEventTouchDown];
 //    [phoot_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-    [topView addSubview:phoot_button];
+//    [topView addSubview:phoot_button];
     
+    
+//    UIButton*rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,40,40)];
+//    [rightButton setImage:[UIImage imageNamed:@"title_more.png"] forState:UIControlStateNormal];
+//    [rightButton setBackgroundImage:[UIImage imageNamed:@"title_bk.png"] forState:UIControlStateHighlighted];
+//    [rightButton addTarget:self action:@selector(menuAction:) forControlEvents:UIControlEventTouchUpInside];
     
     //更多按钮
-    UIButton *more_button = [[UIButton alloc] initWithFrame:CGRectMake(320-RightButtonBoderWidth-40, 0, 40, 44)];
+    more_button = [[UIButton alloc] initWithFrame:CGRectMake(320-RightButtonBoderWidth-40, 0, 40, 44)];
     [more_button setTitle:@"全选" forState:UIControlStateNormal];
-    [more_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [more_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [more_button addTarget:self action:@selector(clicked_more:) forControlEvents:UIControlEventTouchDown];
-    [more_button setBackgroundImage:imge forState:UIControlStateHighlighted];
-    [more_button.titleLabel setFont:[UIFont systemFontOfSize:12]];
-    [topView addSubview:more_button];
-    [self.view addSubview:topView];
+    [more_button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:more_button];
+    self.navigationItem.rightBarButtonItem = rightItem;
     
+    //初始化返回按钮
+    UIButton*backButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,35,29)];
+    [backButton setImage:[UIImage imageNamed:@"title_back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backItem=[[UIBarButtonItem alloc] initWithCustomView:backButton];
     
-    
-    //添加底部视图
-    float bottonHeigth = BottonViewHeight;
-    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
-    {
-        bottonHeigth = bottonHeigth+QBY;
+    if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
+        UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
+        temporaryBarButtonItem.title = @"";
+        self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
     }
-    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, bottonHeigth, 320, TabBarHeight)];
-    UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
-    [botton_image setImage:[UIImage imageNamed:@"Bk_naBottom.png"]];
-    [bottonView addSubview:botton_image];
+    else
+    {
+        self.navigationItem.leftBarButtonItem = backItem;
+    }
+    
+    float mY = self.view.frame.size.height-155;
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<=7.0)
+    {
+        mY = mY+20;
+    }
+    
+    //添加底部试图
+    self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0,mY, 320, TabBarHeight+10)];
+    DDLogCInfo(@"moreEditBar:%@",NSStringFromCGRect(self.moreEditBar.frame));
+    [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [self.view addSubview:self.moreEditBar];
     
     //添加选择文件
     CGRect change_rect = CGRectMake(2, 5, 316, 35);
     change_myFile_button = [[UIButton alloc] initWithFrame:change_rect];
     [change_myFile_button setBackgroundImage:[UIImage imageNamed:@"Bt_SelectFolder.png"] forState:UIControlStateNormal];
     [change_myFile_button.titleLabel setTextAlignment:NSTextAlignmentLeft];
-    [change_myFile_button setTitle:@"选择文件" forState:UIControlStateNormal];
+    [change_myFile_button setTitle:device_name forState:UIControlStateNormal];
     [change_myFile_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [change_myFile_button addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
-    [bottonView addSubview:change_myFile_button];
+    [change_myFile_button addTarget:self action:@selector(clicked_MyFile:) forControlEvents:UIControlEventTouchUpInside];
+    [self.moreEditBar addSubview:change_myFile_button];
     
-    //添加选定按钮
-    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, 45+(TabBarButtonHeight-29)/2, 29, 29)];
-    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOk.png"] forState:UIControlStateNormal];
-    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOkCh.png"] forState:UIControlStateHighlighted];
-    [upload_button addTarget:self action:@selector(clicked_startUpload:) forControlEvents:UIControlEventTouchUpInside];
-    [bottonView addSubview:upload_button];
+    UIButton *btn_download ,*btn_resave;
+    float boderWidth = (320-134*2)/3;
+    btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(boderWidth, 45+(TabBarButtonHeight-35)/2, 134, 35)];
+    [btn_resave setBackgroundImage:[UIImage imageNamed:@"oper_bt_nor.png"] forState:UIControlStateNormal];
+    [btn_resave setBackgroundImage:[UIImage imageNamed:@"oper_bt_se.png"] forState:UIControlStateHighlighted];
+    [btn_resave setTitle:@"上传" forState:UIControlStateNormal];
+    [btn_resave addTarget:self action:@selector(clicked_startUpload:) forControlEvents:UIControlEventTouchUpInside];
+    [self.moreEditBar addSubview:btn_resave];
     
-    UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, 45+(TabBarButtonHeight-29)/2, 29, 29)];
-    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
-    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
-    [upload_back_button addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
-    [bottonView addSubview:upload_back_button];
-    
-    [self.view addSubview:bottonView];
-    
+    btn_download =[[UIButton alloc] initWithFrame:CGRectMake(boderWidth*2+134, 45+(TabBarButtonHeight-35)/2, 134, 35)];
+    [btn_download setBackgroundImage:[UIImage imageNamed:@"oper_bt_nor.png"] forState:UIControlStateNormal];
+    [btn_download setBackgroundImage:[UIImage imageNamed:@"oper_bt_se.png"] forState:UIControlStateHighlighted];
+    [btn_download setTitle:@"取消" forState:UIControlStateNormal];
+    [btn_download addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.moreEditBar addSubview:btn_download];
 }
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    CGRect rect = CGRectMake(0, 0, 320, TableViewHeight);
+//    if([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0)
+//    {
+//        rect.size.height = rect.size.height +44;
+//    }
+    [self.tableView setFrame:rect];
+    
+//    CGRect more_rect = self.moreEditBar.frame;
+//    more_rect.origin.y = self.view.frame.size.height-TabBarHeight;
+//    [self.moreEditBar setFrame:more_rect];
+//    //添加底部视图
+//    float bottonHeigth = BottonViewHeight;
+//    bottonView = [[UIView alloc] initWithFrame:CGRectMake(0, bottonHeigth, 320, TabBarHeight)];
+//    UIImageView *botton_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bottonView.frame.size.width, bottonView.frame.size.height)];
+//    [botton_image setImage:[UIImage imageNamed:@"bk_nabottom.png"]];
+//    [bottonView addSubview:botton_image];
+//    
+//    //添加选择文件
+//    CGRect change_rect = CGRectMake(2, 5, 316, 35);
+//    change_myFile_button = [[UIButton alloc] initWithFrame:change_rect];
+//    [change_myFile_button setBackgroundImage:[UIImage imageNamed:@"Bt_SelectFolder.png"] forState:UIControlStateNormal];
+//    [change_myFile_button.titleLabel setTextAlignment:NSTextAlignmentLeft];
+//    [change_myFile_button setTitle:device_name forState:UIControlStateNormal];
+//    [change_myFile_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [change_myFile_button addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
+//    [bottonView addSubview:change_myFile_button];
+//    
+//    //添加选定按钮
+//    UIButton *upload_button = [[UIButton alloc] initWithFrame:CGRectMake((320/2-29)/2, 45+(TabBarButtonHeight-29)/2, 29, 29)];
+//    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOk.png"] forState:UIControlStateNormal];
+//    [upload_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadOkCh.png"] forState:UIControlStateHighlighted];
+//    [upload_button addTarget:self action:@selector(clicked_startUpload:) forControlEvents:UIControlEventTouchUpInside];
+//    [bottonView addSubview:upload_button];
+//    
+//    UIButton *upload_back_button = [[UIButton alloc] initWithFrame:CGRectMake(320/2+(320/2-29)/2, 45+(TabBarButtonHeight-29)/2, 29, 29)];
+//    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancle.png"] forState:UIControlStateNormal];
+//    [upload_back_button setBackgroundImage:[UIImage imageNamed:@"Bt_UploadCancleCh.png"] forState:UIControlStateHighlighted];
+//    [upload_back_button addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
+//    [bottonView addSubview:upload_back_button];
+//    
+//    [self.view addSubview:bottonView];
+}
+
 
 -(void)clicked_back
 {
-    [self.navigationController setNavigationBarHidden:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -184,11 +249,14 @@
     if (self.selectedAssets.count == self.assets.count) {
         // Deselect all assets
         [self.selectedAssets removeAllObjects];
+        [more_button setTitle:@"全选" forState:UIControlStateNormal];
     } else {
         // Select all assets
         [self.selectedAssets addObjectsFromArray:self.assets];
+        [more_button setTitle:@"取消" forState:UIControlStateNormal];
     }
-    
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:more_button];
+    self.navigationItem.rightBarButtonItem = rightItem;
     // Set done button state
     [self updateDoneButton];
     
@@ -206,28 +274,36 @@
     [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:YES];
 }
 
--(void)clicked_changeMyFile:(id)sender
+-(void)clicked_MyFile:(id)sender
 {
-    NSLog(@"clicked_changeMyFile count:%i",[self.selectedAssets count]);
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
     qbImage_fileView.f_id = self.f_id;
     qbImage_fileView.f_name = self.device_name;
+    qbImage_fileView.title = self.device_name;
     qbImage_fileView.space_id = space_id;
     [qbImage_fileView setQbDelegate:self];
-    
-    CustomViewController *nagation = [[CustomViewController alloc] initWithRootViewController:qbImage_fileView];
-    [nagation setNavigationBarHidden:YES];
-    [self presentModalViewController:nagation animated:YES];
+    [self.navigationController pushViewController:qbImage_fileView animated:YES];
+//    CustomViewController *nagation = [[CustomViewController alloc] initWithRootViewController:qbImage_fileView];
+//    [nagation setNavigationBarHidden:YES];
+//    [self presentModalViewController:nagation animated:YES];
 }
 
 -(void)clicked_startUpload:(id)sender
 {
-    NSLog(@"self.f_id:%@",self.f_id);
     [self.delegate changeUpload:self.selectedAssets changeDeviceName:device_name changeFileId:self.f_id changeSpaceId:space_id];
     
-    NSLog(@"device_name--------:%@",device_name);
-    
-    [self dismissModalViewControllerAnimated:YES];
+    if([self.navigationController.viewControllers count]>3)
+    {
+        UIViewController *delailview = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
+        if(delailview)
+        {
+            [self.navigationController popToViewController:delailview animated:YES];
+        }
+    }
+    else
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 -(void)newFold:(NSDictionary *)dictionary
@@ -269,7 +345,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self.navigationController setNavigationBarHidden:YES];
     if([device_name length]>0)
     {
         [change_myFile_button setTitle:device_name forState:UIControlStateNormal];
@@ -301,13 +376,6 @@
     }
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    // Flash scroll indicators
-//    [self.tableView flashScrollIndicators];
-}
 
 - (void)setShowsCancelButton:(BOOL)showsCancelButton
 {
@@ -377,21 +445,21 @@
 
 - (void)updateRightBarButtonItem
 {
-    if (self.allowsMultipleSelection) {
-        // Set done button
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
-        doneButton.enabled = NO;
-        
-        [self.navigationItem setRightBarButtonItem:doneButton animated:NO];
-        self.doneButton = doneButton;
-    } else if (self.showsCancelButton) {
-        // Set cancel button
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
-        
-        [self.navigationItem setRightBarButtonItem:cancelButton animated:NO];
-    } else {
-        [self.navigationItem setRightBarButtonItem:nil animated:NO];
-    }
+//    if (self.allowsMultipleSelection) {
+//        // Set done button
+//        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
+//        doneButton.enabled = NO;
+//        
+//        [self.navigationItem setRightBarButtonItem:doneButton animated:NO];
+//        self.doneButton = doneButton;
+//    } else if (self.showsCancelButton) {
+//        // Set cancel button
+//        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+//        
+//        [self.navigationItem setRightBarButtonItem:cancelButton animated:NO];
+//    } else {
+//        [self.navigationItem setRightBarButtonItem:nil animated:NO];
+//    }
 }
 
 - (void)updateDoneButton

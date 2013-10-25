@@ -137,7 +137,8 @@ typedef enum{
     isHideTabBar=!isHideTabBar;
     
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(isHideTabBar)
+    UIApplication *app = [UIApplication sharedApplication];
+    if(isHideTabBar || app.applicationIconBadgeNumber==0)
     {
         [appleDate.myTabBarVC.imageView setHidden:YES];
     }

@@ -26,7 +26,7 @@
 @synthesize imageScrollView;
 @synthesize scale_,tableArray;
 @synthesize currPage;
-@synthesize isCliped;
+@synthesize isHaveDelete;
 @synthesize linkManager;
 @synthesize selected_id;
 @synthesize hud;
@@ -202,31 +202,47 @@
     self.bottonToolBar = [[UIToolbar alloc] initWithFrame:bottonRect];
     [self.bottonToolBar setBarStyle:UIBarStyleBlackTranslucent];
     
-    
-    int width = (currWidth-36*3)/2;
-    
-    CGRect leftRect = CGRectMake(36, 5, width, 33);
-    self.leftButton = [[UIButton alloc] initWithFrame:leftRect];
-    [self.leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [self.leftButton.titleLabel setTextColor:[UIColor blackColor]];
-    [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
-    [self.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.leftButton setBackgroundColor:[UIColor clearColor]];
-    [self.bottonToolBar addSubview:self.leftButton];
-    self.leftButton.showsTouchWhenHighlighted = YES;
-    
-    CGRect rightRect = CGRectMake(width*1+36*2, 5, width, 33);
-    self.rightButton = [[UIButton alloc] initWithFrame:rightRect];
-    [self.rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [self.rightButton.titleLabel setTextColor:[UIColor blackColor]];
-    [self.rightButton setTitle:@"删除" forState:UIControlStateNormal];
-    [self.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.rightButton setBackgroundColor:[UIColor clearColor]];
-    self.rightButton.showsTouchWhenHighlighted = YES;
-    [self.bottonToolBar addSubview:self.rightButton];
-    
+    if(isHaveDelete)
+    {
+        int width = (currWidth-36*3)/2;
+        
+        CGRect leftRect = CGRectMake(36, 5, width, 33);
+        self.leftButton = [[UIButton alloc] initWithFrame:leftRect];
+        [self.leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.leftButton.titleLabel setTextColor:[UIColor blackColor]];
+        [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
+        [self.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.leftButton setBackgroundColor:[UIColor clearColor]];
+        [self.bottonToolBar addSubview:self.leftButton];
+        self.leftButton.showsTouchWhenHighlighted = YES;
+        
+        CGRect rightRect = CGRectMake(width*1+36*2, 5, width, 33);
+        self.rightButton = [[UIButton alloc] initWithFrame:rightRect];
+        [self.rightButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.rightButton.titleLabel setTextColor:[UIColor blackColor]];
+        [self.rightButton setTitle:@"删除" forState:UIControlStateNormal];
+        [self.rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.rightButton addTarget:self action:@selector(deleteClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.rightButton setBackgroundColor:[UIColor clearColor]];
+        self.rightButton.showsTouchWhenHighlighted = YES;
+        [self.bottonToolBar addSubview:self.rightButton];
+    }
+    else
+    {
+        int width = currWidth-36*2;
+        
+        CGRect leftRect = CGRectMake(36, 5, width, 33);
+        self.leftButton = [[UIButton alloc] initWithFrame:leftRect];
+        [self.leftButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.leftButton.titleLabel setTextColor:[UIColor blackColor]];
+        [self.leftButton setTitle:@"下载" forState:UIControlStateNormal];
+        [self.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.leftButton addTarget:self action:@selector(clipClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.leftButton setBackgroundColor:[UIColor clearColor]];
+        [self.bottonToolBar addSubview:self.leftButton];
+        self.leftButton.showsTouchWhenHighlighted = YES;
+    }
     [self.view addSubview:self.bottonToolBar];
     
     [self.topToolBar setHidden:YES];

@@ -33,6 +33,7 @@
     BOOL isFirst;
     NSString *f_id;
     NSString *space_id;
+    UIButton *more_button;
 }
 
 @property (nonatomic, retain) id<QBAssetCollectionViewControllerDelegate> delegate;
@@ -55,5 +56,7 @@
 @property (nonatomic, assign) NSString *device_name;
 @property (nonatomic, retain) NSString *f_id;
 @property (nonatomic, retain) NSString *space_id;
+
+@property (strong,nonatomic) UIToolbar *moreEditBar;
 
 @end
