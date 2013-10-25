@@ -16,7 +16,6 @@
 		290C7A041804F3FF00EF4A32 /* EmailListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290C7A021804F3FF00EF4A32 /* EmailListViewController.m */; };
 		290C7A051804F3FF00EF4A32 /* EmailListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 290C7A031804F3FF00EF4A32 /* EmailListViewController.xib */; };
 		290E5D99181923F2008236E4 /* MusicPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 290E5D98181923F2008236E4 /* MusicPlayerViewController.m */; };
-		290E5D9C1819272F008236E4 /* nothing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 290E5D9B1819272F008236E4 /* nothing.mp3 */; };
 		291CCB3617F27F99005C029C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3517F27F99005C029C /* Foundation.framework */; };
 		291CCB3817F27F99005C029C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3717F27F99005C029C /* CoreGraphics.framework */; };
 		291CCB3A17F27F99005C029C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 291CCB3917F27F99005C029C /* UIKit.framework */; };
@@ -66,6 +65,8 @@
 		299BBED6181920C60035167A /* oper_bk.png in Resources */ = {isa = PBXBuildFile; fileRef = 299BBED0181920C60035167A /* oper_bk.png */; };
 		299BBED7181920C60035167A /* oper_bt_nor.png in Resources */ = {isa = PBXBuildFile; fileRef = 299BBED1181920C60035167A /* oper_bt_nor.png */; };
 		299BBED8181920C60035167A /* oper_bt_se.png in Resources */ = {isa = PBXBuildFile; fileRef = 299BBED2181920C60035167A /* oper_bt_se.png */; };
+		299BBEDB181A05D10035167A /* nothing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 299BBEDA181A05D10035167A /* nothing.mp3 */; };
+		299BBEDE181A5E900035167A /* YNNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 299BBEDD181A5E8F0035167A /* YNNavigationController.m */; };
 		29A40DE0181521F100109565 /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A40DDF181521F100109565 /* CustomViewController.m */; };
 		29B2AE11180E63BE002D9D1B /* bk_nabottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0B180E63BE002D9D1B /* bk_nabottom.png */; };
 		29B2AE12180E63BE002D9D1B /* mail_unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0C180E63BE002D9D1B /* mail_unread@2x.png */; };
@@ -263,7 +264,6 @@
 		290C7A031804F3FF00EF4A32 /* EmailListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailListViewController.xib; sourceTree = "<group>"; };
 		290E5D97181923F2008236E4 /* MusicPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicPlayerViewController.h; sourceTree = "<group>"; };
 		290E5D98181923F2008236E4 /* MusicPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicPlayerViewController.m; sourceTree = "<group>"; };
-		290E5D9B1819272F008236E4 /* nothing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = nothing.mp3; sourceTree = "<group>"; };
 		291CCB3217F27F99005C029C /* ndspro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ndspro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		291CCB3517F27F99005C029C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		291CCB3717F27F99005C029C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -339,6 +339,9 @@
 		299BBED0181920C60035167A /* oper_bk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = oper_bk.png; sourceTree = "<group>"; };
 		299BBED1181920C60035167A /* oper_bt_nor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = oper_bt_nor.png; sourceTree = "<group>"; };
 		299BBED2181920C60035167A /* oper_bt_se.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = oper_bt_se.png; sourceTree = "<group>"; };
+		299BBEDA181A05D10035167A /* nothing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = nothing.mp3; sourceTree = "<group>"; };
+		299BBEDC181A5E8F0035167A /* YNNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNNavigationController.h; sourceTree = "<group>"; };
+		299BBEDD181A5E8F0035167A /* YNNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNNavigationController.m; sourceTree = "<group>"; };
 		29A40DDE181521F100109565 /* CustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
 		29A40DDF181521F100109565 /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
 		29B2AE0B180E63BE002D9D1B /* bk_nabottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bk_nabottom.png; sourceTree = "<group>"; };
@@ -619,14 +622,6 @@
 			name = Email;
 			sourceTree = "<group>";
 		};
-		290E5D9A1819272F008236E4 /* Mp3 */ = {
-			isa = PBXGroup;
-			children = (
-				290E5D9B1819272F008236E4 /* nothing.mp3 */,
-			);
-			path = Mp3;
-			sourceTree = "<group>";
-		};
 		291CCB2917F27F99005C029C = {
 			isa = PBXGroup;
 			children = (
@@ -693,7 +688,7 @@
 		291CCB3C17F27F99005C029C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				290E5D9A1819272F008236E4 /* Mp3 */,
+				299BBED9181A05D10035167A /* Mp3 */,
 				29B561DD1814CC190018D1FF /* logo1_120.png */,
 				291CCBCD17F3CD34005C029C /* PConfig.h */,
 				291CCB3D17F27F99005C029C /* ndspro-Info.plist */,
@@ -732,6 +727,8 @@
 				291CCBC917F3C423005C029C /* MF_Base64Additions */,
 				29B561E118151F500018D1FF /* UIBarButtonItem+Yn.h */,
 				29B561E218151F500018D1FF /* UIBarButtonItem+Yn.m */,
+				299BBEDC181A5E8F0035167A /* YNNavigationController.h */,
+				299BBEDD181A5E8F0035167A /* YNNavigationController.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -872,6 +869,14 @@
 				29B2AE20180E6A19002D9D1B /* SFHFKeychainUtils.m */,
 			);
 			path = AddToYourProject;
+			sourceTree = "<group>";
+		};
+		299BBED9181A05D10035167A /* Mp3 */ = {
+			isa = PBXGroup;
+			children = (
+				299BBEDA181A05D10035167A /* nothing.mp3 */,
+			);
+			path = Mp3;
 			sourceTree = "<group>";
 		};
 		29B2AE28180F7E1A002D9D1B /* EGOTableViewPullRefresh */ = {
@@ -1277,7 +1282,6 @@
 				29DF3B63180BE0FC003FEE3B /* lock_bt_num1_se@2x.png in Resources */,
 				29B2AE39180F7E1A002D9D1B /* blueArrow.png in Resources */,
 				29DF3B53180BE0FC003FEE3B /* Bk_Start.png in Resources */,
-				290E5D9C1819272F008236E4 /* nothing.mp3 in Resources */,
 				29B2AE24180E8CC9002D9D1B /* bk_select@2x.png in Resources */,
 				29B2AE18180E64A5002D9D1B /* mail_readed@2x.png in Resources */,
 				29DF3B65180BE0FC003FEE3B /* lock_forget_nor@2x.png in Resources */,
@@ -1308,6 +1312,7 @@
 				29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */,
 				293B36E818175A5800B3CBE6 /* send_zc_nor@2x.png in Resources */,
 				291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */,
+				299BBEDB181A05D10035167A /* nothing.mp3 in Resources */,
 				29DF3B62180BE0FC003FEE3B /* lock_bt_num_se@2x.png in Resources */,
 				29DF3B5D180BE0FC003FEE3B /* file_folder@2x.png in Resources */,
 				29DF3B5E180BE0FC003FEE3B /* file_moving@2x.png in Resources */,
@@ -1478,6 +1483,7 @@
 				292B6B8A17F91B3B0015669A /* IconDownloader.m in Sources */,
 				291CCBBA17F3C40A005C029C /* MF_Base64Additions.m in Sources */,
 				291CCBBB17F3C40A005C029C /* SCBAccountManager.m in Sources */,
+				299BBEDE181A5E900035167A /* YNNavigationController.m in Sources */,
 				291CCC1617F4082B005C029C /* MainViewController.m in Sources */,
 				2902B136180D5B5B00AF04DA /* PhotoLookViewController.m in Sources */,
 				29FE576E1808D3210068DE48 /* DispatchQueueLogFormatter.m in Sources */,

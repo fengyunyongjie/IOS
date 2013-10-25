@@ -67,13 +67,13 @@ typedef enum{
     self.tableView.dataSource=self;
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    //[self.tableView setBackgroundColor:[UIColor whiteColor]];
+    [self.tableView setBackgroundColor:[UIColor whiteColor]];
     self.tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     self.space_used=@"";
     self.space_total=@"";
     
     UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    [exitButton setTitle:@"退出当前帐号" forState:UIControlStateNormal];
+    [exitButton setTitle:@"注销帐号" forState:UIControlStateNormal];
     [exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [exitButton setBackgroundColor:[UIColor clearColor]];
 //    [exitButton setImage:[UIImage imageNamed:@"set_quit_nor.png"] forState:UIControlStateNormal];
@@ -261,7 +261,7 @@ typedef enum{
     //    [alertView show];
     //    [alertView setTag:kAlertTypeExit];
     //    [alertView release];
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"确定要退出登录" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"退出" otherButtonTitles: nil];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"是否注销" delegate:self cancelButtonTitle:@"否" destructiveButtonTitle:@"是" otherButtonTitles: nil];
     [actionSheet setTag:kActionSheetTypeExit];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];

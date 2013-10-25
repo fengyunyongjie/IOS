@@ -22,7 +22,16 @@
 @end
 
 @implementation SendEmailViewController
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
 
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return NO;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -267,7 +276,8 @@
                 if (self.receversTextField) {
                 }else
                 {
-                    UITextField *textField=[[UITextField alloc] initWithFrame:CGRectMake(20, 0, cell.frame.size.width-20, cell.frame.size.height)];
+                    UITextField *textField=[[UITextField alloc] initWithFrame:CGRectMake(14, 0, cell.frame.size.width-28, cell.frame.size.height)];
+                    textField.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
                     self.receversTextField=textField;
                     self.receversTextField.delegate=self;
                 }
@@ -283,7 +293,8 @@
             if (self.eTitleTextField) {
             }else
             {
-                UITextField *textField=[[UITextField alloc] initWithFrame:CGRectMake(20, 0, cell.frame.size.width-20, cell.frame.size.height)];
+                UITextField *textField=[[UITextField alloc] initWithFrame:CGRectMake(14, 0, cell.frame.size.width-28, cell.frame.size.height)];
+                textField.contentVerticalAlignment=UIControlContentVerticalAlignmentCenter;
                 self.eTitleTextField=textField;
                 self.eTitleTextField.delegate=self;
             }
@@ -298,9 +309,10 @@
             if (self.eContentView) {
             }else
             {
-                UITextView *textView=[[UITextView alloc] initWithFrame:CGRectMake(20, 10, cell.frame.size.width-20, 180)];
+                UITextView *textView=[[UITextView alloc] initWithFrame:CGRectMake(9, 2, cell.frame.size.width-18, 96)];
                 textView.editable=YES;
                 self.eContentView=textView;
+                self.eContentView.font=[UIFont systemFontOfSize:16];
             }
             [cell.contentView addSubview:self.eContentView];
             self.eContentView.text=self.eContent;
@@ -362,7 +374,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section==2) {
-        return 200;
+        return 100;
 //        UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
 //        return cell.frame.size.height+30;
     }

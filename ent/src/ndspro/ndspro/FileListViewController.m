@@ -23,6 +23,7 @@
 #import "CustomViewController.h"
 #import "UIBarButtonItem+Yn.h"
 #import "MyTabBarViewController.h"
+#import "YNNavigationController.h"
 
 #define KCOVERTag 888
 
@@ -633,7 +634,7 @@ typedef enum{
         flvc.title=@"选择提交的位置";
         flvc.delegate=self;
         flvc.type=kTypeCommit;
-        UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:flvc];
+        YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:flvc];
         [self presentViewController:nav animated:YES completion:nil];
 
     }else
@@ -643,7 +644,7 @@ typedef enum{
         flvc.title=@"选择转存的位置";
         flvc.delegate=self;
         flvc.type=kTypeResave;
-        UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:flvc];
+        YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:flvc];
         [self presentViewController:nav animated:YES completion:nil];
     }
 }
@@ -705,7 +706,7 @@ typedef enum{
     flvc.spid=self.spid;
     flvc.title=@"选择移动的位置";
     flvc.delegate=self;
-    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:flvc];
+    YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:flvc];
     [self presentViewController:nav animated:YES completion:nil];
 }
 -(void)toDownload:(id)sender
@@ -1680,7 +1681,7 @@ typedef enum{
             {
                 return;
             }
-            UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:sevc];
+            YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:sevc];
             [self presentViewController:nav animated:YES completion:nil];
             [self editFinished];
         }

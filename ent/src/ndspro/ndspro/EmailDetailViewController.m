@@ -28,6 +28,7 @@
 @property (strong,nonatomic) UIView *headerView;
 @property (strong,nonatomic) UIView *footerView;
 @property (strong,nonatomic) UILabel *personLabel;
+@property (strong,nonatomic) UILabel *receiveLabel;
 @property (strong,nonatomic) UILabel *titleLabel;
 @property (strong,nonatomic) UILabel *contentLabel;
 @property (strong,nonatomic) UILabel *timeLabel;
@@ -295,14 +296,15 @@
     NSDictionary *dic=[self.dataDic objectForKey:@"email"];
     if (self.headerView&&dic) {
         //[dic objectForKey:@"receivelist"];
-        int etype=[[dic objectForKey:@"etype"] intValue];
-        if (etype==0) {
-            self.personLabel.text=[dic objectForKey:@"sender"];
-        }else
-        {
-            self.personLabel.text=[dic objectForKey:@"receivelist"];
-        }
-        
+//        int etype=[[dic objectForKey:@"etype"] intValue];
+//        if (etype==0) {
+//            self.personLabel.text=[dic objectForKey:@"sender"];
+//        }else
+//        {
+//            self.personLabel.text=[dic objectForKey:@"receivelist"];
+//        }
+        self.personLabel.text=[NSString stringWithFormat:@"发件人：%@",[dic objectForKey:@"sender"]];
+        self.receiveLabel.text=[NSString stringWithFormat:@"收件人：%@",[dic objectForKey:@"receivelist"]];
         self.titleLabel.text=[dic objectForKey:@"etitle"];
         self.timeLabel.text=[dic objectForKey:@"sendtime"];
         self.contentLabel.text=[dic objectForKey:@"econtent"];
@@ -490,27 +492,27 @@
 {
     if (_isDetail) {
         [self.contentLabel setNumberOfLines:0];
-        CGSize size = CGSizeMake(280,2000);
+        CGSize size = CGSizeMake(300,2000);
         CGSize bestSize=[self.contentLabel sizeThatFits:size];
         if (bestSize.height<34) {
             bestSize.height=34;
         }
-        self.contentLabel.frame=CGRectMake(20, 50, bestSize.width, bestSize.height);
-        self.headerView.frame=CGRectMake(0, 0, 320, bestSize.height+50+16);
-        self.contentBgView.frame=CGRectMake(0, 50, 320, self.headerView.frame.size.height-50);
+        self.contentLabel.frame=CGRectMake(10, 100, bestSize.width, bestSize.height);
+        self.headerView.frame=CGRectMake(0, 0, 320, bestSize.height+100+16);
+        self.contentBgView.frame=CGRectMake(0, 100, 320, self.headerView.frame.size.height-100);
         self.switchButton.frame=CGRectMake(320-60, self.headerView.frame.size.height-21, 50, 21);
         [self.switchButton setTitle:@"收起" forState:UIControlStateNormal];
         return self.headerView.frame.size.height;
     }else
     {
         [self.contentLabel setNumberOfLines:2];
-        self.contentLabel.frame=CGRectMake(20, 50, 280, 34);
-        self.headerView.frame=CGRectMake(0, 0, 320, 100);
-        self.contentBgView.frame=CGRectMake(0, 50, 320, self.headerView.frame.size.height-50);
+        self.contentLabel.frame=CGRectMake(10, 100, 300, 34);
+        self.headerView.frame=CGRectMake(0, 0, 320, 150);
+        self.contentBgView.frame=CGRectMake(0, 100, 320, 50);
         self.switchButton.frame=CGRectMake(320-60, self.headerView.frame.size.height-21, 50, 21);
         [self.switchButton setTitle:@"展开" forState:UIControlStateNormal];
     }
-    return 100;
+    return 150;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -525,39 +527,44 @@
     NSDictionary *dic=[self.dataDic objectForKey:@"email"];
     
     if (!self.headerView) {
-        UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-        UILabel *p_label= [[UILabel alloc] initWithFrame:CGRectMake(20, 4, 170, 21)];
-        UILabel *title_lbl=[[UILabel alloc] initWithFrame:CGRectMake(20, 25, 280, 21)];
-        UILabel *time_lbl=[[UILabel alloc] initWithFrame:CGRectMake(200, 4, 120, 21)];
-        UILabel *content_lbl=[[UILabel alloc] initWithFrame:CGRectMake(20, 50, 280, 34)];
+        UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)];
+        UILabel *p_label= [[UILabel alloc] initWithFrame:CGRectMake(10, 4, 300, 21)];
+        UILabel *r_label= [[UILabel alloc] initWithFrame:CGRectMake(10, 25, 300, 21)];
+        UILabel *title_lbl=[[UILabel alloc] initWithFrame:CGRectMake(10, 50, 300, 21)];
+        UILabel *time_lbl=[[UILabel alloc] initWithFrame:CGRectMake(10, 75, 300, 21)];
+        UILabel *content_lbl=[[UILabel alloc] initWithFrame:CGRectMake(10, 100, 300, 34)];
         
         [p_label setFont:[UIFont boldSystemFontOfSize:16]];
-        [title_lbl setFont:[UIFont systemFontOfSize:14]];
+        [r_label setFont:[UIFont systemFontOfSize:16]];
+        [title_lbl setFont:[UIFont boldSystemFontOfSize:17]];
         [content_lbl setFont:[UIFont systemFontOfSize:14]];
         [time_lbl setFont:[UIFont systemFontOfSize:13]];
         
+        [p_label setTextColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"title_bk_ti.png"]]];
+        [r_label setTextColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"title_bk_ti.png"]]];
         [content_lbl setTextColor:[UIColor grayColor]];
         [time_lbl setTextColor:[UIColor grayColor]];
         [content_lbl setNumberOfLines:2];
         //[content_lbl setLineBreakMode:NSLineBreakByWordWrapping];
         
         [view addSubview:p_label];
+        [view addSubview:r_label];
         [view addSubview:title_lbl];
         [view addSubview:time_lbl];
         [view addSubview:content_lbl];
-        
+        self.receiveLabel=r_label;
         self.personLabel=p_label;
         self.titleLabel=title_lbl;
         self.timeLabel=time_lbl;
         self.contentLabel=content_lbl;
         view.backgroundColor=[UIColor whiteColor];
         
-        UIView *bgView=[[UIView alloc] initWithFrame:CGRectMake(0, 50, 320, 50)];
+        UIView *bgView=[[UIView alloc] initWithFrame:CGRectMake(0, 100, 320, 50)];
         bgView.layer.borderWidth=0.5;
         bgView.layer.borderColor=[UIColor grayColor].CGColor;
         self.contentBgView=bgView;
         [view addSubview:bgView];
-        UIButton *on_off_btn=[[UIButton alloc] initWithFrame:CGRectMake(320-50,100-21,50,21)];
+        UIButton *on_off_btn=[[UIButton alloc] initWithFrame:CGRectMake(320-50,150-21,50,21)];
         [on_off_btn setTitle:@"展开" forState:UIControlStateNormal];
         [on_off_btn setTitleColor:[UIColor colorWithRed:79/255.0f green:102/255.0f blue:139/255.0f alpha:1] forState:UIControlStateNormal];
         [on_off_btn.titleLabel setFont:[UIFont boldSystemFontOfSize:14]];

@@ -7,6 +7,7 @@
 //
 
 #import "WelcomeViewController.h"
+#import "PConfig.h"
 __strong static WelcomeViewController *_welcommeVC;
 @interface WelcomeViewController ()<UIScrollViewDelegate>
 @property (strong,nonatomic) UIScrollView *scrollView;
@@ -77,14 +78,22 @@ __strong static WelcomeViewController *_welcommeVC;
             [scroll_view addSubview:imageView];
         }
     }
-    
-    UIPageControl *pageCtrl=[[UIPageControl alloc] initWithFrame:CGRectMake((self.view.frame.size.width-200)/2, self.view.frame.size.height-100, 200, 49)];
+//    UIImageView *pageBg=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width-200)/2, self.view.frame.size.height-100, 200, 49)];
+//    pageBg.image=[UIImage imageNamed:@"guide_gray.png"];
+//    [self.view addSubview:pageBg];
+    UIPageControl *pageCtrl=[[UIPageControl alloc] initWithFrame:CGRectMake((self.view.frame.size.width-200)/2, 10, 200, 49)];
     
     [pageCtrl setNumberOfPages:3];
     [pageCtrl addTarget:self action:@selector(clicked_page:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:pageCtrl];
     self.pageCtrl=pageCtrl;
     self.scrollView=scroll_view;
+    
+    UIButton *button=[[UIButton alloc] initWithFrame:CGRectMake(320*3-122, self.view.frame.size.height-34-36, 122, 34)];
+    [button setBackgroundImage:[UIImage imageNamed:@"guide_bt_nor.png"] forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageNamed:@"guide_bt_se.png"] forState:UIControlStateHighlighted];
+    [button addTarget:self action:@selector(toHideView) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:button];
 }
 
 - (void)didReceiveMemoryWarning
@@ -100,6 +109,11 @@ __strong static WelcomeViewController *_welcommeVC;
         [self.scrollView setContentOffset:CGPointMake(self.view.frame.size.width * page.currentPage, 0) animated:YES];
     }
 }
+-(void)toHideView
+{
+    [[NSUserDefaults standardUserDefaults] setObject:VERSION forKey:VERSION];
+    [self.view removeFromSuperview];
+}
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSInteger page = scrollView.contentOffset.x/self.view.frame.size.width;
@@ -112,9 +126,5 @@ __strong static WelcomeViewController *_welcommeVC;
         [self.pageCtrl setHidden:NO];
     }
     [self.pageCtrl setCurrentPage:page];
-    if(scrollView.contentOffset.x> self.view.frame.size.width * 2.2 || page==3)
-    {
-         [self.view removeFromSuperview];
-    }
 }
 @end
