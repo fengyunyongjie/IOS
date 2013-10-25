@@ -185,7 +185,7 @@
     if(self.editView == nil)
     {
         self.editView = [[UIButton alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-49, 320, 60)];
-        [self.editView setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forState:UIControlStateNormal];
+        [self.editView setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forState:UIControlStateNormal];
         [self.editView addTarget:self action:@selector(deleteAll:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.editView];
         //删除

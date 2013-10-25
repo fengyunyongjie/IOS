@@ -468,7 +468,7 @@ typedef enum{
         if (![YNFunctions systemIsLaterThanString:@"7.0"]) {
             self.moreEditBar.frame=CGRectMake(0, [UIScreen mainScreen].bounds.size.height-64-49, 320, 49);
         }
-        [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+        [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
             [self.moreEditBar setBarTintColor:[UIColor blueColor]];
         }else
@@ -635,6 +635,10 @@ typedef enum{
         flvc.delegate=self;
         flvc.type=kTypeCommit;
         YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:flvc];
+        [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
+        [nav.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
+        //    [vc1.navigationBar setBackgroundColor:[UIColor colorWithRed:102/255.0f green:163/255.0f blue:222/255.0f alpha:1]];
+        [nav.navigationBar setTintColor:[UIColor whiteColor]];
         [self presentViewController:nav animated:YES completion:nil];
 
     }else
@@ -645,6 +649,10 @@ typedef enum{
         flvc.delegate=self;
         flvc.type=kTypeResave;
         YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:flvc];
+        [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
+        [nav.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
+        //    [vc1.navigationBar setBackgroundColor:[UIColor colorWithRed:102/255.0f green:163/255.0f blue:222/255.0f alpha:1]];
+        [nav.navigationBar setTintColor:[UIColor whiteColor]];
         [self presentViewController:nav animated:YES completion:nil];
     }
 }
@@ -707,6 +715,10 @@ typedef enum{
     flvc.title=@"选择移动的位置";
     flvc.delegate=self;
     YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:flvc];
+    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
+    [nav.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
+    //    [vc1.navigationBar setBackgroundColor:[UIColor colorWithRed:102/255.0f green:163/255.0f blue:222/255.0f alpha:1]];
+    [nav.navigationBar setTintColor:[UIColor whiteColor]];
     [self presentViewController:nav animated:YES completion:nil];
 }
 -(void)toDownload:(id)sender
@@ -1045,7 +1057,7 @@ typedef enum{
         {
             [self.singleEditBar setTintColor:[UIColor blueColor]];
         }
-        [self.singleEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+        [self.singleEditBar setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         [self.singleEditBar setBarStyle:UIBarStyleBlackOpaque];
         [self.tableView addSubview:self.singleEditBar];
         [self.tableView bringSubviewToFront:self.singleEditBar];
