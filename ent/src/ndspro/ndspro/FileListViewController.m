@@ -22,6 +22,7 @@
 #import "SCBSession.h"
 #import "CustomViewController.h"
 #import "UIBarButtonItem+Yn.h"
+#import "MyTabBarViewController.h"
 
 #define KCOVERTag 888
 
@@ -396,6 +397,15 @@ typedef enum{
     [self hideMenu];
     [self.tableView setEditing:!self.tableView.editing animated:YES];
     BOOL isHideTabBar=self.tableView.editing;
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(isHideTabBar)
+    {
+        [appleDate.myTabBarVC.imageView setHidden:YES];
+    }
+    else
+    {
+        [appleDate.myTabBarVC.imageView setHidden:NO];
+    }
     //isHideTabBar=!isHideTabBar;
     for(UIView *view in self.tabBarController.view.subviews)
     {

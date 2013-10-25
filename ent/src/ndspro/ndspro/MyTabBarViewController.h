@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface MyTabBarViewController : UITabBarController
+@property(nonatomic,strong) UIImageView *imageView;
+@property(nonatomic,strong) UILabel *label;
+-(void)addUploadNumber:(NSInteger)count;
 
 @end

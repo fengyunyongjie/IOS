@@ -463,7 +463,7 @@ static CGFloat const kSlideAnimationDuration = 0.0f;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController {
 	[self prepareForEnablingPasscode];
 	[self prepareNavigationControllerWithController: viewController];
-	self.title = @"输入密码";
+	self.title = @"设置密码";
 }
 
 

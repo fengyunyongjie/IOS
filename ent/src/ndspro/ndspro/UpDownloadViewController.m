@@ -13,6 +13,7 @@
 #import "PhotoLookViewController.h"
 #import "OtherBrowserViewController.h"
 #import "UIBarButtonItem+Yn.h"
+#import "MyTabBarViewController.h"
 
 #define UpTabBarHeight (49+20+44)
 #define kActionSheetTagDelete 77
@@ -148,7 +149,17 @@
     [self updateLoadData];
     
     BOOL isHideTabBar=self.table_view.editing;
-    //isHideTabBar=!isHideTabBar;
+    
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(isHideTabBar)
+    {
+        [appleDate.myTabBarVC.imageView setHidden:YES];
+    }
+    else
+    {
+        [appleDate.myTabBarVC.imageView setHidden:NO];
+    }
+    
     for(UIView *view in self.tabBarController.view.subviews)
     {
         if([view isKindOfClass:[UITabBar class]])
@@ -330,53 +341,13 @@
     self.selectAllIds = [self getSelectedIds];
 }
 
--(void)updateCurrTableViewCell
-{
-    if(isShowUpload)
-    {
-        NSInteger type = [self getUploadType];
-        if(type == 1)
-        {
-            if([upLoading_array count]>0)
-            {
-                NSArray *array = [NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]];
-                [self.table_view reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
-            }
-        }
-        else if(type == 3)
-        {
-            if([upLoading_array count]>0)
-            {
-                NSArray *array = [NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]];
-                [self.table_view reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
-            }
-        }
-    }
-    else
-    {
-        NSInteger type = [self getDownType];
-        if(type == 1)
-        {
-            if([downLoading_array count]>0)
-            {
-                NSArray *array = [NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]];
-                [self.table_view reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
-            }
-        }
-        else if(type == 3)
-        {
-            if([downLoading_array count]>0)
-            {
-                NSArray *array = [NSArray arrayWithObject:[NSIndexPath indexPathForItem:0 inSection:0]];
-                [self.table_view reloadRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationNone];
-            }
-        }
-    }
-}
-
 -(void)updateLoadData
 {
-    if(isShowUpload && self.table_view.editing)
+    if(!self.table_view.editing)
+    {
+        return;
+    }
+    if(isShowUpload)
     {
         NSInteger type = [self getUploadType];
         if(type == 1)
@@ -565,7 +536,9 @@
     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [delegate.downmange updateLoad];
     [delegate.uploadmanage updateLoad];
-
+    UIApplication *app = [UIApplication sharedApplication];
+    app.applicationIconBadgeNumber = [delegate.uploadmanage.uploadArray count]+[delegate.downmange.downingArray count];
+    [delegate.myTabBarVC addUploadNumber:app.applicationIconBadgeNumber];
     NSString *leftTitle;
     if([upLoading_array count]>0)
     {
@@ -611,7 +584,10 @@
         else
         {
             DownList *ls = [self.downLoaded_array firstObject];
-            list.d_id = ls.d_id;
+            if(ls!=nil)
+            {
+                list.d_id = ls.d_id;
+            }
             NSArray *array = [list selectDownedAll];
             NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
             for(int i=0;i<[array count];i++)
@@ -632,7 +608,10 @@
         else
         {
             UpLoadList *ls = [self.upLoaded_array firstObject];
-            list.t_id = ls.t_id;
+            if(ls!=nil)
+            {
+                list.t_id = ls.t_id;
+            }
             NSArray *array = [list selectUploadListAllAndUploaded];
             NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
             for(int i=0;i<[array count];i++)
@@ -1185,7 +1164,7 @@
         {
             for(int j=0;j<[downLoading_array count];j++)
             {
-                DownList *list = (DownList *)[downLoading_array objectAtIndex:i];
+                DownList *list = (DownList *)[downLoading_array objectAtIndex:j];
                 DownList *oldList = (DownList *)object;
                 if(list.d_id == oldList.d_id)
                 {
@@ -1207,9 +1186,6 @@
             }
         }
     }
-    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.uploadmanage updateTable];
-    [delegate.downmange updateTable];
     [self isSelectedLeft:isShowUpload];
     if(self.table_view.editing)
     {
@@ -1221,6 +1197,16 @@
 
 -(void)hiddenTabBar:(BOOL)isHideTabBar
 {
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(isHideTabBar)
+    {
+        [appleDate.myTabBarVC.imageView setHidden:YES];
+    }
+    else
+    {
+        [appleDate.myTabBarVC.imageView setHidden:NO];
+    }
+    
     for(UIView *view in self.tabBarController.view.subviews)
     {
         if([view isKindOfClass:[UITabBar class]])

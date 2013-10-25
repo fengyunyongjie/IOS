@@ -119,8 +119,22 @@
             break;
         case 1:
         {
-            
             [cell.textLabel setText:@"修改密码锁"];
+            if ([LTHPasscodeViewController passcodeExistsInKeychain]) {
+                [LTHPasscodeViewController saveTimerStartTime];
+                if ([LTHPasscodeViewController timerDuration] == 1)
+                {
+                    [cell.textLabel setEnabled:NO];
+                }
+                else
+                {
+                    [cell.textLabel setEnabled:YES];
+                }
+            }
+            else
+            {
+                [cell.textLabel setEnabled:NO];
+            }
         }
             break;
         default:
@@ -148,7 +162,11 @@
             break;
         case 1:
         {
-            [[LTHPasscodeViewController sharedUser] showForChangingPasscodeInViewController: self];
+            UITableViewCell *cell = [self.table_view cellForRowAtIndexPath:indexPath];
+            if(cell.textLabel.enabled)
+            {
+                [[LTHPasscodeViewController sharedUser] showForChangingPasscodeInViewController: self];
+            }
         }
             break;
         case 2:

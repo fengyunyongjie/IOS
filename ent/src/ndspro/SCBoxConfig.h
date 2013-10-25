@@ -16,6 +16,7 @@
 #define HOST_URL @"http://192.168.1.9/"
 //#define HOST_URL @"http://b.7cbox.cn/"
 //#define HOST_URL @"http://192.168.1.55:8080/"
+//#define HOST_URL @"http://xianzhouhe.eicp.net:81/"
 #define SERVER_URL [NSString stringWithFormat:@"%@%@",HOST_URL,@"biz/ent"]
 
 

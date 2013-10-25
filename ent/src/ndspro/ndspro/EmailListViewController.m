@@ -13,6 +13,8 @@
 #import "EmailDetailViewController.h"
 #import "UIBarButtonItem+Yn.h"
 #import "CustomSelectButton.h"
+#import "MyTabBarViewController.h"
+#import "AppDelegate.h"
 
 enum{
     kActionSheetTagDeleteOne
@@ -329,6 +331,15 @@ enum{
     NSLog(@"self.table.frame:%@",NSStringFromCGRect(self.tableView.frame));
     [self.tableView setEditing:!self.tableView.editing animated:YES];
     BOOL isHideTabBar=self.tableView.editing;
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(isHideTabBar)
+    {
+        [appleDate.myTabBarVC.imageView setHidden:YES];
+    }
+    else
+    {
+        [appleDate.myTabBarVC.imageView setHidden:NO];
+    }
     //isHideTabBar=!isHideTabBar;
     for(UIView *view in self.tabBarController.view.subviews)
     {

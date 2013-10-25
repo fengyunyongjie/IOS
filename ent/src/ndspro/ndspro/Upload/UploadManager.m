@@ -42,7 +42,11 @@
     }
     else
     {
-        list.t_id =  ((UpLoadList *)[uploadArray lastObject]).t_id;
+        UpLoadList *ls = [uploadArray lastObject];
+        if(ls!=nil)
+        {
+            list.t_id =  ls.t_id;
+        }
     }
     list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
     [uploadArray addObjectsFromArray:[list selectMoveUploadListAllAndNotUpload]];
@@ -167,10 +171,12 @@
         list.t_state = 1;
         list.upload_size = list.t_lenght;
         list.file_id = [NSString formatNSStringForOjbect:[dicationary objectForKey:@"fid"]];
-        NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDate *todayDate = [NSDate date];
-        NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
-        list.t_date = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute,todayComponent.second];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        list.t_date = [dateFormatter stringFromDate:todayDate];
         [list updateUploadList];
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];
@@ -191,22 +197,8 @@
         list.sudu = (int)sudu;
         float f = (float)list.upload_size / (float)list.t_lenght;
         NSLog(@"上传进度:%f",f);
-        [self updateFirstTableViewCell];
+        [self updateTable];
     }
-}
-
--(void)updateFirstTableViewCell
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
-        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-        if([uploadView isKindOfClass:[UpDownloadViewController class]])
-        {
-            //更新UI
-            [uploadView updateCurrTableViewCell];
-        }
-    });
 }
 
 //用户存储空间不足
@@ -284,10 +276,12 @@
         UpLoadList *list = [uploadArray objectAtIndex:0];
         list.t_state = 1;
         list.upload_size = list.t_lenght;
-        NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDate *todayDate = [NSDate date];
-        NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
-        list.t_date = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute,todayComponent.second];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        list.t_date = [dateFormatter stringFromDate:todayDate];
         [list updateUploadList];
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];
@@ -317,6 +311,7 @@
         }
         UIApplication *app = [UIApplication sharedApplication];
         app.applicationIconBadgeNumber = [self.uploadArray count]+[appleDate.downmange.downingArray count];
+        [appleDate.myTabBarVC addUploadNumber:app.applicationIconBadgeNumber];
     });
 }
 
@@ -369,7 +364,7 @@
         {
             isStopCurrUpload = YES;
         }
-        else
+        else if(selectIndex<[uploadArray count])
         {
             UpLoadList *list = [uploadArray objectAtIndex:selectIndex];
             [list deleteUploadList];

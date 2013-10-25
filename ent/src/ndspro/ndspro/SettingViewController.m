@@ -16,6 +16,8 @@
 #import "LTHPasscodeViewController.h"
 #import "PasswordController.h"
 #import "SCBSession.h"
+#import "DBSqlite3.h"
+#import "MyTabBarViewController.h"
 
 typedef enum{
     kAlertTypeNewVersion,
@@ -133,6 +135,17 @@ typedef enum{
 - (IBAction)hideTabBar:(id)sender
 {
     isHideTabBar=!isHideTabBar;
+    
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(isHideTabBar)
+    {
+        [appleDate.myTabBarVC.imageView setHidden:YES];
+    }
+    else
+    {
+        [appleDate.myTabBarVC.imageView setHidden:NO];
+    }
+    
     for(UIView *view in self.tabBarController.view.subviews)
     {
         if([view isKindOfClass:[UITabBar class]])
@@ -731,7 +744,8 @@ typedef enum{
         case kActionSheetTypeExit:
             if (buttonIndex == 0) {
                 //scBox.UserLogout(callBackLogoutFunc,self);
-
+                DBSqlite3 *sql = [[DBSqlite3 alloc] init];
+                [sql cleanSql];
                 
                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
                 [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];

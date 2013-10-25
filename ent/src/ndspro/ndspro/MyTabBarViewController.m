@@ -17,6 +17,7 @@
 @end
 
 @implementation MyTabBarViewController
+@synthesize imageView,label;
 
 //<ios 6.0
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -104,6 +105,34 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)addUploadNumber:(NSInteger)count
+{
+    if(!imageView)
+    {
+        CGRect imageRect = CGRectMake(125, -10, 35, 35);
+        imageView = [[UIImageView alloc] initWithFrame:imageRect];
+        [imageView setImage:[UIImage imageNamed:@"icon_checked_grid.png"]];
+        CGRect labelRect = CGRectMake(5, 2, 25, 30);
+        label = [[UILabel alloc] initWithFrame:labelRect];
+        [label setBackgroundColor:[UIColor clearColor]];
+        [label setTextColor:[UIColor whiteColor]];
+        [label setFont:[UIFont boldSystemFontOfSize:11]];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        [label setLineBreakMode:NSLineBreakByTruncatingTail];
+        [imageView addSubview:label];
+        [self.tabBar addSubview:imageView];
+    }
+    if(count>0)
+    {
+        [label setText:[NSString stringWithFormat:@"%i",count]];
+        [imageView setHidden:NO];
+    }
+    else
+    {
+        [imageView setHidden:YES];
+    }
 }
 
 @end

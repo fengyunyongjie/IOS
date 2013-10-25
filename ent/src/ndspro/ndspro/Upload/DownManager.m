@@ -44,6 +44,14 @@
             [uploadView setDownLoading_array:downingArray];
         }
     }
+    if(!isStart)
+    {
+        for (int i=0; i<[downingArray count]; i++) {
+            DownList *list = [downingArray objectAtIndex:i];
+            list.d_state = 2;
+            list.curr_size = 0;
+        }
+    }
 }
 
 //将需要下载的文件添加到数据库中
@@ -56,10 +64,12 @@
     list.d_baseUrl = @"";
     list.d_file_id = [NSString formatNSStringForOjbect:d_file_id];
     list.d_downSize = d_downSize;
-    NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDate *todayDate = [NSDate date];
-    NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
-    list.d_datetime = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute,todayComponent.second];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    list.d_datetime = [dateFormatter stringFromDate:todayDate];
     list.d_ure_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
     
     [list insertDownList];
@@ -75,7 +85,10 @@
     if([downingArray count]>0)
     {
         DownList *ls = [downingArray lastObject];
-        list.d_id = ls.d_id;
+        if(ls!=nil)
+        {
+            list.d_id = ls.d_id;
+        }
     }
     [downingArray addObjectsFromArray:[list selectDowningAll]];
 }
@@ -88,6 +101,10 @@
         isStart = YES;
         [self updateTableStateForWaiting];
         [self startDown];
+    }
+    if(!isStart)
+    {
+        [self upNetworkStop];
     }
 }
 
@@ -128,10 +145,12 @@
         DownList *list = [downingArray objectAtIndex:0];
         list.d_baseUrl = [NSString formatNSStringForOjbect:baseUrl];
         list.d_state = 1;
-        NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDate *todayDate = [NSDate date];
-        NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
-        list.d_datetime = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute,todayComponent.second];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        list.d_datetime = [dateFormatter stringFromDate:todayDate];
         [list updateDownListForUserId];
         [downingArray removeObjectAtIndex:0];
     }
@@ -144,27 +163,8 @@
     {
         DownList *down = (DownList *)[downingArray objectAtIndex:0];
         down.curr_size = downSize;
-        if(sudu<0)
-        {
-            sudu = 0-sudu;
-        }
-        down.sudu = (int)sudu;
     }
-    [self updateView];
-}
-
--(void)updateView
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
-        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-        if([uploadView isKindOfClass:[UpDownloadViewController class]])
-        {
-            //更新UI
-            [uploadView updateCurrTableViewCell];
-        }
-    });
+    [self updateTable];
 }
 
 -(void)didFailWithError
@@ -228,6 +228,9 @@
             //更新UI
             [uploadView isSelectedLeft:uploadView.isShowUpload];
         }
+        UIApplication *app = [UIApplication sharedApplication];
+        app.applicationIconBadgeNumber = [self.downingArray count]+[appleDate.uploadmanage.uploadArray count];
+        [appleDate.myTabBarVC addUploadNumber:app.applicationIconBadgeNumber];
     });
 }
 
@@ -284,12 +287,9 @@
         {
             [self.file cancelDownload];
         }
-        else
-        {
-            DownList *list = [downingArray objectAtIndex:selectIndex];
-            [list deleteDownList];
-            [downingArray removeObjectAtIndex:selectIndex];
-        }
+        DownList *list = [downingArray objectAtIndex:selectIndex];
+        [list deleteDownList];
+        [downingArray removeObjectAtIndex:selectIndex];
     }
 }
 

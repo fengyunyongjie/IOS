@@ -24,6 +24,15 @@
     }
 }
 
+-(void)cleanSql
+{
+    self.databasePath=[YNFunctions getDBCachePath];
+    self.databasePath=[self.databasePath stringByAppendingPathComponent:@"hongPanShangYe.sqlite"];
+    NSFileManager *filemgr = [NSFileManager defaultManager];
+    BOOL bl = [filemgr removeItemAtPath:self.databasePath error:nil];
+    DDLogCInfo(@"--------------------------------------------------\n删除所有数据库文件:%i\n--------------------------------------------------",bl);
+}
+
 -(id)init
 {
     [self updateVersion];
@@ -84,14 +93,6 @@
         sqlite3_close(contactDB);
     }
     return bl;
-}
-
--(void)cleanSql
-{
-    BOOL bl = [self deleteUploadList:@"DELETE FROM PhotoFile"];
-    NSLog(@"照片文件删除：%i",bl);
-    //    bl = [self deleteUploadList:@"DELETE FROM UploadList"];
-    //    NSLog(@"上传文件删除：%i",bl);
 }
 
 -(BOOL)deleteUploadList:(NSString *)sqlDelete
