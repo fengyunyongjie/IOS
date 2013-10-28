@@ -64,7 +64,7 @@ enum{
     self.tableView.dataSource=self;
     [self.view addSubview:self.tableView];
     self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    self.segmentedControl=[[UISegmentedControl alloc] initWithItems:@[@"收件箱",@"发件箱"]];
+    self.segmentedControl=[[UISegmentedControl alloc] initWithItems:@[@"已接收",@"已发送"]];
     self.segmentedControl.frame=CGRectMake(100, 8, 120, 29);
     [self.segmentedControl setTintColor:[UIColor whiteColor]];
     [self.segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
@@ -84,7 +84,7 @@ enum{
     [_refreshHeaderView refreshLastUpdatedDate];
     
     CGRect customRect = CGRectMake(0, 0, 320, 30);
-    self.customSelectButton = [[CustomSelectButton alloc] initWithFrame:customRect leftText:@"收件箱" rightText:@"发件箱" isShowLeft:YES];
+    self.customSelectButton = [[CustomSelectButton alloc] initWithFrame:customRect leftText:@"已接收" rightText:@"已发送" isShowLeft:YES];
     [self.customSelectButton setDelegate:self];
     [self.customSelectButton setBackgroundColor:[UIColor lightGrayColor]];
     [self.view addSubview:self.customSelectButton];
@@ -306,7 +306,7 @@ enum{
     //    [alertView show];
     //    [alertView setTag:kAlertTagDeleteOne];
     //    [alertView release];
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"是否要删除选中的内容" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles: nil];
     [actionSheet setTag:kActionSheetTagDeleteOne];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];

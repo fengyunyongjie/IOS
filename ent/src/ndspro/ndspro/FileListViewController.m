@@ -364,7 +364,7 @@ typedef enum{
     NSLog(@"点击新建文件夹");
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-    [[alert textFieldAtIndex:0] setText:@"新建文件夹"];
+    //[[alert textFieldAtIndex:0] setText:@"新建文件夹"];
     [[alert textFieldAtIndex:0] setDelegate:self];
     [[alert textFieldAtIndex:0] setPlaceholder:@"请输入名称"];
     [alert setTag:kAlertTagNewFinder];
@@ -417,6 +417,11 @@ typedef enum{
 }
 -(void)editAction:(id)sender
 {
+    //文件列表为空时你，编辑按钮无效！
+    if (!self.tableView.isEditing&&self.listArray.count==0) {
+        return;
+    }
+    
     CGRect r=self.view.frame;
     r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
     self.view.frame=r;
@@ -593,10 +598,21 @@ typedef enum{
 -(void)toMore:(id)sender
 {
     [self hideSingleBar];
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名",@"下载", nil];
-    [actionSheet setTag:kActionSheetTagMore];
-    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+    NSString *fisdir=[dic objectForKey:@"fisdir"];
+    if ([fisdir isEqualToString:@"0"]) {
+        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名", nil];
+        [actionSheet setTag:kActionSheetTagMore];
+        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    }else
+    {
+        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"下载",@"移动",@"重命名", nil];
+        [actionSheet setTag:kActionSheetTagMore];
+        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+    }
+    
 }
 -(void)toRename:(id)sender
 {
@@ -636,7 +652,7 @@ typedef enum{
     //    [alertView show];
     //    [alertView setTag:kAlertTagDeleteOne];
     //    [alertView release];
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"是否要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles: nil];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"是否要删除选中的内容" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles: nil];
     [actionSheet setTag:kActionSheetTagDeleteOne];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
@@ -1094,7 +1110,7 @@ typedef enum{
         {
             [self.singleEditBar setTintColor:[UIColor blueColor]];
         }
-        [self.singleEditBar setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+        [self.singleEditBar setBackgroundImage:[UIImage imageNamed:@"bk_select.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
         [self.singleEditBar setBarStyle:UIBarStyleBlackOpaque];
         [self.tableView addSubview:self.singleEditBar];
         [self.tableView bringSubviewToFront:self.singleEditBar];
@@ -1183,6 +1199,9 @@ typedef enum{
 //        UIBarButtonItem *item1=[[UIBarButtonItem alloc] initWithCustomView:button];
 //        [barItems addObject:item1];
 //    }
+    NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
+    NSString *fisdir=[dic objectForKey:@"fisdir"];
+
     if ([self.roletype isEqualToString:@"9999"]) {
         //个人空间
         [self.singleEditBar setItems:@[item_send,item_flexible,item_commit,item_flexible,item_del,item_flexible,item_more]];
@@ -1193,17 +1212,28 @@ typedef enum{
     }else if ([self.roletype isEqualToString:@"1"])
     {
         //可提交
-        [self.singleEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_download]];
+        
+        if ([fisdir isEqualToString:@"0"]) {
+            [self.singleEditBar setItems:@[item_send,item_flexible,item_resave]];
+        }else
+        {
+            [self.singleEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_download]];
+        }
     }else if ([self.roletype isEqualToString:@"2"])
     {
         //可查看
-        [self.singleEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_download]];
-    }else
-    {
-        [self.singleEditBar setItems:@[item_send,item_flexible,item_commit,item_flexible,item_del,item_flexible,item_more]];
+        
+        if ([fisdir isEqualToString:@"0"]) {
+            [self.singleEditBar setItems:@[item_send,item_flexible,item_resave]];
+        }else
+        {
+            [self.singleEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_download]];
+        }
     }
 
  //   [self toMore:self];
+    
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1811,15 +1841,37 @@ typedef enum{
         }
             
         case kActionSheetTagMore:
-            if (buttonIndex == 0) {
+            if (buttonIndex == 1) {
                 NSLog(@"移动");
-                [self toMove:nil];
-            }else if (buttonIndex == 1) {
+                
+                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+                NSString *fisdir=[dic objectForKey:@"fisdir"];
+                if ([fisdir isEqualToString:@"0"]) {
+                    [self toRename:nil];
+                }else
+                {
+                    [self toMove:nil];
+                }
+            }else if (buttonIndex == 2) {
                 NSLog(@"重命名");
-                [self toRename:nil];
-            }else if(buttonIndex == 2) {
+                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+                NSString *fisdir=[dic objectForKey:@"fisdir"];
+                if ([fisdir isEqualToString:@"0"]) {
+                    [self toRename:nil];
+                }else
+                {
+                }
+                
+            }else if(buttonIndex == 0) {
                 NSLog(@"下载");
-                [self toDownload:nil];
+                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+                NSString *fisdir=[dic objectForKey:@"fisdir"];
+                if ([fisdir isEqualToString:@"0"]) {
+                    [self toMove:nil];
+                }else
+                {
+                    [self toDownload:nil];
+                }
             }
             else{
                 NSLog(@"取消");

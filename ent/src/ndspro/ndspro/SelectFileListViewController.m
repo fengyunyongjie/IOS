@@ -193,7 +193,7 @@
     NSLog(@"点击新建文件夹");
     UIAlertView *alert=[[UIAlertView alloc] initWithTitle:@"新建文件夹" message:@"" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
-    [[alert textFieldAtIndex:0] setText:@"新建文件夹"];
+    //[[alert textFieldAtIndex:0] setText:@"新建文件夹"];
     [[alert textFieldAtIndex:0] setDelegate:self];
     [[alert textFieldAtIndex:0] setPlaceholder:@"请输入名称"];
     [alert show];

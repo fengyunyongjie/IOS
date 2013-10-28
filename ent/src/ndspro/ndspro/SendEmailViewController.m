@@ -12,7 +12,7 @@
 #import "MBProgressHUD.h"
 #import "YNFunctions.h"
 
-@interface SendEmailViewController ()<SCBEmailManagerDelegate,UITextFieldDelegate>
+@interface SendEmailViewController ()<SCBEmailManagerDelegate,UITextFieldDelegate,UITextViewDelegate>
 @property (strong,nonatomic) SCBEmailManager *em;
 @property(strong,nonatomic) MBProgressHUD *hud;
 
@@ -316,6 +316,7 @@
             }
             [cell.contentView addSubview:self.eContentView];
             self.eContentView.text=self.eContent;
+            self.eContentView.delegate=self;
         }
             break;
         case 3:
@@ -454,7 +455,33 @@
     [self.eContentView endEditing:YES];
     
 }
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if (textView==self.eContentView) {
+        //NSLog(@"UserName");
+        NSMutableString *stext = [textView.text mutableCopy];
+        [stext replaceCharactersInRange:range withString:text];
+        return [stext length] <= 200;
+        //        if (range.length>=32) {
+        //            return NO;
+        //        }
+    }
+    return YES;
+}
 #pragma mark - UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
+{
+    if (textField==self.eTitleTextField) {
+        //NSLog(@"UserName");
+        NSMutableString *text = [textField.text mutableCopy];
+        [text replaceCharactersInRange:range withString:string];
+        return [text length] <= 64;
+        //        if (range.length>=32) {
+        //            return NO;
+        //        }
+    }
+    return YES;
+}
 - (BOOL)textFieldShouldReturn:(UITextField*)textField {
     BOOL retValue = NO;
     // see if we're on the username or password fields

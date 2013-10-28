@@ -89,7 +89,7 @@ __strong static WelcomeViewController *_welcommeVC;
     self.pageCtrl=pageCtrl;
     self.scrollView=scroll_view;
     
-    UIButton *button=[[UIButton alloc] initWithFrame:CGRectMake(320*3-122, self.view.frame.size.height-34-36, 122, 34)];
+    UIButton *button=[[UIButton alloc] initWithFrame:CGRectMake(320*3-41, self.view.frame.size.height-41, 41, 41)];
     [button setBackgroundImage:[UIImage imageNamed:@"guide_bt_nor.png"] forState:UIControlStateNormal];
     [button setBackgroundImage:[UIImage imageNamed:@"guide_bt_se.png"] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(toHideView) forControlEvents:UIControlEventTouchUpInside];

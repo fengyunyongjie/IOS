@@ -198,9 +198,9 @@
 {
     NSMutableArray *ids=[[NSMutableArray alloc] init];
     for (NSIndexPath *indexpath in [self selectedIndexPaths]) {
-        if (indexpath.section!=5) {
-            continue;
-        }
+//        if (indexpath.section!=5) {
+//            continue;
+//        }
         NSDictionary *dic=[self.fileArray objectAtIndex:indexpath.row];
         NSString *fid=[dic objectForKey:@"fid"];
         [ids addObject:fid];
@@ -508,13 +508,13 @@
     }
     return 150;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if (self.footerView) {
-        return self.footerView.frame.size.height;
-    }
-    return 100;
-}
+//-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    if (self.footerView) {
+//        return self.footerView.frame.size.height;
+//    }
+//    return 100;
+//}
 #pragma mark - Table view delegate
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section   // custom view for header. will be adjusted to default or specified header height
 {
@@ -570,25 +570,25 @@
     [self loadEmail];
     return self.headerView;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section   // custom view for footer. will be adjusted to default or specified footer height
-{
-    if (!self.footerView) {
-        UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
-//        UIButton *download_button=[[UIButton alloc] initWithFrame:CGRectMake(40, 33, 100, 34)];
-//        [download_button setImage:[UIImage imageNamed:@"send_download_nor.png"] forState:UIControlStateNormal];
-//        [download_button setImage:[UIImage imageNamed:@"send_download_se.png"] forState:UIControlStateHighlighted];
-//        [download_button addTarget:self  action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
-//        UIButton *resave_button=[[UIButton alloc] initWithFrame:CGRectMake(180, 33, 100, 34)];
-//        [resave_button setImage:[UIImage imageNamed:@"send_zc_nor.png"] forState:UIControlStateNormal];
-//        [resave_button setImage:[UIImage imageNamed:@"send_zc_se.png"] forState:UIControlStateHighlighted];
-//        [resave_button addTarget:self  action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
-//        [view addSubview:download_button];
-//        [view addSubview:resave_button];
-        self.footerView=view;
-    }
-    
-    return self.footerView;
-}
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section   // custom view for footer. will be adjusted to default or specified footer height
+//{
+//    if (!self.footerView) {
+//        UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 100)];
+////        UIButton *download_button=[[UIButton alloc] initWithFrame:CGRectMake(40, 33, 100, 34)];
+////        [download_button setImage:[UIImage imageNamed:@"send_download_nor.png"] forState:UIControlStateNormal];
+////        [download_button setImage:[UIImage imageNamed:@"send_download_se.png"] forState:UIControlStateHighlighted];
+////        [download_button addTarget:self  action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
+////        UIButton *resave_button=[[UIButton alloc] initWithFrame:CGRectMake(180, 33, 100, 34)];
+////        [resave_button setImage:[UIImage imageNamed:@"send_zc_nor.png"] forState:UIControlStateNormal];
+////        [resave_button setImage:[UIImage imageNamed:@"send_zc_se.png"] forState:UIControlStateHighlighted];
+////        [resave_button addTarget:self  action:@selector(toResave:) forControlEvents:UIControlEventTouchUpInside];
+////        [view addSubview:download_button];
+////        [view addSubview:resave_button];
+//        self.footerView=view;
+//    }
+//    
+//    return self.footerView;
+//}
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
