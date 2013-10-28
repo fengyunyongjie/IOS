@@ -73,7 +73,8 @@ typedef enum{
     self.space_total=@"";
     
     UIButton *exitButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    [exitButton setTitle:@"注销帐号" forState:UIControlStateNormal];
+
+    [exitButton setTitle:@"退出当前帐号" forState:UIControlStateNormal];
     [exitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [exitButton setBackgroundColor:[UIColor clearColor]];
 //    [exitButton setImage:[UIImage imageNamed:@"set_quit_nor.png"] forState:UIControlStateNormal];

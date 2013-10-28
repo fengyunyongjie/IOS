@@ -1356,6 +1356,8 @@
 				29B2AE49180FE3A4002D9D1B /* guide_1.png in Resources */,
 				29B2AE3C180F7E1A002D9D1B /* grayArrow@2x.png in Resources */,
 				29B2AE50180FE3A4002D9D1B /* sel_nor@2x.png in Resources */,
+				29B2AE11180E63BE002D9D1B /* bk_nabottom.png in Resources */,
+				29B2AE16180E63BE002D9D1B /* title_bt_start_se.png in Resources */,
 				29DF3B59180BE0FC003FEE3B /* del.png in Resources */,
 				29FDD8EA180C035000FFC558 /* Bk_Title.png in Resources */,
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,

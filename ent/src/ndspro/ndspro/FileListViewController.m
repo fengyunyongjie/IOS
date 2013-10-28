@@ -740,6 +740,7 @@ typedef enum{
 }
 -(void)toMove:(id)sender
 {
+
     [self hideSingleBar];
     if (self.tableView.editing) {
         NSArray *array=[self selectedIDs];
@@ -881,6 +882,7 @@ typedef enum{
         [self.fm_move commitFileIDs:@[fid] toPID:f_id sID:s_pid];
     }
     [self editFinished];
+
 }
 -(void)resaveFileToID:(NSString *)f_id
 {
@@ -1095,11 +1097,13 @@ typedef enum{
     [self hideMenu];
     self.selectedIndexPath=indexPath;
     if (!self.singleBg) {
+
         self.singleBg=[[UIControl alloc] initWithFrame:CGRectMake(0, 0,self.tableView.contentSize.width, self.tableView.contentSize.height)];
         [self.singleBg addTarget:self action:@selector(hideSingleBar) forControlEvents:UIControlEventTouchUpInside];
         [self.tableView addSubview:self.singleBg];
     }
     [self.singleBg setHidden:NO];
+
     self.singleBg.frame=CGRectMake(0, 0,self.tableView.contentSize.width, self.tableView.contentSize.height);
     //显示单选操作菜单
     if (!self.singleEditBar) {
