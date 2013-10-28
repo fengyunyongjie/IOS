@@ -21,6 +21,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CustomViewController.h"
 #import "YNFunctions.h"
+#import "AppDelegate.h"
 
 #define QBY 20
 #define TabBarHeight 88
@@ -150,7 +151,7 @@
     }
     
     float mY = self.view.frame.size.height-155;
-    if([[[UIDevice currentDevice] systemVersion] floatValue]<=7.0)
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
     {
         mY = mY+20;
     }
@@ -166,6 +167,7 @@
     change_myFile_button = [[UIButton alloc] initWithFrame:change_rect];
     [change_myFile_button setBackgroundImage:[UIImage imageNamed:@"Bt_SelectFolder.png"] forState:UIControlStateNormal];
     [change_myFile_button.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    [change_myFile_button.titleLabel setLineBreakMode:NSLineBreakByTruncatingMiddle];
     [change_myFile_button setTitle:device_name forState:UIControlStateNormal];
     [change_myFile_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [change_myFile_button addTarget:self action:@selector(clicked_MyFile:) forControlEvents:UIControlEventTouchUpInside];
@@ -187,6 +189,42 @@
     [btn_download addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
     [self.moreEditBar addSubview:btn_download];
 }
+
+-(void)networkError{}
+-(void)authorMenusSuccess:(NSData*)data{}
+-(void)searchSucess:(NSDictionary *)datadic{}
+-(void)operateSucess:(NSDictionary *)datadic{}
+-(void)openFinderSucess:(NSDictionary *)datadic{}
+//打开家庭成员
+-(void)getOpenFamily:(NSDictionary *)dictionary{}
+//打开文件个人信息
+-(void)getFileEntInfo:(NSDictionary *)dictionary
+{
+    DDLogCInfo(@"dictionary:%@",dictionary);
+    NSString *names = [dictionary objectForKey:@"fpnames"];
+    if([names length]>0 && ![names isEqualToString:@"<null>"])
+    {
+        NSString *fname = [dictionary objectForKey:@"fname"];
+        if([fname length]>0)
+        {
+            AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            NSMutableString *file_url = [[NSMutableString alloc] init];
+            [file_url appendString:appDelegate.file_url];
+            [file_url appendString:names];
+            [file_url appendString:fname];
+            [change_myFile_button setTitle:file_url forState:UIControlStateNormal];
+        }
+    }
+}
+-(void)openFinderUnsucess{}
+-(void)removeSucess{}
+-(void)removeUnsucess{}
+-(void)renameSucess{}
+-(void)renameUnsucess{}
+-(void)moveSucess{}
+-(void)moveUnsucess{}
+-(void)newFinderSucess{}
+-(void)newFinderUnsucess{}
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -276,10 +314,11 @@
 
 -(void)clicked_MyFile:(id)sender
 {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
-    qbImage_fileView.f_id = self.f_id;
-    qbImage_fileView.f_name = self.device_name;
-    qbImage_fileView.title = self.device_name;
+    qbImage_fileView.f_id = @"0";
+    qbImage_fileView.f_name = appDelegate.file_url;
+    qbImage_fileView.title = appDelegate.file_url;
     qbImage_fileView.space_id = space_id;
     [qbImage_fileView setQbDelegate:self];
     [self.navigationController pushViewController:qbImage_fileView animated:YES];
@@ -345,6 +384,10 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    //请求文件路径信息
+    SCBFileManager *fileManger = [[SCBFileManager alloc] init];
+    [fileManger setDelegate:self];
+    [fileManger requestEntFileInfo:self.f_id];
     if([device_name length]>0)
     {
         [change_myFile_button setTitle:device_name forState:UIControlStateNormal];

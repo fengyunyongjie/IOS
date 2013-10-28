@@ -119,7 +119,7 @@
             break;
         case 1:
         {
-            [cell.textLabel setText:@"修改密码锁"];
+            [cell.textLabel setText:@"修改密码"];
             if ([LTHPasscodeViewController passcodeExistsInKeychain]) {
                 [LTHPasscodeViewController saveTimerStartTime];
                 if ([LTHPasscodeViewController timerDuration] == 1)

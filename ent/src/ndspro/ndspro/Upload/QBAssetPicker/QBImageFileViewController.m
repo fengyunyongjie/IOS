@@ -20,6 +20,7 @@
 #import "AppDelegate.h"
 #import "SCBSession.h"
 #import "YNFunctions.h"
+#import "QBAssetCollectionViewController.h"
 
 @interface QBImageFileViewController ()
 
@@ -179,7 +180,7 @@
     }
     
     float mY = self.view.frame.size.height-110;
-    if([[[UIDevice currentDevice] systemVersion] floatValue]<=7.0)
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
     {
         mY = mY+20;
     }
@@ -234,7 +235,21 @@
 {
     [self.qbDelegate uploadFileder:f_name];
     [self.qbDelegate uploadFiledId:f_id];
-    [self dismissModalViewControllerAnimated:YES];
+    if([self.navigationController.viewControllers count]>3)
+    {
+        for(UIViewController *delailview in self.navigationController.viewControllers)
+        {
+            if([delailview isKindOfClass:[QBAssetCollectionViewController class]])
+            {
+                [self.navigationController popToViewController:delailview animated:YES];
+                break;
+            }
+        }
+    }
+    else
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 -(void)newFold:(NSDictionary *)dictionary

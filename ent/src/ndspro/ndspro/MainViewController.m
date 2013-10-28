@@ -12,6 +12,8 @@
 #import "SelectFileListViewController.h"
 #import "UIBarButtonItem+Yn.h"
 #import "MBProgressHUD.h"
+#import "AppDelegate.h"
+
 #define AUTHOR_MENU @"AuthorMenus"
 @interface MainViewController()<SCBFileManagerDelegate>
 @property (strong,nonatomic) SCBFileManager *fm;
@@ -261,6 +263,8 @@
                 flVC.f_id=@"0";
                 flVC.title=[dic objectForKey:@"spname"];
                 flVC.roletype=[dic objectForKey:@"roletype"];
+                AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+                appDelegate.file_url = flVC.title;
                 [self.navigationController pushViewController:flVC animated:YES];
             }
         }

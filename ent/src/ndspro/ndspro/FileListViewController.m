@@ -1288,7 +1288,7 @@ typedef enum{
                             }
                             list.d_name = [NSString formatNSStringForOjbect:[diction objectForKey:@"fname"]];
                             list.d_baseUrl = [NSString get_image_save_file_path:list.d_name];
-                            
+                            list.d_downSize = [[diction objectForKey:@"fsize"] integerValue];
                             [tableArray addObject:list];
                             if(row==0 && [fname isEqualToString:fname_])
                             {

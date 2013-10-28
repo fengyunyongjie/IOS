@@ -19,8 +19,9 @@
 // Controllers
 #import "QBImagePickerController.h"
 #import "QBImageFileViewController.h"
+#import "SCBFileManager.h"
 
-@interface QBAssetCollectionViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, QBImagePickerAssetCellDelegate,QBImageFileViewDelegate>
+@interface QBAssetCollectionViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, QBImagePickerAssetCellDelegate,QBImageFileViewDelegate,SCBFileManagerDelegate>
 {
     /*
      自定义navBar

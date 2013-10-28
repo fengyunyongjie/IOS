@@ -323,6 +323,16 @@
         list.t_state = 3;
     }
     [self updateTable];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            //更新UI
+            [uploadView setIsStartUpload:NO];
+        }
+    });
 }
 
 //修改Ui状态为等待
@@ -344,6 +354,16 @@
         list.t_state = 2;
     }
     [self updateTable];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            //更新UI
+            [uploadView setIsStartUpload:NO];
+        }
+    });
 }
 
 //暂时所有上传

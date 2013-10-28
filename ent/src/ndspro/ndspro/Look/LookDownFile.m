@@ -18,9 +18,21 @@
 {
     downsize = 0;
     endSudu = 0;
-    NSString *path = [NSString get_image_save_file_path:fileName];
-    //查询本地是否已经有该图片
-    BOOL bl = [NSString image_exists_at_file_path:path];
+    NSString *path;
+    path = [NSString get_image_FM_file_path:fileName];
+    BOOL bl;
+    bl = [NSString image_exists_FM_file_path:path];
+    if(bl)
+    {
+        [delegate appImageDidLoad:imageViewIndex urlImage:path index:indexPath]; //将视图tag和地址派发给实现类
+        return;
+    }
+    else
+    {
+        path = [NSString get_image_save_file_path:fileName];
+        //查询本地是否已经有该图片
+        bl = [NSString image_exists_at_file_path:path];
+    }
     
     if(bl)
     {

@@ -16,4 +16,6 @@
 + (BOOL)image_exists_at_file_path:(NSString *)image_path;
 //获取图片路径
 + (NSString*)get_image_save_file_path:(NSString*)image_path;
++ (BOOL)image_exists_FM_file_path:(NSString *)image_path;
++ (NSString*)get_image_FM_file_path:(NSString*)image_path;
 @end

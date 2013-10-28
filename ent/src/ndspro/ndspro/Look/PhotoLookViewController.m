@@ -498,26 +498,34 @@
         [s addGestureRecognizer:onceTap];
         UIImage *oldImge = nil;
         
-        if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
+        NSString *url_path = [NSString get_image_FM_file_path:demo.d_name];
+        if([NSString image_exists_FM_file_path:url_path])
         {
-            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
+            NSString *path = [NSString get_image_save_file_path:url_path];
             oldImge = [UIImage imageWithContentsOfFile:path];
         }
         else
         {
-            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_thumbUrl]];
-            oldImge = [UIImage imageWithContentsOfFile:path];
-            isAction = YES;
-            LookDownFile *downImage = [[LookDownFile alloc] init];
-            [downImage setFile_id:demo.d_file_id];
-            [downImage setFileName:demo.d_name];
-            [downImage setImageViewIndex:ImageViewTag+i];
-            [downImage setIndexPath:[NSIndexPath indexPathForRow:ACTNUMBER+i inSection:0]];
-            [downImage setDelegate:self];
-            [downImage startDownload];
-            [downArray addObject:downImage];
+            if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
+            {
+                NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
+                oldImge = [UIImage imageWithContentsOfFile:path];
+            }
+            else
+            {
+                NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_thumbUrl]];
+                oldImge = [UIImage imageWithContentsOfFile:path];
+                isAction = YES;
+                LookDownFile *downImage = [[LookDownFile alloc] init];
+                [downImage setFile_id:demo.d_file_id];
+                [downImage setFileName:demo.d_name];
+                [downImage setImageViewIndex:ImageViewTag+i];
+                [downImage setIndexPath:[NSIndexPath indexPathForRow:ACTNUMBER+i inSection:0]];
+                [downImage setDelegate:self];
+                [downImage startDownload];
+                [downArray addObject:downImage];
+            }
         }
-        
         CGSize size = [self getSacpeImageSize:oldImge];
         imageview.image = oldImge;
         
@@ -567,24 +575,34 @@
         [s addGestureRecognizer:onceTap];
         __block BOOL isAction = FALSE;
         UIImage *oldImge = nil;
-        if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
+        
+        NSString *url_path = [NSString get_image_FM_file_path:demo.d_name];
+        if([NSString image_exists_FM_file_path:url_path])
         {
-            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
+            NSString *path = [NSString get_image_save_file_path:url_path];
             oldImge = [UIImage imageWithContentsOfFile:path];
         }
         else
         {
-            NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
-            oldImge = [UIImage imageWithContentsOfFile:path];
-            isAction = YES;
-            LookDownFile *downImage = [[LookDownFile alloc] init];
-            [downImage setFile_id:demo.d_file_id];
-            [downImage setFileName:demo.d_name];
-            [downImage setImageViewIndex:ImageViewTag+i];
-            [downImage setIndexPath:[NSIndexPath indexPathForRow:ACTNUMBER+i inSection:0]];
-            [downImage setDelegate:self];
-            [downImage startDownload];
-            [downArray addObject:downImage];
+            if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
+            {
+                NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
+                oldImge = [UIImage imageWithContentsOfFile:path];
+            }
+            else
+            {
+                NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
+                oldImge = [UIImage imageWithContentsOfFile:path];
+                isAction = YES;
+                LookDownFile *downImage = [[LookDownFile alloc] init];
+                [downImage setFile_id:demo.d_file_id];
+                [downImage setFileName:demo.d_name];
+                [downImage setImageViewIndex:ImageViewTag+i];
+                [downImage setIndexPath:[NSIndexPath indexPathForRow:ACTNUMBER+i inSection:0]];
+                [downImage setDelegate:self];
+                [downImage startDownload];
+                [downArray addObject:downImage];
+            }
         }
         
         CGSize size = [self getSacpeImageSize:oldImge];

@@ -409,6 +409,23 @@
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
+-(void)requestEntFileInfo:(NSString *)f_id
+{
+    self.fm_type = kFMTypeFileInfo;
+    self.activeData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_INFO]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"fid=%@",f_id];
+    NSLog(@"body:%@",body);
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    
+    [request setHTTPMethod:@"POST"];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+}
+
 #pragma mark - NSURLConnectionDelegate Methods
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response
@@ -534,6 +551,9 @@
                     break;
                 case kFMTypeFamily:
                     [self.delegate getOpenFamily:dic];
+                    break;
+                case kFMTypeFileInfo:
+                    [self.delegate getFileEntInfo:dic];
                     break;
             }
         }

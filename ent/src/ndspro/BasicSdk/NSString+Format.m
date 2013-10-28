@@ -53,4 +53,22 @@
     return path;
 }
 
+//这个路径下是否存在此图片
++ (BOOL)image_exists_FM_file_path:(NSString *)image_path
+{
+    NSFileManager *file_manager = [NSFileManager defaultManager];
+    NSString *documentDir = [YNFunctions getFMCachePath];
+    NSArray *array=[image_path componentsSeparatedByString:@"/"];
+    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+    return [file_manager fileExistsAtPath:path];
+}
+
++ (NSString*)get_image_FM_file_path:(NSString*)image_path
+{
+    NSString *documentDir = [YNFunctions getFMCachePath];
+    NSArray *array=[image_path componentsSeparatedByString:@"/"];
+    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+    return path;
+}
+
 @end

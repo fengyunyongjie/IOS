@@ -15,7 +15,7 @@
 #import "AppDelegate.h"
 #import "Reachability.h"
 
-#define SomeDataSize 1024*20
+#define SomeDataSize 1024*200
 
 @implementation UploadFile
 @synthesize connection,finishName,list,delegate,urlNameArray,urlIndex,file_data,md5String,uploderDemo,total;

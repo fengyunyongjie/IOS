@@ -277,6 +277,16 @@
     isOpenedDown = FALSE;
     isStart = FALSE;
     [self updateTable];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            //更新UI
+            [uploadView setIsStartDown:NO];
+        }
+    });
 }
 //删除一条上传
 -(void)deleteOneDown:(NSInteger)selectIndex
@@ -291,6 +301,7 @@
         [list deleteDownList];
         [downingArray removeObjectAtIndex:selectIndex];
     }
+    [self startDown];
 }
 
 //删除所有上传

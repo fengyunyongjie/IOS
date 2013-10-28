@@ -19,7 +19,7 @@
 #import "YNFunctions.h"
 
 @implementation AppDelegate
-@synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload,musicPlayer;
+@synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload,musicPlayer,file_url;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -29,7 +29,7 @@
     UIApplication *app = [UIApplication sharedApplication];
     app.applicationIconBadgeNumber = [uploadmanage.uploadArray count];
     
-    [[DBSqlite3 alloc] init];
+    [[DBSqlite3 alloc] updateVersion];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];

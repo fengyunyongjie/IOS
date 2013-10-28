@@ -31,6 +31,10 @@
             [delegate upWaitWiFi];
             return;
         }
+        else
+        {
+            [delegate upWaitWiFi];
+        }
     }
     else
     {
@@ -41,21 +45,20 @@
     
     downsize = 0;
     endSudu = 0;
-    NSString *path = [self get_image_save_file_path:file_id];
-    //查询本地是否已经有该图片
-    BOOL bl = [self image_exists_at_file_path:path];
+    NSString *documentDir = [YNFunctions getFMCachePath];
+    NSArray *array=[fileName componentsSeparatedByString:@"/"];
+    file_path = [NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+//    //查询本地是否已经有该图片
+//    BOOL bl = [NSString image_exists_FM_file_path:file_path];
     
-    if(bl)
+//    if(bl)
+//    {
+//        UIImage *image = [[UIImage alloc] initWithContentsOfFile:file_path];
+//        [delegate appImageDidLoad:imageViewIndex urlImage:image index:indexPath]; //将视图tag和地址派发给实现类
+//    }
+//    else
     {
-        UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
-        [delegate appImageDidLoad:imageViewIndex urlImage:image index:indexPath]; //将视图tag和地址派发给实现类
-    }
-    else
-    {
-        NSString *documentDir = [YNFunctions getProviewCachePath];
-        NSArray *array=[fileName componentsSeparatedByString:@"/"];
-        file_path = [NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
-        assert(path!=nil);
+        assert(file_path!=nil);
         self.fileStream=[NSOutputStream outputStreamToFileAtPath:file_path append:NO];
         assert(self.fileStream!=nil);
         [self.fileStream open];
@@ -157,26 +160,6 @@
     {
         file_path = nil;
     }
-}
-
-
-
-//这个路径下是否存在此图片
-- (BOOL)image_exists_at_file_path:(NSString *)image_path
-{
-    NSFileManager *file_manager = [NSFileManager defaultManager];
-    NSString *documentDir = [YNFunctions getProviewCachePath];
-    NSArray *array=[image_path componentsSeparatedByString:@"/"];
-    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
-    return [file_manager fileExistsAtPath:path];
-}
-//获取图片路径
-- (NSString*)get_image_save_file_path:(NSString*)image_path
-{
-    NSString *documentDir = [YNFunctions getProviewCachePath];
-    NSArray *array=[image_path componentsSeparatedByString:@"/"];
-    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
-    return path;
 }
 
 @end

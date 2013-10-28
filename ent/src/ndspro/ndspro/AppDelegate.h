@@ -22,7 +22,8 @@
 @property (strong, nonatomic) DownManager *downmange;
 @property (strong, nonatomic) UploadManager *uploadmanage;
 @property (assign, nonatomic) BOOL isStopUpload;
-@property (nonatomic,strong) MusicPlayerViewController *musicPlayer;
+@property (nonatomic, strong) MusicPlayerViewController *musicPlayer;
+@property (strong, nonatomic) NSString *file_url;
 
 -(void)finishLogin;
 -(void)finishLogout;
