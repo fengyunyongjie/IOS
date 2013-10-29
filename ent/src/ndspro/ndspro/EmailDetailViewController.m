@@ -484,6 +484,10 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    //计算收件人高度
+//    CGSize theSize = CGSizeMake(300,2000);
+//    CGSize sjrSize=[self.receiveLabel sizeThatFits:theSize];
+//    CGSize titleSize=[self.titleLabel sizeThatFits:theSize];
     if (_isDetail) {
         [self.contentLabel setNumberOfLines:0];
         CGSize size = CGSizeMake(300,2000);
@@ -539,6 +543,9 @@
         [content_lbl setTextColor:[UIColor grayColor]];
         [time_lbl setTextColor:[UIColor grayColor]];
         [content_lbl setNumberOfLines:2];
+        
+        [r_label setNumberOfLines:0];
+        [title_lbl setNumberOfLines:0];
         //[content_lbl setLineBreakMode:NSLineBreakByWordWrapping];
         
         [view addSubview:p_label];
