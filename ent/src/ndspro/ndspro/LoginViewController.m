@@ -12,8 +12,15 @@
 #import "AppDelegate.h"
 #import "APService.h"
 #import "SCBSession.h"
+#import "PConfig.h"
+BOOL isMustUpdate=NO;
+enum{
+    kAlertTypeNewVersion,
+    kAlertTypeMustUpdate,
+};
 
 @interface LoginViewController ()<SCBAccountManagerDelegate>
+@property(strong,nonatomic) SCBAccountManager *am;
 @property(strong,nonatomic) MBProgressHUD *hud;
 @end
 
@@ -37,6 +44,10 @@
         // Custom initialization
     }
     return self;
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self checkUpdate];
 }
 - (void)viewDidLoad
 {
@@ -100,6 +111,16 @@
 }
 - (IBAction)login:(id)sender
 {
+    if (isMustUpdate) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"检测到有新版本，是否更新？"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"取消"
+                                                  otherButtonTitles:@"更新", nil];
+        alertView.tag=kAlertTypeMustUpdate;
+        [alertView show];
+        return;
+    }
     [self.userNameTextField endEditing:YES];
     [self.passwordTextField endEditing:YES];
     if ([self registAssert]) {
@@ -125,7 +146,12 @@
     [self.userNameTextField endEditing:YES];
     [self.passwordTextField endEditing:YES];
 }
-
+-(void)checkUpdate
+{
+    SCBAccountManager *am=[[SCBAccountManager alloc] init];
+    am.delegate=self;
+    [am checkNewVersion:BUILD_VERSION];
+}
 #pragma mark - SCBAccountManagerDelegate Methods
 -(void)networkError
 {
@@ -186,6 +212,64 @@
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
 }
+-(void)checkVersionSucceed:(NSDictionary *)datadic
+{
+    int code=-1;
+    code=[[datadic objectForKey:@"code"] intValue];
+    if (code==0) {
+        int isupdate=-1;//是否强制更新，0不强制，1强制
+        isupdate=[[datadic objectForKey:@"isupdate"] intValue];
+        if (isupdate==0) {
+            isMustUpdate=NO;
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"检测到有新版本，是否更新？"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"取消"
+                                                      otherButtonTitles:@"更新", nil];
+            alertView.tag=kAlertTypeNewVersion;
+            [alertView show];
+        }else if(isupdate==1)
+        {
+            isMustUpdate=YES;
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"检测到有新版本，是否更新？"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"取消"
+                                                      otherButtonTitles:@"更新", nil];
+            alertView.tag=kAlertTypeMustUpdate;
+            [alertView show];
+            
+        }
+        NSLog(@"有新版本");
+    }else if(code==1)
+    {
+        NSLog(@"失败，服务端异常");
+        
+    }else if(code==2)
+    {
+        NSLog(@"无新版本");
+        [self.hud show:NO];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        [self.hud show:NO];
+        self.hud.labelText=@"当前版本为最新版本";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+        
+    }else
+    {
+        NSLog(@"失败，服务端发生未知错误");
+    }
+}
+-(void)checkVersionFail
+{
+}
 #pragma mark - UITextFieldDelegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;
 {
@@ -227,5 +311,26 @@
     }
     return retValue;
     //返回值为NO，即 忽略 按下此键；若返回为YES则 认为 用户按下了此键，并去调用TextFieldDoneEditint方法，在此方法中，你可以继续 写下 你想做的事
+}
+#pragma mark - UIAlertViewDelegate Methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (alertView.tag) {
+        case kAlertTypeNewVersion:
+            if (buttonIndex == 1) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+            }
+            break;
+        case kAlertTypeMustUpdate:
+            if (buttonIndex == 1) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+            }else
+            {
+            }
+            break;
+        default:
+            break;
+    }
+    
 }
 @end

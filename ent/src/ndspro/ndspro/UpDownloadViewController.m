@@ -87,20 +87,21 @@
 -(void)menuAction:(id)sender
 {
     if (!self.menuView) {
+        const float scale=1.3f;
         self.menuView =[[UIControl alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
-        UIView * mView=[[UIView alloc] initWithFrame:CGRectMake(220, 0, 80, 47)];
+        UIView * mView=[[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(80*scale)-20-15, 0, 80*scale, 47*scale)];
         UIImageView *bgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title_menu2@2x.png"]];
-        [bgView setFrame:CGRectMake(0, 0, 80, 47)];
+        [bgView setFrame:CGRectMake(0, 0, 80*scale, 47*scale)];
         [mView addSubview:bgView];
         UIButton *btnEdit;
-        btnEdit=[[UIButton alloc] initWithFrame:CGRectMake(0, 7, 40, 40)];
+        btnEdit=[[UIButton alloc] initWithFrame:CGRectMake(0, 7*scale, 40*scale, 40*scale)];
         [btnEdit setImage:[UIImage imageNamed:@"title_bt_edit_nor@2x.png"] forState:UIControlStateHighlighted];
         [btnEdit setImage:[UIImage imageNamed:@"title_bt_edit_se@2x.png"] forState:UIControlStateNormal];
         [btnEdit setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forState:UIControlStateHighlighted];
         [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
         [mView addSubview:btnEdit];
         
-        btnStart=[[UIButton alloc] initWithFrame:CGRectMake(40, 7, 40, 40)];
+        btnStart=[[UIButton alloc] initWithFrame:CGRectMake(40*scale, 7*scale, 40*scale, 40*scale)];
         [btnStart setImage:[UIImage imageNamed:@"title_bt_start_nor.png"] forState:UIControlStateHighlighted];
         [btnStart setImage:[UIImage imageNamed:@"title_bt_start_se.png"] forState:UIControlStateNormal];
         [btnStart setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forState:UIControlStateHighlighted];

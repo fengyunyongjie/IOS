@@ -89,6 +89,16 @@ enum{
     [self.customSelectButton setBackgroundColor:[UIColor lightGrayColor]];
     [self.view addSubview:self.customSelectButton];
     
+    //左右滑动效果
+    UISwipeGestureRecognizer *recognizer;
+    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(rightSwipeFrom)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [[self view] addGestureRecognizer:recognizer];
+    recognizer = nil;
+    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(leftSwipeFrom)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+    [[self view] addGestureRecognizer:recognizer];
+    
     
     if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
         UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
@@ -319,6 +329,9 @@ enum{
 }
 -(void)editAction:(id)sender
 {
+    if (!self.tableView.isEditing && self.inArray.count==0&&self.outArray.count==0) {
+        return;
+    }
     CGRect r=self.view.frame;
     r.size.height=[[UIScreen mainScreen] bounds].size.height-r.origin.y;
     self.view.frame=r;
@@ -593,6 +606,23 @@ enum{
 
 
 #pragma mark - SCBEmailManagerDelegate
+-(void)networkError
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view.superview addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"链接失败，请检查网络";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+    [self doneLoadingTableViewData];
+}
 -(void)operateSucceed:(NSDictionary *)datadic
 {
     [self listEmailSucceed:datadic];

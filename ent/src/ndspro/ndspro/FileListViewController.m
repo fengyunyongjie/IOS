@@ -279,26 +279,27 @@ typedef enum{
     [self hideSingleBar];
     if (!self.menuView) {
         self.menuView =[[UIControl alloc] initWithFrame:self.tableView.frame];
-        UIView * mView=[[UIView alloc] initWithFrame:CGRectMake(150, 0, 161, 47)];
+        const float scale=1.3f;
+        UIView * mView=[[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(161*scale)-15, 0, 161*scale, 47*scale)];
         UIImageView *bgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title_menu4.png"]];
         [mView addSubview:bgView];
         UIButton *btnUpload,*btnNewFinder,*btnEdit,*btnSort;
-        btnUpload=[[UIButton alloc] initWithFrame:CGRectMake(0, 7, 40, 40)];
+        btnUpload=[[UIButton alloc] initWithFrame:CGRectMake(0, 7*scale, 40*scale, 40*scale)];
         [btnUpload setImage:[UIImage imageNamed:@"title_bt_upload_nor.png"] forState:UIControlStateHighlighted];
         [btnUpload setImage:[UIImage imageNamed:@"title_bt_upload_se.png"] forState:UIControlStateNormal];
         [btnUpload setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forState:UIControlStateHighlighted];
         [btnUpload addTarget:self action:@selector(uploadAction:) forControlEvents:UIControlEventTouchUpInside];
-        btnNewFinder=[[UIButton alloc] initWithFrame:CGRectMake(40, 7, 40, 40)];
+        btnNewFinder=[[UIButton alloc] initWithFrame:CGRectMake(40*scale, 7*scale, 40*scale, 40*scale)];
         [btnNewFinder setImage:[UIImage imageNamed:@"title_bt_new_nor.png"] forState:UIControlStateHighlighted];
         [btnNewFinder setImage:[UIImage imageNamed:@"title_bt_new_se.png"] forState:UIControlStateNormal];
         [btnNewFinder setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forState:UIControlStateHighlighted];
         [btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
-        btnEdit=[[UIButton alloc] initWithFrame:CGRectMake(80, 7, 40, 40)];
+        btnEdit=[[UIButton alloc] initWithFrame:CGRectMake(80*scale, 7*scale, 40*scale, 40*scale)];
         [btnEdit setImage:[UIImage imageNamed:@"title_bt_edit_nor.png"] forState:UIControlStateHighlighted];
         [btnEdit setImage:[UIImage imageNamed:@"title_bt_edit_se.png"] forState:UIControlStateNormal];
         [btnEdit setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forState:UIControlStateHighlighted];
         [btnEdit addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
-        btnSort=[[UIButton alloc] initWithFrame:CGRectMake(120, 7, 40, 40)];
+        btnSort=[[UIButton alloc] initWithFrame:CGRectMake(120*scale, 7*scale, 40*scale, 40*scale)];
         [btnSort setImage:[UIImage imageNamed:@"title_bt_sort_nor.png"] forState:UIControlStateHighlighted];
         [btnSort setImage:[UIImage imageNamed:@"title_bt_sort_se.png"] forState:UIControlStateNormal];
         [btnSort setBackgroundImage:[UIImage imageNamed:@"title_se.png"] forState:UIControlStateHighlighted];
@@ -315,7 +316,10 @@ typedef enum{
             //可提交 或 可查看
             [btnNewFinder setHidden:YES];
             [btnUpload setHidden:YES];
-            [bgView setFrame:CGRectMake(80, 0, 81, 47)];
+            [bgView setFrame:CGRectMake(80*scale, 0, 81*scale, 47*scale)];
+        }else
+        {
+            [bgView setFrame:CGRectMake(0, 0, 161*scale, 47*scale)];
         }
         [self.menuView setHidden:YES];
     }
@@ -570,19 +574,19 @@ typedef enum{
         
         if ([self.roletype isEqualToString:@"9999"]) {
             //个人空间
-            [self.moreEditBar setItems:@[item_send,item_flexible,item_commit,item_flexible,item_more,item_flexible,item_download,item_flexible,item_del]];
+            [self.moreEditBar setItems:@[item_more,item_flexible,item_download,item_flexible,item_del]];
         }else if ([self.roletype isEqualToString:@"0"])
         {
             //管理员
-            [self.moreEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_more,item_flexible,item_download,item_flexible,item_del]];
+            [self.moreEditBar setItems:@[item_resave,item_flexible,item_more,item_flexible,item_download,item_flexible,item_del]];
         }else if ([self.roletype isEqualToString:@"1"])
         {
             //可提交
-            [self.moreEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_download]];
+            [self.moreEditBar setItems:@[item_resave,item_flexible,item_download]];
         }else if ([self.roletype isEqualToString:@"2"])
         {
             //可查看
-            [self.moreEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_download]];
+            [self.moreEditBar setItems:@[item_resave,item_flexible,item_download]];
         }
         
     }
@@ -762,12 +766,23 @@ typedef enum{
         }
     }
 
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+    NSString *fid=[dic objectForKey:@"fid"];
+
+    
     SelectFileListViewController *flvc=[[SelectFileListViewController alloc] init];
     flvc.f_id=@"0";
     flvc.roletype=self.roletype;
     flvc.spid=self.spid;
     flvc.title=@"选择移动的位置";
     flvc.delegate=self;
+    flvc.type=kSelectTypeMove;
+    if (self.tableView.isEditing) {
+        flvc.targetsArray=[self selectedIDs];
+    }else
+    {
+        flvc.targetsArray=@[fid];
+    }
     YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:flvc];
     [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"title_bk_ti.png"] forBarMetrics:UIBarMetricsDefault];
     [nav.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
@@ -952,6 +967,20 @@ typedef enum{
             cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
         }
         [cell.detailTextLabel setTextColor:[UIColor grayColor]];
+        
+        UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(15, 5, 40, 40)];
+        UILabel *textLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 5, 200, 21)];
+        UILabel *detailTextLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 30, 200, 21)];
+        [cell.contentView addSubview:imageView];
+        [cell.contentView addSubview:textLabel];
+        [cell.contentView addSubview:detailTextLabel];
+        imageView.tag=1;
+        textLabel.tag=2;
+        detailTextLabel.tag=3;
+        [textLabel setFont:[UIFont systemFontOfSize:16]];
+        [detailTextLabel setFont:[UIFont systemFontOfSize:13]];
+        [detailTextLabel setTextColor:[UIColor grayColor]];
+        
         UIView *tagView = [cell viewWithTag:KCOVERTag];
         if(tagView == nil)
         {
@@ -973,19 +1002,23 @@ typedef enum{
     [accessory  addTarget:self action:@selector(accessoryButtonPressedAction:) forControlEvents:UIControlEventTouchUpInside];
     cell.accessoryView=accessory;
     
+    UIImageView *imageView=(UIImageView *)[cell.contentView viewWithTag:1];
+    UILabel *textLabel=(UILabel *)[cell.contentView viewWithTag:2];
+    UILabel *detailTextLabel=(UILabel *)[cell.contentView viewWithTag:3];
+    
     if (self.listArray) {
         NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
         cell.imageView.transform=CGAffineTransformMakeScale(1.0f,1.0f);
         if (dic) {
-            cell.textLabel.text=[dic objectForKey:@"fname"];
+            textLabel.text=[dic objectForKey:@"fname"];
             NSString *fisdir=[dic objectForKey:@"fisdir"];
             if ([fisdir isEqualToString:@"0"]) {
-                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
-                cell.imageView.image=[UIImage imageNamed:@"file_folder.png"];
+                detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
+                imageView.image=[UIImage imageNamed:@"file_folder.png"];
             }else
             {
-                cell.imageView.image=[UIImage imageNamed:@"file_other.png"];
-                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@   %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize1:[dic objectForKey:@"fsize"]]];
+                imageView.image=[UIImage imageNamed:@"file_other.png"];
+                detailTextLabel.text=[NSString stringWithFormat:@"%@   %@",[dic objectForKey:@"fmodify"],[YNFunctions convertSize1:[dic objectForKey:@"fsize"]]];
                 NSString *fname=[dic objectForKey:@"fname"];
                 NSString *fmime=[[fname pathExtension] lowercaseString];
 //                NSString *fmime=[[dic objectForKey:@"fmime"] lowercaseString];
@@ -1027,11 +1060,11 @@ typedef enum{
                         [icon drawInRect:imageRect];
                         UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
                         UIGraphicsEndImageContext();
-                        cell.imageView.image = image;
+                        imageView.image = image;
 //                        CGRect r=cell.imageView.frame;
 //                        r.size.width=r.size.height=30;
 //                        cell.imageView.frame=r;
-                        cell.imageView.transform=CGAffineTransformMakeScale(0.5f,0.5f);
+                        //cell.imageView.transform=CGAffineTransformMakeScale(0.5f,0.5f);
 
                     }else{
                         NSLog(@"将要下载的文件：%@",localThumbPath);
@@ -1040,19 +1073,19 @@ typedef enum{
                 }else if ([fmime isEqualToString:@"doc"]||
                           [fmime isEqualToString:@"docx"])
                 {
-                    cell.imageView.image = [UIImage imageNamed:@"file_doc.png"];
+                    imageView.image = [UIImage imageNamed:@"file_doc.png"];
                 }else if ([fmime isEqualToString:@"mp3"])
                 {
-                    cell.imageView.image = [UIImage imageNamed:@"file_music.png"];
+                    imageView.image = [UIImage imageNamed:@"file_music.png"];
                 }else if ([fmime isEqualToString:@"mov"])
                 {
-                    cell.imageView.image = [UIImage imageNamed:@"file_moving.png"];
+                    imageView.image = [UIImage imageNamed:@"file_moving.png"];
                 }else if ([fmime isEqualToString:@"ppt"])
                 {
-                    cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
+                    imageView.image = [UIImage imageNamed:@"file_other.png"];
                 }else
                 {
-                    cell.imageView.image = [UIImage imageNamed:@"file_other.png"];
+                    imageView.image = [UIImage imageNamed:@"file_other.png"];
                 }
 
             }
@@ -1119,7 +1152,7 @@ typedef enum{
         [self.tableView addSubview:self.singleEditBar];
         [self.tableView bringSubviewToFront:self.singleEditBar];
         UIImageView *jiantou=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bk_selectTop.png"]];
-        [jiantou setFrame:CGRectMake(290, -6, 10, 6)];
+        [jiantou setFrame:CGRectMake(280, -6, 10, 6)];
         [jiantou setTag:2012];
         [self.singleEditBar addSubview:jiantou];
     }
@@ -1130,12 +1163,12 @@ typedef enum{
         r.origin.y=(indexPath.row+1)*50-(r.size.height *2);
         UIImageView *imageView=(UIImageView *)[self.singleEditBar viewWithTag:2012];
         imageView.transform=CGAffineTransformMakeScale(1.0, -1.0);
-        imageView.frame=CGRectMake(290, 50, 10, 6);
+        imageView.frame=CGRectMake(280, 50, 10, 6);
     }else
     {
         UIImageView *imageView=(UIImageView *)[self.singleEditBar viewWithTag:2012];
         imageView.transform=CGAffineTransformMakeScale(1.0, 1.0);
-        imageView.frame=CGRectMake(290, -6, 10, 6);
+        imageView.frame=CGRectMake(280, -6, 10, 6);
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
     self.singleEditBar.frame=r;
@@ -1203,41 +1236,55 @@ typedef enum{
 //        UIBarButtonItem *item1=[[UIBarButtonItem alloc] initWithCustomView:button];
 //        [barItems addObject:item1];
 //    }
+    //2013年10月29日去提交和发送功能;by FengYN
+    
     NSDictionary *dic=[self.listArray objectAtIndex:indexPath.row];
     NSString *fisdir=[dic objectForKey:@"fisdir"];
 
     if ([self.roletype isEqualToString:@"9999"]) {
         //个人空间
-        [self.singleEditBar setItems:@[item_send,item_flexible,item_commit,item_flexible,item_del,item_flexible,item_more]];
+        if ([fisdir isEqualToString:@"0"])
+        {
+            [self.singleEditBar setItems:@[item_move,item_flexible,item_rename,item_flexible,item_del]];
+        }else
+        {
+            [self.singleEditBar setItems:@[item_download,item_flexible,item_move,item_flexible,item_rename,item_flexible,item_del]];
+        }
+        //[self.singleEditBar setItems:@[item_send,item_flexible,item_commit,item_flexible,item_del,item_flexible,item_more]];
     }else if ([self.roletype isEqualToString:@"0"])
     {
         //管理员
-        [self.singleEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_del,item_flexible,item_more]];
+        if ([fisdir isEqualToString:@"0"])
+        {
+            [self.singleEditBar setItems:@[item_resave,item_flexible,item_move,item_flexible,item_rename,item_flexible,item_del]];
+        }else
+        {
+            [self.singleEditBar setItems:@[item_move,item_flexible,item_rename,item_flexible,item_del,item_flexible,item_more]];
+        }
+//        [self.singleEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_del,item_flexible,item_more]];
     }else if ([self.roletype isEqualToString:@"1"])
     {
         //可提交
         
         if ([fisdir isEqualToString:@"0"]) {
-            [self.singleEditBar setItems:@[item_send,item_flexible,item_resave]];
+            [self.singleEditBar setItems:@[item_flexible,item_resave,item_flexible]];
         }else
         {
-            [self.singleEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_download]];
+            [self.singleEditBar setItems:@[item_download,item_flexible,item_resave]];
         }
     }else if ([self.roletype isEqualToString:@"2"])
     {
         //可查看
         
         if ([fisdir isEqualToString:@"0"]) {
-            [self.singleEditBar setItems:@[item_send,item_flexible,item_resave]];
+            [self.singleEditBar setItems:@[item_flexible,item_resave,item_flexible]];
         }else
         {
-            [self.singleEditBar setItems:@[item_send,item_flexible,item_resave,item_flexible,item_download]];
+            [self.singleEditBar setItems:@[item_download,item_flexible,item_resave]];
         }
     }
 
  //   [self toMore:self];
-    
-
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1477,6 +1524,27 @@ typedef enum{
     [self.view addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
+-(void)Unsucess:(NSString *)strError
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    if (strError==nil||[strError isEqualToString:@""]) {
+        self.hud.labelText=@"操作失败";
+    }else
+    {
+        self.hud.labelText=strError;
+    }
+    
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];

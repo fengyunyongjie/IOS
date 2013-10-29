@@ -187,11 +187,19 @@
 }
 -(BOOL)checkIsEmail:(NSString *)text
 {
-    NSString *Regex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    
-    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
-    
-    return [emailTest evaluateWithObject:text];
+    NSArray *array=[text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@";,"]];
+    for (NSString *strValue in array) {
+        NSString *Regex =@"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        //@"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        //(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*;)*
+        //(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*[,;])*\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*[,;])*
+        NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", Regex];
+        
+        if (![emailTest evaluateWithObject:strValue]) {
+            return NO;
+        };
+    }
+    return YES;
 }
 -(void)didSelectUserIDS:(NSArray *)ids Names:(NSArray *)names
 {
@@ -447,6 +455,22 @@
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
 }
+-(void)networkError
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view.superview addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"链接失败，请检查网络";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
+}
 #pragma mark - Deferred image loading (UIScrollViewDelegate)
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
 	
@@ -455,6 +479,8 @@
     [self.eContentView endEditing:YES];
     
 }
+#pragma mark - UITextViewDelegate
+
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if (textView==self.eContentView) {

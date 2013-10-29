@@ -194,6 +194,7 @@ static SCBAccountManager *_sharedAccountManager;
     }
     switch (self.type) {
         case kUserCheckVersion:
+            NSLog(@"检测版本成功：\n%@",dic);
                 [self.delegate checkVersionSucceed:dic];
             break;
         case kUserGetInfo:

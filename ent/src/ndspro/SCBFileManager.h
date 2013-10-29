@@ -101,4 +101,5 @@ typedef enum {
 -(void)moveUnsucess;
 -(void)newFinderSucess;
 -(void)newFinderUnsucess;
+-(void)Unsucess:(NSString *)strError;
 @end

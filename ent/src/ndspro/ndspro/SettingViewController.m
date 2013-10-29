@@ -23,6 +23,7 @@ typedef enum{
     kAlertTypeNewVersion,
     kAlertTypeNoNewVersion,
     kAlertTypeHideFeature,
+    kAlertTypeMustUpdate,
 }kAlertType;
 typedef enum{
     kActionSheetTypeExit,
@@ -733,12 +734,38 @@ typedef enum{
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
             }
             break;
+        case kAlertTypeMustUpdate:
+            if (buttonIndex == 1) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                [self sureExit];
+            }else
+            {
+                [self sureExit];
+            }
+            break;
         default:
             break;
     }
     
 }
-
+-(void)sureExit
+{
+    DBSqlite3 *sql = [[DBSqlite3 alloc] init];
+    [sql cleanSql];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [APService setTags:nil alias:nil];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.uploadmanage stopAllUpload];
+    [appDelegate.downmange stopAllDown];
+    [[LTHPasscodeViewController sharedUser] hiddenPassword];
+    [appDelegate finishLogout];
+}
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -746,21 +773,7 @@ typedef enum{
         case kActionSheetTypeExit:
             if (buttonIndex == 0) {
                 //scBox.UserLogout(callBackLogoutFunc,self);
-                DBSqlite3 *sql = [[DBSqlite3 alloc] init];
-                [sql cleanSql];
-                
-                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
-                [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
-                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
-                [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                [APService setTags:nil alias:nil];
-                
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [appDelegate.uploadmanage stopAllUpload];
-                [appDelegate.downmange stopAllDown];
-                [[LTHPasscodeViewController sharedUser] hiddenPassword];
-                [appDelegate finishLogout];
+                [self sureExit];
             }
             break;
         case kActionSheetTypeClear:
@@ -865,15 +878,28 @@ typedef enum{
     int code=-1;
     code=[[datadic objectForKey:@"code"] intValue];
     if (code==0) {
-        NSLog(@"有新版本");
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                                message:@"检测到有新版本，是否更新？"
-                                                                               delegate:self
-                                                                      cancelButtonTitle:@"取消"
-                                                                      otherButtonTitles:@"更新", nil];
-                            alertView.tag=kAlertTypeNewVersion;
-                            [alertView show];
+        int isupdate=-1;//是否强制更新，0不强制，1强制
+        isupdate=[[datadic objectForKey:@"isupdate"] intValue];
+        if (isupdate==0) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"检测到有新版本，是否更新？"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"取消"
+                                                      otherButtonTitles:@"更新", nil];
+            alertView.tag=kAlertTypeNewVersion;
+            [alertView show];
+        }else if(isupdate==1)
+        {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"检测到有新版本，是否更新？"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"取消"
+                                                      otherButtonTitles:@"更新", nil];
+            alertView.tag=kAlertTypeMustUpdate;
+            [alertView show];
 
+        }
+        NSLog(@"有新版本");
     }else if(code==1)
     {
         NSLog(@"失败，服务端异常");
@@ -902,6 +928,5 @@ typedef enum{
 }
 -(void)checkVersionFail
 {
-    
 }
 @end

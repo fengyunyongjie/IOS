@@ -188,7 +188,23 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 40, 40)];
+        UILabel *textLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 10, 200, 21)];
+        UILabel *detailTextLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 35, 200, 21)];
+        [cell.contentView addSubview:imageView];
+        [cell.contentView addSubview:textLabel];
+        [cell.contentView addSubview:detailTextLabel];
+        imageView.tag=1;
+        textLabel.tag=2;
+        detailTextLabel.tag=3;
+        [textLabel setFont:[UIFont systemFontOfSize:16]];
+        [detailTextLabel setFont:[UIFont systemFontOfSize:13]];
+        [detailTextLabel setTextColor:[UIColor grayColor]];
     }
+    UIImageView *imageView=(UIImageView *)[cell.contentView viewWithTag:1];
+    UILabel *textLabel=(UILabel *)[cell.contentView viewWithTag:2];
+    UILabel *detailTextLabel=(UILabel *)[cell.contentView viewWithTag:3];
     if (self.listArray) {
         NSDictionary *dic;
         if (self.type==kTypeCommit) {
@@ -197,27 +213,27 @@
             dic=[self.listArray objectAtIndex:indexPath.row];
         }
         if (dic) {
-            cell.textLabel.text=[dic objectForKey:@"spname"];
+            textLabel.text=[dic objectForKey:@"spname"];
             //加载工作区图标
             NSString *roleType=[dic objectForKey:@"roletype"];;
             if ([roleType isEqualToString:@"9999"]) {
-                cell.imageView.image=[UIImage imageNamed:@"ownerfiles.png"];
+                imageView.image=[UIImage imageNamed:@"ownerfiles.png"];
             }else
             {
-                cell.imageView.image=[UIImage imageNamed:@"bizfiles.png"];
+                imageView.image=[UIImage imageNamed:@"bizfiles.png"];
             }
             //显示工作区大小
             NSString *totalspace=[dic objectForKey:@"totalspace"];
             NSString *usedspace=[dic objectForKey:@"usedspace"];
             if (totalspace==nil||usedspace==nil) {
-                cell.detailTextLabel.text=@"1.23G/5G";
+                detailTextLabel.text=@"1.23G/5G";
             }else
             {
-                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@/%@",[YNFunctions convertSize:usedspace],[YNFunctions convertSize:totalspace]];
+                detailTextLabel.text=[NSString stringWithFormat:@"%@/%@",[YNFunctions convertSize:usedspace],[YNFunctions convertSize:totalspace]];
             }
         }
     }
-    [cell.detailTextLabel setTextColor:[UIColor grayColor]];
+    [detailTextLabel setTextColor:[UIColor grayColor]];
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

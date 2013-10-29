@@ -36,6 +36,7 @@ typedef enum {
 @end
 @protocol SCBEmailManagerDelegate
 @optional
+-(void)networkError;
 -(void)listEmailSucceed:(NSDictionary *)datadic;
 -(void)listEmailFail;
 -(void)detailEmailSucceed:(NSDictionary *)datadic;

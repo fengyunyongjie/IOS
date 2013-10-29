@@ -571,7 +571,12 @@
                     [self.delegate renameUnsucess];
                     break;
                 case kFMTypeMove:
-                    [self.delegate moveUnsucess];
+                    if ([[dic objectForKey:@"code"] intValue]==2) {
+                        [self.delegate Unsucess:@"空间不足"];
+                    }else
+                    {
+                        [self.delegate moveUnsucess];
+                    }
                     break;
                 case kFMTypeNewFinder:
                     [self.delegate newFinderUnsucess];

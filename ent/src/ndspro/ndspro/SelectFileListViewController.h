@@ -16,6 +16,7 @@ typedef enum {
     kSelectTypeCommit,
 } SelectType;
 @interface SelectFileListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@property (strong,nonatomic) NSArray *targetsArray;
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
 @property (strong,nonatomic) NSArray *finderArray;

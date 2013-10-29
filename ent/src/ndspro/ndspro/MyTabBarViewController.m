@@ -95,7 +95,8 @@
     [vc4.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"nav_set_se.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"nav_set_nor.png"]];
     [vc4.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor] forState:UIControlStateSelected];
     [vc4.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor colorWithRed:35/255.0f green:73/255.0f blue:127/255.0f alpha:1] forKey:UITextAttributeTextColor] forState:UIControlStateNormal];
-    self.viewControllers=@[vc1,vc2,vc3,vc4];
+    //2013年10月29日，隐掉“文件收发”模块; by FengYN
+    self.viewControllers=@[vc1,vc2,vc4];
     self.selectedIndex=0;
     [self.tabBar setBackgroundImage:[UIImage imageNamed:@"bk_nav.png"]];
     //[self.tabBar setTranslucent:NO];

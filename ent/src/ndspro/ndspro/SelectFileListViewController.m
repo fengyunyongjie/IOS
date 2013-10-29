@@ -89,10 +89,28 @@
     [self.view addSubview:toolbar];
     self.toolbar=toolbar;
     [self.toolbar setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
-    UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitleStr:@"    确 定    " style:UIBarButtonItemStyleDone target:self action:@selector(moveFileToHere:)];
-    UIBarButtonItem *cancel_btn=[[UIBarButtonItem alloc] initWithTitleStr:@"    取 消    " style:UIBarButtonItemStyleBordered target:self action:@selector(moveCancel:)];
+    
+    UIButton *btn_download ,*btn_resave;
+    UIBarButtonItem  *item_download, *item_resave;
+    
+    btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 134, 35)];
+    [btn_resave setBackgroundImage:[UIImage imageNamed:@"oper_bt_nor.png"] forState:UIControlStateNormal];
+    [btn_resave setBackgroundImage:[UIImage imageNamed:@"oper_bt_se.png"] forState:UIControlStateHighlighted];
+    [btn_resave setTitle:@"确 定" forState:UIControlStateNormal];
+    [btn_resave addTarget:self action:@selector(moveFileToHere:) forControlEvents:UIControlEventTouchUpInside];
+    item_resave=[[UIBarButtonItem alloc] initWithCustomView:btn_resave];
+    
+    btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 134, 35)];
+    [btn_download setBackgroundImage:[UIImage imageNamed:@"oper_bt_nor.png"] forState:UIControlStateNormal];
+    [btn_download setBackgroundImage:[UIImage imageNamed:@"oper_bt_se.png"] forState:UIControlStateHighlighted];
+    [btn_download setTitle:@"取 消" forState:UIControlStateNormal];
+    [btn_download addTarget:self action:@selector(moveCancel:) forControlEvents:UIControlEventTouchUpInside];
+    item_download=[[UIBarButtonItem alloc] initWithCustomView:btn_download];
+    
+//    UIBarButtonItem *ok_btn=[[UIBarButtonItem alloc] initWithTitleStr:@"    确 定    " style:UIBarButtonItemStyleDone target:self action:@selector(moveFileToHere:)];
+//    UIBarButtonItem *cancel_btn=[[UIBarButtonItem alloc] initWithTitleStr:@"    取 消    " style:UIBarButtonItemStyleBordered target:self action:@selector(moveCancel:)];
     UIBarButtonItem *fix=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [self.toolbar setItems:@[fix,cancel_btn,fix,ok_btn,fix]];
+    [self.toolbar setItems:@[fix,item_download,fix,item_resave,fix]];
     //self.tableView.frame=CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-toolbarHeight);
     self.tableView.frame=CGRectMake(0, 64, self.view.frame.size.width, [[UIScreen mainScreen] bounds].size.height-49-64);
     
@@ -143,7 +161,19 @@
                 NSMutableArray *array=[[NSMutableArray alloc] init];
                 for (NSDictionary *dic in self.listArray) {
                     NSString *fisdir=[dic objectForKey:@"fisdir"];
-                    if ([fisdir isEqualToString:@"0"]) {
+                    NSString *fid=[dic objectForKey:@"fid"];
+                    BOOL isTarget=NO;
+                    if ((self.type==kSelectTypeMove&&self.targetsArray!=nil)) {
+                        for (NSString *f_id in self.targetsArray) {
+                            NSString *str1=[NSString stringWithFormat:@"%@",f_id];
+                            NSString *str2=[NSString stringWithFormat:@"%@",fid];
+                            if ([str1 isEqualToString:str2]) {
+                                isTarget=YES;
+                                break;
+                            }
+                        }
+                    }
+                    if ([fisdir isEqualToString:@"0"]&&!isTarget) {
                         [array addObject:dic];
                     }
                 }
@@ -215,25 +245,30 @@
                                       reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-//        NSString *osVersion = [[UIDevice currentDevice] systemVersion];
-//        NSString *versionWithoutRotation = @"7.0";
-//        BOOL noRotationNeeded = ([versionWithoutRotation compare:osVersion options:NSNumericSearch]
-//                                 != NSOrderedDescending);
-//        if (noRotationNeeded) {
-//            cell.accessoryType=UITableViewCellAccessoryDetailButton;
-//        }else
-//        {
-//            cell.accessoryType=UITableViewCellAccessoryDetailDisclosureButton;
-//        }
+        UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(15, 5, 40, 40)];
+        UILabel *textLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 5, 200, 21)];
+        UILabel *detailTextLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 30, 200, 21)];
+        [cell.contentView addSubview:imageView];
+        [cell.contentView addSubview:textLabel];
+        [cell.contentView addSubview:detailTextLabel];
+        imageView.tag=1;
+        textLabel.tag=2;
+        detailTextLabel.tag=3;
+        [textLabel setFont:[UIFont systemFontOfSize:16]];
+        [detailTextLabel setFont:[UIFont systemFontOfSize:13]];
+        [detailTextLabel setTextColor:[UIColor grayColor]];
     }
+    UIImageView *imageView=(UIImageView *)[cell.contentView viewWithTag:1];
+    UILabel *textLabel=(UILabel *)[cell.contentView viewWithTag:2];
+    UILabel *detailTextLabel=(UILabel *)[cell.contentView viewWithTag:3];
     if (self.finderArray) {
         NSDictionary *dic=[self.finderArray objectAtIndex:indexPath.row];
         if (dic) {
-            cell.textLabel.text=[dic objectForKey:@"fname"];
+            textLabel.text=[dic objectForKey:@"fname"];
             NSString *fisdir=[dic objectForKey:@"fisdir"];
             if ([fisdir isEqualToString:@"0"]) {
-                cell.detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
-                cell.imageView.image=[UIImage imageNamed:@"file_folder.png"];
+                detailTextLabel.text=[NSString stringWithFormat:@"%@",[dic objectForKey:@"fmodify"]];
+                imageView.image=[UIImage imageNamed:@"file_folder.png"];
             }
         }
     }
@@ -259,6 +294,7 @@
                 flVC.title=[dic objectForKey:@"fname"];
                 flVC.delegate=self.delegate;
                 flVC.type=self.type;
+                flVC.targetsArray=self.targetsArray;
                 [self.navigationController pushViewController:flVC animated:YES];
             }
         }
@@ -290,7 +326,19 @@
         NSMutableArray *array=[[NSMutableArray alloc] init];
         for (NSDictionary *dic in self.listArray) {
             NSString *fisdir=[dic objectForKey:@"fisdir"];
-            if ([fisdir isEqualToString:@"0"]) {
+            NSString *fid=[dic objectForKey:@"fid"];
+            BOOL isTarget=NO;
+            if ((self.type==kSelectTypeMove&&self.targetsArray!=nil)) {
+                for (NSString *f_id in self.targetsArray) {
+                    NSString *str1=[NSString stringWithFormat:@"%@",f_id];
+                    NSString *str2=[NSString stringWithFormat:@"%@",fid];
+                    if ([str1 isEqualToString:str2]) {
+                        isTarget=YES;
+                        break;
+                    }
+                }
+            }
+            if ([fisdir isEqualToString:@"0"]&&!isTarget) {
                 [array addObject:dic];
             }
         }

@@ -9,6 +9,7 @@
 #import "UserListViewController.h"
 #import "YNFunctions.h"
 #import "SCBAccountManager.h"
+#import "MBProgressHUD.h"
 
 @implementation FileItem
 
@@ -20,6 +21,7 @@
 
 @interface UserListViewController ()<SCBAccountManagerDelegate>
 @property (strong,nonatomic) SCBAccountManager *am;
+@property (strong,nonatomic) MBProgressHUD *hud;
 @end
 
 @implementation UserListViewController
@@ -134,7 +136,7 @@
     if (self.listArray) {
         return self.listArray.count;
     }
-    return 1;
+    return 0;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -226,5 +228,21 @@
 }
 -(void)getUserListFail
 {
+}
+-(void)networkError
+{
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view.superview addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"链接失败，请检查网络";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 @end
