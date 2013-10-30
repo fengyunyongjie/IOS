@@ -62,13 +62,23 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
+    if(selected)
+    {
+        [self.jinDuView.backLabel setTextColor:[UIColor blackColor]];
+        [self.size_label setTextColor:[UIColor blackColor]];
+    }
+    else
+    {
+        [self.jinDuView.backLabel setTextColor:[UIColor colorWithRed:180.0/255.0 green:181.0/255.0 blue:181.0/255.0 alpha:1]];
+        [self.size_label setTextColor:[UIColor colorWithRed:180.0/255.0 green:181.0/255.0 blue:181.0/255.0 alpha:1]];
+    }
 }
 
 -(void)setUploadDemo:(UpLoadList *)list
 {
     upload_list = list;
     down_list = nil;
-    [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",(int)list.t_lenght]]];
+    [self.size_label setText:[YNFunctions convertSize1:[NSString stringWithFormat:@"%i",(int)list.t_lenght]]];
     if(list.t_state == 1)
     {
         [self.jinDuView showDate:list.t_date];
@@ -102,7 +112,7 @@
 {
     down_list = list;
     upload_list = nil;
-    [self.size_label setText:[YNFunctions convertSize:[NSString stringWithFormat:@"%i",(int)list.d_downSize]]];
+    [self.size_label setText:[YNFunctions convertSize1:[NSString stringWithFormat:@"%i",(int)list.d_downSize]]];
 //    [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
     if(list.d_state == 1)
     {
@@ -123,8 +133,11 @@
     }
     if(![self.label_name.text isEqualToString:list.d_name])
     {
-        NSString *thumbUrl = [self getThumbPath:list.d_thumbUrl];
-        UIImage *imageV = [UIImage imageWithContentsOfFile:thumbUrl];
+        NSString *fthumb=[NSString formatNSStringForOjbect:list.d_thumbUrl];
+        NSString *localThumbPath=[YNFunctions getIconCachePath];
+        fthumb =[YNFunctions picFileNameFromURL:fthumb];
+        localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
+        UIImage *imageV = [UIImage imageWithContentsOfFile:localThumbPath];
         if(!imageV)
         {
             NSString *fmime=[[list.d_name pathExtension] lowercaseString];

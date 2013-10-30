@@ -579,8 +579,7 @@
         NSString *url_path = [NSString get_image_FM_file_path:demo.d_name];
         if([NSString image_exists_FM_file_path:url_path])
         {
-            NSString *path = [NSString get_image_save_file_path:url_path];
-            oldImge = [UIImage imageWithContentsOfFile:path];
+            oldImge = [UIImage imageWithContentsOfFile:url_path];
         }
         else
         {
@@ -589,7 +588,7 @@
                 NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
                 oldImge = [UIImage imageWithContentsOfFile:path];
             }
-            else
+            if(!oldImge)
             {
                 NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
                 oldImge = [UIImage imageWithContentsOfFile:path];
@@ -861,7 +860,7 @@
 #pragma mark 删除按钮事件
 -(void)deleteClicked:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除图片" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除选中的内容" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [actionSheet setTag:kActionSheetTagDelete];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:self.imageScrollView];
@@ -919,6 +918,19 @@
     }
     [hud hide:YES afterDelay:0.8f];
     hud = nil;
+    
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    [self.hud show:NO];
+    self.hud.labelText=@"网络连接异常";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 
 

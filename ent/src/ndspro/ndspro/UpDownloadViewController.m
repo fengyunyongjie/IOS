@@ -39,6 +39,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.imageDownloadsInProgress = [[NSMutableDictionary alloc] init];
+    
     UISwipeGestureRecognizer *recognizer;
     
     recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(rightSwipeFrom)];
@@ -280,7 +282,7 @@
         }
         else
         {
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定要删除文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除选中的内容" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [actionSheet setTag:kActionSheetTagAllDelete];
             [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
             [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
@@ -811,7 +813,7 @@
     if(cell==nil)
     {
         cell = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
     }
     int section = indexPath.section;
     if(isShowUpload)
@@ -896,6 +898,14 @@
                     }
                 }
                 [cell setDownDemo:list];
+                
+                NSString *fthumb=[NSString formatNSStringForOjbect:list.d_thumbUrl];
+                NSString *localThumbPath=[YNFunctions getIconCachePath];
+                fthumb =[YNFunctions picFileNameFromURL:fthumb];
+                localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
+                    [self startIconDownload:[[NSDictionary alloc] initWithObjectsAndKeys:list.d_thumbUrl,@"fthumb", nil] forIndexPath:indexPath];
+                }
             }
         }
         else if(type == 2)
@@ -912,6 +922,14 @@
                     }
                 }
                 [cell setDownDemo:list];
+                
+                NSString *fthumb=[NSString formatNSStringForOjbect:list.d_thumbUrl];
+                NSString *localThumbPath=[YNFunctions getIconCachePath];
+                fthumb =[YNFunctions picFileNameFromURL:fthumb];
+                localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
+                    [self startIconDownload:[[NSDictionary alloc] initWithObjectsAndKeys:list.d_thumbUrl,@"fthumb", nil] forIndexPath:indexPath];
+                }
             }
         }
         else if(type == 3)
@@ -929,6 +947,14 @@
                     }
                 }
                 [cell setDownDemo:list];
+                
+                NSString *fthumb=[NSString formatNSStringForOjbect:list.d_thumbUrl];
+                NSString *localThumbPath=[YNFunctions getIconCachePath];
+                fthumb =[YNFunctions picFileNameFromURL:fthumb];
+                localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
+                    [self startIconDownload:[[NSDictionary alloc] initWithObjectsAndKeys:list.d_thumbUrl,@"fthumb", nil] forIndexPath:indexPath];
+                }
             }
             else if(section==1 && indexPath.row<[self.downLoaded_array count])
             {
@@ -942,6 +968,14 @@
                     }
                 }
                 [cell setDownDemo:list];
+                
+                NSString *fthumb=[NSString formatNSStringForOjbect:list.d_thumbUrl];
+                NSString *localThumbPath=[YNFunctions getIconCachePath];
+                fthumb =[YNFunctions picFileNameFromURL:fthumb];
+                localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
+                if (![[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
+                    [self startIconDownload:[[NSDictionary alloc] initWithObjectsAndKeys:list.d_thumbUrl,@"fthumb", nil] forIndexPath:indexPath];
+                }
             }
         }
         
@@ -1043,7 +1077,7 @@
 -(void)deletCell:(NSObject *)object
 {
     deleteObject = object;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"确定要删除此文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除选中的内容" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [actionSheet setTag:kActionSheetTagDelete];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
@@ -1228,7 +1262,7 @@
         if([view isKindOfClass:[UITabBar class]])
         {
             if (isHideTabBar) { //if hidden tabBar
-                [view setFrame:CGRectMake(view.frame.origin.x,[[UIScreen mainScreen]bounds].size.height, view.frame.size.width, view.frame.size.height)];
+                [view setFrame:CGRectMake(view.frame.origin.x,[[UIScreen mainScreen]bounds].size.height+2, view.frame.size.width, view.frame.size.height)];
             }else {
                 NSLog(@"isHideTabBar %@",NSStringFromCGRect(view.frame));
                 [view setFrame:CGRectMake(view.frame.origin.x, [[UIScreen mainScreen]bounds].size.height-49, view.frame.size.width, view.frame.size.height)];
@@ -1323,6 +1357,33 @@
     self.hud.margin=10.f;
     [self.hud show:YES];
     [self.hud hide:YES afterDelay:1.0f];
+}
+
+- (void)startIconDownload:(NSDictionary *)dic forIndexPath:(NSIndexPath *)indexPath
+{
+    IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
+    if (iconDownloader == nil)
+    {
+        iconDownloader = [[IconDownloader alloc] init];
+        iconDownloader.data_dic=dic;
+        iconDownloader.indexPathInTableView = indexPath;
+        iconDownloader.delegate = self;
+        [self.imageDownloadsInProgress setObject:iconDownloader forKey:indexPath];
+        [iconDownloader startDownload];
+    }
+}
+
+- (void)appImageDidLoad:(NSIndexPath *)indexPath
+{
+    if(!isShowUpload)
+    {
+        IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
+        if (iconDownloader != nil)
+        {
+            [self.table_view reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        [self.imageDownloadsInProgress removeObjectForKey:indexPath];
+    }
 }
 
 @end

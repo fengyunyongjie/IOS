@@ -13,6 +13,7 @@
 @end
 
 @implementation CustomViewController
+@synthesize cutomDelegate;
 
 //<ios 6.0
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -33,6 +34,12 @@
         [self.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:UITextAttributeTextColor]];
     }
     return self;
+}
+
+-(NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    viewController = [cutomDelegate popToViewController];
+    return [super popToViewController:viewController animated:YES];
 }
 
 - (void)viewDidLoad

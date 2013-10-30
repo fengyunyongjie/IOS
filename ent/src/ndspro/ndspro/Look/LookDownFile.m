@@ -10,12 +10,30 @@
 #import "SCBoxConfig.h"
 #import "YNFunctions.h"
 #import "SCBSession.h"
+#import "Reachability.h"
 
 @implementation LookDownFile
 @synthesize delegate,downsize,imageConnection,imageViewIndex,file_id,indexPath,isStop,macTimeOut,fileSize,fileName,file_path;
 
 - (void)startDownload
 {
+    if([self isConnection] == ReachableViaWiFi)
+    {
+        
+    }
+    else if([self isConnection] == ReachableViaWWAN)
+    {
+        //网络连接断开
+        [delegate didFailWithError];
+        return;
+    }
+    else
+    {
+        //网络连接断开
+        [delegate didFailWithError];
+        return;
+    }
+    
     downsize = 0;
     endSudu = 0;
     NSString *path;
@@ -31,7 +49,8 @@
     {
         path = [NSString get_image_save_file_path:fileName];
         //查询本地是否已经有该图片
-        bl = [NSString image_exists_at_file_path:path];
+        bl = [NSString image_exists_at_file_path:path] && [UIImage imageWithContentsOfFile:path];
+        
     }
     
     if(bl)
@@ -142,6 +161,13 @@
     {
         file_path = nil;
     }
+}
+
+//判断当前的网络是3g还是wifi
+-(NetworkStatus) isConnection
+{
+    Reachability *hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    return [hostReach currentReachabilityStatus];
 }
 
 @end

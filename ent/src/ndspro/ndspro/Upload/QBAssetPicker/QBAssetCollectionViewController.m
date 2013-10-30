@@ -158,8 +158,12 @@
     
     //添加底部试图
     self.moreEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0,mY, 320, TabBarHeight+10)];
+    CGRect bg_rect = CGRectMake(0, 0, 320, TabBarHeight+10);
+    UIImageView *bg_image = [[UIImageView alloc] initWithFrame:bg_rect];
+    [bg_image setImage:[UIImage imageNamed:@"oper_bk.png"]];
+    [self.moreEditBar addSubview:bg_image];
     DDLogCInfo(@"moreEditBar:%@",NSStringFromCGRect(self.moreEditBar.frame));
-    [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+//    [self.moreEditBar setBackgroundImage:[UIImage imageNamed:@"oper_bk.png"] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
     [self.view addSubview:self.moreEditBar];
     
     //添加选择文件

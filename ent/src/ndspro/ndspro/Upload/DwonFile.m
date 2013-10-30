@@ -18,7 +18,13 @@
 
 - (void)startDownload
 {
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [NSThread detachNewThreadSelector:@selector(isNetWork) toTarget:self withObject:nil];
+    });
+}
+
+-(void)isNetWork
+{
     if([self isConnection] == ReachableViaWiFi)
     {
         
@@ -43,20 +49,22 @@
         return;
     }
     
+    
+    
+    
     downsize = 0;
     endSudu = 0;
     NSString *documentDir = [YNFunctions getFMCachePath];
     NSArray *array=[fileName componentsSeparatedByString:@"/"];
     file_path = [NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
-//    //查询本地是否已经有该图片
-//    BOOL bl = [NSString image_exists_FM_file_path:file_path];
+    //查询本地是否已经有该图片
+    BOOL bl = [NSString image_exists_FM_file_path:file_path];
     
-//    if(bl)
-//    {
-//        UIImage *image = [[UIImage alloc] initWithContentsOfFile:file_path];
-//        [delegate appImageDidLoad:imageViewIndex urlImage:image index:indexPath]; //将视图tag和地址派发给实现类
-//    }
-//    else
+    if(bl)
+    {
+        [delegate downFinish:file_path];
+    }
+    else
     {
         assert(file_path!=nil);
         self.fileStream=[NSOutputStream outputStreamToFileAtPath:file_path append:NO];
@@ -67,7 +75,9 @@
         NSMutableURLRequest *request=[[NSMutableURLRequest alloc] initWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
         
         [request setHTTPMethod:@"GET"];
-        imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            imageConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+        });
     }
 }
 

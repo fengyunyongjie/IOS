@@ -12,8 +12,9 @@
 #import "UploadViewCell.h"
 #import "QBImagePickerController.h"
 #import "MBProgressHUD.h"
+#import "IconDownloader.h"
 
-@interface UpDownloadViewController : UIViewController<CustomSelectButtonDelegate,UITableViewDelegate,UITableViewDataSource,UploadViewCellDelegate,QBImagePickerControllerDelegate,UIActionSheetDelegate>
+@interface UpDownloadViewController : UIViewController<CustomSelectButtonDelegate,UITableViewDelegate,UITableViewDataSource,UploadViewCellDelegate,QBImagePickerControllerDelegate,UIActionSheetDelegate,IconDownloaderDelegate>
 
 @property(strong,nonatomic) UITableView *table_view;
 @property(strong,nonatomic) NSMutableArray *upLoading_array;
@@ -31,6 +32,7 @@
 @property(assign,nonatomic) BOOL isStartDown;
 @property(strong,nonatomic) UIButton *btnStart;
 @property(strong,nonatomic) NSMutableArray *selectAllIds;
+@property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
 
 -(void)isSelectedLeft:(BOOL)bl;
 -(void)updateCount:(NSString *)upload_count downCount:(NSString *)down_count;

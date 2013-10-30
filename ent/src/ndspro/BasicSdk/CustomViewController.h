@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CutomViewControllerDelegate <NSObject>
+
+-(UIViewController *)popToViewController;
+
+@end
+
 @interface CustomViewController : UINavigationController
+
+@property(nonatomic,strong) id<CutomViewControllerDelegate> cutomDelegate;
+
+-(void)goonPopToVuew:(UIViewController *)viewController;
 
 @end

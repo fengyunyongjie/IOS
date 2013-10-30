@@ -245,4 +245,28 @@
     return tableArray;
 }
 
+//断开收藏图标的关联
+-(BOOL)updateAllClip
+{
+    sqlite3_stmt *statement;
+    __block BOOL bl = TRUE;
+    const char *dbpath = [self.databasePath UTF8String];
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        const char *insert_stmt = [UpdateDownListAllForUserId UTF8String];
+        int success = sqlite3_prepare_v2(contactDB, insert_stmt, -1, &statement, NULL);
+        if (success != SQLITE_OK) {
+            bl = FALSE;
+        }
+        
+        success = sqlite3_step(statement);
+        if (success == SQLITE_ERROR) {
+            bl = FALSE;
+        }
+        DDLogCInfo(@"insertUserinfo:%i",success);
+        sqlite3_finalize(statement);
+        sqlite3_close(contactDB);
+    }
+    return bl;
+}
+
 @end
