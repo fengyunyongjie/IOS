@@ -644,7 +644,6 @@
         }
         else
         {
-            [NSThread sleepForTimeInterval:0.1];
             [self uploadSomeFile];
         }
     });

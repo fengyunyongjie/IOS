@@ -146,9 +146,17 @@
         [newUpload setDelegate:self];
         [newUpload startUpload];
     }
+    if([uploadArray count]==0)
+    {
+        isStart = FALSE;
+    }
     if(!isStart)
     {
         [self upNetworkStop];
+    }
+    else
+    {
+        [self updateTableStateForWaiting];
     }
 }
 
