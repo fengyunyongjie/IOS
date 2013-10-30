@@ -24,7 +24,7 @@
 @end
 
 @implementation UpDownloadViewController
-@synthesize table_view,upLoading_array,upLoaded_array,downLoading_array,downLoaded_array,customSelectButton,isShowUpload,deleteObject,menuView,editView,rightItem,hud,isStartUpload,isStartDown,btnStart,selectAllIds;
+@synthesize table_view,upLoading_array,upLoaded_array,downLoading_array,downLoaded_array,customSelectButton,isShowUpload,deleteObject,menuView,editView,rightItem,hud,btnStart,selectAllIds;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -158,7 +158,32 @@
 -(void)editAction:(id)sender
 {
     [self.menuView setHidden:YES];
-    [self.table_view setEditing:!self.table_view.editing animated:YES];
+    
+    if(isShowUpload)
+    {
+        if([self.upLoaded_array count] == 0 && [self.upLoading_array count] == 0)
+        {
+            [self.table_view setEditing:NO animated:YES];
+        }
+        else
+        {
+            [self.table_view setEditing:!self.table_view.editing animated:YES];
+        }
+    }
+    else
+    {
+        if([self.downLoaded_array count] == 0 && [self.downLoading_array count] == 0)
+        {
+            [self.table_view setEditing:NO animated:YES];
+        }
+        else
+        {
+            [self.table_view setEditing:!self.table_view.editing animated:YES];
+        }
+    }
+    
+    
+    
     [self.table_view reloadData];
     [self updateLoadData];
     
@@ -213,11 +238,13 @@
     }
     //隐藏按钮
     if (isHideTabBar) {
+        [self.editView setHidden:NO];
         [self.navigationItem setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(editAction:)]];
         [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitleStr:@"全选" style:UIBarButtonItemStylePlain target:self action:@selector(selectAllCell:)]];
     }
     else
     {
+        [self.editView setHidden:YES];
         [self.selectAllIds removeAllObjects];
         [self.navigationItem setLeftBarButtonItem:nil];
         [self.navigationItem setRightBarButtonItem:self.rightItem];
@@ -235,28 +262,24 @@
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     if(isShowUpload)
     {
-        if(!isStartUpload)
+        if(!appDelegate.uploadmanage.isStart)
         {
             [appDelegate.uploadmanage start];
-            isStartUpload = YES;
         }
         else
         {
             [appDelegate.uploadmanage stopAllUpload];
-            isStartUpload = NO;
         }
     }
     else
     {
-        if(!isStartDown)
+        if(!appDelegate.downmange.isStart)
         {
             [appDelegate.downmange start];
-            isStartDown = YES;
         }
         else
         {
             [appDelegate.downmange stopAllDown];
-            isStartDown = NO;
         }
     }
 }
@@ -993,71 +1016,71 @@
         return;
     }
     
-//    if(!isShowUpload)
-//    {
-//        NSInteger type = [self getDownType];
-//        if(type == 2)
-//        {
-//            if(indexPath.row < [downLoaded_array count])
-//            {
-//                DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
-//                NSString *fmime=[[list.d_name pathExtension] lowercaseString];
-//                if ([fmime isEqualToString:@"png"]||
-//                    [fmime isEqualToString:@"jpg"]||
-//                    [fmime isEqualToString:@"jpeg"]||
-//                    [fmime isEqualToString:@"bmp"]||
-//                    [fmime isEqualToString:@"gif"])
-//                {
-//                    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
-//                    for(int i=0;i<[downLoaded_array count];i++) {
-//                       DownList *oldList = [downLoaded_array objectAtIndex:i];
-//                        NSString *fmime=[[oldList.d_name pathExtension] lowercaseString];
-//                        if([fmime isEqualToString:@"png"]|| [fmime isEqualToString:@"jpg"]|| [fmime isEqualToString:@"jpeg"]|| [fmime isEqualToString:@"bmp"]|| [fmime isEqualToString:@"gif"])
-//                        {
-//                            NSLog(@"fmime:%@",fmime);
-//                            DownList *ls = [[DownList alloc] init];
-//                            ls.d_file_id = [NSString formatNSStringForOjbect:oldList.d_file_id];
-//                            ls.d_thumbUrl = [NSString formatNSStringForOjbect:oldList.d_thumbUrl];
-//                            ls.d_name = [NSString formatNSStringForOjbect:oldList.d_name];
-//                            ls.d_baseUrl = [NSString get_image_save_file_path:oldList.d_baseUrl];
-//                            [tableArray addObject:ls];
-//                        }
-//                    }
-//                    if([tableArray count]>0)
-//                    {
-//                        PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-//                        [look setTableArray:tableArray];
-//                        [self presentModalViewController:look animated:YES];
-//                    }
-//                }
-//                else
-//                {
-//                    OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
-//                    otherBrowser.dataDic=[[NSDictionary alloc] initWithObjectsAndKeys:list.d_file_id,@"fid",list.d_name,@"fname",[NSNumber numberWithInteger:list.d_downSize],@"fsize",nil];
-//                    otherBrowser.title=list.d_name;
-//                    [self presentModalViewController:otherBrowser animated:YES];
-//                }
-//            }
-//            PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-//            [look setTableArray:downLoaded_array];
-//            [self presentModalViewController:look animated:YES];
-//        }
-//        else if(type == 3)
-//        {
-//            if(indexPath.section==0 && [downLoading_array count]>0)
-//            {
-//                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-//                [look setTableArray:downLoading_array];
-//                [self presentModalViewController:look animated:YES];
-//            }
-//            if(indexPath.section==1 && [downLoaded_array count]>0)
-//            {
-//                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-//                [look setTableArray:downLoaded_array];
-//                [self presentModalViewController:look animated:YES];
-//            }
-//        }
-//    }
+    if(!isShowUpload)
+    {
+        NSInteger type = [self getDownType];
+        if(type == 2)
+        {
+            if(indexPath.row < [downLoaded_array count])
+            {
+                DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
+                NSString *fmime=[[list.d_name pathExtension] lowercaseString];
+                if ([fmime isEqualToString:@"png"]||
+                    [fmime isEqualToString:@"jpg"]||
+                    [fmime isEqualToString:@"jpeg"]||
+                    [fmime isEqualToString:@"bmp"]||
+                    [fmime isEqualToString:@"gif"])
+                {
+                    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+                    for(int i=0;i<[downLoaded_array count];i++) {
+                       DownList *oldList = [downLoaded_array objectAtIndex:i];
+                        NSString *fmime=[[oldList.d_name pathExtension] lowercaseString];
+                        if([fmime isEqualToString:@"png"]|| [fmime isEqualToString:@"jpg"]|| [fmime isEqualToString:@"jpeg"]|| [fmime isEqualToString:@"bmp"]|| [fmime isEqualToString:@"gif"])
+                        {
+                            NSLog(@"fmime:%@",fmime);
+                            DownList *ls = [[DownList alloc] init];
+                            ls.d_file_id = [NSString formatNSStringForOjbect:oldList.d_file_id];
+                            ls.d_thumbUrl = [NSString formatNSStringForOjbect:oldList.d_thumbUrl];
+                            ls.d_name = [NSString formatNSStringForOjbect:oldList.d_name];
+                            ls.d_baseUrl = [NSString get_image_save_file_path:oldList.d_baseUrl];
+                            [tableArray addObject:ls];
+                        }
+                    }
+                    if([tableArray count]>0)
+                    {
+                        PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+                        [look setTableArray:tableArray];
+                        [self presentModalViewController:look animated:YES];
+                    }
+                }
+                else
+                {
+                    OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
+                    otherBrowser.dataDic=[[NSDictionary alloc] initWithObjectsAndKeys:list.d_file_id,@"fid",list.d_name,@"fname",[NSNumber numberWithInteger:list.d_downSize],@"fsize",nil];
+                    otherBrowser.title=list.d_name;
+                    [self presentModalViewController:otherBrowser animated:YES];
+                }
+            }
+            PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+            [look setTableArray:downLoaded_array];
+            [self presentModalViewController:look animated:YES];
+        }
+        else if(type == 3)
+        {
+            if(indexPath.section==0 && [downLoading_array count]>0)
+            {
+                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+                [look setTableArray:downLoading_array];
+                [self presentModalViewController:look animated:YES];
+            }
+            if(indexPath.section==1 && [downLoaded_array count]>0)
+            {
+                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+                [look setTableArray:downLoaded_array];
+                [self presentModalViewController:look animated:YES];
+            }
+        }
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1092,7 +1115,7 @@
     else if([deleteObject isKindOfClass:[DownList class]])
     {
         DownList *list = (DownList *)deleteObject;
-        if(list.d_state != 1 && list.d_state != 4  )
+        if(list.d_state != 1 && list.d_state != 4)
         {
             UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"你选择的文件中有正在下载的文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定移除" otherButtonTitles:nil, nil];
             [actionSheet setTag:kActionSheetTagDelete];
@@ -1350,7 +1373,7 @@
 }
 
 //文件夹不存在
--(void)showFloderNot
+-(void)showFloderNot:(NSString *)alertText
 {
     if (self.hud) {
         [self.hud removeFromSuperview];
@@ -1359,7 +1382,7 @@
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.hud];
     [self.hud show:NO];
-    self.hud.labelText=@"目标文件夹不存在";
+    self.hud.labelText=alertText;
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];
@@ -1404,7 +1427,11 @@
         IconDownloader *iconDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
         if (iconDownloader != nil)
         {
-            [self.table_view reloadRowsAtIndexPaths:@[iconDownloader.indexPathInTableView] withRowAnimation:UITableViewRowAnimationNone];
+            UploadViewCell *cell = (UploadViewCell *)[self.table_view cellForRowAtIndexPath:indexPath];
+            if(cell != nil && [cell isKindOfClass:[UploadViewCell class]])
+            {
+                [cell updateList];
+            }
         }
         [self.imageDownloadsInProgress removeObjectForKey:indexPath];
     }

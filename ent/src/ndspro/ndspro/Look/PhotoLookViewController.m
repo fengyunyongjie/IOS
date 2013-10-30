@@ -506,10 +506,15 @@
         }
         else
         {
+            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
             {
                 NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
                 oldImge = [UIImage imageWithContentsOfFile:path];
+            }
+            else if(!app_delegate.isConnection)
+            {
+                oldImge = [UIImage imageNamed:@"pic_err.png"];
             }
             else
             {
@@ -583,10 +588,15 @@
         }
         else
         {
+            AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
             {
                 NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
                 oldImge = [UIImage imageWithContentsOfFile:path];
+            }
+            else if(!app_delegate.isConnection)
+            {
+                oldImge = [UIImage imageNamed:@"pic_err.png"];
             }
             if(!oldImge)
             {
@@ -910,14 +920,18 @@
 
 -(void)didFailWithError
 {
-    if([[imageScrollView viewWithTag:ACTNUMBER+self.page] isKindOfClass:[UIActivityIndicatorView class]])
+    for(int i=0;i<self.tableArray.count;i++)
     {
-        UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:ACTNUMBER+self.page];
-        [activity_indicator stopAnimating];
-        [activity_indicator removeFromSuperview];
+        if([[imageScrollView viewWithTag:ACTNUMBER+i] isKindOfClass:[UIActivityIndicatorView class]])
+        {
+            UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:ACTNUMBER+i];
+            [activity_indicator stopAnimating];
+            [activity_indicator removeFromSuperview];
+        }
     }
-    [hud hide:YES afterDelay:0.8f];
-    hud = nil;
+    AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    app_delegate.isConnection = NO;
+    [self loadPageColoumn:self.page];
     
     if (self.hud) {
         [self.hud removeFromSuperview];
@@ -926,7 +940,7 @@
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:self.hud];
     [self.hud show:NO];
-    self.hud.labelText=@"网络连接异常";
+    self.hud.labelText=@"链接失败，请检查网络";
     self.hud.mode=MBProgressHUDModeText;
     self.hud.margin=10.f;
     [self.hud show:YES];

@@ -30,7 +30,12 @@
 -(void)upWaitWiFi;
 //网络失败
 -(void)upNetworkStop;
-
+//文件名过长
+-(void)upNotNameTooTheigth;
+//上传文件大小大于1g
+-(void)upNotSizeTooBig;
+//文件名存在特殊字符
+-(void)upNotHaveXNSString;
 @end
 
 @interface UploadFile : NSObject<UpLoadDelegate>

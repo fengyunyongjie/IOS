@@ -28,17 +28,16 @@
 @property(strong,nonatomic) UIButton *editView;
 @property(strong,nonatomic) UIBarButtonItem *rightItem;
 @property(strong,nonatomic) MBProgressHUD *hud;
-@property(assign,nonatomic) BOOL isStartUpload;
-@property(assign,nonatomic) BOOL isStartDown;
 @property(strong,nonatomic) UIButton *btnStart;
 @property(strong,nonatomic) NSMutableArray *selectAllIds;
 @property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
 
 -(void)isSelectedLeft:(BOOL)bl;
 -(void)updateCount:(NSString *)upload_count downCount:(NSString *)down_count;
--(void)showFloderNot;
+-(void)showFloderNot:(NSString *)alertText;
 -(void)showSpaceNot;
 -(void)updateTableViewCount;
 -(void)updateCurrTableViewCell;
+-(void)start:(id)sender;
 
 @end

@@ -358,13 +358,30 @@
     else if([[dictionary objectForKey:@"code"] intValue] == 7 )
     {
         [self updateAutoUploadState];
-        //重命名
         [delegate upNotUpload];
+    }
+    else if([[dictionary objectForKey:@"code"] intValue] == 3 )
+    {
+        [self updateAutoUploadState];
+        //上传文件大小大于1G
+        [delegate upUserSpaceLass];
     }
     else if([[dictionary objectForKey:@"code"] intValue] == 5 )
     {
         [self updateAutoUploadState];
-        //重命名
+        //空间不足
+        [delegate upUserSpaceLass];
+    }
+    else if([[dictionary objectForKey:@"code"] intValue] == 6 )
+    {
+        [self updateAutoUploadState];
+        //文件名存在特殊字符
+        [delegate upUserSpaceLass];
+    }
+    else if([[dictionary objectForKey:@"code"] intValue] == 2 )
+    {
+        [self updateAutoUploadState];
+        //文件名过长
         [delegate upUserSpaceLass];
     }
     else

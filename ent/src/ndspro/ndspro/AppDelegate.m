@@ -19,7 +19,7 @@
 #import "YNFunctions.h"
 
 @implementation AppDelegate
-@synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload,musicPlayer,file_url;
+@synthesize downmange,myTabBarVC,loginVC,uploadmanage,isStopUpload,musicPlayer,file_url,isConnection;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -28,6 +28,12 @@
     uploadmanage = [[UploadManager alloc] init];
     UIApplication *app = [UIApplication sharedApplication];
     app.applicationIconBadgeNumber = [uploadmanage.uploadArray count];
+    
+    //监听网络
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    [hostReach startNotifier];
     
     [[DBSqlite3 alloc] updateVersion];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -147,6 +153,56 @@
     NSLog(@"接收到通知，内容：%@",userInfo);
     NSLog(@"应用程序状态：%@",@"");
     
+}
+
+
+//网络链接改变时会调用的方法
+-(void)reachabilityChanged:(NSNotification *)note
+{
+    Reachability *currReach = [note object];
+    NSParameterAssert([currReach isKindOfClass:[Reachability class]]);
+    
+    //对连接改变做出响应处理动作
+    NetworkStatus status = [currReach currentReachabilityStatus];
+    NSLog(@"status:%i",status);
+    switch (status) {
+        case 0://无网络
+        {
+            
+        }
+            break;
+        case 1://WLAN
+        {
+            isConnection = YES;
+            if(![YNFunctions isOnlyWifi])
+            {
+                if([self.uploadmanage isAutoStart])
+                {
+                    [self.uploadmanage start];
+                }
+                if([self.downmange isAutoStart])
+                {
+                    [self.downmange start];
+                }
+            }
+        }
+            break;
+        case 2://WiFi
+        {
+            isConnection = YES;
+            if([self.uploadmanage isAutoStart])
+            {
+                [self.uploadmanage start];
+            }
+            if([self.downmange isAutoStart])
+            {
+                [self.downmange start];
+            }
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 @end

@@ -37,10 +37,6 @@
             [delegate upWaitWiFi];
             return;
         }
-        else
-        {
-            [delegate upWaitWiFi];
-        }
     }
     else
     {

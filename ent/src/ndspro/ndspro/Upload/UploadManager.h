@@ -15,6 +15,7 @@
 @property(nonatomic,assign) BOOL isStopCurrUpload;
 @property(nonatomic,assign) BOOL isStart;
 @property(nonatomic,assign) BOOL isOpenedUpload;
+@property(nonatomic,assign) BOOL isAutoStart;
 
 -(id)init;
 -(void)updateLoad;
@@ -30,5 +31,5 @@
 -(void)deleteAllUpload;
 //更新ui
 -(void)updateTable;
-
+-(BOOL)IsHaveAutoStart;
 @end

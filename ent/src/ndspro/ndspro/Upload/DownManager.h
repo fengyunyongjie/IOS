@@ -17,6 +17,7 @@
 @property(nonatomic,assign) BOOL isStart;
 @property(nonatomic,assign) BOOL isOpenedDown;
 @property(nonatomic,strong) DwonFile *file;
+@property(nonatomic,assign) BOOL isAutoStart;
 
 -(id)init;
 -(void)updateLoad;
@@ -32,5 +33,5 @@
 //删除所有上传
 -(void)deleteAllDown;
 -(void)updateTable;
-
+-(BOOL)IsHaveAutoStart;
 @end

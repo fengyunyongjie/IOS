@@ -764,7 +764,9 @@ typedef enum{
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate.uploadmanage stopAllUpload];
+    [appDelegate.uploadmanage.uploadArray removeAllObjects];
     [appDelegate.downmange stopAllDown];
+    [appDelegate.downmange.downingArray removeAllObjects];
     [[LTHPasscodeViewController sharedUser] hiddenPassword];
     [appDelegate finishLogout];
 }

@@ -168,6 +168,40 @@
     [self.label_name setText:list.d_name];
 }
 
+-(void)updateList
+{
+    if(down_list)
+    {
+        NSString *fthumb=[NSString formatNSStringForOjbect:down_list.d_thumbUrl];
+        NSString *localThumbPath=[YNFunctions getIconCachePath];
+        fthumb =[YNFunctions picFileNameFromURL:fthumb];
+        localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
+        UIImage *imageV = [UIImage imageWithContentsOfFile:localThumbPath];
+        if(!imageV)
+        {
+            NSString *fmime=[[down_list.d_name pathExtension] lowercaseString];
+            if ([fmime isEqualToString:@"doc"]|| [fmime isEqualToString:@"docx"])
+            {
+                imageV = [UIImage imageNamed:@"file_doc.png"];
+            }else if ([fmime isEqualToString:@"mp3"])
+            {
+                imageV = [UIImage imageNamed:@"file_music.png"];
+            }else if ([fmime isEqualToString:@"mov"])
+            {
+                imageV = [UIImage imageNamed:@"file_moving.png"];
+            }else if ([fmime isEqualToString:@"ppt"])
+            {
+                imageV = [UIImage imageNamed:@"file_other.png"];
+            }
+            else
+            {
+                imageV = [UIImage imageNamed:@"file_other.png"];
+            }
+        }
+        [self.imageView performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+    }
+}
+
 -(UIImage *)imageFromImage:(UIImage *)image inRect:(CGRect)rect{
 	CGImageRef sourceImageRef = [image CGImage];
 	CGImageRef newImageRef = CGImageCreateWithImageInRect(sourceImageRef, rect);

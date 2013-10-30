@@ -16,7 +16,7 @@
 #import "MyTabBarViewController.h"
 
 @implementation UploadManager
-@synthesize uploadArray,isStopCurrUpload,isStart,isOpenedUpload;
+@synthesize uploadArray,isStopCurrUpload,isStart,isOpenedUpload,isAutoStart;
 
 -(id)init
 {
@@ -125,6 +125,7 @@
 
 -(void)start
 {
+    isAutoStart = YES;
     isOpenedUpload = YES;
     if(!isStart)
     {
@@ -145,14 +146,19 @@
         [newUpload setDelegate:self];
         [newUpload startUpload];
     }
-    if([uploadArray count]==0)
-    {
-        isStart = FALSE;
-    }
     if(!isStart)
     {
         [self upNetworkStop];
     }
+}
+
+-(BOOL)IsHaveAutoStart
+{
+    if(isAutoStart && [uploadArray count]>0)
+    {
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark NewUploadDelegate
@@ -221,17 +227,56 @@
         UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
         if([uploadView isKindOfClass:[UpDownloadViewController class]])
         {
-            [uploadView showFloderNot];
+            [uploadView showFloderNot:@"目标文件夹不存在"];
         }
     });
-    
-    if([uploadArray count]>0)
-    {
-        UpLoadList *list = [uploadArray objectAtIndex:0];
-        [list deleteUploadList];
-        [uploadArray removeObjectAtIndex:0];
-        [self updateTable];
-    }
+    [self startUpload];
+}
+
+//文件名过长
+-(void)upNotNameTooTheigth
+{
+    //调用ui
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            [uploadView showFloderNot:@"文件名过长"];
+        }
+    });
+    [self startUpload];
+}
+//上传文件大小大于1g
+-(void)upNotSizeTooBig
+{
+    //调用ui
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            [uploadView showFloderNot:@"上传文件大小大于1g"];
+        }
+    });
+    [self startUpload];
+}
+
+//文件名存在特殊字符
+-(void)upNotHaveXNSString
+{
+    //调用ui
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
+        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
+        if([uploadView isKindOfClass:[UpDownloadViewController class]])
+        {
+            [uploadView showFloderNot:@"文件名存在特殊字符"];
+        }
+    });
     [self startUpload];
 }
 
@@ -245,13 +290,13 @@
 -(void)upError
 {
     isStopCurrUpload = YES;
-    if([uploadArray count]>0 && isOpenedUpload)
-    {
-        UpLoadList *list = [uploadArray objectAtIndex:0];
-        [list deleteUploadList];
-        [uploadArray removeObjectAtIndex:0];
-        [self updateTable];
-    }
+//    if([uploadArray count]>0 && isOpenedUpload)
+//    {
+//        UpLoadList *list = [uploadArray objectAtIndex:0];
+//        [list deleteUploadList];
+//        [uploadArray removeObjectAtIndex:0];
+//        [self updateTable];
+//    }
     [self startUpload];
 }
 
@@ -318,16 +363,6 @@
         list.t_state = 3;
     }
     [self updateTable];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
-        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-        if([uploadView isKindOfClass:[UpDownloadViewController class]])
-        {
-            //更新UI
-            [uploadView setIsStartUpload:NO];
-        }
-    });
 }
 
 //修改Ui状态为等待
@@ -349,21 +384,12 @@
         list.t_state = 2;
     }
     [self updateTable];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        UINavigationController *NavigationController = [[appleDate.myTabBarVC viewControllers] objectAtIndex:1];
-        UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
-        if([uploadView isKindOfClass:[UpDownloadViewController class]])
-        {
-            //更新UI
-            [uploadView setIsStartUpload:NO];
-        }
-    });
 }
 
 //暂时所有上传
 -(void)stopAllUpload
 {
+    isAutoStart = NO;
     isOpenedUpload = FALSE;
     isStopCurrUpload = YES;
     isStart = NO;
