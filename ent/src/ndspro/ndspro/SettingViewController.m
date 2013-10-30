@@ -709,7 +709,7 @@ typedef enum{
                     break;
                 case 1:
                     //评分
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_URL]];
                     break;
                 case 2:
                     //意见反馈
@@ -733,15 +733,16 @@ typedef enum{
     switch (alertView.tag) {
         case kAlertTypeNewVersion:
             if (buttonIndex == 1) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_URL]];
             }
             break;
         case kAlertTypeMustUpdate:
             if (buttonIndex == 1) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_URL]];
                 [self sureExit];
             }else
             {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_URL]];
                 [self sureExit];
             }
             break;
@@ -887,20 +888,20 @@ typedef enum{
         int isupdate=-1;//是否强制更新，0不强制，1强制
         isupdate=[[datadic objectForKey:@"isupdate"] intValue];
         if (isupdate==0) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                message:@"检测到有新版本，是否更新？"
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"有新版本，点确定更新"
                                                                delegate:self
                                                       cancelButtonTitle:@"取消"
-                                                      otherButtonTitles:@"更新", nil];
+                                                      otherButtonTitles:@"确定", nil];
             alertView.tag=kAlertTypeNewVersion;
             [alertView show];
         }else if(isupdate==1)
         {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                message:@"检测到有新版本，是否更新？"
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"当前版本需要更新才可以使用，点确定更新"
                                                                delegate:self
-                                                      cancelButtonTitle:@"取消"
-                                                      otherButtonTitles:@"更新", nil];
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"确定", nil];
             alertView.tag=kAlertTypeMustUpdate;
             [alertView show];
 
@@ -921,7 +922,7 @@ typedef enum{
         self.hud=[[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:self.hud];
         [self.hud show:NO];
-        self.hud.labelText=@"当前版本为最新版本";
+        self.hud.labelText=@"当前是最新版本";
         self.hud.mode=MBProgressHUDModeText;
         self.hud.margin=10.f;
         [self.hud show:YES];

@@ -69,6 +69,12 @@
 		299BBEDE181A5E900035167A /* YNNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 299BBEDD181A5E8F0035167A /* YNNavigationController.m */; };
 		29A40DE0181521F100109565 /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A40DDF181521F100109565 /* CustomViewController.m */; };
 		29A70F8F1820E9BA005FC210 /* pic_err.png in Resources */ = {isa = PBXBuildFile; fileRef = 29A70F8E1820E9BA005FC210 /* pic_err.png */; };
+		29AFA4A51820B07800DFFE14 /* logo1_114.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AFA49F1820B07800DFFE14 /* logo1_114.png */; };
+		29AFA4A61820B07800DFFE14 /* logo1_120.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AFA4A01820B07800DFFE14 /* logo1_120.png */; };
+		29AFA4A71820B07800DFFE14 /* logo1_29.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AFA4A11820B07800DFFE14 /* logo1_29.png */; };
+		29AFA4A81820B07800DFFE14 /* logo1_57.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AFA4A21820B07800DFFE14 /* logo1_57.png */; };
+		29AFA4A91820B07800DFFE14 /* logo1_58.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AFA4A31820B07800DFFE14 /* logo1_58.png */; };
+		29AFA4AA1820B07800DFFE14 /* logo1_80.png in Resources */ = {isa = PBXBuildFile; fileRef = 29AFA4A41820B07800DFFE14 /* logo1_80.png */; };
 		29B2AE11180E63BE002D9D1B /* bk_nabottom.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0B180E63BE002D9D1B /* bk_nabottom.png */; };
 		29B2AE12180E63BE002D9D1B /* mail_unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0C180E63BE002D9D1B /* mail_unread@2x.png */; };
 		29B2AE13180E63BE002D9D1B /* title_bt_pause_nor.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B2AE0D180E63BE002D9D1B /* title_bt_pause_nor.png */; };
@@ -114,7 +120,6 @@
 		29B44B29180797070025AB61 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B44B28180797070025AB61 /* CoreTelephony.framework */; };
 		29B44B2B180797170025AB61 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29B44B2A180797170025AB61 /* SystemConfiguration.framework */; };
 		29B44B2D180797950025AB61 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 29B44B2C180797950025AB61 /* PushConfig.plist */; };
-		29B561DE1814CC190018D1FF /* logo1_120.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B561DD1814CC190018D1FF /* logo1_120.png */; };
 		29B561E018150F270018D1FF /* title_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B561DF18150F270018D1FF /* title_back@2x.png */; };
 		29B561E318151F500018D1FF /* UIBarButtonItem+Yn.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B561E218151F500018D1FF /* UIBarButtonItem+Yn.m */; };
 		29B561E718166D600018D1FF /* set_bk_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29B561E418166D600018D1FF /* set_bk_1@2x.png */; };
@@ -345,6 +350,12 @@
 		29A40DDE181521F100109565 /* CustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
 		29A40DDF181521F100109565 /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
 		29A70F8E1820E9BA005FC210 /* pic_err.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pic_err.png; sourceTree = "<group>"; };
+		29AFA49F1820B07800DFFE14 /* logo1_114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo1_114.png; sourceTree = "<group>"; };
+		29AFA4A01820B07800DFFE14 /* logo1_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo1_120.png; sourceTree = "<group>"; };
+		29AFA4A11820B07800DFFE14 /* logo1_29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo1_29.png; sourceTree = "<group>"; };
+		29AFA4A21820B07800DFFE14 /* logo1_57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo1_57.png; sourceTree = "<group>"; };
+		29AFA4A31820B07800DFFE14 /* logo1_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo1_58.png; sourceTree = "<group>"; };
+		29AFA4A41820B07800DFFE14 /* logo1_80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo1_80.png; sourceTree = "<group>"; };
 		29B2AE0B180E63BE002D9D1B /* bk_nabottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bk_nabottom.png; sourceTree = "<group>"; };
 		29B2AE0C180E63BE002D9D1B /* mail_unread@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mail_unread@2x.png"; sourceTree = "<group>"; };
 		29B2AE0D180E63BE002D9D1B /* title_bt_pause_nor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_bt_pause_nor.png; sourceTree = "<group>"; };
@@ -398,7 +409,6 @@
 		29B44B28180797070025AB61 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		29B44B2A180797170025AB61 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		29B44B2C180797950025AB61 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
-		29B561DD1814CC190018D1FF /* logo1_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo1_120.png; sourceTree = "<group>"; };
 		29B561DF18150F270018D1FF /* title_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "title_back@2x.png"; sourceTree = "<group>"; };
 		29B561E118151F500018D1FF /* UIBarButtonItem+Yn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Yn.h"; sourceTree = "<group>"; };
 		29B561E218151F500018D1FF /* UIBarButtonItem+Yn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Yn.m"; sourceTree = "<group>"; };
@@ -688,8 +698,8 @@
 		291CCB3C17F27F99005C029C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				29AFA49E1820B07800DFFE14 /* logo */,
 				299BBED9181A05D10035167A /* Mp3 */,
-				29B561DD1814CC190018D1FF /* logo1_120.png */,
 				291CCBCD17F3CD34005C029C /* PConfig.h */,
 				291CCB3D17F27F99005C029C /* ndspro-Info.plist */,
 				291CCB4117F27F99005C029C /* main.m */,
@@ -877,6 +887,19 @@
 				299BBEDA181A05D10035167A /* nothing.mp3 */,
 			);
 			path = Mp3;
+			sourceTree = "<group>";
+		};
+		29AFA49E1820B07800DFFE14 /* logo */ = {
+			isa = PBXGroup;
+			children = (
+				29AFA49F1820B07800DFFE14 /* logo1_114.png */,
+				29AFA4A01820B07800DFFE14 /* logo1_120.png */,
+				29AFA4A11820B07800DFFE14 /* logo1_29.png */,
+				29AFA4A21820B07800DFFE14 /* logo1_57.png */,
+				29AFA4A31820B07800DFFE14 /* logo1_58.png */,
+				29AFA4A41820B07800DFFE14 /* logo1_80.png */,
+			);
+			path = logo;
 			sourceTree = "<group>";
 		};
 		29B2AE28180F7E1A002D9D1B /* EGOTableViewPullRefresh */ = {
@@ -1289,6 +1312,7 @@
 				29FDD8F2180C035000FFC558 /* plus.png in Resources */,
 				29DF3B5A180BE0FC003FEE3B /* download_nor@2x.png in Resources */,
 				29A70F8F1820E9BA005FC210 /* pic_err.png in Resources */,
+				29AFA4A51820B07800DFFE14 /* logo1_114.png in Resources */,
 				29B561E718166D600018D1FF /* set_bk_1@2x.png in Resources */,
 				299BBED5181920C60035167A /* guide_gray.png in Resources */,
 				29B561E818166D600018D1FF /* set_bk_2@2x.png in Resources */,
@@ -1312,6 +1336,7 @@
 				29B44B14180638F40025AB61 /* SendEmailViewController.xib in Resources */,
 				293B36E818175A5800B3CBE6 /* send_zc_nor@2x.png in Resources */,
 				291CCC2C17F410E2005C029C /* SettingViewController.xib in Resources */,
+				29AFA4AA1820B07800DFFE14 /* logo1_80.png in Resources */,
 				299BBEDB181A05D10035167A /* nothing.mp3 in Resources */,
 				29DF3B62180BE0FC003FEE3B /* lock_bt_num_se@2x.png in Resources */,
 				29DF3B5D180BE0FC003FEE3B /* file_folder@2x.png in Resources */,
@@ -1344,6 +1369,7 @@
 				291CCC3117F411F5005C029C /* MyTabBarViewController.xib in Resources */,
 				29FDD8EC180C035000FFC558 /* Bt_Cancle.png in Resources */,
 				29FE57B31808D66E0068DE48 /* Bt_UploadOkCh.png in Resources */,
+				29AFA4A81820B07800DFFE14 /* logo1_57.png in Resources */,
 				292B6B8D17F9659E0015669A /* Main.storyboard in Resources */,
 				29DF3B54180BE0FC003FEE3B /* Bk_Start@iPhone5.png in Resources */,
 				29DF3B77180BE0FC003FEE3B /* rename_se@2x.png in Resources */,
@@ -1360,8 +1386,10 @@
 				29B2AE49180FE3A4002D9D1B /* guide_1.png in Resources */,
 				29B2AE3C180F7E1A002D9D1B /* grayArrow@2x.png in Resources */,
 				29B2AE50180FE3A4002D9D1B /* sel_nor@2x.png in Resources */,
+				29AFA4A91820B07800DFFE14 /* logo1_58.png in Resources */,
 				29B2AE11180E63BE002D9D1B /* bk_nabottom.png in Resources */,
 				29B2AE16180E63BE002D9D1B /* title_bt_start_se.png in Resources */,
+				29AFA4A71820B07800DFFE14 /* logo1_29.png in Resources */,
 				29DF3B59180BE0FC003FEE3B /* del.png in Resources */,
 				29FDD8EA180C035000FFC558 /* Bk_Title.png in Resources */,
 				291CCC1C17F4086D005C029C /* FileListViewController.xib in Resources */,
@@ -1393,13 +1421,13 @@
 				290C7A051804F3FF00EF4A32 /* EmailListViewController.xib in Resources */,
 				29DF3B76180BE0FC003FEE3B /* rename_nor@2x.png in Resources */,
 				29B2AE4A180FE3A4002D9D1B /* guide_1@iPhone5.png in Resources */,
-				29B561DE1814CC190018D1FF /* logo1_120.png in Resources */,
 				29FDD8ED180C035000FFC558 /* Bt_SelectFolder.png in Resources */,
 				29B2AE3E180F7E1A002D9D1B /* whiteArrow@2x.png in Resources */,
 				29FE576F1808D3210068DE48 /* README.txt in Resources */,
 				29B2AE38180F7E1A002D9D1B /* blackArrow@2x.png in Resources */,
 				29DF3B5F180BE0FC003FEE3B /* file_music@2x.png in Resources */,
 				29DF3B7F180BE0FC003FEE3B /* title_bt_edit_nor@2x.png in Resources */,
+				29AFA4A61820B07800DFFE14 /* logo1_120.png in Resources */,
 				29DF3B52180BE0FC003FEE3B /* bk_nav@2x.png in Resources */,
 				29DF3B6A180BE0FC003FEE3B /* move_nor@2x.png in Resources */,
 				29DF3B86180BE0FC003FEE3B /* title_bt_upload_se@2x.png in Resources */,
@@ -1628,7 +1656,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
@@ -1650,7 +1677,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: zhang danglun (ZMPBSB6X32)";

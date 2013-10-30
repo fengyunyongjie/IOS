@@ -43,5 +43,19 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+#pragma mark - QLPreviewControllerDataSource
+// Returns the number of items that the preview controller should preview
+- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)previewController
+{
+    return 1;
+}
+// returns the item that the preview controller should preview
+- (id <QLPreviewItem>) previewController: (QLPreviewController *) controller previewItemAtIndex: (NSInteger) index
+{
+    DDLogCInfo(@"previewController ----------");
+    NSURL *fileURL = nil;
+    fileURL=[NSURL fileURLWithPath:self.filePath];
+    return fileURL;
+}
+#pragma mark - QLPreviewControllerDelegate
 @end

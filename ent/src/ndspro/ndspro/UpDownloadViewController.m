@@ -836,7 +836,7 @@
     if(cell==nil)
     {
         cell = [[UploadViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     }
     int section = indexPath.section;
     if(isShowUpload)
@@ -1024,60 +1024,45 @@
             if(indexPath.row < [downLoaded_array count])
             {
                 DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
-                NSString *fmime=[[list.d_name pathExtension] lowercaseString];
-                if ([fmime isEqualToString:@"png"]||
-                    [fmime isEqualToString:@"jpg"]||
-                    [fmime isEqualToString:@"jpeg"]||
-                    [fmime isEqualToString:@"bmp"]||
-                    [fmime isEqualToString:@"gif"])
-                {
-                    NSMutableArray *tableArray = [[NSMutableArray alloc] init];
-                    for(int i=0;i<[downLoaded_array count];i++) {
-                       DownList *oldList = [downLoaded_array objectAtIndex:i];
-                        NSString *fmime=[[oldList.d_name pathExtension] lowercaseString];
-                        if([fmime isEqualToString:@"png"]|| [fmime isEqualToString:@"jpg"]|| [fmime isEqualToString:@"jpeg"]|| [fmime isEqualToString:@"bmp"]|| [fmime isEqualToString:@"gif"])
-                        {
-                            NSLog(@"fmime:%@",fmime);
-                            DownList *ls = [[DownList alloc] init];
-                            ls.d_file_id = [NSString formatNSStringForOjbect:oldList.d_file_id];
-                            ls.d_thumbUrl = [NSString formatNSStringForOjbect:oldList.d_thumbUrl];
-                            ls.d_name = [NSString formatNSStringForOjbect:oldList.d_name];
-                            ls.d_baseUrl = [NSString get_image_save_file_path:oldList.d_baseUrl];
-                            [tableArray addObject:ls];
-                        }
-                    }
-                    if([tableArray count]>0)
-                    {
-                        PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-                        [look setTableArray:tableArray];
-                        [self presentModalViewController:look animated:YES];
-                    }
-                }
-                else
-                {
-                    OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
-                    otherBrowser.dataDic=[[NSDictionary alloc] initWithObjectsAndKeys:list.d_file_id,@"fid",list.d_name,@"fname",[NSNumber numberWithInteger:list.d_downSize],@"fsize",nil];
-                    otherBrowser.title=list.d_name;
-                    [self presentModalViewController:otherBrowser animated:YES];
+                NSString *f_name=list.d_name;
+                NSString *savedPath=[YNFunctions getFMCachePath];
+                savedPath=[savedPath stringByAppendingPathComponent:f_name];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:savedPath]) {
+                    QLBrowserViewController *browser=[[QLBrowserViewController alloc] init];
+                    browser.dataSource=browser;
+                    browser.delegate=browser;
+                    browser.currentPreviewItemIndex=0;
+                    browser.title=f_name;
+                    browser.filePath=savedPath;
+                    browser.fileName=f_name;
+                    [self presentViewController:browser animated:YES completion:nil];
                 }
             }
-            PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-            [look setTableArray:downLoaded_array];
-            [self presentModalViewController:look animated:YES];
         }
         else if(type == 3)
         {
             if(indexPath.section==0 && [downLoading_array count]>0)
             {
-                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-                [look setTableArray:downLoading_array];
-                [self presentModalViewController:look animated:YES];
+//                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
+//                [look setTableArray:downLoading_array];
+//                [self presentModalViewController:look animated:YES];
             }
             if(indexPath.section==1 && [downLoaded_array count]>0)
             {
-                PhotoLookViewController *look = [[PhotoLookViewController alloc] init];
-                [look setTableArray:downLoaded_array];
-                [self presentModalViewController:look animated:YES];
+                DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
+                NSString *f_name=list.d_name;
+                NSString *savedPath=[YNFunctions getFMCachePath];
+                savedPath=[savedPath stringByAppendingPathComponent:f_name];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:savedPath]) {
+                    QLBrowserViewController *browser=[[QLBrowserViewController alloc] init];
+                    browser.dataSource=browser;
+                    browser.delegate=browser;
+                    browser.currentPreviewItemIndex=0;
+                    browser.title=f_name;
+                    browser.filePath=savedPath;
+                    browser.fileName=f_name;
+                    [self presentViewController:browser animated:YES completion:nil];
+                }
             }
         }
     }

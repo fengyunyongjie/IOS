@@ -105,29 +105,6 @@ typedef enum{
     {
         [appleDate.myTabBarVC.imageView setHidden:NO];
     }
-    //isHideTabBar=!isHideTabBar;
-    for(UIView *view in self.tabBarController.view.subviews)
-    {
-        if([view isKindOfClass:[UITabBar class]])
-        {
-            if (isHideTabBar) { //if hidden tabBar
-                [view setFrame:CGRectMake(view.frame.origin.x,[[UIScreen mainScreen]bounds].size.height+2, view.frame.size.width, view.frame.size.height)];
-            }else {
-                NSLog(@"isHideTabBar %@",NSStringFromCGRect(view.frame));
-                [view setFrame:CGRectMake(view.frame.origin.x, [[UIScreen mainScreen]bounds].size.height-49, view.frame.size.width, view.frame.size.height)];
-            }
-        }else
-        {
-            if (isHideTabBar) {
-                NSLog(@"%@",NSStringFromCGRect(view.frame));
-                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, [[UIScreen mainScreen]bounds].size.height)];
-                NSLog(@"%@",NSStringFromCGRect(view.frame));
-            }else {
-                NSLog(@"%@",NSStringFromCGRect(view.frame));
-                [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width,[[UIScreen mainScreen]bounds].size.height-49)];
-            }
-        }
-    }
     
     NSLog(@"self.view.frame:%@",NSStringFromCGRect(self.view.frame));
     NSLog(@"self.tableview.frame:%@",NSStringFromCGRect(self.tableView.frame));
@@ -273,6 +250,12 @@ typedef enum{
 {
     [self.singleBg setHidden:YES];
     [self.singleEditBar setHidden:YES];
+    if (self.selectedIndexPath) {
+        
+        UITableViewCell *cell=[self.tableView cellForRowAtIndexPath:self.selectedIndexPath];
+        UIButton *button=(UIButton *) cell.accessoryView;
+        [button setSelected:NO];
+    }
 }
 -(void)menuAction:(id)sender
 {
@@ -335,6 +318,7 @@ typedef enum{
     imagePickerController.f_name = self.title;
     imagePickerController.space_id = self.spid;
     [imagePickerController requestFileDetail];
+    [imagePickerController setHidesBottomBarWhenPushed:YES];
 //    CustomViewController *navigation=[[CustomViewController alloc] initWithRootViewController:imagePickerController];
 //    [navigation setNavigationBarHidden:YES];
 //    [self presentModalViewController:navigation animated:YES];
@@ -603,21 +587,25 @@ typedef enum{
 -(void)toMore:(id)sender
 {
     [self hideSingleBar];
-    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
-    NSString *fisdir=[dic objectForKey:@"fisdir"];
-    if ([fisdir isEqualToString:@"0"]) {
-        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名", nil];
+
+        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"下载",@"转存", nil];
         [actionSheet setTag:kActionSheetTagMore];
         [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
         [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-    }else
-    {
-        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"下载",@"移动",@"重命名", nil];
-        [actionSheet setTag:kActionSheetTagMore];
-        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-    }
-    
+//    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+//    NSString *fisdir=[dic objectForKey:@"fisdir"];
+//    if ([fisdir isEqualToString:@"0"]) {
+//        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"移动",@"重命名", nil];
+//        [actionSheet setTag:kActionSheetTagMore];
+//        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+//        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+//    }else
+//    {
+//        UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"下载",@"移动",@"重命名", nil];
+//        [actionSheet setTag:kActionSheetTagMore];
+//        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+//        [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+//    }
 }
 -(void)toRename:(id)sender
 {
@@ -955,7 +943,7 @@ typedef enum{
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         
         NSString *osVersion = [[UIDevice currentDevice] systemVersion];
         NSString *versionWithoutRotation = @"7.0";
@@ -968,9 +956,9 @@ typedef enum{
         }
         [cell.detailTextLabel setTextColor:[UIColor grayColor]];
         
-        UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(15, 5, 40, 40)];
-        UILabel *textLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 5, 200, 21)];
-        UILabel *detailTextLabel=[[UILabel alloc] initWithFrame:CGRectMake(70, 30, 200, 21)];
+        UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(15, 5, 50, 50)];
+        UILabel *textLabel=[[UILabel alloc] initWithFrame:CGRectMake(80, 5, 200, 21)];
+        UILabel *detailTextLabel=[[UILabel alloc] initWithFrame:CGRectMake(80, 30, 200, 21)];
         [cell.contentView addSubview:imageView];
         [cell.contentView addSubview:textLabel];
         [cell.contentView addSubview:detailTextLabel];
@@ -999,6 +987,7 @@ typedef enum{
     [accessory setTag:indexPath.row];
     [accessory setImage:[UIImage imageNamed:@"sel_nor.png"] forState:UIControlStateNormal];
     [accessory setImage:[UIImage imageNamed:@"sel_se.png"] forState:UIControlStateHighlighted];
+    [accessory setImage:[UIImage imageNamed:@"sel_se.png"] forState:UIControlStateSelected];
     [accessory  addTarget:self action:@selector(accessoryButtonPressedAction:) forControlEvents:UIControlEventTouchUpInside];
     cell.accessoryView=accessory;
     
@@ -1037,7 +1026,7 @@ typedef enum{
                     if ([[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
                         NSLog(@"存在文件：%@",localThumbPath);
                         UIImage *icon=[UIImage imageWithContentsOfFile:localThumbPath];
-                        CGSize itemSize = CGSizeMake(80, 80);
+                        CGSize itemSize = CGSizeMake(100, 100);
                         UIGraphicsBeginImageContext(itemSize);
                         CGRect theR=CGRectMake(0, 0, itemSize.width, itemSize.height);
                         if (icon.size.width>icon.size.height) {
@@ -1048,7 +1037,7 @@ typedef enum{
                             theR.size.height=icon.size.height/(icon.size.width/itemSize.width);
                             theR.origin.y=-(theR.size.height/2)-itemSize.height;
                         }
-                        CGRect imageRect = CGRectMake(0, 0, 80, 80);
+                        CGRect imageRect = CGRectMake(0, 0, 100, 100);
 //                        CGSize size=icon.size;
 //                        if (size.width>size.height) {
 //                            imageRect.size.height=size.height*(30.0f/imageRect.size.width);
@@ -1109,7 +1098,7 @@ typedef enum{
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    return 60;
 }
 
 #pragma mark - Table view delegate
@@ -1120,6 +1109,7 @@ typedef enum{
 - (void)accessoryButtonPressedAction: (id)sender
 {
     UIButton *button = (UIButton *)sender;
+    [button setSelected:YES];
 //    UITableViewCell *cell = (UITableViewCell *)[button superview];
 //    NSIndexPath *indexPath=[self.tableView indexPathForCell:cell];
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:button.tag inSection:0];
@@ -1139,8 +1129,9 @@ typedef enum{
 
     self.singleBg.frame=CGRectMake(0, 0,self.tableView.contentSize.width, self.tableView.contentSize.height);
     //显示单选操作菜单
+    int CellHeight=60;
     if (!self.singleEditBar) {
-        self.singleEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+        self.singleEditBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, CellHeight)];
         if ([YNFunctions systemIsLaterThanString:@"7.0"]) {
             [self.singleEditBar setBarTintColor:[UIColor blueColor]];
         }else
@@ -1156,14 +1147,16 @@ typedef enum{
         [jiantou setTag:2012];
         [self.singleEditBar addSubview:jiantou];
     }
+    [self.tableView bringSubviewToFront:self.singleEditBar];
     [self.singleEditBar setHidden:NO];
     CGRect r=self.singleEditBar.frame;
-    r.origin.y=(indexPath.row+1) * 50;
+    
+    r.origin.y=(indexPath.row+1) * CellHeight;
     if (r.origin.y+r.size.height>self.tableView.frame.size.height &&r.origin.y+r.size.height > self.tableView.contentSize.height) {
-        r.origin.y=(indexPath.row+1)*50-(r.size.height *2);
+        r.origin.y=(indexPath.row+1)*CellHeight-(r.size.height *2);
         UIImageView *imageView=(UIImageView *)[self.singleEditBar viewWithTag:2012];
         imageView.transform=CGAffineTransformMakeScale(1.0, -1.0);
-        imageView.frame=CGRectMake(280, 50, 10, 6);
+        imageView.frame=CGRectMake(280, CellHeight, 10, 6);
     }else
     {
         UIImageView *imageView=(UIImageView *)[self.singleEditBar viewWithTag:2012];
@@ -1360,11 +1353,26 @@ typedef enum{
             }
             else
             {
-                OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
-                otherBrowser.dataDic=dic;
                 NSString *f_name=[dic objectForKey:@"fname"];
-                otherBrowser.title=f_name;
-                [self presentModalViewController:otherBrowser animated:YES];
+                NSString *savedPath=[YNFunctions getFMCachePath];
+                savedPath=[savedPath stringByAppendingPathComponent:f_name];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:savedPath]) {
+                    QLBrowserViewController *browser=[[QLBrowserViewController alloc] init];
+                    browser.dataSource=browser;
+                    browser.delegate=browser;
+                    browser.currentPreviewItemIndex=0;
+                    browser.title=f_name;
+                    browser.filePath=savedPath;
+                    browser.fileName=f_name;
+                    [self presentViewController:browser animated:YES completion:nil];
+                }else
+                {
+                    OtherBrowserViewController *otherBrowser=[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil];
+                    otherBrowser.dataDic=dic;
+                    NSString *f_name=[dic objectForKey:@"fname"];
+                    otherBrowser.title=f_name;
+                    [self presentModalViewController:otherBrowser animated:YES];
+                }
             }
         }
     }
@@ -1913,41 +1921,47 @@ typedef enum{
         }
             
         case kActionSheetTagMore:
-            if (buttonIndex == 1) {
-                NSLog(@"移动");
-                
-                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
-                NSString *fisdir=[dic objectForKey:@"fisdir"];
-                if ([fisdir isEqualToString:@"0"]) {
-                    [self toRename:nil];
-                }else
-                {
-                    [self toMove:nil];
-                }
-            }else if (buttonIndex == 2) {
-                NSLog(@"重命名");
-                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
-                NSString *fisdir=[dic objectForKey:@"fisdir"];
-                if ([fisdir isEqualToString:@"0"]) {
-                    [self toRename:nil];
-                }else
-                {
-                }
-                
-            }else if(buttonIndex == 0) {
-                NSLog(@"下载");
-                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
-                NSString *fisdir=[dic objectForKey:@"fisdir"];
-                if ([fisdir isEqualToString:@"0"]) {
-                    [self toMove:nil];
-                }else
-                {
-                    [self toDownload:nil];
-                }
+            if (buttonIndex==0) {
+                [self toDownload:nil];
+            }else if(buttonIndex==1)
+            {
+                [self toCommitOrResave:nil];
             }
-            else{
-                NSLog(@"取消");
-            }
+//            if (buttonIndex == 1) {
+//                NSLog(@"移动");
+//                
+//                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+//                NSString *fisdir=[dic objectForKey:@"fisdir"];
+//                if ([fisdir isEqualToString:@"0"]) {
+//                    [self toRename:nil];
+//                }else
+//                {
+//                    [self toMove:nil];
+//                }
+//            }else if (buttonIndex == 2) {
+//                NSLog(@"重命名");
+//                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+//                NSString *fisdir=[dic objectForKey:@"fisdir"];
+//                if ([fisdir isEqualToString:@"0"]) {
+//                    [self toRename:nil];
+//                }else
+//                {
+//                }
+//                
+//            }else if(buttonIndex == 0) {
+//                NSLog(@"下载");
+//                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row];
+//                NSString *fisdir=[dic objectForKey:@"fisdir"];
+//                if ([fisdir isEqualToString:@"0"]) {
+//                    [self toMove:nil];
+//                }else
+//                {
+//                    [self toDownload:nil];
+//                }
+//            }
+//            else{
+//                NSLog(@"取消");
+//            }
             break;
         case kActionSheetTagShare:
             {

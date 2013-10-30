@@ -221,21 +221,21 @@ enum{
         isupdate=[[datadic objectForKey:@"isupdate"] intValue];
         if (isupdate==0) {
             isMustUpdate=NO;
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                message:@"检测到有新版本，是否更新？"
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"有新版本，点确定更新"
                                                                delegate:self
                                                       cancelButtonTitle:@"取消"
-                                                      otherButtonTitles:@"更新", nil];
+                                                      otherButtonTitles:@"确定", nil];
             alertView.tag=kAlertTypeNewVersion;
             [alertView show];
         }else if(isupdate==1)
         {
             isMustUpdate=YES;
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                                message:@"检测到有新版本，是否更新？"
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"当前版本需要更新才可以使用，点确定更新"
                                                                delegate:self
                                                       cancelButtonTitle:@"取消"
-                                                      otherButtonTitles:@"更新", nil];
+                                                      otherButtonTitles:@"确定", nil];
             alertView.tag=kAlertTypeMustUpdate;
             [alertView show];
             
@@ -248,19 +248,19 @@ enum{
     }else if(code==2)
     {
         NSLog(@"无新版本");
-        [self.hud show:NO];
-        if (self.hud) {
-            [self.hud removeFromSuperview];
-        }
-        self.hud=nil;
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
-        [self.hud show:NO];
-        self.hud.labelText=@"当前版本为最新版本";
-        self.hud.mode=MBProgressHUDModeText;
-        self.hud.margin=10.f;
-        [self.hud show:YES];
-        [self.hud hide:YES afterDelay:1.0f];
+//        [self.hud show:NO];
+//        if (self.hud) {
+//            [self.hud removeFromSuperview];
+//        }
+//        self.hud=nil;
+//        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+//        [self.view addSubview:self.hud];
+//        [self.hud show:NO];
+//        self.hud.labelText=@"当前版本为最新版本";
+//        self.hud.mode=MBProgressHUDModeText;
+//        self.hud.margin=10.f;
+//        [self.hud show:YES];
+//        [self.hud hide:YES afterDelay:1.0f];
         
     }else
     {
@@ -318,14 +318,15 @@ enum{
     switch (alertView.tag) {
         case kAlertTypeNewVersion:
             if (buttonIndex == 1) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_URL]];
             }
             break;
         case kAlertTypeMustUpdate:
             if (buttonIndex == 1) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_URL]];
             }else
             {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_URL]];
             }
             break;
         default:
