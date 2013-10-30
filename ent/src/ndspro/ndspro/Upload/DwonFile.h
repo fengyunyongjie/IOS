@@ -47,7 +47,7 @@
 @property (nonatomic, assign) NSInteger fileSize;
 @property (nonatomic, strong) NSString *fileName;
 @property (nonatomic, strong) NSString *file_path;
-@property (strong,nonatomic) NSOutputStream *fileStream;
+@property (strong, nonatomic) NSOutputStream *fileStream;
 
 - (void)startDownload;
 - (void)cancelDownload;

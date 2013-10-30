@@ -112,7 +112,7 @@
 {
     if(!imageView)
     {
-        CGRect imageRect = CGRectMake(125, -10, 35, 35);
+        CGRect imageRect = CGRectMake(165, -10, 35, 35);
         imageView = [[UIImageView alloc] initWithFrame:imageRect];
         [imageView setImage:[UIImage imageNamed:@"icon_checked_grid.png"]];
         CGRect labelRect = CGRectMake(5, 2, 25, 30);

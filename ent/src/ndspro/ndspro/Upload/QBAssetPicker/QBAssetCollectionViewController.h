@@ -54,9 +54,9 @@
 @property (nonatomic, assign) NSUInteger maximumNumberOfSelection;
 
 @property (nonatomic, assign) BOOL isNeedBackButton;
-@property (nonatomic, assign) NSString *device_name;
-@property (nonatomic, retain) NSString *f_id;
-@property (nonatomic, retain) NSString *space_id;
+@property (nonatomic, strong) NSString *device_name;
+@property (nonatomic, strong) NSString *f_id;
+@property (nonatomic, strong) NSString *space_id;
 
 @property (strong,nonatomic) UIToolbar *moreEditBar;
 

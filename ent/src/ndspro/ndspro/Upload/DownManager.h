@@ -16,7 +16,7 @@
 @property(nonatomic,assign) BOOL isStopCurrDown;
 @property(nonatomic,assign) BOOL isStart;
 @property(nonatomic,assign) BOOL isOpenedDown;
-@property(nonatomic,retain) DwonFile *file;
+@property(nonatomic,strong) DwonFile *file;
 
 -(id)init;
 -(void)updateLoad;
@@ -31,8 +31,6 @@
 -(void)deleteOneDown:(NSInteger)selectIndex;
 //删除所有上传
 -(void)deleteAllDown;
-//暂时所有下载
--(void)stopAllDown;
 -(void)updateTable;
 
 @end

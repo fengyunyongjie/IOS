@@ -6,6 +6,9 @@
 //
 //
 
+#define UpdateHeigth 10
+#define UpdateWidth 15
+
 #import "UploadViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "AppDelegate.h"
@@ -19,27 +22,27 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        CGRect image_rect = CGRectMake(5, 5, 40, 40);
+        CGRect image_rect = CGRectMake(5+UpdateHeigth, UpdateHeigth, 40, 40);
         self.imageView = [[UIImageView alloc] initWithFrame:image_rect];
         [self addSubview:self.imageView];
         
-        CGRect label_rect = CGRectMake(60, 5, 150, 20);
+        CGRect label_rect = CGRectMake(60+UpdateWidth, 5+UpdateHeigth/2, 150, 20);
         self.label_name = [[UILabel alloc] initWithFrame:label_rect];
         [self.label_name setTextColor:[UIColor blackColor]];
         [self.label_name setBackgroundColor:[UIColor clearColor]];
         [self addSubview:self.label_name];
         
-        CGRect progress_rect = CGRectMake(60, 30, 150, 3);
+        CGRect progress_rect = CGRectMake(60+UpdateWidth, 30+UpdateHeigth/2, 150, 3);
         self.jinDuView = [[CustomJinDu alloc] initWithFrame:progress_rect];
         [self addSubview:self.jinDuView];
         
-        CGRect sizeRect = CGRectMake(220, 25, 70, 15);
+        CGRect sizeRect = CGRectMake(220+UpdateWidth, 25+UpdateHeigth/2, 70, 15);
         self.size_label = [[UILabel alloc] initWithFrame:sizeRect];
         [self.size_label setTextColor:[UIColor colorWithRed:180.0/255.0 green:181.0/255.0 blue:181.0/255.0 alpha:1]];
         [self.size_label setFont:[UIFont systemFontOfSize:11]];
         [self addSubview:self.size_label];
         
-        CGRect button_rect = CGRectMake(270, 0, 50, 50);
+        CGRect button_rect = CGRectMake(270, 0, 50+UpdateHeigth, 50+UpdateHeigth);
         self.button_dele_button = [[UIButton alloc] initWithFrame:button_rect];
         [self.button_dele_button setBackgroundImage:[UIImage imageNamed:@"Bt_Cancle.png"] forState:UIControlStateNormal];
         [self.button_dele_button addTarget:self action:@selector(deleteSelf) forControlEvents:UIControlEventTouchUpInside];
@@ -114,7 +117,7 @@
     upload_list = nil;
     [self.size_label setText:[YNFunctions convertSize1:[NSString stringWithFormat:@"%i",(int)list.d_downSize]]];
 //    [self.sudu_label setText:[NSString stringWithFormat:@"%@/s",[YNFunctions convertSize:[NSString stringWithFormat:@"%i",list.sudu]]]];
-    if(list.d_state == 1)
+    if(list.d_state == 1 || list.d_state == 4)
     {
         [self.jinDuView showDate:list.d_datetime];
     }
@@ -220,19 +223,19 @@
     {
         [UIView animateWithDuration:0.15 animations:^{
             float y = 40;
-            CGRect image_rect = CGRectMake(5+y, 5, 40, 40);
+            CGRect image_rect = CGRectMake(5+y+UpdateHeigth, UpdateHeigth, 40, 40);
             [self.imageView setFrame:image_rect];
             
-            CGRect label_rect = CGRectMake(60+y, 5, 150, 20);
+            CGRect label_rect = CGRectMake(60+y+UpdateWidth, 5+UpdateHeigth/2, 150, 20);
             [self.label_name setFrame:label_rect];
             
-            CGRect progress_rect = CGRectMake(60+y, 30, 150, 3);
+            CGRect progress_rect = CGRectMake(60+y+UpdateWidth, 30+UpdateHeigth/2, 150, 3);
             [self.jinDuView setFrame:progress_rect];
             
-            CGRect sizeRect = CGRectMake(220+y, 25, 70, 15);
+            CGRect sizeRect = CGRectMake(220+y+UpdateWidth, 25+UpdateHeigth/2, 70, 15);
             [self.size_label setFrame:sizeRect];
             
-            CGRect button_rect = CGRectMake(270+y, 0, 50, 50);
+            CGRect button_rect = CGRectMake(270+y, 0, 50+UpdateHeigth, 50+UpdateHeigth);
             [self.button_dele_button setFrame:button_rect];
             [self.button_dele_button setHidden:YES];
         }];
@@ -240,19 +243,19 @@
     else
     {
         [UIView animateWithDuration:0.15 animations:^{
-            CGRect image_rect = CGRectMake(5, 5, 40, 40);
+            CGRect image_rect = CGRectMake(5+UpdateHeigth, UpdateHeigth, 40, 40);
             [self.imageView setFrame:image_rect];
             
-            CGRect label_rect = CGRectMake(60, 5, 150, 20);
+            CGRect label_rect = CGRectMake(60+UpdateWidth, 5+UpdateHeigth/2, 150, 20);
             [self.label_name setFrame:label_rect];
             
-            CGRect progress_rect = CGRectMake(60, 30, 150, 3);
+            CGRect progress_rect = CGRectMake(60+UpdateWidth, 30+UpdateHeigth/2, 150, 3);
             [self.jinDuView setFrame:progress_rect];
             
-            CGRect sizeRect = CGRectMake(220, 25, 70, 15);
+            CGRect sizeRect = CGRectMake(220+UpdateWidth, 25+UpdateHeigth/2, 70, 15);
             [self.size_label setFrame:sizeRect];
             
-            CGRect button_rect = CGRectMake(270, 0, 50, 50);
+            CGRect button_rect = CGRectMake(270, 0, 50+UpdateHeigth, 50+UpdateHeigth);
             [self.button_dele_button setFrame:button_rect];
             [self.button_dele_button setHidden:NO];
         }];

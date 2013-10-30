@@ -14,7 +14,7 @@
 #define DeleteDownedAll @"DELETE FROM DownList WHERE d_state=1 and d_ure_id=?"
 #define SelectDownListIsHaveName @"SELECT * FROM DownList WHERE d_name=? and d_ure_id=? and d_state=?"
 #define UpdateDownListForUserId @"UPDATE DownList SET d_state=?,d_baseUrl=?,d_file_id=?,d_downSize=?,d_datetime=? WHERE d_id=? and d_ure_id=?"
-#define UpdateDownListAllForUserId @"UPDATE DownList SET d_state=2 WHERE d_state=1"
+#define UpdateDownListAllForUserId @"UPDATE DownList SET d_state=4 WHERE d_state=1"
 #define SelectDowningAll @"SELECT * FROM DownList WHERE d_state=0 and d_id>? and d_ure_id=?"
 #define SelectDownedAll @"SELECT * FROM DownList WHERE d_state<>0 and d_id>? and d_ure_id=? ORDER BY d_id desc"
 

@@ -152,7 +152,12 @@
 //    [bottonView addSubview:upload_back_button];
 //    
 //    [self.view addSubview:bottonView];
-    CGRect rect = CGRectMake(0, 0, 320, TableViewHeight);
+    float tableViewH = TableViewHeight;
+    if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
+    {
+        tableViewH = tableViewH+17;
+    }
+    CGRect rect = CGRectMake(0, 0, 320, tableViewH);
     table_view = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     table_view.dataSource = self;
     table_view.delegate = self;
@@ -235,20 +240,13 @@
 {
     [self.qbDelegate uploadFileder:f_name];
     [self.qbDelegate uploadFiledId:f_id];
-    if([self.navigationController.viewControllers count]>3)
+    for(UIViewController *delailview in self.navigationController.viewControllers)
     {
-        for(UIViewController *delailview in self.navigationController.viewControllers)
+        if([delailview isKindOfClass:[QBAssetCollectionViewController class]])
         {
-            if([delailview isKindOfClass:[QBAssetCollectionViewController class]])
-            {
-                [self.navigationController popToViewController:delailview animated:YES];
-                break;
-            }
+            [self.navigationController popToViewController:delailview animated:YES];
+            break;
         }
-    }
-    else
-    {
-        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

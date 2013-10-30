@@ -79,12 +79,6 @@
         {
             for(int i=0;i<[array_ count];i++)
             {
-                if(i == 0)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                    });
-                }
                 ALAsset *asset = [array_ objectAtIndex:i];
                 UpLoadList *list = [[UpLoadList alloc] init];
                 list.t_date = @"";
@@ -101,6 +95,7 @@
                 list.is_autoUpload = NO;
                 
                 list.is_share = NO;
+                NSLog(@"s_id:%@",s_id);
                 list.spaceId = [NSString formatNSStringForOjbect:s_id];
                 [list insertUploadList];
             }

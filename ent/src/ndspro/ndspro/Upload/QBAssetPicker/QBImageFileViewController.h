@@ -33,15 +33,15 @@
     BOOL isChangeMove;
     SCBFileManager *fileManager;
 }
-@property(nonatomic,retain) UITableView *table_view;
-@property(nonatomic,retain) NSMutableArray *fileArray;
-@property(nonatomic,retain) id<QBImageFileViewDelegate> qbDelegate;
-@property(nonatomic,retain) NSString *f_name;
-@property(nonatomic,retain) NSString *f_id;
+@property(nonatomic,strong) UITableView *table_view;
+@property(nonatomic,strong) NSMutableArray *fileArray;
+@property(nonatomic,strong) id<QBImageFileViewDelegate> qbDelegate;
+@property(nonatomic,strong) NSString *f_name;
+@property(nonatomic,strong) NSString *f_id;
 @property(nonatomic,assign) BOOL isChangeMove;
-@property(nonatomic,assign) NSString *space_id;
-@property(nonatomic,retain) SCBFileManager *fileManager;
-@property (strong,nonatomic) UIToolbar *moreEditBar;
+@property(nonatomic,strong) NSString *space_id;
+@property(nonatomic,strong) SCBFileManager *fileManager;
+@property(strong,nonatomic) UIToolbar *moreEditBar;
 
 @end
 

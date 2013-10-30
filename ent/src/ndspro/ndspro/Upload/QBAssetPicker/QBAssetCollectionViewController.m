@@ -22,6 +22,7 @@
 #import "CustomViewController.h"
 #import "YNFunctions.h"
 #import "AppDelegate.h"
+#import "FileListViewController.h"
 
 #define QBY 20
 #define TabBarHeight 88
@@ -335,17 +336,14 @@
 {
     [self.delegate changeUpload:self.selectedAssets changeDeviceName:device_name changeFileId:self.f_id changeSpaceId:space_id];
     
-    if([self.navigationController.viewControllers count]>3)
+    for(int i=self.navigationController.viewControllers.count-1;i>=0;i--)
     {
-        UIViewController *delailview = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
-        if(delailview)
+        UIViewController *viewController = [self.navigationController.viewControllers objectAtIndex:i];
+        if([viewController isKindOfClass:[FileListViewController class]])
         {
-            [self.navigationController popToViewController:delailview animated:YES];
+            [self.navigationController popToViewController:viewController animated:YES];
+            break;
         }
-    }
-    else
-    {
-        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

@@ -1093,7 +1093,7 @@ typedef enum{
         //判断文件是否已经下载
         DownList *list = [[DownList alloc] init];
         list.d_ure_id = [[SCBSession sharedSession] userId];
-        list.d_name = cell.textLabel.text;
+        list.d_name = textLabel.text;
         list.d_state = 1;
         UIImageView *tagView = (UIImageView *)[cell viewWithTag:KCOVERTag];
         if([list selectUploadListIsHave])

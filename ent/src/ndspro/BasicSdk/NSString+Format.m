@@ -27,7 +27,7 @@
 
 +(NSString *)formatNSStringForOjbect:(NSObject *)object
 {
-    if([object isEqual:@"<null>"] || [object isEqual:@"<NULL>"] )
+    if(object ==nil || [object isEqual:@"<null>"] || [object isEqual:@"<NULL>"])
     {
         object = @"";
     }

@@ -91,7 +91,7 @@
     if (!self.menuView) {
         const float scale=1.3f;
         self.menuView =[[UIControl alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height)];
-        UIView * mView=[[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(80*scale)-20-15, 0, 80*scale, 47*scale)];
+        UIView * mView=[[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(80*scale)-15, 0, 80*scale, 47*scale)];
         UIImageView *bgView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"title_menu2@2x.png"]];
         [bgView setFrame:CGRectMake(0, 0, 80*scale, 47*scale)];
         [mView addSubview:bgView];
@@ -802,7 +802,7 @@
 
 -(float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    return 60;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1077,6 +1077,30 @@
 -(void)deletCell:(NSObject *)object
 {
     deleteObject = object;
+    if([deleteObject isKindOfClass:[UpLoadList class]])
+    {
+        UpLoadList *list = (UpLoadList *)deleteObject;
+        if(list.t_state != 1)
+        {
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"你选择的文件中有正在上传的文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定移除" otherButtonTitles:nil, nil];
+            [actionSheet setTag:kActionSheetTagDelete];
+            [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+            [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+            return;
+        }
+    }
+    else if([deleteObject isKindOfClass:[DownList class]])
+    {
+        DownList *list = (DownList *)deleteObject;
+        if(list.d_state != 1 && list.d_state != 4  )
+        {
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"你选择的文件中有正在下载的文件" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定移除" otherButtonTitles:nil, nil];
+            [actionSheet setTag:kActionSheetTagDelete];
+            [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+            [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+            return;
+        }
+    }
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"是否要删除选中的内容" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [actionSheet setTag:kActionSheetTagDelete];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
