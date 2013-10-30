@@ -309,7 +309,7 @@ typedef enum{
             return 1;
             break;
         case 1:
-            return 4;
+            return 3;
             break;
         case 2:
             return 3;
@@ -451,7 +451,7 @@ typedef enum{
             descLabel.hidden = YES;
             titleLabel.textAlignment = UITextAlignmentLeft;
             switch (row) {
-                case 3:
+                case 2:
                 {
                     titleLabel.text =@"密码锁";
                     //titleLabel.hidden=YES;
@@ -542,17 +542,17 @@ typedef enum{
                 }
                     
                     break;
-                case 2:
-                    bgView.image=[UIImage imageNamed:@"set_bk_3.png"];
-                    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    descLabel.hidden = YES;
-                    m_switch.hidden = NO;
-                    titleLabel.text = @"消息提醒";
-                    m_switch.on=[YNFunctions isMessageAlert];
-                    break;
-                default:
-                    break;
+//                case 2:
+//                    bgView.image=[UIImage imageNamed:@"set_bk_3.png"];
+//                    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//                    descLabel.hidden = YES;
+//                    m_switch.hidden = NO;
+//                    titleLabel.text = @"消息提醒";
+//                    m_switch.on=[YNFunctions isMessageAlert];
+//                    break;
+//                default:
+//                    break;
             }
         }
             break;
@@ -653,7 +653,9 @@ typedef enum{
                     break;
                 case 2:
                 {
-                    //缓存占用
+                    //
+                    PasswordController *password = [[PasswordController alloc] init];
+                    [self.navigationController pushViewController:password animated:YES];
                 }
                     
                     break;
@@ -661,12 +663,12 @@ typedef enum{
                     //清除缓存
                     [self clearCache];
                     break;
-                case 3:
-                {
-                    PasswordController *password = [[PasswordController alloc] init];
-                    [self.navigationController pushViewController:password animated:YES];
-                }
-                    break;
+//                case 3:
+//                {
+//                    PasswordController *password = [[PasswordController alloc] init];
+//                    [self.navigationController pushViewController:password animated:YES];
+//                }
+//                    break;
                 default:
                     break;
             }

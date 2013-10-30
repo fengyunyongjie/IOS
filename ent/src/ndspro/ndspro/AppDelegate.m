@@ -47,16 +47,16 @@
     {
         NSLog(@"应用程序正常启动");
     }
-    
-    if ([YNFunctions isMessageAlert]) {
-        // Required
-        [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                       UIRemoteNotificationTypeSound |
-                                                       UIRemoteNotificationTypeAlert)];
-    }
-
-    // Required
-    [APService setupWithOption:launchOptions];
+//屏蔽掉消息推送！
+//    if ([YNFunctions isMessageAlert]) {
+//        // Required
+//        [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+//                                                       UIRemoteNotificationTypeSound |
+//                                                       UIRemoteNotificationTypeAlert)];
+//    }
+//
+//    // Required
+//    [APService setupWithOption:launchOptions];
     //给程序添加日志
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
@@ -136,11 +136,13 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     
     // Required
+    //屏蔽掉消息推送！
     [APService registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     // Required
+    //屏蔽掉消息推送！
     [APService handleRemoteNotification:userInfo];
     NSLog(@"接收到通知，内容：%@",userInfo);
     NSLog(@"应用程序状态：%@",@"");

@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "291CCB3117F27F99005C029C"
                BuildableName = "ndspro.app"
-               BlueprintName = "ndspro"
+               BlueprintName = "&#34425;&#30424;&#21830;&#19994;&#29256;"
                ReferencedContainer = "container:ndspro.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,7 +44,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "291CCB3117F27F99005C029C"
             BuildableName = "ndspro.app"
-            BlueprintName = "ndspro"
+            BlueprintName = "&#34425;&#30424;&#21830;&#19994;&#29256;"
             ReferencedContainer = "container:ndspro.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "291CCB3117F27F99005C029C"
             BuildableName = "ndspro.app"
-            BlueprintName = "ndspro"
+            BlueprintName = "&#34425;&#30424;&#21830;&#19994;&#29256;"
             ReferencedContainer = "container:ndspro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -81,7 +81,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "291CCB3117F27F99005C029C"
             BuildableName = "ndspro.app"
-            BlueprintName = "ndspro"
+            BlueprintName = "&#34425;&#30424;&#21830;&#19994;&#29256;"
             ReferencedContainer = "container:ndspro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
