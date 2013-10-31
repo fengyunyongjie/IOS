@@ -24,7 +24,7 @@
 @end
 
 @implementation UpDownloadViewController
-@synthesize table_view,upLoading_array,upLoaded_array,downLoading_array,downLoaded_array,customSelectButton,isShowUpload,deleteObject,menuView,editView,rightItem,hud,btnStart,selectAllIds;
+@synthesize table_view,upLoading_array,upLoaded_array,downLoading_array,downLoaded_array,customSelectButton,isShowUpload,deleteObject,menuView,editView,rightItem,hud,btnStart,selectAllIds,notingLabel;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -663,6 +663,46 @@
     }
     [self.table_view reloadData];
     [self updateLoadData];
+    
+    if(notingLabel == nil)
+    {
+        CGRect notingRect = CGRectMake(0, (self.view.frame.size.height-40)/2, 320, 40);
+        notingLabel = [[UILabel alloc] initWithFrame:notingRect];
+        [notingLabel setTextColor:[UIColor grayColor]];
+        [notingLabel setFont:[UIFont systemFontOfSize:18]];
+        [notingLabel setTextAlignment:NSTextAlignmentCenter];
+        [self.view addSubview:notingLabel];
+        [notingLabel setHidden:YES];
+    }
+    
+    if(isShowUpload)
+    {
+        [notingLabel setText:@"暂无上传任务"];
+        if([self.upLoading_array count] == 0 && [self.upLoaded_array count] == 0)
+        {
+            self.table_view.separatorStyle = UITableViewCellSeparatorStyleNone;
+            [notingLabel setHidden:NO];
+        }
+        else
+        {
+            self.table_view.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            [notingLabel setHidden:YES];
+        }
+    }
+    else
+    {
+        [notingLabel setText:@"暂无下载任务"];
+        if([self.downLoaded_array count] == 0 && [self.downLoading_array count] == 0)
+        {
+            self.table_view.separatorStyle = UITableViewCellSeparatorStyleNone;
+            [notingLabel setHidden:NO];
+        }
+        else
+        {
+            self.table_view.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            [notingLabel setHidden:YES];
+        }
+    }
 }
 
 -(void)leftSwipeFrom

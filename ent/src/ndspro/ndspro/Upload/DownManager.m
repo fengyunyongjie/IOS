@@ -88,7 +88,7 @@
         for(int i=0;i<[downingArray count];i++)
         {
             DownList *demo = [downingArray objectAtIndex:i];
-            if(demo.d_state == 0)
+            if(demo.d_state != 1 && demo.d_state != 5)
             {
                 endList = demo;
             }

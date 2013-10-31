@@ -30,7 +30,8 @@
 @property(strong,nonatomic) MBProgressHUD *hud;
 @property(strong,nonatomic) UIButton *btnStart;
 @property(strong,nonatomic) NSMutableArray *selectAllIds;
-@property (strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
+@property(strong,nonatomic) NSMutableDictionary *imageDownloadsInProgress;
+@property(strong,nonatomic) UILabel *notingLabel;
 
 -(void)isSelectedLeft:(BOOL)bl;
 -(void)updateCount:(NSString *)upload_count downCount:(NSString *)down_count;

@@ -118,7 +118,7 @@
         UpLoadList *endList = nil;
         for (int i=0; i<[uploadArray count]; i++) {
             UpLoadList *demo = [uploadArray objectAtIndex:i];
-            if(demo.t_state == 0)
+            if(demo.t_state != 1 && demo.t_state != 5)
             {
                 endList = demo;
             }

@@ -34,7 +34,7 @@
         [self.right_button.titleLabel setFont:[UIFont systemFontOfSize:16]];
         [self.right_botton_image setHidden:YES];
         [UIView animateWithDuration:0.3 animations:^{
-            CGRect boderRect = CGRectMake(0, self.frame.size.height-2, 160, 2);
+            CGRect boderRect = CGRectMake(0, self.frame.size.height-4, 160, 4);
             [self.boderImageView setFrame:boderRect];
         }];
     }
@@ -45,7 +45,7 @@
         [self.right_button.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
         [self.right_botton_image setHidden:NO];
         [UIView animateWithDuration:0.3 animations:^{
-            CGRect boderRect = CGRectMake(160, self.frame.size.height-2, 160, 2);
+            CGRect boderRect = CGRectMake(160, self.frame.size.height-4, 160, 4);
             [self.boderImageView setFrame:boderRect];
         }];
     }
