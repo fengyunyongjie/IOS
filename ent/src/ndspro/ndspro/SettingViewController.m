@@ -751,6 +751,18 @@ typedef enum{
     }
     
 }
+-(void)sureClear
+{
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getFMCachePath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getIconCachePath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
+    [self calcCacheSize];
+    DownList *down = [[DownList alloc] init];
+    [down updateAllClip];
+    [self.tableView reloadData];
+}
 -(void)sureExit
 {
     DBSqlite3 *sql = [[DBSqlite3 alloc] init];
@@ -778,20 +790,13 @@ typedef enum{
         case kActionSheetTypeExit:
             if (buttonIndex == 0) {
                 //scBox.UserLogout(callBackLogoutFunc,self);
+                [self sureClear];
                 [self sureExit];
             }
             break;
         case kActionSheetTypeClear:
             if (buttonIndex==0) {
-                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getFMCachePath] error:nil];
-                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getIconCachePath] error:nil];
-                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getKeepCachePath] error:nil];
-                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getTempCachePath] error:nil];
-                [[NSFileManager defaultManager] removeItemAtPath:[YNFunctions getProviewCachePath] error:nil];
-                [self calcCacheSize];
-                DownList *down = [[DownList alloc] init];
-                [down updateAllClip];
-                [self.tableView reloadData];
+                [self sureClear];
             }
             break;
         case kActionSheetTypeWiFi:

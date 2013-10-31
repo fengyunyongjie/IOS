@@ -510,38 +510,38 @@ typedef enum{
         //发送 删除 提交 移动 全选
         UIButton *btn_send, *btn_commit ,*btn_del ,*btn_more,*btn_download ,*btn_resave;
         UIBarButtonItem *item_send, *item_commit ,*item_del ,*item_more, *item_download, *item_resave,*item_flexible;
-        
-        btn_send =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        int btnWidth=40;
+        btn_send =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
         [btn_send setImage:[UIImage imageNamed:@"send_nor.png"] forState:UIControlStateNormal];
         [btn_send setImage:[UIImage imageNamed:@"send_se.png"] forState:UIControlStateHighlighted];
         [btn_send addTarget:self action:@selector(toSend:) forControlEvents:UIControlEventTouchUpInside];
         item_send=[[UIBarButtonItem alloc] initWithCustomView:btn_send];
         
-        btn_commit =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        btn_commit =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
         [btn_commit setImage:[UIImage imageNamed:@"tj_nor.png"] forState:UIControlStateNormal];
         [btn_commit setImage:[UIImage imageNamed:@"tj_se.png"] forState:UIControlStateHighlighted];
         [btn_commit addTarget:self action:@selector(toCommitOrResave:) forControlEvents:UIControlEventTouchUpInside];
         item_commit=[[UIBarButtonItem alloc] initWithCustomView:btn_commit];
         
-        btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
         [btn_resave setImage:[UIImage imageNamed:@"zc_nor.png"] forState:UIControlStateNormal];
         [btn_resave setImage:[UIImage imageNamed:@"zc_se.png"] forState:UIControlStateHighlighted];
         [btn_resave addTarget:self action:@selector(toCommitOrResave:) forControlEvents:UIControlEventTouchUpInside];
         item_resave=[[UIBarButtonItem alloc] initWithCustomView:btn_resave];
         
-        btn_del =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        btn_del =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
         [btn_del setImage:[UIImage imageNamed:@"del_nor.png"] forState:UIControlStateNormal];
         [btn_del setImage:[UIImage imageNamed:@"del_se.png"] forState:UIControlStateHighlighted];
         [btn_del addTarget:self action:@selector(toDelete:) forControlEvents:UIControlEventTouchUpInside];
         item_del=[[UIBarButtonItem alloc] initWithCustomView:btn_del];
         
-        btn_more =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        btn_more =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
         [btn_more setImage:[UIImage imageNamed:@"move_nor.png"] forState:UIControlStateNormal];
         [btn_more setImage:[UIImage imageNamed:@"move_se.png"] forState:UIControlStateHighlighted];
         [btn_more addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
         item_more=[[UIBarButtonItem alloc] initWithCustomView:btn_more];
         
-        btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+        btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
         [btn_download setImage:[UIImage imageNamed:@"download_nor.png"] forState:UIControlStateNormal];
         [btn_download setImage:[UIImage imageNamed:@"download_se.png"] forState:UIControlStateHighlighted];
         [btn_download addTarget:self action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
@@ -1471,7 +1471,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作成功";
     self.hud.mode=MBProgressHUDModeText;
