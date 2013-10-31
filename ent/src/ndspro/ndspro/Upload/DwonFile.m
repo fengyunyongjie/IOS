@@ -54,6 +54,11 @@
     file_path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
     //查询本地是否已经有该图片
     BOOL bl = [NSString image_exists_FM_file_path:file_path];
+    if(bl)
+    {
+        NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:file_path];
+        bl = fileSize==[[handle availableData] length];
+    }
     
     if(bl)
     {
