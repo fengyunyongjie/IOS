@@ -18,4 +18,5 @@
 + (NSString*)get_image_save_file_path:(NSString*)image_path;
 + (BOOL)image_exists_FM_file_path:(NSString *)image_path;
 + (NSString*)get_image_FM_file_path:(NSString*)image_path;
++(void)CreatePath:(NSString *)urlPath;
 @end

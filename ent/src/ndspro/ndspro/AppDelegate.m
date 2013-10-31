@@ -23,6 +23,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    isConnection = YES;
     //初始化数据
     downmange = [[DownManager alloc] init];
     uploadmanage = [[UploadManager alloc] init];

@@ -1025,8 +1025,11 @@
             {
                 DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
                 NSString *f_name=list.d_name;
-                NSString *savedPath=[YNFunctions getFMCachePath];
-                savedPath=[savedPath stringByAppendingPathComponent:f_name];
+                NSString *documentDir = [YNFunctions getFMCachePath];
+                NSArray *array=[f_name componentsSeparatedByString:@"/"];
+                NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,list.d_file_id];
+                [NSString CreatePath:createPath];
+                NSString *savedPath = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
                 if ([[NSFileManager defaultManager] fileExistsAtPath:savedPath]) {
                     QLBrowserViewController *browser=[[QLBrowserViewController alloc] init];
                     browser.dataSource=browser;
@@ -1065,8 +1068,11 @@
             {
                 DownList *list = [downLoaded_array objectAtIndex:indexPath.row];
                 NSString *f_name=list.d_name;
-                NSString *savedPath=[YNFunctions getFMCachePath];
-                savedPath=[savedPath stringByAppendingPathComponent:f_name];
+                NSString *documentDir = [YNFunctions getFMCachePath];
+                NSArray *array=[f_name componentsSeparatedByString:@"/"];
+                NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,list.d_file_id];
+                [NSString CreatePath:createPath];
+                NSString *savedPath = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
                 if ([[NSFileManager defaultManager] fileExistsAtPath:savedPath]) {
                     QLBrowserViewController *browser=[[QLBrowserViewController alloc] init];
                     browser.dataSource=browser;

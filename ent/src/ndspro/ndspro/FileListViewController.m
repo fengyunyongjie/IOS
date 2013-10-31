@@ -322,7 +322,7 @@ typedef enum{
 //    CustomViewController *navigation=[[CustomViewController alloc] initWithRootViewController:imagePickerController];
 //    [navigation setNavigationBarHidden:YES];
 //    [self presentModalViewController:navigation animated:YES];
-    [self.navigationController pushViewController:imagePickerController animated:YES];
+    [self.navigationController pushViewController:imagePickerController animated:NO];
 }
 
 -(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
@@ -973,7 +973,7 @@ typedef enum{
         if(tagView == nil)
         {
             tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF@2x.png"]];
-            CGRect rect = CGRectMake(40, 28, 22, 22);
+            CGRect rect = CGRectMake(53, 40, 15, 15);
             [tagView setFrame:rect];
             [tagView setTag:KCOVERTag];
             [cell addSubview:tagView];
@@ -1347,15 +1347,19 @@ typedef enum{
                         {
                             look.isHaveDelete = NO;
                         }
-                        [self presentModalViewController:look animated:YES];
+                        [self presentViewController:look animated:YES completion:nil];
                     }
                 }
             }
             else
             {
+                NSString *file_id=[dic objectForKey:@"fid"];
                 NSString *f_name=[dic objectForKey:@"fname"];
-                NSString *savedPath=[YNFunctions getFMCachePath];
-                savedPath=[savedPath stringByAppendingPathComponent:f_name];
+                NSString *documentDir = [YNFunctions getFMCachePath];
+                NSArray *array=[f_name componentsSeparatedByString:@"/"];
+                NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,file_id];
+                [NSString CreatePath:createPath];
+                NSString *savedPath = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
                 if ([[NSFileManager defaultManager] fileExistsAtPath:savedPath]) {
                     QLBrowserViewController *browser=[[QLBrowserViewController alloc] init];
                     browser.dataSource=browser;
@@ -1371,7 +1375,7 @@ typedef enum{
                     otherBrowser.dataDic=dic;
                     NSString *f_name=[dic objectForKey:@"fname"];
                     otherBrowser.title=f_name;
-                    [self presentModalViewController:otherBrowser animated:YES];
+                    [self presentViewController:otherBrowser animated:YES completion:nil];
                 }
             }
         }

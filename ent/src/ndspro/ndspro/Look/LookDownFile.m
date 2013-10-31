@@ -36,8 +36,12 @@
     
     downsize = 0;
     endSudu = 0;
-    NSString *path;
-    path = [NSString get_image_FM_file_path:fileName];
+    
+    NSString *documentDir = [YNFunctions getFMCachePath];
+    NSArray *array=[fileName componentsSeparatedByString:@"/"];
+    NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,file_id];
+    [NSString CreatePath:createPath];
+    NSString *path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
     BOOL bl;
     bl = [NSString image_exists_FM_file_path:path];
     if(bl)
@@ -47,10 +51,12 @@
     }
     else
     {
-        path = [NSString get_image_save_file_path:fileName];
+        documentDir = [YNFunctions getProviewCachePath];
+        createPath = [NSString stringWithFormat:@"%@/%@",documentDir,file_id];
+        [NSString CreatePath:createPath];
+        path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
         //查询本地是否已经有该图片
         bl = [NSString image_exists_at_file_path:path] && [UIImage imageWithContentsOfFile:path];
-        
     }
     
     if(bl)
@@ -59,9 +65,10 @@
     }
     else
     {
-        NSString *documentDir = [YNFunctions getProviewCachePath];
-        NSArray *array=[fileName componentsSeparatedByString:@"/"];
-        file_path = [NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+        documentDir = [YNFunctions getProviewCachePath];
+        createPath = [NSString stringWithFormat:@"%@/%@",documentDir,file_id];
+        [NSString CreatePath:createPath];
+        file_path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
         assert(path!=nil);
         self.fileStream=[NSOutputStream outputStreamToFileAtPath:file_path append:NO];
         assert(self.fileStream!=nil);

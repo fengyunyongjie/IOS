@@ -60,4 +60,6 @@
 //查询所有上传完成的历史记录
 -(NSMutableArray *)selectUploadListAllAndUploaded;
 
+-(void)updateList:(UpLoadList *)demo;
+
 @end

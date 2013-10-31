@@ -200,15 +200,15 @@
     btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(boderWidth, (49-35)/2, 134, 35)];
     [btn_resave setBackgroundImage:[UIImage imageNamed:@"oper_bt_nor.png"] forState:UIControlStateNormal];
     [btn_resave setBackgroundImage:[UIImage imageNamed:@"oper_bt_se.png"] forState:UIControlStateHighlighted];
-    [btn_resave setTitle:@"确定" forState:UIControlStateNormal];
-    [btn_resave addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
+    [btn_resave setTitle:@"取消" forState:UIControlStateNormal];
+    [btn_resave addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
     [self.moreEditBar addSubview:btn_resave];
     
     btn_download =[[UIButton alloc] initWithFrame:CGRectMake(boderWidth*2+134, (49-35)/2, 134, 35)];
     [btn_download setBackgroundImage:[UIImage imageNamed:@"oper_bt_nor.png"] forState:UIControlStateNormal];
     [btn_download setBackgroundImage:[UIImage imageNamed:@"oper_bt_se.png"] forState:UIControlStateHighlighted];
-    [btn_download setTitle:@"取消" forState:UIControlStateNormal];
-    [btn_download addTarget:self action:@selector(clicked_uploadStop:) forControlEvents:UIControlEventTouchUpInside];
+    [btn_download setTitle:@"确定" forState:UIControlStateNormal];
+    [btn_download addTarget:self action:@selector(clicked_changeMyFile:) forControlEvents:UIControlEventTouchUpInside];
     [self.moreEditBar addSubview:btn_download];
     
     [self.view addSubview:self.moreEditBar];

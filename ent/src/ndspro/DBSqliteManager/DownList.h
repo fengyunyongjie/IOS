@@ -50,5 +50,6 @@
 -(NSMutableArray *)selectDownedAll;
 //断开收藏图标的关联
 -(BOOL)updateAllClip;
+-(void)updateList:(DownList *)demo;
 
 @end

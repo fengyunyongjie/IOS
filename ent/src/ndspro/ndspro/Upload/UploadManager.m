@@ -16,7 +16,7 @@
 #import "MyTabBarViewController.h"
 
 @implementation UploadManager
-@synthesize uploadArray,isStopCurrUpload,isStart,isOpenedUpload,isAutoStart;
+@synthesize uploadArray,isStopCurrUpload,isStart,isOpenedUpload,isAutoStart,isJoin;
 
 -(id)init
 {
@@ -60,7 +60,7 @@
             [uploadView setUpLoading_array:uploadArray];
         }
     }
-    if(!isStart)
+    if(!isJoin)
     {
         isStopCurrUpload = YES;
         isStart = FALSE;
@@ -74,6 +74,7 @@
 
 -(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
 {
+    isJoin = YES;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         if([array_ count]>0)
         {
@@ -114,7 +115,22 @@
     }
     else
     {
-        list.t_id =  ((UpLoadList *)[uploadArray lastObject]).t_id;
+        UpLoadList *endList = nil;
+        for (int i=0; i<[uploadArray count]; i++) {
+            UpLoadList *demo = [uploadArray objectAtIndex:i];
+            if(demo.t_state == 0)
+            {
+                endList = demo;
+            }
+        }
+        if(endList)
+        {
+            list.t_id = endList.t_id;
+        }
+        else
+        {
+            list.t_id =  0;
+        }
     }
     list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
     
@@ -125,6 +141,7 @@
 
 -(void)start
 {
+    isJoin = YES;
     isAutoStart = YES;
     isOpenedUpload = YES;
     if(!isStart)
@@ -153,10 +170,6 @@
     if(!isStart)
     {
         [self upNetworkStop];
-    }
-    else
-    {
-        [self updateTableStateForWaiting];
     }
 }
 
@@ -298,13 +311,16 @@
 -(void)upError
 {
     isStopCurrUpload = YES;
-//    if([uploadArray count]>0 && isOpenedUpload)
-//    {
-//        UpLoadList *list = [uploadArray objectAtIndex:0];
-//        [list deleteUploadList];
-//        [uploadArray removeObjectAtIndex:0];
-//        [self updateTable];
-//    }
+    if([uploadArray count]>0 && isOpenedUpload)
+    {
+        UpLoadList *list = [uploadArray objectAtIndex:0];
+        list.t_state = 5;
+        UpLoadList *demo = [[UpLoadList alloc] init];
+        [demo updateList:list];
+        [uploadArray addObject:demo];
+        [uploadArray removeObjectAtIndex:0];
+        [self updateTable];
+    }
     [self startUpload];
 }
 
@@ -413,7 +429,7 @@
         {
             isStopCurrUpload = YES;
         }
-        else if(selectIndex<[uploadArray count])
+        if(selectIndex<[uploadArray count])
         {
             UpLoadList *list = [uploadArray objectAtIndex:selectIndex];
             [list deleteUploadList];

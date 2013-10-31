@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "QLBrowserViewController.h"
-#import "LookDownFile.h"
+#import "DwonFile.h"
 
-@interface OtherBrowserViewController : UIViewController<UIDocumentInteractionControllerDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate,LookDownDelegate>
+@interface OtherBrowserViewController : UIViewController<UIDocumentInteractionControllerDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate,DownloaderDelegate>
 @property (strong,nonatomic) IBOutlet UIToolbar *toolbar;
 @property (strong,nonatomic) IBOutlet UIBarButtonItem *shareItem;
 @property (strong,nonatomic) IBOutlet UIBarButtonItem *openItem;

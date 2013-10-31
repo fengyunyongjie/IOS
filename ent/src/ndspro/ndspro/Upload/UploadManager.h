@@ -16,6 +16,7 @@
 @property(nonatomic,assign) BOOL isStart;
 @property(nonatomic,assign) BOOL isOpenedUpload;
 @property(nonatomic,assign) BOOL isAutoStart;
+@property(nonatomic,assign) BOOL isJoin;
 
 -(id)init;
 -(void)updateLoad;

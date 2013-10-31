@@ -99,6 +99,10 @@
     {
         [self.jinDuView showText:@"等待WiFi"];
     }
+    else if(list.t_state == 5)
+    {
+        [self.jinDuView showText:@"上传失败"];
+    }
     if(![self.label_name.text isEqualToString:list.t_name])
     {
         ALAssetsLibrary *libary = [[ALAssetsLibrary alloc] init];
@@ -133,6 +137,10 @@
     else if(list.d_state == 3)
     {
         [self.jinDuView showText:@"等待WiFi"];
+    }
+    else if(list.d_state == 5)
+    {
+        [self.jinDuView showText:@"下载失败"];
     }
     if(![self.label_name.text isEqualToString:list.d_name])
     {

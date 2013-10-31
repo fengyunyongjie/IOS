@@ -269,4 +269,16 @@
     return bl;
 }
 
+-(void)updateList:(DownList *)demo
+{
+    self.d_name = demo.d_name;
+    self.d_thumbUrl = d_thumbUrl;
+    self.d_state = demo.d_state;
+    self.d_baseUrl = demo.d_baseUrl;
+    self.d_file_id = demo.d_file_id;
+    self.d_downSize = demo.d_downSize;
+    self.d_datetime = demo.d_datetime;
+    self.d_ure_id = demo.d_ure_id;
+}
+
 @end

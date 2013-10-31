@@ -24,7 +24,7 @@
         titleLabel.textColor = [UIColor blackColor];
         titleLabel.highlightedTextColor = [UIColor whiteColor];
         titleLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
-        
+        [titleLabel setBackgroundColor:[UIColor clearColor]];
         [self.contentView addSubview:titleLabel];
         self.titleLabel = titleLabel;
         
@@ -34,7 +34,7 @@
         countLabel.textColor = [UIColor colorWithWhite:0.498 alpha:1.0];
         countLabel.highlightedTextColor = [UIColor whiteColor];
         countLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        
+        [countLabel setBackgroundColor:[UIColor clearColor]];
         [self.contentView addSubview:countLabel];
         self.countLabel = countLabel;
     }

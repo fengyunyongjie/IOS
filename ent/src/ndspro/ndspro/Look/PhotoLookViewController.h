@@ -35,7 +35,7 @@
     /*
      字典类型把已经加载完成的数据存储
      */
-    NSMutableDictionary *activityDic;
+    NSMutableArray *activityDic;
     
     /*
      滑动不加载数据

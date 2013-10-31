@@ -75,7 +75,7 @@
     
     downArray = [[NSMutableArray alloc] init];
     linkManager = [[SCBLinkManager alloc] init];
-    activityDic = [[NSMutableDictionary alloc] init];
+    activityDic = [[NSMutableArray alloc] init];
     
     self.view.backgroundColor = [UIColor blackColor];
     self.offset = 0.0;
@@ -391,19 +391,19 @@
 #pragma mark 加载符
 -(void)loadActivity
 {
-    //加载数据
-    int page = imageScrollView.contentOffset.x/320;
-    DownList *demo = [tableArray objectAtIndex:page];
-    if(![[activityDic objectForKey:[NSString stringWithFormat:@"%@",demo.d_name]] isKindOfClass:[DownList class]])
-    {
-        CGRect activityRect = CGRectMake(320*(page-1)+(320-20)/2, (ScollviewHeight-20)/2, 20, 20);
-        UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
-        [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
-        [activity_indicator startAnimating];
-        [activity_indicator setTag:ACTNUMBER+page];
-        [imageScrollView addSubview:activity_indicator];
-        [activityDic setObject:demo forKey:[NSString stringWithFormat:@"%@",demo.d_name]];
-    }
+//    //加载数据
+//    int page = imageScrollView.contentOffset.x/320;
+//    DownList *demo = [tableArray objectAtIndex:page];
+//    if(![[activityDic objectForKey:[NSString stringWithFormat:@"%@",demo.d_name]] isKindOfClass:[DownList class]])
+//    {
+//        CGRect activityRect = CGRectMake(320*(page-1)+(320-20)/2, (ScollviewHeight-20)/2, 20, 20);
+//        UIActivityIndicatorView *activity_indicator = [[UIActivityIndicatorView alloc] initWithFrame:activityRect];
+//        [activity_indicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhite];
+//        [activity_indicator startAnimating];
+//        [activity_indicator setTag:ACTNUMBER+page];
+//        [imageScrollView addSubview:activity_indicator];
+//        [activityDic setObject:demo forKey:[NSString stringWithFormat:@"%@",demo.d_name]];
+//    }
 }
 
 #pragma mark 加载数据
@@ -498,28 +498,38 @@
         [s addGestureRecognizer:onceTap];
         UIImage *oldImge = nil;
         
-        NSString *url_path = [NSString get_image_FM_file_path:demo.d_name];
+        NSString *documentDir = [YNFunctions getFMCachePath];
+        NSArray *array=[demo.d_name componentsSeparatedByString:@"/"];
+        NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,demo.d_file_id];
+        [NSString CreatePath:createPath];
+        NSString *url_path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
         if([NSString image_exists_FM_file_path:url_path])
         {
-            NSString *path = [NSString get_image_save_file_path:url_path];
-            oldImge = [UIImage imageWithContentsOfFile:path];
+            oldImge = [UIImage imageWithContentsOfFile:url_path];
         }
         else
         {
             AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
+            documentDir = [YNFunctions getProviewCachePath];
+            
+            createPath = [NSString stringWithFormat:@"%@/%@",documentDir,demo.d_file_id];
+            [NSString CreatePath:createPath];
+            url_path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
+            if([NSString image_exists_FM_file_path:url_path])
             {
-                NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
-                oldImge = [UIImage imageWithContentsOfFile:path];
+                oldImge = [UIImage imageWithContentsOfFile:url_path];
             }
             else if(!app_delegate.isConnection)
             {
                 oldImge = [UIImage imageNamed:@"pic_err.png"];
             }
-            else
+            if(!oldImge)
             {
-                NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_thumbUrl]];
-                oldImge = [UIImage imageWithContentsOfFile:path];
+                NSString *fthumb=[NSString formatNSStringForOjbect:demo.d_thumbUrl];
+                NSString *localThumbPath=[YNFunctions getIconCachePath];
+                fthumb =[YNFunctions picFileNameFromURL:fthumb];
+                url_path=[localThumbPath stringByAppendingPathComponent:fthumb];
+                oldImge = [UIImage imageWithContentsOfFile:url_path];
                 isAction = YES;
                 LookDownFile *downImage = [[LookDownFile alloc] init];
                 [downImage setFile_id:demo.d_file_id];
@@ -551,6 +561,7 @@
             
             [s addSubview:activity_indicator];
             [activity_indicator startAnimating];
+            [activityDic addObject:activity_indicator];
         }
         [imageScrollView addSubview:s];
     }
@@ -581,7 +592,11 @@
         __block BOOL isAction = FALSE;
         UIImage *oldImge = nil;
         
-        NSString *url_path = [NSString get_image_FM_file_path:demo.d_name];
+        NSString *documentDir = [YNFunctions getFMCachePath];
+        NSArray *array=[demo.d_name componentsSeparatedByString:@"/"];
+        NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,demo.d_file_id];
+        [NSString CreatePath:createPath];
+        NSString *url_path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
         if([NSString image_exists_FM_file_path:url_path])
         {
             oldImge = [UIImage imageWithContentsOfFile:url_path];
@@ -589,10 +604,13 @@
         else
         {
             AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            if([NSString image_exists_at_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]])
+            documentDir = [YNFunctions getProviewCachePath];
+            createPath = [NSString stringWithFormat:@"%@/%@",documentDir,demo.d_file_id];
+            [NSString CreatePath:createPath];
+            url_path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
+            if([NSString image_exists_FM_file_path:url_path])
             {
-                NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
-                oldImge = [UIImage imageWithContentsOfFile:path];
+                oldImge = [UIImage imageWithContentsOfFile:url_path];
             }
             else if(!app_delegate.isConnection)
             {
@@ -600,8 +618,11 @@
             }
             if(!oldImge)
             {
-                NSString *path = [NSString get_image_save_file_path:[NSString stringWithFormat:@"%@",demo.d_baseUrl]];
-                oldImge = [UIImage imageWithContentsOfFile:path];
+                NSString *fthumb=[NSString formatNSStringForOjbect:demo.d_thumbUrl];
+                NSString *localThumbPath=[YNFunctions getIconCachePath];
+                fthumb =[YNFunctions picFileNameFromURL:fthumb];
+                url_path=[localThumbPath stringByAppendingPathComponent:fthumb];
+                oldImge = [UIImage imageWithContentsOfFile:url_path];
                 isAction = YES;
                 LookDownFile *downImage = [[LookDownFile alloc] init];
                 [downImage setFile_id:demo.d_file_id];
@@ -632,6 +653,7 @@
             [activity_indicator setTag:ACTNUMBER+i];
             [s addSubview:activity_indicator];
             [activity_indicator startAnimating];
+            [activityDic addObject:activity_indicator];
         }
         [imageScrollView addSubview:s];
     }
@@ -920,18 +942,10 @@
 
 -(void)didFailWithError
 {
-    for(int i=0;i<self.tableArray.count;i++)
-    {
-        if([[imageScrollView viewWithTag:ACTNUMBER+i] isKindOfClass:[UIActivityIndicatorView class]])
-        {
-            UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:ACTNUMBER+i];
-            [activity_indicator stopAnimating];
-            [activity_indicator removeFromSuperview];
-        }
-    }
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     app_delegate.isConnection = NO;
-    [self loadPageColoumn:self.page];
+    
+    [self updateAllView];
     
     if (self.hud) {
         [self.hud removeFromSuperview];
@@ -947,7 +961,111 @@
     [self.hud hide:YES afterDelay:1.0f];
 }
 
-
+-(void)updateAllView
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(imageScrollView)
+        {
+            [imageScrollView removeFromSuperview];
+            imageScrollView = nil;
+        }
+        
+        self.offset = 0.0;
+        scale_ = 1.0;
+        currPage = self.page;
+        imageScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, currWidth, currHeight)];
+        imageScrollView.backgroundColor = [UIColor clearColor];
+        imageScrollView.scrollEnabled = YES;
+        imageScrollView.pagingEnabled = YES;
+        imageScrollView.showsHorizontalScrollIndicator = NO;
+        imageScrollView.delegate = self;
+        
+        if(currPage==0&&[tableArray count]>=3)
+        {
+            startPage = 0;
+            endPage = currPage+2;
+            for (int i = 0; i<currPage+3; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                [self loadPageColoumn:i];
+            }
+        }
+        
+        if(currPage==0&&[tableArray count]<=3)
+        {
+            startPage = 0;
+            endPage = [tableArray count]-1;
+            for (int i = 0; i<[tableArray count]; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                if(i<0)
+                {
+                    continue;
+                }
+                [self loadPageColoumn:i];
+            }
+        }
+        
+        if(currPage>0&&currPage+1<[tableArray count])
+        {
+            startPage = currPage-1;
+            endPage = currPage+1;
+            for (int i = currPage-1; i<currPage+2; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                if(i<0)
+                {
+                    continue;
+                }
+                [self loadPageColoumn:i];
+            }
+        }
+        
+        if(currPage+1==[tableArray count] && [tableArray count]>=3)
+        {
+            startPage = currPage-2;
+            endPage = currPage-1;
+            for (int i = currPage-2; i<=currPage; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                if(i<0)
+                {
+                    continue;
+                }
+                [self loadPageColoumn:i];
+            }
+        }
+        
+        if(currPage+1==[tableArray count] && [tableArray count]<3)
+        {
+            startPage = 0;
+            endPage = currPage-1;
+            for (int i = 0; i<=currPage; i++){
+                if(i>=[tableArray count])
+                {
+                    break;
+                }
+                
+                [self loadPageColoumn:i];
+            }
+        }
+        [self.view addSubview:imageScrollView];
+        [self.view bringSubviewToFront:self.topToolBar];
+        [self.view bringSubviewToFront:self.bottonToolBar];
+        
+        imageScrollView.contentSize = CGSizeMake(currWidth*[tableArray count], currHeight);
+        [imageScrollView setContentOffset:CGPointMake(currWidth*currPage, 0) animated:NO];
+        [self handleOnceTap:nil];
+    });
+}
 
 #pragma mark 下载回调
 - (void)downFinish:(NSString *)baseUrl{}
@@ -993,6 +1111,7 @@
             UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:indexPath.row];
             [activity_indicator stopAnimating];
             [activity_indicator removeFromSuperview];
+            activity_indicator = nil;
         }
         if (self.hud) {
             [self.hud removeFromSuperview];

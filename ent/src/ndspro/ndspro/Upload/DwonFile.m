@@ -45,14 +45,13 @@
         return;
     }
     
-    
-    
-    
     downsize = 0;
     endSudu = 0;
     NSString *documentDir = [YNFunctions getFMCachePath];
     NSArray *array=[fileName componentsSeparatedByString:@"/"];
-    file_path = [NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+    NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,file_id];
+    [NSString CreatePath:createPath];
+    file_path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
     //查询本地是否已经有该图片
     BOOL bl = [NSString image_exists_FM_file_path:file_path];
     

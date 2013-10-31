@@ -14,10 +14,21 @@
 #define RightButtonBoderWidth 0
 #define hilighted_color [UIColor colorWithRed:255.0/255.0 green:180.0/255.0 blue:94.0/255.0 alpha:1.0]
 @interface OtherBrowserViewController ()
-@property (strong,nonatomic) LookDownFile *downImage;
+@property (strong,nonatomic) DwonFile *downImage;
 @end
 
 @implementation OtherBrowserViewController
+
+//<ios 6.0
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return NO;
+}
+
+//>ios 6.0
+- (BOOL)shouldAutorotate{
+    return NO;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,7 +47,6 @@
     [self.openItem setEnabled:NO];
     self.isFinished=NO;
 	// Do any additional setup after loading the view.
-    [self performSelector:@selector(showDoc) withObject:self afterDelay:1];
     //顶视图
     float topHeigth = 20;
     if([[[UIDevice currentDevice] systemVersion] floatValue]<7.0)
@@ -92,14 +102,18 @@
 //    [nbar addSubview:self.more_button];
 //    [self.more_button release];
 //    [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(showDoc) userInfo:nil repeats:NO];
+    [self showDoc];
 }
 
 -(void)showDoc
 {
+    NSString *file_id=[self.dataDic objectForKey:@"fid"];
     NSString *f_name=[self.dataDic objectForKey:@"fname"];
-    NSString *savedPath=[YNFunctions getProviewCachePath];
-    savedPath=[savedPath stringByAppendingPathComponent:f_name];
-    self.savePath=savedPath;
+    NSString *documentDir = [YNFunctions getFMCachePath];
+    NSArray *array=[f_name componentsSeparatedByString:@"/"];
+    NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,file_id];
+    [NSString CreatePath:createPath];
+    self.savePath = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.savePath]) {
         [self.downloadProgress setHidden:YES];
         [self.downloadLabel setText:@"下载完成"];
@@ -107,22 +121,31 @@
         [self.downloadBtn setHidden:YES];
         [self.alertLabel setHidden:YES];
         [self.openItem setEnabled:YES];
-        QLBrowserViewController *previewController=[[QLBrowserViewController alloc] init];
-        previewController.dataSource=self;
-        previewController.delegate=self;
-        previewController.currentPreviewItemIndex=0;
-        [previewController setHidesBottomBarWhenPushed:YES];
-        [self presentViewController:previewController animated:YES completion:^(void){
-            NSLog(@"%@",previewController);
-        }];
+        [self performSelector:@selector(showNewView) withObject:self afterDelay:1];
     }
 }
+
+-(void)showNewView
+{
+    QLBrowserViewController *previewController=[[QLBrowserViewController alloc] init];
+    previewController.dataSource=self;
+    previewController.delegate=self;
+    previewController.currentPreviewItemIndex=0;
+    [previewController setHidesBottomBarWhenPushed:YES];
+    [self presentViewController:previewController animated:YES completion:^(void){
+        NSLog(@"%@",previewController);
+    }];
+}
+
 -(IBAction)openWithOthersApp:(id)sender
 {
+    NSString *file_id=[self.dataDic objectForKey:@"fid"];
     NSString *f_name=[self.dataDic objectForKey:@"fname"];
-    NSString *savedPath=[YNFunctions getProviewCachePath];
-    savedPath=[savedPath stringByAppendingPathComponent:f_name];
-    self.savePath=savedPath;
+    NSString *documentDir = [YNFunctions getFMCachePath];
+    NSArray *array=[f_name componentsSeparatedByString:@"/"];
+    NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,file_id];
+    [NSString CreatePath:createPath];
+    self.savePath = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
 }
 -(IBAction)shared:(id)sender
 {
@@ -141,12 +164,10 @@
 -(void)toDownloading
 {
     if (self.downImage==nil) {
-        NSString *f_id=[self.dataDic objectForKey:@"fid"];
+        NSString *file_id=[self.dataDic objectForKey:@"fid"];
         NSString *f_name=[self.dataDic objectForKey:@"fname"];
-        NSString *savedPath=[YNFunctions getProviewCachePath];
-        savedPath=[savedPath stringByAppendingPathComponent:f_name];
-        self.downImage = [[LookDownFile alloc] init];
-        [self.downImage setFile_id:f_id];
+        self.downImage = [[DwonFile alloc] init];
+        [self.downImage setFile_id:file_id];
         [self.downImage setFileName:f_name];
         [self.downImage setDelegate:self];
         [self.downImage startDownload];
@@ -210,5 +231,28 @@
     fileURL=[NSURL fileURLWithPath:self.savePath];
     return fileURL;
 }
+
+- (void)downFinish:(NSString *)baseUrl
+{
+    
+    [self appImageDidLoad:0 urlImage:[UIImage imageWithContentsOfFile:baseUrl] index:nil];
+}
+
+-(void)didFailWithError
+{
+    
+}
+//上传失败
+-(void)upError{}
+//服务器异常
+-(void)webServiceFail{}
+//上传无权限
+-(void)upNotUpload{}
+//用户存储空间不足
+-(void)upUserSpaceLass{}
+//等待WiFi
+-(void)upWaitWiFi{}
+//网络失败
+-(void)upNetworkStop{}
 
 @end

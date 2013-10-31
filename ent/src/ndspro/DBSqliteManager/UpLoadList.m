@@ -316,4 +316,24 @@
     return tableArray;
 }
 
+-(void)updateList:(UpLoadList *)demo
+{
+    self.t_id = demo.t_id;
+    self.t_date = demo.t_date;
+    self.t_lenght = demo.t_lenght;
+    self.t_name = demo.t_name;
+    self.t_state = demo.t_state;
+    self.t_fileUrl = demo.t_fileUrl;
+    self.t_url_pid = demo.t_url_pid;
+    self.t_url_name = demo.t_url_name;
+    self.t_file_type = demo.t_file_type;
+    self.user_id = demo.user_id;
+    self.file_id = demo.file_id;
+    self.upload_size = demo.upload_size;
+    self.is_autoUpload = demo.is_autoUpload;
+    
+    self.is_share = demo.is_share;
+    self.spaceId = demo.spaceId;
+}
+
 @end

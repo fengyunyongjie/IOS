@@ -84,10 +84,18 @@
     list.d_id = 0;
     if([downingArray count]>0)
     {
-        DownList *ls = [downingArray lastObject];
-        if(ls!=nil)
+        DownList *endList = nil;
+        for(int i=0;i<[downingArray count];i++)
         {
-            list.d_id = ls.d_id;
+            DownList *demo = [downingArray objectAtIndex:i];
+            if(demo.d_state == 0)
+            {
+                endList = demo;
+            }
+        }
+        if(endList)
+        {
+            list.d_id = endList.d_id;
         }
     }
     [downingArray addObjectsFromArray:[list selectDowningAll]];
@@ -187,13 +195,16 @@
 //上传失败
 -(void)upError
 {
-//    if([downingArray count]>0 && isOpenedDown)
-//    {
-//        DownList *list = [downingArray objectAtIndex:0];
-//        [list deleteDownList];
-//        [downingArray removeObjectAtIndex:0];
-//        [self updateTable];
-//    }
+    if([downingArray count]>0 && isOpenedDown)
+    {
+        DownList *list = [downingArray objectAtIndex:0];
+        list.d_state = 5;
+        DownList *demo = [[DownList alloc] init];
+        [demo updateList:list];
+        [downingArray addObject:demo];
+        [downingArray removeObjectAtIndex:0];
+        [self updateTable];
+    }
     [self startDown];
 }
 //服务器异常

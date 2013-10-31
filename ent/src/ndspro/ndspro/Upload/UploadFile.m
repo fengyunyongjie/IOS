@@ -395,6 +395,13 @@
 //分段上传
 -(void)uploadSomeFile
 {
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.uploadmanage.isStopCurrUpload)
+    {
+        [self updateAutoUploadState];
+        [delegate upError];
+        return;
+    }
     ALAssetsLibrary *libary = [[ALAssetsLibrary alloc] init];
     [libary assetForURL:[NSURL URLWithString:list.t_fileUrl] resultBlock:^(ALAsset *result)
      {
@@ -539,7 +546,7 @@
     NSData *returnData;
     NSError *error;
     @try {
-        NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+        NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_MAX];
         NSLog(@"request1:%@",request);
         [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"ent_uid"];
         [request setValue:CLIENT_TAG forHTTPHeaderField:@"ent_uclient"];

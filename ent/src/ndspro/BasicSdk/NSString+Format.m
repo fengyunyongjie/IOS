@@ -57,10 +57,7 @@
 + (BOOL)image_exists_FM_file_path:(NSString *)image_path
 {
     NSFileManager *file_manager = [NSFileManager defaultManager];
-    NSString *documentDir = [YNFunctions getFMCachePath];
-    NSArray *array=[image_path componentsSeparatedByString:@"/"];
-    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
-    return [file_manager fileExistsAtPath:path];
+    return [file_manager fileExistsAtPath:image_path];
 }
 
 + (NSString*)get_image_FM_file_path:(NSString*)image_path
@@ -69,6 +66,17 @@
     NSArray *array=[image_path componentsSeparatedByString:@"/"];
     NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
     return path;
+}
+
++(void)CreatePath:(NSString *)urlPath
+{
+    if (![[NSFileManager defaultManager] fileExistsAtPath:urlPath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:urlPath
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
 }
 
 @end
