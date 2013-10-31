@@ -278,7 +278,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self hiddenTabBar:YES];
+//    [self hiddenTabBar:YES];
     // Flash scroll indicators
     [self.tableView flashScrollIndicators];
 }

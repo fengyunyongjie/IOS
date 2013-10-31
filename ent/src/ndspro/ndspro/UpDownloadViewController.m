@@ -1036,6 +1036,20 @@
                     browser.filePath=savedPath;
                     browser.fileName=f_name;
                     [self presentViewController:browser animated:YES completion:nil];
+                }else
+                {
+                    if (self.hud) {
+                        [self.hud removeFromSuperview];
+                    }
+                    self.hud=nil;
+                    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+                    [self.view addSubview:self.hud];
+                    [self.hud show:NO];
+                    self.hud.labelText=@"文件不存在，请重新下载";
+                    self.hud.mode=MBProgressHUDModeText;
+                    self.hud.margin=10.f;
+                    [self.hud show:YES];
+                    [self.hud hide:YES afterDelay:1.0f];
                 }
             }
         }
@@ -1062,6 +1076,20 @@
                     browser.filePath=savedPath;
                     browser.fileName=f_name;
                     [self presentViewController:browser animated:YES completion:nil];
+                }else
+                {
+                    if (self.hud) {
+                        [self.hud removeFromSuperview];
+                    }
+                    self.hud=nil;
+                    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+                    [self.view addSubview:self.hud];
+                    [self.hud show:NO];
+                    self.hud.labelText=@"文件不存在，请重新下载";
+                    self.hud.mode=MBProgressHUDModeText;
+                    self.hud.margin=10.f;
+                    [self.hud show:YES];
+                    [self.hud hide:YES afterDelay:1.0f];
                 }
             }
         }

@@ -180,6 +180,7 @@ static SCBAccountManager *_sharedAccountManager;
 // causes the image to be displayed.
 {
     NSLog(@"connectionDidFinishLoading");
+    NSLog(@"%@",[[NSString alloc] initWithData:self.activeData encoding:NSUTF8StringEncoding]);
     NSError *jsonParsingError=nil;
     if (self.activeData==nil) {
         NSLog(@"!!!数据错误!!");
@@ -195,7 +196,12 @@ static SCBAccountManager *_sharedAccountManager;
     switch (self.type) {
         case kUserCheckVersion:
             NSLog(@"检测版本成功：\n%@",dic);
+            if (dic==nil||[dic objectForKey:@"code"]==nil) {
+                [self.delegate checkVersionFail];
+            }else
+            {
                 [self.delegate checkVersionSucceed:dic];
+            }
             break;
         case kUserGetInfo:
             if ([[dic objectForKey:@"code"] intValue]==0) {

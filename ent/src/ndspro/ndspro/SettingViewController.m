@@ -885,9 +885,9 @@ typedef enum{
     int code=-1;
     code=[[datadic objectForKey:@"code"] intValue];
     if (code==0) {
-        int isupdate=-1;//是否强制更新，0不强制，1强制
+        int isupdate=-1;//是否强制更新，0不强制，1强制   10月31日，修改为： 强制更新的版本号
         isupdate=[[datadic objectForKey:@"isupdate"] intValue];
-        if (isupdate==0) {
+        if ([BUILD_VERSION intValue]>=isupdate) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                                 message:@"有新版本，点确定更新"
                                                                delegate:self
@@ -895,7 +895,7 @@ typedef enum{
                                                       otherButtonTitles:@"确定", nil];
             alertView.tag=kAlertTypeNewVersion;
             [alertView show];
-        }else if(isupdate==1)
+        }else if([BUILD_VERSION intValue]<isupdate)
         {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                                 message:@"当前版本需要更新才可以使用，点确定更新"
@@ -935,5 +935,18 @@ typedef enum{
 }
 -(void)checkVersionFail
 {
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
+    self.hud=nil;
+    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:self.hud];
+    
+    [self.hud show:NO];
+    self.hud.labelText=@"检测更新失败";
+    self.hud.mode=MBProgressHUDModeText;
+    self.hud.margin=10.f;
+    [self.hud show:YES];
+    [self.hud hide:YES afterDelay:1.0f];
 }
 @end

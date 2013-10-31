@@ -219,7 +219,7 @@ enum{
     if (code==0) {
         int isupdate=-1;//是否强制更新，0不强制，1强制
         isupdate=[[datadic objectForKey:@"isupdate"] intValue];
-        if (isupdate==0) {
+        if ([BUILD_VERSION intValue]>=isupdate) {
             isMustUpdate=NO;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                                 message:@"有新版本，点确定更新"
@@ -228,7 +228,7 @@ enum{
                                                       otherButtonTitles:@"确定", nil];
             alertView.tag=kAlertTypeNewVersion;
             [alertView show];
-        }else if(isupdate==1)
+        }else if([BUILD_VERSION intValue]<isupdate)
         {
             isMustUpdate=YES;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""

@@ -1171,50 +1171,50 @@ typedef enum{
 //    NSMutableArray *barItems=[NSMutableArray array];
     UIButton *btn_send, *btn_commit ,*btn_del ,*btn_more ,*btn_resave ,*btn_download ,*btn_rename ,*btn_move;
     UIBarButtonItem *item_send, *item_commit ,*item_del ,*item_more, *item_flexible ,*item_resave ,*item_download ,*item_rename ,*item_move;
-    
-    btn_send =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    int btnWidth=40;
+    btn_send =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
     [btn_send setImage:[UIImage imageNamed:@"send_nor.png"] forState:UIControlStateNormal];
     [btn_send setImage:[UIImage imageNamed:@"send_se.png"] forState:UIControlStateHighlighted];
     [btn_send addTarget:self action:@selector(toSend:) forControlEvents:UIControlEventTouchUpInside];
     item_send=[[UIBarButtonItem alloc] initWithCustomView:btn_send];
     
-    btn_commit =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    btn_commit =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
     [btn_commit setImage:[UIImage imageNamed:@"tj_nor.png"] forState:UIControlStateNormal];
     [btn_commit setImage:[UIImage imageNamed:@"tj_se.png"] forState:UIControlStateHighlighted];
     [btn_commit addTarget:self action:@selector(toCommitOrResave:) forControlEvents:UIControlEventTouchUpInside];
     item_commit=[[UIBarButtonItem alloc] initWithCustomView:btn_commit];
     
-    btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    btn_resave =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
     [btn_resave setImage:[UIImage imageNamed:@"zc_nor.png"] forState:UIControlStateNormal];
     [btn_resave setImage:[UIImage imageNamed:@"zc_se.png"] forState:UIControlStateHighlighted];
     [btn_resave addTarget:self action:@selector(toCommitOrResave:) forControlEvents:UIControlEventTouchUpInside];
     item_resave=[[UIBarButtonItem alloc] initWithCustomView:btn_resave];
     
-    btn_del =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    btn_del =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
     [btn_del setImage:[UIImage imageNamed:@"del_nor.png"] forState:UIControlStateNormal];
     [btn_del setImage:[UIImage imageNamed:@"del_se.png"] forState:UIControlStateHighlighted];
     [btn_del addTarget:self action:@selector(toDelete:) forControlEvents:UIControlEventTouchUpInside];
     item_del=[[UIBarButtonItem alloc] initWithCustomView:btn_del];
     
-    btn_more =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    btn_more =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
     [btn_more setImage:[UIImage imageNamed:@"more_nor.png"] forState:UIControlStateNormal];
     [btn_more setImage:[UIImage imageNamed:@"more_se.png"] forState:UIControlStateHighlighted];
     [btn_more addTarget:self action:@selector(toMore:) forControlEvents:UIControlEventTouchUpInside];
     item_more=[[UIBarButtonItem alloc] initWithCustomView:btn_more];
     
-    btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    btn_download =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
     [btn_download setImage:[UIImage imageNamed:@"download_nor.png"] forState:UIControlStateNormal];
     [btn_download setImage:[UIImage imageNamed:@"download_se.png"] forState:UIControlStateHighlighted];
     [btn_download addTarget:self action:@selector(toDownload:) forControlEvents:UIControlEventTouchUpInside];
     item_download=[[UIBarButtonItem alloc] initWithCustomView:btn_download];
     
-    btn_rename =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    btn_rename =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
     [btn_rename setImage:[UIImage imageNamed:@"rename_nor.png"] forState:UIControlStateNormal];
     [btn_rename setImage:[UIImage imageNamed:@"rename_se.png"] forState:UIControlStateHighlighted];
     [btn_rename addTarget:self action:@selector(toRename:) forControlEvents:UIControlEventTouchUpInside];
     item_rename=[[UIBarButtonItem alloc] initWithCustomView:btn_rename];
     
-    btn_move =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, 29, 39)];
+    btn_move =[[UIButton alloc] initWithFrame:CGRectMake(0, 0, btnWidth, 39)];
     [btn_move setImage:[UIImage imageNamed:@"move_nor.png"] forState:UIControlStateNormal];
     [btn_move setImage:[UIImage imageNamed:@"move_se.png"] forState:UIControlStateHighlighted];
     [btn_move addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
@@ -1866,9 +1866,9 @@ typedef enum{
                 {
                     [self.fm removeFileWithIDs:@[f_id]];
                 }
+                [self editFinished];
             }
 //            [self hideOptionCell];
-            [self editFinished];
             break;
         }
         case kActionSheetTagDeleteMore:
@@ -1965,93 +1965,10 @@ typedef enum{
             break;
         case kActionSheetTagShare:
             {
-//            if (buttonIndex == 0) {
-//                NSLog(@"短信分享");
-//                //[self toDelete:nil];
-//                [self messageShare:actionSheet.title];
-//            }else if (buttonIndex == 1) {
-//                NSLog(@"邮件分享");
-//                //[self toShared:nil];
-//                //[self mailShare:actionSheet.title];
-//                [self praMailShare:actionSheet.title];
-//            }else if(buttonIndex == 2) {
-//                NSLog(@"复制");
-//                [self pasteBoard:actionSheet.title];
-//            }else if(buttonIndex == 3) {
-//                NSLog(@"微信");
-//                [self weixin:actionSheet.title];
-//            }else if(buttonIndex == 4) {
-//                NSLog(@"朋友圈");
-//                [self frends:actionSheet.title];
-//            }else if(buttonIndex == 5) {
-//                NSLog(@"新浪");
-//            }else if(buttonIndex == 6) {
-//                NSLog(@"取消");
-//            }
             }
             break;
         case kActionSheetTagPhoto:
         {
-//            NSDictionary *dic=[self.listArray objectAtIndex:[actionSheet.title intValue]];
-//            if (buttonIndex==0) {
-//                NSMutableArray *array=[NSMutableArray array];
-//                int index=0;
-//                for (int i=0;i<self.listArray.count;i++) {
-//                    NSDictionary *dict=[self.listArray objectAtIndex:i];
-//                    NSString *f_mime=[[dict objectForKey:@"f_mime"] lowercaseString];
-//                    if ([f_mime isEqualToString:@"png"]||
-//                        [f_mime isEqualToString:@"jpg"]||
-//                        [f_mime isEqualToString:@"jpeg"]||
-//                        [f_mime isEqualToString:@"bmp"]||
-//                        [f_mime isEqualToString:@"gif"]) {
-//                        PhotoFile *demo = [[PhotoFile alloc] init];
-//                        [demo setF_date:[dict objectForKey:@"f_create"]];
-//                        [demo setF_id:[[dict objectForKey:@"f_id"] intValue]];
-//                        [demo setF_name:[dic objectForKey:@"f_name"]];
-//                        [array addObject:demo];
-//                        
-//                        if (i==[actionSheet.title intValue]) {
-//                            index=array.count-1;
-//                        }
-//                        [demo release];
-//                    }
-//                }
-//                PhotoLookViewController *photoLookViewController = [[PhotoLookViewController alloc] init];
-//                [photoLookViewController setHidesBottomBarWhenPushed:YES];
-//                [photoLookViewController setCurrPage:index];
-//                [photoLookViewController setTableArray:array];
-//                [self presentModalViewController:photoLookViewController animated:YES];
-//                [photoLookViewController release];
-//            }else if(buttonIndex==1)
-//            {
-//                NSString *filePath=[YNFunctions getFMCachePath];
-//                filePath=[filePath stringByAppendingPathComponent:[dic objectForKey:@"f_name"]];
-//                if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-//                    QLBrowserViewController *previewController=[[QLBrowserViewController alloc] init];
-//                    previewController.dataSource=self;
-//                    previewController.delegate=self;
-//                    
-//                    previewController.currentPreviewItemIndex=0;
-//                    [previewController setHidesBottomBarWhenPushed:YES];
-//                    //            [self.navigationController pushViewController:previewController animated:YES];
-//                    //[self presentModalViewController:previewController animated:YES];
-//                    [self presentViewController:previewController animated:YES completion:^(void){
-//                        NSLog(@"%@",previewController);
-//                    }];
-//                    //            [self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
-//                }else{
-//                    OtherBrowserViewController *otherBrowser=[[[OtherBrowserViewController alloc] initWithNibName:@"OtherBrowser" bundle:nil]  autorelease];
-//                    //[otherBrowser setHidesBottomBarWhenPushed:YES];
-//                    otherBrowser.dataDic=dic;
-//                    NSString *f_name=[dic objectForKey:@"f_name"];
-//                    otherBrowser.title=f_name;
-//                    [self.navigationController pushViewController:otherBrowser animated:YES];
-//                    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
-//                    [myTabbar setHidesTabBarWithAnimate:YES];
-//                }
-//            }else
-//            {
-//            }
         }
             break;
         default:

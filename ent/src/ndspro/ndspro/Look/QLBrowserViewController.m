@@ -22,13 +22,16 @@
     }
     return self;
 }
-
+- (BOOL)shouldAutorotate NS_AVAILABLE_IOS(6_0)
+{
+    return YES;
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return YES;
 }
 
-- (NSInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
@@ -52,7 +55,6 @@
 // returns the item that the preview controller should preview
 - (id <QLPreviewItem>) previewController: (QLPreviewController *) controller previewItemAtIndex: (NSInteger) index
 {
-    DDLogCInfo(@"previewController ----------");
     NSURL *fileURL = nil;
     fileURL=[NSURL fileURLWithPath:self.filePath];
     return fileURL;
