@@ -15,8 +15,7 @@
 -(BOOL)insertUploadList
 {
     sqlite3_stmt *statement;
-    __block int count = 0;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [InsertUploadList UTF8String];
@@ -38,24 +37,18 @@
         sqlite3_bind_int(statement, 12, is_autoUpload);
         sqlite3_bind_int(statement, 13, is_share);
         sqlite3_bind_text(statement, 14, [spaceId UTF8String], -1, SQLITE_TRANSIENT);
-        
+        sqlite3_bind_int(statement, 15, is_Onece);
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR || success != 101) {
             bl = FALSE;
-            
+        }
+        else
+        {
+            bl = TRUE;
         }
         NSLog(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
-        if(!bl)
-        {
-            if(count<2)
-            {
-                [NSThread sleepForTimeInterval:0.5];
-                [self insertUploadList];
-                count++;
-            }
-        }
     }
     return bl;
 }
@@ -63,7 +56,7 @@
 -(BOOL)deleteUploadList
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteUploadList UTF8String];
@@ -76,6 +69,10 @@
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
+        }
+        else
+        {
+            bl = TRUE;
         }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
@@ -233,6 +230,7 @@
             uploadList.is_autoUpload = sqlite3_column_int(statement, 12);
             uploadList.is_share = sqlite3_column_int(statement, 13);
             uploadList.spaceId = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 14)];
+            uploadList.is_Onece = sqlite3_column_int(statement, 15);
             [tableArray addObject:uploadList];
         }
         sqlite3_finalize(statement);
@@ -270,6 +268,7 @@
             uploadList.is_autoUpload = sqlite3_column_int(statement, 12);
             uploadList.is_share = sqlite3_column_int(statement, 13);
             uploadList.spaceId = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 14)];
+            uploadList.is_Onece = sqlite3_column_int(statement, 15);
             [tableArray addObject:uploadList];
         }
         sqlite3_finalize(statement);
@@ -307,6 +306,7 @@
             uploadList.is_autoUpload = sqlite3_column_int(statement, 12);
             uploadList.is_share = sqlite3_column_int(statement, 13);
             uploadList.spaceId = [NSString formatNSStringForChar:(const char *)sqlite3_column_text(statement, 14)];
+            uploadList.is_Onece = sqlite3_column_int(statement, 15);
             [tableArray addObject:uploadList];
         }
         sqlite3_finalize(statement);

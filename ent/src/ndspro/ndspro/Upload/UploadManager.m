@@ -68,7 +68,7 @@
             UpLoadList *list = [uploadArray objectAtIndex:i];
             if(list.t_state == 5 || list.t_state == 6)
             {
-                list.is_Onece = YES;
+                list.is_Onece = NO;
             }
             else
             {
@@ -157,10 +157,14 @@
         UploadFile *newUpload = [[UploadFile alloc] init];
         newUpload.list = [uploadArray objectAtIndex:0];
         [newUpload setDelegate:self];
-        if(newUpload.list.t_state == 0 || newUpload.list.is_Onece)
+        if(newUpload.list.t_state == 0 || !newUpload.list.is_Onece)
         {
             newUpload.list.t_state = 0;
             [newUpload startUpload];
+        }
+        else if(newUpload.list.is_Onece)
+        {
+            [self upNetworkStop];
         }
     }
     if([uploadArray count]==0)
@@ -272,17 +276,22 @@
 //文件大小超过1GB
 -(void)upNotSizeTooBig
 {
+    DDLogCInfo(@"文件大小超过1GB..................................");
     isStopCurrUpload = YES;
-    if([uploadArray count]>0 && isOpenedUpload)
+    if([uploadArray count]>0)
     {
         UpLoadList *list = [uploadArray objectAtIndex:0];
         list.t_state = 6;
-        list.is_Onece = NO;
-        [list deleteUploadList];
-        [list insertUploadList];
+        list.is_Onece = YES;
+        BOOL bl = [list deleteUploadList];
+        if(bl)
+        {
+            [list insertUploadList];
+        }
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];
     }
+    
     //调用ui
     dispatch_async(dispatch_get_main_queue(), ^{
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -320,7 +329,7 @@
     {
         UpLoadList *list = [uploadArray objectAtIndex:0];
         list.t_state = 5;
-        list.is_Onece = NO;
+        list.is_Onece = YES;
         [list deleteUploadList];
         [list insertUploadList];
         [uploadArray removeObjectAtIndex:0];
@@ -398,7 +407,7 @@
         UpLoadList *list = [uploadArray objectAtIndex:i];
         if(list.t_state == 5 || list.t_state == 6)
         {
-            list.is_Onece = YES;
+            
         }
         else
         {
@@ -416,7 +425,7 @@
         UpLoadList *list = [uploadArray objectAtIndex:i];
         if(list.t_state == 5 || list.t_state == 6)
         {
-            list.is_Onece = YES;
+            list.is_Onece = NO;
         }
         else
         {
@@ -434,7 +443,7 @@
         UpLoadList *list = [uploadArray objectAtIndex:i];
         if(list.t_state == 5 || list.t_state == 6)
         {
-            list.is_Onece = YES;
+            
         }
         else
         {
