@@ -32,7 +32,9 @@ build/*
 *.xcuserstate
 *.xcbkptlist
 xcuserdate
+xcuserdata/*
 UserInterfaceState.xcuserstate
 Breakpoints.xcbkptlist
 xcdebugger
+ent/src/ndspro/ndspro.xcodeproj/project.xcworkspace/xcuserdata/fengyn.xcuserdatad/UserInterfaceState.xcuserstate
 

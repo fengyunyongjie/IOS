@@ -112,11 +112,11 @@ enum{
 - (IBAction)login:(id)sender
 {
     if (isMustUpdate) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                            message:@"检测到有新版本，是否更新？"
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                            message:@"当前版本需要更新才可以使用，点确定更新"
                                                            delegate:self
-                                                  cancelButtonTitle:@"取消"
-                                                  otherButtonTitles:@"更新", nil];
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:@"确定", nil];
         alertView.tag=kAlertTypeMustUpdate;
         [alertView show];
         return;
