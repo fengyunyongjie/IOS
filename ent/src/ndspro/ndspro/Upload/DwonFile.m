@@ -121,7 +121,9 @@
         bytesWritten = [self.fileStream write:&dataBytes[bytesWrittenSoFar] maxLength:dataLength - bytesWrittenSoFar];
         assert(bytesWritten != 0);
         if (bytesWritten == -1) {
-            //[self stopReceiveWithStatus:@"File write error"];
+            //下载文件失败
+            [connection cancel];
+            [delegate didFailWithError];
             break;
         } else {
             bytesWrittenSoFar += bytesWritten;
