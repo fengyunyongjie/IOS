@@ -1025,7 +1025,7 @@ typedef enum{
                     fthumb =[YNFunctions picFileNameFromURL:fthumb];
                     localThumbPath=[localThumbPath stringByAppendingPathComponent:fthumb];
                     NSLog(@"是否存在文件：%@",localThumbPath);
-                    if ([[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]) {
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:localThumbPath]&&[UIImage imageWithContentsOfFile:localThumbPath]!=nil) {
                         NSLog(@"存在文件：%@",localThumbPath);
                         UIImage *icon=[UIImage imageWithContentsOfFile:localThumbPath];
                         CGSize itemSize = CGSizeMake(100, 100);
