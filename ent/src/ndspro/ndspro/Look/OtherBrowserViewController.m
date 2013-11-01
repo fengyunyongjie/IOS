@@ -9,6 +9,8 @@
 #import "OtherBrowserViewController.h"
 #import "QLBrowserViewController.h"
 #import "YNFunctions.h"
+#import "AppDelegate.h"
+
 #define TabBarHeight 60
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -164,11 +166,13 @@
 -(void)toDownloading
 {
     if (self.downImage==nil) {
-        NSString *file_id=[self.dataDic objectForKey:@"fid"];
-        NSString *f_name=[self.dataDic objectForKey:@"fname"];
+        NSString *file_id = [self.dataDic objectForKey:@"fid"];
+        NSString *f_name = [self.dataDic objectForKey:@"fname"];
+        NSInteger size = [[self.dataDic objectForKey:@"fsize"] integerValue];
         self.downImage = [[DwonFile alloc] init];
         [self.downImage setFile_id:file_id];
         [self.downImage setFileName:f_name];
+        [self.downImage setFileSize:size];
         [self.downImage setDelegate:self];
         [self.downImage startDownload];
     }
@@ -234,8 +238,7 @@
 
 - (void)downFinish:(NSString *)baseUrl
 {
-    
-    [self appImageDidLoad:0 urlImage:[UIImage imageWithContentsOfFile:baseUrl] index:nil];
+    [self showDoc];
 }
 
 -(void)didFailWithError

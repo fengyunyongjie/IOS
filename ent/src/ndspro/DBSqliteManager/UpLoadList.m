@@ -10,7 +10,7 @@
 #import "NSString+Format.h"
 
 @implementation UpLoadList
-@synthesize t_id,t_name,t_lenght,t_date,t_state,t_fileUrl,t_url_pid,t_url_name,t_file_type,user_id,file_id,upload_size,is_autoUpload,is_share,spaceId,sudu;
+@synthesize t_id,t_name,t_lenght,t_date,t_state,t_fileUrl,t_url_pid,t_url_name,t_file_type,user_id,file_id,upload_size,is_autoUpload,is_share,spaceId,sudu,is_Onece,is_Fail;
 
 -(BOOL)insertUploadList
 {
@@ -334,6 +334,8 @@
     
     self.is_share = demo.is_share;
     self.spaceId = demo.spaceId;
+    self.is_Onece = demo.is_Onece;
+    self.is_Fail = demo.is_Fail;
 }
 
 @end

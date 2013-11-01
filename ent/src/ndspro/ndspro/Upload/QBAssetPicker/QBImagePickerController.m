@@ -352,7 +352,7 @@
     
     ALAssetsGroup *assetsGroup = [self.assetsGroups objectAtIndex:indexPath.row];
     
-    cell.imageView.image = [UIImage imageWithCGImage:assetsGroup.posterImage];
+    cell.topImageView.image = [UIImage imageWithCGImage:assetsGroup.posterImage];
     cell.titleLabel.text = [NSString stringWithFormat:@"%@", [assetsGroup valueForProperty:ALAssetsGroupPropertyName]];
     cell.countLabel.text = [NSString stringWithFormat:@"(%d)", assetsGroup.numberOfAssets];
     

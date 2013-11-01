@@ -12,6 +12,7 @@
 
 @interface QBImagePickerGroupCell : UITableViewCell
 
+@property (nonatomic, strong) UIImageView *topImageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *countLabel;
 

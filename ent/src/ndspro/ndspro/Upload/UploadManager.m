@@ -66,7 +66,14 @@
         isStart = FALSE;
         for (int i=0; i<[uploadArray count]; i++) {
             UpLoadList *list = [uploadArray objectAtIndex:i];
-            list.t_state = 2;
+            if(list.t_state == 5)
+            {
+                list.is_Onece = YES;
+            }
+            else
+            {
+                list.t_state = 2;
+            }
         }
     }
 }
@@ -161,7 +168,11 @@
         UploadFile *newUpload = [[UploadFile alloc] init];
         newUpload.list = [uploadArray objectAtIndex:0];
         [newUpload setDelegate:self];
-        [newUpload startUpload];
+        if(newUpload.list.t_state == 0 || newUpload.list.is_Onece)
+        {
+            newUpload.list.t_state = 0;
+            [newUpload startUpload];
+        }
     }
     if([uploadArray count]==0)
     {
@@ -315,9 +326,9 @@
     {
         UpLoadList *list = [uploadArray objectAtIndex:0];
         list.t_state = 5;
-        UpLoadList *demo = [[UpLoadList alloc] init];
-        [demo updateList:list];
-        [uploadArray addObject:demo];
+        list.is_Onece = NO;
+        [list deleteUploadList];
+        [list insertUploadList];
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];
     }
@@ -384,7 +395,15 @@
 {
     for (int i=0; i<[uploadArray count]; i++) {
         UpLoadList *list = [uploadArray objectAtIndex:i];
-        list.t_state = 3;
+        if(list.t_state == 5)
+        {
+            list.is_Onece = YES;
+        }
+        else
+        {
+            list.t_state = 3;
+        }
+        list.upload_size = 0;
     }
     [self updateTable];
 }
@@ -394,7 +413,14 @@
 {
     for (int i=0; i<[uploadArray count]; i++) {
         UpLoadList *list = [uploadArray objectAtIndex:i];
-        list.t_state = 0;
+        if(list.t_state == 5)
+        {
+            list.is_Onece = YES;
+        }
+        else
+        {
+            list.t_state = 0;
+        }
         list.upload_size = 0;
     }
     [self updateTable];
@@ -405,7 +431,15 @@
 {
     for (int i=0; i<[uploadArray count]; i++) {
         UpLoadList *list = [uploadArray objectAtIndex:i];
-        list.t_state = 2;
+        if(list.t_state == 5)
+        {
+            list.is_Onece = YES;
+        }
+        else
+        {
+            list.t_state = 2;
+        }
+        list.upload_size = 0;
     }
     [self updateTable];
 }

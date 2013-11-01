@@ -1082,12 +1082,25 @@ typedef enum{
             }
         }
         //判断文件是否已经下载
-        DownList *list = [[DownList alloc] init];
-        list.d_ure_id = [[SCBSession sharedSession] userId];
-        list.d_name = textLabel.text;
-        list.d_state = 1;
         UIImageView *tagView = (UIImageView *)[cell viewWithTag:KCOVERTag];
-        if([list selectUploadListIsHave])
+        //获取数据
+        NSString *fileName = [NSString formatNSStringForOjbect:[dic objectForKey:@"fname"]];
+        NSString *file_id = [NSString formatNSStringForOjbect:[dic objectForKey:@"fid"]];
+        NSInteger fileSize = [[dic objectForKey:@"fsize"] integerValue];
+        
+        NSString *documentDir = [YNFunctions getFMCachePath];
+        NSArray *array=[fileName componentsSeparatedByString:@"/"];
+        NSString *createPath = [NSString stringWithFormat:@"%@/%@",documentDir,file_id];
+        [NSString CreatePath:createPath];
+        NSString *file_path = [NSString stringWithFormat:@"%@/%@",createPath,[array lastObject]];
+        //查询本地是否已经有该图片
+        BOOL bl = [NSString image_exists_FM_file_path:file_path];
+        if(bl)
+        {
+            NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:file_path];
+            bl = fileSize==[[handle availableData] length];
+        }
+        if(bl)
         {
             [tagView setHidden:NO];
         }

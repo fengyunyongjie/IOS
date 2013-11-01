@@ -17,7 +17,7 @@
 #define UpdateUploadListForName @"UPDATE UploadList SET File_id=?,Upload_size=?,t_date=?,t_state=? WHERE t_name=? and User_id=?"
 
 #define SelectAutoUploadListAllAndNotUpload @"SELECT * FROM UploadList WHERE Is_autoUpload=1 and t_state=0 and t_id>? and User_id=?"
-#define SelectMoveUploadListAllAndNotUpload @"SELECT * FROM UploadList WHERE Is_autoUpload=0 and t_state=0 and t_id>? and User_id=?"
+#define SelectMoveUploadListAllAndNotUpload @"SELECT * FROM UploadList WHERE Is_autoUpload=0 and t_state<>1 and t_id>? and User_id=?"
 #define SelectUploadListAllAndUploaded @"SELECT * FROM UploadList WHERE t_state=1 and User_id=? and t_id>? ORDER BY t_id desc"
 
 @interface UpLoadList : DBSqlite3
@@ -38,6 +38,8 @@
 @property(nonatomic,assign) BOOL is_share;
 @property(nonatomic,retain) NSString *spaceId;
 @property(nonatomic,assign) NSInteger sudu;
+@property(nonatomic,assign) BOOL is_Onece;
+@property(nonatomic,assign) BOOL is_Fail;
 
 //添加数据
 -(BOOL)insertUploadList;

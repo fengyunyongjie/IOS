@@ -12,7 +12,7 @@
 #define DeleteDownList @"DELETE FROM DownList WHERE d_id=? and d_ure_id=?"
 #define DeleteDowningAll @"DELETE FROM DownList WHERE d_state<>1 and d_ure_id=?"
 #define DeleteDownedAll @"DELETE FROM DownList WHERE d_state=1 and d_ure_id=?"
-#define SelectDownListIsHaveName @"SELECT * FROM DownList WHERE d_name=? and d_ure_id=? and d_state=?"
+#define SelectDownListIsHaveName @"SELECT * FROM DownList WHERE d_name=? and d_ure_id=? and d_state=? and d_file_id=?"
 #define UpdateDownListForUserId @"UPDATE DownList SET d_state=?,d_baseUrl=?,d_file_id=?,d_downSize=?,d_datetime=? WHERE d_id=? and d_ure_id=?"
 #define UpdateDownListAllForUserId @"UPDATE DownList SET d_state=4 WHERE d_state=1"
 #define SelectDowningAll @"SELECT * FROM DownList WHERE d_state=0 and d_id>? and d_ure_id=?"
@@ -31,6 +31,7 @@
 @property(strong,nonatomic) NSString *d_ure_id;
 @property(assign,nonatomic) NSInteger curr_size;
 @property(nonatomic,assign) NSInteger sudu;
+@property(nonatomic,assign) BOOL is_Onece;
 
 //添加数据
 -(BOOL)insertDownList;

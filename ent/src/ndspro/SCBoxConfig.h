@@ -10,9 +10,9 @@
 #define NetDisk_SCBoxConfig_h
 
 #define CLIENT_TAG @"3"
-#define CONNECT_TIMEOUT 15
+#define CONNECT_TIMEOUT 30
 #define RESPONSE_TIMEOUT 10
-#define CONNECT_MAX 30
+#define CONNECT_MAX 60
 //商业版URL
 #define HOST_URL @"http://192.168.1.9/"
 //#define HOST_URL @"http://b.7cbox.cn/"

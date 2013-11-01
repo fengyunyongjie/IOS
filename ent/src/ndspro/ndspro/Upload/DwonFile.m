@@ -158,7 +158,16 @@
     //下载完成
     if(file_path)
     {
-        [delegate downFinish:file_path];
+        NSFileHandle *handle = [NSFileHandle fileHandleForReadingAtPath:file_path];
+        BOOL bl = fileSize==[[handle availableData] length];
+        if(bl)
+        {
+            [delegate downFinish:file_path];
+        }
+        else
+        {
+            [delegate upError];
+        }
     }
 }
 

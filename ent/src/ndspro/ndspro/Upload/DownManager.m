@@ -84,15 +84,7 @@
     list.d_id = 0;
     if([downingArray count]>0)
     {
-        DownList *endList = nil;
-        for(int i=0;i<[downingArray count];i++)
-        {
-            DownList *demo = [downingArray objectAtIndex:i];
-            if(demo.d_state != 1 && demo.d_state != 5)
-            {
-                endList = demo;
-            }
-        }
+        DownList *endList = [downingArray lastObject];
         if(endList)
         {
             list.d_id = endList.d_id;
@@ -141,7 +133,11 @@
         self.file.file_id = list.d_file_id;
         self.file.fileName = list.d_name;
         self.file.delegate = self;
-        [self.file startDownload];
+        if(list.d_state == 0 || list.is_Onece)
+        {
+            list.d_state = 0;
+            [self.file startDownload];
+        }
     }
     if([downingArray count]==0)
     {
@@ -199,9 +195,9 @@
     {
         DownList *list = [downingArray objectAtIndex:0];
         list.d_state = 5;
-        DownList *demo = [[DownList alloc] init];
-        [demo updateList:list];
-        [downingArray addObject:demo];
+        list.is_Onece = NO;
+        [list deleteDownList];
+        [list insertDownList];
         [downingArray removeObjectAtIndex:0];
         [self updateTable];
     }
@@ -260,7 +256,15 @@
 {
     for (int i=0; i<[downingArray count]; i++) {
         DownList *list = [downingArray objectAtIndex:i];
-        list.d_state = 3;
+        if(list.d_state == 5)
+        {
+            list.is_Onece = YES;
+        }
+        else
+        {
+            list.d_state = 3;
+        }
+        list.curr_size = 0;
     }
     [self updateTable];
 }
@@ -270,7 +274,14 @@
 {
     for (int i=0; i<[downingArray count]; i++) {
         DownList *list = [downingArray objectAtIndex:i];
-        list.d_state = 0;
+        if(list.d_state == 5)
+        {
+            list.is_Onece = YES;
+        }
+        else
+        {
+            list.d_state = 0;
+        }
         list.curr_size = 0;
     }
     [self updateTable];
@@ -281,7 +292,14 @@
 {
     for (int i=0; i<[downingArray count]; i++) {
         DownList *list = [downingArray objectAtIndex:i];
-        list.d_state = 2;
+        if(list.d_state == 5)
+        {
+            list.is_Onece = YES;
+        }
+        else
+        {
+            list.d_state = 2;
+        }
         list.curr_size = 0;
     }
     [self updateTable];

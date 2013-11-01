@@ -11,7 +11,7 @@
 #import "YNFunctions.h"
 
 @implementation DownList
-@synthesize d_thumbUrl,d_baseUrl,d_datetime,d_downSize,d_id,d_name,d_state,d_file_id,d_ure_id,curr_size,sudu;
+@synthesize d_thumbUrl,d_baseUrl,d_datetime,d_downSize,d_id,d_name,d_state,d_file_id,d_ure_id,curr_size,sudu,is_Onece;
 
 //添加数据
 -(BOOL)insertDownList
@@ -144,6 +144,7 @@
         sqlite3_bind_text(statement, 1, [d_name UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_text(statement, 2, [d_ure_id UTF8String], -1, SQLITE_TRANSIENT);
         sqlite3_bind_int(statement, 3, d_state);
+        sqlite3_bind_text(statement, 4, [d_file_id UTF8String], -1, SQLITE_TRANSIENT);
         if (sqlite3_step(statement)==SQLITE_ROW) {
             bl = TRUE;
         }
