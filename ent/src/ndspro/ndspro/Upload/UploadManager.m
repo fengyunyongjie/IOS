@@ -66,7 +66,7 @@
         isStart = FALSE;
         for (int i=0; i<[uploadArray count]; i++) {
             UpLoadList *list = [uploadArray objectAtIndex:i];
-            if(list.t_state == 5)
+            if(list.t_state == 5 || list.t_state == 6)
             {
                 list.is_Onece = YES;
             }
@@ -122,21 +122,10 @@
     }
     else
     {
-        UpLoadList *endList = nil;
-        for (int i=0; i<[uploadArray count]; i++) {
-            UpLoadList *demo = [uploadArray objectAtIndex:i];
-            if(demo.t_state != 1 && demo.t_state != 5)
-            {
-                endList = demo;
-            }
-        }
-        if(endList)
+        UpLoadList *ls = [uploadArray lastObject];
+        if(ls!=nil)
         {
-            list.t_id = endList.t_id;
-        }
-        else
-        {
-            list.t_id =  0;
+            list.t_id =  ls.t_id;
         }
     }
     list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
@@ -280,9 +269,20 @@
     });
     [self startUpload];
 }
-//上传文件大小大于1g
+//文件大小超过1GB
 -(void)upNotSizeTooBig
 {
+    isStopCurrUpload = YES;
+    if([uploadArray count]>0 && isOpenedUpload)
+    {
+        UpLoadList *list = [uploadArray objectAtIndex:0];
+        list.t_state = 6;
+        list.is_Onece = NO;
+        [list deleteUploadList];
+        [list insertUploadList];
+        [uploadArray removeObjectAtIndex:0];
+        [self updateTable];
+    }
     //调用ui
     dispatch_async(dispatch_get_main_queue(), ^{
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -290,7 +290,7 @@
         UpDownloadViewController *uploadView = (UpDownloadViewController *)[NavigationController.viewControllers objectAtIndex:0];
         if([uploadView isKindOfClass:[UpDownloadViewController class]])
         {
-            [uploadView showFloderNot:@"上传文件大小大于1g"];
+            [uploadView showFloderNot:@"文件大小超过1GB"];
         }
     });
     [self startUpload];
@@ -315,12 +315,6 @@
 //服务器异常
 -(void)webServiceFail
 {
-    [self upError];
-}
-
-//上传失败
--(void)upError
-{
     isStopCurrUpload = YES;
     if([uploadArray count]>0 && isOpenedUpload)
     {
@@ -332,6 +326,13 @@
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];
     }
+    [self startUpload];
+}
+
+//上传失败
+-(void)upError
+{
+    isStopCurrUpload = YES;
     [self startUpload];
 }
 
@@ -395,7 +396,7 @@
 {
     for (int i=0; i<[uploadArray count]; i++) {
         UpLoadList *list = [uploadArray objectAtIndex:i];
-        if(list.t_state == 5)
+        if(list.t_state == 5 || list.t_state == 6)
         {
             list.is_Onece = YES;
         }
@@ -413,7 +414,7 @@
 {
     for (int i=0; i<[uploadArray count]; i++) {
         UpLoadList *list = [uploadArray objectAtIndex:i];
-        if(list.t_state == 5)
+        if(list.t_state == 5 || list.t_state == 6)
         {
             list.is_Onece = YES;
         }
@@ -431,7 +432,7 @@
 {
     for (int i=0; i<[uploadArray count]; i++) {
         UpLoadList *list = [uploadArray objectAtIndex:i];
-        if(list.t_state == 5)
+        if(list.t_state == 5 || list.t_state == 6)
         {
             list.is_Onece = YES;
         }

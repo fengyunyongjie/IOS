@@ -81,7 +81,7 @@
 -(void)updateNetWork
 {
     [self updateAutoUploadState];
-    [delegate upError];
+    [delegate webServiceFail];
 }
 
 //2.生成目录
@@ -364,7 +364,7 @@
     {
         [self updateAutoUploadState];
         //上传文件大小大于1G
-        [delegate upUserSpaceLass];
+        [delegate upNotSizeTooBig];
     }
     else if([[dictionary objectForKey:@"code"] intValue] == 5 )
     {
@@ -376,13 +376,13 @@
     {
         [self updateAutoUploadState];
         //文件名存在特殊字符
-        [delegate upUserSpaceLass];
+        [delegate upNotHaveXNSString];
     }
     else if([[dictionary objectForKey:@"code"] intValue] == 2 )
     {
         [self updateAutoUploadState];
         //文件名过长
-        [delegate upUserSpaceLass];
+        [delegate upNotNameTooTheigth];
     }
     else
     {

@@ -48,7 +48,14 @@
     {
         for (int i=0; i<[downingArray count]; i++) {
             DownList *list = [downingArray objectAtIndex:i];
-            list.d_state = 2;
+            if(list.d_state == 5)
+            {
+                list.is_Onece = YES;
+            }
+            else
+            {
+                list.d_state = 2;
+            }
             list.curr_size = 0;
         }
     }
@@ -184,13 +191,6 @@
 -(void)didFailWithError
 {
     //UI提示下载失败
-    //并且继续下载下一条
-    [self startDown];
-}
-
-//上传失败
--(void)upError
-{
     if([downingArray count]>0 && isOpenedDown)
     {
         DownList *list = [downingArray objectAtIndex:0];
@@ -201,6 +201,13 @@
         [downingArray removeObjectAtIndex:0];
         [self updateTable];
     }
+    //并且继续下载下一条
+    [self startDown];
+}
+
+//上传失败
+-(void)upError
+{
     [self startDown];
 }
 //服务器异常

@@ -103,6 +103,10 @@
     {
         [self.jinDuView showText:@"上传失败"];
     }
+    else if(list.t_state == 6)
+    {
+        [self.jinDuView showText:@"上传失败，文件超过1GB"];
+    }
     if(![self.label_name.text isEqualToString:list.t_name])
     {
         ALAssetsLibrary *libary = [[ALAssetsLibrary alloc] init];
