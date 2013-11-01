@@ -294,7 +294,7 @@
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"未选中任何文件（夹）";
             self.hud.mode=MBProgressHUDModeText;
@@ -1086,7 +1086,7 @@
                     }
                     self.hud=nil;
                     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-                    [self.view addSubview:self.hud];
+                    [self.view.superview addSubview:self.hud];
                     [self.hud show:NO];
                     self.hud.labelText=@"文件不存在，请重新下载";
                     self.hud.mode=MBProgressHUDModeText;
@@ -1129,7 +1129,7 @@
                     }
                     self.hud=nil;
                     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-                    [self.view addSubview:self.hud];
+                    [self.view.superview addSubview:self.hud];
                     [self.hud show:NO];
                     self.hud.labelText=@"文件不存在，请重新下载";
                     self.hud.mode=MBProgressHUDModeText;
@@ -1439,7 +1439,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=alertText;
     self.hud.mode=MBProgressHUDModeText;
@@ -1456,7 +1456,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"空间不足";
     self.hud.mode=MBProgressHUDModeText;

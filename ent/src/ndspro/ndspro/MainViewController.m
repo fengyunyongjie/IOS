@@ -178,7 +178,7 @@
         }
         return self.listArray.count;
     }
-    return 1;
+    return 0;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -316,7 +316,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"链接失败，请检查网络";

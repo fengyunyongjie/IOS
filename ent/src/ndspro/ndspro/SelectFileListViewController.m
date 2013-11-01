@@ -125,7 +125,9 @@
         UIBarButtonItem *temporaryBarButtonItem = [[UIBarButtonItem alloc] init];
         temporaryBarButtonItem.title = @"";
         self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
-    }else if(self.f_id.intValue!=0)
+    }else if(self.f_id.intValue==0&&self.type==kSelectTypeMove)
+    {
+    }else
     {
         self.navigationItem.leftBarButtonItem = backItem;
     }
@@ -308,7 +310,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"链接失败，请检查网络";
@@ -386,7 +388,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作成功";
     self.hud.mode=MBProgressHUDModeText;
@@ -405,7 +407,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";

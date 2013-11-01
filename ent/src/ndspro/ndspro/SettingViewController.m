@@ -832,7 +832,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"链接失败，请检查网络";
@@ -925,7 +925,7 @@ typedef enum{
         }
         self.hud=nil;
         self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+        [self.view.superview addSubview:self.hud];
         [self.hud show:NO];
         self.hud.labelText=@"当前是最新版本";
         self.hud.mode=MBProgressHUDModeText;
@@ -945,7 +945,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"检测更新失败";

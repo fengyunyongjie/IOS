@@ -80,7 +80,7 @@
         }
         self.hud=nil;
         self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+        [self.view.superview addSubview:self.hud];
         [self.hud show:NO];
         self.hud.labelText=@"请填写标题栏";
         //self.hud.labelText=error_info;
@@ -98,7 +98,7 @@
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"请填写收件人";
             //self.hud.labelText=error_info;
@@ -114,7 +114,7 @@
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"请输入正确的邮箱帐号";
             //self.hud.labelText=error_info;
@@ -132,7 +132,7 @@
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"请选择收件人";
             //self.hud.labelText=error_info;
@@ -176,7 +176,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"正在发送...";
     //self.hud.labelText=error_info;
@@ -429,7 +429,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"发送成功";
     //self.hud.labelText=error_info;
@@ -446,7 +446,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"发送失败";
     //self.hud.labelText=error_info;

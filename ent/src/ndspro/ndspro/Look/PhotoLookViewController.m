@@ -952,7 +952,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"链接失败，请检查网络";
     self.hud.mode=MBProgressHUDModeText;
@@ -1166,7 +1166,7 @@
         }
         self.hud=nil;
         self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+        [self.view.superview addSubview:self.hud];
         [self.hud show:NO];
         self.hud.labelText=@"已经复制成功";
         self.hud.mode=MBProgressHUDModeText;
@@ -1183,7 +1183,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     if (error_info==nil||[error_info isEqualToString:@""]) {
         self.hud.labelText=@"获取外链失败";

@@ -225,7 +225,7 @@
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"未选中任何文件";
             self.hud.mode=MBProgressHUDModeText;
@@ -249,7 +249,7 @@
                 }
                 self.hud=nil;
                 self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-                [self.view addSubview:self.hud];
+                [self.view.superview addSubview:self.hud];
                 [self.hud show:NO];
                 self.hud.labelText=@"不能下载文件夹";
                 self.hud.mode=MBProgressHUDModeText;
@@ -286,7 +286,7 @@
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"未选中任何文件（夹）";
             self.hud.mode=MBProgressHUDModeText;
@@ -714,7 +714,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
     self.hud.mode=MBProgressHUDModeText;
@@ -729,7 +729,7 @@
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作成功";
     self.hud.mode=MBProgressHUDModeText;

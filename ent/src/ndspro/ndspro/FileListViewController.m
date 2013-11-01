@@ -80,7 +80,7 @@ typedef enum{
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self updateFileList];
+    //[self updateFileList];
 }
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -630,7 +630,7 @@ typedef enum{
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"未选中任何文件（夹）";
             self.hud.mode=MBProgressHUDModeText;
@@ -662,7 +662,7 @@ typedef enum{
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"未选中任何文件（夹）";
             self.hud.mode=MBProgressHUDModeText;
@@ -714,7 +714,7 @@ typedef enum{
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"未选中任何文件（夹）";
             self.hud.mode=MBProgressHUDModeText;
@@ -744,7 +744,7 @@ typedef enum{
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"未选中任何文件（夹）";
             self.hud.mode=MBProgressHUDModeText;
@@ -794,7 +794,7 @@ typedef enum{
                 }
                 self.hud=nil;
                 self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-                [self.view addSubview:self.hud];
+                [self.view.superview addSubview:self.hud];
                 [self.hud show:NO];
                 self.hud.labelText=@"不能下载文件夹";
                 self.hud.mode=MBProgressHUDModeText;
@@ -811,7 +811,7 @@ typedef enum{
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"未选中任何文件";
             self.hud.mode=MBProgressHUDModeText;
@@ -847,7 +847,7 @@ typedef enum{
             }
             self.hud=nil;
             self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
+            [self.view.superview addSubview:self.hud];
             [self.hud show:NO];
             self.hud.labelText=@"不能下载文件夹";
             self.hud.mode=MBProgressHUDModeText;
@@ -934,7 +934,7 @@ typedef enum{
     if (self.listArray) {
         return self.listArray.count;
     }
-    return 1;
+    return 0;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1458,7 +1458,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
@@ -1494,7 +1494,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
@@ -1517,7 +1517,7 @@ typedef enum{
 //    }
 //    self.hud=nil;
 //    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-//    [self.view addSubview:self.hud];    [self.hud show:NO];
+//    [self.view.superview addSubview:self.hud];    [self.hud show:NO];
 //    self.hud.labelText=@"操作成功";
 //    self.hud.mode=MBProgressHUDModeText;
 //    self.hud.margin=10.f;
@@ -1533,7 +1533,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
     self.hud.mode=MBProgressHUDModeText;
@@ -1548,7 +1548,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     if (strError==nil||[strError isEqualToString:@""]) {
         self.hud.labelText=@"操作失败";
@@ -1569,7 +1569,7 @@ typedef enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"操作失败";
     self.hud.mode=MBProgressHUDModeText;
@@ -1718,7 +1718,7 @@ typedef enum{
 //                    }
 //                    self.hud=nil;
 //                    self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-//                    [self.view addSubview:self.hud];
+//                    [self.view.superview addSubview:self.hud];
 //                    [self.hud show:NO];
 //                    self.hud.labelText=@"输入的邮箱地址非法";
 //                    //self.hud.labelText=error_info;

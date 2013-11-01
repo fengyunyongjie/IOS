@@ -74,7 +74,7 @@ enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     BOOL rt = YES;
     NSString *loginName = self.userNameTextField.text;
@@ -135,7 +135,7 @@ enum{
         }
         self.hud=nil;
         self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
+        [self.view.superview addSubview:self.hud];
         self.hud.labelText=@"正在登录...";
         self.hud.mode=MBProgressHUDModeIndeterminate;
         [self.hud show:YES];
@@ -160,7 +160,7 @@ enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     
     [self.hud show:NO];
     self.hud.labelText=@"链接失败，请检查网络";
@@ -187,7 +187,7 @@ enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"登录成功！";
     self.hud.mode=MBProgressHUDModeText;
@@ -204,7 +204,7 @@ enum{
     }
     self.hud=nil;
     self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:self.hud];
+    [self.view.superview addSubview:self.hud];
     [self.hud show:NO];
     self.hud.labelText=@"用户名或密码错误";
     self.hud.mode=MBProgressHUDModeText;
@@ -234,7 +234,7 @@ enum{
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                                 message:@"当前版本需要更新才可以使用，点确定更新"
                                                                delegate:self
-                                                      cancelButtonTitle:@"取消"
+                                                      cancelButtonTitle:nil
                                                       otherButtonTitles:@"确定", nil];
             alertView.tag=kAlertTypeMustUpdate;
             [alertView show];
@@ -254,7 +254,7 @@ enum{
 //        }
 //        self.hud=nil;
 //        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-//        [self.view addSubview:self.hud];
+//        [self.view.superview addSubview:self.hud];
 //        [self.hud show:NO];
 //        self.hud.labelText=@"当前版本为最新版本";
 //        self.hud.mode=MBProgressHUDModeText;
