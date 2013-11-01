@@ -80,7 +80,9 @@ typedef enum{
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    //[self updateFileList];
+    if (!self.tableView.isEditing) {
+        [self updateFileList];
+    }
 }
 - (void)viewDidAppear:(BOOL)animated
 {
