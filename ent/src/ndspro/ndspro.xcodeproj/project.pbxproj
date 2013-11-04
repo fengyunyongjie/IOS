@@ -1205,9 +1205,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		291CCB3117F27F99005C029C /* 虹盘商业版 */ = {
+		291CCB3117F27F99005C029C /* ndspro */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 291CCB6417F27F99005C029C /* Build configuration list for PBXNativeTarget "虹盘商业版" */;
+			buildConfigurationList = 291CCB6417F27F99005C029C /* Build configuration list for PBXNativeTarget "ndspro" */;
 			buildPhases = (
 				291CCB2E17F27F99005C029C /* Sources */,
 				291CCB2F17F27F99005C029C /* Frameworks */,
@@ -1218,7 +1218,7 @@
 			);
 			dependencies = (
 			);
-			name = "虹盘商业版";
+			name = ndspro;
 			productName = ndspro;
 			productReference = 291CCB3217F27F99005C029C /* 虹盘商业版.app */;
 			productType = "com.apple.product-type.application";
@@ -1276,7 +1276,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				291CCB3117F27F99005C029C /* 虹盘商业版 */,
+				291CCB3117F27F99005C029C /* ndspro */,
 				291CCB5217F27F99005C029C /* ndsproTests */,
 			);
 		};
@@ -1558,7 +1558,7 @@
 /* Begin PBXTargetDependency section */
 		291CCB5917F27F99005C029C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 291CCB3117F27F99005C029C /* 虹盘商业版 */;
+			target = 291CCB3117F27F99005C029C /* ndspro */;
 			targetProxy = 291CCB5817F27F99005C029C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1748,7 +1748,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		291CCB6417F27F99005C029C /* Build configuration list for PBXNativeTarget "虹盘商业版" */ = {
+		291CCB6417F27F99005C029C /* Build configuration list for PBXNativeTarget "ndspro" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				291CCB6517F27F99005C029C /* Debug */,
