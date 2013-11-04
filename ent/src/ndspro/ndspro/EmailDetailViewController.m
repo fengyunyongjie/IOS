@@ -486,6 +486,9 @@
     self.titleLabel.frame=CGRectMake(10, 50+(sjrSize.height-21), 300, titleSize.height);
     self.timeLabel.frame=CGRectMake(10, 75+(sjrSize.height-21)+(titleSize.height-21), 300, 21);
     
+//    CGSize theSize = CGSizeMake(300,2000);
+//    CGSize sjrSize=[self.receiveLabel sizeThatFits:theSize];
+//    CGSize titleSize=[self.titleLabel sizeThatFits:theSize];
     if (_isDetail) {
         [self.contentLabel setNumberOfLines:0];
         CGSize size = CGSizeMake(300,2000);
