@@ -50,6 +50,19 @@
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
     }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self insertUploadList];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
+    }
     return bl;
 }
 
@@ -78,13 +91,26 @@
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
     }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self deleteUploadList];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
+    }
     return bl;
 }
 
 -(BOOL)deleteAutoUploadListAllAndNotUpload
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteAutoUploadListAllAndNotUpload UTF8String];
@@ -98,9 +124,26 @@
         if (success == SQLITE_ERROR) {
             bl = FALSE;
         }
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self deleteAutoUploadListAllAndNotUpload];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }
@@ -108,7 +151,7 @@
 -(BOOL)deleteMoveUploadListAllAndNotUpload
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteMoveUploadListAllAndNotUpload UTF8String];
@@ -121,9 +164,26 @@
         if (success == SQLITE_ERROR) {
             bl = FALSE;
         }
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self deleteMoveUploadListAllAndNotUpload];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }
@@ -131,7 +191,7 @@
 -(BOOL)deleteUploadListAllAndUploaded
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteUploadListAndUpload UTF8String];
@@ -145,9 +205,26 @@
         if (success == SQLITE_ERROR) {
             bl = FALSE;
         }
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self deleteUploadListAllAndUploaded];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }
@@ -155,7 +232,7 @@
 -(BOOL)updateUploadList
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [UpdateUploadListForName UTF8String];
@@ -174,9 +251,26 @@
         if (success == SQLITE_ERROR) {
             bl = FALSE;
         }
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self insertUploadList];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }

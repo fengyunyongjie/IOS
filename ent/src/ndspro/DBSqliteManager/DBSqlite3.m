@@ -98,7 +98,7 @@
 -(BOOL)deleteUploadList:(NSString *)sqlDelete
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [sqlDelete UTF8String];
@@ -109,6 +109,10 @@
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
+        }
+        else
+        {
+            bl = TRUE;
         }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);

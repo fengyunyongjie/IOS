@@ -19,6 +19,9 @@
 #define SelectDownedAll @"SELECT * FROM DownList WHERE d_state=1 and d_id>? and d_ure_id=? ORDER BY d_id desc"
 
 @interface DownList : DBSqlite3
+{
+    __block int count;
+}
 
 @property(assign,nonatomic) NSInteger d_id;
 @property(strong,nonatomic) NSString *d_name;

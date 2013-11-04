@@ -21,6 +21,9 @@
 #define SelectUploadListAllAndUploaded @"SELECT * FROM UploadList WHERE t_state=1 and User_id=? and t_id>? ORDER BY t_id desc"
 
 @interface UpLoadList : DBSqlite3
+{
+    __block int count;
+}
 
 @property(nonatomic,assign) NSInteger t_id;
 @property(nonatomic,retain) NSString *t_name;

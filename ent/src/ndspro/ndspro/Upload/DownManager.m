@@ -64,23 +64,24 @@
 //将需要下载的文件添加到数据库中
 -(void)addDownList:(NSString *)d_name thumbName:(NSString *)thumbName d_fileId:(NSString *)d_file_id d_downSize:(NSInteger)d_downSize
 {
-    DownList *list = [[DownList alloc] init];
-    list.d_name = [NSString formatNSStringForOjbect:d_name];
-    list.d_thumbUrl = [NSString formatNSStringForOjbect:thumbName];
-    list.d_state = 0;
-    list.d_baseUrl = @"";
-    list.d_file_id = [NSString formatNSStringForOjbect:d_file_id];
-    list.d_downSize = d_downSize;
-    NSDate *todayDate = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    list.d_datetime = [dateFormatter stringFromDate:todayDate];
-    list.d_ure_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
-    
-    [list insertDownList];
-    [self start];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        DownList *list = [[DownList alloc] init];
+        list.d_name = [NSString formatNSStringForOjbect:d_name];
+        list.d_thumbUrl = [NSString formatNSStringForOjbect:thumbName];
+        list.d_state = 0;
+        list.d_baseUrl = @"";
+        list.d_file_id = [NSString formatNSStringForOjbect:d_file_id];
+        list.d_downSize = d_downSize;
+        NSDate *todayDate = [NSDate date];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        list.d_datetime = [dateFormatter stringFromDate:todayDate];
+        list.d_ure_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
+        [list insertDownList];
+        [self start];
+//    });
 }
 
 //更新数据

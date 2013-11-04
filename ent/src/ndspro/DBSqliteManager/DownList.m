@@ -17,7 +17,7 @@
 -(BOOL)insertDownList
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [InsertDownList UTF8String];
@@ -37,10 +37,26 @@
         if (success == SQLITE_ERROR || success != 101) {
             bl = FALSE;
         }
-        
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self insertDownList];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }
@@ -48,7 +64,7 @@
 //根据文件id删除一条记录
 -(BOOL)deleteDownList
 {
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     if([self.d_baseUrl isEqualToString:@"(null)"] || [self.d_baseUrl length]==0)
     {
         
@@ -62,9 +78,10 @@
             DDLogCInfo(@"删除文件是否成功：%i",isDelete);
         }
     }
+    });
     
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteDownList UTF8String];
@@ -78,9 +95,26 @@
         if (success == SQLITE_ERROR) {
             bl = FALSE;
         }
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self deleteDownList];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }
@@ -89,7 +123,7 @@
 -(BOOL)deleteDowningAll
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteDowningAll UTF8String];
@@ -102,9 +136,26 @@
         if (success == SQLITE_ERROR) {
             bl = FALSE;
         }
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self deleteDowningAll];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }
@@ -113,7 +164,7 @@
 -(BOOL)deleteUploadedAll
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [DeleteDownedAll UTF8String];
@@ -126,9 +177,26 @@
         if (success == SQLITE_ERROR) {
             bl = FALSE;
         }
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self deleteUploadedAll];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }
@@ -157,7 +225,7 @@
 -(BOOL)updateDownListForUserId
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [UpdateDownListForUserId UTF8String];
@@ -179,9 +247,26 @@
         if (success == SQLITE_ERROR) {
             bl = FALSE;
         }
+        else
+        {
+            bl = TRUE;
+        }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);
         sqlite3_close(contactDB);
+    }
+    if(!bl)
+    {
+        if(count<2)
+        {
+            [NSThread sleepForTimeInterval:0.5];
+            [self updateDownListForUserId];
+            count++;
+        }
+        else
+        {
+            count = 0;
+        }
     }
     return bl;
 }
@@ -250,7 +335,7 @@
 -(BOOL)updateAllClip
 {
     sqlite3_stmt *statement;
-    __block BOOL bl = TRUE;
+    __block BOOL bl = FALSE;
     const char *dbpath = [self.databasePath UTF8String];
     if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
         const char *insert_stmt = [UpdateDownListAllForUserId UTF8String];
@@ -262,6 +347,10 @@
         success = sqlite3_step(statement);
         if (success == SQLITE_ERROR) {
             bl = FALSE;
+        }
+        else
+        {
+            bl = TRUE;
         }
         DDLogCInfo(@"insertUserinfo:%i",success);
         sqlite3_finalize(statement);

@@ -353,7 +353,7 @@
 					<object class="IBUIButton" id="1065129784">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{95, 292}, {193, 34}}</string>
+						<string key="NSFrame">{{33, 294}, {255, 34}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -371,32 +371,6 @@
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">Bt_ToLogin.png</string>
-						</object>
-						<reference key="IBUIFontDescription" ref="482621946"/>
-						<reference key="IBUIFont" ref="775277722"/>
-					</object>
-					<object class="IBUIButton" id="278553280">
-						<reference key="NSNextResponder" ref="436373160"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{33, 292}, {47, 34}}</string>
-						<reference key="NSSuperview" ref="436373160"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="1065129784"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUINormalTitle">注册</string>
-						<reference key="IBUIHighlightedTitleColor" ref="850892251"/>
-						<object class="NSColor" key="IBUINormalTitleColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-						</object>
-						<reference key="IBUINormalTitleShadowColor" ref="618917617"/>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">Bt_ShowPwd.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="482621946"/>
 						<reference key="IBUIFont" ref="775277722"/>
@@ -577,15 +551,6 @@
 					</object>
 					<int key="connectionID">148</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">userRegister:</string>
-						<reference key="source" ref="278553280"/>
-						<reference key="destination" ref="372490531"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">149</int>
-				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -686,7 +651,6 @@
 							<reference ref="508392622"/>
 							<reference ref="263868912"/>
 							<reference ref="979438309"/>
-							<reference ref="278553280"/>
 							<reference ref="1065129784"/>
 						</array>
 						<reference key="parent" ref="0"/>
@@ -714,11 +678,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">114</int>
 						<reference key="object" ref="1065129784"/>
-						<reference key="parent" ref="436373160"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">116</int>
-						<reference key="object" ref="278553280"/>
 						<reference key="parent" ref="436373160"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -753,7 +712,6 @@
 				<string key="111.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="112.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="114.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="116.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="117.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="118.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="119.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -833,7 +791,6 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="Bk_Pic.png">{640, 225}</string>
-			<string key="Bt_ShowPwd.png">{83, 68}</string>
 			<string key="Bt_ToLogin.png">{94, 68}</string>
 			<string key="Edit_PwdClk.png">{509, 69}</string>
 			<string key="Edit_PwdNor.png">{509, 69}</string>
