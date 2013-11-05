@@ -11,5 +11,5 @@
 #define VERSION @"1.0.0"
 #define BUILD_VERSION @"1"
 
-#define APPSTORE_URL @"https://itunes.apple.com/us/app/hong-pan/id618660630?ls=1&mt=8"
+#define APPSTORE_URL @"https://itunes.apple.com/us/app/hong-pan-shang-ye-ban/id737677663?ls=1&mt=8"
 #endif
