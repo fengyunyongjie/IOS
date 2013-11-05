@@ -14,6 +14,7 @@ typedef enum {
     kFMTypeRemove,
     kFMTypeRename,
     kFMTypeMove,
+    kFMTypeCommitOrResave,
     kFMTypeOperateUpdate,
     kFMTypeNewFinder,
     kFMTypeSearch,

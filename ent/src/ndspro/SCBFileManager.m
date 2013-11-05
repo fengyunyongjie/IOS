@@ -291,7 +291,7 @@
 //文件提交/ent/file/commit
 -(void)commitFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid sID:(NSString *)s_id
 {
-    self.fm_type=kFMTypeMove;
+    self.fm_type=kFMTypeCommitOrResave;
     self.activeData=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_COMMIT_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
@@ -314,7 +314,7 @@
 //文件转存/ent/file/resave
 -(void)resaveFileIDs:(NSArray *)f_ids toPID:(NSString *)f_pid
 {
-    self.fm_type=kFMTypeMove;
+    self.fm_type=kFMTypeCommitOrResave;
     self.activeData=[NSMutableData data];
     NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,FM_RESAVE_URI]];
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
@@ -537,6 +537,7 @@
                     [self.delegate renameSucess];
                     break;
                 case kFMTypeMove:
+                case kFMTypeCommitOrResave:
                     [self.delegate moveSucess];
                     NSLog(@"移动成功");
                     break;
@@ -570,13 +571,16 @@
                 case kFMTypeRename:
                     [self.delegate renameUnsucess];
                     break;
-                case kFMTypeMove:
+                case kFMTypeCommitOrResave:
                     if ([[dic objectForKey:@"code"] intValue]==2) {
                         [self.delegate Unsucess:@"空间不足"];
                     }else
                     {
                         [self.delegate moveUnsucess];
                     }
+                    break;
+                case kFMTypeMove:
+                    [self.delegate moveUnsucess];
                     break;
                 case kFMTypeNewFinder:
                     [self.delegate newFinderUnsucess];
