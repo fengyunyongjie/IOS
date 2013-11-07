@@ -62,16 +62,28 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //开启推送功能！
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert |    UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    // Required
+    [APService
+     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                         UIRemoteNotificationTypeSound |
+                                         UIRemoteNotificationTypeAlert)];
+    // Required
+    [APService setupWithOption:launchOptions];
+    [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kAPNetworkDidReceiveMessageNotification object:nil];
+    //开启推送结束
+    
+    
     [[DBSqlite3 alloc] updateVersion];
     upload_all = [[UploadAll alloc] init];
     maticUpload = [[AutomaticUpload alloc] init];
     moveUpload = [[MoveUpload alloc] init];
     autoUpload = [[NewAutoUpload alloc] init];
     downImageArray = [[NSMutableArray alloc] init];
-    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-    
-    [defaultCenter addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+
     //网络监听
     hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"];
     [hostReach startNotifier]; 
@@ -125,18 +137,6 @@
     musicPlayer = [[MusicPlayerViewController alloc] init];
 //    //设置屏幕常亮
 //    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-    
-    
-    // Required
-    [APService
-     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                         UIRemoteNotificationTypeSound |
-                                         UIRemoteNotificationTypeAlert)];
-    // Required
-    [APService setupWithOption:launchOptions];
-    
-    
-    [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kAPNetworkDidReceiveMessageNotification object:nil];
     return YES;
 }
 

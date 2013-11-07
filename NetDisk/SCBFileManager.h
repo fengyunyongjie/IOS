@@ -72,6 +72,7 @@ typedef enum {
 //下载/fm/download/new/
 @end
 @protocol SCBFileManagerDelegate
+@optional
 -(void)searchSucess:(NSDictionary *)datadic;
 -(void)operateSucess:(NSDictionary *)datadic;
 -(void)openFinderSucess:(NSDictionary *)datadic;

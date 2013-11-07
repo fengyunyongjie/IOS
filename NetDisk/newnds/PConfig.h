@@ -8,7 +8,8 @@
 
 #ifndef NetDisk_PConfig_h
 #define NetDisk_PConfig_h
-#define VERSION @"V2.0.2"
+#define VERSION [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]
+#define BUILD_VERSION [NSBundle mainBundle].infoDictionary[@"CFBundleVersion"]
 
 
 #endif

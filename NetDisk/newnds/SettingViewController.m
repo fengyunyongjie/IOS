@@ -19,6 +19,8 @@
 #import "UserInfo.h"
 #import "NSString+Format.h"
 #import "SCBSession.h"
+#import "APService.h"
+#import "MASettingViewController.h"
 
 #define OFFButtonHeight 25
 #define OFFBorderWidth 20
@@ -109,6 +111,7 @@ typedef enum{
     y=608;
     [exitButton setFrame:CGRectMake(10, y, 301, 50)];
     [exitButton addTarget:self action:@selector(exitAccount:) forControlEvents:UIControlEventTouchUpInside];
+    [exitButton setTag:10000];
     [self.tableView addSubview:exitButton];
     [self.tableView bringSubviewToFront:exitButton];
 }
@@ -195,36 +198,62 @@ typedef enum{
         case 3:
         {
             UISwitch *theSwith = (UISwitch *)sender;
-            NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
-            if (![YNFunctions isOnlyWifi] && ![YNFunctions isAutoUpload]) {
-//                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
-//                                                                    message:@"这可能会产生流量费用，您是否要继续？"
-//                                                                   delegate:self
-//                                                          cancelButtonTitle:@"取消"
-//                                                          otherButtonTitles:@"继续", nil];
-//                alertView.tag=kAlertTypeAuto;
-//                [alertView show];
-//                [alertView release];
-                UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"这可能会产生流量费用，您是否要继续？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"继续" otherButtonTitles: nil];
-                [actionSheet setTag:kActionSheetTypeAuto];
-                [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
-                [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+            if (theSwith.on) {
+                //开启消息提醒
+                NSLog(@"开启消息提醒");
             }else
             {
-                [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
-                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                if([onStr isEqualToString:@"0"])
-                {
-                    [appleDate.maticUpload colseAutomaticUpload];
-                }
-                else
-                {
-                    [appleDate.maticUpload startAutomaticUpload];
-                }
+                NSLog(@"关闭消息提醒");
             }
-            NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
+            [YNFunctions setIsAlertMessage:theSwith.on];
+            if ([YNFunctions isAlertMessage]) {
+                // Required
+                [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                               UIRemoteNotificationTypeSound |
+                                                               UIRemoteNotificationTypeAlert)];
+                
+//                NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] entjpush]];
+//                [APService setTags:nil alias:alias];
+//                NSLog(@"设置别名成功：%@",alias);
+            }else
+            {
+                [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+            }
         }
             break;
+//        case 3:
+//        {
+//            UISwitch *theSwith = (UISwitch *)sender;
+//            NSString *onStr = [NSString stringWithFormat:@"%d",theSwith.on];
+//            if (![YNFunctions isOnlyWifi] && ![YNFunctions isAutoUpload]) {
+////                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+////                                                                    message:@"这可能会产生流量费用，您是否要继续？"
+////                                                                   delegate:self
+////                                                          cancelButtonTitle:@"取消"
+////                                                          otherButtonTitles:@"继续", nil];
+////                alertView.tag=kAlertTypeAuto;
+////                [alertView show];
+////                [alertView release];
+//                UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"这可能会产生流量费用，您是否要继续？" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"继续" otherButtonTitles: nil];
+//                [actionSheet setTag:kActionSheetTypeAuto];
+//                [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+//                [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
+//            }else
+//            {
+//                [[NSUserDefaults standardUserDefaults]setObject:onStr forKey:@"isAutoUpload"];
+//                AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//                if([onStr isEqualToString:@"0"])
+//                {
+//                    [appleDate.maticUpload colseAutomaticUpload];
+//                }
+//                else
+//                {
+//                    [appleDate.maticUpload startAutomaticUpload];
+//                }
+//            }
+//            NSLog(@"打开或关闭自动上传:: %@ ",[[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"]);
+//        }
+//            break;
         default:
             break;
     }
@@ -468,7 +497,7 @@ typedef enum{
             return 3;
             break;
         case 1:
-            return 4;
+            return 5;
             break;
         case 2:
             return 3;
@@ -593,7 +622,7 @@ typedef enum{
             descLabel.hidden = YES;
             titleLabel.textAlignment = UITextAlignmentLeft;
             switch (row) {
-                case 3:
+                case 4:
                 {
                     //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
                     //titleLabel.hidden=YES;
@@ -621,13 +650,33 @@ typedef enum{
                     [label release];
                     
                     m_switch.hidden = YES;
-                    NSString *switchFlag = [[NSUserDefaults standardUserDefaults] objectForKey:@"isAutoUpload"];
-                    if (switchFlag==nil) {
-                        m_switch.on = NO;
-                    }
-                    else{
-                        m_switch.on = [switchFlag boolValue];
-                    }
+                    m_switch.on=[YNFunctions isAutoUpload];
+                }
+                    break;
+                case 3:
+                {
+                    //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
+                    //titleLabel.hidden=YES;
+                    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.textLabel.text=@"消息提醒设置";
+                    [cell.textLabel setFont:titleLabel.font];
+                    cell.detailTextLabel.text=@"";
+                    [cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
+                    
+                    CGRect label_rect = CGRectMake(240, 12, 40, 20);
+                    UILabel *label = [[UILabel alloc] initWithFrame:label_rect];
+                    label.font = cell.textLabel.font;
+                    label.textColor = cell.textLabel.textColor;
+                    label.textAlignment = NSTextAlignmentCenter;
+                    label.backgroundColor = cell.textLabel.backgroundColor;
+                    [label setHidden:YES];
+                    automicOff_button.hidden = NO;
+                    m_switch.on=[YNFunctions isAlertMessage];
+                    [cell addSubview:label];
+                    [label release];
+                    
+                    m_switch.hidden = NO;
+                    m_switch.on=[YNFunctions isAlertMessage];
                 }
                     break;
                 case 0:
@@ -732,9 +781,15 @@ typedef enum{
             }
         }
             break;
-            
         case 3:
+        {
             cell.hidden = YES;
+            //重设退出安钮位置
+            UIButton *exitButton=(UIButton *)[self.tableView viewWithTag:10000];
+            CGRect r=exitButton.frame;
+            r.origin.y=self.tableView.contentSize.height-80;
+            exitButton.frame=r;
+        }
             break;
         default:
             break;
@@ -863,9 +918,15 @@ typedef enum{
                     break;
                 case 3:
                 {
+                    //占击消息设置
+                    MASettingViewController *masViewCtrl=[[MASettingViewController alloc] init];
+                    [self.navigationController pushViewController:masViewCtrl animated:YES];
+                }
+                case 4:
+                {
                     //点击照片自动备份
                     AutomicUploadViewController *uploadview = [[AutomicUploadViewController alloc] init];
-//                    ReportViewController *viewController=[[ReportViewController alloc] initWithNibName:@"ReportViewController" bundle:nil];
+                    //                    ReportViewController *viewController=[[ReportViewController alloc] initWithNibName:@"ReportViewController" bundle:nil];
                     [self.navigationController pushViewController:uploadview animated:YES];
                 }
                     break;

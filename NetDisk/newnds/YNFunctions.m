@@ -303,4 +303,98 @@ static BOOL h_f=NO;
     NSString *strValue = [NSString stringWithFormat:@"%d",value];
     [[NSUserDefaults standardUserDefaults] setObject:strValue forKey:@"isAutoUpload"];
 }
+#pragma mark --------早否打开消息提醒
++(BOOL)isAlertMessage
+{
+    NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:@"isAlertMessage"];
+    if (value==nil) {
+        return YES;
+    }
+    return [value boolValue];
+}
++(void)setIsAlertMessage:(BOOL)value
+{
+    NSString *strValue = [NSString stringWithFormat:@"%d",value];
+    [[NSUserDefaults standardUserDefaults] setObject:strValue forKey:@"isAlertMessage"];
+}
++(NSArray *)allFamily
+{
+    NSArray * array=[[NSUserDefaults standardUserDefaults] objectForKey:@"allFamily"];
+    return array;
+}
++(NSArray *)selectFamily
+{
+    NSArray * array=[YNFunctions unselectFamily];
+    if (array==nil&&array.count==0) {
+        NSMutableArray *marray=[NSMutableArray array];
+        NSArray * allArray=[YNFunctions allFamily];
+        for (NSString *str in allArray) {
+            [marray addObject:[NSString stringWithFormat:@"%d",[str intValue]]];
+        }
+        return marray;
+    }
+    NSMutableArray *marray=[NSMutableArray array];
+    NSArray * allArray=[YNFunctions allFamily];
+    for (NSString *str in allArray) {
+        BOOL unSelect=NO;
+        for (NSString *strin in array) {
+            if ([str intValue]==[strin intValue]) {
+                unSelect=YES;
+                break;
+            }
+        }
+        if (!unSelect) {
+            [marray addObject:[NSString stringWithFormat:@"%d",[str intValue]]];
+        }
+    }
+    return marray;
+}
++(NSArray *)unselectFamily
+{
+    NSArray * array=[[NSUserDefaults standardUserDefaults] objectForKey:@"unselectFamily"];
+    return array;
+}
++(void)setAllFamily:(NSArray *)array
+{
+    [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"allFamily"];
+}
++(void)setUnselectFamily:(NSArray *)array
+{
+    [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"unselectFamily"];
+}
++(void)setSelectFamily:(NSArray *)array
+{
+    [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"selectFamily"];
+}
++(BOOL)isInUnselectFamilyValue:(NSString *)value
+{
+    NSArray *array=[YNFunctions unselectFamily];
+    for (NSString *str in array) {
+        if ([str intValue]==[value intValue]){
+            return YES;
+        }
+    }
+    return NO;
+}
++(void)addItemToUnselectFamilyWithStringValue:(NSString *)value
+{
+    NSArray *array=[YNFunctions unselectFamily];
+    for (NSString *str in array) {
+        if ([str intValue]==[value intValue]){
+            return;
+        }
+    }
+    NSMutableArray *marray=[NSMutableArray arrayWithArray:array];
+    [marray addObject:value];
+    [YNFunctions setUnselectFamily:marray];
+}
++(void)removeItemToUnselectFamilyWithStringValue:(NSString *)value
+{
+    NSArray *array=[YNFunctions unselectFamily];
+    if ([YNFunctions isInUnselectFamilyValue:value]) {
+         NSMutableArray *marray=[NSMutableArray arrayWithArray:array];
+        [marray removeObject:value];
+        [YNFunctions setUnselectFamily:marray];
+    }
+}
 @end

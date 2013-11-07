@@ -39,4 +39,15 @@
 #pragma mark --------获取是否打开自动上传照片
 +(BOOL)isAutoUpload;
 +(void)setIsAutoUpload:(BOOL)value;
++(BOOL)isAlertMessage;
++(void)setIsAlertMessage:(BOOL)value;
++(NSArray *)allFamily;
++(NSArray *)selectFamily;
++(NSArray *)unselectFamily;
++(void)setAllFamily:(NSArray *)array;
++(void)setUnselectFamily:(NSArray *)array;
++(void)setSelectFamily:(NSArray *)array;
++(void)addItemToUnselectFamilyWithStringValue:(NSString *)value;
++(void)removeItemToUnselectFamilyWithStringValue:(NSString *)value;
++(BOOL)isInUnselectFamilyValue:(NSString *)value;
 @end

@@ -416,6 +416,7 @@
 		29E816741732388100866C34 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E316DB811100756966 /* CFNetwork.framework */; };
 		29E81679173238E900866C34 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E516DB822500756966 /* SystemConfiguration.framework */; };
 		29E8167A1732392D00866C34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298D2101171FA6A200CA00FA /* MobileCoreServices.framework */; };
+		29EEDD91182B6DA0005D4793 /* MASettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EEDD90182B6DA0005D4793 /* MASettingViewController.m */; };
 		29EFE850172A55AD0099B5A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A0571650D0C700BEDB27 /* UIKit.framework */; };
 		29EFE851172A55AD0099B5A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A0591650D0C700BEDB27 /* Foundation.framework */; };
 		29EFE852172A55AD0099B5A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A3A05B1650D0C700BEDB27 /* CoreGraphics.framework */; };
@@ -932,6 +933,8 @@
 		29DF5BDC1755F9B1005D85E4 /* regist_bg_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = regist_bg_top.png; sourceTree = "<group>"; };
 		29E0C1351733846C005007BC /* PhohoDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhohoDemo.h; sourceTree = "<group>"; };
 		29E0C1361733846C005007BC /* PhohoDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhohoDemo.m; sourceTree = "<group>"; };
+		29EEDD8F182B6DA0005D4793 /* MASettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASettingViewController.h; sourceTree = "<group>"; };
+		29EEDD90182B6DA0005D4793 /* MASettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASettingViewController.m; sourceTree = "<group>"; };
 		29EFE84F172A55AD0099B5A7 /* newnds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newnds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29EFE855172A55AD0099B5A7 /* newnds-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "newnds-Info.plist"; sourceTree = "<group>"; };
 		29EFE857172A55AD0099B5A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1468,6 +1471,8 @@
 				29D1BECD17BA2FA8001CF197 /* SelectFileUrlViewController.m */,
 				29D1BECF17BA3A25001CF197 /* SelectDetailViewController.h */,
 				29D1BED017BA3A25001CF197 /* SelectDetailViewController.m */,
+				29EEDD8F182B6DA0005D4793 /* MASettingViewController.h */,
+				29EEDD90182B6DA0005D4793 /* MASettingViewController.m */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -3071,6 +3076,7 @@
 				29C942CF17F557F10042CD8E /* NewAutoUpload.m in Sources */,
 				29CFEFDF180395D0009FFEBF /* MusicPlayerViewController.m in Sources */,
 				297D4A6C18054A6E00703383 /* SqlliteManager.m in Sources */,
+				29EEDD91182B6DA0005D4793 /* MASettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3098,8 +3104,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: zhang danglun";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zhang danglun";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -3120,8 +3126,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "B1BFCB73-AD0C-4E02-910D-F3EF4A96836F";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B1BFCB73-AD0C-4E02-910D-F3EF4A96836F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -3138,7 +3143,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: zhang danglun";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zhang danglun";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
@@ -3159,7 +3164,6 @@
 					"\"$(SRCROOT)/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "B1BFCB73-AD0C-4E02-910D-F3EF4A96836F";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B1BFCB73-AD0C-4E02-910D-F3EF4A96836F";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
