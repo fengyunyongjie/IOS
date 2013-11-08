@@ -43,6 +43,7 @@
 @synthesize useType;
 @synthesize searchText;
 @synthesize space_id;
+@synthesize isDelete;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -94,6 +95,12 @@
     {
         [file_delegate nullData];
     }
+    if(isDelete)
+    {
+        isDelete = FALSE;
+        [self performSelector:@selector(showSucess) withObject:nil afterDelay:0];
+    }
+    
 }
 
 //上传失败
@@ -1124,7 +1131,11 @@
     }
 
     [self escSelected];
-    
+    isDelete = TRUE;
+}
+
+-(void)showSucess
+{
     if (self.hud) {
         [self.hud removeFromSuperview];
     }

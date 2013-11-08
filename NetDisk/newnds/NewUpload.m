@@ -379,7 +379,15 @@
             }
             NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingMutableLeaves error:nil];
             NSLog(@"%@",dictionary);
-            
+            NSString *upload_fid = [dictionary objectForKey:@"f_id"];
+            if([upload_fid length]>0)
+            {
+                [self updateAutoUploadState];
+                [delegate upFinish:dictionary];
+                [file_data release];
+                [md5String release];
+                return;
+            }
             if([[dictionary objectForKey:@"code"] intValue] == 0 )
             {
                 [self newRequestUploadState:list.t_name];

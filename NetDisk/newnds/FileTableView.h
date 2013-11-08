@@ -84,6 +84,7 @@
 @property(nonatomic,assign) int useType;
 @property(nonatomic,retain) NSString *searchText;
 @property(nonatomic,retain) NSString *space_id;
+@property(nonatomic,assign) BOOL isDelete;
 
 //请求文件
 -(void)requestFile:(NSString *)f_id space_id:(NSString *)space_id;

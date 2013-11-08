@@ -76,6 +76,7 @@
                         AutoUploadList *ls = [[[AutoUploadList alloc] init] autorelease];
                         ls.a_name = [NSString formatNSStringForOjbect:asset.defaultRepresentation.filename];
                         ls.a_user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
+                        [autableArray addObject:ls];
                         BOOL bl = [ls selectAutoUploadList];
                         if(!bl)
                         {
@@ -94,11 +95,12 @@
                             list.is_autoUpload = YES;
                             list.is_share = NO;
                             list.spaceId = [NSString formatNSStringForOjbect:info.space_id];
-                            BOOL inserBL = [list selectUploadListIsHave];
-                            if(!inserBL)
-                            {
-                                [mutableArray addObject:list];
-                            }
+                            [mutableArray addObject:list];
+//                            BOOL inserBL = [list selectUploadListIsHave];
+//                            if(!inserBL)
+//                            {
+//                                [mutableArray addObject:list];
+//                            }
 //                            BOOL inserBl = [list insertUploadList];
 //                            if(inserBl)
 //                            {
@@ -135,6 +137,12 @@
                 [list insertsUploadList:mutableArray];
                 [mutableArray release];
                 [list release];
+                
+                AutoUploadList *autoList = [[AutoUploadList alloc] init];
+                [autoList insertsAutoUploadList:autableArray];
+                [autableArray release];
+                [autoList release];
+                
                 isStop = FALSE;
                 [self updateUploadList];
                 AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];

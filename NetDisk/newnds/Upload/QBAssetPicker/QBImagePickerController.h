@@ -69,6 +69,7 @@ typedef NS_ENUM(NSInteger, QBImagePickerFilterType) {
 @property (nonatomic,retain) NSString *f_id;
 @property (nonatomic,retain) NSString *f_name;
 @property (nonatomic,retain) NSString *space_id;
+@property (nonatomic, assign) BOOL isAlert;
 
 -(void)requestFileDetail;
 

@@ -36,7 +36,7 @@
 @end
 
 @implementation QBImagePickerController
-@synthesize f_id,f_name,space_id;
+@synthesize f_id,f_name,space_id,isAlert;
 
 //<ios 6.0
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -140,7 +140,24 @@
     };
     
     void (^assetsGroupsFailureBlock)(NSError *) = ^(NSError *error) {
-        NSLog(@"Error: %@", [error localizedDescription]);
+        if(!isAlert)
+        {
+            isAlert = TRUE;
+            dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *titleString;
+            if([[[UIDevice currentDevice] systemVersion] intValue]>=6.0)
+            {
+                titleString = @"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t步骤：设置>隐私>照片>虹盘";
+            }
+            else
+            {
+                titleString = @"因iOS系统限制，开启照片服务才能上传，传输过程严格加密，不会作其他用途。\n\n\t\t步骤：设置>定位服务>虹盘";
+            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:titleString delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+            [alertView show];
+            [alertView release];
+            });
+        };
     };
     
     // Enumerate Camera Roll

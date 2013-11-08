@@ -602,6 +602,19 @@
             file_tableView.space_id = space_id;
         }
     }
+    
+    if([self.navigationController.viewControllers count]>0)
+    {
+        IPhotoViewController *delailview = [self.navigationController.viewControllers objectAtIndex:0];
+        if(delailview)
+        {
+            delailview.spaceId = spaceId;
+            delailview.photo_tableView.requestId = spaceId;
+            delailview.file_tableView.space_id = spaceId;
+            [self.navigationController popToViewController:delailview animated:YES];
+        }
+    }
+    
     if(isPhoto)
     {
         [photo_tableView reloadPhotoData];
