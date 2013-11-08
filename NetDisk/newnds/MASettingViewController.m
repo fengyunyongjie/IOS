@@ -126,6 +126,7 @@
                 NSLog(@"设置标签和别名成功,\n别名：%@\n标签：%@",alias,tags);
             }else
             {
+                [APService setTags:nil alias:nil];
                 [[UIApplication sharedApplication] unregisterForRemoteNotifications];
             }
 

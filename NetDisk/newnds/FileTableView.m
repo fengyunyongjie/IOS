@@ -1288,6 +1288,14 @@
     if([array count] > 0)
     {
         [table_array addObjectsFromArray:array];
+        NSMutableArray *marray=[NSMutableArray array];
+        for (NSDictionary *dic in array) {
+            NSString *str=[dic objectForKey:@"space_id"];
+            if (str) {
+                [marray addObject:str];
+            }
+        }
+        [YNFunctions setAllFamily:marray];
     }
     [file_delegate setMemberArray:table_array];
     [table_array release];

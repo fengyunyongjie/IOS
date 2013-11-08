@@ -10,6 +10,7 @@
 #import "SCBSession.h"
 #import "AppDelegate.h"
 #import "SelectDetailViewController.h"
+#import "YNFunctions.h"
 
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
@@ -113,6 +114,14 @@
     {
         [tableArray addObjectsFromArray:array];
         [table_view reloadData];
+        NSMutableArray *marray=[NSMutableArray array];
+        for (NSDictionary *dic in array) {
+            NSString *str=[dic objectForKey:@"space_id"];
+            if (str) {
+                [marray addObject:str];
+            }
+        }
+        [YNFunctions setAllFamily:marray];
     }
 }
 

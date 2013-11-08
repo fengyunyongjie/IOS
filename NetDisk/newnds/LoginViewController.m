@@ -15,6 +15,7 @@
 #import "SCBSession.h"
 #import "UserInfo.h"
 #import "NSString+Format.h"
+#import "YNFunctions.h"
 
 @interface LoginViewController ()
 @property(strong,nonatomic) UIAlertView *av;
@@ -150,9 +151,17 @@
 #pragma mark - SCBAccountManagerDelegate Methods
 -(void)loginSucceed:(id)manager
 {
-    NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
-    [APService setTags:nil alias:alias];
-    NSLog(@"设置别名成功：%@",alias);
+    if ([YNFunctions isAlertMessage]) {
+        [APService
+         registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                             UIRemoteNotificationTypeSound |
+                                             UIRemoteNotificationTypeAlert)];
+        NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
+        NSSet *tags=[NSSet setWithArray:[YNFunctions selectFamily]];
+        
+        [APService setTags:tags alias:alias];
+        NSLog(@"设置标签和别名成功,\n别名：%@\n标签：%@",alias,tags);
+    }
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [app_delegate setLogin];
     [[NSUserDefaults standardUserDefaults] setObject:_userNameTextField.text forKey:@"usr_name"];

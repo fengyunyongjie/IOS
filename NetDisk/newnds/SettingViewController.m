@@ -212,11 +212,14 @@ typedef enum{
                                                                UIRemoteNotificationTypeSound |
                                                                UIRemoteNotificationTypeAlert)];
                 
-//                NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] entjpush]];
-//                [APService setTags:nil alias:alias];
-//                NSLog(@"设置别名成功：%@",alias);
+                NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
+                NSSet *tags=[NSSet setWithArray:[YNFunctions selectFamily]];
+                
+                [APService setTags:tags alias:alias];
+                NSLog(@"设置标签和别名成功,\n别名：%@\n标签：%@",alias,tags);
             }else
             {
+                [APService setTags:nil alias:nil];
                 [[UIApplication sharedApplication] unregisterForRemoteNotifications];
             }
         }
@@ -365,6 +368,10 @@ typedef enum{
     switch ([actionSheet tag]) {
         case kActionSheetTypeExit:
             if (buttonIndex == 0) {
+                
+                [APService setTags:nil alias:nil];
+                [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+                
                 //scBox.UserLogout(callBackLogoutFunc,self);
                 UserInfo *info = [[[UserInfo alloc] init] autorelease];
                 info.user_name = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]];
