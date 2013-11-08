@@ -10,6 +10,7 @@
 #import "DBSqlite3.h"
 
 #define InsertAutoUploadList @"INSERT INTO AutoUploadList(a_name,a_user_id,a_state) VALUES (?,?,?)"
+#define InsertsAutoUploadList @"INSERT INTO AutoUploadList(a_name,a_user_id,a_state) VALUES ('%@','%@',%i)"
 #define DeleteAutoUploadList @"DELETE FROM AutoUploadList WHERE a_name=? and a_user_id=?"
 #define DeleteAllAutoUploadList @"DELETE FROM AutoUploadList WHERE a_state=0"
 #define UpdateAutoUploadListForName @"UPDATE AutoUploadList SET a_state=? WHERE a_name=? and a_user_id=?"
@@ -34,5 +35,7 @@
 -(BOOL)selectAutoUploadList;
 
 -(NSInteger)SelectCountAutoUploadList;
+//批量处理添加
+-(BOOL)insertsAutoUploadList:(NSMutableArray *)tableArray;
 
 @end

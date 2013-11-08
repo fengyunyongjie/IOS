@@ -100,6 +100,28 @@
     timeLineNowNumber++;
     [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
 }
+
+#pragma mark 获取没有拍摄时间的图片
+-(void)getFM_NotTimeImage:(NSString *)user_id space_id:(NSString *)space_id
+{
+    self.matableData = [NSMutableData data];
+    NSURL *s_url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",SERVER_URL,PHOTO_FM_NOTTimeImage]];
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:s_url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:CONNECT_TIMEOUT];
+    url_string = PHOTO_FM_NOTTimeImage;
+    NSMutableString *body=[[NSMutableString alloc] init];
+    [body appendFormat:@"space_id=%@&usr_id=%@",space_id,user_id];
+    NSMutableData *myRequestData=[NSMutableData data];
+    [myRequestData appendData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:myRequestData];
+    NSLog(@"--------------------------------------------------请求的参数：%@",body);
+    [body release];
+    [request setValue:[[SCBSession sharedSession] userId] forHTTPHeaderField:@"usr_id"];
+    [request setValue:CLIENT_TAG forHTTPHeaderField:@"client_tag"];
+    [request setValue:[[SCBSession sharedSession] userToken] forHTTPHeaderField:@"usr_token"];
+    [request setHTTPMethod:@"POST"];
+    NSLog(@"%@,%@",[[SCBSession sharedSession] userId],[[SCBSession sharedSession] userToken]);
+    [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];
+}
  
 #pragma mark 根据表达式获取图片信息  /fm/timeImage
 -(void)getPhotoDetailTimeImage:(NSString *)spaceId express:(NSString *)express
@@ -560,6 +582,13 @@
         if([photoDelegate respondsToSelector:@selector(getPhotoDetailTimeImage:)])
         {
             [photoDelegate getPhotoDetailTimeImage:diction];
+        }
+    }
+    else if([url_string isEqualToString:PHOTO_FM_NOTTimeImage])
+    {
+        if([photoDelegate respondsToSelector:@selector(getPhotoFmNotTimeImage:)])
+        {
+            [photoDelegate getPhotoFmNotTimeImage:diction];
         }
     }
 }

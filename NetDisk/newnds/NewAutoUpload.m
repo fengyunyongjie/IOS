@@ -59,6 +59,8 @@
         __block int total = 0;
         if([group numberOfAssets]>0)
         {
+            NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+            NSMutableArray *autableArray = [[NSMutableArray alloc] init];
             NSLog(@"[group numberOfAssets]:%i",[group numberOfAssets]);
             [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop) {
                 NSString* assetType = [asset valueForProperty:ALAssetPropertyType];
@@ -92,13 +94,18 @@
                             list.is_autoUpload = YES;
                             list.is_share = NO;
                             list.spaceId = [NSString formatNSStringForOjbect:info.space_id];
-                            BOOL inserBl = [list insertUploadList];
-                            if(inserBl)
+                            BOOL inserBL = [list selectUploadListIsHave];
+                            if(!inserBL)
                             {
-                                ls.a_user_id = [NSString formatNSStringForOjbect:list.user_id];
-                                ls.a_state = 0;
-                                [ls insertAutoUploadList];
+                                [mutableArray addObject:list];
                             }
+//                            BOOL inserBl = [list insertUploadList];
+//                            if(inserBl)
+//                            {
+//                                ls.a_user_id = [NSString formatNSStringForOjbect:list.user_id];
+//                                ls.a_state = 0;
+//                                [ls insertAutoUploadList];
+//                            }
                             
                             dispatch_async(dispatch_get_main_queue(), ^{
                                 AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -116,7 +123,6 @@
                                     }
                                 }
                             });
-                            
                             [list release];
                         }
                     }
@@ -125,6 +131,10 @@
             }];
             if([group numberOfAssets]<=total-1)
             {
+                UpLoadList *list = [[UpLoadList alloc] init];
+                [list insertsUploadList:mutableArray];
+                [mutableArray release];
+                [list release];
                 isStop = FALSE;
                 [self updateUploadList];
                 AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];

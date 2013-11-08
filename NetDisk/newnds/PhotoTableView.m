@@ -287,16 +287,23 @@
     if(photoType < [sectionarray count])
     {
         NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
-        NSString *Express = [dictionary objectForKey:@"express"];
+        NSString *Express = [NSString stringWithFormat:@"%@",[dictionary objectForKey:@"express"]];
         
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         if(appleDate.isHomeLoad)
         {
-            NSLog(@"正在加载家庭空间数据");
+            NSLog(@"正在加载家庭空间数据:%@",Express);
             //请求时间轴
             SCBPhotoManager *photoManager = [[[SCBPhotoManager alloc] init] autorelease];
             [photoManager setPhotoDelegate:self];
-            [photoManager getPhotoDetailTimeImage:requestId express:Express];
+            if([Express isEqualToString:@"nottime"])
+            {
+                [photoManager getFM_NotTimeImage:[[SCBSession sharedSession] userId] space_id:requestId];
+            }
+            else
+            {
+                [photoManager getPhotoDetailTimeImage:requestId express:Express];
+            }
         }
         else
         {
@@ -304,6 +311,11 @@
             [appleDate clearDown];
         }
     }
+}
+
+-(void)getPhotoFmNotTimeImage:(NSDictionary *)dictionary
+{
+    [self getPhotoDetailTimeImage:dictionary];
 }
 
 -(void)getPhotoDetailTimeImage:(NSDictionary *)dictionary
@@ -549,10 +561,20 @@
     }
     else
     {
-        NSDictionary *dictionary = [sectionarray objectAtIndex:button.cell.sectionTag];
-        NSString *sectionString = [dictionary objectForKey:@"tag"];
-        NSArray *array = [photo_diction objectForKey:sectionString];
-        [photo_delegate showFile:button.cell.pageTag array:[NSMutableArray arrayWithArray:array]];
+        int currTag = 0;
+        NSMutableArray *section_array = [[NSMutableArray alloc] init];
+        for(int i=0;i<[sectionarray count];i++)
+        {
+            NSDictionary *dictionary = [sectionarray objectAtIndex:i];
+            NSString *sectionString = [dictionary objectForKey:@"tag"];
+            NSArray *array = [photo_diction objectForKey:sectionString];
+            if(i == button.cell.sectionTag)
+            {
+                currTag = [section_array count] + button.cell.pageTag;
+            }
+            [section_array addObjectsFromArray:array];
+        }
+        [photo_delegate showFile:currTag array:section_array];
     }
 }
 

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "DBSqlite3.h"
 #define InsertUploadList @"INSERT INTO UploadList(t_name,t_lenght,t_date,t_state,t_fileUrl,t_url_pid,t_url_name,t_file_type,User_id,File_id,Upload_size,Is_autoUpload,Is_share,Space_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+#define InsertsUploadList @"INSERT INTO UploadList(t_name,t_lenght,t_date,t_state,t_fileUrl,t_url_pid,t_url_name,t_file_type,User_id,File_id,Upload_size,Is_autoUpload,Is_share,Space_id) VALUES ('%@',%i,'%@',%i,'%@','%@','%@',%i,'%@','%@',%i,%i,%i,'%@')"
 #define DeleteUploadList @"DELETE FROM UploadList WHERE t_id=? and User_id=?"
 #define DeleteAutoUploadListAllAndNotUpload @"DELETE FROM UploadList WHERE Is_autoUpload=1 and t_state <>1 and User_id=?"
 #define DeleteMoveUploadListAllAndNotUpload @"DELETE FROM UploadList WHERE Is_autoUpload=0 and t_state <>1 and User_id=?"
@@ -58,5 +59,7 @@
 -(NSMutableArray *)selectMoveUploadListAllAndNotUpload;
 //查询所有上传完成的历史记录
 -(NSMutableArray *)selectUploadListAllAndUploaded;
+//批量处理添加
+-(BOOL)insertsUploadList:(NSMutableArray *)tableArray;
 
 @end

@@ -12,6 +12,38 @@
 @implementation UpLoadList
 @synthesize t_id,t_name,t_lenght,t_date,t_state,t_fileUrl,t_url_pid,t_url_name,t_file_type,user_id,file_id,upload_size,is_autoUpload,is_share,spaceId;
 
+//批量处理添加
+-(BOOL)insertsUploadList:(NSMutableArray *)tableArray
+{
+    __block BOOL bl = FALSE;
+    const char *dbpath = [self.databasePath UTF8String];
+    if (sqlite3_open(dbpath, &contactDB)==SQLITE_OK) {
+        
+        sqlite3_exec(contactDB,"BEGIN TRANSACTION",0,0,0);  //事务开始
+        for (int i=0; i<tableArray.count; i++) {
+            UpLoadList *list = [tableArray objectAtIndex:i];
+            NSString *format = [NSString stringWithFormat:InsertsUploadList,list.t_name,list.t_lenght,list.t_date,list.t_state,list.t_fileUrl,list.t_url_pid,list.t_url_name,list.t_file_type,list.user_id,list.file_id,list.upload_size,list.is_autoUpload,list.is_share,list.spaceId];
+            NSString *s = [[NSString alloc] initWithUTF8String:[format UTF8String]];
+            const char *insert_stmt = (char *) [s UTF8String];
+            int success  = sqlite3_exec(contactDB, insert_stmt , 0, 0, 0 );
+            if (success != SQLITE_OK) {
+                bl = FALSE;
+            }
+        }
+        int success = sqlite3_exec(contactDB,"COMMIT",0,0,0); //COMMIT
+        
+        if (success == SQLITE_ERROR) {
+            bl = FALSE;
+        }
+        else
+        {
+            bl = TRUE;
+        }
+    }
+    sqlite3_close(contactDB);
+    return bl;
+}
+
 -(BOOL)insertUploadList
 {
     BOOL isHave = [self selectUploadListIsHave];

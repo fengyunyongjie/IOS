@@ -34,6 +34,8 @@
 
 -(void)getPhotoDetailTimeImage:(NSDictionary *)dictionary;
 
+-(void)getPhotoFmNotTimeImage:(NSDictionary *)dictionary;
+
 @end
 
 @protocol NewFoldDelegate <NSObject>
@@ -86,6 +88,8 @@
 -(void)getPhotoArrayTimeline:(NSString *)spaceId;
 #pragma mark 根据表达式获取图片信息  /fm/timeImage
 -(void)getPhotoDetailTimeImage:(NSString *)spaceId express:(NSString *)express;
+#pragma mark 获取没有拍摄时间的图片
+-(void)getFM_NotTimeImage:(NSString *)user_id space_id:(NSString *)space_id;
 //获取按日查询的照片/photo/detail
 //获取最新标签/photo/tag/recent
 //获取指定文件相关标签/photo/tag/file_tags

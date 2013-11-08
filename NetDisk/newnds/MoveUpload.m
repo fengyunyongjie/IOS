@@ -62,6 +62,7 @@
 -(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
         if([array_ count]>0)
         {
             for(int i=0;i<[array_ count];i++)
@@ -98,10 +99,14 @@
                 {
                     list.is_share = YES;
                 }
-                [list insertUploadList];
+                [mutableArray addObject:list];
+//                [list insertUploadList];
                 [list release];
             }
         }
+        UpLoadList *list = [[UpLoadList alloc] init];
+        [list insertsUploadList:mutableArray];
+        [list release];
         [self updateUploadList];
     });
 }

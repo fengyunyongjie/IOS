@@ -310,8 +310,8 @@
     [self.topToolBar setHidden:YES];
     [self.bottonToolBar setHidden:YES];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    
         if(isLoadImage)
         {
             NSLog(@"不进行预加载。。。");
@@ -377,7 +377,7 @@
         enFloat = scrollView.contentOffset.x;
         isLoadImage = FALSE;
         NSLog(@"预加载结束。。。");
-    });
+//    });
 }
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{
@@ -526,7 +526,7 @@
             NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
             oldImge = [UIImage imageWithContentsOfFile:path];
             isAction = YES;
-            dispatch_async(dispatch_get_main_queue(), ^{
+//            dispatch_async(dispatch_get_main_queue(), ^{
                 DownImage *downImage = [[[DownImage alloc] init] autorelease];
                 [downImage setFileId:demo.f_id];
                 [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
@@ -537,7 +537,7 @@
                 [downImage setDelegate:self];
                 [downImage startDownload];
                 [downArray addObject:downImage];
-            });
+//            });
         }
         
         CGSize size = [self getSacpeImageSize:oldImge];
@@ -613,7 +613,7 @@
             NSString *path = [self get_image_save_file_path:[NSString stringWithFormat:@"%i",demo.f_id]];
             oldImge = [UIImage imageWithContentsOfFile:path];
             isAction = YES;
-            dispatch_async(dispatch_get_main_queue(), ^{
+//            dispatch_async(dispatch_get_main_queue(), ^{
                 DownImage *downImage = [[[DownImage alloc] init] autorelease];
                 [downImage setFileId:demo.f_id];
                 [downImage setImageUrl:[NSString stringWithFormat:@"%iT",demo.f_id]];
@@ -624,7 +624,7 @@
                 [downImage setDelegate:self];
                 [downImage startDownload];
                 [downArray addObject:downImage];
-            });
+//            });
         }
         
         CGSize size = [self getSacpeImageSize:oldImge];
@@ -1288,6 +1288,9 @@
             UIActivityIndicatorView *activity_indicator = (UIActivityIndicatorView *)[imageScrollView viewWithTag:indexPath.row];
             [activity_indicator stopAnimating];
             [activity_indicator removeFromSuperview];
+        }
+        if (self.hud) {
+            [self.hud removeFromSuperview];
         }
     NSLog(@"下载完成后显示结束。。。");
     });

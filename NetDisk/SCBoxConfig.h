@@ -151,6 +151,8 @@
 #define PHOTO_GENERAL @"/photo/general"
 //获取按月或日查询的所有照片（分页）
 #define PHOTO_DETAIL @"/photo/detail"
+//获取没有时间的图片 /fm/notTimeImage
+#define PHOTO_FM_NOTTimeImage @"/fm/notTimeImage"
 //移除
 #define PHOTO_Delete @"/fm/rm"
 //新建
