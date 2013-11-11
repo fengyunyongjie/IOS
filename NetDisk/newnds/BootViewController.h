@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface BootViewController : UIViewController
-
+-(IBAction)toLogVc:(id)sender;
+-(IBAction)toRegistVc:(id)sender;
 @end

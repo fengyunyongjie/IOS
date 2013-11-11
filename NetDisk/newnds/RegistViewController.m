@@ -84,19 +84,10 @@
         NSLog(@"设置标签和别名成功,\n别名：%@\n标签：%@",alias,tags);
     }
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [app_delegate setLogin];
-    [self dismissViewControllerAnimated:NO completion:^(void){
-        if (self.delegate && [self.delegate respondsToSelector:@selector(dismissViewControllerAnimated:completion:)]) {
-            [[NSUserDefaults standardUserDefaults] setObject:self.m_userNameTextField.text forKey:@"usr_name"];
-            [[NSUserDefaults standardUserDefaults] setObject:self.m_passwordAgainTextField.text forKey:@"usr_pwd"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            
-            if (self.delegate&&[self.delegate respondsToSelector:@selector(resetData)]) {
-                [self.delegate resetData];
-            }
-            [self.delegate dismissViewControllerAnimated:NO completion:nil];
-        }
-    }];
+    [[NSUserDefaults standardUserDefaults] setObject:self.m_userNameTextField.text forKey:@"usr_name"];
+    [[NSUserDefaults standardUserDefaults] setObject:self.m_passwordAgainTextField.text forKey:@"usr_pwd"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [app_delegate finishLogin];
 }
 -(void)registUnsucceed:(id)manager
 {

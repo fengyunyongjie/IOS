@@ -413,7 +413,7 @@ typedef enum{
                     [uploadView escLoginList];
                 }
                 [[FavoritesData sharedFavoritesData] stopDownloading];
-                [self.rootViewController presendLoginViewController];
+                [appleDate finishLogout];
             }
             break;
         case kActionSheetTypeClear:

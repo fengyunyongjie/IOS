@@ -41,6 +41,7 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
     if ([self isLogin]) {
         [self finishLogin];
     }else

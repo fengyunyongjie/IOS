@@ -127,6 +127,4 @@ typedef enum
 
 - (void)NeedToHiddenSpecialView:(int)view_index;
 
--(void)presendLoginViewController;
-
 @end

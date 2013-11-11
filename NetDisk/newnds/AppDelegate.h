@@ -17,6 +17,7 @@
 #import "Reachability.h"
 #import "NewAutoUpload.h"
 #import "MusicPlayerViewController.h"
+#import "BootViewController.h"
 
 //新浪微博微博
 #define kAppKey         @"706445160"
@@ -42,6 +43,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MYTabBarController *myTabBarController;
+@property (strong, nonatomic) UIViewController *loginVC;
 @property (retain, nonatomic) NSString *user_name;
 @property (assign, nonatomic) BOOL isUnUpload;
 @property (nonatomic,retain) UploadAll *upload_all;
@@ -55,7 +57,8 @@
 @property (nonatomic,assign) BOOL isShareUpload;
 @property (nonatomic,retain) NSMutableArray *downImageArray;
 @property (nonatomic,assign) BOOL isHomeLoad;
-
+-(void)finishLogout;
+-(void)finishLogin;
 -(void)setLogin;
 //分享图片
 -(void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path;

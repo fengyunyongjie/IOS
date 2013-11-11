@@ -13,7 +13,6 @@
 
 #import "MYTabBarController.h"
 #import "YNFunctions.h"
-#import "LoginViewController.h"
 #import "SettingViewController.h"
 #import "MyndsViewController.h"
 #import "FavoritesViewController.h"
@@ -83,32 +82,6 @@
         r.size.height=60;
     }
     return self;
-}
--(void)presendLoginViewController
-{
-    NSString *version=[[NSUserDefaults standardUserDefaults] objectForKey:VERSION];
-    if (version==nil) {
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"usr_name"];
-        [[NSUserDefaults standardUserDefaults] setObject:nil  forKey:@"usr_pwd"];
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"switch_flag"];
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"isAutoUpload"];
-        [[NSUserDefaults standardUserDefaults] setObject:@"version" forKey:VERSION];
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"showHelpInMSB"];
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"showHelpInHS"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    
-    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
-    NSString *userPwd  = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_pwd"];
-    if (userName==nil&&userPwd==nil) {
-        LoginViewController *lv=[[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil] autorelease];
-        lv.delegate=self;
-        [self presentViewController:lv animated:NO completion:^(void){}];
-    }
-    else
-    {
-        [self performSelector:@selector(aabbcc) withObject:nil afterDelay:0.1f];
-    }
 }
 -(void)aabbcc
 {
@@ -212,18 +185,6 @@
 	// Do any additional setup after loading the view.
 }
 
-//-(void)viewDidAppear:(BOOL)animated
-//{
-//    [self presendLoginViewController];
-//    if (self.selectedIndex==0) {
-//        self.selectedIndex=1;
-//        self.selectedIndex=0;
-//    }
-//}
-
-
-
-
 - (void)setNeed_to_custom:(BOOL)flag style:(int)style
 {
     need_to_custom = flag;
@@ -239,9 +200,6 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    CGRect r=self.tabBar.frame;
-    
-    [self presendLoginViewController];
     self.view.hidden=NO;
     [super viewDidAppear:animated];
     if (self.selectedIndex==0) {

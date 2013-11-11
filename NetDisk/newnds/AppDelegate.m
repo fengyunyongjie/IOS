@@ -92,22 +92,24 @@
     [hostReach startNotifier]; 
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
-    [self.myTabBarController setNeed_to_custom:YES];
-    [self.myTabBarController setTab_bar_bg:[UIImage imageNamed:@"Bk_Nav.png"]];
-    [self.myTabBarController setNormal_image:[NSArray arrayWithObjects:@"Bt_MySpaceDef.png",@"Bt_FamilyDef.png",@"Bt_TransferDef.png",@"Bt_UsercentreDef.png", nil]];
-    [self.myTabBarController setSelect_image:[NSArray arrayWithObjects:@"Bt_MySpaceCh.png",@"Bt_FamilyCh.png",@"Bt_TransferCh.png",@"Bt_UsercentreCh.png",nil]];
-    [self.myTabBarController setShow_style:UItabbarControllerShowStyleIconAndText];
-    [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, TabBarHeight)];
-    [self.myTabBarController setFont:[UIFont boldSystemFontOfSize:12.0]];
-    [self.myTabBarController setFont_color:[UIColor whiteColor]];
-    [self.myTabBarController setHilighted_color:hilighted_color];
-    self.myTabBarController.tab_delegate = self;
-    DefaultViewController *viewController=[[[DefaultViewController alloc] init] autorelease];
-    self.window.rootViewController=viewController;
+    
+    if ([self isLogin]) {
+        [self finishLogin];
+    }else
+    {
+        [self finishLogout];
+    }
+    
+    if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]) {
+        NSLog(@"应用程序从通知中心启动：%@",[launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey]);
+    }else
+    {
+        NSLog(@"应用程序正常启动");
+    }
+    
+    
     //程序启动时，在代码中向微信终端注册你的id
     [WXApi registerApp:@"wxdcc0186c9f173352"];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [self.window makeKeyAndVisible];
     //处理其它程序调用本程序打开文件
     if ([YNFunctions isUnlockFeature]) {
@@ -119,30 +121,51 @@
             [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
         }
     }
-    //预先加载所有视图
-    [self addTabBarView];
-    [self goMainViewController];
-    //判断是否开机启动
-    if([self isFirstLoad])
-    {
-        //开机启动画面
-        firstLoadView = [[FirstLoadViewController alloc] init];
-        [firstLoadView setDelegate:self];
-        [self.window addSubview:firstLoadView.view];
-    }
-    else
-    {
-        //进入主界面
-        [firstLoadView.view setHidden:YES];
-    }
-    
     //设置背景音乐
     musicPlayer = [[MusicPlayerViewController alloc] init];
 //    //设置屏幕常亮
 //    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     return YES;
 }
+-(BOOL)isLogin
+{
+    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
+    NSString *userPwd  = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_pwd"];
+    if (userName==nil&&userPwd==nil) {
+        return NO;
+    }
+    return YES;
+}
+-(void)finishLogin
+{
+    [self initMyTabBarCtrl];
+    self.window.rootViewController=self.myTabBarController;
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(openAutomic) userInfo:self repeats:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+}
 
+-(void)finishLogout
+{
+    self.loginVC=[[UINavigationController alloc] initWithRootViewController:[[BootViewController alloc] init]];
+    self.window.rootViewController=self.loginVC;
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+}
+
+-(void)initMyTabBarCtrl
+{
+    self.myTabBarController=[[[MYTabBarController alloc] init] autorelease];
+    [self.myTabBarController setNeed_to_custom:YES];
+    [self.myTabBarController setTab_bar_bg:[UIImage imageNamed:@"Bk_Nav.png"]];
+    [self.myTabBarController setNormal_image:[NSArray arrayWithObjects:@"Bt_MySpaceDef.png",@"Bt_FamilyDef.png",@"Bt_TransferDef.png",@"Bt_UsercentreDef.png", nil]];
+    [self.myTabBarController setSelect_image:[NSArray arrayWithObjects:@"Bt_MySpaceCh.png",@"Bt_FamilyCh.png",@"Bt_TransferCh.png",@"Bt_UsercentreCh.png",nil]];
+    [self.myTabBarController setShow_style:UItabbarControllerShowStyleIconAndText];
+    [self.myTabBarController setShow_way:UItabbarControllerHorizontal Rect:CGRectMake(0, 431, 320, TabBarHeight)];
+    [self.myTabBarController setFont:[UIFont boldSystemFontOfSize:12.0]];
+    [self.myTabBarController setFont_color:[UIColor whiteColor]];
+    [self.myTabBarController setHilighted_color:hilighted_color];
+    self.myTabBarController.tab_delegate = self;
+    [self addTabBarView];
+}
 
 //网络链接改变时会调用的方法
 -(void)reachabilityChanged:(NSNotification *)note
@@ -356,7 +379,6 @@
     self.myTabBarController.selectedIndex = 0;
     //[self.myTabBarController.selectedViewController.navigationController popToRootViewControllerAnimated:NO];
     [self.myTabBarController when_tabbar_is_selected:0];
-    
     //询问是否开始自动上传
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(openAutomic) userInfo:self repeats:NO];
 }
