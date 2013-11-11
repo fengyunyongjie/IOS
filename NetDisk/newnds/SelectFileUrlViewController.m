@@ -69,7 +69,7 @@
     }
     else
     {
-        titleLabel.text=@"选择转存位置";
+        titleLabel.text=@"选择复制位置";
         if (self.showType==1) {
             titleLabel.text=@"家庭空间";
         }

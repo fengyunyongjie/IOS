@@ -24,6 +24,24 @@
 		291F866C17A8B84400DA7B7B /* ChangeUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 291F866B17A8B84400DA7B7B /* ChangeUploadViewController.m */; };
 		29228C8817A2218C00DD3E8D /* QBImageFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29228C8717A2218C00DD3E8D /* QBImageFileViewController.m */; };
 		29262229172BD70000A95E97 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29262227172BD70000A95E97 /* LoginViewController.m */; };
+		2926267D1830B808009A02AE /* guide_bk_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2926266D1830B808009A02AE /* guide_bk_1.png */; };
+		2926267E1830B808009A02AE /* guide_bk_1@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 2926266E1830B808009A02AE /* guide_bk_1@iPhone5.png */; };
+		2926267F1830B808009A02AE /* guide_bk_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2926266F1830B808009A02AE /* guide_bk_2.png */; };
+		292626801830B808009A02AE /* guide_bk_2@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626701830B808009A02AE /* guide_bk_2@iPhone5.png */; };
+		292626811830B808009A02AE /* guide_bk_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626711830B808009A02AE /* guide_bk_3.png */; };
+		292626821830B808009A02AE /* guide_bk_3@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626721830B808009A02AE /* guide_bk_3@iPhone5.png */; };
+		292626831830B808009A02AE /* guide_bt_nor.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626731830B808009A02AE /* guide_bt_nor.png */; };
+		292626841830B808009A02AE /* guide_bt_se.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626741830B808009A02AE /* guide_bt_se.png */; };
+		292626851830B808009A02AE /* user_bk.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626751830B808009A02AE /* user_bk.png */; };
+		292626861830B808009A02AE /* user_bk@iPhone5.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626761830B808009A02AE /* user_bk@iPhone5.png */; };
+		292626871830B808009A02AE /* user_bt_back_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626771830B808009A02AE /* user_bt_back_nor@2x.png */; };
+		292626881830B808009A02AE /* user_bt_back_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626781830B808009A02AE /* user_bt_back_se@2x.png */; };
+		292626891830B808009A02AE /* user_bt_login_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 292626791830B808009A02AE /* user_bt_login_nor@2x.png */; };
+		2926268A1830B808009A02AE /* user_bt_login_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2926267A1830B808009A02AE /* user_bt_login_se@2x.png */; };
+		2926268B1830B808009A02AE /* user_bt_reg_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2926267B1830B808009A02AE /* user_bt_reg_nor@2x.png */; };
+		2926268C1830B808009A02AE /* user_bt_reg_se@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2926267C1830B808009A02AE /* user_bt_reg_se@2x.png */; };
+		292626901830B8A3009A02AE /* BootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2926268E1830B8A3009A02AE /* BootViewController.m */; };
+		292626911830B8A3009A02AE /* BootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2926268F1830B8A3009A02AE /* BootViewController.xib */; };
 		2929E30D17CC2EA9003CB75A /* FileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */; };
 		2929E31017CC2F50003CB75A /* IPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2929E30F17CC2F50003CB75A /* IPhotoViewController.m */; };
 		292CC2D417E6E4CB00E3FE12 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CC2D317E6E4CB00E3FE12 /* HelpViewController.m */; };
@@ -471,6 +489,25 @@
 		29228C8717A2218C00DD3E8D /* QBImageFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBImageFileViewController.m; sourceTree = "<group>"; };
 		29262226172BD70000A95E97 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		29262227172BD70000A95E97 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		2926266D1830B808009A02AE /* guide_bk_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guide_bk_1.png; sourceTree = "<group>"; };
+		2926266E1830B808009A02AE /* guide_bk_1@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide_bk_1@iPhone5.png"; sourceTree = "<group>"; };
+		2926266F1830B808009A02AE /* guide_bk_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guide_bk_2.png; sourceTree = "<group>"; };
+		292626701830B808009A02AE /* guide_bk_2@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide_bk_2@iPhone5.png"; sourceTree = "<group>"; };
+		292626711830B808009A02AE /* guide_bk_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guide_bk_3.png; sourceTree = "<group>"; };
+		292626721830B808009A02AE /* guide_bk_3@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guide_bk_3@iPhone5.png"; sourceTree = "<group>"; };
+		292626731830B808009A02AE /* guide_bt_nor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guide_bt_nor.png; sourceTree = "<group>"; };
+		292626741830B808009A02AE /* guide_bt_se.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guide_bt_se.png; sourceTree = "<group>"; };
+		292626751830B808009A02AE /* user_bk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_bk.png; sourceTree = "<group>"; };
+		292626761830B808009A02AE /* user_bk@iPhone5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_bk@iPhone5.png"; sourceTree = "<group>"; };
+		292626771830B808009A02AE /* user_bt_back_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_bt_back_nor@2x.png"; sourceTree = "<group>"; };
+		292626781830B808009A02AE /* user_bt_back_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_bt_back_se@2x.png"; sourceTree = "<group>"; };
+		292626791830B808009A02AE /* user_bt_login_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_bt_login_nor@2x.png"; sourceTree = "<group>"; };
+		2926267A1830B808009A02AE /* user_bt_login_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_bt_login_se@2x.png"; sourceTree = "<group>"; };
+		2926267B1830B808009A02AE /* user_bt_reg_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_bt_reg_nor@2x.png"; sourceTree = "<group>"; };
+		2926267C1830B808009A02AE /* user_bt_reg_se@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_bt_reg_se@2x.png"; sourceTree = "<group>"; };
+		2926268D1830B8A3009A02AE /* BootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BootViewController.h; sourceTree = "<group>"; };
+		2926268E1830B8A3009A02AE /* BootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BootViewController.m; sourceTree = "<group>"; };
+		2926268F1830B8A3009A02AE /* BootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BootViewController.xib; sourceTree = "<group>"; };
 		2929E30B17CC2EA9003CB75A /* FileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileTableViewCell.h; sourceTree = "<group>"; };
 		2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTableViewCell.m; sourceTree = "<group>"; };
 		2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhotoViewController.h; sourceTree = "<group>"; };
@@ -1274,6 +1311,29 @@
 			path = newnds/SDKExport;
 			sourceTree = "<group>";
 		};
+		2926266C1830B808009A02AE /* iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				2926266D1830B808009A02AE /* guide_bk_1.png */,
+				2926266E1830B808009A02AE /* guide_bk_1@iPhone5.png */,
+				2926266F1830B808009A02AE /* guide_bk_2.png */,
+				292626701830B808009A02AE /* guide_bk_2@iPhone5.png */,
+				292626711830B808009A02AE /* guide_bk_3.png */,
+				292626721830B808009A02AE /* guide_bk_3@iPhone5.png */,
+				292626731830B808009A02AE /* guide_bt_nor.png */,
+				292626741830B808009A02AE /* guide_bt_se.png */,
+				292626751830B808009A02AE /* user_bk.png */,
+				292626761830B808009A02AE /* user_bk@iPhone5.png */,
+				292626771830B808009A02AE /* user_bt_back_nor@2x.png */,
+				292626781830B808009A02AE /* user_bt_back_se@2x.png */,
+				292626791830B808009A02AE /* user_bt_login_nor@2x.png */,
+				2926267A1830B808009A02AE /* user_bt_login_se@2x.png */,
+				2926267B1830B808009A02AE /* user_bt_reg_nor@2x.png */,
+				2926267C1830B808009A02AE /* user_bt_reg_se@2x.png */,
+			);
+			path = iPhone;
+			sourceTree = "<group>";
+		};
 		292FF986173A48FF004CC609 /* YNFunctions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1292,6 +1352,9 @@
 				298075DA174A141F00B138FE /* RegistViewController.h */,
 				298075DB174A141F00B138FE /* RegistViewController.m */,
 				29C942D417F5D2510042CD8E /* RegistViewController.xib */,
+				2926268D1830B8A3009A02AE /* BootViewController.h */,
+				2926268E1830B8A3009A02AE /* BootViewController.m */,
+				2926268F1830B8A3009A02AE /* BootViewController.xib */,
 			);
 			name = "Login&Regist";
 			sourceTree = "<group>";
@@ -1789,6 +1852,7 @@
 		29BCC80B17B348E400108473 /* Login-Regist */ = {
 			isa = PBXGroup;
 			children = (
+				2926266C1830B808009A02AE /* iPhone */,
 				29BCC81E17B34A5600108473 /* Title.png */,
 				29BCC80C17B348E400108473 /* Bk_Pic.png */,
 				29BCC80D17B348E400108473 /* Bk_Treaty.png */,
@@ -2955,6 +3019,23 @@
 				29C942D517F5D2510042CD8E /* RegistViewController.xib in Resources */,
 				29C942D717F5D2590042CD8E /* LoginViewController.xib in Resources */,
 				29CFEFE7180396B4009FFEBF /* nothing.mp3 in Resources */,
+				2926267D1830B808009A02AE /* guide_bk_1.png in Resources */,
+				2926267E1830B808009A02AE /* guide_bk_1@iPhone5.png in Resources */,
+				2926267F1830B808009A02AE /* guide_bk_2.png in Resources */,
+				292626801830B808009A02AE /* guide_bk_2@iPhone5.png in Resources */,
+				292626811830B808009A02AE /* guide_bk_3.png in Resources */,
+				292626821830B808009A02AE /* guide_bk_3@iPhone5.png in Resources */,
+				292626831830B808009A02AE /* guide_bt_nor.png in Resources */,
+				292626841830B808009A02AE /* guide_bt_se.png in Resources */,
+				292626851830B808009A02AE /* user_bk.png in Resources */,
+				292626861830B808009A02AE /* user_bk@iPhone5.png in Resources */,
+				292626871830B808009A02AE /* user_bt_back_nor@2x.png in Resources */,
+				292626881830B808009A02AE /* user_bt_back_se@2x.png in Resources */,
+				292626891830B808009A02AE /* user_bt_login_nor@2x.png in Resources */,
+				2926268A1830B808009A02AE /* user_bt_login_se@2x.png in Resources */,
+				2926268B1830B808009A02AE /* user_bt_reg_nor@2x.png in Resources */,
+				2926268C1830B808009A02AE /* user_bt_reg_se@2x.png in Resources */,
+				292626911830B8A3009A02AE /* BootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3077,6 +3158,7 @@
 				29CFEFDF180395D0009FFEBF /* MusicPlayerViewController.m in Sources */,
 				297D4A6C18054A6E00703383 /* SqlliteManager.m in Sources */,
 				29EEDD91182B6DA0005D4793 /* MASettingViewController.m in Sources */,
+				292626901830B8A3009A02AE /* BootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

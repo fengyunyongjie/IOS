@@ -380,7 +380,7 @@
         [btnMove addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
         [folderMenu addSubview:btnMove];
         UILabel *lblMove=[[[UILabel alloc] init] autorelease];
-        lblMove.text=@"转存";
+        lblMove.text=@"复制";
         lblMove.textAlignment=UITextAlignmentCenter;
         lblMove.font=[UIFont systemFontOfSize:12];
         lblMove.textColor=[UIColor whiteColor];
@@ -889,7 +889,7 @@
 #pragma mark 更多文件
 -(void)toMore:(id)sender
 {
-    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"转存",@"重命名", nil];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:@"更多" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"复制",@"重命名", nil];
     [actionSheet setTag:kActionSheetTagMore];
     [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
     [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];

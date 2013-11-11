@@ -961,7 +961,7 @@
             [editBtn2 addTarget:self action:@selector(toMove:) forControlEvents:UIControlEventTouchUpInside];
             [edit_view addSubview:editBtn2];
             UILabel *editLbl2=[[[UILabel alloc] init] autorelease];
-            editLbl2.text=@"转存";
+            editLbl2.text=@"复制";
             editLbl2.textAlignment=UITextAlignmentCenter;
             editLbl2.font=[UIFont systemFontOfSize:12];
             editLbl2.textColor=[UIColor whiteColor];
