@@ -98,6 +98,10 @@
     [self.m_hud show:YES];
     [self.m_hud hide:YES afterDelay:1.0f];
 }
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (IBAction) regitst:(id)sender
 {
     if ([self registAssert]) {

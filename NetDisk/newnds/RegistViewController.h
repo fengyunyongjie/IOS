@@ -19,5 +19,5 @@
 - (IBAction)endEdit:(id)sender;
 - (IBAction)showPasswd:(id)sender;
 - (IBAction)lookXY:(id)sender;
-
+- (IBAction)goBack:(id)sender;
 @end

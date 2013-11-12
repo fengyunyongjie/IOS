@@ -16,4 +16,5 @@
 - (IBAction)userRegister:(id)sender;
 - (IBAction)endEdit:(id)sender;
 - (IBAction)forgetPswd:(id)sender;
+- (IBAction)goBack:(id)sender;
 @end

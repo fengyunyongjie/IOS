@@ -115,6 +115,10 @@
     [self.hud hide:YES afterDelay:1.0f];
     return rt;
 }
+- (IBAction)goBack:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (IBAction)login:(id)sender
 {
     [self.userNameTextField endEditing:YES];
