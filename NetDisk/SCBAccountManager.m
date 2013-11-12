@@ -214,7 +214,7 @@ static SCBAccountManager *_sharedAccountManager;
                 NSLog(@"data=%@",dic);
                 //NSLog(@"空间（已用大小/总大小） ： %@/%@",[dic objectForKey:@"space_used"],[dic objectForKey:@"space_total"]);
                 //[self.delegate spaceSucceedUsed:[dic objectForKey:@"space_used"] total:[dic objectForKey:@"space_total"]];
-                [self.delegate spaceSucceedUsed:[dic objectForKey:@"space_inuse"] total:[dic objectForKey:@"space_size"]];
+                [self.delegate spaceSucceedUsed:[dic objectForKey:@"occupation_size"] total:[dic objectForKey:@"total_size"]];
             }else
             {
                 

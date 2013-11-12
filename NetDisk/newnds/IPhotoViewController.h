@@ -76,6 +76,7 @@
 @property(nonatomic,retain) NSString *spaceId;
 @property(nonatomic,retain) NSString *ower_name;
 @property(strong,nonatomic) UIControl *helpView;
+@property(nonatomic,retain) UIButton *back_button;
 
 //显示文件列表
 -(void)showFileList;

@@ -109,7 +109,12 @@
     
     
     //程序启动时，在代码中向微信终端注册你的id
+<<<<<<< HEAD
     [WXApi registerApp:@"wxdcc0186c9f173352"];
+=======
+    [WXApi registerApp:@"wxdcc0186c9f173352" withDescription:@"demo 2.0"];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+>>>>>>> update 16:24
     [self.window makeKeyAndVisible];
     //处理其它程序调用本程序打开文件
     if ([YNFunctions isUnlockFeature]) {
@@ -288,24 +293,62 @@
     return path;
 }
 
-- (void) sendImageContentIsFiends:(BOOL)bl text:(NSString *)text
+- (void) sendImageContentIsFiends:(BOOL)bl title:(NSString *)title text:(NSString *)text path:(NSString *)path imagePath:(NSString *)imagePath
 {
-    BOOL isSuccess =[WXApi isWXAppInstalled];
-    if(!isSuccess)
+    if(path == nil)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你的手机还没有安装微信客户端" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
-        [alert show];
-        [alert release];
-        return;
+        WXMediaMessage *message = [WXMediaMessage message];
+        
+        NSData *data = [[NSData alloc] initWithContentsOfFile:imagePath];
+        UIImage *imageV = [UIImage imageWithContentsOfFile:imagePath];
+        if([data length]>=32)
+        {
+            imageV = [self scaleFromImage:imageV toSize:CGSizeMake(200, 200)];
+        }
+        [message setThumbImage:imageV];
+        
+        WXImageObject *ext = [WXImageObject object];
+        ext.imageData = [NSData dataWithContentsOfFile:imagePath];
+        message.mediaObject = ext;
+        
+        SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
+        req.bText = NO;
+        req.message = message;
+        if(bl)
+        {
+            req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
+        }
+        
+        [WXApi sendReq:req];
     }
-    SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
-    req.bText = YES;
-    req.text = text;
-    if(bl)
+    else
     {
-        req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
+        WXMediaMessage *message = [WXMediaMessage message];
+        message.title = title;
+        message.description = text;
+        
+        NSData *data = [[NSData alloc] initWithContentsOfFile:imagePath];
+        UIImage *imageV = [UIImage imageWithContentsOfFile:imagePath];
+        if([data length]>=32)
+        {
+            imageV = [self scaleFromImage:imageV toSize:CGSizeMake(400, 400)];
+        }
+        [message setThumbImage:imageV];
+        
+        WXWebpageObject *ext = [WXWebpageObject object];
+        ext.webpageUrl = path;
+        
+        message.mediaObject = ext;
+        
+        SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
+        req.bText = NO;
+        req.message = message;
+        if(bl)
+        {
+            req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
+        }
+        [WXApi sendReq:req];
     }
-    [WXApi sendReq:req];
 }
 
 - (void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path

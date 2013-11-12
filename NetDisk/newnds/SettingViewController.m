@@ -144,8 +144,10 @@ typedef enum{
 }
 -(void)spaceSucceedUsed:(NSString *)space_used total:(NSString *)space_total
 {
-    self.space_total=[YNFunctions convertSize:space_total];
-    self.space_used=[YNFunctions convertSize:space_used];
+//    self.space_total=[YNFunctions convertSize:space_total];
+//    self.space_used=[YNFunctions convertSize:space_used];
+    self.space_total = space_total;
+    self.space_used = space_used;
     [self.tableView reloadData];
 }
 -(void)nicknameSucessed:(NSString *)nickname

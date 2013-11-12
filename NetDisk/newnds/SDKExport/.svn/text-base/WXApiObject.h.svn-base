@@ -28,7 +28,7 @@ enum WXScene {
     
     WXSceneSession  = 0,        /**< 聊天界面    */
     WXSceneTimeline = 1,        /**< 朋友圈      */
-    WXSceneFavorite = 2,        /**< 收藏       */
+    WXSceneFavorite = 2,        /**< 我的收藏    */
 };
 
 /*! @brief 该类为微信终端SDK所有请求类的基类
@@ -75,7 +75,7 @@ enum WXScene {
  */
 @property (nonatomic, assign) BOOL bText;
 
-/** 发送的目标场景，可以选择发送到聊天界面(WXSceneSession)、朋友圈(WXSceneTimeline)或收藏(WXSceneFavorite)。
+/** 发送的目标场景，可以选择发送到聊天界面(WXSceneSession)、朋友圈(WXSceneTimeline)或我的收藏(WXSceneFavorite)。 
  * @note 默认发送到聊天界面。
  * @see WXScene
  */
@@ -164,7 +164,7 @@ enum WXScene {
  */
 @property (nonatomic, retain) NSString *description;
 /** 缩略图数据
- * @attention 内存大小不能超过32K
+ * @attention 大小不能超过32K
  */
 @property (nonatomic, retain) NSData   *thumbData;
 /** 多媒体消息标签，第三方程序可选填此字段，用于数据运营统计等
@@ -177,7 +177,7 @@ enum WXScene {
 /*! @brief 设置消息缩略图的方法
  *
  * @param image 缩略图
- * @attention 内存大小不能超过32K
+ * @attention 大小不能超过32K
  */
 - (void) setThumbImage:(UIImage *)image;
 
@@ -289,7 +289,7 @@ enum WXScene {
  *
  * 第三方程序向微信终端发送包含WXAppExtendObject的多媒体消息，
  * 微信需要处理该消息时，会调用该第三方程序来处理多媒体消息内容。
- * @note extInfo和fileData不能同时为空
+ * @note url，extInfo和fileData不能同时为空
  * @see WXMediaMessage
  */
 @interface WXAppExtendObject : NSObject
@@ -299,20 +299,18 @@ enum WXScene {
  */
 +(WXAppExtendObject *) object;
 
-/** App文件数据，该数据发送给微信好友，微信好友需要点击后下载数据，微信终端会回传给第三方程序处理
- * @attention 大小不能超过10M
+/** 若第三方程序不存在，微信终端会打开该url所指的App下载地址
+ * @attention 长度不能超过10K
  */
-@property (nonatomic, retain) NSData   *fileData;
-
+@property (nonatomic, retain) NSString *url;
 /** 第三方程序自定义简单数据，微信终端会回传给第三方程序处理
  * @attention 长度不能超过2K
  */
 @property (nonatomic, retain) NSString *extInfo;
-
-/**
- * @attention Deprecated
+/** App文件数据，该数据发送给微信好友，微信好友需要点击后下载数据，微信终端会回传给第三方程序处理
+ * @attention 大小不能超过10M
  */
-@property (nonatomic, retain) NSString *url;
+@property (nonatomic, retain) NSData   *fileData;
 
 @end
 

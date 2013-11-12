@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2908870F1831CD8B00551283 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2908870C1831CD8B00551283 /* libWeChatSDK.a */; };
 		2910C30A17436A7F00195008 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 831E7A411668CC420089A012 /* libsqlite3.dylib */; };
-		2910C31D17438AEF00195008 /* libWeChatSDK_armv7_armv7s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2910C31917438AEF00195008 /* libWeChatSDK_armv7_armv7s.a */; };
 		2918548417587D2500C566A3 /* regist_bg_mid.png in Resources */ = {isa = PBXBuildFile; fileRef = 2918548317587D2500C566A3 /* regist_bg_mid.png */; };
 		2918548617587E2B00C566A3 /* regist_input_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 2918548517587E2B00C566A3 /* regist_input_bg.png */; };
 		2918F40F17A128FD0031ACB2 /* Bk_Content.png in Resources */ = {isa = PBXBuildFile; fileRef = 2918F40717A128FB0031ACB2 /* Bk_Content.png */; };
@@ -111,6 +111,7 @@
 		296E39C917B8D80200A43F29 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 296E39C717B8D80200A43F29 /* ReportViewController.m */; };
 		296E39CA17B8D80200A43F29 /* ReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 296E39C817B8D80200A43F29 /* ReportViewController.xib */; };
 		297D4A6C18054A6E00703383 /* SqlliteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 297D4A6B18054A6E00703383 /* SqlliteManager.m */; };
+		297F53CF1830DC7E00696F02 /* CustomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 297F53CE1830DC7D00696F02 /* CustomScrollView.m */; };
 		298075DD174A141F00B138FE /* RegistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 298075DB174A141F00B138FE /* RegistViewController.m */; };
 		298075DF174A1CAF00B138FE /* input3_createbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 83A66086169982B90065C73C /* input3_createbg.png */; };
 		29852CF5172CB2B5001AD87A /* MYTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29852CF4172CB2B5001AD87A /* MYTabBarController.m */; };
@@ -467,10 +468,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2910C31817438AEF00195008 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
-		2910C31917438AEF00195008 /* libWeChatSDK_armv7_armv7s.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK_armv7_armv7s.a; sourceTree = "<group>"; };
-		2910C31A17438AEF00195008 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
-		2910C31B17438AEF00195008 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		2908870C1831CD8B00551283 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		2908870D1831CD8B00551283 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		2908870E1831CD8B00551283 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
 		2918548317587D2500C566A3 /* regist_bg_mid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = regist_bg_mid.png; sourceTree = "<group>"; };
 		2918548517587E2B00C566A3 /* regist_input_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = regist_input_bg.png; sourceTree = "<group>"; };
 		2918F40717A128FB0031ACB2 /* Bk_Content.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bk_Content.png; sourceTree = "<group>"; };
@@ -594,6 +594,8 @@
 		296E39C817B8D80200A43F29 /* ReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportViewController.xib; sourceTree = "<group>"; };
 		297D4A6A18054A6E00703383 /* SqlliteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlliteManager.h; sourceTree = "<group>"; };
 		297D4A6B18054A6E00703383 /* SqlliteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SqlliteManager.m; sourceTree = "<group>"; };
+		297F53CD1830DC7D00696F02 /* CustomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScrollView.h; sourceTree = "<group>"; };
+		297F53CE1830DC7D00696F02 /* CustomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomScrollView.m; sourceTree = "<group>"; };
 		298075DA174A141F00B138FE /* RegistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistViewController.h; sourceTree = "<group>"; };
 		298075DB174A141F00B138FE /* RegistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistViewController.m; sourceTree = "<group>"; };
 		29852CF3172CB2B5001AD87A /* MYTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MYTabBarController.h; sourceTree = "<group>"; };
@@ -1290,22 +1292,21 @@
 				29EFE850172A55AD0099B5A7 /* UIKit.framework in Frameworks */,
 				29EFE851172A55AD0099B5A7 /* Foundation.framework in Frameworks */,
 				29EFE852172A55AD0099B5A7 /* CoreGraphics.framework in Frameworks */,
-				2910C31D17438AEF00195008 /* libWeChatSDK_armv7_armv7s.a in Frameworks */,
 				29BAD62D17B4C15300F258F4 /* libPushSDK.a in Frameworks */,
 				29BAD63517B4C8C800F258F4 /* libPushSDK-Simulator.a in Frameworks */,
+				2908870F1831CD8B00551283 /* libWeChatSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2910C31717438AEE00195008 /* SDKExport */ = {
+		2908870B1831CD8B00551283 /* SDKExport */ = {
 			isa = PBXGroup;
 			children = (
-				2910C31817438AEF00195008 /* libWeChatSDK.a */,
-				2910C31917438AEF00195008 /* libWeChatSDK_armv7_armv7s.a */,
-				2910C31A17438AEF00195008 /* WXApi.h */,
-				2910C31B17438AEF00195008 /* WXApiObject.h */,
+				2908870C1831CD8B00551283 /* libWeChatSDK.a */,
+				2908870D1831CD8B00551283 /* WXApi.h */,
+				2908870E1831CD8B00551283 /* WXApiObject.h */,
 			);
 			name = SDKExport;
 			path = newnds/SDKExport;
@@ -1476,6 +1477,8 @@
 				2929E30F17CC2F50003CB75A /* IPhotoViewController.m */,
 				29C9413717D857B70088B392 /* SearchViewController.h */,
 				29C9413817D857B80088B392 /* SearchViewController.m */,
+				297F53CD1830DC7D00696F02 /* CustomScrollView.h */,
+				297F53CE1830DC7D00696F02 /* CustomScrollView.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -2375,13 +2378,13 @@
 				29AE060317BC858A004FEA5E /* mode.storyboard */,
 				29A06C1216F98EFA00D4A62D /* mm.xib */,
 				83ADAC10168C75A800419952 /* entitlements.plist */,
+				2908870B1831CD8B00551283 /* SDKExport */,
 				29D5BA0717F3BDD8003BF16C /* MKNetworkKit */,
 				29B3899117431A48007313B1 /* Pic */,
 				83B3EAA716718B270050B105 /* clientLib */,
 				8387CBAE1663187A00B5AE1E /* lib */,
 				839B33DF165569DD008AAADC /* Custom */,
 				839B33BF165553B2008AAADC /* Png */,
-				2910C31717438AEE00195008 /* SDKExport */,
 				83A3A0561650D0C700BEDB27 /* Frameworks */,
 				83A3A0541650D0C700BEDB27 /* Products */,
 				293896B9170932BA00929F48 /* UMAnalytics_Sdk_2.1.3.OpenUDID */,
@@ -3158,7 +3161,11 @@
 				29CFEFDF180395D0009FFEBF /* MusicPlayerViewController.m in Sources */,
 				297D4A6C18054A6E00703383 /* SqlliteManager.m in Sources */,
 				29EEDD91182B6DA0005D4793 /* MASettingViewController.m in Sources */,
+<<<<<<< HEAD
 				292626901830B8A3009A02AE /* BootViewController.m in Sources */,
+=======
+				297F53CF1830DC7E00696F02 /* CustomScrollView.m in Sources */,
+>>>>>>> update 16:24
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -61,7 +61,7 @@
 -(void)finishLogin;
 -(void)setLogin;
 //分享图片
--(void) sendImageContentIsFiends:(BOOL)bl path:(NSString *)path;
+- (void) sendImageContentIsFiends:(BOOL)bl title:(NSString *)title text:(NSString *)text path:(NSString *)path imagePath:(NSString *)imagePath;
 //分享文字
 - (void) sendImageContentIsFiends:(BOOL)bl text:(NSString *)text;
 //微博授权

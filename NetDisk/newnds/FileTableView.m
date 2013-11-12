@@ -877,13 +877,23 @@
 -(void)weixin:(NSString *)content
 {
     sharedType = 4;
-    [self getPubSharedLink];
+    //微信
+    NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+    NSString *f_id=[dic objectForKey:@"f_id"];
+    NSString *imagePath = [self get_image_save_file_path:[NSString stringWithFormat:@"%@",f_id]];
+    AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:NO title:nil text:nil path:nil imagePath:imagePath];
 }
 
 -(void)frends:(NSString *)content
 {
     sharedType = 5;
-    [self getPubSharedLink];
+    //微信
+    NSDictionary *dic=[tableArray objectAtIndex:selectedIndexPath.row];
+    NSString *f_id=[dic objectForKey:@"f_id"];
+    NSString *imagePath = [self get_image_save_file_path:[NSString stringWithFormat:@"%@",f_id]];
+    AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:YES title:nil text:nil path:nil imagePath:imagePath];
 }
 
 #pragma mark 更多文件
@@ -1044,18 +1054,11 @@
     }
     else if(sharedType == 4)
     {
-        //微信
-        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
-
-        AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appDelegate sendImageContentIsFiends:NO text:text];
+        
     }
     else if(sharedType == 5)
     {
-        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
         
-        AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appDelegate sendImageContentIsFiends:YES text:text];
     }
 }
 

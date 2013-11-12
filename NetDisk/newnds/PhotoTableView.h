@@ -14,6 +14,7 @@
 #import "SCBLinkManager.h"
 #import <MessageUI/MessageUI.h>
 #import "MBProgressHUD.h"
+#import "CustomScrollView.h"
 
 @protocol PhotoTableViewDelegate <NSObject>
 
@@ -78,6 +79,7 @@
 @property(nonatomic,retain) SCBLinkManager *linkManager;
 @property(nonatomic,retain) MBProgressHUD *hud;
 @property(nonatomic,retain) NSString *requestId;
+@property(nonatomic,retain) CustomScrollView *booksScrollView;
 
 //加载数据
 -(void)reloadPhotoData;

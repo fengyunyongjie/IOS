@@ -46,6 +46,7 @@
 @synthesize hud;
 @synthesize spaceId;
 @synthesize ower_name;
+@synthesize back_button;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -98,37 +99,18 @@
         }
     }
     [self requestSpace];
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
     if(isPhoto)
     {
         [photo_tableView reloadPhotoData];
-        if (self.hud) {
-            [self.hud removeFromSuperview];
-        }
-        self.hud=nil;
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
-        [self.hud show:NO];
-        self.hud.labelText=@"加载中...";
-        self.hud.mode=MBProgressHUDModeIndeterminate;
-        self.hud.margin=10.f;
-        [self.hud show:YES];
     }
     else
     {
         if(loadType != 2)
         {
             [self showFileList];
-            if (self.hud) {
-                [self.hud removeFromSuperview];
-            }
-            self.hud=nil;
-            self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-            [self.view addSubview:self.hud];
-            [self.hud show:NO];
-            self.hud.labelText=@"加载中...";
-            self.hud.mode=MBProgressHUDModeIndeterminate;
-            self.hud.margin=10.f;
-            [self.hud show:YES];
         }
         else
         {
@@ -171,12 +153,11 @@
     if(isNeedBackButton)
     {
         UIImage *back_image = [UIImage imageNamed:@"Bt_Back.png"];
-        UIButton *back_button = [[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)];
+        back_button = [[[UIButton alloc] initWithFrame:CGRectMake(RightButtonBoderWidth, (44-back_image.size.height/2)/2, back_image.size.width/2, back_image.size.height/2)] autorelease];
         [back_button setBackgroundImage:imge forState:UIControlStateHighlighted];
         [back_button setImage:back_image forState:UIControlStateNormal];
         [back_button addTarget:self action:@selector(clickBack) forControlEvents:UIControlEventTouchUpInside];
         [topView addSubview:back_button];
-        [back_button release];
     }
     //选项卡栏目
     UIButton *phoot_button = [[UIButton alloc] init];
@@ -242,14 +223,11 @@
     [file_tableView setSpace_id:spaceId];
     [file_tableView setFile_delegate:self];
     [self.view addSubview:file_tableView];
-    
-    
     //初始化图片列表
     photo_tableView = [[PhotoTableView alloc] initWithFrame:rect];
     [photo_tableView setPhoto_delegate:self];
     photo_tableView.requestId = spaceId;
     [self.view addSubview:photo_tableView];
-    
     //延迟加载
     [self showAllView];
     
@@ -335,6 +313,7 @@
 //点击照片内容
 -(void)clicked_photo:(id)sender
 {
+    [back_button setHidden:YES];
     [file_tableView.selected_dictionary removeAllObjects];
     UIButton *button = sender;
     //把色值转换成图片
@@ -353,22 +332,14 @@
     UIButton *photo_button = (UIButton *)[self.view viewWithTag:24];
     [photo_button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [photo_button setBackgroundImage:nil forState:UIControlStateNormal];
-    
+    if (self.hud) {
+        [self.hud removeFromSuperview];
+    }
     if(!isPhoto)
     {
         isPhoto = TRUE;
         [photo_tableView reloadPhotoData];
-        if (self.hud) {
-            [self.hud removeFromSuperview];
-        }
-        self.hud=nil;
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
-        [self.hud show:NO];
-        self.hud.labelText=@"加载中...";
-        self.hud.mode=MBProgressHUDModeIndeterminate;
-        self.hud.margin=10.f;
-        [self.hud show:YES];
+        
     }
     file_tableView.hidden = YES;
     photo_tableView.hidden = NO;
@@ -390,6 +361,10 @@
 //点击文件内容
 -(void)clicked_file:(id)sender
 {
+    if(self.navigationController.viewControllers.count>1)
+    {
+        [back_button setHidden:NO];
+    }
     UIButton *button = sender;
     //把色值转换成图片
     CGRect rect_image = CGRectMake(0, 0, ChangeTabWidth, 44);
@@ -416,14 +391,6 @@
         if (self.hud) {
             [self.hud removeFromSuperview];
         }
-        self.hud=nil;
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
-        [self.hud show:NO];
-        self.hud.labelText=@"加载中...";
-        self.hud.mode=MBProgressHUDModeIndeterminate;
-        self.hud.margin=10.f;
-        [self.hud show:YES];
     }
     file_tableView.hidden = NO;
     photo_tableView.hidden = YES;
@@ -586,8 +553,6 @@
 -(void)clickRowSpaceId:(id)sender
 {
     [space_control setHidden:YES];
-    
-    
     //重新请求空间
     UIButton *button = sender;
     int row = button.tag - KButtonTagSpqce;
@@ -603,39 +568,29 @@
         }
     }
     
-    if([self.navigationController.viewControllers count]>0)
+    if(isPhoto)
     {
-        IPhotoViewController *delailview = [self.navigationController.viewControllers objectAtIndex:0];
-        if(delailview)
+        [photo_tableView reloadPhotoData];
+    }
+    else
+    {
+        if([self.navigationController.viewControllers count]>0)
         {
-            delailview.isPhoto = isPhoto;
-            delailview.spaceId = spaceId;
-            delailview.photo_tableView.requestId = spaceId;
-            delailview.file_tableView.space_id = spaceId;
-            [self.navigationController popToViewController:delailview animated:YES];
-            
-            if(delailview.isPhoto)
+            IPhotoViewController *delailview = [self.navigationController.viewControllers objectAtIndex:0];
+            if(delailview)
             {
-                [photo_tableView reloadPhotoData];
-                UIButton *photo_button = (UIButton *)[delailview.view viewWithTag:23];
-                [photo_button setHighlighted:YES];
-                UIButton *file_button = (UIButton *)[delailview.view viewWithTag:24];
-                [file_button setSelected:NO];
-                [delailview.photo_tableView setHidden:NO];
-                [delailview.file_tableView setHidden:YES];
-            }
-            else
-            {
+                delailview.isPhoto = isPhoto;
+                delailview.spaceId = spaceId;
+                delailview.photo_tableView.requestId = spaceId;
+                delailview.file_tableView.space_id = spaceId;
+                [self.navigationController popToViewController:delailview animated:YES];
                 [self showFileList];
-                UIButton *photo_button = (UIButton *)[delailview.view viewWithTag:23];
-                [photo_button setHighlighted:NO];
-                UIButton *file_button = (UIButton *)[delailview.view viewWithTag:24];
-                [file_button setHighlighted:YES];
-                [delailview.file_tableView setHidden:NO];
-                [delailview.photo_tableView setHidden:YES];
             }
         }
+        
     }
+    
+    
 }
 
 -(void)clicked_more:(id)sender
@@ -1372,7 +1327,6 @@
     }
 }
 
-
 -(void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -1395,6 +1349,26 @@
     [member_array release];
     [null_imageview release];
     [super dealloc];
+}
+
+-(void)mainThread
+{
+//    if(brScrollBar)
+//    {
+//        [brScrollBar removeFromParentViewController];
+//    }
+//    if(!self.photo_tableView.hidden)
+//    {
+//        brScrollBar = [BRScrollBarController initForScrollView:self.photo_tableView
+//                                                    onPosition:kIntBRScrollBarPositionRight
+//                                                      delegate:self];
+//    }
+//    else if(!self.file_tableView.hidden)
+//    {
+//        brScrollBar = [BRScrollBarController initForScrollView:self.file_tableView
+//                                                    onPosition:kIntBRScrollBarPositionRight
+//                                                      delegate:self];
+//    }
 }
 
 @end

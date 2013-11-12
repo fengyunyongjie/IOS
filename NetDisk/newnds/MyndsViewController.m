@@ -1896,7 +1896,6 @@ typedef enum{
             SCBLinkManager *lm_temp=[[[SCBLinkManager alloc] init] autorelease];
             [lm_temp setDelegate:self];
             [lm_temp linkWithIDs:@[f_id]];
-            [self hideOptionCell];
         }
     }
 }
@@ -1917,21 +1916,26 @@ typedef enum{
 }
 -(void)weixin:(NSString *)content
 {
-    [self getPubSharedLink];
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    NSString *compressaddr=[dic objectForKey:@"compressaddr"];
+    compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
+    NSString *imagePath=[YNFunctions getIconCachePath];
+    imagePath=[imagePath stringByAppendingPathComponent:compressaddr];
+    AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:NO title:nil text:nil path:nil imagePath:imagePath];
     self.sharedType=kSharedTypeWeixin;
-//        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-//    
-//    AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-//    [appDelegate sendImageContentIsFiends:NO text:text];
 }
 -(void)frends:(NSString *)content
 {
-    [self getPubSharedLink];
+    NSLog(@"self.listArray:%i;self.selectedIndexPath.row-1:%i",[self.listArray count],self.selectedIndexPath.row-1);
+    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+    NSString *compressaddr=[dic objectForKey:@"compressaddr"];
+    compressaddr =[YNFunctions picFileNameFromURL:compressaddr];
+    NSString *imagePath=[YNFunctions getIconCachePath];
+    imagePath=[imagePath stringByAppendingPathComponent:compressaddr];
+    AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate sendImageContentIsFiends:YES title:nil text:nil path:nil imagePath:imagePath];
     self.sharedType=kSharedTypeFrends;
-//        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],content];
-//    
-//    AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-//    [appDelegate sendImageContentIsFiends:YES text:text];
 }
 -(void)EscMenu
 {
@@ -2624,9 +2628,7 @@ typedef enum{
             break;
         case kSharedTypeFrends:
         {
-            NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
-            AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-            [appDelegate sendImageContentIsFiends:YES text:text];
+            
         }
             break;
         case kSharedTypeCopy:
@@ -2649,9 +2651,7 @@ typedef enum{
             break;
         case kSharedTypeWeixin:
         {
-            NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
-            AppDelegate *appDelegate=[[UIApplication sharedApplication] delegate];
-            [appDelegate sendImageContentIsFiends:NO text:text];
+            
         }
             break;
         case kSharedTypeMail:
@@ -3757,5 +3757,15 @@ typedef enum{
 
 #pragma mark 所有的分享接口回调
 -(void)InvitationAdd:(NSDictionary *)dationary{}
+
+
+//获取图片路径
+- (NSString*)get_image_save_file_path:(NSString*)image_path
+{
+    NSString *documentDir = [YNFunctions getProviewCachePath];
+    NSArray *array=[image_path componentsSeparatedByString:@"/"];
+    NSString *path=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+    return path;
+}
 
 @end

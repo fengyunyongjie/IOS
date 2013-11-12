@@ -34,7 +34,7 @@
 #define kAlertTagMailAddr 72
 
 @implementation PhotoTableView
-@synthesize _dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager,hud,requestId;
+@synthesize _dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager,hud,requestId,booksScrollView;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -54,6 +54,10 @@
     fileManager.delegate = self;
     linkManager = [[SCBLinkManager alloc] init];
     linkManager.delegate = self;
+    
+    //右边标签
+    booksScrollView = [[CustomScrollView alloc] init];
+    
     return self;
 }
 
@@ -328,42 +332,39 @@
         if([array count] > 0)
         {
             [photo_delegate haveData];
+            NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
             NSMutableArray *tableArray = [[NSMutableArray alloc] init];
+            int i=0;
             for(NSDictionary *dictionary in array)
             {
                 PhotoFile *demo = [[PhotoFile alloc] init];
                 demo.f_id = [[dictionary objectForKey:@"f_id"] intValue];
                 [tableArray addObject:demo];
                 [demo release];
+                [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:photoType]];
+                i++;
             }
-            if([tableArray count] > 0)
-            {
-                NSLog(@"tableArray:%@",tableArray);
-            }
-            //        if (photoType>=dictionary.count) {
-            //            NSLog(@"数据数量：：%d",dictionary.count);
-            //            return;
-            //        }
             NSLog(@"数据数量：：%d,下标::%d",dictionary.count,photoType);
-            @try {
-                NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
-                NSString *tag = [dictionary objectForKey:@"tag"];
-                [photo_diction setObject:tableArray forKey:tag];
-            }
-            @catch (NSException *exception) {
-                NSLog(@"我的天呐，出现异常了！");
-                CFShow(exception);
+            if(photoType >= [sectionarray count])
+            {
                 return;
             }
-            @finally {
-                
-            }
+            NSDictionary *dictionary = [sectionarray objectAtIndex:photoType];
+            NSLog(@"[NSIndexSet indexSetWithIndex:photoType]");
+            NSString *tag = [dictionary objectForKey:@"tag"];
+            [photo_diction setObject:tableArray forKey:tag];
+            NSLog(@"[NSIndexSet indexSetWithIndex:photoType]");
+            [self reloadSectionIndexTitles];
+            [self reloadSections:[NSIndexSet indexSetWithIndex:photoType] withRowAnimation:UITableViewRowAnimationNone];
+            NSLog(@"[NSIndexSet indexSetWithIndex:photoType]");
+            [indexPaths release];
             [tableArray release];
         }
+        
+        [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        
         photoType++;
         [self requestPhotoType];
-        [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        [self reloadData];
         
         if([[photo_diction allKeys] count] == 0)
         {
@@ -438,7 +439,7 @@
             {
                 CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
                 imageV = [self imageFromImage:imageV inRect:imageRect];
-                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
             }
             else
             {
@@ -448,7 +449,7 @@
                 UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
                 CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
                 imageS = [self imageFromImage:imageS inRect:imageRect];
-                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:NO];
             }
         }
         else if(imageV.size.width<=imageV.size.height)
@@ -457,7 +458,7 @@
             {
                 CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
                 imageV = [self imageFromImage:imageV inRect:imageRect];
-                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
             }
             else
             {
@@ -467,7 +468,7 @@
                 UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
                 CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
                 imageS = [self imageFromImage:imageS inRect:imageRect];
-                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                [image_view performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:NO];
             }
         }
     }
@@ -700,19 +701,9 @@
     
     int section = [indexPath section];
     int row = [indexPath row];
-    static NSString *cellString = @"cellString";
-    PhotoFileCell *cell = [self dequeueReusableCellWithIdentifier:cellString];
-    if(cell == nil)
-    {
-        cell = [[[PhotoFileCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellString] autorelease];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
-    else
-    {
-        while ([cell.contentView.subviews lastObject] != nil) {
-            [(UIView*)[cell.contentView.subviews lastObject] removeFromSuperview];  //删除并进行重新分配
-        }
-    }
+    
+    PhotoFileCell *cell = [[[PhotoFileCell alloc] init] autorelease];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     if([photo_diction.allKeys count] == 0)
     {
@@ -737,7 +728,7 @@
                     CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
                     UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
                     UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
                     [cell.contentView addSubview:image];
                     SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
                     [button setTag:row+UIButtonTag*section];
@@ -752,7 +743,7 @@
                     CGRect rect = CGRectMake(i*105+5, 5, 100, 100);
                     UIImageView *image = [[UIImageView alloc] initWithFrame:rect];
                     UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
                     [cell.contentView addSubview:image];
                     SelectButton *button = [[SelectButton alloc] initWithFrame:rect];
                     [button setTag:row+UIButtonTag*section];
@@ -800,7 +791,7 @@
                     
                     {
                         UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
                     }
                     
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -815,7 +806,7 @@
                                 {
                                     CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
                                     imageV = [self imageFromImage:imageV inRect:imageRect];
-                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
                                 }
                                 else
                                 {
@@ -825,7 +816,7 @@
                                     UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
                                     CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
                                     imageS = [self imageFromImage:imageS inRect:imageRect];
-                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:NO];
                                 }
                             }
                             else if(imageV.size.width<=imageV.size.height)
@@ -834,7 +825,7 @@
                                 {
                                     CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
                                     imageV = [self imageFromImage:imageV inRect:imageRect];
-                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
                                 }
                                 else
                                 {
@@ -844,7 +835,7 @@
                                     UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
                                     CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
                                     imageS = [self imageFromImage:imageS inRect:imageRect];
-                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:NO];
                                 }
                             }
                         }
@@ -916,7 +907,7 @@
                     
                     {
                         UIImage *imageV = [UIImage imageNamed:@"icon_Load.png"];
-                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                        [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
                     }
                     
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -930,7 +921,7 @@
                                 {
                                     CGRect imageRect = CGRectMake((imageV.size.width-imageV.size.height)/2, 0, imageV.size.height, imageV.size.height);
                                     imageV = [self imageFromImage:imageV inRect:imageRect];
-                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
                                 }
                                 else
                                 {
@@ -940,7 +931,7 @@
                                     UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
                                     CGRect imageRect = CGRectMake((newImageSize.width-200)/2, 0, 200, 200);
                                     imageS = [self imageFromImage:imageS inRect:imageRect];
-                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:NO];
                                 }
                             }
                             else if(imageV.size.width<=imageV.size.height)
@@ -949,7 +940,7 @@
                                 {
                                     CGRect imageRect = CGRectMake(0, (imageV.size.height-imageV.size.width)/2, imageV.size.width, imageV.size.width);
                                     imageV = [self imageFromImage:imageV inRect:imageRect];
-                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:YES];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageV waitUntilDone:NO];
                                 }
                                 else
                                 {
@@ -959,7 +950,7 @@
                                     UIImage *imageS = [self scaleFromImage:imageV toSize:newImageSize];
                                     CGRect imageRect = CGRectMake(0, (newImageSize.height-200)/2, 200, 200);
                                     imageS = [self imageFromImage:imageS inRect:imageRect];
-                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:YES];
+                                    [image performSelectorOnMainThread:@selector(setImage:) withObject:imageS waitUntilDone:NO];
                                 }
                             }
                         }
@@ -1397,17 +1388,10 @@
     else if(sharedType == 4)
     {
         //微信
-        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
-        
-        AppDelegate *appDelegate= (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appDelegate sendImageContentIsFiends:NO text:text];
     }
     else if(sharedType == 5)
     {
-        NSString *text=[NSString stringWithFormat:@"%@想和您分享虹盘的文件，链接地址：%@",[[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"],l_url];
         
-        AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appDelegate sendImageContentIsFiends:YES text:text];
     }
 }
 -(void)releaseLinkUnsuccess:(NSString *)error_info{
