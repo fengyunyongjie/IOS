@@ -608,20 +608,33 @@
         IPhotoViewController *delailview = [self.navigationController.viewControllers objectAtIndex:0];
         if(delailview)
         {
+            delailview.isPhoto = isPhoto;
             delailview.spaceId = spaceId;
             delailview.photo_tableView.requestId = spaceId;
             delailview.file_tableView.space_id = spaceId;
             [self.navigationController popToViewController:delailview animated:YES];
+            
+            if(delailview.isPhoto)
+            {
+                [photo_tableView reloadPhotoData];
+                UIButton *photo_button = (UIButton *)[delailview.view viewWithTag:23];
+                [photo_button setHighlighted:YES];
+                UIButton *file_button = (UIButton *)[delailview.view viewWithTag:24];
+                [file_button setSelected:NO];
+                [delailview.photo_tableView setHidden:NO];
+                [delailview.file_tableView setHidden:YES];
+            }
+            else
+            {
+                [self showFileList];
+                UIButton *photo_button = (UIButton *)[delailview.view viewWithTag:23];
+                [photo_button setHighlighted:NO];
+                UIButton *file_button = (UIButton *)[delailview.view viewWithTag:24];
+                [file_button setHighlighted:YES];
+                [delailview.file_tableView setHidden:NO];
+                [delailview.photo_tableView setHidden:YES];
+            }
         }
-    }
-    
-    if(isPhoto)
-    {
-        [photo_tableView reloadPhotoData];
-    }
-    else
-    {
-        [self showFileList];
     }
 }
 
