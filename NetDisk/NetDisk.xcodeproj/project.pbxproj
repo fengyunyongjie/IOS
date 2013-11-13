@@ -3177,6 +3177,7 @@
 				292626901830B8A3009A02AE /* BootViewController.m in Sources */,
 				297F53CF1830DC7E00696F02 /* CustomScrollView.m in Sources */,
 				2994E74618332BE4006E812E /* YNNavigationController.m in Sources */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
