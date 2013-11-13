@@ -369,8 +369,7 @@ typedef enum{
 {
     switch ([actionSheet tag]) {
         case kActionSheetTypeExit:
-            if (buttonIndex == 0) {
-                
+            if (buttonIndex == 0) { 
                 [APService setTags:nil alias:nil];
                 [[UIApplication sharedApplication] unregisterForRemoteNotifications];
                 

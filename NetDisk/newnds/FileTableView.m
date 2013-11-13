@@ -586,9 +586,10 @@
         NSString *f_id = [dictioinary objectForKey:@"f_id"];
         [array addObject:f_id];
     }
-    [fileManager setDelegate:self];
+    SCBFileManager *fileMove=[[SCBFileManager alloc] init];
+    [fileMove setDelegate:self];
 //    [fileManager moveFileIDs:array toPID:pid];
-    [fileManager copyFileIDs:array toPID:pid toSpaceId:spaceId toPidSpaceId:sp_id];
+    [fileMove copyFileIDs:array toPID:pid toSpaceId:spaceId toPidSpaceId:sp_id];
     [array release];
 }
 
@@ -1226,7 +1227,7 @@
     }
     else
     {
-        [self requestFile:p_id space_id:space_id];
+        //[self requestFile:p_id space_id:space_id];
     }
     
     [self escSelected];

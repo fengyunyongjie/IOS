@@ -159,6 +159,7 @@
 		2994E74118322C71006E812E /* user_edit_icon1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2994E73E18322C71006E812E /* user_edit_icon1.png */; };
 		2994E74218322C71006E812E /* user_edit_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2994E73F18322C71006E812E /* user_edit_icon2.png */; };
 		2994E74318322C71006E812E /* user_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 2994E74018322C71006E812E /* user_edit.png */; };
+		2994E74618332BE4006E812E /* YNNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2994E74518332BE4006E812E /* YNNavigationController.m */; };
 		299D9F6B1754326900B61161 /* DBSqlite3.m in Sources */ = {isa = PBXBuildFile; fileRef = 299D9F681754326900B61161 /* DBSqlite3.m */; };
 		299D9F6C1754326900B61161 /* TaskDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 299D9F6A1754326900B61161 /* TaskDemo.m */; };
 		29A2D2F51733C2680013D65A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 83A58F4216636AD70075D243 /* libz.dylib */; };
@@ -626,6 +627,8 @@
 		2994E73E18322C71006E812E /* user_edit_icon1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_edit_icon1.png; sourceTree = "<group>"; };
 		2994E73F18322C71006E812E /* user_edit_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_edit_icon2.png; sourceTree = "<group>"; };
 		2994E74018322C71006E812E /* user_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_edit.png; sourceTree = "<group>"; };
+		2994E74418332BE4006E812E /* YNNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YNNavigationController.h; sourceTree = "<group>"; };
+		2994E74518332BE4006E812E /* YNNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YNNavigationController.m; sourceTree = "<group>"; };
 		299D9F671754326900B61161 /* DBSqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBSqlite3.h; sourceTree = "<group>"; };
 		299D9F681754326900B61161 /* DBSqlite3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBSqlite3.m; sourceTree = "<group>"; };
 		299D9F691754326900B61161 /* TaskDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDemo.h; sourceTree = "<group>"; };
@@ -1345,6 +1348,8 @@
 		292FF986173A48FF004CC609 /* YNFunctions */ = {
 			isa = PBXGroup;
 			children = (
+				2994E74418332BE4006E812E /* YNNavigationController.h */,
+				2994E74518332BE4006E812E /* YNNavigationController.m */,
 				292FF987173A4930004CC609 /* YNFunctions.h */,
 				292FF988173A4930004CC609 /* YNFunctions.m */,
 			);
@@ -3171,7 +3176,7 @@
 				29EEDD91182B6DA0005D4793 /* MASettingViewController.m in Sources */,
 				292626901830B8A3009A02AE /* BootViewController.m in Sources */,
 				297F53CF1830DC7E00696F02 /* CustomScrollView.m in Sources */,
-
+				2994E74618332BE4006E812E /* YNNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

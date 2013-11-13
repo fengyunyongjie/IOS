@@ -168,22 +168,22 @@
 -(void)clicked_changeMyFile
 {
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    if(![ownr_name isEqualToString:[NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]]])
-    {
-        if (self.hud) {
-            [self.hud removeFromSuperview];
-        }
-        self.hud=nil;
-        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.hud];
-        [self.hud show:NO];
-        self.hud.labelText=@"没有操作权限";
-        self.hud.mode=MBProgressHUDModeText;
-        self.hud.margin=10.f;
-        [self.hud show:YES];
-        [self.hud hide:YES afterDelay:1.0f];
-        return;
-    }
+//    if(![ownr_name isEqualToString:[NSString formatNSStringForOjbect:[[SCBSession sharedSession] userName]]])
+//    {
+//        if (self.hud) {
+//            [self.hud removeFromSuperview];
+//        }
+//        self.hud=nil;
+//        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+//        [self.view addSubview:self.hud];
+//        [self.hud show:NO];
+//        self.hud.labelText=@"没有操作权限";
+//        self.hud.mode=MBProgressHUDModeText;
+//        self.hud.margin=10.f;
+//        [self.hud show:YES];
+//        [self.hud hide:YES afterDelay:1.0f];
+//        return;
+//    }
     
     if(isAutomatic)
     {

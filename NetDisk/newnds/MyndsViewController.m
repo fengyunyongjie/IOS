@@ -973,6 +973,7 @@ typedef enum{
 }
 - (void)moveCancel:(id)sender
 {
+    [self.delegate hideOptionCell];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)deleteAction:(id)sender

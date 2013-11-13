@@ -35,6 +35,7 @@
 #import "NSString+Format.h"
 #import "DownImage.h"
 #import "DBSqlite3.h"
+#import "YNNavigationController.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -146,7 +147,7 @@
 
 -(void)finishLogout
 {
-    self.loginVC=[[UINavigationController alloc] initWithRootViewController:[[BootViewController alloc] init]];
+    self.loginVC=[[YNNavigationController alloc] initWithRootViewController:[[BootViewController alloc] init]];
     self.window.rootViewController=self.loginVC;
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
