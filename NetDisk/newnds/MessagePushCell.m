@@ -61,10 +61,10 @@
         if(sort_type == 6) //添加好友
         {
             title = [NSString stringWithFormat:AddFirendToMe,msg_sender_remark];
-            CGRect rect = accept_button.frame;
-            rect.size.width = 50*2+5;
-            accept_button.frame = rect;
-            [accept_button setTitle:@"添加Ta为好友" forState:UIControlStateNormal];
+//            CGRect rect = accept_button.frame;
+//            rect.size.width = 50*2+5;
+//            accept_button.frame = rect;
+//            [accept_button setTitle:@"添加Ta为好友" forState:UIControlStateNormal];
         }
                 
     }
