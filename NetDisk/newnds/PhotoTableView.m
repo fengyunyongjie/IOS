@@ -34,7 +34,7 @@
 #define kAlertTagMailAddr 72
 
 @implementation PhotoTableView
-@synthesize _dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager,hud,requestId,booksScrollView;
+@synthesize _dicReuseCells,editBL,photo_diction,sectionarray,downCellArray,isLoadData,isLoadImage,endFloat,isSort,photo_delegate,fileManager,linkManager,hud,requestId;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -54,9 +54,6 @@
     fileManager.delegate = self;
     linkManager = [[SCBLinkManager alloc] init];
     linkManager.delegate = self;
-    
-    //右边标签
-    booksScrollView = [[CustomScrollView alloc] init];
     
     return self;
 }

@@ -9,6 +9,7 @@
 #import "UploadViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "AppDelegate.h"
+#import "YNFunctions.h"
 
 @implementation UploadViewCell
 @synthesize demo,button_dele_button,imageView,contentView,label_name;
@@ -98,7 +99,18 @@
     {
         ALAssetsLibrary *libary = [[[ALAssetsLibrary alloc] init] autorelease];
         [libary assetForURL:[NSURL URLWithString:list.t_fileUrl] resultBlock:^(ALAsset *result){
-            UIImage *imageV = [UIImage imageWithCGImage:[result thumbnail]];
+            UIImage *imageV = nil;
+            if(list.t_file_type == 5)
+            {
+                NSString *documentDir = [YNFunctions getProviewCachePath];
+                NSArray *array=[list.t_fileUrl componentsSeparatedByString:@"/"];
+                NSString *filePath=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+                imageV = [UIImage imageWithContentsOfFile:filePath];
+            }
+            else
+            {
+                imageV = [UIImage imageWithCGImage:[result thumbnail]];
+            }            
             if(imageV.size.width>=imageV.size.height)
             {
                 if(imageV.size.height<=88)

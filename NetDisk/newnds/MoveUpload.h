@@ -20,6 +20,7 @@
 -(void)updateLoad;
 -(void)start;
 
+-(void)addUpload:(NSString *)filePath changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id;
 -(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id;
 
 //暂时所有上传

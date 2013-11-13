@@ -13,6 +13,7 @@
 #import "NSString+Format.h"
 #import "SCBSession.h"
 #import "AppDelegate.h"
+#import "YNFunctions.h"
 
 @implementation MoveUpload
 @synthesize uploadArray,isStopCurrUpload,isStart,isOpenedUpload;
@@ -57,6 +58,38 @@
     {
         [self upNetworkStop];
     }
+}
+
+-(void)addUpload:(NSString *)filePath changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
+{
+    UpLoadList *list = [[UpLoadList alloc] init];
+    list.t_date = @"";
+    NSString *documentDir = [YNFunctions getProviewCachePath];
+    NSArray *array=[filePath componentsSeparatedByString:@"/"];
+    filePath=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+    list.t_lenght = [[NSData dataWithContentsOfFile:filePath] length];
+    NSString *fileName = [[filePath componentsSeparatedByString:@"/"] lastObject];
+    list.t_name = [NSString formatNSStringForOjbect:fileName];
+    list.t_state = 0;
+    list.t_fileUrl = [NSString formatNSStringForOjbect:filePath];
+    list.t_url_pid = [NSString formatNSStringForOjbect:f_id];
+    list.t_url_name = [NSString formatNSStringForOjbect:device_name];
+    list.t_file_type = 5;
+    list.user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
+    list.file_id = @"";
+    list.upload_size = 0;
+    list.is_autoUpload = NO;
+    list.is_share = NO;
+    list.spaceId = [NSString formatNSStringForOjbect:s_id];
+    NSLog(@"[[SCBSession sharedSession] spaceID]:%@;[[SCBSession sharedSession] homeID]:%@",[[SCBSession sharedSession] spaceID],[[SCBSession sharedSession] homeID]);
+    AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if(appleDate.isShareUpload)
+    {
+        list.is_share = YES;
+    }
+    [list insertUploadList];
+    [list release];
+    [self updateUploadList];
 }
 
 -(void)changeUpload:(NSMutableOrderedSet *)array_ changeDeviceName:(NSString *)device_name changeFileId:(NSString *)f_id changeSpaceId:(NSString *)s_id
@@ -179,10 +212,12 @@
         list.t_state = 1;
         list.upload_size = list.t_lenght;
         list.file_id = [NSString formatNSStringForOjbect:[dicationary objectForKey:@"fid"]];
-        NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDate *todayDate = [NSDate date];
-        NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
-        list.t_date = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute,todayComponent.second];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        list.t_date = [dateFormatter stringFromDate:todayDate];
         [list updateUploadList];
         [uploadArray removeObjectAtIndex:0];
         [self updateTable];

@@ -302,10 +302,12 @@
         list.t_state = 1;
         list.upload_size = list.t_lenght;
         list.file_id = [NSString formatNSStringForOjbect:[dicationary objectForKey:@"fid"]];
-        NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDate *todayDate = [NSDate date];
-        NSDateComponents *todayComponent = [calendar components:NSEraCalendarUnit| NSYearCalendarUnit| NSMonthCalendarUnit| NSDayCalendarUnit| NSHourCalendarUnit| NSMinuteCalendarUnit | NSSecondCalendarUnit| NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekdayOrdinalCalendarUnit | NSQuarterCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit | NSYearForWeekOfYearCalendarUnit fromDate:todayDate];
-        list.t_date = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i",todayComponent.year,todayComponent.month,todayComponent.day,todayComponent.hour,todayComponent.minute,todayComponent.second];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        list.t_date = [dateFormatter stringFromDate:todayDate];
         [list updateUploadList];
         AutoUploadList *ls = [[AutoUploadList alloc] init];
         ls.a_name = [NSString formatNSStringForOjbect:list.t_name];

@@ -50,6 +50,7 @@
 @synthesize isShareUpload;
 @synthesize downImageArray;
 @synthesize isHomeLoad;
+@synthesize imagePath;
 
 @class UploadAll;
 - (void)dealloc
@@ -110,7 +111,7 @@
     
     
     //程序启动时，在代码中向微信终端注册你的id
-    [WXApi registerApp:@"wxdcc0186c9f173352" withDescription:@"demo 2.0"];
+    [WXApi registerApp:@"wxdcc0186c9f173352"];
     [self.window makeKeyAndVisible];
     //处理其它程序调用本程序打开文件
     if ([YNFunctions isUnlockFeature]) {
@@ -128,6 +129,7 @@
 //    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     return YES;
 }
+
 -(BOOL)isLogin
 {
     NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"usr_name"];
@@ -404,11 +406,79 @@
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    return  [WXApi handleOpenURL:url delegate:self];
+    return YES;
 }
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return  [WXApi handleOpenURL:url delegate:self];
+    NSString *path = [[[url path] componentsSeparatedByString:@"."] lastObject];
+    path = [path lowercaseString];
+    if([path isEqualToString:@"png"]||
+     [path isEqualToString:@"jpg"]||
+     [path isEqualToString:@"jpeg"]||
+     [path isEqualToString:@"bmp"]||
+     [path isEqualToString:@"gif"])
+    {
+        NSString *documentDir = [YNFunctions getProviewCachePath];
+        NSArray *array=[[url path] componentsSeparatedByString:@"/"];
+        NSString *filePath=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+        [[NSData dataWithContentsOfURL:url] writeToFile:filePath atomically:YES];
+        NSLog(@"filePath:%@",filePath);
+        imagePath = [[NSString alloc] initWithFormat:@"%@",filePath];
+        UIActionSheet *sheetView = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"是否保存到虹盘" otherButtonTitles:@"确定", nil];
+        [sheetView showInView:self.window];
+    }
+    return  YES;
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
+//        [self.moveUpload ];
+        [self clicked_changeMyFile];
+    }
+}
+
+-(void)clicked_changeMyFile
+{
+    QBImageFileViewController *qbImage_fileView = [[QBImageFileViewController alloc] init];
+    if(self.myTabBarController.selectedIndex == 0)
+    {
+        qbImage_fileView.space_id = [[SCBSession sharedSession] spaceID];
+    }
+    else if(self.myTabBarController.selectedIndex == 1)
+    {
+        qbImage_fileView.space_id = [[SCBSession sharedSession] homeID];
+    }
+    else
+    {
+        self.myTabBarController.selectedIndex = 0;
+        qbImage_fileView.space_id = [[SCBSession sharedSession] spaceID];
+    }
+    qbImage_fileView.f_id = @"1";
+    qbImage_fileView.f_name=@"选择上传位置";
+    space_ID = qbImage_fileView.space_id;
+    [qbImage_fileView setQbDelegate:self];
+    
+    UINavigationController *nagation = [[UINavigationController alloc] initWithRootViewController:qbImage_fileView];
+    [nagation setNavigationBarHidden:YES];
+    [self.myTabBarController presentModalViewController:nagation animated:YES];
+    [nagation release];
+    [qbImage_fileView release];
+}
+
+#pragma qbDelegate
+
+-(void)uploadFileder:(NSString *)deviceName
+{
+    device_name = deviceName;
+}
+
+-(void)uploadFiledId:(NSString *)f_id_
+{
+    f_ID = f_id_;
+    NSLog(@"imagePath:%@",imagePath);
+    [self.moveUpload addUpload:imagePath changeDeviceName:device_name changeFileId:f_ID changeSpaceId:space_ID];
 }
 
 -(void)setLogin

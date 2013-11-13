@@ -331,11 +331,22 @@
         [libary assetForURL:[NSURL URLWithString:list.t_fileUrl] resultBlock:^(ALAsset *result)
         {
             NSError *error = nil;
-            Byte *byte_data = malloc(result.defaultRepresentation.size);
-            //获得照片图像数据
-            [result.defaultRepresentation getBytes:byte_data fromOffset:0 length:result.defaultRepresentation.size error:&error];
-            file_data = [[NSData alloc] initWithData:[NSData dataWithBytesNoCopy:byte_data length:result.defaultRepresentation.size]];
-            NSLog(@"1:申请效验:%i",[file_data length]);
+            if(list.t_file_type == 5)
+            {
+                NSString *documentDir = [YNFunctions getProviewCachePath];
+                NSArray *array=[list.t_fileUrl componentsSeparatedByString:@"/"];
+                NSString *filePath=[NSString stringWithFormat:@"%@/%@",documentDir,[array lastObject]];
+                file_data = [[NSData alloc] initWithContentsOfFile:filePath];
+            }
+            else
+            {
+                Byte *byte_data = malloc(result.defaultRepresentation.size);
+                //获得照片图像数据
+                [result.defaultRepresentation getBytes:byte_data fromOffset:0 length:result.defaultRepresentation.size error:&error];
+                file_data = [[NSData alloc] initWithData:[NSData dataWithBytesNoCopy:byte_data length:result.defaultRepresentation.size]];
+                NSLog(@"1:申请效验:%i",[file_data length]);
+            }
+            
             
             md5String = [[NSString alloc] initWithString:[self md5:file_data]];
             NSURL *s_url = nil;
