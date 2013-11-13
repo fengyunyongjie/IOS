@@ -497,7 +497,7 @@
     }
     else if(msg_sort == 12) //新增图片和视频
     {
-        title=[NSString stringWithFormat:@"%@在%@中加入了新内容",msg_sender_remark,title];
+        title=[NSString stringWithFormat:@"%@在%@中加入了新内容(家庭空间）",msg_sender_remark,text];
     }
     
     return title;
