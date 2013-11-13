@@ -109,12 +109,7 @@
     
     
     //程序启动时，在代码中向微信终端注册你的id
-<<<<<<< HEAD
-    [WXApi registerApp:@"wxdcc0186c9f173352"];
-=======
     [WXApi registerApp:@"wxdcc0186c9f173352" withDescription:@"demo 2.0"];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
->>>>>>> update 16:24
     [self.window makeKeyAndVisible];
     //处理其它程序调用本程序打开文件
     if ([YNFunctions isUnlockFeature]) {

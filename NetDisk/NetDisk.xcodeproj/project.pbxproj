@@ -3169,11 +3169,9 @@
 				29CFEFDF180395D0009FFEBF /* MusicPlayerViewController.m in Sources */,
 				297D4A6C18054A6E00703383 /* SqlliteManager.m in Sources */,
 				29EEDD91182B6DA0005D4793 /* MASettingViewController.m in Sources */,
-<<<<<<< HEAD
 				292626901830B8A3009A02AE /* BootViewController.m in Sources */,
-=======
 				297F53CF1830DC7E00696F02 /* CustomScrollView.m in Sources */,
->>>>>>> update 16:24
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
