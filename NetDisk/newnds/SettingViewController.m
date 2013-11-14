@@ -665,7 +665,7 @@ typedef enum{
                 {
                     //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
                     //titleLabel.hidden=YES;
-                    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.textLabel.text=@"消息提醒设置";
                     [cell.textLabel setFont:titleLabel.font];
                     cell.detailTextLabel.text=@"";
@@ -677,13 +677,19 @@ typedef enum{
                     label.textColor = cell.textLabel.textColor;
                     label.textAlignment = NSTextAlignmentCenter;
                     label.backgroundColor = cell.textLabel.backgroundColor;
-                    [label setHidden:YES];
+                    [label setHidden:NO];
                     automicOff_button.hidden = NO;
+                    if ([YNFunctions isAlertMessage]) {
+                        label.text = @"开启";
+                    }else
+                    {
+                        label.text = @"关闭";
+                    }
                     m_switch.on=[YNFunctions isAlertMessage];
                     [cell addSubview:label];
                     [label release];
                     
-                    m_switch.hidden = NO;
+                    m_switch.hidden = YES;
                     m_switch.on=[YNFunctions isAlertMessage];
                 }
                     break;

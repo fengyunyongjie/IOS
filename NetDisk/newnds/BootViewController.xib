@@ -57,7 +57,7 @@
 					<object class="IBUIButton" id="569545703">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{0, 524}, {160, 44}}</string>
+						<string key="NSFrame">{{0, 524}, {159, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="237046187"/>
@@ -96,9 +96,10 @@
 					<object class="IBUIButton" id="237046187">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{160, 524}, {160, 44}}</string>
+						<string key="NSFrame">{{161, 524}, {159, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -320,7 +321,7 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="NS.key.0">guide_bt_nor.png</string>
-			<string key="NS.object.0">{320, 85}</string>
+			<string key="NS.object.0">{310, 80}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

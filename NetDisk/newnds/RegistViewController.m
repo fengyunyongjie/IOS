@@ -177,23 +177,23 @@
      Animate the resize so that it's in sync with the appearance of the keyboard.
      */
     
-    [UIView beginAnimations:@"MoveUp" context:nil];
-    [UIView setAnimationDuration:0.2f];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    CGRect r=self.view.frame;
-    r.origin.y=-100;
-    [self.view setFrame:r];
-    [UIView commitAnimations];
+//    [UIView beginAnimations:@"MoveUp" context:nil];
+//    [UIView setAnimationDuration:0.2f];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    CGRect r=self.view.frame;
+//    r.origin.y=-100;
+//    [self.view setFrame:r];
+//    [UIView commitAnimations];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
-    [UIView beginAnimations:@"MoveUp" context:nil];
-    [UIView setAnimationDuration:0.2f];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    CGRect r=self.view.frame;
-    r.origin.y=20;
-    [self.view setFrame:r];
-    [UIView commitAnimations];
+//    [UIView beginAnimations:@"MoveUp" context:nil];
+//    [UIView setAnimationDuration:0.2f];
+//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+//    CGRect r=self.view.frame;
+//    r.origin.y=20;
+//    [self.view setFrame:r];
+//    [UIView commitAnimations];
 }
 #pragma mark - UITextFieldDelegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;

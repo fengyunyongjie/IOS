@@ -301,7 +301,7 @@
 					<object class="IBUIImageView" id="407702419">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{33, 173}, {255, 35}}</string>
+						<string key="NSFrame">{{33, 65}, {255, 35}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="690874092"/>
@@ -316,7 +316,7 @@
 					<object class="IBUIImageView" id="246013528">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{33, 216}, {255, 35}}</string>
+						<string key="NSFrame">{{33, 108}, {255, 35}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="312657618"/>
@@ -328,7 +328,7 @@
 					<object class="IBUIImageView" id="690874092">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{41, 179}, {22, 24}}</string>
+						<string key="NSFrame">{{41, 71}, {22, 24}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="263868912"/>
@@ -343,7 +343,7 @@
 					<object class="IBUIImageView" id="312657618">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{41, 222}, {22, 24}}</string>
+						<string key="NSFrame">{{41, 114}, {22, 24}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="979438309"/>
@@ -358,7 +358,7 @@
 					<object class="IBUIButton" id="1065129784">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{60, 296}, {200, 30}}</string>
+						<string key="NSFrame">{{60, 156}, {200, 30}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -415,7 +415,7 @@
 					<object class="IBUITextField" id="263868912">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{64, 176}, {224, 30}}</string>
+						<string key="NSFrame">{{64, 68}, {224, 30}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="246013528"/>
@@ -444,7 +444,7 @@
 					<object class="IBUITextField" id="979438309">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{64, 219}, {224, 30}}</string>
+						<string key="NSFrame">{{64, 111}, {224, 30}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1065129784"/>
@@ -473,7 +473,7 @@
 					<object class="IBUIButton" id="344232571">
 						<reference key="NSNextResponder" ref="436373160"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{14, 8}, {44, 44}}</string>
+						<string key="NSFrame">{{14, 8}, {35, 35}}</string>
 						<reference key="NSSuperview" ref="436373160"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="508392622"/>
@@ -687,16 +687,16 @@
 						<int key="objectID">107</int>
 						<reference key="object" ref="436373160"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="407702419"/>
-							<reference ref="246013528"/>
 							<reference ref="508392622"/>
-							<reference ref="263868912"/>
-							<reference ref="979438309"/>
 							<reference ref="248379833"/>
 							<reference ref="344232571"/>
-							<reference ref="1065129784"/>
+							<reference ref="407702419"/>
 							<reference ref="690874092"/>
+							<reference ref="263868912"/>
+							<reference ref="246013528"/>
 							<reference ref="312657618"/>
+							<reference ref="979438309"/>
+							<reference ref="1065129784"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>

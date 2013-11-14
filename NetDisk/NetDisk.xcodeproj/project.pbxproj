@@ -3131,7 +3131,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zhang danglun";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -3152,7 +3152,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44814D79-DFD8-458D-BB80-1B6A87D4AAE3";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
