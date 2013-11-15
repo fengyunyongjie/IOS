@@ -38,8 +38,7 @@
 @synthesize isAutomaticUpload;
 @synthesize headerView;
 @synthesize selectIndex;
-@synthesize hud;
-
+@synthesize hud,toScrollView;
 
 #pragma mark ----删除上传时列表
 -(void)deleteUploadingIndexRow:(int)row_ isDeleteRecory:(BOOL)isDelete
@@ -311,7 +310,7 @@
     uploadAll_label.font=[UIFont systemFontOfSize:12];
     uploadAll_label.textColor=[UIColor whiteColor];
     uploadAll_label.backgroundColor=[UIColor clearColor];
-    uploadAll_label.frame=CGRectMake(x, y+44, 90, 21);
+    uploadAll_label.frame=CGRectMake(x, y+54, 90, 21);
     [self.more_control addSubview:uploadAll_label];
     
     //全部清除
@@ -327,10 +326,16 @@
     deleteAll_label.font=[UIFont systemFontOfSize:12];
     deleteAll_label.textColor=[UIColor whiteColor];
     deleteAll_label.backgroundColor=[UIColor clearColor];
-    deleteAll_label.frame=CGRectMake(x+90, y+44, 90, 21);
+    deleteAll_label.frame=CGRectMake(x+90, y+54, 90, 21);
     [self.more_control addSubview:deleteAll_label];
     [self.view addSubview:self.more_control];
     [self.more_control setHidden:YES];
+    
+    CGRect toRect = CGRectMake(320-25, 44, 320, TableViewHeight);
+    toScrollView = [[PhotoScrollView alloc] initWithFrame:toRect];
+    toScrollView.delegate = self;
+    toScrollView.hidden = YES;
+    [self.view addSubview:toScrollView];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -778,6 +783,83 @@
     [self.uploadListTableView reloadData];
 }
 
+#pragma mark PhotoScrollViewDelegate ------
+-(void)updateScrollView:(CGPoint)point
+{
+    [self scrollViewDidEndDecelerating:nil];
+    
+    float photoHeight = 0;
+    if(self.uploadListTableView.frame.size.height * 3 > self.uploadListTableView.contentSize.height)
+    {
+        return;
+    }
+    photoHeight = point.y * self.uploadListTableView.contentSize.height / (TableViewHeight - 20);
+    if(photoHeight < 0)
+    {
+        photoHeight = 0;
+    }
+    if(photoHeight > self.uploadListTableView.contentSize.height - self.uploadListTableView.frame.size.height)
+    {
+        photoHeight = self.uploadListTableView.contentSize.height - self.uploadListTableView.frame.size.height;
+    }
+    [self.uploadListTableView setContentOffset:CGPointMake(0, photoHeight)];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    float photoHeight = 0;
+    CGPoint point = scrollView.contentOffset;
+    if(self.uploadListTableView.frame.size.height * 3 > self.uploadListTableView.contentSize.height)
+    {
+        return;
+    }
+    [self stopTimerAndScrollView];
+    
+    photoHeight = point.y * (toScrollView.frame.size.height - 5) / self.uploadListTableView.contentSize.height;
+    if(photoHeight < 0)
+    {
+        photoHeight = 0;
+    }
+    if(photoHeight > toScrollView.frame.size.height - 5)
+    {
+        photoHeight = toScrollView.frame.size.height - 5;
+    }
+    [toScrollView updateScrollView:photoHeight];
+}
+
+-(void)stopTimerAndScrollView
+{
+    if(isToScrollView)
+    {
+        toScrollView.hidden = NO;
+    }
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    isToScrollView = FALSE;
+    if(toTimer)
+    {
+        [toTimer invalidate];
+        toTimer = nil;
+    }
+    toTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(scrollViewDidEnd) userInfo:nil repeats:NO];
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    isToScrollView = TRUE;
+}
+
+-(void)scrollViewDidEnd
+{
+    if(toTimer)
+    {
+        [toTimer invalidate];
+        toTimer = nil;
+    }
+    toScrollView.hidden = YES;
+}
 
 - (void)didReceiveMemoryWarning
 {

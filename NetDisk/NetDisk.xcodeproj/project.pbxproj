@@ -411,6 +411,7 @@
 		29DF5BD61755A760005D85E4 /* OpenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29DF5BD41755A760005D85E4 /* OpenViewController.m */; };
 		29DF5BD71755A760005D85E4 /* OpenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29DF5BD51755A760005D85E4 /* OpenViewController.xib */; };
 		29E0C1381733846C005007BC /* PhohoDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E0C1361733846C005007BC /* PhohoDemo.m */; };
+		29E681F91835CE6C005DC397 /* smarticon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29E681F81835CE6C005DC397 /* smarticon.png */; };
 		29E816741732388100866C34 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E316DB811100756966 /* CFNetwork.framework */; };
 		29E81679173238E900866C34 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B068E516DB822500756966 /* SystemConfiguration.framework */; };
 		29E8167A1732392D00866C34 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298D2101171FA6A200CA00FA /* MobileCoreServices.framework */; };
@@ -929,6 +930,7 @@
 		29DF5BD51755A760005D85E4 /* OpenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OpenViewController.xib; sourceTree = "<group>"; };
 		29E0C1351733846C005007BC /* PhohoDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhohoDemo.h; sourceTree = "<group>"; };
 		29E0C1361733846C005007BC /* PhohoDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhohoDemo.m; sourceTree = "<group>"; };
+		29E681F81835CE6C005DC397 /* smarticon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smarticon.png; sourceTree = "<group>"; };
 		29EEDD8F182B6DA0005D4793 /* MASettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASettingViewController.h; sourceTree = "<group>"; };
 		29EEDD90182B6DA0005D4793 /* MASettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASettingViewController.m; sourceTree = "<group>"; };
 		29EFE84F172A55AD0099B5A7 /* newnds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newnds.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1640,6 +1642,7 @@
 		29B3899117431A48007313B1 /* Pic */ = {
 			isa = PBXGroup;
 			children = (
+				29E681F81835CE6C005DC397 /* smarticon.png */,
 				29BFAD4B174C6306000AFE7A /* 111.png */,
 				291E0B14174B61CF007A72FB /* interestSelected.png */,
 				29B84DDE174B4C2F009073C7 /* share60@2X.png */,
@@ -2944,6 +2947,7 @@
 				2994E74118322C71006E812E /* user_edit_icon1.png in Resources */,
 				2994E74218322C71006E812E /* user_edit_icon2.png in Resources */,
 				2994E74318322C71006E812E /* user_edit.png in Resources */,
+				29E681F91835CE6C005DC397 /* smarticon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3137,7 +3141,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: zhang danglun";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: zhang danglun (ZMPBSB6X32)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "newnds/newnds-Prefix.pch";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -3158,7 +3162,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "44814D79-DFD8-458D-BB80-1B6A87D4AAE3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9315C2A6-AB5E-454C-BA06-D43232DE11B8";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;

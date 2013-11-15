@@ -291,14 +291,14 @@
     return path;
 }
 
-- (void) sendImageContentIsFiends:(BOOL)bl title:(NSString *)title text:(NSString *)text path:(NSString *)path imagePath:(NSString *)imagePath
+- (void) sendImageContentIsFiends:(BOOL)bl title:(NSString *)title text:(NSString *)text path:(NSString *)path imagePath:(NSString *)imagePaths
 {
     if(path == nil)
     {
         WXMediaMessage *message = [WXMediaMessage message];
         
-        NSData *data = [[NSData alloc] initWithContentsOfFile:imagePath];
-        UIImage *imageV = [UIImage imageWithContentsOfFile:imagePath];
+        NSData *data = [[NSData alloc] initWithContentsOfFile:imagePaths];
+        UIImage *imageV = [UIImage imageWithContentsOfFile:imagePaths];
         if([data length]>=32)
         {
             imageV = [self scaleFromImage:imageV toSize:CGSizeMake(200, 200)];
@@ -306,7 +306,7 @@
         [message setThumbImage:imageV];
         
         WXImageObject *ext = [WXImageObject object];
-        ext.imageData = [NSData dataWithContentsOfFile:imagePath];
+        ext.imageData = [NSData dataWithContentsOfFile:imagePaths];
         message.mediaObject = ext;
         
         SendMessageToWXReq* req = [[[SendMessageToWXReq alloc] init]autorelease];
@@ -316,7 +316,6 @@
         {
             req.scene = WXSceneTimeline;  //选择发送到朋友圈，默认值为WXSceneSession，发送到会话
         }
-        
         [WXApi sendReq:req];
     }
     else
@@ -325,8 +324,8 @@
         message.title = title;
         message.description = text;
         
-        NSData *data = [[NSData alloc] initWithContentsOfFile:imagePath];
-        UIImage *imageV = [UIImage imageWithContentsOfFile:imagePath];
+        NSData *data = [[NSData alloc] initWithContentsOfFile:imagePaths];
+        UIImage *imageV = [UIImage imageWithContentsOfFile:imagePaths];
         if([data length]>=32)
         {
             imageV = [self scaleFromImage:imageV toSize:CGSizeMake(400, 400)];

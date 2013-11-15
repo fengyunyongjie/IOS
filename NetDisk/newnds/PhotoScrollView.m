@@ -16,9 +16,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.alpha = 0.8;
-        CGRect bookRect = CGRectMake(0, 0, 35, 25);
+        CGRect bookRect = CGRectMake(0, 0, 25, 25);
         self.bookImageView = [[UIImageView alloc] initWithFrame:bookRect];
-        [self.bookImageView setImage:[UIImage imageNamed:@"btn_updown_on.png"]];
+        [self.bookImageView setImage:[UIImage imageNamed:@"smarticon.png"]];
         [self addSubview:self.bookImageView];
     }
     return self;
@@ -39,7 +39,7 @@
     }
     
     [UIView animateWithDuration:0.2 animations:^{
-        CGRect bookRect = CGRectMake(0, point.y, 30, 25);
+        CGRect bookRect = CGRectMake(0, point.y, 25, 25);
         [self.bookImageView setFrame:bookRect];
     }];
 }
@@ -59,7 +59,7 @@
     }
     
     [UIView animateWithDuration:0.2 animations:^{
-        CGRect bookRect = CGRectMake(0, point.y, 30, 25);
+        CGRect bookRect = CGRectMake(0, point.y, 25, 25);
         [self.bookImageView setFrame:bookRect];
     }];
 }
@@ -79,7 +79,7 @@
     }
     
     [UIView animateWithDuration:0.2 animations:^{
-        CGRect bookRect = CGRectMake(0, point.y, 30, 25);
+        CGRect bookRect = CGRectMake(0, point.y, 25, 25);
         [self.bookImageView setFrame:bookRect];
     }];
 }
@@ -96,7 +96,7 @@
     }
     
     [UIView animateWithDuration:0.2 animations:^{
-        CGRect bookRect = CGRectMake(0, height, 30, 25);
+        CGRect bookRect = CGRectMake(0, height, 25, 25);
         [self.bookImageView setFrame:bookRect];
     }];
 }

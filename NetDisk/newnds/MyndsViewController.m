@@ -2331,7 +2331,7 @@ typedef enum{
                     [cell.imageView addSubview:tagView];
                 }
                 UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
-                [tagView setHidden:YES];
+                [tagView setHidden:NO];
             }else
             {
                 if (cell.imageView.subviews.count==0) {
@@ -2345,25 +2345,25 @@ typedef enum{
                 UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
                 [tagView setHidden:YES];
             }
-            //文件是否下载完成图标
-            NSString *filePath=[YNFunctions getFMCachePath];
-            filePath=[filePath stringByAppendingPathComponent:name];
-            
-            UIImageView *tagImageView=(UIImageView *)[cell.imageView.subviews objectAtIndex:0];
-            [tagImageView setImage:[UIImage imageNamed:@"favorite_tag_n.png"]];
-            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-                if (cell.imageView.subviews.count==0) {
-                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
-                    CGRect r=[tagView frame];
-                    r.origin.x=15;
-                    r.origin.y=25;
-                    [tagView setFrame:r];
-                    [cell.imageView addSubview:tagView];
-                }
-                UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
-                [tagImageView setImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
-                [tagView setHidden:NO];
-            }
+//            //文件是否下载完成图标
+//            NSString *filePath=[YNFunctions getFMCachePath];
+//            filePath=[filePath stringByAppendingPathComponent:name];
+//            
+//            UIImageView *tagImageView=(UIImageView *)[cell.imageView.subviews objectAtIndex:0];
+//            [tagImageView setImage:[UIImage imageNamed:@"favorite_tag_n.png"]];
+//            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//                if (cell.imageView.subviews.count==0) {
+//                    UIImageView *tagView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
+//                    CGRect r=[tagView frame];
+//                    r.origin.x=15;
+//                    r.origin.y=25;
+//                    [tagView setFrame:r];
+//                    [cell.imageView addSubview:tagView];
+//                }
+//                UIImageView *tagView=[cell.imageView.subviews objectAtIndex:0];
+//                [tagImageView setImage:[UIImage imageNamed:@"Ico_CoverF.png"]];
+//                [tagView setHidden:NO];
+//            }
         }
         text=name;
         

@@ -11,8 +11,9 @@
 #import "UploadFile.h"
 #import "UploadViewCell.h"
 #import "MBProgressHUD.h"
+#import "PhotoScrollView.h"
 
-@interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,UploadViewCellDelegate,UIScrollViewDelegate,UIActionSheetDelegate>
+@interface ChangeUploadViewController : UIViewController <UploadFileDelegate,UITableViewDataSource,UITableViewDelegate,UploadViewCellDelegate,UIScrollViewDelegate,UIActionSheetDelegate,PhotoScrollViewDelegate,UIScrollViewDelegate>
 {
     //头部视图
     UIView *topView;
@@ -55,6 +56,9 @@
     int selectedIndex;
     NSInteger selectIndex;
     MBProgressHUD *hud;
+    
+    BOOL isToScrollView;
+    NSTimer *toTimer;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -68,6 +72,7 @@
 @property(nonatomic,retain) UploadViewCell *headerView;
 @property(nonatomic,assign) NSInteger selectIndex;
 @property(nonatomic,retain) MBProgressHUD *hud;
+@property(nonatomic,retain) PhotoScrollView *toScrollView;
 
 //上传成功
 -(void)upFinish:(NSInteger)fileTag;
