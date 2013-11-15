@@ -47,6 +47,8 @@
 @synthesize spaceId;
 @synthesize ower_name;
 @synthesize back_button;
+@synthesize toScrollView;
+@synthesize myBarIndex;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -82,6 +84,7 @@
     {
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         appleDate.isHomeLoad = FALSE;
+        self.myBarIndex = 0;
     }
 }
 
@@ -89,6 +92,12 @@
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appleDate.isHomeLoad = YES;
+    if(appleDate.myTabBarController.selectedIndex == myBarIndex)
+    {
+        myBarIndex = 1;
+        return;
+    }
+    myBarIndex = 1;
     if(appleDate.myTabBarController.IsTabBarHiden && !isPhoto)
     {
         UILabel *lblEdit = (UILabel *)[ctrlView viewWithTag:2013];
@@ -222,11 +231,13 @@
     [file_tableView setAllHeight:self.view.frame.size.height];
     [file_tableView setSpace_id:spaceId];
     [file_tableView setFile_delegate:self];
+    file_tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:file_tableView];
     //初始化图片列表
     photo_tableView = [[PhotoTableView alloc] initWithFrame:rect];
     [photo_tableView setPhoto_delegate:self];
     photo_tableView.requestId = spaceId;
+    photo_tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:photo_tableView];
     //延迟加载
     [self showAllView];
@@ -259,6 +270,56 @@
         [self.helpView addSubview:iKnowBtn];
         [self.helpView addTarget:self action:@selector(hideHelpView:) forControlEvents:UIControlEventTouchUpInside];
         [self.helpView setBackgroundColor:[UIColor colorWithWhite:0.4f alpha:0.5]];
+    }
+    CGRect toRect = CGRectMake(320-25, 44, 320, TableViewHeight);
+    toScrollView = [[PhotoScrollView alloc] initWithFrame:toRect];
+    toScrollView.delegate = self;
+    toScrollView.hidden = YES;
+    [self.view addSubview:toScrollView];
+}
+
+#pragma mark PhotoScrollViewDelegate ------
+-(void)updateScrollView:(CGPoint)point
+{
+    [self scrollViewDidEndDecelerating:nil];
+    
+    float photoHeight = 0;
+    
+    if(isPhoto)
+    {
+        if(photo_tableView.frame.size.height * 3 > photo_tableView.contentSize.height)
+        {
+            return;
+        }
+        NSLog(@"photo_tableView.contentSize.height:%f",photo_tableView.contentSize.height);
+        photoHeight = point.y * photo_tableView.contentSize.height / (TableViewHeight - 20);
+        if(photoHeight < 0)
+        {
+            photoHeight = 0;
+        }
+        if(photoHeight > photo_tableView.contentSize.height - photo_tableView.frame.size.height)
+        {
+            photoHeight = photo_tableView.contentSize.height - photo_tableView.frame.size.height;
+        }
+        [photo_tableView setContentOffset:CGPointMake(0, photoHeight)];
+    }
+    else
+    {
+        if(file_tableView.frame.size.height * 3 > file_tableView.contentSize.height)
+        {
+            return;
+        }
+        NSLog(@"file_tableView.contentSize.height:%f",photo_tableView.contentSize.height);
+        photoHeight = point.y * file_tableView.contentSize.height / (TableViewHeight - 20);
+        if(photoHeight < 0)
+        {
+            photoHeight = 0;
+        }
+        if(photoHeight > file_tableView.contentSize.height - file_tableView.frame.size.height)
+        {
+            photoHeight = file_tableView.contentSize.height - file_tableView.frame.size.height;
+        }
+        [file_tableView setContentOffset:CGPointMake(0, photoHeight)];
     }
 }
 
@@ -1369,6 +1430,86 @@
 //                                                    onPosition:kIntBRScrollBarPositionRight
 //                                                      delegate:self];
 //    }
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    float photoHeight = 0;
+    CGPoint point = scrollView.contentOffset;
+    if(isPhoto)
+    {
+        if(photo_tableView.frame.size.height * 3 > photo_tableView.contentSize.height)
+        {
+            return;
+        }
+        [self stopTimerAndScrollView];
+        
+        NSLog(@"photo_tableView.contentSize.height:%f",photo_tableView.contentSize.height);
+        photoHeight = point.y * (toScrollView.frame.size.height - 5) / photo_tableView.contentSize.height;
+        if(photoHeight < 0)
+        {
+            photoHeight = 0;
+        }
+        if(photoHeight > toScrollView.frame.size.height - 5)
+        {
+            photoHeight = toScrollView.frame.size.height - 5;
+        }
+        [toScrollView updateScrollView:photoHeight];
+    }
+    else
+    {
+        if(file_tableView.frame.size.height * 3 > file_tableView.contentSize.height)
+        {
+            return;
+        }
+        [self stopTimerAndScrollView];
+        
+        NSLog(@"file_tableView.contentSize.height:%f",photo_tableView.contentSize.height);
+        photoHeight = point.y * (toScrollView.frame.size.height - 5) / file_tableView.contentSize.height;
+        if(photoHeight < 0)
+        {
+            photoHeight = 0;
+        }
+        if(photoHeight > toScrollView.frame.size.height - 5)
+        {
+            photoHeight = toScrollView.frame.size.height - 5;
+        }
+        [toScrollView updateScrollView:photoHeight]; 
+    }
+}
+
+-(void)stopTimerAndScrollView
+{
+    if(isToScrollView)
+    {
+        toScrollView.hidden = NO;
+    }
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    isToScrollView = FALSE;
+    if(toTimer)
+    {
+        [toTimer invalidate];
+        toTimer = nil;
+    }
+    toTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(scrollViewDidEnd) userInfo:nil repeats:NO];
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    isToScrollView = TRUE;
+}
+
+-(void)scrollViewDidEnd
+{
+    if(toTimer)
+    {
+        [toTimer invalidate];
+        toTimer = nil;
+    }
+    toScrollView.hidden = YES;
 }
 
 @end

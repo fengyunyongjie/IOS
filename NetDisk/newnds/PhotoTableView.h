@@ -35,9 +35,15 @@
 
 -(void)nullData;
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView;
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
+
 @end
 
-@interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIActionSheetDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate,UIAlertViewDelegate>
+@interface PhotoTableView : UITableView <SCBPhotoDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIActionSheetDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate,UIAlertViewDelegate,UIScrollViewDelegate>
 {
 	NSMutableDictionary *_dicReuseCells; //选中的数据
     BOOL editBL;  //是否为编辑状态，默认为false

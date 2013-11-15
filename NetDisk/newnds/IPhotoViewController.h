@@ -14,8 +14,9 @@
 #import <MessageUI/MessageUI.h>
 #import "QBImagePickerController.h"
 #import "SelectFileUrlViewController.h"
+#import "PhotoScrollView.h"
 
-@interface IPhotoViewController : UIViewController <FileTableViewDelegate,PhotoTableViewDelegate,QBImageFileViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,UITextFieldDelegate,QBImagePickerControllerDelegate,SelectFileUrlDelegate>
+@interface IPhotoViewController : UIViewController <FileTableViewDelegate,PhotoTableViewDelegate,QBImageFileViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,UITextFieldDelegate,QBImagePickerControllerDelegate,SelectFileUrlDelegate,PhotoScrollViewDelegate,UIScrollViewDelegate>
 {
     UIView *topView;
     BOOL isNeedBackButton;
@@ -47,6 +48,9 @@
     MBProgressHUD *hud;
     NSString *ower_name;
     BOOL isLoading;
+    
+    BOOL isToScrollView;
+    NSTimer *toTimer;
 }
 
 @property(nonatomic,retain) UIView *topView;
@@ -77,6 +81,8 @@
 @property(nonatomic,retain) NSString *ower_name;
 @property(strong,nonatomic) UIControl *helpView;
 @property(nonatomic,retain) UIButton *back_button;
+@property(nonatomic,retain) PhotoScrollView *toScrollView;
+@property(nonatomic,assign) int myBarIndex;
 
 //显示文件列表
 -(void)showFileList;

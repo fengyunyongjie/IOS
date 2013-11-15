@@ -580,6 +580,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [photo_delegate scrollViewDidEndDecelerating:scrollView];
         isLoadImage = TRUE;
         if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
         {
@@ -600,6 +601,7 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    [photo_delegate scrollViewDidEndDecelerating:scrollView];
     isLoadImage = TRUE;
     if(!isLoadData && scrollView.contentOffset.y >= 0 && endFloat > scrollView.contentOffset.y && scrollView.contentOffset.y <= scrollView.contentSize.height)
     {
@@ -620,6 +622,7 @@
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    [photo_delegate scrollViewWillBeginDragging:scrollView];
     isLoadImage = FALSE;
 }
 
@@ -1496,6 +1499,11 @@
     {
         return [NSString stringWithFormat:@"%i年",component.year];
     }
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [photo_delegate scrollViewDidScroll:scrollView];
 }
 
 -(void)dealloc

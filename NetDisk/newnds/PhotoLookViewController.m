@@ -11,6 +11,7 @@
 #import "YNFunctions.h"
 #import "FavoritesData.h"
 #import "AppDelegate.h"
+#import "IPhotoViewController.h"
 
 #define ACTNUMBER 400000
 #define ScrollViewTag 100000
@@ -1185,6 +1186,17 @@
         [hud hide:YES afterDelay:0.8f];
         [hud release];
         hud = nil;
+        
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        if(appDelegate.myTabBarController.selectedIndex == 1)
+        {
+            UINavigationController *gationController = [[appDelegate.myTabBarController viewControllers] objectAtIndex:1];
+            IPhotoViewController *iPhoto = (IPhotoViewController *)[gationController.viewControllers objectAtIndex:0];
+            if([iPhoto isKindOfClass:[IPhotoViewController class]])
+            {
+                iPhoto.myBarIndex = 2;
+            }
+        }
     }
     else
     {

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "QBImagePickerController.h"
 #import "QLBrowserViewController.h"
+#import "PhotoScrollView.h"
 
 typedef enum {
     kMyndsTypeDefault,
@@ -28,7 +29,11 @@ typedef enum {
     kSharedTypeWeixin,
     kSharedTypeFrends,
 }SharedType;
-@interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate,UIActionSheetDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate>
+@interface MyndsViewController : UIViewController<UIDocumentInteractionControllerDelegate,UITableViewDataSource,UITableViewDelegate,QBImagePickerControllerDelegate,UIActionSheetDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate,PhotoScrollViewDelegate,UIScrollViewDelegate>
+{
+    BOOL isToScrollView;
+    NSTimer *toTimer;
+}
 
 @property (strong,nonatomic) NSDictionary *dataDic;
 @property (strong,nonatomic) NSArray *listArray;
@@ -77,6 +82,8 @@ typedef enum {
 @property (strong,nonatomic) UIView *selectToolView;
 @property (strong,nonatomic) NSArray *movefIds;
 @property (assign,nonatomic) BOOL isMoveLoad;
+@property(nonatomic,retain) PhotoScrollView *toScrollView;
+
 -(void)loadData;
 - (void)viewWillAppear:(BOOL)animated;
 @end

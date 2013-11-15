@@ -543,35 +543,35 @@
     }
     else if(msg_sort == 6) //添加好友
     {
-//        BOOL bl = [[dictionary objectForKey:@"is_accept"] boolValue];
-//        if(bl)
-//        {
-//            cell.accept_button.hidden = YES;
-//            cell.refused_button.hidden = YES;
-//            
-//            CGRect title_rect = cell.title_label.frame;
-//            title_rect.size.width = 320-boderWidth*2;
-//            cell.title_label.frame = title_rect;
-//            CGRect time_rect = cell.time_label.frame;
-//            time_rect.size.width = 320-boderWidth*2;
-//            cell.time_label.frame = time_rect;
-//        }
-//        else
-//        {
-//            CGRect rect = cell.accept_button.frame;
-//            rect.size.width = 50*2+5;
-//            cell.accept_button.frame = rect;
-//            cell.accept_button.hidden = NO;
-//            [cell.accept_button setTitle:@"添加Ta为好友" forState:UIControlStateNormal];
-//            cell.refused_button.hidden = YES;
-//            
-//            CGRect title_rect = cell.title_label.frame;
-//            title_rect.size.width = navbarWidth-boderWidth;
-//            cell.title_label.frame = title_rect;
-//            CGRect time_rect = cell.time_label.frame;
-//            time_rect.size.width = navbarWidth-boderWidth;
-//            cell.time_label.frame = time_rect;
-//        }
+        BOOL bl = YES;//[[dictionary objectForKey:@"is_accept"] boolValue];
+        if(bl)
+        {
+            cell.accept_button.hidden = YES;
+            cell.refused_button.hidden = YES;
+            
+            CGRect title_rect = cell.title_label.frame;
+            title_rect.size.width = 320-boderWidth*2;
+            cell.title_label.frame = title_rect;
+            CGRect time_rect = cell.time_label.frame;
+            time_rect.size.width = 320-boderWidth*2;
+            cell.time_label.frame = time_rect;
+        }
+        else
+        {
+            CGRect rect = cell.accept_button.frame;
+            rect.size.width = 50*2+5;
+            cell.accept_button.frame = rect;
+            cell.accept_button.hidden = NO;
+            [cell.accept_button setTitle:@"添加Ta为好友" forState:UIControlStateNormal];
+            cell.refused_button.hidden = YES;
+            
+            CGRect title_rect = cell.title_label.frame;
+            title_rect.size.width = navbarWidth-boderWidth;
+            cell.title_label.frame = title_rect;
+            CGRect time_rect = cell.time_label.frame;
+            time_rect.size.width = navbarWidth-boderWidth;
+            cell.time_label.frame = time_rect;
+        }
     }
     else
     {

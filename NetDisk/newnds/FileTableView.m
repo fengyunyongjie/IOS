@@ -1497,6 +1497,28 @@
     return path;
 }
 
+#pragma mark UIScrollviewDelegate
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [file_delegate scrollViewDidScroll:scrollView];
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [file_delegate scrollViewDidEndDecelerating:scrollView];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [file_delegate scrollViewDidEndDecelerating:scrollView];
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [file_delegate scrollViewWillBeginDragging:scrollView];
+}
+
 -(void)dealloc
 {
     [upDictionary release];

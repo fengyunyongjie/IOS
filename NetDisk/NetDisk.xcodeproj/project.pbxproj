@@ -390,6 +390,7 @@
 		29D5BA2D17F46C20003BF16C /* BackgroundRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D5BA2C17F46C1E003BF16C /* BackgroundRunner.m */; };
 		29D6028F183301CC0005176E /* CustomControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D6028E183301CC0005176E /* CustomControl.m */; };
 		29D60293183304190005176E /* libPushSDK-Simulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D60292183304190005176E /* libPushSDK-Simulator.a */; };
+		29D60299183362610005176E /* PhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D60298183362610005176E /* PhotoScrollView.m */; };
 		29D72E031771753A008D830A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29D72E021771753A008D830A /* QuickLook.framework */; };
 		29D72E0617718780008D830A /* favorite_tag_n@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D72E041771877E008D830A /* favorite_tag_n@2x.png */; };
 		29D72E0717718780008D830A /* favorite_tag_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 29D72E051771877F008D830A /* favorite_tag_n.png */; };
@@ -904,6 +905,8 @@
 		29D6028D183301CC0005176E /* CustomControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomControl.h; sourceTree = "<group>"; };
 		29D6028E183301CC0005176E /* CustomControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomControl.m; sourceTree = "<group>"; };
 		29D60292183304190005176E /* libPushSDK-Simulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPushSDK-Simulator.a"; sourceTree = "<group>"; };
+		29D60297183362610005176E /* PhotoScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoScrollView.h; sourceTree = "<group>"; };
+		29D60298183362610005176E /* PhotoScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoScrollView.m; sourceTree = "<group>"; };
 		29D72E021771753A008D830A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		29D72E041771877E008D830A /* favorite_tag_n@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "favorite_tag_n@2x.png"; sourceTree = "<group>"; };
 		29D72E051771877F008D830A /* favorite_tag_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = favorite_tag_n.png; sourceTree = "<group>"; };
@@ -1436,6 +1439,8 @@
 				29C9413817D857B80088B392 /* SearchViewController.m */,
 				29D6028D183301CC0005176E /* CustomControl.h */,
 				29D6028E183301CC0005176E /* CustomControl.m */,
+				29D60297183362610005176E /* PhotoScrollView.h */,
+				29D60298183362610005176E /* PhotoScrollView.m */,
 			);
 			name = Photo;
 			sourceTree = "<group>";
@@ -3063,6 +3068,7 @@
 				292626901830B8A3009A02AE /* BootViewController.m in Sources */,
 				2994E74618332BE4006E812E /* YNNavigationController.m in Sources */,
 				29D6028F183301CC0005176E /* CustomControl.m in Sources */,
+				29D60299183362610005176E /* PhotoScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

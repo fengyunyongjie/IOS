@@ -35,6 +35,12 @@
 
 -(void)nullData;
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView;
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
+
 @end
 
 @interface FileTableView : UITableView <NewFoldDelegate,UITableViewDataSource,UITableViewDelegate,DownloaderDelegate,UIAlertViewDelegate,SCBFileManagerDelegate,SCBLinkManagerDelegate,UIActionSheetDelegate>

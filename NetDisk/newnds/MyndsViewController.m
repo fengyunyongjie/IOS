@@ -31,6 +31,7 @@
 #define TabBarHeight 60
 #define ChangeTabWidth 90
 #define RightButtonBoderWidth 0
+#define TableViewHeight self.view.frame.size.height-44-60
 
 #define CATEGORY_PICTURE @"PIC"
 #define CATEGORY_VIDEO @"VIDEO"
@@ -88,7 +89,7 @@ typedef enum{
 @end
 
 @implementation MyndsViewController
-
+@synthesize toScrollView;
 //<ios 6.0
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
@@ -682,7 +683,14 @@ typedef enum{
     self.optionCell=[[[UITableViewCell alloc] init] autorelease];
     [self.optionCell addSubview:[[[UIToolbar alloc] init] autorelease]];
     self.selectedIndexPath=nil;
+    
+    CGRect toRect = CGRectMake(320-25, 44, 320, self.view.frame.size.height-44-60);
+    toScrollView = [[PhotoScrollView alloc] initWithFrame:toRect];
+    toScrollView.delegate = self;
+    toScrollView.hidden = YES;
+    [self.view addSubview:toScrollView];
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:YES];
@@ -830,7 +838,72 @@ typedef enum{
         self.more_button.hidden=YES;
         self.selectToolView.frame=CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60);
     }
+    
+    self.tableView.showsVerticalScrollIndicator = NO;
+    [self.view bringSubviewToFront:self.toScrollView];
 }
+
+#pragma mark PhotoScrollViewDelegate ------
+-(void)updateScrollView:(CGPoint)point
+{
+    [self toScrollViewDidEndDecelerating];
+    
+    float photoHeight = 0;
+    if(self.tableView.frame.size.height * 3 > self.tableView.contentSize.height)
+    {
+        return;
+    }
+    photoHeight = point.y * self.tableView.contentSize.height / (TableViewHeight - 20);
+    if(photoHeight < 0)
+    {
+        photoHeight = 0;
+    }
+    if(photoHeight > self.tableView.contentSize.height - self.tableView.frame.size.height)
+    {
+        photoHeight = self.tableView.contentSize.height - self.tableView.frame.size.height;
+    }
+    [self.tableView setContentOffset:CGPointMake(0, photoHeight)];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(self.tableView.frame.size.height * 3 > self.tableView.contentSize.height)
+    {
+        return;
+    }
+    [self stopTimerAndScrollView];
+    
+    CGPoint point = scrollView.contentOffset;
+    float photoHeight = point.y * (toScrollView.frame.size.height - 5) / self.tableView.contentSize.height;
+    if(photoHeight < 0)
+    {
+        photoHeight = 0;
+    }
+    if(photoHeight > toScrollView.frame.size.height - 5)
+    {
+        photoHeight = toScrollView.frame.size.height - 5;
+    }
+    [toScrollView updateScrollView:photoHeight];
+}
+
+-(void)stopTimerAndScrollView
+{
+    if(isToScrollView)
+    {
+        toScrollView.hidden = NO;
+    }
+}
+
+-(void)scrollViewDidEnd
+{
+    if(toTimer)
+    {
+        [toTimer invalidate];
+        toTimer = nil;
+    }
+    toScrollView.hidden = YES;
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [self.sm cancelAllTask];
@@ -3383,9 +3456,11 @@ typedef enum{
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self.ctrlView setHidden:YES];
+    isToScrollView = TRUE;
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    [self toScrollViewDidEndDecelerating];
     if (!decelerate)
 	{
         if (self.selectedIndexPath) {
@@ -3398,11 +3473,23 @@ typedef enum{
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    [self toScrollViewDidEndDecelerating];
     if (self.selectedIndexPath) {
         //[self hideOptionCell];
         return;
     }
     [self loadImagesForOnscreenRows];
+}
+
+-(void)toScrollViewDidEndDecelerating
+{
+    isToScrollView = FALSE;
+    if(toTimer)
+    {
+        [toTimer invalidate];
+        toTimer = nil;
+    }
+    toTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(scrollViewDidEnd) userInfo:nil repeats:NO];
 }
 
 // this method is used in case the user scrolled into a set of cells that don't have their app icons yet
