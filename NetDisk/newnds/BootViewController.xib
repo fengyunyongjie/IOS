@@ -117,7 +117,7 @@
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">1292</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{141, 470}, {38, 36}}</string>
+						<string key="NSFrame">{{141, 485}, {38, 36}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="569545703"/>
@@ -247,13 +247,13 @@
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="522172120"/>
+						<int key="objectID">11</int>
+						<reference key="object" ref="237046187"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">11</int>
-						<reference key="object" ref="237046187"/>
+						<int key="objectID">19</int>
+						<reference key="object" ref="522172120"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>

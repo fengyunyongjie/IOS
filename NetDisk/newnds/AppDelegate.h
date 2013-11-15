@@ -19,6 +19,7 @@
 #import "MusicPlayerViewController.h"
 #import "BootViewController.h"
 #import "QBImageFileViewController.h"
+#import "MBProgressHUD.h"
 
 //新浪微博微博
 #define kAppKey         @"706445160"
@@ -44,7 +45,7 @@
     NSString *f_ID;
     NSString *space_ID;
 }
-
+@property (strong,nonatomic) MBProgressHUD *hud;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MYTabBarController *myTabBarController;
 @property (strong, nonatomic) UIViewController *loginVC;

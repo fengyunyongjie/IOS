@@ -36,6 +36,7 @@
 #import "DownImage.h"
 #import "DBSqlite3.h"
 #import "YNNavigationController.h"
+#import "SCBFileManager.h"
 
 @implementation AppDelegate
 @synthesize user_name;
@@ -145,6 +146,10 @@
     self.window.rootViewController=self.myTabBarController;
     [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(openAutomic) userInfo:self repeats:NO];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    
+    SCBFileManager *fm=[[SCBFileManager alloc] init];
+    fm.delegate=self;
+    [fm requestOpenFamily:@""];
 }
 
 -(void)finishLogout
@@ -627,6 +632,13 @@
     {
         [self.autoUpload start];
     }
+    if ([self isLogin]) {
+        if ([YNFunctions isAlertMessage]) {
+            SCBFileManager *fm=[[SCBFileManager alloc] init];
+            fm.delegate=self;
+            [fm requestOpenFamily:@""];
+        }
+    }
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
@@ -669,14 +681,30 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+//    if (self.hud) {
+//        [self.hud removeFromSuperview];
+//    }
+//    self.hud=nil;
+//    self.hud=[[MBProgressHUD alloc] initWithView:self.window];
+//    [self.window addSubview:self.hud];
+//    [self.hud show:NO];
+//    self.hud.labelText=[userInfo description];
+//    self.hud.mode=MBProgressHUDModeText;
+//    self.hud.margin=10.f;
+//    [self.hud show:YES];
+//    [self.hud hide:YES afterDelay:10.0f];
+//    UIAlertView *alert=[[UIAlertView alloc] initWithTitle:nil message:[userInfo objectForKey:@"alert"] delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+//    [alert show];
+    
     // Required
     [APService handleRemoteNotification:userInfo];
     NSLog(@"userInfo:%@",userInfo);
-    
-    MessagePushController *messagePush = [[MessagePushController alloc] init];
-    messagePush.isPushMessage = YES;
-    [self.window.rootViewController presentModalViewController:messagePush animated:YES];
-    [messagePush release];
+    if ([UIApplication sharedApplication].applicationState!=UIApplicationStateActive) {
+        MessagePushController *messagePush = [[MessagePushController alloc] init];
+        messagePush.isPushMessage = YES;
+        [self.window.rootViewController presentModalViewController:messagePush animated:YES];
+        [messagePush release];
+    }
 }
 -(void)addTabBarView
 {
@@ -771,5 +799,34 @@
         [downImage cancelDownload];
     }
 }
-
+#pragma mark - SCBFileManagerDelegate
+//打开家庭成员
+-(void)getOpenFamily:(NSDictionary *)dictionary
+{
+    NSLog(@"dictionary:%@",dictionary);
+    NSArray *array = [dictionary objectForKey:@"spaces"];
+    if([array count] > 0)
+    {
+        NSMutableArray *marray=[NSMutableArray array];
+        for (NSDictionary *dic in array) {
+            NSString *str=[dic objectForKey:@"space_id"];
+            if (str) {
+                [marray addObject:str];
+            }
+        }
+        [YNFunctions setAllFamily:marray];
+        
+        if ([YNFunctions isAlertMessage]) {
+            [APService
+             registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                 UIRemoteNotificationTypeSound |
+                                                 UIRemoteNotificationTypeAlert)];
+            NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
+            NSSet *tags=[NSSet setWithArray:[YNFunctions selectFamily]];
+            
+            [APService setTags:tags alias:alias];
+            NSLog(@"设置标签和别名成功,\n别名：%@\n标签：%@",alias,tags);
+        }
+    }
+}
 @end

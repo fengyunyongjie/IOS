@@ -72,17 +72,6 @@
 -(void)registSucceed
 {
      [self.m_hud removeFromSuperview];
-    if ([YNFunctions isAlertMessage]) {
-        [APService
-         registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                             UIRemoteNotificationTypeSound |
-                                             UIRemoteNotificationTypeAlert)];
-        NSString *alias=[NSString stringWithFormat:@"%@",[[SCBSession sharedSession] spaceID]];
-        NSSet *tags=[NSSet setWithArray:[YNFunctions selectFamily]];
-        
-        [APService setTags:tags alias:alias];
-        NSLog(@"设置标签和别名成功,\n别名：%@\n标签：%@",alias,tags);
-    }
     AppDelegate *app_delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [[NSUserDefaults standardUserDefaults] setObject:self.m_userNameTextField.text forKey:@"usr_name"];
     [[NSUserDefaults standardUserDefaults] setObject:self.m_passwordAgainTextField.text forKey:@"usr_pwd"];
