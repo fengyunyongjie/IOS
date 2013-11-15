@@ -12,6 +12,10 @@
 #import "SCBDownloader.h"
 #import "FavoritesViewController.h"
 #import "ALAsset+AGIPC.h"
+#import "AutoUploadList.h"
+#import "NSString+Format.h"
+#import "SCBSession.h"
+
 static FavoritesData *_sharedFavoritesData;
 @implementation FavoritesData
 +(FavoritesData *)sharedFavoritesData
@@ -167,8 +171,21 @@ static FavoritesData *_sharedFavoritesData;
         UIImage *image=[UIImage imageWithContentsOfFile:filePath];
         ALAssetsLibrary *library=[[ALAssetsLibrary alloc] init];
         [library writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error) {
-            NSLog(@"%@",assetURL);
-            NSLog(@"%@",error);
+            [library assetForURL:assetURL resultBlock:^(ALAsset *asset)
+             {
+                 AutoUploadList *ls = [[[AutoUploadList alloc] init] autorelease];
+                 ls.a_name = [NSString formatNSStringForOjbect:asset.defaultRepresentation.filename];
+                 ls.a_user_id = [NSString formatNSStringForOjbect:[[SCBSession sharedSession] userId]];
+                 ls.a_state = 1;
+                 BOOL bl = [ls selectAutoUploadList];
+                 if(!bl)
+                 {
+                     [ls insertAutoUploadList];
+                 }
+             }failureBlock:^(NSError *error)
+             {
+                 NSLog(@"error:%@",error);
+             }];
         }];
     }
     if (self.fviewController && [self.fviewController respondsToSelector:@selector(fileDidDownload:)]) {
