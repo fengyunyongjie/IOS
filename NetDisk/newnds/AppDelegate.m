@@ -428,7 +428,7 @@
         [[NSData dataWithContentsOfURL:url] writeToFile:filePath atomically:YES];
         NSLog(@"filePath:%@",filePath);
         imagePath = [[NSString alloc] initWithFormat:@"%@",filePath];
-        UIActionSheet *sheetView = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"是否保存到虹盘" otherButtonTitles:@"确定", nil];
+        UIActionSheet *sheetView = [[UIActionSheet alloc] initWithTitle:@"是否保存到虹盘" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"确定", nil];
         [sheetView showInView:self.window];
     }
     return  YES;
@@ -436,7 +436,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex == 1)
+    if(buttonIndex == 0)
     {
 //        [self.moveUpload ];
         [self clicked_changeMyFile];

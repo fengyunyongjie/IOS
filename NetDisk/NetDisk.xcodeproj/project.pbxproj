@@ -1435,8 +1435,6 @@
 				29D2FC9917C5B54800D6A553 /* PhotoTableView.m */,
 				2929E30B17CC2EA9003CB75A /* FileTableViewCell.h */,
 				2929E30C17CC2EA9003CB75A /* FileTableViewCell.m */,
-				2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */,
-				2929E30F17CC2F50003CB75A /* IPhotoViewController.m */,
 				29C9413717D857B70088B392 /* SearchViewController.h */,
 				29C9413817D857B80088B392 /* SearchViewController.m */,
 				29D6028D183301CC0005176E /* CustomControl.h */,
@@ -1946,6 +1944,7 @@
 				29B18AC0173C973700DBF2CB /* Browsers */,
 				29639037173A3E98009C5530 /* FileItemTableCell.h */,
 				29639038173A3E98009C5530 /* FileItemTableCell.m */,
+				29FE1BFE1839C16F00F9069D /* FamilySpace */,
 				292FF986173A48FF004CC609 /* YNFunctions */,
 				292FF98F173A4CDE004CC609 /* Login&Regist */,
 				29852D1E172D1808001AD87A /* Favorites */,
@@ -2047,6 +2046,15 @@
 				29ACAFFF1783D51F00AC9E6A /* Bt_Operator.png */,
 			);
 			name = editList;
+			sourceTree = "<group>";
+		};
+		29FE1BFE1839C16F00F9069D /* FamilySpace */ = {
+			isa = PBXGroup;
+			children = (
+				2929E30E17CC2F4F003CB75A /* IPhotoViewController.h */,
+				2929E30F17CC2F50003CB75A /* IPhotoViewController.m */,
+			);
+			name = FamilySpace;
 			sourceTree = "<group>";
 		};
 		8387CBAE1663187A00B5AE1E /* lib */ = {

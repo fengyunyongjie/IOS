@@ -27,6 +27,7 @@
 #import "QLBrowserViewController.h"
 #import "AppDelegate.h"
 #import "NSString+Format.h"
+#import "YNNavigationController.h"
 
 #define TabBarHeight 60
 #define ChangeTabWidth 90
@@ -1879,7 +1880,7 @@ typedef enum{
             break;
     }
     moveViewController.delegate=self;
-    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:moveViewController];
+    YNNavigationController *nav=[[YNNavigationController alloc] initWithRootViewController:moveViewController];
     [self presentViewController:nav animated:YES completion:nil];
 }
 

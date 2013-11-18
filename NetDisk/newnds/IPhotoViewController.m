@@ -87,7 +87,13 @@
         self.myBarIndex = 0;
     }
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    MYTabBarController *myTabbar = (MYTabBarController *)[self tabBarController];
+    if (myTabbar.IsTabBarHiden&&!file_tableView.isEditing) {
+        [myTabbar setHidesTabBarWithAnimate:NO];
+    }
+}
 -(void)viewDidAppear:(BOOL)animated
 {
     AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
