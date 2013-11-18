@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #define AddFirendToMe @"%@添加您为好友" //添加好友消息
 #define AddFirendToOther @"添加对方为好友" //添加好友消息
-#define AddFamilyToMe @"%@邀请添加您为家庭空间成员" //添加家庭成员
+#define AddFamilyToMe @"%@邀请添加%@为家庭空间成员" //添加家庭成员
 #define AddFirendToSelf @"%@对你说：\"%@\"" //好友私信
 #define AddShared @"%@邀请你加入\"%@\"共享文件夹" //邀请加入共享
 #define GetOutShared @"%@将你从共享文件夹\"%@\"中移除" //踢出共享用户

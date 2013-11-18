@@ -115,14 +115,14 @@
     BOOL rt = YES;
     NSString *loginName = self.m_userNameTextField.text;
     if (loginName==nil||[loginName isEqualToString:@""]) {
-        self.m_hud.labelText=@"请输入合法的用户名";
+        self.m_hud.labelText=@"请输入正确的邮箱账户";
         rt=NO;
     }
     else
     {
         NSRange rang  = [loginName rangeOfString:@"@"];
         if (rang.location==NSNotFound) {
-            self.m_hud.labelText=@"请输入合法的用户名";
+            self.m_hud.labelText=@"请输入正确的邮箱账户";
             rt=NO;
         }
         else

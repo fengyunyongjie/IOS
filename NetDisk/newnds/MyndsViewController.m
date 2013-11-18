@@ -224,7 +224,6 @@ typedef enum{
         [self.view addSubview:self.ctrlView];
         [self.ctrlView setHidden:YES];
         UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_na.png"]];
-        
         int height = 5;
         bg.frame=CGRectMake(25, 44, 270, 176+5);
         [self.ctrlView addSubview:bg];
@@ -308,6 +307,7 @@ typedef enum{
         lblNewFinder11.backgroundColor=[UIColor clearColor];
         lblNewFinder11.frame=CGRectMake(25+90, 59+88+44+height, 90, 22);
         [self.ctrlView addSubview:lblNewFinder11];
+        
         
 //        //按钮－新建文件夹 1，2
 //        UIButton *btnNewFinder12= [UIButton buttonWithType:UIButtonTypeCustom];
@@ -748,7 +748,7 @@ typedef enum{
             self.tableView.frame=r;
             [self.searchView setHidden:YES];
 //            self.selectToolView.hidden=NO;
-            self.more_button.hidden=YES;
+            self.more_button.hidden=NO;
             self.selectToolView.frame=CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60);
             //Initialize the toolbar
 //            UIToolbar *toolbar = [[UIToolbar alloc] init];
@@ -835,8 +835,36 @@ typedef enum{
         [self.view bringSubviewToFront:self.selectToolView];
         [self.searchView setHidden:YES];
         self.selectToolView.hidden=NO;
-        self.more_button.hidden=YES;
+        self.more_button.hidden=NO;
         self.selectToolView.frame=CGRectMake(0, self.view.frame.size.height-60, self.view.frame.size.width, 60);
+        
+        self.ctrlView=[[UIControl alloc] init];
+        self.ctrlView.frame=self.view.frame;
+        [self.ctrlView addTarget:self action:@selector(touchView:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.ctrlView];
+        [self.ctrlView setHidden:YES];
+        
+        UIImageView *bg=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Bk_na.png"]];
+        //bg.frame=CGRectMake(25, 44, 270, 175);
+        bg.frame=CGRectMake(25+(90*2), 44, 90, 87);
+        [self.ctrlView addSubview:bg];
+        //按钮－新建文件夹 1，1
+        self.btnNewFinder= [UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnNewFinder.frame=CGRectMake(25+(90*2), 44, 90, 87);
+        [self.btnNewFinder setImage:[UIImage imageNamed:@"Bt_naCreateForlder.png"] forState:UIControlStateNormal];
+        [self.btnNewFinder setBackgroundImage:[UIImage imageNamed:@"Bk_naChecked.png"] forState:UIControlStateHighlighted];
+        [self.btnNewFinder addTarget:self action:@selector(newFinder:) forControlEvents:UIControlEventTouchUpInside];
+        [self.ctrlView addSubview:self.btnNewFinder];
+        UILabel *lblNewFinder11=[[[UILabel alloc] init] autorelease];
+        lblNewFinder11.text=@"新建文件夹";
+        lblNewFinder11.textAlignment=UITextAlignmentCenter;
+        lblNewFinder11.font=[UIFont systemFontOfSize:12];
+        lblNewFinder11.textColor=[UIColor whiteColor];
+        lblNewFinder11.backgroundColor=[UIColor clearColor];
+        lblNewFinder11.frame=CGRectMake(25+(90*2), 59+44, 90, 21);
+        [self.ctrlView addSubview:lblNewFinder11];
+        
+        
     }
     
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -1021,7 +1049,7 @@ typedef enum{
     //                    [self.fm renameWithID:f_id newName:fildtext];
     //                    [self.fm setDelegate:self];
     //                }
-    if(self.myndsType == kMyndsTypeShare || self.myndsType == kMyndsTypeMyShare)
+    if(self.myndsType == kMyndsTypeShare || self.myndsType == kMyndsTypeMyShare||self.myndsType == kMyndsTypeMyShareSelect||self.myndsType == kMyndsTypeShareSelect)
     {
         [self.sm cancelAllTask];
         self.sm=nil;
@@ -1186,6 +1214,7 @@ typedef enum{
     switch (self.myndsType) {
         case kMyndsTypeDefault:
         case kMyndsTypeDefaultSearch:
+        case kMyndsTypeSelect:
         {
             [self.fm cancelAllTask];
             self.fm=nil;
@@ -1197,6 +1226,7 @@ typedef enum{
         
         case kMyndsTypeShare:
         case kMyndsTypeShareSearch:
+        case kMyndsTypeShareSelect:
         {
             [self.sm cancelAllTask];
             self.sm=nil;
@@ -1207,6 +1237,7 @@ typedef enum{
             break;
         case kMyndsTypeMyShare:
         case kMyndsTypeMyShareSearch:
+        case kMyndsTypeMyShareSelect:
         {
             [self.sm cancelAllTask];
             self.sm=nil;

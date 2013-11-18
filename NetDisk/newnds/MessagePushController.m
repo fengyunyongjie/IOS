@@ -480,7 +480,7 @@
     }
     else if(msg_sort == 8) //添加家庭成员
     {
-        title = [NSString stringWithFormat:AddFamilyToMe,msg_sender_remark];
+        title = [NSString stringWithFormat:AddFamilyToMe,msg_sender_remark,text];
     }
     else if(msg_sort == 9) //上传文件
     {
@@ -497,9 +497,12 @@
     }
     else if(msg_sort == 12) //新增图片和视频
     {
-        title=[NSString stringWithFormat:@"%@在%@中加入了新内容(家庭空间）",msg_sender_remark,text];
+        title=[NSString stringWithFormat:@"%@在%@中加入了新内容",msg_sender_remark,text];
     }
-    
+    int msg_type=[[dictionary objectForKey:@"msg_typ0e"] intValue];
+    if (msg_type==2) {
+        title=[NSString stringWithFormat:@"%@(家庭空间)",title];
+    }
     return title;
 }
 
