@@ -127,7 +127,7 @@
             }else
             {
                 [APService setTags:nil alias:nil];
-                [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+                //[[UIApplication sharedApplication] unregisterForRemoteNotifications];
             }
 
         }

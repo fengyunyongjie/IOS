@@ -222,7 +222,7 @@ typedef enum{
             }else
             {
                 [APService setTags:nil alias:nil];
-                [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+                //[[UIApplication sharedApplication] unregisterForRemoteNotifications];
             }
         }
             break;
@@ -371,7 +371,7 @@ typedef enum{
         case kActionSheetTypeExit:
             if (buttonIndex == 0) { 
                 [APService setTags:nil alias:nil];
-                [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+                //[[UIApplication sharedApplication] unregisterForRemoteNotifications];
                 
                 //scBox.UserLogout(callBackLogoutFunc,self);
                 UserInfo *info = [[[UserInfo alloc] init] autorelease];
