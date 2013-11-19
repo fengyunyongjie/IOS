@@ -165,6 +165,7 @@
     NSString *f_id = [dictioinary objectForKey:@"f_id"];
     NSString *name= [dictioinary objectForKey:@"f_name"];
     NSString *f_modify=[dictioinary objectForKey:@"f_modify"];
+    NSString *f_size=[dictioinary objectForKey:@"f_size"];
     NSLog(@"f_mime:%@",f_mime);
     int selectId = [[selected_dictionary objectForKey:[NSString stringWithFormat:@"%i",indexPath.row]] intValue];
     NSLog(@"selectId:%i",selectId);
@@ -188,8 +189,8 @@
         [cell.select_button setHidden:YES];
     }
     
-    cell.textLabel.text=name;
-    cell.detailTextLabel.text=f_modify;
+    cell.textLabel.text = name;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",[YNFunctions convertSize:f_size],f_modify];
     
     if ([f_mime isEqualToString:@"DIRECTORY"]) {
         cell.imageView.image = [UIImage imageNamed:@"Ico_FolderF.png"];

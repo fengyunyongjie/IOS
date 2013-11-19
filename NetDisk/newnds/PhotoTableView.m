@@ -263,6 +263,7 @@
     }
     if([sectionarray count]>0)
     {
+        [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         [self reloadData];
         photoType = 0;
         AppDelegate *appleDate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -357,8 +358,6 @@
             [indexPaths release];
             [tableArray release];
         }
-        
-        [self setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         
         photoType++;
         [self requestPhotoType];

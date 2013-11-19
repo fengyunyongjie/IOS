@@ -635,7 +635,7 @@ typedef enum{
                     //titleLabel.text = @"自动备份照片(Wi-Fi下,节省流量)";
                     //titleLabel.hidden=YES;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.textLabel.text=@"照片自动备份";
+                    cell.textLabel.text=@"相册自动备份";
                     [cell.textLabel setFont:titleLabel.font];
                     cell.detailTextLabel.text=@"仅Wi-Fi下进行,节省流量";
                     [cell.detailTextLabel setFont:[UIFont fontWithName:cell.detailTextLabel.font.fontName size:9.0f]];
