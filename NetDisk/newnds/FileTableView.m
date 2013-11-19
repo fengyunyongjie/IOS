@@ -190,7 +190,15 @@
     }
     
     cell.textLabel.text = name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",[YNFunctions convertSize:f_size],f_modify];
+    NSString *textString = nil;
+    if ([f_mime isEqualToString:@"DIRECTORY"])
+    {
+        textString = [NSString stringWithFormat:@"%@",f_modify];
+    }
+    else
+    {
+        textString = [NSString stringWithFormat:@"%@ %@",[YNFunctions convertSize:f_size],f_modify];
+    }
     
     if ([f_mime isEqualToString:@"DIRECTORY"]) {
         cell.imageView.image = [UIImage imageNamed:@"Ico_FolderF.png"];
@@ -246,6 +254,8 @@
     {
         cell.imageView.image = [UIImage imageNamed:@"Ico_OtherF.png"];
     }
+    
+    cell.detailTextLabel.text = textString;
     
     //是否显示收藏图标
     BOOL bl = [[FavoritesData sharedFavoritesData] isExistsWithFID:f_id];
