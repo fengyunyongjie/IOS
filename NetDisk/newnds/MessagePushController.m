@@ -16,6 +16,7 @@
 #define RightButtonBoderWidth 0
 #define AcceptTag 10000
 #define RefusedTag 20000
+#define PageCount 7
 
 @interface MessagePushController ()
 
@@ -115,12 +116,17 @@
     [self.view addSubview:null_imageview];
     [null_imageview setHidden:YES];
     //刷新数据
-    [self reloadMessageData];
+    [messageManager selectMessages:-1 cursor:0 offset:PageCount unread:-1];
 }
 
 -(void)reloadMessageData
 {
-    [messageManager selectMessages:-1 cursor:0 offset:-1 unread:-1];
+    if(isRequest)
+    {
+        isRequest = FALSE;
+        page = [table_array count]-1;
+        [messageManager selectMessages:-1 cursor:page offset:PageCount unread:-1];
+    }
 }
 
 -(void)back_clicked:(id)sender
@@ -250,23 +256,28 @@
 
 -(void)getSelectMessges:(NSDictionary *)dictioinary
 {
+    isLoad = FALSE;
     int code = [[dictioinary objectForKey:@"code"] intValue];
     if(code == 0)
     {
         NSArray *array = [dictioinary objectForKey:@"msgs"];
         NSLog(@"得到消息：%@",array);
-        [table_array removeAllObjects];
         for (NSDictionary *diction in array) {
             NSMutableDictionary *tableD = [[NSMutableDictionary alloc] initWithDictionary:diction];
             [table_array addObject:tableD];
             [tableD release];
         }
-        
-        if([table_array count]>0)
+        if([array count]>0)
         {
+            if([array count] == PageCount)
+            {
+                isRequest = YES;
+            }
+            else
+            {
+                isRequest = FALSE;
+            }
             [self.table_view reloadData];
-            [friendManager getFriendshipsGroups:0 offset:-1];
-            isSelect = FALSE;
         }
         else
         {
@@ -280,7 +291,10 @@
 {
     NSLog(@"dictioinary:%@",dictioinary);
     //刷新数据
-    [self reloadMessageData];
+    [table_array removeAllObjects];
+    page = 0;
+    //刷新数据
+    [messageManager selectMessages:-1 cursor:1 offset:PageCount unread:-1];
 }
 
 -(void)error
@@ -377,7 +391,10 @@
     [hud release];
     
     //刷新数据
-    [self reloadMessageData];
+    [table_array removeAllObjects];
+    page = 0;
+    //刷新数据
+    [messageManager selectMessages:-1 cursor:1 offset:PageCount unread:-1];
     
 //    [self.table_view reloadData];
 }
@@ -427,7 +444,10 @@
     
     
     //刷新数据
-    [self reloadMessageData];
+    [table_array removeAllObjects];
+    page = 0;
+    //刷新数据
+    [messageManager selectMessages:-1 cursor:1 offset:PageCount unread:-1];
 }
 
 -(void)searchSucess:(NSDictionary *)datadic
@@ -675,6 +695,15 @@
                      lineBreakMode:UILineBreakModeWordWrap];
     [cell.time_label setText:time];
     return cell;
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    int y = scrollView.contentOffset.y;
+    if(!isLoad && y >= self.table_view.contentSize.height-self.table_view.frame.size.height)
+    {
+        [self reloadMessageData];
+    }
 }
 
 -(void)dealloc

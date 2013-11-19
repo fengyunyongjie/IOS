@@ -11,7 +11,7 @@
 #import "SCBFriendManager.h"
 #import "SCBShareManager.h"
 
-@interface MessagePushController : UIViewController<UITableViewDataSource,UITableViewDelegate,SCBMessageManagerDelegate,SCBFriendManagerDelegate,SCBShareManagerDelegate>
+@interface MessagePushController : UIViewController<UITableViewDataSource,UITableViewDelegate,SCBMessageManagerDelegate,SCBFriendManagerDelegate,SCBShareManagerDelegate,UIScrollViewDelegate>
 {
     UITableView *table_view;
     /*
@@ -29,6 +29,9 @@
     BOOL isPushMessage;
     
     UIImageView *null_imageview; //pop.png
+    int page;
+    int isLoad;
+    int isRequest;
 }
 
 @property(nonatomic,retain) UITableView *table_view;
