@@ -16,7 +16,7 @@
 #define RightButtonBoderWidth 0
 #define AcceptTag 10000
 #define RefusedTag 20000
-#define PageCount 7
+#define PageCount 18
 
 @interface MessagePushController ()
 
@@ -135,6 +135,8 @@
     if(isRequest)
     {
         isRequest = FALSE;
+        [table_array addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Wait",@"YangSL", nil]];
+        [self.table_view reloadData];
         page = [table_array count]-1;
         [messageManager selectMessages:-1 cursor:page offset:PageCount unread:-1];
     }
@@ -177,6 +179,10 @@
     else
     {
         NSDictionary *diction = [table_array objectAtIndex:[indexPath row]];
+        if([diction objectForKey:@"YangSL"] != nil)
+        {
+            return 50;
+        };
         NSString *text = [self getCellShowText:diction];
         CGFloat height = [self getCellHight:diction withForText:text];
         return height;
@@ -196,6 +202,15 @@
     if(indexPath.row<[table_array count])
     {
         NSDictionary *diction = [table_array objectAtIndex:[indexPath row]];
+        if([diction objectForKey:@"YangSL"] != nil)
+        {
+            MessagePushCell *cell = [[[MessagePushCell alloc] init] autorelease];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            cell.textLabel.text = @"加载中,请稍等......";
+            [cell.textLabel setFont:[UIFont systemFontOfSize:16]];
+            [cell.textLabel setTextAlignment:NSTextAlignmentCenter];
+            return cell;
+        }
         return [self showMessageCellWithDictionary:diction withForIndexPath:indexPath];
     }
     else
@@ -272,13 +287,23 @@
     if(code == 0)
     {
         NSArray *array = [dictioinary objectForKey:@"msgs"];
+        
         NSLog(@"得到消息：%@",array);
+        int index = 0;
         for (NSDictionary *diction in array) {
             NSMutableDictionary *tableD = [[NSMutableDictionary alloc] initWithDictionary:diction];
-            [table_array addObject:tableD];
+            if(index == 0 && [table_array count] > 0)
+            {
+                [table_array replaceObjectAtIndex:[table_array count]-1 withObject:tableD];
+            }
+            else
+            {
+                [table_array addObject:tableD];
+            }
             [tableD release];
+            index ++;
         }
-        if([array count]>0)
+        if([table_array count]>0)
         {
             if([array count] == PageCount)
             {
@@ -286,6 +311,11 @@
             }
             else
             {
+                NSDictionary *diction = [table_array lastObject];
+                if([diction objectForKey:@"YangSL"] != nil)
+                {
+                    [table_array removeLastObject];
+                }
                 isRequest = FALSE;
             }
             [self.table_view reloadData];
