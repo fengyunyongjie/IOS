@@ -58,6 +58,7 @@ typedef enum{
     kActionSheetTagDeleteOne,
     kActionSheetTagDeleteMore,
     kActionSheetTagPhoto,
+    kActionSheetTagSavePhoto,
 }ActionSheetTag;
 @implementation FileItem
 
@@ -1531,29 +1532,10 @@ typedef enum{
 }
 -(void)toFavorite:(id)sender
 {
-    NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
-    NSString *f_id=[dic objectForKey:@"f_id"];
-    if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
-        [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
-        NSString *fileName=[dic objectForKey:@"f_name"];
-        NSString *filePath=[YNFunctions getFMCachePath];
-        filePath=[filePath stringByAppendingPathComponent:fileName];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-            NSError *error=[[NSError alloc] init];
-            if ([[NSFileManager defaultManager] removeItemAtPath:filePath error:&error]) {
-                NSLog(@"删除本地收藏文件成功：%@",filePath);
-            }else
-            {
-                NSLog(@"删除本地收藏文件失败：%@",filePath);
-            }
-        }
-    }else
-    {
-        [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
-    }
-    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row -1 inSection:self.selectedIndexPath.section];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self hideOptionCell];
+    UIActionSheet *actionSheet=[[UIActionSheet alloc]  initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"保存到本地相册",nil];
+    [actionSheet setTag:kActionSheetTagSavePhoto];
+    [actionSheet setActionSheetStyle:UIActionSheetStyleBlackOpaque];
+    [actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
 }
 -(void)toDelete:(id)sender
 {
@@ -3730,6 +3712,35 @@ typedef enum{
             }else if(buttonIndex == 6) {
                 NSLog(@"取消");
             }
+            break;
+        case kActionSheetTagSavePhoto:
+        {
+            if (buttonIndex==0) {
+                NSDictionary *dic=[self.listArray objectAtIndex:self.selectedIndexPath.row-1];
+                NSString *f_id=[dic objectForKey:@"f_id"];
+                if ([[FavoritesData sharedFavoritesData] isExistsWithFID:f_id]) {
+                    [[FavoritesData sharedFavoritesData] removeObjectForKey:f_id];
+                    NSString *fileName=[dic objectForKey:@"f_name"];
+                    NSString *filePath=[YNFunctions getFMCachePath];
+                    filePath=[filePath stringByAppendingPathComponent:fileName];
+                    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                        NSError *error=[[NSError alloc] init];
+                        if ([[NSFileManager defaultManager] removeItemAtPath:filePath error:&error]) {
+                            NSLog(@"删除本地收藏文件成功：%@",filePath);
+                        }else
+                        {
+                            NSLog(@"删除本地收藏文件失败：%@",filePath);
+                        }
+                    }
+                }else
+                {
+                    [[FavoritesData sharedFavoritesData] setObject:dic forKey:f_id];
+                }
+                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:self.selectedIndexPath.row -1 inSection:self.selectedIndexPath.section];
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self hideOptionCell];
+            }
+        }
             break;
         case kActionSheetTagPhoto:
         {
