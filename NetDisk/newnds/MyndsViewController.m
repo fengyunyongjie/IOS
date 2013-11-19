@@ -1258,7 +1258,7 @@ typedef enum{
     }
     dispatch_async(dispatch_get_main_queue(), ^{
     NSString *strFid=[NSString stringWithFormat:@"%@",self.f_id];
-    if (![strFid isEqualToString:@"1"]) {
+    if (![strFid isEqualToString:@"1"]&&self.myndsType!=kMyndsTypeSelect&&self.myndsType!=kMyndsTypeMyShareSelect&&self.myndsType!=kMyndsTypeShareSelect) {
         //加载本地缓存文件 根目录暂时不加载
         NSString *dataFilePath=[YNFunctions getDataCachePath];
         dataFilePath=[dataFilePath stringByAppendingPathComponent:[YNFunctions getFileNameWithFID:self.f_id]];
@@ -3041,7 +3041,25 @@ typedef enum{
 }
 -(void)newFinderSucess
 {
-    [self operateUpdate];
+    if (self.myndsType==kMyndsTypeSelect||self.myndsType==kMyndsTypeMyShareSelect||self.myndsType==kMyndsTypeShareSelect) {
+        [self updateFileList];
+        if (self.hud) {
+            [self.hud removeFromSuperview];
+        }
+        self.hud=nil;
+        self.hud=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:self.hud];
+        
+        [self.hud show:NO];
+        self.hud.labelText=@"操作成功";
+        self.hud.mode=MBProgressHUDModeText;
+        self.hud.margin=10.f;
+        [self.hud show:YES];
+        [self.hud hide:YES afterDelay:1.0f];
+    }else
+    {
+        [self operateUpdate];
+    }
 }
 -(void)newFinderUnsucess
 {

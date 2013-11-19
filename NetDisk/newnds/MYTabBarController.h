@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-
 typedef enum
 {
     //仅文本
@@ -63,7 +62,7 @@ typedef enum
     int default_selected_index;
     //字体大小和颜色
     UIColor *font_color;
-    UIFont *font;
+    //UIFont *font;
     UIColor *hilighted_color;
     BOOL is_did_load;
     //当前选中的tabbar视图

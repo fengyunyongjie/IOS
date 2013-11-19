@@ -71,13 +71,6 @@
         show_style = 0;
         show_way = 0;
         default_selected_index = 0;
-        @try {
-            font = [UIFont boldSystemFontOfSize:14.0f];
-        }
-        @catch (NSException *exception) {
-        }
-        @finally {
-        }
         UIColor *default_color = [UIColor whiteColor];
         font_color = default_color;
         tab_btn = [[NSMutableArray alloc] initWithCapacity:0];

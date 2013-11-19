@@ -497,7 +497,8 @@
     }
     else if(msg_sort == 12) //新增图片和视频
     {
-        title=[NSString stringWithFormat:@"%@在%@中加入了新内容",msg_sender_remark,text];
+        NSArray *fname=[text componentsSeparatedByString:@"|"];
+        title=[NSString stringWithFormat:@"%@在%@中加入了新内容%@",msg_sender_remark,fname[1],fname[0]];
     }
     int msg_type=[[dictionary objectForKey:@"msg_typ0e"] intValue];
     if (msg_type==2) {
